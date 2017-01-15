@@ -26,7 +26,7 @@
  * File Name: ORdatabaseDecisionTree.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7a 27-January-2015
+ * Project Version: 3e7b 27-January-2015
  *
  *******************************************************************************/
 
@@ -96,7 +96,7 @@ void createAndOrParseIntoDirectory(string* folderNameFullPath, string* folderNam
 #endif
 
 //#define OR_IMAGE_COMPARISON_GEOMETRIC_COMPARISON_BINNING
-void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, int imageHeight, unsigned char* rgbMapSmall, Feature* firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, long* decisionTreeSQLmultipleRowInsertQueryLength)
+void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, int imageHeight, unsigned char* rgbMapSmall, ORfeature* firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, long* decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string currentDirectory =* initialDirectory;
 	int currentDirectoryLengthInitial =* currentDirectoryLength;
@@ -104,14 +104,14 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 	bool addPermutationsOfTrainFeaturesForGeoBinning;
 	int maxNumFeaturePermutations;
 
-	Feature* currentFeatureInTempList = firstFeatureInList;
+	ORfeature* currentFeatureInTempList = firstFeatureInList;
 
 	//now bin the features;
 	int findex1 = 0;
 
 	while(currentFeatureInTempList->next != NULL)
 	{
-		Feature* currentFeatureInTempList2 = firstFeatureInList;
+		ORfeature* currentFeatureInTempList2 = firstFeatureInList;
 
 		if((!ignoreOTfeatures) || (currentFeatureInTempList->OTpointIndex == 0))
 		{//perform binning of nearby features only (not OT features)
@@ -262,8 +262,8 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 							geoxyBins[3] = geoyBin[1];
 
 							#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
-							SnapshotIDreferenceList* firstReferenceInDTBinListGeo = new SnapshotIDreferenceList();
-							SnapshotIDreferenceList* currentReferenceInDTBinListGeo = firstReferenceInDTBinListGeo;
+							ORsnapshotIDreferenceList* firstReferenceInDTBinListGeo = new ORsnapshotIDreferenceList();
+							ORsnapshotIDreferenceList* currentReferenceInDTBinListGeo = firstReferenceInDTBinListGeo;
 							#endif
 
 							//int numberOfIntelligentGeoBins = countIncrements(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2);  //2^(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2);
@@ -386,7 +386,7 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 									bool placedNewDTBinReference = false;
 									bool dtBinAlreadyAddedToList = false;
 									currentReferenceInDTBinListGeo = firstReferenceInDTBinListGeo;
-									SnapshotIDreferenceList* previousReferenceInDTBinListGeo = firstReferenceInDTBinListGeo;
+									ORsnapshotIDreferenceList* previousReferenceInDTBinListGeo = firstReferenceInDTBinListGeo;
 									bool DTBinListGeoIndex = 0;
 									int currentDTBinValue = currentReferenceInDTBinListGeo->referenceID;
 									#ifdef OR_DEBUG
@@ -402,12 +402,12 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 										{
 											if(currentReferenceInDTBinListGeo->referenceID >= currentDTBinValue)
 											{
-												SnapshotIDreferenceList* newReferenceInDTBinListGeo = new SnapshotIDreferenceList();
+												ORsnapshotIDreferenceList* newReferenceInDTBinListGeo = new ORsnapshotIDreferenceList();
 												newReferenceInDTBinListGeo->referenceID = dtBinTemp;
 												//cout << "add bin to list; newReferenceInDTBinListGeo->referenceID = " << newReferenceInDTBinListGeo->referenceID << endl;
 												if(DTBinListGeoIndex > 0)
 												{
-													SnapshotIDreferenceList* tempRef = previousReferenceInDTBinListGeo->next;
+													ORsnapshotIDreferenceList* tempRef = previousReferenceInDTBinListGeo->next;
 													tempRef->previous = newReferenceInDTBinListGeo;
 													newReferenceInDTBinListGeo->next = tempRef;
 													newReferenceInDTBinListGeo->previous = previousReferenceInDTBinListGeo;
@@ -415,7 +415,7 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 												}
 												else
 												{
-													SnapshotIDreferenceList* tempRef = firstReferenceInDTBinListGeo;
+													ORsnapshotIDreferenceList* tempRef = firstReferenceInDTBinListGeo;
 													tempRef->previous = newReferenceInDTBinListGeo;
 													newReferenceInDTBinListGeo->next = tempRef;
 													firstReferenceInDTBinListGeo = newReferenceInDTBinListGeo;
@@ -592,7 +592,7 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 }
 
 //#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING
-void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(int imageWidth, int imageHeight, unsigned char* rgbMapSmall, Feature* firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, long* decisionTreeSQLmultipleRowInsertQueryLength)
+void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(int imageWidth, int imageHeight, unsigned char* rgbMapSmall, ORfeature* firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, long* decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string* currentDirectory = initialDirectory;
 	int currentDirectoryLengthInitial =* currentDirectoryLength;
@@ -703,7 +703,7 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(int imageW
 }
 
 //#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
-void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, int imageHeight, unsigned char* rgbMapSmall, Feature* firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, long* decisionTreeSQLmultipleRowInsertQueryLength)
+void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, int imageHeight, unsigned char* rgbMapSmall, ORfeature* firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, long* decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string currentDirectory =* initialDirectory;
 	int currentDirectoryLengthInitial =* currentDirectoryLength;
@@ -748,8 +748,8 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 	}
 
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
-	SnapshotIDreferenceList* firstReferenceInDTBinListFourier = new SnapshotIDreferenceList();
-	SnapshotIDreferenceList* currentReferenceInDTBinListFourier = firstReferenceInDTBinListFourier;
+	ORsnapshotIDreferenceList* firstReferenceInDTBinListFourier = new ORsnapshotIDreferenceList();
+	ORsnapshotIDreferenceList* currentReferenceInDTBinListFourier = firstReferenceInDTBinListFourier;
 	#endif
 	int numberOfIntelligentFourierBins = pow(2.0, OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS);
 	#ifdef OR_DEBUG
@@ -912,7 +912,7 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 			bool placedNewDTBinReference = false;
 			bool dtBinAlreadyAddedToList = false;
 			currentReferenceInDTBinListFourier = firstReferenceInDTBinListFourier;
-			SnapshotIDreferenceList* previousReferenceInDTBinListFourier = firstReferenceInDTBinListFourier;
+			ORsnapshotIDreferenceList* previousReferenceInDTBinListFourier = firstReferenceInDTBinListFourier;
 			bool DTBinListFourierIndex = 0;
 			int currentDTBinValue = currentReferenceInDTBinListFourier->referenceID;
 			#ifdef OR_DEBUG
@@ -928,14 +928,14 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 				{
 					if(currentReferenceInDTBinListFourier->referenceID >= currentDTBinValue)
 					{
-						SnapshotIDreferenceList* newReferenceInDTBinListFourier = new SnapshotIDreferenceList();
+						ORsnapshotIDreferenceList* newReferenceInDTBinListFourier = new ORsnapshotIDreferenceList();
 						newReferenceInDTBinListFourier->referenceID = dtBinTemp;
 						#ifdef OR_DEBUG
 						//cout << "add bin to list; newReferenceInDTBinListFourier->referenceID = " << newReferenceInDTBinListFourier->referenceID << endl;
 						#endif
 						if(DTBinListFourierIndex > 0)
 						{
-							SnapshotIDreferenceList* tempRef = previousReferenceInDTBinListFourier->next;
+							ORsnapshotIDreferenceList* tempRef = previousReferenceInDTBinListFourier->next;
 							tempRef->previous = newReferenceInDTBinListFourier;
 							newReferenceInDTBinListFourier->next = tempRef;
 							newReferenceInDTBinListFourier->previous = previousReferenceInDTBinListFourier;
@@ -943,7 +943,7 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 						}
 						else
 						{
-							SnapshotIDreferenceList* tempRef = firstReferenceInDTBinListFourier;
+							ORsnapshotIDreferenceList* tempRef = firstReferenceInDTBinListFourier;
 							tempRef->previous = newReferenceInDTBinListFourier;
 							newReferenceInDTBinListFourier->next = tempRef;
 							firstReferenceInDTBinListFourier = newReferenceInDTBinListFourier;
@@ -1115,7 +1115,7 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 }
 
 //#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON
-void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(int imageWidth, int imageHeight, unsigned char* rgbMapSmall, Feature* firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, long* decisionTreeSQLmultipleRowInsertQueryLength)
+void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(int imageWidth, int imageHeight, unsigned char* rgbMapSmall, ORfeature* firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, long* decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string currentDirectory =* initialDirectory;
 
@@ -1140,7 +1140,7 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(int i
 }
 
 
-void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(int imageWidth, int imageHeight, unsigned char* rgbMapSmall, Feature* firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, long* decisionTreeSQLmultipleRowInsertQueryLength)
+void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(int imageWidth, int imageHeight, unsigned char* rgbMapSmall, ORfeature* firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, long* decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string* currentDirectory = initialDirectory;
 
@@ -1162,7 +1162,7 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(int imageWidth
 }
 
 
-void addSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcombinations(int imageWidth, int imageHeight, unsigned char* rgbMapSmall, Feature* firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures)
+void addSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcombinations(int imageWidth, int imageHeight, unsigned char* rgbMapSmall, ORfeature* firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures)
 {
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
 	char* decisionTreeMultipleRowInsertQueryTextCharStar = new char[100000000];	//requires 100MB in ram, for ~ 1000,000 sql inserted rows, each <= 100 characters in length
@@ -1403,7 +1403,7 @@ void createSnapshotIDreferenceImageComparisonDecisionTreeString(int imageWidth, 
 	}
 }
 
-void createFeatureContainerListUsingUsingGetSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcheck(FeatureContainer* firstFeatureContainerInTestFeatureMatchingTrainBin, bool ignoreOTfeatures, int imageWidth, int imageHeight, unsigned char* rgbMapSmall, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour* normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], int trainOrTest)
+void createFeatureContainerListUsingUsingGetSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcheck(ORfeatureContainer* firstFeatureContainerInTestFeatureMatchingTrainBin, bool ignoreOTfeatures, int imageWidth, int imageHeight, unsigned char* rgbMapSmall, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour* normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], int trainOrTest)
 {
 	string currentDirectory = "";
 	char currentDirectoryCharStar[OR_IMAGE_COMPARISON_DECISION_TREE_BIN_MAX_LENGTH];
@@ -1415,7 +1415,7 @@ void createFeatureContainerListUsingUsingGetSnapshotIDreferenceToImageComparison
 }
 
 
-void getSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcheck(int imageWidth, int imageHeight, unsigned char* rgbMapSmall, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour* normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], SnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList, int trainOrTest, string* DTbin)
+void getSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcheck(int imageWidth, int imageHeight, unsigned char* rgbMapSmall, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour* normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], ORsnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList, int trainOrTest, string* DTbin)
 {
 	string currentDirectory = "";
 	char currentDirectoryCharStar[OR_IMAGE_COMPARISON_DECISION_TREE_BIN_MAX_LENGTH];
@@ -1440,7 +1440,7 @@ void getSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTch
 
 
 #ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
-void getSnapshotIDreferencesInImageComparisonDecisionTree(int imageWidth, int imageHeight, unsigned char* rgbMapSmall, SnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList, string* currentDirectory)
+void getSnapshotIDreferencesInImageComparisonDecisionTree(int imageWidth, int imageHeight, unsigned char* rgbMapSmall, ORsnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList, string* currentDirectory)
 {
 	if(OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
 	{
@@ -1882,9 +1882,9 @@ void addSnapshotIDReferenceToList(string* parseFileName, long snapshotID)
 }
 
 
-void parseSnapshotIDreferenceList(string* parseFileName, SnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList)
+void parseSnapshotIDreferenceList(string* parseFileName, ORsnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList)
 {
-	SnapshotIDreferenceList* currentReferenceInSnapshotIDReferenceList = firstReferenceInSnapshotIDreferenceList;
+	ORsnapshotIDreferenceList* currentReferenceInSnapshotIDReferenceList = firstReferenceInSnapshotIDreferenceList;
 
 	ifstream parseFileObject(parseFileName->c_str());		//append to snapshot id reference list
 
@@ -1905,7 +1905,7 @@ void parseSnapshotIDreferenceList(string* parseFileName, SnapshotIDreferenceList
 				//cout << "currentReferenceInSnapshotIDReferenceList->referenceID = " << currentReferenceInSnapshotIDReferenceList->referenceID << endl;
 				#endif
 
-				SnapshotIDreferenceList* newReferenceInSnapshotIDReferenceList = new SnapshotIDreferenceList();
+				ORsnapshotIDreferenceList* newReferenceInSnapshotIDReferenceList = new ORsnapshotIDreferenceList();
 				currentReferenceInSnapshotIDReferenceList->next = newReferenceInSnapshotIDReferenceList;
 				currentReferenceInSnapshotIDReferenceList = currentReferenceInSnapshotIDReferenceList->next;
 

@@ -26,7 +26,7 @@
  * File Name: ORcomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7a 27-January-2015
+ * Project Version: 3e7b 27-January-2015
  *
  *******************************************************************************/
 
@@ -67,10 +67,10 @@ int passes;
 
 
 #ifdef OR_IMAGE_COMPARISON_NONSQL_GEOMETRIC_COMPARISON_OPTIMISED_TRAIN_FILE_IO_V2
-static FeatureContainer trainfeatureGeoCompBinArray[OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS][2];	//trainfeatureGeoCompBinArray now stores 2 feature combinations (instead of 1 feature)
+static ORfeatureContainer trainfeatureGeoCompBinArray[OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS][2];	//trainfeatureGeoCompBinArray now stores 2 feature combinations (instead of 1 feature)
 #endif
 #ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_BASIC_NO_SQL
-static FeatureContainer trainfeatureImageAverageColourCompBinArray[OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL][OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL][OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL];
+static ORfeatureContainer trainfeatureImageAverageColourCompBinArray[OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL][OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL][OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL];
 #endif
 
 //#ifdef OR_PRINT_ALGORITHM_AND_TIME_DETAILS
@@ -224,12 +224,12 @@ void fillDCTcoeffSelectionArrays()
 
 
 /*
-//FeatureContainer testfeatureGeoCompArray[numberOfTestObjects][numberOfTestViewIndicies][numberOfTestZoomIndicies][maxNumberOfTestPolysAcrossAllObjects][OR_METHOD_POLYGON_NUMBER_OF_SIDES];
+//ORfeatureContainer testfeatureGeoCompArray[numberOfTestObjects][numberOfTestViewIndicies][numberOfTestZoomIndicies][maxNumberOfTestPolysAcrossAllObjects][OR_METHOD_POLYGON_NUMBER_OF_SIDES];
 #ifndef LINUX
 #ifdef OR_METHOD_2DOD
-	FeatureContainer testfeatureGeoCompArray[OR_METHOD2DOD_NUM_OF_OBJECTS][OR_METHOD2DOD_NUMBER_OF_VIEWINDICIES_TEST][OR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TEST][OR_METHOD_POLYGON_NUMBER_OF_SIDES];
+	ORfeatureContainer testfeatureGeoCompArray[OR_METHOD2DOD_NUM_OF_OBJECTS][OR_METHOD2DOD_NUMBER_OF_VIEWINDICIES_TEST][OR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TEST][OR_METHOD_POLYGON_NUMBER_OF_SIDES];
 #elif defined OR_METHOD_3DOD
-	FeatureContainer testfeatureGeoCompArray[OR_METHOD3DOD_NUM_OF_OBJECTS][OR_METHOD3DOD_NUMBER_OF_VIEWINDICIES_TEST][OR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TEST][OR_METHOD_POLYGON_NUMBER_OF_SIDES];
+	ORfeatureContainer testfeatureGeoCompArray[OR_METHOD3DOD_NUM_OF_OBJECTS][OR_METHOD3DOD_NUMBER_OF_VIEWINDICIES_TEST][OR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TEST][OR_METHOD_POLYGON_NUMBER_OF_SIDES];
 #endif
 #endif
 */
@@ -243,7 +243,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 	char currentTempFolder[EXE_FOLDER_PATH_MAX_LENGTH];
 	getCurrentDirectory(currentTempFolder);
 
-	ObjectReferenceList* firstReferenceInSnapshotMatchObjectReferenceList = new ObjectReferenceList();
+	ORobjectReferenceList* firstReferenceInSnapshotMatchObjectReferenceList = new ORobjectReferenceList();
 
 	bool useGeneratedTestPixmapFiles = false;
 	bool useGeneratedTrainPixmapFiles = false;
@@ -346,7 +346,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3e7a 27-January-2015<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3e7b 27-January-2015<p>";
 		}
 		else
 		{
@@ -359,7 +359,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		string ICRtableStart = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL)
 		{
-			ICRtableStart = ICRtableStart + "<TABLE width=\"100%\" cellpadding=\"3\" cellspacing=\"0\" border=\"1\"><TR><TD colspan=\"6\">Test</TD><TD colspan=\"6\">Train</TD><TD></TD></TR><TR><TD>Object</TD><TD>View</TD><TD>Zoom</TD><TD>PolygonBAI</TD><TD>Side</TD><TD>Image</TD><TD>Object</TD><TD>View</TD><TD>Zoom</TD><TD>PolygonBAI</TD><TD>Side</TD><TD>Image</TD><TD></TD></TR>";
+			ICRtableStart = ICRtableStart + "<TABLE width=\"100%\" cellpadding=\"3\" cellspacing=\"0\" border=\"1\"><TR><TD colspan=\"6\">Test</TD><TD colspan=\"6\">Train</TD><TD></TD></TR><TR><TD>Object</TD><TD>View</TD><TD>Zoom</TD><TD>ORpolygon</TD><TD>Side</TD><TD>Image</TD><TD>Object</TD><TD>View</TD><TD>Zoom</TD><TD>ORpolygon</TD><TD>Side</TD><TD>Image</TD><TD></TD></TR>";
 		}
 		else
 		{
@@ -424,8 +424,8 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		cout << "numberOfNearestFeatures = " << numberOfNearestFeatures << endl;
 	}
 
-	Feature* testFirstFeatureInNearestFeatureList = new Feature();
-	Feature* trainFirstFeatureInNearestFeatureList = new Feature();
+	ORfeature* testFirstFeatureInNearestFeatureList = new ORfeature();
+	ORfeature* trainFirstFeatureInNearestFeatureList = new ORfeature();
 
 	generateNearestFeaturesList(testFirstFeatureInNearestFeatureList, numberOfNearestFeatures);
 	generateNearestFeaturesList(trainFirstFeatureInNearestFeatureList, numberOfNearestFeatures);
@@ -470,8 +470,8 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 
 	int numberOfNearestFeatures = calculateNumberOfNearestFeatures(NUMBER_OF_POLYGONS_PER_FEATURE, OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM);
 
-	Feature* testFirstFeatureInNearestFeatureList = new Feature();
-	Feature* trainFirstFeatureInNearestFeatureList = new Feature();
+	ORfeature* testFirstFeatureInNearestFeatureList = new ORfeature();
+	ORfeature* trainFirstFeatureInNearestFeatureList = new ORfeature();
 
 	generateNearestFeaturesList(testFirstFeatureInNearestFeatureList, numberOfNearestFeatures);
 	generateNearestFeaturesList(trainFirstFeatureInNearestFeatureList, numberOfNearestFeatures);
@@ -493,10 +493,10 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 	}
 
 	#ifdef LINUX
-	FeatureContainer testfeatureGeoCompArray[numberOfTestObjects][numberOfTestViewIndicies][numberOfTestZoomIndicies][maxNumberOfTestPolysAcrossAllObjects][OR_METHOD_POLYGON_NUMBER_OF_SIDES];
+	ORfeatureContainer testfeatureGeoCompArray[numberOfTestObjects][numberOfTestViewIndicies][numberOfTestZoomIndicies][maxNumberOfTestPolysAcrossAllObjects][OR_METHOD_POLYGON_NUMBER_OF_SIDES];
 	#else
 	/*
-	array<FeatureContainer ^> ^ testfeatureGeoCompArray = new array<FeatureContainer ^>(numberOfTestObjects*numberOfTestViewIndicies*numberOfTestZoomIndicies*maxNumberOfTestPolysAcrossAllObjects*OR_METHOD_POLYGON_NUMBER_OF_SIDES);
+	array<ORfeatureContainer ^> ^ testfeatureGeoCompArray = new array<ORfeatureContainer ^>(numberOfTestObjects*numberOfTestViewIndicies*numberOfTestZoomIndicies*maxNumberOfTestPolysAcrossAllObjects*OR_METHOD_POLYGON_NUMBER_OF_SIDES);
 	int tempdim1 = numberOfTestViewIndicies*numberOfTestZoomIndicies*maxNumberOfTestPolysAcrossAllObjects*OR_METHOD_POLYGON_NUMBER_OF_SIDES
 	int tempdim2 = numberOfTestZoomIndicies*maxNumberOfTestPolysAcrossAllObjects*OR_METHOD_POLYGON_NUMBER_OF_SIDES
 	int tempdim3 = maxNumberOfTestPolysAcrossAllObjects*OR_METHOD_POLYGON_NUMBER_OF_SIDES
@@ -534,7 +534,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 							string testinterpolatedNearestFeaturesMapFileName;
 							testinterpolatedNearestFeaturesMapFileName = testinterpolatedRGBMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + TEST_STRING + TFD_EXTENSION;
 
-							Feature* firstFeatureInList = new Feature();
+							ORfeature* firstFeatureInList = new ORfeature();
 
 							bool ignoreOTfeatures;
 							if(dimension == OR_METHOD2DOD_DIMENSIONS)
@@ -580,7 +580,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 	}
 
 	#ifndef OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_BASIC_NO_SQL
-	FeatureContainer trainfeatureGeoCompArray[numberOfTrainObjects][numberOfTrainViewIndicies][numberOfTrainZoomIndicies][maxNumberOfTrainPolysAcrossAllObjects][OR_METHOD_POLYGON_NUMBER_OF_SIDES];
+	ORfeatureContainer trainfeatureGeoCompArray[numberOfTrainObjects][numberOfTrainViewIndicies][numberOfTrainZoomIndicies][maxNumberOfTrainPolysAcrossAllObjects][OR_METHOD_POLYGON_NUMBER_OF_SIDES];
 	#endif
 	
 	for(int trainObjectIndex=0; trainObjectIndex<numberOfTrainObjects; trainObjectIndex++)
@@ -611,7 +611,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 						traininterpolatedNearestFeaturesMapFileName = traininterpolatedRGBMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + TRAIN_STRING + TFD_EXTENSION;
 						//generateNearestFeaturesList(&(trainfeatureGeoCompArray[trainObjectIndex][trainViewIndex][trainPolyIndex][trainSideIndex]), numberOfNearestFeatures);
 
-						Feature* firstFeatureInList = new Feature();
+						ORfeature* firstFeatureInList = new ORfeature();
 
 						bool ignoreOTfeatures;
 						if(dimension == OR_METHOD2DOD_DIMENSIONS)
@@ -642,14 +642,14 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 						int gBin = (int)(((double)(avgCol.g)/(MAX_RGB_VAL))*OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL);
 						int bBin = (int)(((double)(avgCol.b)/(MAX_RGB_VAL))*OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL);
 
-						FeatureContainer* currentFeatureContainerInList = &(trainfeatureImageAverageColourCompBinArray[rBin][gBin][bBin]);
+						ORfeatureContainer* currentFeatureContainerInList = &(trainfeatureImageAverageColourCompBinArray[rBin][gBin][bBin]);
 						// go to last feature container in list (ie append to list if list already has items)
 						while(currentFeatureContainerInList->next != NULL)
 						{
 							currentFeatureContainerInList = currentFeatureContainerInList->next;
 						}
 						currentFeatureContainerInList->firstFeatureInFeatureList = firstFeatureInList;
-						FeatureContainer* newFeatureContainer = new FeatureContainer();
+						ORfeatureContainer* newFeatureContainer = new ORfeatureContainer();
 						currentFeatureContainerInList->next = newFeatureContainer;
 						#else
 						(trainfeatureGeoCompArray[trainObjectIndex][trainViewIndex][trainZoomIndex][trainPolyIndex][trainSideIndex]).firstFeatureInFeatureList = firstFeatureInList;
@@ -704,7 +704,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 
 						string traininterpolatedNearestFeaturesMapFileName;
 						traininterpolatedNearestFeaturesMapFileName = traininterpolatedRGBMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + TRAIN_STRING + TFD_EXTENSION;
-						Feature* firstFeatureInTempList = new Feature();
+						ORfeature* firstFeatureInTempList = new ORfeature();
 
 						bool ignoreOTfeatures;
 						if(dimension == OR_METHOD2DOD_DIMENSIONS)
@@ -721,14 +721,14 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 						}
 						createFeaturesListUsingFeaturesFile(traininterpolatedNearestFeaturesMapFileName, firstFeatureInTempList, true, false, ignoreOTfeatures);
 
-						Feature* currentFeatureInTempList = firstFeatureInTempList;
+						ORfeature* currentFeatureInTempList = firstFeatureInTempList;
 
 						//now bin the features;
 						int findex1 = 0;
 
 						while(currentFeatureInTempList->next != NULL)
 						{
-							Feature* currentFeatureInTempList2 = firstFeatureInTempList;
+							ORfeature* currentFeatureInTempList2 = firstFeatureInTempList;
 
 							int findex2 = 0;
 							while(currentFeatureInTempList2->next != NULL)
@@ -771,8 +771,8 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 
 									if(insideBin)
 									{
-										FeatureContainer* currentFeatureContainerInList1 = &(trainfeatureGeoCompBinArray[x1Bin][y1Bin][x2Bin][y2Bin][0]);
-										FeatureContainer* currentFeatureContainerInList2 = &(trainfeatureGeoCompBinArray[x1Bin][y1Bin][x2Bin][y2Bin][1]);
+										ORfeatureContainer* currentFeatureContainerInList1 = &(trainfeatureGeoCompBinArray[x1Bin][y1Bin][x2Bin][y2Bin][0]);
+										ORfeatureContainer* currentFeatureContainerInList2 = &(trainfeatureGeoCompBinArray[x1Bin][y1Bin][x2Bin][y2Bin][1]);
 
 										// go to last feature container in list (ie append to list if list already has items)
 										while(currentFeatureContainerInList1->next != NULL)
@@ -784,10 +784,10 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 											currentFeatureContainerInList2 = currentFeatureContainerInList2->next;
 										}
 										currentFeatureContainerInList1->firstFeatureInFeatureList = currentFeatureInTempList;
-										FeatureContainer* newFeatureContainer1 = new FeatureContainer();
+										ORfeatureContainer* newFeatureContainer1 = new ORfeatureContainer();
 										currentFeatureContainerInList1->next = newFeatureContainer1;
 										currentFeatureContainerInList2->firstFeatureInFeatureList = currentFeatureInTempList2;
-										FeatureContainer* newFeatureContainer2 = new FeatureContainer();
+										ORfeatureContainer* newFeatureContainer2 = new ORfeatureContainer();
 										currentFeatureContainerInList2->next = newFeatureContainer2;
 									}
 
@@ -812,7 +812,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		for(int y=0; y<OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS; y++)
 		{
 			cout << "bin x = " << x << ", bin y = " << y << endl;
-			FeatureContainer* currentFeatureContainerInList = &(trainfeatureGeoCompBinArray[x][y]);
+			ORfeatureContainer* currentFeatureContainerInList = &(trainfeatureGeoCompBinArray[x][y]);
 
 			// go to last feature container in list (ie append to list if list already has items)
 			while(currentFeatureContainerInList->next != NULL)
@@ -1058,11 +1058,11 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 
 					#ifdef OR_METHOD_GEOMETRIC_COMPARISON_BINNING
 
-						Feature* currentTestFeature;
+						ORfeature* currentTestFeature;
 
 						if(OR_IMAGE_COMPARISON_SQL_GET_TEST_DATA_FROM_SQL)
 						{
-							currentTestFeature = new Feature();
+							currentTestFeature = new ORfeature();
 							long testID = 0;							//this will be used in the future to shortcut identify test snapshots for a particular object at a particular viewindex and zoom that have been recently added to database and require comparision against the entire database
 							string sqlDatabaseTestTableName = OR_MYSQL_TABLE_NAME_TEST;			//this will be used in the future to shortcut identify test snapshots for a particular object at a particular viewindex and zoom that have been recently added to database and require comparision against the entire database
 							bool ignoreOTfeaturestest;
@@ -1097,7 +1097,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 							}
 							else
 							{
-								currentTestFeature = new Feature(); 	//create dummy feature - not used.
+								currentTestFeature = new ORfeature(); 	//create dummy feature - not used.
 							}
 						}
 
@@ -1210,11 +1210,11 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 							fLoopSingle = true;
 						}
 
-						Feature* testcurrentFeatureInNearestFeatureList = currentTestFeature;
+						ORfeature* testcurrentFeatureInNearestFeatureList = currentTestFeature;
 						int findex1 = 0;
 						while((testcurrentFeatureInNearestFeatureList->next != NULL) && fLoopOn)
 						{
-							Feature* testcurrentFeatureInNearestFeatureList2 = currentTestFeature;
+							ORfeature* testcurrentFeatureInNearestFeatureList2 = currentTestFeature;
 							int findex2 = 0;
 							while((testcurrentFeatureInNearestFeatureList2->next != NULL) && fLoopOn)
 							{
@@ -1306,10 +1306,10 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 
 									#ifdef OR_IMAGE_COMPARISON_NONSQL_GEOMETRIC_COMPARISON_OPTIMISED_TRAIN_FILE_IO_V2
 
-										FeatureContainer* firstFeatureContainerInTestFeatureMatchingTrainBin =  &(trainfeatureGeoCompBinArray[x][y][x2][y2][0]);
-										FeatureContainer* firstFeatureContainerInTestFeatureMatchingTrainBin2 =  &(trainfeatureGeoCompBinArray[x][y][x2][y2][1]);
-										FeatureContainer* currentFeatureContainerInTestFeatureMatchingTrainBin = firstFeatureContainerInTestFeatureMatchingTrainBin;
-										FeatureContainer* currentFeatureContainerInTestFeatureMatchingTrainBin2 = firstFeatureContainerInTestFeatureMatchingTrainBin2;
+										ORfeatureContainer* firstFeatureContainerInTestFeatureMatchingTrainBin =  &(trainfeatureGeoCompBinArray[x][y][x2][y2][0]);
+										ORfeatureContainer* firstFeatureContainerInTestFeatureMatchingTrainBin2 =  &(trainfeatureGeoCompBinArray[x][y][x2][y2][1]);
+										ORfeatureContainer* currentFeatureContainerInTestFeatureMatchingTrainBin = firstFeatureContainerInTestFeatureMatchingTrainBin;
+										ORfeatureContainer* currentFeatureContainerInTestFeatureMatchingTrainBin2 = firstFeatureContainerInTestFeatureMatchingTrainBin2;
 
 									#else
 
@@ -1351,8 +1351,8 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 										bool DTbinDebugMatchFound = false;
 										#endif
 
-										FeatureContainer* currentFeatureContainerInTestFeatureMatchingTrainBin;
-										FeatureContainer* firstFeatureContainerInTestFeatureMatchingTrainBin = new FeatureContainer();
+										ORfeatureContainer* currentFeatureContainerInTestFeatureMatchingTrainBin;
+										ORfeatureContainer* firstFeatureContainerInTestFeatureMatchingTrainBin = new ORfeatureContainer();
 
 										string DTbin = "";
 										#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_SLOW_BUT_USE_LESS_HD
@@ -1383,8 +1383,8 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 
 											currentFeatureContainerInTestFeatureMatchingTrainBin = firstFeatureContainerInTestFeatureMatchingTrainBin;
 
-											SnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList = new SnapshotIDreferenceList();
-											SnapshotIDreferenceList* currentReferenceInSnapshotIDReferenceList = firstReferenceInSnapshotIDreferenceList;
+											ORsnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList = new ORsnapshotIDreferenceList();
+											ORsnapshotIDreferenceList* currentReferenceInSnapshotIDReferenceList = firstReferenceInSnapshotIDreferenceList;
 
 											getSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcheck(smallImageWidth, smallImageHeight, testrgbMapSmall, geoxybin, geoxBin, geoyBin, &normalisedAverageHueDeviationRequirement, testconcatonatedSignedDctCoeffArrayRequirement, firstReferenceInSnapshotIDreferenceList, trainOrTest, &DTbin);
 											#ifdef OR_DEBUG_COMPARISON
@@ -1417,10 +1417,10 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 												#endif
 
 												int irrelevant = 0;
-												Feature* firstNewFeature = new Feature();
+												ORfeature* firstNewFeature = new ORfeature();
 												currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList = firstNewFeature;
 												createFeatureListUsingDatabaseQuery(currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList, true, false, ignoreOTfeaturestrain, OR_MYSQL_TABLE_NAME_TRAIN, currentReferenceInSnapshotIDReferenceList->referenceID, "", irrelevant, irrelevant, irrelevant, irrelevant, true);
-												FeatureContainer* newFeatureContainer = new FeatureContainer();
+												ORfeatureContainer* newFeatureContainer = new ORfeatureContainer();
 												currentFeatureContainerInTestFeatureMatchingTrainBin->next = newFeatureContainer;
 												currentFeatureContainerInTestFeatureMatchingTrainBin = currentFeatureContainerInTestFeatureMatchingTrainBin->next;
 
@@ -1669,9 +1669,9 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 
 										if(performImgCheck)
 										{
-											FeatureContainer* currentFeatureContainerInList = &(trainfeatureImageAverageColourCompBinArray[rColourSaturationVaried][gColourSaturationVaried][bColourSaturationVaried]);
+											ORfeatureContainer* currentFeatureContainerInList = &(trainfeatureImageAverageColourCompBinArray[rColourSaturationVaried][gColourSaturationVaried][bColourSaturationVaried]);
 									#else
-										FeatureContainer* currentFeatureContainerInList = &(trainfeatureImageAverageColourCompBinArray[r][g][b]);
+										ORfeatureContainer* currentFeatureContainerInList = &(trainfeatureImageAverageColourCompBinArray[r][g][b]);
 									#endif
 
 										while(currentFeatureContainerInList->next != NULL)
@@ -2196,7 +2196,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 
 								#ifdef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 								//see if object exists, and if it does, increment number of successful snapshots
-								ObjectReferenceList* currentReferenceInSnapshotMatchObjectReferenceList = firstReferenceInSnapshotMatchObjectReferenceList;
+								ORobjectReferenceList* currentReferenceInSnapshotMatchObjectReferenceList = firstReferenceInSnapshotMatchObjectReferenceList;
 								bool foundObjectNameInObjectReferenceList = false;
 								while(currentReferenceInSnapshotMatchObjectReferenceList->next != NULL)
 								{
@@ -2215,7 +2215,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 									#endif
 									currentReferenceInSnapshotMatchObjectReferenceList->objectName = trainObjectNameWithLowestErrorRecordAcrossAllSides;
 									currentReferenceInSnapshotMatchObjectReferenceList->numMatchingSnapshots = 1;
-									ObjectReferenceList* newObjectReference = new ObjectReferenceList();
+									ORobjectReferenceList* newObjectReference = new ORobjectReferenceList();
 									currentReferenceInSnapshotMatchObjectReferenceList->next = newObjectReference;
 								}
 								#endif
@@ -2231,7 +2231,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 
 									#ifndef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 									//see if object exists, and if it does, increment number of successful snapshots
-									ObjectReferenceList* currentReferenceInSnapshotMatchObjectReferenceList = firstReferenceInSnapshotMatchObjectReferenceList;
+									ORobjectReferenceList* currentReferenceInSnapshotMatchObjectReferenceList = firstReferenceInSnapshotMatchObjectReferenceList;
 									bool foundObjectNameInObjectReferenceList = false;
 									while(currentReferenceInSnapshotMatchObjectReferenceList->next != NULL)
 									{
@@ -2250,7 +2250,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 										#endif
 										currentReferenceInSnapshotMatchObjectReferenceList->objectName = trainObjectNameWithLowestErrorRecord[s];
 										currentReferenceInSnapshotMatchObjectReferenceList->numMatchingSnapshots = 1;
-										ObjectReferenceList* newObjectReference = new ObjectReferenceList();
+										ORobjectReferenceList* newObjectReference = new ORobjectReferenceList();
 										currentReferenceInSnapshotMatchObjectReferenceList->next = newObjectReference;
 									}
 									#endif
@@ -2307,7 +2307,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 
 										cout << "\n new match found;" << endl;
 										cout << "traininterpolatedNearestFeaturesMapFileName = " << traininterpolatedNearestFeaturesMapFileName << endl;
-										Feature* currentFeatureInList = trainFirstFeatureInNearestFeatureList;
+										ORfeature* currentFeatureInList = trainFirstFeatureInNearestFeatureList;
 										while(currentFeatureInList->next != NULL)
 										{
 											cout << currentFeatureInList->OTpointIndex << "\t" << currentFeatureInList->pointTransformed.x <<  "\t" << currentFeatureInList->pointTransformed.y <<  "\t" << currentFeatureInList->pointTransformed.z << "\t" << currentFeatureInList->point.x <<  "\t" << currentFeatureInList->point.y <<  "\t" << currentFeatureInList->point.z <<endl;
@@ -2716,7 +2716,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 	delete testrgbDev8BitSmallMap;
 	//#endif
 
-	ObjectReferenceList* currentReferenceInSnapshotMatchObjectReferenceList = firstReferenceInSnapshotMatchObjectReferenceList;
+	ORobjectReferenceList* currentReferenceInSnapshotMatchObjectReferenceList = firstReferenceInSnapshotMatchObjectReferenceList;
 	string highestNumMatchingSnapshotsObjectName = "";
 	int highestNumMatchingSnapshotsNumObjects = 0;
 	string secondHighestNumMatchingSnapshotsObjectName = "";
@@ -2877,11 +2877,11 @@ void convertDCTcoeffIndividualArraysToConcatonatedSignedDCTcoeffArray(signed cha
 static char* stringFormatDouble = "%0.6f";
 static char* stringFormatDec = "%d";
 
-void createGeoTableHTMLfromFeatureList(Feature* firstFeatureInNearestFeatureList, bool applyBinning, string* geoTableHTMLoutputString)
+void createGeoTableHTMLfromFeatureList(ORfeature* firstFeatureInNearestFeatureList, bool applyBinning, string* geoTableHTMLoutputString)
 {
 	*geoTableHTMLoutputString =* geoTableHTMLoutputString + "<TABLE>";
 
-	Feature* currentFeatureInList = firstFeatureInNearestFeatureList;
+	ORfeature* currentFeatureInList = firstFeatureInNearestFeatureList;
 	while((currentFeatureInList->next != NULL) && !(currentFeatureInList->lastFilledFeatureInList))
 	{
 		#ifdef OR_DEBUG_COMPARISON
@@ -2920,14 +2920,14 @@ void createGeoTableHTMLfromFeatureList(Feature* firstFeatureInNearestFeatureList
 
 /*
 #ifdef DEBUG_OR_OUTPUT_DT_BIN
-bool determineIfGeoBinningIdenticalMatchFound(Feature* firstFeatureInNearestFeatureList, int pBinxRequirement[], int pBinyRequirement[])
+bool determineIfGeoBinningIdenticalMatchFound(ORfeature* firstFeatureInNearestFeatureList, int pBinxRequirement[], int pBinyRequirement[])
 {
 	bool geoBinningIsSameAsOriginal = false;
 
-	Feature* currentFeatureInNearestFeatureList = firstFeatureInNearestFeatureList;
+	ORfeature* currentFeatureInNearestFeatureList = firstFeatureInNearestFeatureList;
 	while((currentFeatureInNearestFeatureList->next != NULL) && !(currentFeatureInNearestFeatureList->lastFilledFeatureInList))
 	{
-		Feature* currentFeatureInNearestFeatureList2 = firstFeatureInNearestFeatureList;
+		ORfeature* currentFeatureInNearestFeatureList2 = firstFeatureInNearestFeatureList;
 		while((currentFeatureInNearestFeatureList2->next != NULL) && !(currentFeatureInNearestFeatureList2->lastFilledFeatureInList))
 		{
 			bool passedAll = true;

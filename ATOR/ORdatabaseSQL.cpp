@@ -26,7 +26,7 @@
  * File Name: ORdatabaseSQL.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7a 27-January-2015
+ * Project Version: 3e7b 27-January-2015
  *
  *******************************************************************************/
 
@@ -260,7 +260,7 @@ void convertSQLdatabaseStringToSnapshotMaps(int imageWidthFacingPoly, int imageH
 
 
 
-void createFeatureListUsingDatabaseQuery(Feature* firstFeatureInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures, string sqlDatabaseTestTableName, long testID, string testObjectName, int testViewIndex, int testZoomIndex, int testPolyIndex, int testSideIndex, bool useTestID)
+void createFeatureListUsingDatabaseQuery(ORfeature* firstFeatureInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures, string sqlDatabaseTestTableName, long testID, string testObjectName, int testViewIndex, int testZoomIndex, int testPolyIndex, int testSideIndex, bool useTestID)
 {
 	int query_state;
 	MYSQL_ROW row;
@@ -358,7 +358,7 @@ void createFeatureListUsingDatabaseQuery(Feature* firstFeatureInList, bool creat
 
 
 //#ifdef OR_IMAGE_COMPARISON_DECISION_TREE
-void createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(FeatureContainer* firstFeatureContainerInTestFeatureMatchingTrainBin, bool ignoreOTfeatures, char* decisionTreeBinText, int decisionTreeBinTextLength, int trainOrTest)
+void createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(ORfeatureContainer* firstFeatureContainerInTestFeatureMatchingTrainBin, bool ignoreOTfeatures, char* decisionTreeBinText, int decisionTreeBinTextLength, int trainOrTest)
 {
 
 	int query_state;
@@ -460,15 +460,15 @@ void createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(FeatureCon
 		int tableIndex = 0;
 		result = mysql_store_result(connection);
 
-		FeatureContainer* currentFeatureContainerInTestFeatureMatchingTrainBin = firstFeatureContainerInTestFeatureMatchingTrainBin;
+		ORfeatureContainer* currentFeatureContainerInTestFeatureMatchingTrainBin = firstFeatureContainerInTestFeatureMatchingTrainBin;
 
 		while((row = mysql_fetch_row(result)) != NULL)
 		{//only use first matching feature; nb that when train table is separated from test table every feature will have a unique objectname, viewnum, zoomnum, polynum and testside
 
-			Feature* firstNewFeature = new Feature();
+			ORfeature* firstNewFeature = new ORfeature();
 			currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList = firstNewFeature;
 			addSQLRowDataToFeatureList(row, firstNewFeature, true, ignoreOTfeatures, numFeatures);
-			FeatureContainer* newFeatureContainer = new FeatureContainer();
+			ORfeatureContainer* newFeatureContainer = new ORfeatureContainer();
 			currentFeatureContainerInTestFeatureMatchingTrainBin->next = newFeatureContainer;
 			currentFeatureContainerInTestFeatureMatchingTrainBin = currentFeatureContainerInTestFeatureMatchingTrainBin->next;
 
@@ -744,7 +744,7 @@ void insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration(string sqlDat
 #endif
 
 
-void createSnapshotIDreferenceListUsingSQLdatabaseDecisionTreeTableQuery(SnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList, string sqlDatabaseDecisionTreeTableName, char* decisionTreeBinText, int decisionTreeBinTextLength, int trainOrTest)
+void createSnapshotIDreferenceListUsingSQLdatabaseDecisionTreeTableQuery(ORsnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList, string sqlDatabaseDecisionTreeTableName, char* decisionTreeBinText, int decisionTreeBinTextLength, int trainOrTest)
 {
 	int query_state;
 	MYSQL_ROW row;
@@ -838,7 +838,7 @@ void createSnapshotIDreferenceListUsingSQLdatabaseDecisionTreeTableQuery(Snapsho
 		int tableIndex = 0;
 		result = mysql_store_result(connection);
 
-		SnapshotIDreferenceList* currentReferenceInSnapshotIDReferenceList = firstReferenceInSnapshotIDreferenceList;
+		ORsnapshotIDreferenceList* currentReferenceInSnapshotIDReferenceList = firstReferenceInSnapshotIDreferenceList;
 
 		while((row = mysql_fetch_row(result)) != NULL)
 		{//only use first matching feature; nb that when train table is separated from test table every feature will have a unique objectname, viewnum, zoomnum, polynum and testside
@@ -852,7 +852,7 @@ void createSnapshotIDreferenceListUsingSQLdatabaseDecisionTreeTableQuery(Snapsho
 			bool snapshotIDReferenceAlreadyAddedToList = false;
 			if(tableIndex > 0)
 			{
-				SnapshotIDreferenceList* currentReferenceInSnapshotIDReferenceListTemp = firstReferenceInSnapshotIDreferenceList;
+				ORsnapshotIDreferenceList* currentReferenceInSnapshotIDReferenceListTemp = firstReferenceInSnapshotIDreferenceList;
 				while(currentReferenceInSnapshotIDReferenceListTemp->next != NULL)
 				{
 					if(tableID == currentReferenceInSnapshotIDReferenceListTemp->referenceID)
@@ -870,7 +870,7 @@ void createSnapshotIDreferenceListUsingSQLdatabaseDecisionTreeTableQuery(Snapsho
 				//cout << "tableID = " << tableID << endl;
 				#endif
 
-				SnapshotIDreferenceList* newReferenceInSnapshotIDReferenceList = new SnapshotIDreferenceList();
+				ORsnapshotIDreferenceList* newReferenceInSnapshotIDReferenceList = new ORsnapshotIDreferenceList();
 				currentReferenceInSnapshotIDReferenceList->next = newReferenceInSnapshotIDReferenceList;
 				currentReferenceInSnapshotIDReferenceList = currentReferenceInSnapshotIDReferenceList->next;
 			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_LOOKUP_DO_NOT_ALLOW_REPEATS
@@ -899,7 +899,7 @@ void createSnapshotIDreferenceListUsingSQLdatabaseDecisionTreeTableQuery(Snapsho
 
 
 
-void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer* firstFeatureContainerInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour* normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], unsigned char* rgb8bitSmallMapForInstantDBqueryAccessRequirement, int smallImageWidth, int smallImageHeight, string trainTableName, int trainOrTest)
+void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(ORfeatureContainer* firstFeatureContainerInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour* normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], unsigned char* rgb8bitSmallMapForInstantDBqueryAccessRequirement, int smallImageWidth, int smallImageHeight, string trainTableName, int trainOrTest)
 {
 	if(!createFeatureObjects)
 	{
@@ -1477,19 +1477,19 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer* f
 	{
 		int tableIndex = 0;
 		result = mysql_store_result(connection);
-		FeatureContainer* currentFeatureContainerInList = firstFeatureContainerInList;
+		ORfeatureContainer* currentFeatureContainerInList = firstFeatureContainerInList;
 
 		while((row = mysql_fetch_row(result)) != NULL)
 		{
-			Feature* firstNewFeature = new Feature();
+			ORfeature* firstNewFeature = new ORfeature();
 			currentFeatureContainerInList->firstFeatureInFeatureList = firstNewFeature;
-			Feature* currentFeatureInList = currentFeatureContainerInList->firstFeatureInFeatureList;
+			ORfeature* currentFeatureInList = currentFeatureContainerInList->firstFeatureInFeatureList;
 
 			addSQLRowDataToFeatureList(row, firstNewFeature, createFeatureObjects, ignoreOTfeatures, numFeatures);
 
 			tableIndex++;
 
-			FeatureContainer* newFeatureContainer = new FeatureContainer();
+			ORfeatureContainer* newFeatureContainer = new ORfeatureContainer();
 			currentFeatureContainerInList->next = newFeatureContainer;
 			currentFeatureContainerInList = currentFeatureContainerInList->next;
 		}
@@ -1505,7 +1505,7 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer* f
 	#endif
 }
 
-void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature* firstFeatureInList, bool createFeatureObjects, bool ignoreOTfeatures, int numFeatures)
+void addSQLRowDataToFeatureList(MYSQL_ROW row, ORfeature* firstFeatureInList, bool createFeatureObjects, bool ignoreOTfeatures, int numFeatures)
 {
 	if(!createFeatureObjects)
 	{
@@ -1513,7 +1513,7 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature* firstFeatureInList, bool
 		exit(0);
 	}
 
-	Feature* currentFeatureInList = firstFeatureInList;
+	ORfeature* currentFeatureInList = firstFeatureInList;
 
 	int fieldIndex = 0;
 
@@ -1789,7 +1789,7 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature* firstFeatureInList, bool
 
 			if(createFeatureObjects)
 			{
-				Feature* newFeature = new Feature();
+				ORfeature* newFeature = new ORfeature();
 				currentFeatureInList->next = newFeature;
 			}
 			currentFeatureInList=currentFeatureInList->next;
@@ -1860,9 +1860,9 @@ string createSQLSelectRowCommand(int numFeatures)
 
 
 
-void insertTransformedFeatureListIntoDatabase(Feature* firstFeatureInList, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest, bool ignoreOTfeatures, unsigned char* rgb8bitSmallMapForInstantDBqueryAccess, int smallImageWidth, int smallImageHeight, bool addPermutationsOfTrainFeaturesForGeoBinning, int maxNumFeaturePermutations, string tableName, long* databaseTableSize)
+void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest, bool ignoreOTfeatures, unsigned char* rgb8bitSmallMapForInstantDBqueryAccess, int smallImageWidth, int smallImageHeight, bool addPermutationsOfTrainFeaturesForGeoBinning, int maxNumFeaturePermutations, string tableName, long* databaseTableSize)
 {
-	Feature* currentFeatureInTempList = firstFeatureInList;
+	ORfeature* currentFeatureInTempList = firstFeatureInList;
 
 	//now bin the features;
 
@@ -1870,7 +1870,7 @@ void insertTransformedFeatureListIntoDatabase(Feature* firstFeatureInList, strin
 
 	while((currentFeatureInTempList->next != NULL) && (findex1 < maxNumFeaturePermutations))
 	{
-		Feature* currentFeatureInTempList2 = firstFeatureInList;
+		ORfeature* currentFeatureInTempList2 = firstFeatureInList;
 
 		if((!ignoreOTfeatures) || (currentFeatureInTempList->OTpointIndex == 0) || !addPermutationsOfTrainFeaturesForGeoBinning)
 		{//perform binning of nearby features only (not OT features)
@@ -1937,7 +1937,7 @@ void insertTransformedFeatureListIntoDatabase(Feature* firstFeatureInList, strin
 							{
 								for(int featureNum=0; featureNum<OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS; featureNum++)
 								{
-									Feature* currentFeature;
+									ORfeature* currentFeature;
 
 									if(featureNum == 0)
 									{
@@ -2000,7 +2000,7 @@ void insertTransformedFeatureListIntoDatabase(Feature* firstFeatureInList, strin
 							}
 						}
 
-						Feature* currentFeature = firstFeatureInList;
+						ORfeature* currentFeature = firstFeatureInList;
 
 						bool storeAllNearbyAndOTFeaturesDuringTrain;
 						if(OR_SQL_DATABASE_STORE_ALL_NEARBY_AND_OT_FEATURES)

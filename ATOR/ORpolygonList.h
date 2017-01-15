@@ -26,7 +26,7 @@
  * File Name: ORpolygonList.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7a 27-January-2015
+ * Project Version: 3e7b 27-January-2015
  *
  *******************************************************************************/
 
@@ -48,45 +48,45 @@
 #include <math.h>
 using namespace std;
 
-class ObjectReferenceList{
+class ORobjectReferenceList{
 private:
 	/*There are currently no private attributes of this class*/
 public:
 
-	ObjectReferenceList(void); // constructor declaration
-	~ObjectReferenceList();	//  and destructor.
+	ORobjectReferenceList(void); // constructor declaration
+	~ORobjectReferenceList();	//  and destructor.
 
 	long objectNumber;
 	string objectName;
 	int numMatchingSnapshots;
 
-	ObjectReferenceList* next;
+	ORobjectReferenceList* next;
 };
 
 
 
-class SnapshotIDreferenceList{
+class ORsnapshotIDreferenceList{
 private:
 	/*There are currently no private attributes of this class*/
 public:
 
-	SnapshotIDreferenceList(void); // constructor declaration
-	~SnapshotIDreferenceList();	//  and destructor.
+	ORsnapshotIDreferenceList(void); // constructor declaration
+	~ORsnapshotIDreferenceList();	//  and destructor.
 
 	long referenceID;
 
-	SnapshotIDreferenceList* next;
-	SnapshotIDreferenceList* previous;	//only used for ORdatabaseDecisionTree.cpp
+	ORsnapshotIDreferenceList* next;
+	ORsnapshotIDreferenceList* previous;	//only used for ORdatabaseDecisionTree.cpp
 };
 
 
-class Feature{
+class ORfeature{
 private:
 	/*There are currently no private attributes of this class*/
 public:
 
-	Feature(void); // constructor declaration
-	~Feature();	//  and destructor.
+	ORfeature(void); // constructor declaration
+	~ORfeature();	//  and destructor.
 
 	int numberOfFeaturePixelsUsedToGenerateFeature;
 
@@ -131,27 +131,27 @@ public:
 	int snapshotMapsTextLength;
 
 	bool lastFilledFeatureInList;	//added 8 June 2012 to fix overrun
-	Feature* next;
+	ORfeature* next;
 
 	//bool nearestFeatureActive;	//added 13 June 2012 to prevent non-filled existent features from being used to create polys
 
 };
 
-class PolygonBAI{
+class ORpolygon{
 private:
 	/*There are currently no private attributes of this class*/
 public:
 
-	PolygonBAI(void); // constructor declaration
-	~PolygonBAI();	//  and destructor.
+	ORpolygon(void); // constructor declaration
+	~ORpolygon();	//  and destructor.
 
 	vec point1;
 	vec point2;
 	vec point3;
-	PolygonBAI* next;
+	ORpolygon* next;
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
-	Feature* firstFeatureInNearestFeatureList;
+	ORfeature* firstFeatureInNearestFeatureList;
 #endif
 
 //#ifdef OR_METHOD_TRANSFORM_KEY_OT_FEATURES
@@ -163,19 +163,19 @@ public:
 };
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
-class FeatureContainer{
+class ORfeatureContainer{
 private:
 	/*There are currently no private attributes of this class*/
 public:
 
-	FeatureContainer(void); // constructor declaration
-	~FeatureContainer();	//  and destructor.
+	ORfeatureContainer(void); // constructor declaration
+	~ORfeatureContainer();	//  and destructor.
 
 	int numVotes;
 	double error;
 
-	Feature* firstFeatureInFeatureList;
-	FeatureContainer* next;
+	ORfeature* firstFeatureInFeatureList;
+	ORfeatureContainer* next;
 };
 #endif
 
@@ -185,13 +185,13 @@ public:
 #define NO_EDGE_FOUND (3)
 
 
-class MeshPoint{
+class ORmeshPoint{
 private:
 	/*There are currently no private attributes of this class*/
 public:
 
-	MeshPoint(void); 	// constructor declaration
-	~MeshPoint();	//  and destructor.
+	ORmeshPoint(void); 	// constructor declaration
+	~ORmeshPoint();	//  and destructor.
 
 	vec point;
 	int xInt;
@@ -202,11 +202,11 @@ public:
 	double luminosityContrast;	//[emulates luminosity contrast map]
 
 	//#ifdef OR_USE_CONTRAST_CALC_METHOD_C
-	MeshPoint* interpixelMeshPoint;	//used to store contrast mesh as a submesh of an rgb mesh with a 0.5/0.5 offset
+	ORmeshPoint* interpixelMeshPoint;	//used to store contrast mesh as a submesh of an rgb mesh with a 0.5/0.5 offset
 	bool interpixelMeshPointFilled;
 	//#endif
 
-	MeshPoint* adjacentMeshPoint[9];	//y:0,x:0->3, y:1,x:0->3, y:2,x:0->3
+	ORmeshPoint* adjacentMeshPoint[9];	//y:0,x:0->3, y:1,x:0->3, y:2,x:0->3
 	bool adjacentMeshPointFilled[9]; 	//to specify the boundary conditions of the meshpoint
 
 	//#ifdef OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST
@@ -237,49 +237,49 @@ public:
 
 
 
-	MeshPoint* next;
+	ORmeshPoint* next;
 };
 
-MeshPoint* findMeshPointIntInMesh(MeshPoint* firstMeshPointInMeshList, int x, int y, bool* hasFoundMeshPoint);
-MeshPoint* findMeshPointIntInMesh(MeshPoint* firstMeshPointInMeshList, vec* point, bool* hasFoundMeshPoint, int meshZoneLimit);
-MeshPoint* findMeshPointIntInMesh(MeshPoint* firstMeshPointInMeshList, int position);
+ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, int x, int y, bool* hasFoundMeshPoint);
+ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, vec* point, bool* hasFoundMeshPoint, int meshZoneLimit);
+ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, int position);
 
 //#ifdef OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST
-void calculateMeshPointNormal(MeshPoint* meshPoint);
-void calculateMeshPointNormalContrast(MeshPoint* meshPoint);
+void calculateMeshPointNormal(ORmeshPoint* meshPoint);
+void calculateMeshPointNormalContrast(ORmeshPoint* meshPoint);
 //#ifdef OR_USE_CONTRAST_CALC_METHOD_C
-void calculateMeshPointInterpixelNormal(MeshPoint* meshPoint);
-void calculateMeshPointInterpixelNormalContrast(MeshPoint* meshPoint);
-void calculateMeshPointInterpixelLuminosityContrast(MeshPoint* meshPoint);
-void calculateMeshPointInterpixelDepth(MeshPoint* meshPoint);
-void calculateMeshPointInterpixelDepthWithForegroundDepthCheck(MeshPoint* meshPoint);
+void calculateMeshPointInterpixelNormal(ORmeshPoint* meshPoint);
+void calculateMeshPointInterpixelNormalContrast(ORmeshPoint* meshPoint);
+void calculateMeshPointInterpixelLuminosityContrast(ORmeshPoint* meshPoint);
+void calculateMeshPointInterpixelDepth(ORmeshPoint* meshPoint);
+void calculateMeshPointInterpixelDepthWithForegroundDepthCheck(ORmeshPoint* meshPoint);
 //#endif
 //#endif
-void calculateMeshPointLuminosityContrast(MeshPoint* meshPoint);
+void calculateMeshPointLuminosityContrast(ORmeshPoint* meshPoint);
 
 
 
-class PixelContiguous{
+class ORpixelContiguous{
 private:
 	/*There are currently no private attributes of this class*/
 public:
 
-	PixelContiguous(void); // constructor declaration
-	PixelContiguous(int newX, int newY, PixelContiguous* newPrevious);
-	PixelContiguous(MeshPoint* newMeshPoint, PixelContiguous* newPrevious);
-	~PixelContiguous();	//  and destructor.
+	ORpixelContiguous(void); // constructor declaration
+	ORpixelContiguous(int newX, int newY, ORpixelContiguous* newPrevious);
+	ORpixelContiguous(ORmeshPoint* newMeshPoint, ORpixelContiguous* newPrevious);
+	~ORpixelContiguous();	//  and destructor.
 
 	bool pathAlreadyCrawled;
 	bool finalPathAlreadyCrawled;
-	int xInt;			//only used by non MeshPoint functions
-	int yInt;			//only used by non MeshPoint functions
-	vec point;			//only used by non MeshPoint functions
-	vec pointNonWorldCoord;		//only used by non MeshPoint functions
+	int xInt;			//only used by non ORmeshPoint functions
+	int yInt;			//only used by non ORmeshPoint functions
+	vec point;			//only used by non ORmeshPoint functions
+	vec pointNonWorldCoord;		//only used by non ORmeshPoint functions
 
-	MeshPoint* meshPoint;	//only used by MeshPoint functions
+	ORmeshPoint* meshPoint;	//only used by ORmeshPoint functions
 
-	PixelContiguous* next[9];
-	PixelContiguous* previous;
+	ORpixelContiguous* next[9];
+	ORpixelContiguous* previous;
 
 	bool readyToDelete;
 };

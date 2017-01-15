@@ -26,7 +26,7 @@
  * File Name: ORmethod3DOD.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7a 27-January-2015
+ * Project Version: 3e7b 27-January-2015
  *
  *******************************************************************************/
 
@@ -51,28 +51,28 @@
 #endif
 
 
-void transformObjectData3DOD(Reference* firstReferenceInInterpolated3DRGBMap, PolygonBAI* currentPolygonInList, int side, bool first, Feature* firstFeatureInList);
+void transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, ORpolygon* currentPolygonInList, int side, bool first, ORfeature* firstFeatureInList);
 
-void calculateEyePositionAndOrientation3DOD(vec* eyeFacingPoly, vec* viewAtFacingPoly, vec* viewUpFacingPoly, vec* viewPortWidthHeightDepth, PolygonBAI* pol, int side);
+void calculateEyePositionAndOrientation3DOD(vec* eyeFacingPoly, vec* viewAtFacingPoly, vec* viewUpFacingPoly, vec* viewPortWidthHeightDepth, ORpolygon* pol, int side);
 
 
-void create3DmeshUsingPointMap3DOD(int imageWidth, int imageHeight, double* pointMap, double* depthMap, unsigned char* rgbMap, MeshPoint* firstMeshPointInMeshList, MeshPoint* meshPointArray[], bool useEdgeZeroCrossingMap, int contrastValChosen, ViewInfo* vi);
+void create3DmeshUsingPointMap3DOD(int imageWidth, int imageHeight, double* pointMap, double* depthMap, unsigned char* rgbMap, ORmeshPoint* firstMeshPointInMeshList, ORmeshPoint* meshPointArray[], bool useEdgeZeroCrossingMap, int contrastValChosen, RTviewInfo* vi);
 
-void createInterpolated3DmeshReferenceListUsingPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointMapInterpolated, unsigned char* rgbMap, Reference* firstReferenceInInterpolated3Dmap);
+void createInterpolated3DmeshReferenceListUsingPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointMapInterpolated, unsigned char* rgbMap, LDreference* firstReferenceInInterpolated3Dmap);
 
 
 #ifdef OR_METHOD_3DOD_USE_OLD_TESTED_BUT_BASIC_FEATURE_DETECTION
-bool generateFeatureList3DOD(ViewInfo* vi, double* depthMap, double* pointMap, bool* depthContrastBooleanMap, bool* luminosityContrastBooleanMap, bool* luminosityContrastMapMinusDepthContrastMap, Feature* firstFeatureInList, int trainOrTest);
+bool generateFeatureList3DOD(RTviewInfo* vi, double* depthMap, double* pointMap, bool* depthContrastBooleanMap, bool* luminosityContrastBooleanMap, bool* luminosityContrastMapMinusDepthContrastMap, ORfeature* firstFeatureInList, int trainOrTest);
 
 void reconcileFeaturesMap(int imageWidth, int imageHeight, bool* featuresBooleanMap);
-void createFeaturesUsingBooleanMap(int imageWidth, int imageHeight, bool* booleanMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], ViewInfo* vi);
-void createFeaturesUsingBooleanMapUsingDepthMap(int imageWidth, int imageHeight, bool* booleanMap, double* depthMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], ViewInfo* vi, double* pointMap);
+void createFeaturesUsingBooleanMap(int imageWidth, int imageHeight, bool* booleanMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], RTviewInfo* vi);
+void createFeaturesUsingBooleanMapUsingDepthMap(int imageWidth, int imageHeight, bool* booleanMap, double* depthMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], RTviewInfo* vi, double* pointMap);
 void createFeaturesUsingBooleanMapUsingPointMap(int imageWidth, int imageHeight, bool* booleanMap, double* pointMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3]);
 	//void createFeaturesUsingBooleanMap(int imageWidth, int imageHeight, bool* booleanMap, double* depthMap, bool* featuresUsingDepthContrastMap, bool* featuresUsingDepthContrastMapComplete);
 
-void generateFeatureListUsingFeatureArrays(int imageWidth, int imageHeight, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], Feature* firstFeatureInList, ViewInfo* vi);
-void generateFeatureListUsingFeatureArraysUsingDepthMap(int imageWidth, int imageHeight, double* depthMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], Feature* firstFeatureInList, ViewInfo* vi);
-void generateFeatureListUsingFeatureArraysUsingPointMap(int imageWidth, int imageHeight, double* pointMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], Feature* firstFeatureInList);
+void generateFeatureListUsingFeatureArrays(int imageWidth, int imageHeight, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], ORfeature* firstFeatureInList, RTviewInfo* vi);
+void generateFeatureListUsingFeatureArraysUsingDepthMap(int imageWidth, int imageHeight, double* depthMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], ORfeature* firstFeatureInList, RTviewInfo* vi);
+void generateFeatureListUsingFeatureArraysUsingPointMap(int imageWidth, int imageHeight, double* pointMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], ORfeature* firstFeatureInList);
 
 #endif
 

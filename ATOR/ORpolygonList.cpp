@@ -26,7 +26,7 @@
  * File Name: ORpolygonList.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7a 27-January-2015
+ * Project Version: 3e7b 27-January-2015
  *
  *******************************************************************************/
 
@@ -44,7 +44,7 @@
 using namespace std;
 
 
-ObjectReferenceList::ObjectReferenceList(void)
+ORobjectReferenceList::ORobjectReferenceList(void)
 {
 	objectNumber = 0;
 	objectName = "";
@@ -53,7 +53,7 @@ ObjectReferenceList::ObjectReferenceList(void)
 	next = NULL;
 }
 
-ObjectReferenceList::~ObjectReferenceList()
+ORobjectReferenceList::~ORobjectReferenceList()
 {
 	if(next != NULL)
 	{
@@ -62,7 +62,7 @@ ObjectReferenceList::~ObjectReferenceList()
 }
 
 
-SnapshotIDreferenceList::SnapshotIDreferenceList(void)
+ORsnapshotIDreferenceList::ORsnapshotIDreferenceList(void)
 {
 	referenceID = 0;
 
@@ -70,7 +70,7 @@ SnapshotIDreferenceList::SnapshotIDreferenceList(void)
 	previous = NULL;
 }
 
-SnapshotIDreferenceList::~SnapshotIDreferenceList()
+ORsnapshotIDreferenceList::~ORsnapshotIDreferenceList()
 {
 	if(next != NULL)
 	{
@@ -79,7 +79,7 @@ SnapshotIDreferenceList::~SnapshotIDreferenceList()
 }
 
 
-PolygonBAI::PolygonBAI(void)
+ORpolygon::ORpolygon(void)
 {
 	point1.x = 0.0;
 	point1.y = 0.0;
@@ -112,7 +112,7 @@ PolygonBAI::PolygonBAI(void)
 
 }
 
-PolygonBAI::~PolygonBAI()
+ORpolygon::~ORpolygon()
 {
 	//there will be a slow minor memory leak until the below code is sorted
 	/*
@@ -130,7 +130,7 @@ PolygonBAI::~PolygonBAI()
 	}
 }
 
-Feature::Feature(void)
+ORfeature::ORfeature(void)
 {
 	point.x = 0.0;			//2DOD x pos relative to current snapshot / 3DOD world coord
 	point.y = 0.0;			//2DOD y pos relative to current snapshot / 3DOD world coord
@@ -192,7 +192,7 @@ Feature::Feature(void)
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
 
-FeatureContainer::FeatureContainer(void)
+ORfeatureContainer::ORfeatureContainer(void)
 {
 	numVotes = 0;
 	error=98765321;
@@ -209,7 +209,7 @@ FeatureContainer::FeatureContainer(void)
 	next = NULL;
 }
 
-FeatureContainer::~FeatureContainer()
+ORfeatureContainer::~ORfeatureContainer()
 {
 	if(firstFeatureInFeatureList != NULL)
 	{
@@ -224,7 +224,7 @@ FeatureContainer::~FeatureContainer()
 
 #endif
 
-Feature::~Feature()
+ORfeature::~ORfeature()
 {
 	if(next != NULL)
 	{
@@ -233,7 +233,7 @@ Feature::~Feature()
 }
 
 
-MeshPoint::MeshPoint(void)
+ORmeshPoint::ORmeshPoint(void)
 {
 	xInt = 0;
 	yInt = 0;
@@ -306,7 +306,7 @@ MeshPoint::MeshPoint(void)
 	next = NULL;
 }
 
-MeshPoint::~MeshPoint()
+ORmeshPoint::~ORmeshPoint()
 {
 	if(next != NULL)
 	{
@@ -315,7 +315,7 @@ MeshPoint::~MeshPoint()
 }
 
 
-PixelContiguous::PixelContiguous(void)
+ORpixelContiguous::ORpixelContiguous(void)
 {
 	xInt = 0;
 	yInt = 0;
@@ -342,7 +342,7 @@ PixelContiguous::PixelContiguous(void)
 	readyToDelete = true;
 }
 
-PixelContiguous::PixelContiguous(int newX, int newY, PixelContiguous* newPrevious)
+ORpixelContiguous::ORpixelContiguous(int newX, int newY, ORpixelContiguous* newPrevious)
 {
 	xInt = newX;
 	yInt = newY;
@@ -370,7 +370,7 @@ PixelContiguous::PixelContiguous(int newX, int newY, PixelContiguous* newPreviou
 	previous->readyToDelete = false;
 }
 
-PixelContiguous::PixelContiguous(MeshPoint* newMeshPoint, PixelContiguous* newPrevious)
+ORpixelContiguous::ORpixelContiguous(ORmeshPoint* newMeshPoint, ORpixelContiguous* newPrevious)
 {
 	xInt = 0;
 	yInt = 0;
@@ -399,7 +399,7 @@ PixelContiguous::PixelContiguous(MeshPoint* newMeshPoint, PixelContiguous* newPr
 }
 
 
-PixelContiguous::~PixelContiguous()
+ORpixelContiguous::~ORpixelContiguous()
 {
 	/*Cannot use recursion here;
 	cout << "deleting contig" <<  endl;
@@ -437,12 +437,12 @@ PixelContiguous::~PixelContiguous()
 	}
 	cout << "finished del" << endl;
 	*/
-	PixelContiguous* currentPixelContiguous = this;
+	ORpixelContiguous* currentPixelContiguous = this;
 	bool stillMoreToDelete = true;
 	while(stillMoreToDelete)
 	{
 		bool foundAPixelContiguousToParseInto = false;
-		PixelContiguous* pixelContiguousToParseInto;
+		ORpixelContiguous* pixelContiguousToParseInto;
 		for(int q=0;q<9;q++)
 		{
 			if(q != 4)
@@ -487,12 +487,12 @@ PixelContiguous::~PixelContiguous()
 }
 
 
-MeshPoint* findMeshPointIntInMesh(MeshPoint* firstMeshPointInMeshList, int x, int y, bool* hasFoundMeshPoint)
+ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, int x, int y, bool* hasFoundMeshPoint)
 {
-	MeshPoint* foundMeshPoint = NULL;
+	ORmeshPoint* foundMeshPoint = NULL;
 	*hasFoundMeshPoint = false;
 
-	MeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
+	ORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	while(currentMeshPointInMesh->next != NULL)
 	{
 		if((currentMeshPointInMesh->xInt == x) && (currentMeshPointInMesh->yInt == y))
@@ -506,13 +506,13 @@ MeshPoint* findMeshPointIntInMesh(MeshPoint* firstMeshPointInMeshList, int x, in
 	return foundMeshPoint;
 }
 
-MeshPoint* findMeshPointIntInMesh(MeshPoint* firstMeshPointInMeshList, vec* point, bool* hasFoundMeshPoint, int meshZoneLimit)
+ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, vec* point, bool* hasFoundMeshPoint, int meshZoneLimit)
 {
-	MeshPoint* foundMeshPoint = NULL;
+	ORmeshPoint* foundMeshPoint = NULL;
 	*hasFoundMeshPoint = false;
 	int numMeshPointsCounted = 0;
 
-	MeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
+	ORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	while((currentMeshPointInMesh->next != NULL) && (numMeshPointsCounted < meshZoneLimit))
 	{
 		if(compareVectors(&(currentMeshPointInMesh->point), point))
@@ -527,9 +527,9 @@ MeshPoint* findMeshPointIntInMesh(MeshPoint* firstMeshPointInMeshList, vec* poin
 	return foundMeshPoint;
 }
 
-MeshPoint* findMeshPointIntInMesh(MeshPoint* firstMeshPointInMeshList, int position)
+ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, int position)
 {
-	MeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
+	ORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	for(int i=0; i < position; i++)
 	{
 		currentMeshPointInMesh = currentMeshPointInMesh->next;
@@ -546,7 +546,7 @@ MeshPoint* findMeshPointIntInMesh(MeshPoint* firstMeshPointInMeshList, int posit
 //vec meshPointNormals[4];	//from 4 tris creating using mesh point and two out of four surrounding meshpoints, x-, x+, y-, y+
 //vec meshPointNormal; 		//average of four calculated meshpoint normals
 //no boundary checks - these can easily be implemented using adjacentMeshPointFilled
-void calculateMeshPointInterpixelNormal(MeshPoint* meshPoint)
+void calculateMeshPointInterpixelNormal(ORmeshPoint* meshPoint)
 {
 	/*
 	2 4
@@ -602,7 +602,7 @@ void calculateMeshPointInterpixelNormal(MeshPoint* meshPoint)
 
 //see calculateMeshPointNormalsUsingPointMap
 //no boundary checks - these can easily be implemented using adjacentMeshPointFilled
-void calculateMeshPointInterpixelNormalContrast(MeshPoint* meshPoint)
+void calculateMeshPointInterpixelNormalContrast(ORmeshPoint* meshPoint)
 {
 	/*
 	q;
@@ -655,7 +655,7 @@ void calculateMeshPointInterpixelNormalContrast(MeshPoint* meshPoint)
 	meshPoint->meshPointNormalContrast = contrastLevel;
 }
 
-void calculateMeshPointInterpixelLuminosityContrast(MeshPoint* meshPoint)
+void calculateMeshPointInterpixelLuminosityContrast(ORmeshPoint* meshPoint)
 {
 	/*
 	q;
@@ -712,7 +712,7 @@ void calculateMeshPointInterpixelLuminosityContrast(MeshPoint* meshPoint)
 	meshPoint->interpixelMeshPoint->luminosityContrast = contrastLevel;
 }
 
-void calculateMeshPointInterpixelDepth(MeshPoint* meshPoint)
+void calculateMeshPointInterpixelDepth(ORmeshPoint* meshPoint)
 {
 	/*
 	q;
@@ -740,7 +740,7 @@ void calculateMeshPointInterpixelDepth(MeshPoint* meshPoint)
 
 }
 
-void calculateMeshPointInterpixelDepthWithForegroundDepthCheck(MeshPoint* meshPoint)
+void calculateMeshPointInterpixelDepthWithForegroundDepthCheck(ORmeshPoint* meshPoint)
 {
 	/*
 	q;
@@ -772,7 +772,7 @@ void calculateMeshPointInterpixelDepthWithForegroundDepthCheck(MeshPoint* meshPo
 }
 
 
-void calculateMeshPointInterpixelDepthWithForegroundDepthCheckOLD(MeshPoint* meshPoint)
+void calculateMeshPointInterpixelDepthWithForegroundDepthCheckOLD(ORmeshPoint* meshPoint)
 {
 	double averageDepth = 0.0;
 	int numberOfDepthValsRecorded = 0;
@@ -875,7 +875,7 @@ void calculateMeshPointInterpixelDepthWithForegroundDepthCheckOLD(MeshPoint* mes
 //vec meshPointNormals[4];	//from 4 tris creating using mesh point and two out of four surrounding meshpoints, x-, x+, y-, y+
 //vec meshPointNormal; 		//average of four calculated meshpoint normals
 //no boundary checks - these can easily be implemented using adjacentMeshPointFilled
-void calculateMeshPointNormal(MeshPoint* meshPoint)
+void calculateMeshPointNormal(ORmeshPoint* meshPoint)
 {
 	vec averageNormalVector;
 	averageNormalVector.x = 0.0;
@@ -913,7 +913,7 @@ void calculateMeshPointNormal(MeshPoint* meshPoint)
 
 //see calculateMeshPointNormalsUsingPointMap
 //no boundary checks - these can easily be implemented using adjacentMeshPointFilled
-void calculateMeshPointNormalContrast(MeshPoint* meshPoint)
+void calculateMeshPointNormalContrast(ORmeshPoint* meshPoint)
 {
 	double contrastLevel = 0.0;
 
@@ -931,7 +931,7 @@ void calculateMeshPointNormalContrast(MeshPoint* meshPoint)
 }
 //#endif
 
-void calculateMeshPointLuminosityContrast(MeshPoint* meshPoint)
+void calculateMeshPointLuminosityContrast(ORmeshPoint* meshPoint)
 {
 	double contrastLevel = 0.0;
 

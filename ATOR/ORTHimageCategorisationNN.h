@@ -26,7 +26,7 @@
  * File Name: ORTHimageCategorisationNN.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7a 27-January-2015
+ * Project Version: 3e7b 27-January-2015
  * Test Harness for OR Image Categorisation NN method (not yet implemented)
  *******************************************************************************/
 
@@ -123,29 +123,29 @@ unique combinations)
 
 
 
-class FileNameMatch{
+class ORfileNameMatch{
 private:
 	/*There are currently no private attributes of this class*/
 public:
 
-	FileNameMatch(void); // constructor declaration
-	~FileNameMatch();	//  and destructor.
+	ORfileNameMatch(void); // constructor declaration
+	~ORfileNameMatch();	//  and destructor.
 
 	string fileName1;
 	string fileName2;
 
-	FileNameMatch* next;
+	ORfileNameMatch* next;
 };
 
 
 int main();
 void deriveDCTcoefficients(string exampleImageFileName, signed char dctCoeff[]);
-NeuronContainer* initialiseImageNeuralNetwork(int NNtypeBeingTested, NeuronContainer* firstInputNeuronInNetwork, long* numberOfInputNeurons, long numberOfOutputNeurons, string exampleImageFileName);
-bool generateDCTarrayExperienceFromImage(string imageFileName, Experience* currentExperience, int objectDecision);
-bool generatePixelMapExperienceFromImage(string imageFileName, Experience* currentExperience, int objectDecision);
-void generateExperienceFromOneArray(double* array, int arrayLength, double maxInputValueForNormalisation, Experience* tempExperience, int objectDecision);
+ANNneuronContainer* initialiseImageNeuralNetwork(int NNtypeBeingTested, ANNneuronContainer* firstInputNeuronInNetwork, long* numberOfInputNeurons, long numberOfOutputNeurons, string exampleImageFileName);
+bool generateDCTarrayExperienceFromImage(string imageFileName, ANNexperience* currentExperience, int objectDecision);
+bool generatePixelMapExperienceFromImage(string imageFileName, ANNexperience* currentExperience, int objectDecision);
+void generateExperienceFromOneArray(double* array, int arrayLength, double maxInputValueForNormalisation, ANNexperience* tempExperience, int objectDecision);
 int ORTHimageCategorisationNN();
-void createImageFileNameMatchListFromMatchFile(string fileName, FileNameMatch* firstMatchInList);
+void createImageFileNameMatchListFromMatchFile(string fileName, ORfileNameMatch* firstMatchInList);
 
 
 #endif

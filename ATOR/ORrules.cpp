@@ -26,7 +26,7 @@
  * File Name: ORrules.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3e7a 27-January-2015
+ * Project Version: 3e7b 27-January-2015
  *
  *******************************************************************************/
 
@@ -276,7 +276,7 @@ void fillInORrulesExternVariables()
 
 
 	//Standard OR Rules Entries;
-	RulesClass* currentReferenceRulesClass = ORrulesObjectRecognition;
+	XMLrulesClass* currentReferenceRulesClass = ORrulesObjectRecognition;
 	while(currentReferenceRulesClass->next != NULL)
 	{
 		//OR_IMAGE_COMPARISON_DECISION_TREE...

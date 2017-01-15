@@ -26,7 +26,7 @@
  * File Name: ORcomparison.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7a 27-January-2015
+ * Project Version: 3e7b 27-January-2015
  *
  *******************************************************************************/
 
@@ -78,11 +78,11 @@ void convertDCTcoeffIndividualArraysToConcatonatedSignedDCTcoeffArray(signed cha
 
 void convertImageFileType(string* imageBaseFileName, string* imageBaseFileNameConverted, string imageExtension, string imageExtensionConverted);
 #ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
-void createGeoTableHTMLfromFeatureList(Feature* firstFeatureInNearestFeatureList, bool applyBinning, string* geoTableHTMLoutputString);
+void createGeoTableHTMLfromFeatureList(ORfeature* firstFeatureInNearestFeatureList, bool applyBinning, string* geoTableHTMLoutputString);
 #endif
 /*
 #ifdef DEBUG_OR_OUTPUT_DT_BIN
-bool determineIfGeoBinningIdenticalMatchFound(Feature* firstFeatureInNearestFeatureList, int pBinxRequirement[], int pBinyRequirement[]);
+bool determineIfGeoBinningIdenticalMatchFound(ORfeature* firstFeatureInNearestFeatureList, int pBinxRequirement[], int pBinyRequirement[]);
 #endif
 */
 void readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(string* rgbMapSmallFacingPolyFileNamePPM, string* rgbMapSmallFacingPolyFileNameJPEG, signed char* concatonatedSignedDctCoeffArrayRequirement, bool printOutput);

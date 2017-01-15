@@ -26,12 +26,12 @@
  * File Name: ORglobalDefs.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3e7a 27-January-2015
+ * Project Version: 3e7b 27-January-2015
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
  *
- *	Install External Package 1 - Heitger Feature Detection
+ *	Install External Package 1 - Heitger ORfeature Detection
  *  	{FD v0.5b/c executable (Eg Linux: FD.exe, Windows: FD.exe)
  *		"heitger feature detection with RBB Endian Mod v0.5b" is
  *		olof Henricsson 96-06-07 release of Friedrich Heitger's SE binary with
@@ -528,7 +528,7 @@
  *		(Windows 8 x86_64 Only)
  *		Install MS Visual Studio Express 2013 for Windows Desktop (VS2013_RTM_DskExp_ENU.iso / wdexpress_full.exe)
  *
- *	Compile/Link External Package 1 - Heitger Feature Detection (FD)
+ *	Compile/Link External Package 1 - Heitger ORfeature Detection (FD)
  *
  *		(Linux Only)
  *		nedit FDdefs.h, and uncomment the LINUX preprocessor def
@@ -974,7 +974,7 @@ extern bool OR_METHOD_CREATE_NEARBY_FEATURES_FILE_DURING_TEST;
 
 
 
-//OR_FEATURES... (including Mesh Lists and Feature Detection using contiguous regions);
+//OR_FEATURES... (including Mesh Lists and ORfeature Detection using contiguous regions);
 
 //xml determined by default;
 extern bool OR_USE_FIND_CORNER_FEATURES;

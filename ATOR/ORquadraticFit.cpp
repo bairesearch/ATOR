@@ -26,7 +26,7 @@
  * File Name: ORquadraticFit.cpp (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3e7a 27-January-2015
+ * Project Version: 3e7b 27-January-2015
  *
  * Assumes that depth information is less accurate than image information
  *******************************************************************************/
@@ -63,7 +63,7 @@ int isnan(double d)
 #endif
 
 
-QFzeroCrossing::QFzeroCrossing(void)
+ORQFzeroCrossing::ORQFzeroCrossing(void)
 {
 	x = 0;	//x pos pixel
 	y = 0;	//y pos pixel
@@ -97,7 +97,7 @@ QFzeroCrossing::QFzeroCrossing(void)
 	next = NULL;
 }
 
-QFzeroCrossing::~QFzeroCrossing()
+ORQFzeroCrossing::~ORQFzeroCrossing()
 {
 	if(next != NULL)
 	{
@@ -114,7 +114,7 @@ static int globalImageWidth;
 
 
 
-void generateZeroCrossingList(double* luminosityContrastMap, int imageWidth, int imageHeight, QFzeroCrossing* firstZeroCrossingInList, bool edgeDetect, double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, int interpixelMapType)
+void generateZeroCrossingList(double* luminosityContrastMap, int imageWidth, int imageHeight, ORQFzeroCrossing* firstZeroCrossingInList, bool edgeDetect, double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, int interpixelMapType)
 {
 	globalImageWidth = imageWidth;
 
@@ -523,7 +523,7 @@ double calculateAreaOfOneSideOfEdgeInPixel(int xDevPointOnSide, int yDevPointOnS
  ****/
 
 //pointMap not currently used
-void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, QFzeroCrossing* currentZeroCrossingInList, int imageWidth, int imageHeight, double luminosityContrastMap[], double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, int interpixelMapType)
+void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, ORQFzeroCrossing* currentZeroCrossingInList, int imageWidth, int imageHeight, double luminosityContrastMap[], double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, int interpixelMapType)
 {
 	int kernelWidthForegroundCheck;
 	int kernelHeightForegroundCheck;
@@ -861,7 +861,7 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 							}
 							#endif
 
-							QFzeroCrossing* zc = new QFzeroCrossing();
+							ORQFzeroCrossing* zc = new ORQFzeroCrossing();
 							currentZeroCrossingInList->next = zc;
 							currentZeroCrossingInList = currentZeroCrossingInList->next;
 						}
@@ -971,7 +971,7 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 							}
 							#endif
 
-							QFzeroCrossing* zc = new QFzeroCrossing();
+							ORQFzeroCrossing* zc = new ORQFzeroCrossing();
 							currentZeroCrossingInList->next = zc;
 							currentZeroCrossingInList = currentZeroCrossingInList->next;
 						}
@@ -1006,7 +1006,7 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 
 
 	//x, y are redundant
-bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, QFzeroCrossing* currentZeroCrossingInList)
+bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, ORQFzeroCrossing* currentZeroCrossingInList)
 {
 	//Summary:
 	// calculates eigen values of the C coefficient in coefficients[], an eigen vector, alpha, beta,
@@ -1326,7 +1326,7 @@ bool checkTotalNegativeCurvatureAbovePointThreshold(float a3, float a4)
 
 
 
-bool checkPointZeroCrossingObjectPassesThreshold(QFzeroCrossing* zc)
+bool checkPointZeroCrossingObjectPassesThreshold(ORQFzeroCrossing* zc)
 {
 	bool passedThreshold;
 
@@ -1385,10 +1385,10 @@ bool checkPointZeroCrossingObjectPassesThreshold(QFzeroCrossing* zc)
 /***
  * FOR LOW EFFICIENCY ZEROCROSSING CALCULATIONS (with passing of zeroCrossing object)
  *
- * checkEdgeZeroCrossingObjectPassesThreshold(QFzeroCrossing* zc)
+ * checkEdgeZeroCrossingObjectPassesThreshold(ORQFzeroCrossing* zc)
  */
 
-bool checkEdgeZeroCrossingObjectPassesThreshold(QFzeroCrossing* zc)
+bool checkEdgeZeroCrossingObjectPassesThreshold(ORQFzeroCrossing* zc)
 {
 	bool passedThreshold;
 
@@ -1445,10 +1445,10 @@ bool checkEdgeZeroCrossingObjectPassesThreshold(QFzeroCrossing* zc)
 /***
  * FOR LOW EFFICIENCY ZEROCROSSING CALCULATIONS (with passing of zeroCrossing object)
  *
- * checkEdgeZeroCrossingObjectContrastGradients(QFzeroCrossing* zc)
+ * checkEdgeZeroCrossingObjectContrastGradients(ORQFzeroCrossing* zc)
  */
 
-bool checkEdgeZeroCrossingObjectContrastGradients(QFzeroCrossing* zc)
+bool checkEdgeZeroCrossingObjectContrastGradients(ORQFzeroCrossing* zc)
 {
 
 	/********************THEORY***********************************************************

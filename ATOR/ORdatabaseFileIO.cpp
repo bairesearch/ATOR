@@ -26,7 +26,7 @@
  * File Name: ORdatabaseFileIO.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7a 27-January-2015
+ * Project Version: 3e7b 27-January-2015
  *
  *******************************************************************************/
 
@@ -233,12 +233,12 @@ string DBgenerateFolderName(string* objectName, bool trainOrTest)
 
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
-bool compareFeaturesListForMatch(Feature* testFirstFeatureInNearestFeatureList, Feature* trainFirstFeatureInNearestFeatureList, int dimension, bool* exactMatchFound)
+bool compareFeaturesListForMatch(ORfeature* testFirstFeatureInNearestFeatureList, ORfeature* trainFirstFeatureInNearestFeatureList, int dimension, bool* exactMatchFound)
 {
 	int numberOfFeatureGeoMatches = 0;
 	int numberOfFeatureGeoBinnedExactMatches = 0;
 	bool passedGeometricCheck = false;
-	Feature* testcurrentFeatureInNearestFeatureList = testFirstFeatureInNearestFeatureList;
+	ORfeature* testcurrentFeatureInNearestFeatureList = testFirstFeatureInNearestFeatureList;
 	while((testcurrentFeatureInNearestFeatureList->next != NULL) && !(testcurrentFeatureInNearestFeatureList->lastFilledFeatureInList))
 	{
 		bool testpassedDimensionCheck = true;
@@ -252,7 +252,7 @@ bool compareFeaturesListForMatch(Feature* testFirstFeatureInNearestFeatureList, 
 
 		if(testpassedDimensionCheck)
 		{
-			Feature* traincurrentFeatureInNearestFeatureList = trainFirstFeatureInNearestFeatureList;
+			ORfeature* traincurrentFeatureInNearestFeatureList = trainFirstFeatureInNearestFeatureList;
 			while((traincurrentFeatureInNearestFeatureList->next != NULL) && !(traincurrentFeatureInNearestFeatureList->lastFilledFeatureInList))
 			{
 				bool trainpassedDimensionCheck = true;
@@ -322,9 +322,9 @@ bool compareFeaturesListForMatch(Feature* testFirstFeatureInNearestFeatureList, 
 }
 
 
-void addFeatureToEndOfFeatureList(Feature* firstFeatureInList, Feature* featureToAdd)
+void addFeatureToEndOfFeatureList(ORfeature* firstFeatureInList, ORfeature* featureToAdd)
 {
-	Feature* currentFeatureInList = firstFeatureInList;
+	ORfeature* currentFeatureInList = firstFeatureInList;
 
 	// go to last feature in list (ie append to list if list already has items)
 	while(currentFeatureInList->next != NULL)
@@ -342,7 +342,7 @@ void addFeatureToEndOfFeatureList(Feature* firstFeatureInList, Feature* featureT
 	#endif
 	copyVectors(&(currentFeatureInList->pointTransformed), &(featureToAdd->pointTransformed));
 
-	Feature* newFeature = new Feature();
+	ORfeature* newFeature = new ORfeature();
 	currentFeatureInList->next = newFeature;
 
 }
@@ -350,9 +350,9 @@ void addFeatureToEndOfFeatureList(Feature* firstFeatureInList, Feature* featureT
 
 
 
-void createFeaturesListUsingFeaturesFile(string fileName, Feature* firstFeatureInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures)
+void createFeaturesListUsingFeaturesFile(string fileName, ORfeature* firstFeatureInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures)
 {
-	Feature* currentFeatureInList = firstFeatureInList;
+	ORfeature* currentFeatureInList = firstFeatureInList;
 
 	if(appendToList)
 	{//if creatingFeatureObjects, go to last feature in list (ie append to list if list already has items)
@@ -597,7 +597,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature* firstFeatureI
 
 					if(createFeatureObjects)
 					{
-						Feature* newFeature = new Feature();
+						ORfeature* newFeature = new ORfeature();
 						currentFeatureInList->next = newFeature;
 					}
 
@@ -680,11 +680,11 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature* firstFeatureI
 
 
 
-void createTransformedFeaturesFile(Feature* firstFeatureInList, string fileName, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest)
+void createTransformedFeaturesFile(ORfeature* firstFeatureInList, string fileName, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest)
 {
 	ofstream writeFileObject(fileName.c_str());
 
-	Feature* currentFeature = firstFeatureInList;
+	ORfeature* currentFeature = firstFeatureInList;
 	while(currentFeature->next != NULL)
 	{
 		char polygonIndexString[10];

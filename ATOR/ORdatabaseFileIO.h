@@ -26,7 +26,7 @@
  * File Name: ORdatabaseFileIO.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7a 27-January-2015
+ * Project Version: 3e7b 27-January-2015
  *
  *******************************************************************************/
 
@@ -74,10 +74,10 @@ string DBgenerateFolderName(string* objectName, bool trainOrTest);
 
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
-	bool compareFeaturesListForMatch(Feature* testFirstFeatureInNearestFeatureList, Feature* trainFirstFeatureInNearestFeatureList, int dimension, bool* exactMatchFound);
-	void addFeatureToEndOfFeatureList(Feature* firstFeatureInList, Feature* featureToAdd);
-	void createTransformedFeaturesFile(Feature* firstFeatureInList, string fileName, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest);
-	void createFeaturesListUsingFeaturesFile(string fileName, Feature* firstFeatureInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures);
+	bool compareFeaturesListForMatch(ORfeature* testFirstFeatureInNearestFeatureList, ORfeature* trainFirstFeatureInNearestFeatureList, int dimension, bool* exactMatchFound);
+	void addFeatureToEndOfFeatureList(ORfeature* firstFeatureInList, ORfeature* featureToAdd);
+	void createTransformedFeaturesFile(ORfeature* firstFeatureInList, string fileName, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest);
+	void createFeaturesListUsingFeaturesFile(string fileName, ORfeature* firstFeatureInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures);
 #endif
 
 #endif

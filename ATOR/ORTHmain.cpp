@@ -26,7 +26,7 @@
  * File Name: ORTHmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7a 27-January-2015
+ * Project Version: 3e7b 27-January-2015
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -69,7 +69,7 @@ int main
 	createRGBMapFromPixmapImage(rgbPixMap, rgbMap);
 	freePixmap(rgbPixMap);
 	double* nullpointer = NULL;
-	ViewInfo* vi = NULL;
+	RTviewInfo* vi = NULL;
 
 	generateEdgeListFromRGBmapWithQuadraticFit(rgbMap, edgeBoolMap, imageWidth, imageHeight, 1.0, false, nullpointer, nullpointer, 1, vi);
 }
@@ -94,7 +94,7 @@ int main()
 		int maxNumberOfPolygonsTrain = OR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TRAIN;
 		int numberOfTrainViewIndiciesPerObject = OR_METHOD2DOD_NUMBER_OF_VIEWINDICIES_TRAIN;
 
-		ViewInfo viTrain;
+		RTviewInfo viTrain;
 
 		viTrain.imageWidth = TH_OR_METHOD2DOD_DEFAULT_IMAGE_WIDTH;
 		viTrain.imageHeight = TH_OR_METHOD2DOD_DEFAULT_IMAGE_HEIGHT;
@@ -115,7 +115,7 @@ int main()
 		int maxNumberOfPolygonsTest = OR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TEST;
 		int numberOfTestViewIndiciesPerObject = OR_METHOD2DOD_NUMBER_OF_VIEWINDICIES_TEST;
 
-		ViewInfo viTest;
+		RTviewInfo viTest;
 
 		viTest.imageWidth = TH_OR_METHOD2DOD_DEFAULT2_IMAGE_WIDTH;
 		viTest.imageHeight = TH_OR_METHOD2DOD_DEFAULT2_IMAGE_HEIGHT;
@@ -186,7 +186,7 @@ int main()
 		int maxNumberOfPolygonsTrain = OR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TRAIN;
 		int numberOfTrainViewIndiciesPerObject = OR_METHOD3DOD_NUMBER_OF_VIEWINDICIES_TRAIN;
 
-		ViewInfo viTrain;
+		RTviewInfo viTrain;
 
 		viTrain.imageWidth = TH_OR_METHOD3DOD_DEFAULT_IMAGE_WIDTH;
 		viTrain.imageHeight = TH_OR_METHOD3DOD_DEFAULT_IMAGE_HEIGHT;
@@ -207,7 +207,7 @@ int main()
 		int maxNumberOfPolygonsTest = OR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TEST;
 		int numberOfTestViewIndiciesPerObject = OR_METHOD3DOD_NUMBER_OF_VIEWINDICIES_TEST;
 
-		ViewInfo viTest;
+		RTviewInfo viTest;
 
 		viTest.imageWidth = TH_OR_METHOD3DOD_DEFAULT2_IMAGE_WIDTH;
 		viTest.imageHeight = TH_OR_METHOD3DOD_DEFAULT2_IMAGE_HEIGHT;

@@ -26,7 +26,7 @@
  * File Name: ORquadraticFit.h (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3e7a 27-January-2015
+ * Project Version: 3e7b 27-January-2015
  *
  *******************************************************************************/
 
@@ -88,14 +88,14 @@
 #define POINT_DETECT (false)
 
 
-class QFzeroCrossing{
+class ORQFzeroCrossing{
 
 	private:
 		/*There are currently no attributes of this class*/
 	public:
 
-		QFzeroCrossing(void); // constructor declaration
-		~QFzeroCrossing();	//  and destructor.
+		ORQFzeroCrossing(void); // constructor declaration
+		~ORQFzeroCrossing();	//  and destructor.
 
 		int x;
 		int y;
@@ -104,7 +104,7 @@ class QFzeroCrossing{
 		float alpha;
 		float beta;
 		float coefficient[NUMBER_OF_COEFFICIENTS];
-		QFzeroCrossing* next;
+		ORQFzeroCrossing* next;
 
 		float dzAlpha;
 		float dzBeta;
@@ -127,9 +127,9 @@ double calculateAreaOfOneSideOfEdgeInPixel(int xDevPointOnSide, int yDevPointOnS
 
 
 /*************************************** Edgise Frame High Level ('EdgiseFrameStandard') Methods* ***********************************/
-	void generateZeroCrossingList(double* luminosityContrastMap, int imageWidth, int imageHeight, QFzeroCrossing* firstZeroCrossingInList, bool edgeDetect, double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, int interpixelMapType);
-		void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, QFzeroCrossing* currentZeroCrossingInList, int imageWidth, int imageHeight, double luminosityContrastMap[], double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, int interpixelMapType);
-			bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, QFzeroCrossing* currentZeroCrossingInList);
+	void generateZeroCrossingList(double* luminosityContrastMap, int imageWidth, int imageHeight, ORQFzeroCrossing* firstZeroCrossingInList, bool edgeDetect, double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, int interpixelMapType);
+		void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, ORQFzeroCrossing* currentZeroCrossingInList, int imageWidth, int imageHeight, double luminosityContrastMap[], double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, int interpixelMapType);
+			bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, ORQFzeroCrossing* currentZeroCrossingInList);
 /************************************ End Edgise Frame High Level ('EdgiseFrameStandard') Methods* **********************************/
 
 
@@ -147,9 +147,9 @@ bool checkTotalNegativeCurvatureAbovePointThreshold(float a3, float a4);
 /********************************** End Pixel Checking methods* ******************************/
 
 /********************************** Zero Crossing Checking methods* **********************************/
-bool checkEdgeZeroCrossingObjectPassesThreshold(QFzeroCrossing* zc);
-	bool checkEdgeZeroCrossingObjectContrastGradients(QFzeroCrossing* zc);
-bool checkPointZeroCrossingObjectPassesThreshold(QFzeroCrossing* zc);
+bool checkEdgeZeroCrossingObjectPassesThreshold(ORQFzeroCrossing* zc);
+	bool checkEdgeZeroCrossingObjectContrastGradients(ORQFzeroCrossing* zc);
+bool checkPointZeroCrossingObjectPassesThreshold(ORQFzeroCrossing* zc);
 	//bool checkTotalNegativeCurvatureAbovePointThreshold(float a3, float a4);
 
 /********************************** End Zero Crossing Checking methods* **********************************/

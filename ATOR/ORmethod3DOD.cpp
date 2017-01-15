@@ -26,7 +26,7 @@
  * File Name: ORmethod3DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7a 27-January-2015
+ * Project Version: 3e7b 27-January-2015
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -48,7 +48,7 @@
 using namespace std;
 
 
-void transformObjectData3DOD(Reference* firstReferenceInInterpolated3DRGBMap, PolygonBAI* currentPolygonInList, int side, bool first, Feature* firstFeatureInList)
+void transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, ORpolygon* currentPolygonInList, int side, bool first, ORfeature* firstFeatureInList)
 {
 	long time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonStart;
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
@@ -60,7 +60,7 @@ void transformObjectData3DOD(Reference* firstReferenceInInterpolated3DRGBMap, Po
 		time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonStart = getTimeAsLong();
 	}
 
-	PolygonBAI* transformedObjectTriangle = new PolygonBAI();	//equilateral triangle
+	ORpolygon* transformedObjectTriangle = new ORpolygon();	//equilateral triangle
 	transformedObjectTriangle->point1.x = currentPolygonInList->point1.x;
 	transformedObjectTriangle->point1.y = currentPolygonInList->point1.y;
 	transformedObjectTriangle->point1.z = currentPolygonInList->point1.z;
@@ -191,7 +191,7 @@ void transformObjectData3DOD(Reference* firstReferenceInInterpolated3DRGBMap, Po
 	//1c. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		Feature* currentFeature;	//startup
+		ORfeature* currentFeature;	//startup
 		currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
@@ -222,7 +222,7 @@ void transformObjectData3DOD(Reference* firstReferenceInInterpolated3DRGBMap, Po
 	}
 	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
-		Feature* currentFeature;
+		ORfeature* currentFeature;
 		currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
@@ -368,7 +368,7 @@ void transformObjectData3DOD(Reference* firstReferenceInInterpolated3DRGBMap, Po
 	//5c. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		Feature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
+		ORfeature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
 			currentFeature->pointTransformed.x = currentFeature->pointTransformed.x + translationVector.x;
@@ -386,7 +386,7 @@ void transformObjectData3DOD(Reference* firstReferenceInInterpolated3DRGBMap, Po
 	}
 	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
-		Feature* currentFeature = firstFeatureInList;
+		ORfeature* currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
 			currentFeature->pointTransformed.x = currentFeature->pointTransformed.x + translationVector.x;
@@ -427,7 +427,7 @@ void transformObjectData3DOD(Reference* firstReferenceInInterpolated3DRGBMap, Po
 
 
 	//not yet finished
-void calculateEyePositionAndOrientation3DOD(vec* eyeFacingPoly, vec* viewAtFacingPoly, vec* viewUpFacingPoly, vec* viewPortWidthHeightDepth, PolygonBAI* pol, int side)
+void calculateEyePositionAndOrientation3DOD(vec* eyeFacingPoly, vec* viewAtFacingPoly, vec* viewUpFacingPoly, vec* viewPortWidthHeightDepth, ORpolygon* pol, int side)
 {
 	vec pt1;
 	vec pt2;
@@ -538,15 +538,15 @@ void calculateEyePositionAndOrientation3DOD(vec* eyeFacingPoly, vec* viewAtFacin
 }
 
 
-void createInterpolated3DmeshReferenceListUsingPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointMapInterpolated, unsigned char* rgbMap, Reference* firstReferenceInInterpolated3Dmap)
+void createInterpolated3DmeshReferenceListUsingPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointMapInterpolated, unsigned char* rgbMap, LDreference* firstReferenceInInterpolated3Dmap)
 {
-	Reference* currentReferenceInInterpolated3DMap = firstReferenceInInterpolated3Dmap;
+	LDreference* currentReferenceInInterpolated3DMap = firstReferenceInInterpolated3Dmap;
 
 	for(int y = 0; y < (imageHeight); y++)
 	{
 		for(int x = 0; x < (imageWidth); x++)
 		{
-			PolygonBAI polyArray[4];
+			ORpolygon polyArray[4];
 
 			vec centreVec;
 			vec v1;
@@ -642,7 +642,7 @@ void createInterpolated3DmeshReferenceListUsingPointMap(int imageWidth, int imag
 					*/
 					#endif
 
-					Reference* newReference = new Reference();
+					LDreference* newReference = new LDreference();
 					currentReferenceInInterpolated3DMap->next = newReference;
 					currentReferenceInInterpolated3DMap = currentReferenceInInterpolated3DMap->next;
 				}
@@ -652,15 +652,15 @@ void createInterpolated3DmeshReferenceListUsingPointMap(int imageWidth, int imag
 }
 
 
-void create3DmeshUsingPointMap3DOD(int imageWidth, int imageHeight, double* pointMap, double* depthMap, unsigned char* rgbMap, MeshPoint* firstMeshPointInMeshList, MeshPoint* meshPointArray[], bool useEdgeZeroCrossingMap, int contrastValChosen, ViewInfo* vi)
+void create3DmeshUsingPointMap3DOD(int imageWidth, int imageHeight, double* pointMap, double* depthMap, unsigned char* rgbMap, ORmeshPoint* firstMeshPointInMeshList, ORmeshPoint* meshPointArray[], bool useEdgeZeroCrossingMap, int contrastValChosen, RTviewInfo* vi)
 {
 	//#ifdef OR_USE_CONTRAST_CALC_METHOD_C
 	#ifndef LINUX
-	MeshPoint** meshPointInterpixelArray = new MeshPoint* [imageWidth*imageHeight];
-	QFzeroCrossing** edgeZeroCrossingMap = new QFzeroCrossing* [imageWidth*imageHeight];
+	ORmeshPoint** meshPointInterpixelArray = new ORmeshPoint* [imageWidth*imageHeight];
+	ORQFzeroCrossing** edgeZeroCrossingMap = new ORQFzeroCrossing* [imageWidth*imageHeight];
 	#else
-	MeshPoint* meshPointInterpixelArray[imageWidth*imageHeight];
-	QFzeroCrossing* edgeZeroCrossingMap[imageWidth*imageHeight];
+	ORmeshPoint* meshPointInterpixelArray[imageWidth*imageHeight];
+	ORQFzeroCrossing* edgeZeroCrossingMap[imageWidth*imageHeight];
 	#endif
 	//#endif
 
@@ -711,7 +711,7 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, int imageHeight, double* poin
 		}
 	}
 
-	MeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
+	ORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	int numMeshPointsInExistingMesh = 0;
 	while(currentMeshPointInMesh->next != NULL)
 	{
@@ -719,11 +719,11 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, int imageHeight, double* poin
 		currentMeshPointInMesh = currentMeshPointInMesh->next;
 	}
 
-	MeshPoint* firstNewMeshPointInMesh = currentMeshPointInMesh;
+	ORmeshPoint* firstNewMeshPointInMesh = currentMeshPointInMesh;
 	currentMeshPointInMesh = firstNewMeshPointInMesh;
 
 
-	MeshPoint* firstMeshPointInInterpixelMesh = new MeshPoint();
+	ORmeshPoint* firstMeshPointInInterpixelMesh = new ORmeshPoint();
 	if(OR_USE_CONTRAST_CALC_METHOD_C)
 	{
 		firstNewMeshPointInMesh->interpixelMeshPointFilled = true;	// x+0.5, y+0.5
@@ -737,7 +737,7 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, int imageHeight, double* poin
 	{
 		for(int x = 0; x < (imageWidth); x++)
 		{
-			MeshPoint* currentMeshPointInInterpixelMesh;
+			ORmeshPoint* currentMeshPointInInterpixelMesh;
 			if(OR_USE_CONTRAST_CALC_METHOD_C)
 			{
 				currentMeshPointInInterpixelMesh = currentMeshPointInMesh->interpixelMeshPoint;
@@ -818,13 +818,13 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, int imageHeight, double* poin
 
 			meshPointArray[y*imageWidth + x] = currentMeshPointInMesh;	//required for speed
 
-			MeshPoint* newMeshPoint = new MeshPoint();
+			ORmeshPoint* newMeshPoint = new ORmeshPoint();
 			currentMeshPointInMesh->next = newMeshPoint;
 			currentMeshPointInMesh = currentMeshPointInMesh->next;
 
 			if(OR_USE_CONTRAST_CALC_METHOD_C)
 			{
-				MeshPoint* newMeshPointInInterpixelMesh = new MeshPoint();
+				ORmeshPoint* newMeshPointInInterpixelMesh = new ORmeshPoint();
 				currentMeshPointInInterpixelMesh->next = newMeshPointInInterpixelMesh;
 				currentMeshPointInMesh->interpixelMeshPointFilled = true;	// x+0.5, y+0.5
 				currentMeshPointInMesh->interpixelMeshPoint = newMeshPointInInterpixelMesh;
@@ -837,7 +837,7 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, int imageHeight, double* poin
 
 	currentMeshPointInMesh = firstNewMeshPointInMesh;
 
-	MeshPoint* currentMeshPointInInterpixelMesh;
+	ORmeshPoint* currentMeshPointInInterpixelMesh;
 	if(OR_USE_CONTRAST_CALC_METHOD_C)
 	{
 		currentMeshPointInInterpixelMesh = firstMeshPointInInterpixelMesh;
@@ -1089,7 +1089,7 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, int imageHeight, double* poin
 
 						vec borderPoint;
 						getPointMapValue(x, y, imageWidth, pointMap, &borderPoint);
-						MeshPoint* nearestMeshpointInExistingMesh;
+						ORmeshPoint* nearestMeshpointInExistingMesh;
 						bool hasFoundMeshPoint = false;
 						nearestMeshpointInExistingMesh = findMeshPointIntInMesh(firstMeshPointInMeshList, &borderPoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
 						if(hasFoundMeshPoint == false)
@@ -1098,7 +1098,7 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, int imageHeight, double* poin
 							exit(0);
 						}
 
-						MeshPoint* meshpointInAdditionalMesh;
+						ORmeshPoint* meshpointInAdditionalMesh;
 						meshpointInAdditionalMesh = meshPointArray[y*imageWidth + x];
 
 						/*old inefficient;
@@ -1163,7 +1163,7 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, int imageHeight, double* poin
 
 						vec depthContrastEdgePoint;
 						getPointMapValue(x, y, imageWidth, pointMap, &depthContrastEdgePoint);
-						MeshPoint* nearestMeshpointInExistingMesh;
+						ORmeshPoint* nearestMeshpointInExistingMesh;
 						bool hasFoundMeshPoint = false;
 						nearestMeshpointInExistingMesh = findMeshPointIntInMesh(firstMeshPointInMeshList, &depthContrastEdgePoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
 						if(hasFoundMeshPoint == false)
@@ -1172,7 +1172,7 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, int imageHeight, double* poin
 							exit(0);
 						}
 
-						MeshPoint* meshpointInAdditionalMesh;
+						ORmeshPoint* meshpointInAdditionalMesh;
 						meshpointInAdditionalMesh = meshPointArray[y*imageWidth + x];
 
 						if(calculateTheDistanceBetweenTwoPoints(&(nearestMeshpointInExistingMesh->point), &(meshpointInAdditionalMesh->point)) < OR_METHOD_3DOD_USE_ADVANCED_INTERP_MESH_JOINING_MAXIMUM_RECONCILIATION_DISTANCE)
@@ -1221,10 +1221,10 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, int imageHeight, double* poin
 
 
 
-void create3DMeshReferenceListUsingPointMap(int imageWidth, int imageHeight, double* pointMap, unsigned char* rgbMap, MeshPoint* firstMeshPointInMeshList)
+void create3DMeshReferenceListUsingPointMap(int imageWidth, int imageHeight, double* pointMap, unsigned char* rgbMap, ORmeshPoint* firstMeshPointInMeshList)
 {
 
-	MeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
+	ORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	for(int y = 0; y < (imageHeight); y++)
 	{
 		for(int x = 0; x < (imageWidth); x++)
@@ -1243,7 +1243,7 @@ void create3DMeshReferenceListUsingPointMap(int imageWidth, int imageHeight, dou
 			currentMeshPointInMesh->xInt = x;
 			currentMeshPointInMesh->yInt = x;
 
-			MeshPoint* newMeshPoint = new MeshPoint();
+			ORmeshPoint* newMeshPoint = new ORmeshPoint();
 			currentMeshPointInMesh->next = newMeshPoint;
 			currentMeshPointInMesh = currentMeshPointInMesh->next;
 
@@ -1292,7 +1292,7 @@ void create3DMeshReferenceListUsingPointMap(int imageWidth, int imageHeight, dou
 
 
 #ifdef OR_METHOD_3DOD_USE_OLD_TESTED_BUT_BASIC_FEATURE_DETECTION
-bool generateFeatureList3DOD(ViewInfo* vi, double* depthMap, double* pointMap, bool* depthContrastBooleanMap, bool* luminosityContrastBooleanMap, bool* luminosityContrastMapMinusDepthContrastMap, Feature* firstFeatureInList, int trainOrTest)
+bool generateFeatureList3DOD(RTviewInfo* vi, double* depthMap, double* pointMap, bool* depthContrastBooleanMap, bool* luminosityContrastBooleanMap, bool* luminosityContrastMapMinusDepthContrastMap, ORfeature* firstFeatureInList, int trainOrTest)
 {
 	bool result = true;
 
@@ -1349,7 +1349,7 @@ bool generateFeatureList3DOD(ViewInfo* vi, double* depthMap, double* pointMap, b
 	#endif
 
 	//#ifdef OR_DEBUG
-	Feature* currentFeatureInList = firstFeatureInList;
+	ORfeature* currentFeatureInList = firstFeatureInList;
 	while(currentFeatureInList->next != NULL)
 	{
 		cout << "currentFeatureInList++" << endl;
@@ -1474,7 +1474,7 @@ void reconcileFeaturesMap(int imageWidth, int imageHeight, bool* featuresBoolean
 
 
 
-void createFeaturesUsingBooleanMap(int imageWidth, int imageHeight, bool* booleanMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], ViewInfo* vi)
+void createFeaturesUsingBooleanMap(int imageWidth, int imageHeight, bool* booleanMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], RTviewInfo* vi)
 {
 	double imageSizeWidth = vi->imageWidth;
 	double imageSizeHeight = vi->imageHeight;
@@ -1697,7 +1697,7 @@ void createFeaturesUsingBooleanMap(int imageWidth, int imageHeight, bool* boolea
 }
 
 
-void createFeaturesUsingBooleanMapUsingDepthMap(int imageWidth, int imageHeight, bool* booleanMap, double* depthMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], ViewInfo* vi, double* pointMap)
+void createFeaturesUsingBooleanMapUsingDepthMap(int imageWidth, int imageHeight, bool* booleanMap, double* depthMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], RTviewInfo* vi, double* pointMap)
 {
 	double imageSizeWidth = vi->imageWidth;
 	double imageSizeHeight = vi->imageHeight;
@@ -2160,12 +2160,12 @@ void createFeaturesUsingBooleanMapUsingPointMap(int imageWidth, int imageHeight,
 }
 
 
-void generateFeatureListUsingFeatureArrays(int imageWidth, int imageHeight, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], Feature* firstFeatureInList, ViewInfo* vi)
+void generateFeatureListUsingFeatureArrays(int imageWidth, int imageHeight, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], ORfeature* firstFeatureInList, RTviewInfo* vi)
 {
 	//First create a list of unique features
 
 	//set currentFeatureInList to last corner in list;
-	Feature* currentFeatureInList = firstFeatureInList;
+	ORfeature* currentFeatureInList = firstFeatureInList;
 	while(currentFeatureInList->next != NULL)
 	{
 		currentFeatureInList = currentFeatureInList->next;
@@ -2227,7 +2227,7 @@ void generateFeatureListUsingFeatureArrays(int imageWidth, int imageHeight, int 
 						currentFeatureInList->yViewport = y;
 
 						copyVectorRT(&(currentFeatureInList->point), &corner);
-						Feature* newFeature = new Feature();
+						ORfeature* newFeature = new ORfeature();
 						currentFeatureInList->next = newFeature;
 						currentFeatureInList = currentFeatureInList->next;
 					}
@@ -2240,12 +2240,12 @@ void generateFeatureListUsingFeatureArrays(int imageWidth, int imageHeight, int 
 }
 
 
-void generateFeatureListUsingFeatureArraysUsingDepthMap(int imageWidth, int imageHeight, double* depthMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], Feature* firstFeatureInList, ViewInfo* vi)
+void generateFeatureListUsingFeatureArraysUsingDepthMap(int imageWidth, int imageHeight, double* depthMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], ORfeature* firstFeatureInList, RTviewInfo* vi)
 {
 	//First create a list of unique features
 
 	//set currentFeatureInList to last corner in list;
-	Feature* currentFeatureInList = firstFeatureInList;
+	ORfeature* currentFeatureInList = firstFeatureInList;
 	while(currentFeatureInList->next != NULL)
 	{
 		currentFeatureInList = currentFeatureInList->next;
@@ -2322,7 +2322,7 @@ void generateFeatureListUsingFeatureArraysUsingDepthMap(int imageWidth, int imag
 						currentFeatureInList->yViewport = y;
 
 						copyVectorRT(&(currentFeatureInList->point), &corner);
-						Feature* newFeature = new Feature();
+						ORfeature* newFeature = new ORfeature();
 						currentFeatureInList->next = newFeature;
 						currentFeatureInList = currentFeatureInList->next;
 					}
@@ -2334,12 +2334,12 @@ void generateFeatureListUsingFeatureArraysUsingDepthMap(int imageWidth, int imag
 
 }
 
-void generateFeatureListUsingFeatureArraysUsingPointMap(int imageWidth, int imageHeight, double* pointMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], Feature* firstFeatureInList)
+void generateFeatureListUsingFeatureArraysUsingPointMap(int imageWidth, int imageHeight, double* pointMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], ORfeature* firstFeatureInList)
 {
 	//First create a list of unique features
 
 	//set currentFeatureInList to last corner in list;
-	Feature* currentFeatureInList = firstFeatureInList;
+	ORfeature* currentFeatureInList = firstFeatureInList;
 	while(currentFeatureInList->next != NULL)
 	{
 		currentFeatureInList = currentFeatureInList->next;
@@ -2410,7 +2410,7 @@ void generateFeatureListUsingFeatureArraysUsingPointMap(int imageWidth, int imag
 						currentFeatureInList->yViewport = y;
 
 						copyVectorRT(&(currentFeatureInList->point), &corner);
-						Feature* newFeature = new Feature();
+						ORfeature* newFeature = new ORfeature();
 						currentFeatureInList->next = newFeature;
 						currentFeatureInList = currentFeatureInList->next;
 					}
