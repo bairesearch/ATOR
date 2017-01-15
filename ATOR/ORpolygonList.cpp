@@ -1,9 +1,29 @@
 /*******************************************************************************
+ * 
+ * This file is part of BAIPROJECT.
+ * 
+ * BAIPROJECT is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3
+ * only, as published by the Free Software Foundation.
+ * 
+ * BAIPROJECT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License version 3 for more details
+ * (a copy is included in the LICENSE file that accompanied this code).
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
+ * for a copy of the AGPLv3 License.
+ * 
+ *******************************************************************************/
+
+/*******************************************************************************
  *
  * File Name: ORpolygonList.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a8b 14-June-2012
+ * Project Version: 3a11b 09-July-2012
  *
  *******************************************************************************/
 
@@ -26,7 +46,7 @@ ObjectReferenceList::ObjectReferenceList(void)
 	objectNumber = 0;
 	objectName = "";
 	numMatchingSnapshots = 0;
-	
+
 	next = NULL;
 }
 
@@ -132,11 +152,11 @@ Feature::Feature(void)
 	pointTransformed.x = 0.0;
 	pointTransformed.y = 0.0;
 	pointTransformed.z = 0.0;
-	
+
 	#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
 	matchFound = false;
 	#endif
-		
+
 #endif
 
 //#ifdef OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
@@ -158,13 +178,13 @@ Feature::Feature(void)
 	yViewport = 0;
 	magnitude = 0.0;
 	numberOfFeaturePixelsUsedToGenerateFeature = 0;
-	
+
 	lastFilledFeatureInList = true;
 	next = NULL;
-	
+
 	//nearestFeatureActive = false;
-	
-	
+
+
 }
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
@@ -269,7 +289,7 @@ MeshPoint::MeshPoint(void)
 
 
 	edge = false;	//currently only used if OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED
-	
+
 	//#ifdef OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED
 	quadraticFitDepth = 0.0;
 	zeroCrossingValueX = 0.0;

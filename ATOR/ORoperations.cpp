@@ -1,9 +1,29 @@
 /*******************************************************************************
+ * 
+ * This file is part of BAIPROJECT.
+ * 
+ * BAIPROJECT is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3
+ * only, as published by the Free Software Foundation.
+ * 
+ * BAIPROJECT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License version 3 for more details
+ * (a copy is included in the LICENSE file that accompanied this code).
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
+ * for a copy of the AGPLv3 License.
+ * 
+ *******************************************************************************/
+
+/*******************************************************************************
  *
  * File Name: ORoperations.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a8b 14-June-2012
+ * Project Version: 3a11b 09-July-2012
  *
  *******************************************************************************/
 
@@ -37,23 +57,23 @@ void createPointMapFromDepthMap(int imageWidth, int imageHeight, double * depthM
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-		
+
 			double depth = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
 
 			vec xyzWorld;
-						
+
 			if(depth != RT_RAYTRACE_NO_HIT_DEPTH_T)
-			{			
-				calculatePointMapValue(x, y, depth, &xyzWorld, vi);	
+			{
+				calculatePointMapValue(x, y, depth, &xyzWorld, vi);
 			}
 			else
 			{
 				xyzWorld.x = 0.0;
 				xyzWorld.y = 0.0;
 				xyzWorld.z = 0.0;
-							
+
 			}
-			
+
 			setPointMapValue(x, y, imageWidth, &xyzWorld, pointMap);
 		}
 	}
@@ -62,7 +82,7 @@ void createPointMapFromDepthMap(int imageWidth, int imageHeight, double * depthM
 void printvi(view_info * vi)
 {
 	cout << "printvi()" << endl;
-	
+
 	cout << "vi->viewat.x = " << vi->viewat.x << endl;
 	cout << "vi->viewat.y = " << vi->viewat.y << endl;
 	cout << "vi->viewat.z = " << vi->viewat.z << endl;
@@ -78,26 +98,26 @@ void printvi(view_info * vi)
 	cout << "vi->viewheight = " << vi->viewheight << endl;
 	cout << "vi->focal_length = " << vi->focal_length << endl;
 
-	
+
 }
 
 
 void printPointMap(int imageWidth, int imageHeight, double * pointMap)
 {
 	cout << "printPointMap()" << endl;
-	
+
 	//fill luminosityMap
 	for(int y = 0; y < imageHeight; y++)
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-		
+
 			vec xyzWorld;
 			getPointMapValue(x, y, imageWidth, pointMap, &xyzWorld);
-			
+
 			if(!((xyzWorld.x == RT_RAYTRACE_NO_HIT_POINT_X) && (xyzWorld.x == RT_RAYTRACE_NO_HIT_POINT_Y) && (xyzWorld.x == RT_RAYTRACE_NO_HIT_POINT_Z)))
 			{
-				cout << xyzWorld.x << " " << xyzWorld.y << " " << xyzWorld.z << endl; 
+				cout << xyzWorld.x << " " << xyzWorld.y << " " << xyzWorld.z << endl;
 			}
 		}
 	}
@@ -106,19 +126,19 @@ void printPointMap(int imageWidth, int imageHeight, double * pointMap)
 void printDepthMap(int imageWidth, int imageHeight, double * depthMap)
 {
 	cout << "printDepthMap()" << endl;
-	
+
 	//fill luminosityMap
 	for(int y = 0; y < imageHeight; y++)
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-		
+
 			vec xyzWorld;
 			double depth = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
 
 			if(depth != RT_RAYTRACE_NO_HIT_DEPTH_T)
-			{			
-				cout << depth << endl; 
+			{
+				cout << depth << endl;
 			}
 		}
 	}
@@ -512,17 +532,17 @@ PolygonBAI * addPolysToListForGivenFeatureAndNearestFeatureList(PolygonBAI * fir
 					{
 						minAcceptableAreaOfTNormalised = OR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON;
 					}
-					
+
 					//double maxLengthOfT = maxDouble(widthOfOriginalT, heightOfOriginalT);
 					//double averageSideLengthOfMinimumSizedTEquilateral = sqrt(OR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON);
 					//double averageSideLengthOfMinimumSizedTThin = averageSideLengthOfMinimumSizedTEquilateral*2.0;
 					//double areaRequirementNormalisationFactor = maxLengthOfT/averageSideLengthOfMinimumSizedTThin;
 					//f(areaOfT/areaRequirementNormalisationFactor > OR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON)
-					
+
 					double areaOfT = calculateAreaOfTriangle(&(currentFeature->point), &(currentFeatureInNearestFeatureList->point), &(currentFeatureInNearestFeatureList2->point));
 					if(areaOfT > minAcceptableAreaOfTNormalised)
 					*/
-					
+
 					if(OR_METHOD_2DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST)
 					{
 						double areaOfT = calculateAreaOfTriangle(&(currentFeature->point), &(currentFeatureInNearestFeatureList->point), &(currentFeatureInNearestFeatureList2->point));
@@ -544,7 +564,7 @@ PolygonBAI * addPolysToListForGivenFeatureAndNearestFeatureList(PolygonBAI * fir
 					}
 					else
 					{
-				
+
 						//basic:
 						double areaOfT = calculateAreaOfTriangle(&(currentFeature->point), &(currentFeatureInNearestFeatureList->point), &(currentFeatureInNearestFeatureList2->point));
 						if(areaOfT > OR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON)
@@ -611,7 +631,7 @@ int calculateNumberOfNearestFeatures(int numberOfPolygonsPerFeature, int numberO
 	if(numberOfPolygonsPerFeature == 1)
 	{
 		numberOfNearestFeatures = 3 + numberOfNearbyFeaturesToTransform;
-	}	
+	}
 	else if(numberOfPolygonsPerFeature == 3)
 	{
 		numberOfNearestFeatures = 3 + maxInt(1, numberOfNearbyFeaturesToTransform);
@@ -680,9 +700,9 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 			firstFeatureInNearestFeatureList->pointNonWorldCoord.z = currentFeatureInList1->pointNonWorldCoord.z;
 			Feature * secondFeatureInNearestFeatureList = new Feature();
 			firstFeatureInNearestFeatureList->next = secondFeatureInNearestFeatureList;
-			
+
 			double previousDistanceToNearestFeatureFromFeatureList2 = 0.0;
-			
+
 			Feature * currentFeatureInNearestFeatureList = secondFeatureInNearestFeatureList;	//do not use first point
 			int currentNearestFeatureIndex = 1;
 			bool stillFindingNearestFeatures = true;
@@ -716,7 +736,7 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 								cout << "currentFeatureInNearestFeatureList->point.z = " << currentFeatureInNearestFeatureList->point.z << endl;
 								cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.x = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.x << endl;
 								cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.y = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.y << endl;
-								cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.z = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.z << endl;								
+								cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.z = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.z << endl;
 								*/
 							}
 						}
@@ -738,7 +758,7 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 					Feature * newFeature = new Feature();
 					currentFeatureInNearestFeatureList->next = newFeature;
 					currentFeatureInNearestFeatureList = currentFeatureInNearestFeatureList->next;
-					currentNearestFeatureIndex++;				
+					currentNearestFeatureIndex++;
 				}
 			}
 
@@ -751,7 +771,7 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 			cout << "currentFeatureInList1->point.z = " << currentFeatureInList1->point.z << endl;
 			cout << "currentFeatureInList1->pointNonWorldCoord.x = " << currentFeatureInList1->pointNonWorldCoord.x << endl;
 			cout << "currentFeatureInList1->pointNonWorldCoord.y = " << currentFeatureInList1->pointNonWorldCoord.y << endl;
-			cout << "currentFeatureInList1->pointNonWorldCoord.z = " << currentFeatureInList1->pointNonWorldCoord.z << endl;			
+			cout << "currentFeatureInList1->pointNonWorldCoord.z = " << currentFeatureInList1->pointNonWorldCoord.z << endl;
 			currentFeatureInNearestFeatureList = firstFeatureInNearestFeatureList;
 			while(currentFeatureInNearestFeatureList->next != NULL)
 			{
@@ -762,7 +782,7 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 				cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.x = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.x << endl;
 				cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.y = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.y << endl;
 				cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.z = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.z << endl;
-				
+
 				currentFeatureInNearestFeatureList=currentFeatureInNearestFeatureList->next;
 			}
 			#endif
@@ -796,7 +816,7 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 
 		//#define DEBUG_POLYGON_GENERATION
 		#ifdef DEBUG_POLYGON_GENERATION
-			
+
 		cout << "DEBUG_POLYGON_GENERATION:" << endl;
 		int numSidesPerPolygon = 3;
 		int numberOfPolygons = 0;
@@ -814,11 +834,11 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 			cout << "currentPolygonInList->point3.x = " << currentPolygonInList->point3.x << endl;
 			cout << "currentPolygonInList->point3.y = " << currentPolygonInList->point3.y << endl;
 			cout << "currentPolygonInList->point3.z = " << currentPolygonInList->point3.z << endl;
-			
+
 			currentPolygonInList=currentPolygonInList->next;
 		}
 		cout << "numberOfPolygons = " << numberOfPolygons << endl;
-		
+
 		#endif
 	}
 

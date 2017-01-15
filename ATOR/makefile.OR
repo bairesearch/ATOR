@@ -10,7 +10,7 @@ SOURCES= ORmain.cpp ORmethod.cpp ORmethod3DOD.cpp ORmethod2DOD.cpp LDopengl.cpp 
 LIBTOOLFLAGS = --silent --tag=CC --mode=link gcc -std=gnu99 -g -O2
 
 OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=OR.exe
+EXECUTABLE=OpenOR.exe
 
 all: $(SOURCES) $(EXECUTABLE)
 	

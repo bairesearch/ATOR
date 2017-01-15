@@ -1,9 +1,29 @@
 /*******************************************************************************
+ * 
+ * This file is part of BAIPROJECT.
+ * 
+ * BAIPROJECT is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3
+ * only, as published by the Free Software Foundation.
+ * 
+ * BAIPROJECT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License version 3 for more details
+ * (a copy is included in the LICENSE file that accompanied this code).
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
+ * for a copy of the AGPLv3 License.
+ * 
+ *******************************************************************************/
+
+/*******************************************************************************
  *
  * File Name: ORrules.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3a8b 14-June-2012
+ * Project Version: 3a11b 09-July-2012
  *
  *******************************************************************************/
 
@@ -11,7 +31,7 @@
 #include "ORglobalDefs.h"
 #include "XMLrulesClass.h"
 #include "RTglobalDefs.h"
- 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
@@ -27,13 +47,13 @@ using namespace std;
 bool convertStringToBool(string stringValue)
 {
 	bool result = false;
-	
+
 	for(int i=0; i<stringValue.length(); i++)
 	{
 		stringValue[i] = tolower(stringValue[i]);
 	}
 	//cout << "stringValue = " << stringValue << endl;
-	
+
 	if(stringValue == "true")
 	{
 		result = true;
@@ -59,7 +79,7 @@ void fillInORRulesExternVariables()
 
 
 	//OR_IMAGE_COMPARISON_DECISION_TREE...
-	
+
 	OR_IMAGE_COMPARISON_DECISION_TREE = true;
 
 	OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING = true;
@@ -75,50 +95,50 @@ void fillInORRulesExternVariables()
 	OR_IMAGE_COMPARISON_SQL_GET_TEST_DATA_FROM_SQL = true;		//tested - default ON [this should be able to be turned off for optimisation purposes, it needs to fix up memory leak however] - this will not be changable in xml file, it should never need to be changed in release versions
 	OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE = true;	//tested - default ON [turn this off to display html results file properly] - this will not be changable in xml file, it should never need to be changed in release versions
 
-	
+
 	//OR_FEATURES...
 
 	//xml determined by default;
 	OR_USE_FIND_CORNER_FEATURES = true;
 	OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES = true;
-	OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES = false; 
-	OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY = false;  
-	
+	OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES = false;
+	OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY = false;
+
 	OR_METHOD_USE_MESH_LISTS = false;   //[has not been tested with centred feature detection]
 	OR_METHOD_3DOD_USE_MESH_LISTS_COMBINED = false;
 	OR_METHOD_3DOD_USE_ADVANCED_INTERP_MESH_JOINING_MAXIMUM_RECONCILIATION_DISTANCE = 0.1;
 	OR_METHOD_2DOD_USE_MESH_LISTS_COMBINED = false;		//never use this - not yet implemented
-	
+
 	MIN_REGION_SIZE_TO_CALCULATE_CENTRED_FEATURE = (20);					 //this needs to be made dynamic based upon vi
 	MINIMUM_NUMBER_OF_PIXELS_IN_A_BOUNDARY = (2);
 	OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES_DO_NOT_USE_UNCHANGING_CASE = false;		 //tested - default OFF
 	OR_METHOD_3DOD_CONTINUOUS_EDGE_MAX_NOISE = (0.1);					  //this needs to be made dynamic based upon vi
 	OR_METHOD_3DOD_CONTINUOUS_EDGE_MAX_NOISE_2 = (OR_METHOD_3DOD_CONTINUOUS_EDGE_MAX_NOISE);  //this needs to be made dynamic based upon vi 	  //this needs to be checked, this value might need to be increased slightly
-	OR_METHOD_3DOD_CONTINUOUS_EDGE_MAX_POINT_MOVEMENT = (0.3);				  //this needs to be made dynamic based upon vi   
+	OR_METHOD_3DOD_CONTINUOUS_EDGE_MAX_POINT_MOVEMENT = (0.3);				  //this needs to be made dynamic based upon vi
 	OR_METHOD_2DOD_CONTINUOUS_EDGE_MAX_NOISE = (1.0);					  //this needs to be made dynamic based upon zoom??
 	OR_METHOD_2DOD_CONTINUOUS_EDGE_MAX_NOISE_2 = (OR_METHOD_2DOD_CONTINUOUS_EDGE_MAX_NOISE);  //this needs to be made dynamic based upon zoom??	  //this needs to be checked, this value might need to be increased slightly
 
 
 
 	//OR_METHOD3DOD FEATURE...
-	
+
 	OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST = true;
 	OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION = false;
-	
-	OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE = (0.001); 
-	
-	
-	
+
+	OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE = (0.001);
+
+
+
 	//OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING...
-	
-	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_COLOUR_INFORMATION = false;	
+
+	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_COLOUR_INFORMATION = false;
 
 
 
 	//OR_SHARED_VARS...	//general contrast threshold constraints
-	
-	OR_USE_CONTRAST_CALC_METHOD_C = true;				  //tested - default ON		//OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY may be more recommended with OR_USE_CONTRAST_CALC_METHOD_B 
-	OR_USE_CONTRAST_CALC_METHOD_B = false;				  //tested - default OFF	//OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY may be more recommended with OR_USE_CONTRAST_CALC_METHOD_B 
+
+	OR_USE_CONTRAST_CALC_METHOD_C = true;				  //tested - default ON		//OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY may be more recommended with OR_USE_CONTRAST_CALC_METHOD_B
+	OR_USE_CONTRAST_CALC_METHOD_B = false;				  //tested - default OFF	//OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY may be more recommended with OR_USE_CONTRAST_CALC_METHOD_B
 
 	LUMINOSITY_CONTRAST_FRACTION_THRESHOLD = (0.05); 	 //default 0.05 for method C, default 0.02 for method B
 	DEPTH_GRADIENT_CONTRAST_FRACTION_THRESHOLD = (0.05);	 //default 0.05 for method C, default 0.02 for method B  //this needs to be dynamic - not static - and should be dependant upon focal length
@@ -132,7 +152,7 @@ void fillInORRulesExternVariables()
 
 
 	//OR_METHOD2DOD...
-	
+
 	OR_IMAGE_COMPARISON_PATTERN_NEVER_CULL_SNAPSHOTS = true;
 
 
@@ -196,8 +216,8 @@ void fillInORRulesExternVariables()
 	//OR ACCURACY/TUNING VARIABLES...
 
 	OR_IMAGE_COMPARITOR_MATCH_ERROR_THRESHOLD = (0.2);
-	
-	
+
+
 	//OR DISPLAY VARIABLES...
 
 	OR_PRINT_ALGORITHM_PROGRESS = false;		    //true in xml/testing
@@ -210,55 +230,55 @@ void fillInORRulesExternVariables()
 	DEMO_TO_CUSTOMER_HIDE_T_FROM_VIEW = false;	    //for 2DOD, this will stop data outside of the normalised triangle object data from being culled
 	strcpy(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_FNAME, "ORResults.html");
 
-	
+
 	//OR TRANSFORMATION ACCURACY VARIABLES...
-	
+
 	OR_METHOD_3DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST = true;
 	OR_METHOD_2DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST = true;
 	POLYGON_MIN_ANGLE_DEGREES = (10.0);
 
 	OR_METHOD3DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON = (0.1);	//OLD; 20  //this needs to be made dynamic in the future! [based upon distance object is away from pov]
 	OR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON = (20.0);	  //100 //20
-	
-	
-	
+
+
+
 	//OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING...
 
 	OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL = (20);
-	OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING_MULTIPLIER = (5);	     
-		
-		
-		
-	//OR OPTIMISATION GEOMETRIC COMPARISON... 
+	OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING_MULTIPLIER = (5);
+
+
+
+	//OR OPTIMISATION GEOMETRIC COMPARISON...
 
 	OR_METHOD_ONLY_USE_ONE_POLY_PER_FEATURE_FAST_BUT_LOW_REDUNDANCY = false;		    //untested - default OFF
 	OR_METHOD_ONLY_USE_TWO_NEAREST_FEATURES_TO_COMPARE_FAST_BUT_LOW_REDUNDANCY = false;	    //untested - default OFF
-	
+
 	OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR = (0.3);
 	OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NEAREST_FEATURE_MAX_DISTANCE = (6.0);
 
-	
-	
+
+
 	//OR OPTIMISATION SMALL IMAGE COMPARISON VARIABLES...
-	
+
 	OR_IMAGE_COMPARITOR_SMALL_MATCH_ERROR_THRESHOLD = 0.2;
-	
+
 
 	//OR SPARE PARAMETERS VARIABLES...
-	
+
 	OR_RULES_XML_SPARE_PARAMETER_1 = false;
-	OR_RULES_XML_SPARE_PARAMETER_2 = (0.0);	 
-		
-			
+	OR_RULES_XML_SPARE_PARAMETER_2 = (0.0);
+
+
 	/************** 1. PARSE STANDARD XML RULES *********************/
-	
-	
+
+
 	//Standard OR Rules Entries;
 	RulesClass * currentReferenceRulesClass = ORrulesObjectRecognition;
 	while(currentReferenceRulesClass->next != NULL)
 	{
 		//OR_IMAGE_COMPARISON_DECISION_TREE...
-	
+
 		if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_DECISION_TREE_NAME)
 		{
 			OR_IMAGE_COMPARISON_DECISION_TREE = convertStringToBool(currentReferenceRulesClass->stringValue);
@@ -270,7 +290,7 @@ void fillInORRulesExternVariables()
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING_NAME)
 		{
 			OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING =  convertStringToBool(currentReferenceRulesClass->stringValue);
-		}	
+		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NAME)
 		{
 			OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING =  convertStringToBool(currentReferenceRulesClass->stringValue);
@@ -295,7 +315,7 @@ void fillInORRulesExternVariables()
 		{
 			OR_IMAGE_COMPARISON_SQL_SMALL_HUE_DEV_MAP_COMPARISON =  convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
-									
+
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_SQL_GET_TEST_DATA_FROM_SQL_NAME)
 		{
 			OR_IMAGE_COMPARISON_SQL_GET_TEST_DATA_FROM_SQL =  convertStringToBool(currentReferenceRulesClass->stringValue);
@@ -303,15 +323,15 @@ void fillInORRulesExternVariables()
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_NAME)
 		{
 			OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE =  convertStringToBool(currentReferenceRulesClass->stringValue);
-		}			
+		}
 
 
-		//OR_FEATURES... 
+		//OR_FEATURES...
 
 		else if(currentReferenceRulesClass->name == OR_USE_FIND_CORNER_FEATURES_NAME)
 		{
 			OR_USE_FIND_CORNER_FEATURES = convertStringToBool(currentReferenceRulesClass->stringValue);
-		}		
+		}
 		else if(currentReferenceRulesClass->name == OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_NAME)
 		{
 			OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES = convertStringToBool(currentReferenceRulesClass->stringValue);
@@ -323,32 +343,32 @@ void fillInORRulesExternVariables()
 		else if(currentReferenceRulesClass->name == OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY_NAME)
 		{
 			OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY =  convertStringToBool(currentReferenceRulesClass->stringValue);
-		}		
-		
+		}
+
 		else if(currentReferenceRulesClass->name == OR_METHOD_USE_MESH_LISTS_NAME)
 		{
 			OR_METHOD_USE_MESH_LISTS = convertStringToBool(currentReferenceRulesClass->stringValue);
-		}	
+		}
 		else if(currentReferenceRulesClass->name == OR_METHOD_3DOD_USE_MESH_LISTS_COMBINED_NAME)
 		{
 			OR_METHOD_3DOD_USE_MESH_LISTS_COMBINED =  convertStringToBool(currentReferenceRulesClass->stringValue);
-		}	
+		}
 		else if(currentReferenceRulesClass->name == OR_METHOD_3DOD_USE_ADVANCED_INTERP_MESH_JOINING_MAXIMUM_RECONCILIATION_DISTANCE_NAME)
 		{
 			OR_METHOD_3DOD_USE_ADVANCED_INTERP_MESH_JOINING_MAXIMUM_RECONCILIATION_DISTANCE =  currentReferenceRulesClass->fractionalValue;
-		}	
+		}
 		else if(currentReferenceRulesClass->name == OR_METHOD_2DOD_USE_MESH_LISTS_COMBINED_NAME)
 		{
 			OR_METHOD_2DOD_USE_MESH_LISTS_COMBINED =  convertStringToBool(currentReferenceRulesClass->stringValue);
-		}	
-								
+		}
+
 		else if(currentReferenceRulesClass->name == MIN_REGION_SIZE_TO_CALCULATE_CENTRED_FEATURE_NAME)
 		{
 			MIN_REGION_SIZE_TO_CALCULATE_CENTRED_FEATURE = currentReferenceRulesClass->fractionalValue;
 		}
 		else if(currentReferenceRulesClass->name == MINIMUM_NUMBER_OF_PIXELS_IN_A_BOUNDARY_NAME)
 		{
-			MINIMUM_NUMBER_OF_PIXELS_IN_A_BOUNDARY = currentReferenceRulesClass->fractionalValue;
+			MINIMUM_NUMBER_OF_PIXELS_IN_A_BOUNDARY = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES_DO_NOT_USE_UNCHANGING_CASE_NAME)
 		{
@@ -373,8 +393,8 @@ void fillInORRulesExternVariables()
 		else if(currentReferenceRulesClass->name == OR_METHOD_2DOD_CONTINUOUS_EDGE_MAX_NOISE_2_NAME)
 		{
 			OR_METHOD_2DOD_CONTINUOUS_EDGE_MAX_NOISE_2 = currentReferenceRulesClass->fractionalValue;
-		}																	
-		
+		}
+
 
 
 		//OR_METHOD3DOD FEATURE...
@@ -387,22 +407,22 @@ void fillInORRulesExternVariables()
 		{
 			OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION = convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
-		
+
 		else if(currentReferenceRulesClass->name == OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE_NAME)
 		{
 			OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE = currentReferenceRulesClass->fractionalValue;
 		}
-				
-				
+
+
 		//OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING...
 
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_COLOUR_INFORMATION_NAME)
 		{
 			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_COLOUR_INFORMATION = convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
-		
-		
-				
+
+
+
 		//OR_SHARED_VARS...	//general contrast threshold constraints
 
 
@@ -444,12 +464,12 @@ void fillInORRulesExternVariables()
 		}
 
 		//OR_METHOD2DOD...
-	
+
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_NEVER_CULL_SNAPSHOTS_NAME)
 		{
 			OR_IMAGE_COMPARISON_PATTERN_NEVER_CULL_SNAPSHOTS = convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
-		
+
 		//OR_METHOD...
 
 		else if(currentReferenceRulesClass->name == OR_METHOD_SUPPORT_HIGH_LEVEL_SCALING_NAME)
@@ -458,34 +478,34 @@ void fillInORRulesExternVariables()
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TRAIN_NAME)
 		{
-			OR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TRAIN = currentReferenceRulesClass->fractionalValue;
+			OR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TRAIN = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TEST_NAME)
 		{
-			OR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TEST = currentReferenceRulesClass->fractionalValue;
+			OR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TEST = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TRAIN_NAME)
 		{
-			OR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TRAIN = currentReferenceRulesClass->fractionalValue;
+			OR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TRAIN = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TEST_NAME)
 		{
-			OR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TEST = currentReferenceRulesClass->fractionalValue;
+			OR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TEST = int(currentReferenceRulesClass->fractionalValue);
 		}
-		
-		
-		
+
+
+
 		//LD_OPENGL...
 
 		else if(currentReferenceRulesClass->name == OR_SNAPSHOT_WINDOW_POSITION_X_NAME)
 		{
-			OR_SNAPSHOT_WINDOW_POSITION_X = currentReferenceRulesClass->fractionalValue;
+			OR_SNAPSHOT_WINDOW_POSITION_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_SNAPSHOT_WINDOW_POSITION_Y_NAME)
 		{
-			OR_SNAPSHOT_WINDOW_POSITION_Y = currentReferenceRulesClass->fractionalValue;
+			OR_SNAPSHOT_WINDOW_POSITION_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
-		
+
 
 		//OR_IMAGE_COMPARISON...
 
@@ -581,18 +601,18 @@ void fillInORRulesExternVariables()
 
 		else if(currentReferenceRulesClass->name == WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE_NAME)
 		{
-			WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE = currentReferenceRulesClass->fractionalValue;
+			WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO_NAME)
 		{
-			OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO = currentReferenceRulesClass->fractionalValue;
+			OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD_3DOD_USE_SMALL_IMAGE_RATIO_NAME)
 		{
-			OR_METHOD_3DOD_USE_SMALL_IMAGE_RATIO = currentReferenceRulesClass->fractionalValue;
+			OR_METHOD_3DOD_USE_SMALL_IMAGE_RATIO = int(currentReferenceRulesClass->fractionalValue);
 		}
-	
-	
+
+
 		//OR DISPLAY VARIABLES...
 
 		else if(currentReferenceRulesClass->name == OR_PRINT_ALGORITHM_PROGRESS_NAME)
@@ -626,17 +646,17 @@ void fillInORRulesExternVariables()
 		else if(currentReferenceRulesClass->name == OR_GENERATE_IMAGE_COMPARITOR_RESULTS_FNAME_NAME)
 		{
 			strcpy(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_FNAME, (currentReferenceRulesClass->stringValue).c_str());
-		}	
-		
+		}
+
 		//OR ACCURACY/TUNING VARIABLES...
-	
+
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARITOR_MATCH_ERROR_THRESHOLD_NAME)
 		{
 			OR_IMAGE_COMPARITOR_MATCH_ERROR_THRESHOLD = currentReferenceRulesClass->fractionalValue;
 		}
-			
+
 		//OR TRANSFORMATION ACCURACY VARIABLES...
-	
+
 		else if(currentReferenceRulesClass->name == OR_METHOD_3DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST_NAME)
 		{
 			OR_METHOD_3DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST = convertStringToBool(currentReferenceRulesClass->stringValue);
@@ -644,35 +664,35 @@ void fillInORRulesExternVariables()
 		else if(currentReferenceRulesClass->name == OR_METHOD_2DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST_NAME)
 		{
 			OR_METHOD_2DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST = convertStringToBool(currentReferenceRulesClass->stringValue);
-		}			
+		}
 		else if(currentReferenceRulesClass->name == POLYGON_MIN_ANGLE_DEGREES_NAME)
 		{
 			POLYGON_MIN_ANGLE_DEGREES = currentReferenceRulesClass->fractionalValue;
-		}	
+		}
 		else if(currentReferenceRulesClass->name == OR_METHOD3DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON_NAME)
 		{
 			OR_METHOD3DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON = currentReferenceRulesClass->fractionalValue;
-		}		
+		}
 		else if(currentReferenceRulesClass->name == OR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON_NAME)
 		{
 			OR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON = currentReferenceRulesClass->fractionalValue;
-		}				
-			
-	
+		}
+
+
 		//OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING...
 
 
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL_NAME)
 		{
-			OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING_MULTIPLIER_NAME)
 		{
-			OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING_MULTIPLIER = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING_MULTIPLIER = int(currentReferenceRulesClass->fractionalValue);
 		}
-		 
-		//OR OPTIMISATION GEOMETRIC COMPARISON... 
-	
+
+		//OR OPTIMISATION GEOMETRIC COMPARISON...
+
 		else if(currentReferenceRulesClass->name == OR_METHOD_ONLY_USE_ONE_POLY_PER_FEATURE_FAST_BUT_LOW_REDUNDANCY_NAME)
 		{
 			OR_METHOD_ONLY_USE_ONE_POLY_PER_FEATURE_FAST_BUT_LOW_REDUNDANCY = convertStringToBool(currentReferenceRulesClass->stringValue);
@@ -680,7 +700,7 @@ void fillInORRulesExternVariables()
 		else if(currentReferenceRulesClass->name == OR_METHOD_ONLY_USE_TWO_NEAREST_FEATURES_TO_COMPARE_FAST_BUT_LOW_REDUNDANCY_NAME)
 		{
 			OR_METHOD_ONLY_USE_TWO_NEAREST_FEATURES_TO_COMPARE_FAST_BUT_LOW_REDUNDANCY = convertStringToBool(currentReferenceRulesClass->stringValue);
-		}	
+		}
 		else if(currentReferenceRulesClass->name == OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR_NAME)
 		{
 			OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR = currentReferenceRulesClass->fractionalValue;
@@ -688,19 +708,19 @@ void fillInORRulesExternVariables()
 		else if(currentReferenceRulesClass->name == OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NEAREST_FEATURE_MAX_DISTANCE_NAME)
 		{
 			OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NEAREST_FEATURE_MAX_DISTANCE = currentReferenceRulesClass->fractionalValue;
-		}	
+		}
 
-	
+
 		//OR OPTIMISATION SMALL IMAGE COMPARISON VARIABLES...
-	
+
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARITOR_SMALL_MATCH_ERROR_THRESHOLD_NAME)
 		{
 			OR_IMAGE_COMPARITOR_SMALL_MATCH_ERROR_THRESHOLD = currentReferenceRulesClass->fractionalValue;
-		}	
-	
-	
+		}
+
+
 		//OR SPARE PARAMETERS VARIABLES...
-	
+
 		else if(currentReferenceRulesClass->name == OR_RULES_XML_SPARE_PARAMETER_1_NAME)
 		{
 			OR_RULES_XML_SPARE_PARAMETER_1 = convertStringToBool(currentReferenceRulesClass->stringValue);
@@ -708,36 +728,36 @@ void fillInORRulesExternVariables()
 		else if(currentReferenceRulesClass->name == OR_RULES_XML_SPARE_PARAMETER_2_NAME)
 		{
 			OR_RULES_XML_SPARE_PARAMETER_2 = currentReferenceRulesClass->fractionalValue;
-		}	
-		
-		
-			
-		
-		else
-		{
-		
 		}
 
-		currentReferenceRulesClass = currentReferenceRulesClass->next;		
-												
+
+
+
+		else
+		{
+
+		}
+
+		currentReferenceRulesClass = currentReferenceRulesClass->next;
+
 	}
-	
+
 	/************** 2. POST PROCESSES STANDARD XML RULES *********************/
-	
+
 	//OR_IMAGE_COMPARISON_DECISION_TREE...
 
 	OR_IMAGE_COMPARISON_GEOMETRIC_COMPARISON_BINNING = false;
 	OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING = false;
 	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING = false;
 	OR_IMAGE_COMPARISON_SMALL_HUE_DEV_MAP_COMPARISON = false;
-	
+
 	if(OR_IMAGE_COMPARISON_DECISION_TREE)
-	{	
+	{
 		OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING = false;
 		OR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_DEV_BINNING = false;
 		OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING = false;
 		OR_IMAGE_COMPARISON_SQL_SMALL_HUE_DEV_MAP_COMPARISON = false;
-		
+
 		if(OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 		{
 			OR_IMAGE_COMPARISON_GEOMETRIC_COMPARISON_BINNING = true;
@@ -756,7 +776,7 @@ void fillInORRulesExternVariables()
 		if(OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
 		{
 			OR_IMAGE_COMPARISON_SMALL_HUE_DEV_MAP_COMPARISON = true;
-		}	
+		}
 	}
 	else
 	{
@@ -764,7 +784,7 @@ void fillInORRulesExternVariables()
 		OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING = false;
 		OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING = false;
 		OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON = false;
-		
+
 		if(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING)
 		{
 			OR_IMAGE_COMPARISON_GEOMETRIC_COMPARISON_BINNING = true;
@@ -785,34 +805,34 @@ void fillInORRulesExternVariables()
 			OR_IMAGE_COMPARISON_SMALL_HUE_DEV_MAP_COMPARISON = true;
 		}
 	}
-			
-		
+
+
 	OR_IMAGE_COMPARISON_TEST_GEO_BIN_ACCURACY = true;
 	#ifdef OR_IMAGE_COMPARISON_SQL
 	if(OR_IMAGE_COMPARISON_DECISION_TREE)
 	{
 		OR_IMAGE_COMPARISON_TEST_GEO_BIN_ACCURACY = false;		//this cannot be used with decision tree activated
-	}	
+	}
 	#endif
-	
-	
-	
+
+
+
 	//OR_METHOD_GEOMETRIC_COMPARISON...
-	
+
 	OR_METHOD_TRANSFORM_NEARBY_FEATURES = false;			//NEW this has been made dependent upon whether geo comparison is used.
-	
+
 	OR_SQL_DATABASE_STORE_ALL_NEARBY_AND_OT_FEATURES = false;	//this can be used with OR_IMAGE_COMPARISON_DECISION_TREE as nearby feature data is not taken and used from snapshot tables [only used in the definition of decision tree tables]
-	
+
 	OR_METHOD_TRANSFORM_KEY_OT_FEATURES = false;
 	OR_METHOD_TRANSFORM_ALL_FEATURES = false;
 	OR_METHOD_CREATE_OT_FEATURES_FILE = false;
 	OR_METHOD_CREATE_ALL_FEATURES_FILE = false;
-	
+
 	OR_IMAGE_COMPARISON_NONSQL_GEOMETRIC_COMPARISON_OPTIMISED_TEST_FILE_IO = false;
 	OR_METHOD_CREATE_NEARBY_FEATURES_FILE = false;
 	OR_METHOD_CREATE_NEARBY_FEATURES_FILE_ALWAYS = false;
 	OR_METHOD_CREATE_NEARBY_FEATURES_FILE_DURING_TEST = false;
-		
+
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
 
 	if(OR_METHOD_TRANSFORM_KEY_OT_FEATURES)
@@ -874,7 +894,7 @@ void fillInORRulesExternVariables()
 				if(OR_METHOD_CREATE_NEARBY_FEATURES_FILE_DURING_TEST)
 				{
 					OR_METHOD_CREATE_NEARBY_FEATURES_FILE = true;
-				}			
+				}
 				//OR_SQL_DATABASE_STORE_ALL_NEARBY_AND_OT_FEATURES = true
 			}
 
@@ -884,7 +904,7 @@ void fillInORRulesExternVariables()
 			if(OR_METHOD_CREATE_NEARBY_FEATURES_FILE_ALWAYS)
 			{
 				OR_METHOD_CREATE_NEARBY_FEATURES_FILE = true;
-			}			
+			}
 
 			#endif
 		}
@@ -892,8 +912,8 @@ void fillInORRulesExternVariables()
 	#endif
 #endif
 
-		
-	
+
+
 	//OR_SHARED_VARS...	//general contrast threshold constraints
 
 	if(OR_USE_CONTRAST_CALC_METHOD_B)
@@ -915,7 +935,7 @@ void fillInORRulesExternVariables()
 		MAX_NORMAL_CONTRAST = (MAX_NORMAL*3.0*4);
 		ESTIMATE_MAX_DEPTH_CONTRAST = (ESTIMATE_MAX_DEPTH_T_REAL);
 		ESTIMATE_MAX_DEPTH_GRADIENT_CONTRAST = (ESTIMATE_MAX_DEPTH_CONTRAST*4.0);	//OLD: 0.1 instead
-		
+
 	}
 	else if(OR_USE_CONTRAST_CALC_METHOD_B)
 	{
@@ -933,9 +953,9 @@ void fillInORRulesExternVariables()
 	}
 
 	#ifdef USE_OLD_ESTIMATE_MAX_DEPTH_GRADIENT_CONTRAST
-	ESTIMATE_MAX_DEPTH_GRADIENT_CONTRAST = 0.1;	
+	ESTIMATE_MAX_DEPTH_GRADIENT_CONTRAST = 0.1;
 	#endif
-		
+
 	EDGE_LUMINOSITY_CONTRAST_THRESHOLD = (MAX_LUMINOSITY_CONTRAST*LUMINOSITY_CONTRAST_FRACTION_THRESHOLD);   //OLD = ~0.07*MAX_LUMINOSITY_CONTRAST = ~ ((20.0/254.0)*MAX_LUMINOSITY_CONTRAST)
 	EDGE_LUMINOSITY_THRESHOLD = (MAX_LUMINOSITY*LUMINOSITY_FRACTION_THRESHOLD);
 	EDGE_NORMAL_CONTRAST_THRESHOLD = (MAX_NORMAL_CONTRAST*POINT_NORMAL_CONTRAST_FRACTION_THRESHOLD);
@@ -961,7 +981,7 @@ void fillInORRulesExternVariables()
 
 
 	//OR_PIXEL_MAPS...
-	
+
 	if(OR_USE_CONTRAST_CALC_METHOD_C)
 	{
 		DEFAULT_DEPTH_GRADIENT_MAP_GENERATION_INTERPIXEL = (true);
@@ -1008,43 +1028,43 @@ void fillInORRulesExternVariables()
 
 
 	//OR_IMAGE_COMPARISON...
-	
-	IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR = (IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR_BASE * 3);	
-	//#define OR_IMAGE_COMPARISON_MIN_TOTAL_NUM_STARK_LOCAL_CONTRASTS (100.0/(28*28/2))	
-	
-	
-	
+
+	IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR = (IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR_BASE * 3);
+	//#define OR_IMAGE_COMPARISON_MIN_TOTAL_NUM_STARK_LOCAL_CONTRASTS (100.0/(28*28/2))
+
+
+
 	//OR_OPERATIONS...
 	MAX_FEATURE_DISTANCE_ERROR_USING_POINT_MAP_METHOD = (XYCOORDINATES_CONVERSION_INTO_PIXELS * MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD);	//in world units		//OLD;(0.001)
-	
-	
-	
+
+
+
 	//OR_QUADRATIC_FIT...
 	HEITGER_FEATURE_RGB_MAP_KERNEL_THRESHOLD = (HEITGER_FEATURE_RGB_MAP_CENTRE_THRESHOLD/4.0);		//NB this represents the optimised values for 2DOD, consider/test using (HEITGER_FEATURE_RGB_MAP_CENTRE_THRESHOLD/4.0) for 3DOD...!!
 	HEITGER_FEATURE_RGB_MAP_TOTAL_KERNEL_THRESHOLD = (HEITGER_FEATURE_RGB_MAP_KERNEL_THRESHOLD*10.0);
 
 	if(USE_EDGISE_5X5_KERNEL)
-	{	
+	{
 		QUADRATIC_FIT_KERNEL_SIZE = (QUADRATIC_FIT_KERNEL_SIZE_5X5);
 		ZERO_CROSSING_POSITION_THRESHOLD = (HALF_PIXEL_WIDTH);
-		A3A4_COEFFICIENT_NEGATIVE_CURVATURE_POINT_THRESHOLD = (A3A4_COEFFICIENT_NEGATIVE_CURVATURE_POINT_THRESHOLD_5X5_KERNEL);	
+		A3A4_COEFFICIENT_NEGATIVE_CURVATURE_POINT_THRESHOLD = (A3A4_COEFFICIENT_NEGATIVE_CURVATURE_POINT_THRESHOLD_5X5_KERNEL);
 	}
 	else if(USE_EDGISE_3X3_KERNEL)
 	{
 		QUADRATIC_FIT_KERNEL_SIZE = (QUADRATIC_FIT_KERNEL_SIZE_3X3);
 		ZERO_CROSSING_POSITION_THRESHOLD = (HALF_PIXEL_WIDTH);
-		A3A4_COEFFICIENT_NEGATIVE_CURVATURE_POINT_THRESHOLD = (A3A4_COEFFICIENT_NEGATIVE_CURVATURE_POINT_THRESHOLD_3X3_KERNEL);		
+		A3A4_COEFFICIENT_NEGATIVE_CURVATURE_POINT_THRESHOLD = (A3A4_COEFFICIENT_NEGATIVE_CURVATURE_POINT_THRESHOLD_3X3_KERNEL);
 	}
 	else
 	{
 		cout << "OR rules XML error: a quadratic fit kernel must be defined" << endl;
 	}
-	
 
-	
-	
+
+
+
 	//OR DISPLAY VARIABLES...
-	
+
 	if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML)
 	{
 		if(!OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL)
@@ -1080,12 +1100,12 @@ void fillInORRulesExternVariables()
 	}
 
 
-	
+
 	/************** 3. PREPARE OPTIONAL XML RULES (SET DEFAULTS)  *********************/
-	
-	
+
+
 	//OR_FEATURES...
-	
+
 	//dynamically determined by default (these do not need to be defined in the xml file);
 	OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP = false;
 	OR_METHOD2DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP = false;
@@ -1110,7 +1130,7 @@ void fillInORRulesExternVariables()
 		else
 		{
 			OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP = false;
-			OR_METHOD2DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP = false;	
+			OR_METHOD2DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP = false;
 		}
 
 		if(OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP)
@@ -1167,15 +1187,15 @@ void fillInORRulesExternVariables()
 
 
 	//OR_METHOD3DOD FEATURE...
-	
+
 	OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST = false;
 	if(OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION)
 	{
 		OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST = true;
 	}
-	
-	
-	
+
+
+
 
 	//OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING...
 	//dynamically determined by default (these do not need to be defined in the xml file);
@@ -1193,10 +1213,10 @@ void fillInORRulesExternVariables()
 	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_3_Y = 1;
 	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_4_X = 2;
 	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_4_Y = 1;
-	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_X = 0; 
-	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_Y = 2; 
-	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_X = 1; 
-	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_Y = 2; 
+	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_X = 0;
+	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_Y = 2;
+	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_X = 1;
+	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_Y = 2;
 	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_7_X = -1;
 	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_7_Y = -1;
 	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_8_X = -1;
@@ -1238,20 +1258,20 @@ void fillInORRulesExternVariables()
 	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_7_X = -1;
 	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_7_Y = -1;
 	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_8_X = -1;
-	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_8_Y = -1;	
-	
+	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_8_Y = -1;
+
 	if(OR_IMAGE_COMPARISON_DECISION_TREE)
 	{
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL = (2);	//must be even! [not odd]
 	#else
-		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL = (1);					
+		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL = (1);
 	#endif
 		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS = (32);		//6bit signed; -16->+15 	//num DCT bins per dimension
 		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_IN_BITS = (6);
 
 		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY = 10;				//deterministic dct coeff comparison requirement
-		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED = 50; 	//deterministic dct coeff comparison requirement							
+		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED = 50; 	//deterministic dct coeff comparison requirement
 	}
 	else
 	{
@@ -1260,14 +1280,14 @@ void fillInORRulesExternVariables()
 	#ifdef OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_REQUIREMENT_V4
 		//OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL is used, therefore OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL must be max 64bit
 		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS = (16);		//5bit signed; -8->+7 	//num DCT bins per dimension
-		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_IN_BITS = (5);					
+		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_IN_BITS = (5);
 	#else
 		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS = (32);		//6bit signed; -16->+15 	//num DCT bins per dimension
-		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_IN_BITS = (6);				
-	#endif	
+		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_IN_BITS = (6);
+	#endif
 
 		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY = 10;				//deterministic dct coeff comparison requirement
-		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED = 50; 	//deterministic dct coeff comparison requirement							
+		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED = 50; 	//deterministic dct coeff comparison requirement
 
 	}
 
@@ -1277,19 +1297,19 @@ void fillInORRulesExternVariables()
 	if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_COLOUR_INFORMATION)
 	{
 		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_MATCHED_LUM_CHROMA_SUBSAMPLING = true;
-		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ENHANCED_CHROMA_SUBSAMPLING = true;	//even with matched Lum:chroma subsampling, chroma data is still too compressed, so need to artificially raise the quality of the jpeg compression to determine the colour DCT coefficients		
+		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ENHANCED_CHROMA_SUBSAMPLING = true;	//even with matched Lum:chroma subsampling, chroma data is still too compressed, so need to artificially raise the quality of the jpeg compression to determine the colour DCT coefficients
 	}
 	else
 	{
 		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_MATCHED_LUM_CHROMA_SUBSAMPLING = false;
-		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ENHANCED_CHROMA_SUBSAMPLING = false;	//even with matched Lum:chroma subsampling, chroma data is still too compressed, so need to artificially raise the quality of the jpeg compression to determine the colour DCT coefficients			
+		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ENHANCED_CHROMA_SUBSAMPLING = false;	//even with matched Lum:chroma subsampling, chroma data is still too compressed, so need to artificially raise the quality of the jpeg compression to determine the colour DCT coefficients
 	}
 
 	if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_COLOUR_INFORMATION)
 	{
 		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y = (7);
 		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCr = (3);
-		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCb = (3);				
+		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCb = (3);
 	}
 	else
 	{
@@ -1297,37 +1317,37 @@ void fillInORRulesExternVariables()
 		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCr = (0);
 		OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCb = (0);
 	}
-	
-	
-	
+
+
+
 	//OR_METHOD2DOD...
-	
+
 	if(OR_IMAGE_COMPARISON_PATTERN_NEVER_CULL_SNAPSHOTS)
 	{
 		//either no cull or square cull is required for fourier transform
 		OR_METHOD_DO_NOT_CULL_SNAPSHOT = true;			//square cull
-		OR_METHOD_DO_NOT_CULL_SNAPSHOT_EXTREME = false;		//no cull 
+		OR_METHOD_DO_NOT_CULL_SNAPSHOT_EXTREME = false;		//no cull
 	}
 	else
 	{
 		OR_METHOD_DO_NOT_CULL_SNAPSHOT = false;			//square cull
-		OR_METHOD_DO_NOT_CULL_SNAPSHOT_EXTREME = false;		//no cull 
+		OR_METHOD_DO_NOT_CULL_SNAPSHOT_EXTREME = false;		//no cull
 	}
-		
-		
-		
+
+
+
 	//OR_METHOD...
-	
+
 	OR_METHOD2DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS = false;
 	OR_METHOD2DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS = 1;
 	OR_METHOD3DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS = false;
 	OR_METHOD3DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS = 1;
-	
+
 	if(OR_METHOD_SUPPORT_HIGH_LEVEL_SCALING)
 	{
 		OR_METHOD2DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS = true;
 		//OR_METHOD3DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS = true;
-		
+
 		if(OR_METHOD2DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS)
 		{
 			OR_METHOD2DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS = 3;
@@ -1336,7 +1356,7 @@ void fillInORRulesExternVariables()
 		{
 			OR_METHOD2DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS = 1;
 		}
-		
+
 		if(OR_METHOD3DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS)
 		{
 			OR_METHOD3DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS = 3;
@@ -1347,23 +1367,23 @@ void fillInORRulesExternVariables()
 		}
 
 	}
-	
-	
+
+
 	//OR OPTIMISATION IMAGE CROPPING VARIABLES...
-	
+
 	OR_METHOD_2DOD_NORM_SNAPSHOT_X = (OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO*(OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_BLOCK_SIZE-1));	//Eg 28	[must be divisible by OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO]
 	OR_METHOD_2DOD_NORM_SNAPSHOT_Y = (OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO*(OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_BLOCK_SIZE-1)); 	//Eg 28	[must be divisible by OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO]
 
 	OR_METHOD_3DOD_NORM_SNAPSHOT_X = (OR_METHOD_3DOD_USE_SMALL_IMAGE_RATIO*OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_BLOCK_SIZE);		//eg 40
 	OR_METHOD_3DOD_NORM_SNAPSHOT_Y = (OR_METHOD_3DOD_USE_SMALL_IMAGE_RATIO*OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_BLOCK_SIZE);		//eg 40
-	
-	
 
-	//OR OPTIMISATION GEOMETRIC COMPARISON... 
-	
+
+
+	//OR OPTIMISATION GEOMETRIC COMPARISON...
+
 	if(OR_METHOD_ONLY_USE_ONE_POLY_PER_FEATURE_FAST_BUT_LOW_REDUNDANCY)
 	{
-		NUMBER_OF_POLYGONS_PER_FEATURE = (1); 		//default; 1	
+		NUMBER_OF_POLYGONS_PER_FEATURE = (1); 		//default; 1
 	}
 	else
 	{
@@ -1372,7 +1392,7 @@ void fillInORRulesExternVariables()
 
 	if(OR_METHOD_ONLY_USE_TWO_NEAREST_FEATURES_TO_COMPARE_FAST_BUT_LOW_REDUNDANCY)
 	{
-		OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE = (2);	//default; 4, 10 will reduce speed but increase redundancy [due to bug?]	
+		OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE = (2);	//default; 4, 10 will reduce speed but increase redundancy [due to bug?]
 	}
 	else
 	{
@@ -1380,16 +1400,16 @@ void fillInORRulesExternVariables()
 	}
 
 
-	
-		
+
+
 	/************** 4. SET OPTIONAL XML RULES *********************/
-		
-	//Extra OR Rules Entries;	
+
+	//Extra OR Rules Entries;
 		//now allow for override of default dependencies;
 	currentReferenceRulesClass = ORrulesObjectRecognition;
 	while(currentReferenceRulesClass->next != NULL)
 	{
-	
+
 		//OR_FEATURES...
 		if(currentReferenceRulesClass->name == OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_NAME)
 		{
@@ -1439,30 +1459,30 @@ void fillInORRulesExternVariables()
 		{
 			OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST = convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
-						
+
 
 
 		//OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING...
 
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_IN_BITS_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_IN_BITS = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_IN_BITS = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_MATCHED_LUM_CHROMA_SUBSAMPLING_NAME)
 		{
@@ -1474,235 +1494,235 @@ void fillInORRulesExternVariables()
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCr_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCr = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCr = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCb_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCb = currentReferenceRulesClass->fractionalValue;
-		}														
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCb = int(currentReferenceRulesClass->fractionalValue);
+		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_0_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_0_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_0_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_0_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_0_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_0_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_1_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_1_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_1_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_1_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_1_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_1_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_2_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_2_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_2_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_2_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_2_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_2_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_3_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_3_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_3_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_3_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_3_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_3_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_4_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_4_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_4_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_4_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_4_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_4_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_X = currentReferenceRulesClass->fractionalValue;
-		}								
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_X = int(currentReferenceRulesClass->fractionalValue);
+		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_7_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_7_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_7_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_7_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_7_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_7_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_8_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_8_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_8_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_8_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_8_Y = currentReferenceRulesClass->fractionalValue;
-		}	
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_8_Y = int(currentReferenceRulesClass->fractionalValue);
+		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_0_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_0_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_0_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_0_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_0_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_0_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_1_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_1_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_1_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_1_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_1_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_1_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_2_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_2_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_2_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_2_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_2_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_2_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_3_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_3_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_3_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_3_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_3_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_3_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_4_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_4_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_4_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_4_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_4_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_4_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_5_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_5_X = currentReferenceRulesClass->fractionalValue;
-		}								
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_5_X = int(currentReferenceRulesClass->fractionalValue);
+		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_5_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_5_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_5_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_6_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_6_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_6_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_6_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_6_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_6_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_7_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_7_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_7_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_7_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_7_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_7_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_8_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_8_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_8_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_8_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_8_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_8_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_0_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_0_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_0_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_0_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_0_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_0_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_1_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_1_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_1_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_1_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_1_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_1_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_2_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_2_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_2_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_2_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_2_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_2_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_3_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_3_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_3_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_3_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_3_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_3_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_4_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_4_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_4_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_4_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_4_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_4_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_5_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_5_X = currentReferenceRulesClass->fractionalValue;
-		}								
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_5_X = int(currentReferenceRulesClass->fractionalValue);
+		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_5_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_5_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_5_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_6_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_6_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_6_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_6_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_6_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_6_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_7_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_7_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_7_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_7_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_7_Y = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_7_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_8_X_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_8_X = currentReferenceRulesClass->fractionalValue;
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_8_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_8_Y_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_8_Y = currentReferenceRulesClass->fractionalValue;
-		}		
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_8_Y = int(currentReferenceRulesClass->fractionalValue);
+		}
 
 		//OR_METHOD2DOD...
-	
+
 		else if(currentReferenceRulesClass->name == OR_METHOD_DO_NOT_CULL_SNAPSHOT_NAME)
 		{
 			OR_METHOD_DO_NOT_CULL_SNAPSHOT = convertStringToBool(currentReferenceRulesClass->stringValue);
@@ -1713,14 +1733,14 @@ void fillInORRulesExternVariables()
 		}
 
 		//OR_METHOD...
-		
+
 		else if(currentReferenceRulesClass->name == OR_METHOD2DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS_NAME)
 		{
 			OR_METHOD2DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS = convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD2DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS_NAME)
 		{
-			OR_METHOD2DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS = currentReferenceRulesClass->fractionalValue;
+			OR_METHOD2DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD3DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS_NAME)
 		{
@@ -1728,30 +1748,30 @@ void fillInORRulesExternVariables()
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD3DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS_NAME)
 		{
-			OR_METHOD3DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS = currentReferenceRulesClass->fractionalValue;
+			OR_METHOD3DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS = int(currentReferenceRulesClass->fractionalValue);
 		}
-		
+
 		//OR OPTIMISATION IMAGE CROPPING VARIABLES...
-		
+
 		else if(currentReferenceRulesClass->name == OR_METHOD_2DOD_NORM_SNAPSHOT_X_NAME)
 		{
-			OR_METHOD_2DOD_NORM_SNAPSHOT_X = currentReferenceRulesClass->fractionalValue;
+			OR_METHOD_2DOD_NORM_SNAPSHOT_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD_2DOD_NORM_SNAPSHOT_Y_NAME)
 		{
-			OR_METHOD_2DOD_NORM_SNAPSHOT_Y = currentReferenceRulesClass->fractionalValue;
+			OR_METHOD_2DOD_NORM_SNAPSHOT_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD_3DOD_NORM_SNAPSHOT_X_NAME)
 		{
-			OR_METHOD_3DOD_NORM_SNAPSHOT_X = currentReferenceRulesClass->fractionalValue;
+			OR_METHOD_3DOD_NORM_SNAPSHOT_X = int(currentReferenceRulesClass->fractionalValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD_3DOD_NORM_SNAPSHOT_Y_NAME)
 		{
-			OR_METHOD_3DOD_NORM_SNAPSHOT_Y = currentReferenceRulesClass->fractionalValue;
+			OR_METHOD_3DOD_NORM_SNAPSHOT_Y = int(currentReferenceRulesClass->fractionalValue);
 		}
-		
-		//OR OPTIMISATION GEOMETRIC COMPARISON... 
-		
+
+		//OR OPTIMISATION GEOMETRIC COMPARISON...
+
 		else if(currentReferenceRulesClass->name == NUMBER_OF_POLYGONS_PER_FEATURE_NAME)
 		{
 			NUMBER_OF_POLYGONS_PER_FEATURE = currentReferenceRulesClass->fractionalValue;
@@ -1760,31 +1780,31 @@ void fillInORRulesExternVariables()
 		{
 			OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE = currentReferenceRulesClass->fractionalValue;
 		}
-		
-							
+
+
 		else
 		{
-		
+
 		}
 
 		currentReferenceRulesClass = currentReferenceRulesClass->next;
 	}
-	
 
-	
-	
+
+
+
 
 	/************** 5.  POST PROCESSES OPTIONAL XML RULES *********************/
-	 
-	
+
+
 	//OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING...
-	
-	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET = (OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS/2);	//value to add to signed value before binning			
+
+	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET = (OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS/2);	//value to add to signed value before binning
 	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS = (OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCr + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCb);	 	//only compare a selection of 15 of the 64x3 DCT coefficients (of the Y, Cr and Cb blocks) {64 bit - Y DCT; 5bit[signed]*3 + YCr DCT; 5bit[signed]*3 + YCb DCT; 5bit[signed]*7}   - OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT0 d0, OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT1 d1, OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT2 d2, OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT3 d3 ... OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT15 d15
 
 	string tempString = "";
 	char tempStringCharStar[100];
-	
+
 	tempString = "";
 	tempStringCharStar[0] = '\0';
 	sprintf(tempStringCharStar, "%d", OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY);
@@ -1796,7 +1816,7 @@ void fillInORRulesExternVariables()
 	sprintf(tempStringCharStar, "%d", OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED);
 	tempString = tempString + "-quality " + tempStringCharStar + "%";
 	strcpy(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED_STRING, tempString.c_str());
-	
+
 	if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_MATCHED_LUM_CHROMA_SUBSAMPLING)
 	{
 		strcpy(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING, OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_ON);
@@ -1806,42 +1826,42 @@ void fillInORRulesExternVariables()
 
 		strcpy(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING, OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_OFF);
 	}
-	
-	//cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING << endl;
-	//cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED_STRING = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED_STRING << endl;		
 
-	
+	//cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING << endl;
+	//cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED_STRING = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED_STRING << endl;
+
+
 
 	//OR OPTIMISATION IMAGE CROPPING VARIABLES...
 
 	if(OR_METHOD_2DOD_NORM_SNAPSHOT_X%OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO != 0)
 	{
-		cout << "warning; OR rules XML: OR_METHOD_2DOD_NORM_SNAPSHOT_X is not divisible by OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO" << endl;	
+		cout << "warning; OR rules XML: OR_METHOD_2DOD_NORM_SNAPSHOT_X is not divisible by OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO" << endl;
 	}
 	if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
 	{
 		if(OR_METHOD_2DOD_NORM_SNAPSHOT_X/OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO > OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_BLOCK_SIZE)
 		{
-			cout << "error; OR rules XML: OR_METHOD_2DOD_NORM_SNAPSHOT_X/OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO > OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_BLOCK_SIZE" << endl;	
+			cout << "error; OR rules XML: OR_METHOD_2DOD_NORM_SNAPSHOT_X/OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO > OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_BLOCK_SIZE" << endl;
 			exit(0);
 		}
 	}
 
 	if(OR_METHOD_3DOD_NORM_SNAPSHOT_X%OR_METHOD_3DOD_USE_SMALL_IMAGE_RATIO != 0)
 	{
-		cout << "warning; OR rules XML: OR_METHOD_3DOD_NORM_SNAPSHOT_X is not divisible by OR_METHOD_3DOD_USE_SMALL_IMAGE_RATIO" << endl;	
+		cout << "warning; OR rules XML: OR_METHOD_3DOD_NORM_SNAPSHOT_X is not divisible by OR_METHOD_3DOD_USE_SMALL_IMAGE_RATIO" << endl;
 	}
 	if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
 	{
 		if(OR_METHOD_3DOD_NORM_SNAPSHOT_X/OR_METHOD_3DOD_USE_SMALL_IMAGE_RATIO > OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_BLOCK_SIZE)
 		{
-			cout << "error; OR rules XML: OR_METHOD_3DOD_NORM_SNAPSHOT_X/OR_METHOD_3DOD_USE_SMALL_IMAGE_RATIO > OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_BLOCK_SIZE" << endl;	
+			cout << "error; OR rules XML: OR_METHOD_3DOD_NORM_SNAPSHOT_X/OR_METHOD_3DOD_USE_SMALL_IMAGE_RATIO > OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_BLOCK_SIZE" << endl;
 			exit(0);
 		}
 	}
 
 
-	
+
 	OR_METHOD_2DOD_USE_NORM_SNAPSHOT_CROP = false;
 	OR_METHOD_3DOD_USE_NORM_SNAPSHOT_CROP = false;
 	OR_METHOD_2DOD_NORM_SNAPSHOT_CROP_X = 0;
@@ -1871,7 +1891,7 @@ void fillInORRulesExternVariables()
 		OR_METHOD_XDOD_SNAPSHOT_SIZE = OR_METHOD_XDOD_NORM_SNAPSHOT_X*OR_METHOD_XDOD_NORM_SNAPSHOT_Y;
 		OR_METHOD_XDOD_SNAPSHOT_SMALL_IMAGE_SIZE = ((OR_METHOD_2DOD_NORM_SNAPSHOT_X/OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO)*(OR_METHOD_2DOD_NORM_SNAPSHOT_Y/OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO));	//must choose largest snapshot out of 2DOD and 3DOD
 	}
-	
+
 
 	bool minimumHorizontalWindowsSizeIsLessThanSnapshotWidth = false;
 	#ifdef LINUX
@@ -1899,7 +1919,7 @@ void fillInORRulesExternVariables()
 			OR_METHOD_2DOD_NORM_SNAPSHOT_UNCROPPED_WIDTH_TO_CROPPED_WIDTH = (double(OR_METHOD_2DOD_NORM_SNAPSHOT_X+(OR_METHOD_2DOD_NORM_SNAPSHOT_CROP_X*2))/double(OR_METHOD_2DOD_NORM_SNAPSHOT_X));
 			OR_METHOD_3DOD_NORM_SNAPSHOT_CROP_X = (OR_IMAGE_COMPARISON_DECISION_TREE_GAUSSIAN_KERNEL_SIZE/2);
 			OR_METHOD_3DOD_NORM_SNAPSHOT_CROP_Y = (OR_IMAGE_COMPARISON_DECISION_TREE_GAUSSIAN_KERNEL_SIZE/2);
-			OR_METHOD_3DOD_NORM_SNAPSHOT_UNCROPPED_WIDTH_TO_CROPPED_WIDTH = (double((OR_METHOD_3DOD_NORM_SNAPSHOT_X+(OR_METHOD_3DOD_NORM_SNAPSHOT_CROP_X*2))/double(OR_METHOD_3DOD_NORM_SNAPSHOT_X));	
+			OR_METHOD_3DOD_NORM_SNAPSHOT_UNCROPPED_WIDTH_TO_CROPPED_WIDTH = (double((OR_METHOD_3DOD_NORM_SNAPSHOT_X+(OR_METHOD_3DOD_NORM_SNAPSHOT_CROP_X*2))/double(OR_METHOD_3DOD_NORM_SNAPSHOT_X));
 		#else
 			OR_METHOD_2DOD_USE_NORM_SNAPSHOT_CROP = false;
 			OR_METHOD_3DOD_USE_NORM_SNAPSHOT_CROP = false;
@@ -1908,7 +1928,7 @@ void fillInORRulesExternVariables()
 			OR_METHOD_2DOD_NORM_SNAPSHOT_UNCROPPED_WIDTH_TO_CROPPED_WIDTH = (1.0);
 			OR_METHOD_3DOD_NORM_SNAPSHOT_CROP_X = (0);
 			OR_METHOD_3DOD_NORM_SNAPSHOT_CROP_Y = (0);
-			OR_METHOD_3DOD_NORM_SNAPSHOT_UNCROPPED_WIDTH_TO_CROPPED_WIDTH = (1.0);	
+			OR_METHOD_3DOD_NORM_SNAPSHOT_UNCROPPED_WIDTH_TO_CROPPED_WIDTH = (1.0);
 		#endif
 
 	}
@@ -1916,30 +1936,30 @@ void fillInORRulesExternVariables()
 	{
 		OR_METHOD_2DOD_USE_NORM_SNAPSHOT_CROP = true;	//CURRENTLY REQUIRES OPENGL(?)
 		OR_METHOD_3DOD_USE_NORM_SNAPSHOT_CROP = true;	//CURRENTLY REQUIRES OPENGL(?)
-		OR_METHOD_2DOD_NORM_SNAPSHOT_CROP_X = ((WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE-OR_METHOD_2DOD_NORM_SNAPSHOT_X)/2);	
+		OR_METHOD_2DOD_NORM_SNAPSHOT_CROP_X = ((WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE-OR_METHOD_2DOD_NORM_SNAPSHOT_X)/2);
 		OR_METHOD_2DOD_NORM_SNAPSHOT_CROP_Y = ((WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE-OR_METHOD_2DOD_NORM_SNAPSHOT_Y)/2);
 		OR_METHOD_2DOD_NORM_SNAPSHOT_UNCROPPED_WIDTH_TO_CROPPED_WIDTH = (double(OR_METHOD_2DOD_NORM_SNAPSHOT_X+(OR_METHOD_2DOD_NORM_SNAPSHOT_CROP_X*2))/double(OR_METHOD_2DOD_NORM_SNAPSHOT_X));	//#define OR_METHOD_2DOD_NORM_SNAPSHOT_UNCROPPED_WIDTH_TO_CROPPED_WIDTH (double(WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE)/double(OR_METHOD_2DOD_NORM_SNAPSHOT_X))
-		OR_METHOD_3DOD_NORM_SNAPSHOT_CROP_X = ((WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE-OR_METHOD_3DOD_NORM_SNAPSHOT_X)/2);	
-		OR_METHOD_3DOD_NORM_SNAPSHOT_CROP_Y = ((WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE-OR_METHOD_3DOD_NORM_SNAPSHOT_X)/2);	
+		OR_METHOD_3DOD_NORM_SNAPSHOT_CROP_X = ((WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE-OR_METHOD_3DOD_NORM_SNAPSHOT_X)/2);
+		OR_METHOD_3DOD_NORM_SNAPSHOT_CROP_Y = ((WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE-OR_METHOD_3DOD_NORM_SNAPSHOT_X)/2);
 		OR_METHOD_3DOD_NORM_SNAPSHOT_UNCROPPED_WIDTH_TO_CROPPED_WIDTH = (double(OR_METHOD_3DOD_NORM_SNAPSHOT_X+(OR_METHOD_3DOD_NORM_SNAPSHOT_CROP_X*2))/double(OR_METHOD_3DOD_NORM_SNAPSHOT_X));	//#define OR_METHOD_3DOD_NORM_SNAPSHOT_UNCROPPED_WIDTH_TO_CROPPED_WIDTH (double(WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE)/double(OR_METHOD_3DOD_NORM_SNAPSHOT_X))
 
 	}
-	
+
 
 	//OR SQL PIXMAPS VARIABLES...
 
 	OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_DATA_LENGTH = (OR_METHOD_XDOD_SNAPSHOT_SIZE*3 + OR_METHOD_XDOD_SNAPSHOT_SIZE*3 + OR_METHOD_XDOD_SNAPSHOT_SMALL_IMAGE_SIZE*3 + OR_METHOD_XDOD_SNAPSHOT_SMALL_IMAGE_SIZE*3);
 
 
-	
-	//OR OPTIMISATION GEOMETRIC COMPARISON... 
-	
+
+	//OR OPTIMISATION GEOMETRIC COMPARISON...
+
 	OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM = (OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE);
 
 	#ifdef DEBUG_OR_PRINT_OR_RULES_EXTERN_VARS
 	printORRulesExternVariables();
 	#endif
-			
+
 }
 
 
@@ -1972,14 +1992,14 @@ void printORRulesExternVariables()
 	cout << "" << endl;
 	cout << "" << endl;
 	cout << "" << endl;
-	
+
 	//OR_FEATURES...
 
 	//xml determined by default;
 	cout << "OR_USE_FIND_CORNER_FEATURES = " << OR_USE_FIND_CORNER_FEATURES << endl;
 	cout << "OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES = " << OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES << endl;
 	cout << "OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES = " << OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES << endl;
-	cout << "OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY = " << OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY << endl; 
+	cout << "OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY = " << OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY << endl;
 	cout << "OR_METHOD_USE_MESH_LISTS = " << OR_METHOD_USE_MESH_LISTS << endl;   //[has not been tested with centred feature detection]
 	cout << "" << endl;
 	//dynamically determined by default;
@@ -2005,19 +2025,19 @@ void printORRulesExternVariables()
 	cout << "" << endl;
 	cout << "" << endl;
 	cout << "" << endl;
-	
+
 	//OR_METHOD3DOD FEATURE...
-	
+
 	cout << "OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST = " << OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST << endl;
 	cout << "OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION = " << OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION << endl;
 	cout << "OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST = " << OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST << endl;
 	cout << "" << endl;
-	cout << "OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE = " << OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE << endl; 
+	cout << "OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE = " << OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE << endl;
 	cout << "" << endl;
 	cout << "" << endl;
 	cout << "" << endl;
-	
-	
+
+
 	//OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING...
 
 	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL << endl;
@@ -2033,7 +2053,7 @@ void printORRulesExternVariables()
 	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_MATCHED_LUM_CHROMA_SUBSAMPLING = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_MATCHED_LUM_CHROMA_SUBSAMPLING << endl;
 	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ENHANCED_CHROMA_SUBSAMPLING = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ENHANCED_CHROMA_SUBSAMPLING << endl;
 	cout << "" << endl;
-	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING << endl; 
+	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING << endl;
 	cout << "" << endl;
 	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y << endl;
 	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCr = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCr << endl;
@@ -2049,10 +2069,10 @@ void printORRulesExternVariables()
 	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_3_Y = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_3_Y << endl;
 	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_4_X = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_4_X << endl;
 	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_4_Y = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_4_Y << endl;
-	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_X = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_X << endl; 
-	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_Y = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_Y << endl; 
-	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_X = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_X << endl; 
-	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_Y = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_Y << endl; 
+	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_X = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_X << endl;
+	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_Y = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_Y << endl;
+	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_X = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_X << endl;
+	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_Y = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_Y << endl;
 	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_7_X = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_7_X << endl;
 	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_7_Y = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_7_Y << endl;
 	cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_8_X = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_8_X << endl;
@@ -2101,10 +2121,10 @@ void printORRulesExternVariables()
 	cout << "" << endl;
 	cout << "" << endl;
 	cout << "" << endl;
-	
+
 	//OR_SHARED_VARS...	//general contrast threshold constraints
 
-	cout << "OR_USE_CONTRAST_CALC_METHOD_C = " << OR_USE_CONTRAST_CALC_METHOD_C << endl;		//OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY may be more recommended with OR_USE_CONTRAST_CALC_METHOD_B 
+	cout << "OR_USE_CONTRAST_CALC_METHOD_C = " << OR_USE_CONTRAST_CALC_METHOD_C << endl;		//OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY may be more recommended with OR_USE_CONTRAST_CALC_METHOD_B
 	cout << "OR_USE_CONTRAST_CALC_METHOD_B = " << OR_USE_CONTRAST_CALC_METHOD_B << endl;		//OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY may be more recommended with OR_USE_CONTRAST_CALC_METHOD_B
 	cout << "" << endl;
 	cout << "LUMINOSITY_CONTRAST_FRACTION_THRESHOLD = " << LUMINOSITY_CONTRAST_FRACTION_THRESHOLD << endl;
@@ -2223,7 +2243,7 @@ void printORRulesExternVariables()
 	cout << "" << endl;
 	cout << "" << endl;
 	cout << "" << endl;
-	
+
 
 	//OR_QUADRATIC_FIT...
 
@@ -2258,7 +2278,7 @@ void printORRulesExternVariables()
 	cout << "" << endl;
 	cout << "OR_METHOD_2DOD_NORM_SNAPSHOT_X = " << OR_METHOD_2DOD_NORM_SNAPSHOT_X << endl;	//secondary
 	cout << "OR_METHOD_2DOD_NORM_SNAPSHOT_Y = " << OR_METHOD_2DOD_NORM_SNAPSHOT_Y << endl;	//secondary
-	cout << "OR_METHOD_3DOD_NORM_SNAPSHOT_X = " << OR_METHOD_3DOD_NORM_SNAPSHOT_X << endl;	//secondary		
+	cout << "OR_METHOD_3DOD_NORM_SNAPSHOT_X = " << OR_METHOD_3DOD_NORM_SNAPSHOT_X << endl;	//secondary
 	cout << "OR_METHOD_3DOD_NORM_SNAPSHOT_Y = " << OR_METHOD_3DOD_NORM_SNAPSHOT_Y << endl;	//secondary
 	cout << "" << endl;
 	/*
@@ -2322,7 +2342,7 @@ void printORRulesExternVariables()
 	cout << "" << endl;
 
 
-	//OR OPTIMISATION GEOMETRIC COMPARISON... 
+	//OR OPTIMISATION GEOMETRIC COMPARISON...
 
 	cout << "OR_METHOD_ONLY_USE_ONE_POLY_PER_FEATURE_FAST_BUT_LOW_REDUNDANCY = " << OR_METHOD_ONLY_USE_ONE_POLY_PER_FEATURE_FAST_BUT_LOW_REDUNDANCY << endl;			 //untested - default OFF
 	cout << "OR_METHOD_ONLY_USE_TWO_NEAREST_FEATURES_TO_COMPARE_FAST_BUT_LOW_REDUNDANCY = " << OR_METHOD_ONLY_USE_TWO_NEAREST_FEATURES_TO_COMPARE_FAST_BUT_LOW_REDUNDANCY << endl;	 //untested - default OFF
@@ -2362,4 +2382,4 @@ void printORRulesExternVariables()
 
 
 
- 
+

@@ -1,9 +1,29 @@
 /*******************************************************************************
+ * 
+ * This file is part of BAIPROJECT.
+ * 
+ * BAIPROJECT is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3
+ * only, as published by the Free Software Foundation.
+ * 
+ * BAIPROJECT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License version 3 for more details
+ * (a copy is included in the LICENSE file that accompanied this code).
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
+ * for a copy of the AGPLv3 License.
+ * 
+ *******************************************************************************/
+
+/*******************************************************************************
  *
  * File Name: ORfeature.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a8b 14-June-2012
+ * Project Version: 3a11b 09-July-2012
  *
  * Assumes that depth information is less accurate than image information
  *
@@ -513,7 +533,7 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 					{
 						contiguousRegionDebugrgbMap[yAtpreviousRelativeMinimaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMinimaDistanceToCenteroid*RGB_NUM + 0] = 255;
 						contiguousRegionDebugrgbMap[yAtpreviousRelativeMinimaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMinimaDistanceToCenteroid*RGB_NUM + 1] = 255;
-						contiguousRegionDebugrgbMap[yAtpreviousRelativeMinimaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMinimaDistanceToCenteroid*RGB_NUM + 2] = 0;					
+						contiguousRegionDebugrgbMap[yAtpreviousRelativeMinimaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMinimaDistanceToCenteroid*RGB_NUM + 2] = 0;
 						/*
 						contiguousRegionDebugrgbMap[yAtpreviousRelativeMinimaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMinimaDistanceToCenteroid*RGB_NUM + 0] = 0;
 						contiguousRegionDebugrgbMap[yAtpreviousRelativeMinimaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMinimaDistanceToCenteroid*RGB_NUM + 1] = 255;
@@ -543,12 +563,12 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 						currentFeatureInList->point.x = (pointWorldAtpreviousRelativeMinimaDistanceToCenteroid.x)*zoom;
 						currentFeatureInList->point.y = (pointWorldAtpreviousRelativeMinimaDistanceToCenteroid.y)*zoom;
 					}
-					
+
 					Feature * newFeature = new Feature();
 					currentFeatureInList->next = newFeature;
 					currentFeatureInList = currentFeatureInList->next;
-										
-					
+
+
 					if(OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES_DO_NOT_USE_UNCHANGING_CASE)
 					{
 						distanceToCenteroidType = DISTANCE_TO_CENTEROID_INCREASING;
@@ -563,12 +583,12 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 						pointNonWorldAtpreviousRelativeMaximaDistanceToCenteroid.y = currentInPixelContiguousBoundaryStack->pointNonWorldCoord.y;
 						pointNonWorldAtpreviousRelativeMaximaDistanceToCenteroid.z = currentInPixelContiguousBoundaryStack->pointNonWorldCoord.z;
 						xAtpreviousRelativeMaximaDistanceToCenteroid = currentInPixelContiguousBoundaryStack->xInt;
-						yAtpreviousRelativeMaximaDistanceToCenteroid = currentInPixelContiguousBoundaryStack->yInt;					
+						yAtpreviousRelativeMaximaDistanceToCenteroid = currentInPixelContiguousBoundaryStack->yInt;
 					}
 					else
 					{
 						distanceToCenteroidType = DISTANCE_TO_CENTEROID_UNCHANGING;
-						previousUnchangingDistanceToCenteroid = currentDistanceToCenteroid;	
+						previousUnchangingDistanceToCenteroid = currentDistanceToCenteroid;
 					}
 
 
@@ -632,7 +652,7 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 					{
 						contiguousRegionDebugrgbMap[yAtpreviousRelativeMaximaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMaximaDistanceToCenteroid*RGB_NUM + 0] = 255;
 						contiguousRegionDebugrgbMap[yAtpreviousRelativeMaximaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMaximaDistanceToCenteroid*RGB_NUM + 1] = 255;
-						contiguousRegionDebugrgbMap[yAtpreviousRelativeMaximaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMaximaDistanceToCenteroid*RGB_NUM + 2] = 0;					
+						contiguousRegionDebugrgbMap[yAtpreviousRelativeMaximaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMaximaDistanceToCenteroid*RGB_NUM + 2] = 0;
 						/*
 						contiguousRegionDebugrgbMap[yAtpreviousRelativeMaximaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMaximaDistanceToCenteroid*RGB_NUM + 0] = 255;
 						contiguousRegionDebugrgbMap[yAtpreviousRelativeMaximaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMaximaDistanceToCenteroid*RGB_NUM + 1] = 0;
@@ -665,8 +685,8 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 					Feature * newFeature = new Feature();
 					currentFeatureInList->next = newFeature;
 					currentFeatureInList = currentFeatureInList->next;
-										
-					
+
+
 					if(OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES_DO_NOT_USE_UNCHANGING_CASE)
 					{
 						distanceToCenteroidType = DISTANCE_TO_CENTEROID_DECREASING;
@@ -681,7 +701,7 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 						pointNonWorldAtpreviousRelativeMinimaDistanceToCenteroid.y = currentInPixelContiguousBoundaryStack->pointNonWorldCoord.y;
 						pointNonWorldAtpreviousRelativeMinimaDistanceToCenteroid.z = currentInPixelContiguousBoundaryStack->pointNonWorldCoord.z;
 						xAtpreviousRelativeMinimaDistanceToCenteroid = currentInPixelContiguousBoundaryStack->xInt;
-						yAtpreviousRelativeMinimaDistanceToCenteroid = currentInPixelContiguousBoundaryStack->yInt;					
+						yAtpreviousRelativeMinimaDistanceToCenteroid = currentInPixelContiguousBoundaryStack->yInt;
 					}
 					else
 					{
@@ -919,7 +939,7 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 					exit(0);
 				}
 				else if(numberOfPossibleCrawlPaths > 1)
-				{	
+				{
 					cout << "circumferenceForRegion = " << circumferenceForRegion << endl;
 					cout << "numberOfBoundaryOrFakeBoundaryPixelsTraced = " << numberOfBoundaryOrFakeBoundaryPixelsTraced << endl;
 					cout << "error; numberOfPossibleCrawlPaths > 1" << endl;
@@ -958,7 +978,7 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 	double pixelXOffset;
 	double pixelYOffset;
 	int kernelWidthForegroundCheck;
-	int kernelHeightForegroundCheck;	
+	int kernelHeightForegroundCheck;
 	int xBoundaryMax;
 	int xBoundaryMin;
 	int yBoundaryMax;
@@ -973,7 +993,7 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 		yBoundaryMax = imageHeight-1;
 		yBoundaryMin = 0;
 		kernelWidthForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_WIDTH_NO_INTERPIXEL;
-		kernelHeightForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_WIDTH_NO_INTERPIXEL;		
+		kernelHeightForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_WIDTH_NO_INTERPIXEL;
 	}
 	else if(interpixelContrastMapType == INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST)
 	{
@@ -985,7 +1005,7 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 		yBoundaryMax = imageHeight-2;
 		yBoundaryMin = 0;
 		kernelWidthForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_WIDTH_INTERPIXEL;
-		kernelHeightForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_HEIGHT_INTERPIXEL;		
+		kernelHeightForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_HEIGHT_INTERPIXEL;
 	}
 	else if(interpixelContrastMapType == INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST)
 	{
@@ -997,7 +1017,7 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 		yBoundaryMax = imageHeight-2;
 		yBoundaryMin = 1;
 		kernelWidthForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_WIDTH_NO_INTERPIXEL;
-		kernelHeightForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_HEIGHT_NO_INTERPIXEL;		
+		kernelHeightForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_HEIGHT_NO_INTERPIXEL;
 	}
 
 
@@ -1242,7 +1262,7 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 							//mark central point
 							contiguousRegionDebugrgbMap[int(regionaveragey)*imageWidth*RGB_NUM + int(regionaveragex)*RGB_NUM + 0] = 255;
 							contiguousRegionDebugrgbMap[int(regionaveragey)*imageWidth*RGB_NUM + int(regionaveragex)*RGB_NUM + 1] = 255;
-							contiguousRegionDebugrgbMap[int(regionaveragey)*imageWidth*RGB_NUM + int(regionaveragex)*RGB_NUM + 2] = 0;						
+							contiguousRegionDebugrgbMap[int(regionaveragey)*imageWidth*RGB_NUM + int(regionaveragex)*RGB_NUM + 2] = 0;
 							#endif
 
 							if(useEdgeZeroCrossingMap)
@@ -1339,7 +1359,7 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 							*/
 
 							if(traceSuccessful && (circumferenceForRegion > MIN_REGION_SIZE_TO_CALCULATE_CENTRED_FEATURE))
-							{ 
+							{
 
 
 
@@ -1369,8 +1389,8 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 								//mark central point [orange]
 								contiguousRegionDebugrgbMap[int(boundaryaveragey)*imageWidth*RGB_NUM + int(boundaryaveragex)*RGB_NUM + 0] = 255;
 								contiguousRegionDebugrgbMap[int(boundaryaveragey)*imageWidth*RGB_NUM + int(boundaryaveragex)*RGB_NUM + 1] = 128;
-								contiguousRegionDebugrgbMap[int(boundaryaveragey)*imageWidth*RGB_NUM + int(boundaryaveragex)*RGB_NUM + 2] = 0;						
-								#endif							
+								contiguousRegionDebugrgbMap[int(boundaryaveragey)*imageWidth*RGB_NUM + int(boundaryaveragex)*RGB_NUM + 2] = 0;
+								#endif
 
 								#ifdef OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY_EXTRA_NOT_NECESSARY_AND_BUGGY_2
 									currentFeatureInList->xViewport = boundaryaveragex*zoom;
@@ -1437,29 +1457,29 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 
 							currentFeatureInList->xViewport = regionaveragex*zoom;
 							currentFeatureInList->yViewport = regionaveragey*zoom;
-							
+
 							/*
 							cout << "regionaveragex= " << regionaveragex << endl;
 							cout << "regionaveragey " << regionaveragey << endl;
 							cout << "zoom = " << zoom << endl;
 							*/
 							if(dimension == OR_METHOD3DOD_DIMENSIONS)
-							{			
+							{
 								currentFeatureInList->point.x = regionsumpos.x;
 								currentFeatureInList->point.y = regionsumpos.y;
 								currentFeatureInList->point.z = regionsumpos.z;
-								
+
 								currentFeatureInList->pointNonWorldCoord.x = (regionaveragex)*zoom;
 								currentFeatureInList->pointNonWorldCoord.y = (regionaveragey)*zoom;
 								currentFeatureInList->pointNonWorldCoord.z = getDepthValueWithOrWithoutForegroundCheck(currentFeatureInList->pointNonWorldCoord.x, currentFeatureInList->pointNonWorldCoord.y, imageWidth, imageHeight, kernelWidthForegroundCheck, kernelHeightForegroundCheck, depthMap, zoom);
-							
+
 								/*
 								calculateDepthMapValue(&(currentFeatureInList->point), &(currentFeatureInList->pointNonWorldCoord), vi);
 								*/
 								/*
-								currentFeatureInList->pointNonWorldCoord.x = 
-								currentFeatureInList->pointNonWorldCoord.y = 
-								currentFeatureInList->pointNonWorldCoord.z = 						
+								currentFeatureInList->pointNonWorldCoord.x =
+								currentFeatureInList->pointNonWorldCoord.y =
+								currentFeatureInList->pointNonWorldCoord.z =
 								*/
 							}
 							else
@@ -1514,7 +1534,7 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 }
 
 double getDepthValueWithOrWithoutForegroundCheck(double pointNonWorldCoordx, double pointNonWorldCoordy, int imageWidth, int imageHeight, int kernelWidthForegroundCheck, int kernelHeightForegroundCheck, double depthMap[], int zoom)
-{	
+{
 	//depth calculations added 13 June 2012 - check these....
 	#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS
 		vec xyzNearbyPointOnObject;
@@ -1956,7 +1976,7 @@ bool defineRegionCheckNextPixelNonRecursive(PixelContiguous * firstInPixelContig
 							#ifdef OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY_EXTRA_NOT_NECESSARY_AND_BUGGY
 							*regionSize = *regionSize + subpixelArea;
 							#endif
-							
+
 							//now add subpixel area for a diagonal adjacent pixels if necessary
 
 							int xAdjacentDev1;
@@ -2437,13 +2457,13 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(PixelContiguous * firs
 				if(pixelStatus == NOT_PROCESSED)
 				{
 					//cout << "h11" << endl;
-					
+
 					bool passCondition = false;
 					if(OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
 					{
 						if(currentMeshPoint->adjacentMeshPoint[q]->edge == true)	//CHECK THIS - not yet used - need to create an edgise routine for MeshLists first..
 						{
-							passCondition = true;					
+							passCondition = true;
 						}
 					}
 					else
@@ -2463,10 +2483,10 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(PixelContiguous * firs
 							passCondition = true;
 						}
 					}
-					
+
 					if(passCondition)
 					{
-					
+
 						//cout << "edge found" << endl;
 						currentMeshPoint->adjacentMeshPoint[q]->alreadyProcessed = EDGE_FOUND;
 
@@ -2830,13 +2850,13 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 			{
 				q2Min = 1;
 				q2Max = 9;
-				q2Increment = 2;		    
+				q2Increment = 2;
 			}
-			
+
 			for(int q2=q2Min; q2<q2Max; q2=q2+q2Increment)
 			{
 				bool passCondition = true;
-				
+
 				int q;
 				if(OR_TRACE_CONTIGUOUS_REGION_BOUNDARY_DIAGONALS)
 				{
@@ -2865,7 +2885,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 				{
 					q = q2;
 				}
-				
+
 				if(passCondition)
 				{
 
@@ -3064,9 +3084,9 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 						}
 						*/
 					}
-				
+
 				}
-				
+
 
 			}
 		}
@@ -3078,7 +3098,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 		else
 		{
 			bool foundAReferenceToCrawlTo = false;
-			
+
 			int q2Min;
 			int q2Max;
 			int q2Increment;
@@ -3092,7 +3112,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 			{
 				q2Min = 1;
 				q2Max = 9;
-				q2Increment = 2;		    
+				q2Increment = 2;
 			}
 
 
@@ -3205,9 +3225,9 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 						cout << "2. q = " << q << endl;
 						*/
 					}
-				
+
 				}
-				
+
 			}
 			if(!foundAReferenceToCrawlTo)
 			{
@@ -3241,7 +3261,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 		}
 
 	}
-	
+
 	//cout << "\t\t numberOfBoundaryOrFakeBoundaryPixelsTraced = " << numberOfBoundaryOrFakeBoundaryPixelsTraced << endl;
 	*numberOfCounts = numberOfBoundaryOrFakeBoundaryPixelsTraced;
 
@@ -3334,7 +3354,7 @@ bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(MeshPoint * aMeshPointOnT
 			{
 				q2Min = 1;
 				q2Max = 9;
-				q2Increment = 2;		    
+				q2Increment = 2;
 			}
 
 
@@ -3475,7 +3495,7 @@ bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(MeshPoint * aMeshPointOnT
 		{
 
 			bool foundAReferenceToCrawlTo = false;
-			
+
 			int q2Min;
 			int q2Max;
 			int q2Increment;
@@ -3489,9 +3509,9 @@ bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(MeshPoint * aMeshPointOnT
 			{
 				q2Min = 1;
 				q2Max = 9;
-				q2Increment = 2;		    
+				q2Increment = 2;
 			}
-			
+
 			for(int q2=q2Min; q2<q2Max; q2=q2+q2Increment)
 			{
 				bool passCondition = true;
@@ -4256,7 +4276,7 @@ void defineRegionCheckNextPixelUsingMeshPointRecursive(MeshPoint * currentMeshPo
 				}
 				else
 				{
-				
+
 					double contrastValUsedForComparison;
 					double minContrastValueUsedForComparison;
 					if(contrastValUsedForComparison = CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_LUMINOSITY_CONTRAST)
@@ -4271,8 +4291,8 @@ void defineRegionCheckNextPixelUsingMeshPointRecursive(MeshPoint * currentMeshPo
 					}
 					if(contrastValUsedForComparison > minContrastValueUsedForComparison)
 				}
-				
-				
+
+
 				{
 					//cout << "edge found" << endl;
 					currentMeshPoint->adjacentMeshPoint[q]->alreadyProcessed = EDGE_FOUND;

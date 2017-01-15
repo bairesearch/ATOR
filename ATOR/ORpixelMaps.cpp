@@ -1,9 +1,29 @@
 /*******************************************************************************
+ * 
+ * This file is part of BAIPROJECT.
+ * 
+ * BAIPROJECT is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3
+ * only, as published by the Free Software Foundation.
+ * 
+ * BAIPROJECT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License version 3 for more details
+ * (a copy is included in the LICENSE file that accompanied this code).
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
+ * for a copy of the AGPLv3 License.
+ * 
+ *******************************************************************************/
+
+/*******************************************************************************
  *
  * File Name: ORpixelMaps.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a8b 14-June-2012
+ * Project Version: 3a11b 09-July-2012
  *
  *******************************************************************************/
 
@@ -646,7 +666,7 @@ void createContrastMapFromMapWithForegroundDepthCheckOLD(int imageWidth, int ima
 			if(contrastVal > mapThreshold)
 			{
 				bool contrastValPassedThreshold = false;
-				
+
 				if(OR_USE_CONTRAST_CALC_METHOD_C)
 				{
 					if(contrastVal != MAP_VALUE_OUT_OF_RANGE)
@@ -927,7 +947,7 @@ void createContrastBooleanMapFromContrastMapWithForegroundDepthCheck(int imageWi
 			if(contrastVal > mapThreshold)
 			{
 				bool contrastValPassedThreshold = false;
-				
+
 				if(OR_USE_CONTRAST_CALC_METHOD_C)
 				{
 					if(contrastVal != MAP_VALUE_OUT_OF_RANGE)
@@ -943,7 +963,7 @@ void createContrastBooleanMapFromContrastMapWithForegroundDepthCheck(int imageWi
 				{
 					contrastValPassedThreshold = true;
 				}
-								
+
 
 				setBooleanMapValue(x, y, imageWidth, contrastValPassedThreshold, contrastBooleanMap);
 			}
@@ -1949,7 +1969,7 @@ void resampleRGBMap(unsigned char * rgbMap, int imageWidth, int imageHeight, uns
 
 	int * resampledRGBMapAtDesiredzoomInt = new int[resampledWidth*resampledHeight*RGB_NUM];
 	bool * resampledRGBMapAtDesiredzoomBool = new bool[resampledWidth*resampledHeight];
-	
+
 	if(ignoreBackgroundComparisonMethod == OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE_COMPLETELY)
 	{
 		for(int y = 0; y < resampledHeight; y++)
@@ -1960,7 +1980,7 @@ void resampleRGBMap(unsigned char * rgbMap, int imageWidth, int imageHeight, uns
 			}
 		}
 	}
-	
+
 	int * resampledRGBMapAtDesiredzoomCount = new int[resampledWidth*resampledHeight];
 	if(ignoreBackgroundComparisonMethod == OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE)
 	{
@@ -2040,7 +2060,7 @@ void resampleRGBMap(unsigned char * rgbMap, int imageWidth, int imageHeight, uns
 						resampledRGBMapAtDesiredzoomBool[(y/zoom)*resampledWidth + (x/zoom)] = false;
 					}
 				}
-				
+
 				if(ignoreBackgroundComparisonMethod == OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE)
 				{
 					if(!((rgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + RGB_RED] == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (rgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (rgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] == OR_SNAPSHOT_BACKGROUND_COLOUR_B)))
@@ -2094,13 +2114,13 @@ void resampleRGBMap(unsigned char * rgbMap, int imageWidth, int imageHeight, uns
 						resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED]);
 						resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN]);
 						resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE]);
-					}	
+					}
 				}
 				else
 				{
 					resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED]);
 					resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN]);
-					resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE]);				
+					resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE]);
 				}
 			}
 		}
@@ -2262,7 +2282,7 @@ void resampleLumOrContrastOrDepthMap(double * lumOrContrastOrDepthMap, int image
 				else
 				{
 					resampledLumOrContrastOrDepthMapAtDesiredzoomChar[y*resampledWidth + x] = (unsigned char)(resampledMapAtDesiredzoomInt[y*resampledWidth + x]);
-				
+
 				}
 			}
 		}

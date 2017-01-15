@@ -1,9 +1,29 @@
 /*******************************************************************************
+ * 
+ * This file is part of BAIPROJECT.
+ * 
+ * BAIPROJECT is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3
+ * only, as published by the Free Software Foundation.
+ * 
+ * BAIPROJECT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License version 3 for more details
+ * (a copy is included in the LICENSE file that accompanied this code).
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
+ * for a copy of the AGPLv3 License.
+ * 
+ *******************************************************************************/
+
+/*******************************************************************************
  *
  * File Name: ORglobalDefs.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3a8b 14-June-2012
+ * Project Version: 3a11b 09-July-2012
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
@@ -17,16 +37,16 @@
  *			e) change of binary name from SE to FD.exe};
  *
  *		(Linux EL5 Only)
- *		copy (Linux EL5 x86_64 compiled) FD.exe to OR.exe working folder
+ *		copy (Linux EL5 x86_64 compiled) FD.exe to OpenOR.exe working folder
  *
  *		(Linux EL6 Only)
- *		copy (Linux EL6 x86_64 compiled) FD.exe to OR.exe working folder
+ *		copy (Linux EL6 x86_64 compiled) FD.exe to OpenOR.exe working folder
  *
  *		(Windows Only)
- *		copy (Windows XP i386 compiled) FD.exe to OR.exe working folder
+ *		copy (Windows XP i386 compiled) FD.exe to OpenOR.exe working folder
  *
  *		(Windows 7 x86_64 Only)
- *		copy (Windows 7 x86_64 compiled) FD.exe to OR.exe working folder
+ *		copy (Windows 7 x86_64 compiled) FD.exe to OpenOR.exe working folder
  *
  *	Install External Package 2 - Freeglut;
  *
@@ -78,8 +98,8 @@
  *
  *		(Windows 7 x86_64 Only)
  *		Is there any?
- *		copy jpeg.lib in JPEG\Release folder to C:\Program Files\Microsoft Visual Studio 9.0\VC\lib\
- *		copy jpeglib.h, jconfig.h, and jmorecfg.h in JPEG folder to C:\Program Files\Microsoft Visual Studio 9.0\VC\Include\
+ *		copy jpeg.lib [in JPEG\Release folder] to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib
+ *		copy jpeglib.h, jconfig.h, and jmorecfg.h [in JPEG folder] to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\
  *		ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *
  * Install External Package 5 - MySQL Server;
@@ -127,7 +147,7 @@
  *			Click Execute
  *			Click Finish
  *		the MySQL server should be initiated during installation, and a root password should be assigned
- *		Copy C:\Program Files\MySQL\MySQL Server 5.1\lib\libmysql.dll to working folder (location of OR.exe)
+ *		Copy C:\Program Files\MySQL\MySQL Server 5.1\lib\libmysql.dll to working folder (location of OpenOR.exe)
  *			[NB on Windows XP, may need to place MySQL libraries in ... otherwise follow development installation instructions]
  *
  *		(Windows 7 x86_64 Only) On the MySQL Server perform the following actions to initiate the server;
@@ -152,7 +172,12 @@
  *			Click Execute
  *			Click Finish
  *		the MySQL server should be initiated during installation, and a root password should be assigned
- *		Copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.dll to working folder (location of OR.exe)
+ *		Copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.dll to working folder (location of OpenOR.exe)
+ *		[NO: copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.lib to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib]
+ *		copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\include\mysql.h to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\
+ *		ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
+ *
+ *		Restart PC
  *
  *		5. Part b)
  *
@@ -172,8 +197,8 @@
  *					(where createBAIORmysqlDatabase.sql contains the following text;)
  *
  *				CREATE DATABASE objectRecog;
- *				CREATE USER 'rich'@'localhost' IDENTIFIED BY 'Esteban7';
- *				GRANT ALL ON *.* TO 'rich'@'localhost';
+ *				CREATE USER 'MYSQLUSERNAME'@'localhost' IDENTIFIED BY 'MYSQLPASSWORD';
+ *				GRANT ALL ON *.* TO 'MYSQLUSERNAME'@'localhost';
  *				use objectRecog;
  *
  *				CREATE TABLE s (ID BIGINT, PRIMARY KEY (ID));
@@ -326,8 +351,8 @@
  *			mysql -u root -p
  *			enter root password previously assigned during Mysql server installation, chooseamysqlrootpassword
  *			CREATE DATABASE objectRecog;
- *			CREATE USER 'newusername'@'localhost' IDENTIFIED BY 'newuserpassword';
- *			GRANT ALL ON *.* TO 'newusername'@'localhost';
+ *			CREATE USER 'MYSQLUSERNAME'@'localhost' IDENTIFIED BY 'MYSQLPASSWORD';
+ *			GRANT ALL ON *.* TO 'MYSQLUSERNAME'@'localhost';
  *			exit (exit mysql command line interface)
  *			Install OpenOffice.org Base MySQL Access Point (this is a useful procedure for developers, even if they install the mysql database via the script B);
  * 				Install Java Jave Run-time environment (JRE):
@@ -344,7 +369,7 @@
  *				Open OpenOffice.org Base
  *				Connect to an existing database (JDBC). Click Next
  *				enter Datasource URL; jdbc:mysql://localhost:3306/objectRecog. enter JDBC driver class; com.mysql.jdbc.Driver. Click 'test class'. Click Next
- *				enter mysql database username (newusername), and click 'password required'. click 'Test Connection'. Click 'Next'
+ *				enter mysql database username (MYSQLUSERNAME), and click 'password required'. click 'Test Connection'. Click 'Next'
  *				ensure 'Yes, register the database for me' is selected. Ensure 'open the database for editing' is selected. Click 'Next'
  *				When asked, type a OpenOffice.org Base database filename, eg 'objectRecogMySQLDatabaseOpenOfficeFrontEnd'
  *			Now create the object recognition tables;
@@ -405,7 +430,7 @@
  *	Ensure that all source ANSI files are either Windows/PC (ASCII) or UNIX formated
  *
  *		(Linux Only)
- *		dos2unix *.cpp *.c *.h *.ldr *.DAT *.dat *.data *.xml *.backup
+ *		dos2unix *.cpp *.c *.h *.txt *.ldr *.tal *.DAT *.dat *.data *.xml *.backup
  *
  *		(Windows Only)
  *		ToDos.exe *.cpp *.c *.h *.ldr *.DAT *.dat *.data *.xml *.backup
@@ -501,25 +526,29 @@
  *		create folder C:\Program Files\Microsoft Visual Studio 9.0\VC\Include\mysql\
  *		copy all files in C:\Program Files\MySQL\MySQL Server 5.1\include\ folder to C:\Program Files\Microsoft Visual Studio 9.0\VC\Include\mysql\
  *		ensure libmysql.lib is added to MS Visual Studio OR project - Linker - additional dependencies
- *		Copy C:\Program Files\MySQL\MySQL Server 5.1\lib\libmysql.dll to working folder (location of OR.exe)
+ *		Copy C:\Program Files\MySQL\MySQL Server 5.1\lib\libmysql.dll to working folder (location of OpenOR.exe)
  *
  *		(Windows 7 x86_64 Only)
  *		copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.lib and libmysql.dll to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\
  *		create folder C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\mysql\
  *		copy all files in C:\Program Files (x86)\MySQL\MySQL Server 5.5\include\ folder to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\mysql\
  *		ensure libmysql.lib is added to MS Visual Studio OR project - Linker - additional dependencies
- *		Copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.dll to working folder (location of OR.exe)
+ *		Copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.dll to working folder (location of OpenOR.exe)
  *
- *	Compile OR.exe
+ *	Compile OpenOR.exe
  *
  *		(Linux Only)
- *		open ORglobalDefs.h, and ensure #define LINUX is added
+ *		open SHAREDglobalDefs.h,
+ *			ensure #define LINUX is added
+ *			ensure only #define COMPILE_OR is uncommented
  *		copy makefile.OR makefile
  *		./clear.bat (rm *.o)
  *		make
  *
  *		(Windows Only)
- *		open ORglobalDefs.h, and ensure #define LINUX is commented out
+ *		open SHAREDglobalDefs.h
+ *			ensure #define LINUX is commented out
+ *			ensure only #define COMPILE_OR is uncommented
  *		Open OR.sln
  *		Build All
  *
@@ -536,7 +565,7 @@
  * - [2a1x]
  * - [2a2x]
  * - [2a3x] feature.cpp centre features implementation
- * - [2a4x] CS.exe upgrade
+ * - [2a4x] OpenCS.exe upgrade
  * - [2a5x] feature.cpp centre features have now been implemented - however still need to implement 3DOD min max detection on surfaces about centroid (instead of just edges about centroid)
  * - [2a6x] 2x2 (instead of 3x3) contrast determination kernel is now an option (provides thinner lines of contrast and so much better for centred feature detection without quad fit) , and so interpixel contrast maps can be generated using pixel rgb maps, although currently assuming pixel depth maps, in the future consider in 3DOD supporting interpixel depth maps - these may be common for parallax generated depth information.
  *			check; error: discontinous edge
@@ -556,16 +585,19 @@
  *
  * Usage Examples;
  *
- * ./OR.exe -sqlipaddress localhost -sqlusername rich -sqlpassword Esteban7 -trainortest 1 -object house2DOD -cleartrain -multview multViewList2DOD.txt -tempfolder "/home/rich/baior/temp" -exefolder "/home/rich/baior/bin" -workingfolder "/home/rich/source/source"
+ * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -cleartrain -multview multViewList2DOD.txt -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
  *
- * ./OR.exe -sqlipaddress localhost -sqlusername rich -sqlpassword Esteban7 -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "/home/rich/baior/temp" -exefolder "/home/rich/baior/bin" -workingfolder "/home/rich/source/source"
- * ./OR.exe -sqlipaddress localhost -sqlusername rich -sqlpassword Esteban7 -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "/home/rich/baior/temp" -exefolder "/home/rich/baior/bin" -workingfolder "/home/rich/source/source"
+ * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
+ * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
+ * OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "E:\Files\source\sourcevs\source\working" -exefolder "E:\Files\source\sourcevs\source\working" -workingfolder "E:\Files\source\sourcevs\source\working"
+ * OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "E:\Files\source\sourcevs\source\working" -exefolder "E:\Files\source\sourcevs\source\working" -workingfolder "E:\Files\source\sourcevs\source\working"
  *
  *
- * ./OR.exe -sqlipaddress localhost -sqlusername rich -sqlpassword Esteban7 -trainortest 1 -object house3DOD -od3 -cleartrain -multview multViewList3DOD.txt -tempfolder "/home/rich/baior/temp" -exefolder "/home/rich/baior/bin" -workingfolder "/home/rich/source/source"
  *
- * ./OR.exe -sqlipaddress localhost -sqlusername rich -sqlpassword Esteban7 -trainortest 1 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -cleartrain -tempfolder "/home/rich/baior/temp" -exefolder "/home/rich/baior/bin" -workingfolder "/home/rich/source/source"
- * ./OR.exe -sqlipaddress localhost -sqlusername rich -sqlpassword Esteban7 -trainortest 0 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -view 1 -tempfolder "/home/rich/baior/temp" -exefolder "/home/rich/baior/bin" -workingfolder "/home/rich/source/source"
+ * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -od3 -cleartrain -multview multViewList3DOD.txt -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
+ *
+ * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -cleartrain -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
+ * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -view 1 -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
  *
  *
  * Future Developments;
@@ -1555,7 +1587,7 @@ extern double OR_RULES_XML_SPARE_PARAMETER_2;	//this needs to be made dynamic in
 
 	#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 		#ifdef LINUX
-			#define OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_DEFAULT_BASE_DIRECTORY "/home/rich/source/source/"
+			#define OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_DEFAULT_BASE_DIRECTORY "/home/systemusername/source/source/"
 			#define OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_DEFAULT_NAME "BAIcomparator"
 		#else
 			#define OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_DEFAULT_BASE_DIRECTORY "c:/files/"
@@ -1629,7 +1661,7 @@ extern double OR_RULES_XML_SPARE_PARAMETER_2;	//this needs to be made dynamic in
 			//#define OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS	//option 1
 			#define OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2	//option 2 [default option for 2010/2011 code]
 			//#define OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V3	//option 3 [new for 2012 code - added 8 June 2012 - UNTESTED]
-			
+
 			//#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
 			#define OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_LOOKUP_DO_NOT_ALLOW_REPEATS
 			//#endif
@@ -1651,10 +1683,10 @@ extern double OR_RULES_XML_SPARE_PARAMETER_2;	//this needs to be made dynamic in
 		//#define OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD_METHOD_3_LUMINOSITY_ONLY				//highest redundancy, lowest discrimination [recog speed]
 		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD_METHOD_1_ALL_RGB_COMPONENTS_WITH_DIRECTION
 			//#define OR_IMAGE_COMPARISON_DECISION_TREE_NORMALISE_RGB_MAP
-			#define OR_IMAGE_COMPARISON_DECISION_TREE_RGB_CONTRAST_THRESHOLD_FRACTION (0.2)	// l/r/g/b contrast >10%: trinary tree branch left, l/r/g/b contrast < -10%: trinary tree branch right, else trinary tree branch centre			
+			#define OR_IMAGE_COMPARISON_DECISION_TREE_RGB_CONTRAST_THRESHOLD_FRACTION (0.2)	// l/r/g/b contrast >10%: trinary tree branch left, l/r/g/b contrast < -10%: trinary tree branch right, else trinary tree branch centre
 			#define OR_IMAGE_COMPARISON_DECISION_TREE_NORMALISE_RGB_MAP_AVERAGED_NORMALISED_LUMINOSITY_FRACTION (0.5)
 		#endif
-		
+
 		#define OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_RED_GT_NODE_NAME "a" 	//sanitised - rGT
 		#define OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_RED_LT_NODE_NAME "b" 	//sanitised - rLT
 		#define OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_GREEN_GT_NODE_NAME "a"	//sanitised - gGT
@@ -1743,8 +1775,8 @@ OR SQL VARIABLES;
 
 	#define OR_MYSQL_DATABASE_NAME "objectRecog"
 	#define OR_MYSQL_IP_ADDRESS_DEFAULT "localhost"
-	#define OR_MYSQL_USER_NAME_DEFAULT "rich"
-	#define OR_MYSQL_USER_PASSWORD_DEFAULT "Esteban7"
+	#define OR_MYSQL_USER_NAME_DEFAULT "MYSQLUSERNAME"
+	#define OR_MYSQL_USER_PASSWORD_DEFAULT "MYSQLPASSWORD"
 	#define OR_MYSQL_TABLE_NAME_TRAIN "s"	//snapshot
 	#define OR_MYSQL_TABLE_NAME_TEST "st"	//snapshotTest
 	#define OR_MYSQL_TABLE_NAME_DECISIONTREE "dt"	//decisionTree
@@ -1886,7 +1918,7 @@ OR SQL VARIABLES;
 
 		/***** OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING *****/
 
-		//#define OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT		//temporarily disabled for testing... [results in longer DT (decision tree) index]  
+		//#define OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT		//temporarily disabled for testing... [results in longer DT (decision tree) index]
 
 		#define OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y_MAX (9)
 		#define OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCr_MAX (9)

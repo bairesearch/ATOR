@@ -1,9 +1,29 @@
 /*******************************************************************************
+ * 
+ * This file is part of BAIPROJECT.
+ * 
+ * BAIPROJECT is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3
+ * only, as published by the Free Software Foundation.
+ * 
+ * BAIPROJECT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License version 3 for more details
+ * (a copy is included in the LICENSE file that accompanied this code).
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
+ * for a copy of the AGPLv3 License.
+ * 
+ *******************************************************************************/
+
+/*******************************************************************************
  *
  * File Name: ORmethod3DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a8b 14-June-2012
+ * Project Version: 3a11b 09-July-2012
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -63,11 +83,11 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	*/
 
 
-	
-	
+
+
 #ifdef OR_DEBUG_METHOD_3DOD
 
-			
+
 	cout << "\n \t starting to tranform object triangle " << endl;
 	cout << "0. currentPolygonInList without transformation " << endl;
 	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
@@ -81,17 +101,17 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	cout << "transformedObjectTriangle->point3.z = " << transformedObjectTriangle->point3.z << endl;
 	cout << transformedObjectTriangle->point1.x << " " << transformedObjectTriangle->point1.y << " " << transformedObjectTriangle->point1.z << endl;
 	cout << transformedObjectTriangle->point2.x << " " << transformedObjectTriangle->point2.y << " " << transformedObjectTriangle->point2.z << endl;
-	cout << transformedObjectTriangle->point3.x << " " << transformedObjectTriangle->point3.y << " " << transformedObjectTriangle->point3.z << endl;	
+	cout << transformedObjectTriangle->point3.x << " " << transformedObjectTriangle->point3.y << " " << transformedObjectTriangle->point3.z << endl;
 #endif
 
 
 	//1. Perform All Rotations (X, Y, Z, such that object triangle side is parallel with x axis, and object triangle normal is parallel with z axis)
-	
+
 	vec normalBeforeRotation;
 	calculateNormalOfTri(&(currentPolygonInList->point1), &(currentPolygonInList->point2), &(currentPolygonInList->point3), &normalBeforeRotation);
 	vec normalBeforeRotationNormalised;	//not required
-	normaliseVectorRT(&normalBeforeRotation, &normalBeforeRotationNormalised);	//not required	
-		
+	normaliseVectorRT(&normalBeforeRotation, &normalBeforeRotationNormalised);	//not required
+
 	mat xyzRotationMatrix12;
 	vec eye;
 	vec at;
@@ -103,7 +123,7 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	at.y = normalBeforeRotationNormalised.y;
 	at.z = normalBeforeRotationNormalised.z;
 	if(side == 0)
-	{	
+	{
 		subtractVectorsRT(&(currentPolygonInList->point1), &(currentPolygonInList->point2), &up);
 	}
 	else if(side == 1)
@@ -118,22 +138,22 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	{
 		cout << "error: illegal side" << endl;
 		exit(0);
-	}			
+	}
 	generateLookAtRotationMatrix(&at, &eye, &up, &xyzRotationMatrix12);
-	
+
 	transposeMatrix(&xyzRotationMatrix12);
-	
+
 	/*
 	vec normalBeforeRotation;
-	calculateNormalOfTri(&(transformedObjectTriangle->point1), &(transformedObjectTriangle->point2), &(transformedObjectTriangle->point3), &normalBeforeRotation);	
+	calculateNormalOfTri(&(transformedObjectTriangle->point1), &(transformedObjectTriangle->point2), &(transformedObjectTriangle->point3), &normalBeforeRotation);
 	//normalBeforeRotation.x = -normalBeforeRotation.x;
 	//normalBeforeRotation.y = -normalBeforeRotation.y;
 	//normalBeforeRotation.z = -normalBeforeRotation.z;
 	vec normalBeforeRotationNormalised;	//not required
-	normaliseVectorRT(&normalBeforeRotation, &normalBeforeRotationNormalised);	//not required	
+	normaliseVectorRT(&normalBeforeRotation, &normalBeforeRotationNormalised);	//not required
 	//mat xyzRotationMatrix12;
 	//generateXYZRotationMatrix(&normalBeforeRotationNormalised, &xyzRotationMatrix12);
-	
+
 	vec rotationVector;
 	calculateRotationVectorFromVector(&normalBeforeRotationNormalised, &rotationVector);	//added 14 June 2012
 	//double xRotationFactor1a = calculateAngleOfVector3D(&normalBeforeRotationNormalised, AXIS_X);	//should be negative (- ....)?		//euler angle x
@@ -142,7 +162,7 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	double xRotationFactor1a = rotationVector.x;
 	double yRotationFactor1b = rotationVector.y;
 	double zRotationFactor2a = rotationVector.z;
-	
+
 	mat xRotationMatrix1a;
 	createIdentityMatrix(&xRotationMatrix1a);
 	createRotatationMatrix(&xRotationMatrix1a, AXIS_X, xRotationFactor1a);
@@ -152,7 +172,7 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	mat zRotationMatrix2a;
 	createIdentityMatrix(&zRotationMatrix2a);
 	createRotatationMatrix(&zRotationMatrix2a, AXIS_Z, zRotationFactor2a);
-	
+
 	//M = Rz(B1)Ry(B2)Rx(B3)
 	//so M = Ry(B2)Rx(B3)
 	mat xyRotationMatrix1;
@@ -161,11 +181,11 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	createIdentityMatrix(&xyzRotationMatrix12);
 	multiplyMatricies(&xyRotationMatrix1, &yRotationMatrix1b, &xRotationMatrix1a);
 	multiplyMatricies(&xyzRotationMatrix12, &zRotationMatrix2a, &xyRotationMatrix1);
-	
+
 	*/
-	
-	
-			
+
+
+
 
 #ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 	//openglUseMatrix = true;
@@ -192,7 +212,7 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	cout << "normalBeforeRotationNormalised.z = " << normalBeforeRotationNormalised.z << endl;
 	//cout << "xRotationFactor1a = " << xRotationFactor1a << endl;
 	//cout << "yRotationFactor1b = " << yRotationFactor1b << endl;
-	//cout << "zRotationFactor2a = " << zRotationFactor2a << endl;	
+	//cout << "zRotationFactor2a = " << zRotationFactor2a << endl;
 	cout << "xyzRotationMatrix12.a.x = " << xyzRotationMatrix12.a.x << endl;
 	cout << "xyzRotationMatrix12.a.y = " << xyzRotationMatrix12.a.y << endl;
 	cout << "xyzRotationMatrix12.a.z = " << xyzRotationMatrix12.a.z << endl;
@@ -225,7 +245,7 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	cout << "transformedObjectTriangle->point3.z = " << transformedObjectTriangle->point3.z << endl;
 	cout << transformedObjectTriangle->point1.x << " " << transformedObjectTriangle->point1.y << " " << transformedObjectTriangle->point1.z << endl;
 	cout << transformedObjectTriangle->point2.x << " " << transformedObjectTriangle->point2.y << " " << transformedObjectTriangle->point2.z << endl;
-	cout << transformedObjectTriangle->point3.x << " " << transformedObjectTriangle->point3.y << " " << transformedObjectTriangle->point3.z << endl;	
+	cout << transformedObjectTriangle->point3.x << " " << transformedObjectTriangle->point3.y << " " << transformedObjectTriangle->point3.z << endl;
 	#endif
 
 	//1c. tranform nearest features
@@ -336,14 +356,14 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 		mat multipliedMatrix;
 		mat matTemp;
 		createIdentityMatrixRT(&multipliedMatrix);
-		
+
 		multiplyMatricies(&matTemp, &multipliedMatrix, &xyzRotationMatrix12);
-		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);		
+		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
 		/*
 		multiplyMatricies(&matTemp, &multipliedMatrix, &zRotateMatrix2ii);
 		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
 		multiplyMatricies(&matTemp, &multipliedMatrix, &xyzRotationMatrix12);
-		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);		
+		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
 		multiplyMatricies(&matTemp, &multipliedMatrix, &zRotationMatrix2a);
 		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
 		multiplyMatricies(&matTemp, &multipliedMatrix, &yRotationMatrix1b);
@@ -351,7 +371,7 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 		multiplyMatricies(&matTemp, &multipliedMatrix, &xRotationMatrix1a);
 		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
 		*/
-		
+
 		copyMatrix2IntoMatrix1(&opengl3DMultiplicationMatrix, &multipliedMatrix);
 
 	#endif
@@ -732,7 +752,7 @@ void create3DMeshUsingPointMap3DOD(int imageWidth, int imageHeight, double * poi
 #else
 	MeshPoint * meshPointInterpixelArray[imageWidth*imageHeight];
 	QFZeroCrossing * edgeZeroCrossingMap[imageWidth*imageHeight];
-#endif	
+#endif
 	//#endif
 
 	int interpixelContrastMapType;
@@ -794,7 +814,7 @@ void create3DMeshUsingPointMap3DOD(int imageWidth, int imageHeight, double * poi
 	MeshPoint * firstNewMeshPointInMesh = currentMeshPointInMesh;
 	currentMeshPointInMesh = firstNewMeshPointInMesh;
 
-	
+
 	MeshPoint * firstMeshPointInInterpixelMesh = new MeshPoint();
 	if(OR_USE_CONTRAST_CALC_METHOD_C)
 	{
@@ -907,7 +927,7 @@ void create3DMeshUsingPointMap3DOD(int imageWidth, int imageHeight, double * poi
 	//calculate mesh point adjacent mesh points
 
 	currentMeshPointInMesh = firstNewMeshPointInMesh;
-	
+
 	MeshPoint * currentMeshPointInInterpixelMesh;
 	if(OR_USE_CONTRAST_CALC_METHOD_C)
 	{
@@ -1215,13 +1235,13 @@ void create3DMeshUsingPointMap3DOD(int imageWidth, int imageHeight, double * poi
 			double * depthContrastMap = new double[imageWidth * imageHeight];
 			bool * contrastBooleanMap = new bool[imageWidth*imageHeight];
 			bool * depthContrastBooleanMap = new bool[imageWidth*imageHeight];
-			
+
 		#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS_OLD
 			createContrastMapFromMapWithForegroundDepthCheck(imageWidth, imageHeight, depthMap, depthMap, depthContrastMap, contrastBooleanMap, foregroundDepthCheckDepthContrastBooleanMap, EDGE_DEPTH_CONTRAST_THRESHOLD);
 		#else
 			createContrastMapFromMap(imageWidth, imageHeight, depthMap, depthContrastMap);
 			createDepthContrastBooleanMap(imageWidth, imageHeight, depthContrastMap, depthContrastBooleanMap);	//need to check threshold here
-		#endif			
+		#endif
 
 
 
@@ -1275,11 +1295,11 @@ void create3DMeshUsingPointMap3DOD(int imageWidth, int imageHeight, double * poi
 					}
 				}
 			}
-			
+
 			delete depthContrastMap;
 			delete contrastBooleanMap;
 			delete depthContrastBooleanMap;
-						
+
 		}
 	}
 

@@ -1,9 +1,29 @@
 /*******************************************************************************
+ * 
+ * This file is part of BAIPROJECT.
+ * 
+ * BAIPROJECT is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3
+ * only, as published by the Free Software Foundation.
+ * 
+ * BAIPROJECT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License version 3 for more details
+ * (a copy is included in the LICENSE file that accompanied this code).
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
+ * for a copy of the AGPLv3 License.
+ * 
+ *******************************************************************************/
+
+/*******************************************************************************
  *
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a8b 14-June-2012
+ * Project Version: 3a11b 09-July-2012
  *
  *******************************************************************************/
 
@@ -203,8 +223,8 @@
 	#define OR_METHOD2DOD_NUM_FEAT_POS_NOISE_VALUES_PER_AXIS (3)
 	#define OR_METHOD2DOD_FEAT_POS_MAX_NOISE_PER_AXIS (1.0)		//1.0 pixels in original image (not snapshot image)
 	#define OR_METHOD2DOD_NUM_FEAT_POS_NOISE_VALUES (9) 		//(NUM_ORI_NOISE_VALUES_PER_AXIS*NUM_ORI_NOISE_VALUES_PER_AXIS*NUM_ORI_NOISE_VALUES_PER_AXIS)
-	
-	
+
+
 #else
 	#define OR_METHOD3DOD_NUM_ORI_NOISE_VALUES_PER_AXIS (1)
 	#define OR_METHOD3DOD_NUM_POS_NOISE_VALUES_PER_AXIS (1)
@@ -231,7 +251,7 @@
 
 
 
-#define OR_NUMBER_OF_NN_LAYERS (7)		//NB I am using the THANNwithLRRC.exe object experience number of layers ...
+#define OR_NUMBER_OF_NN_LAYERS (7)		//NB I am using the THANNwithOpenLRRC.exe object experience number of layers ...
 //#define OR_MAX_NUMBER_OF_EPOCHS 1000		//not used - NB 2D NNs do not use folds during training as each (image) experience has a different class target
 #ifdef OR_DEBUG_TRAIN_USING_FAR_INSUFFICIENT_NUMBER_EPOCHS
 	#define	OR_SIMPLE_TRAIN_DEFAULT_NUM_OF_TRAINING_EPOCHS 10

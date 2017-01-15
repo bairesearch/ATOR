@@ -1,9 +1,29 @@
 /*******************************************************************************
+ * 
+ * This file is part of BAIPROJECT.
+ * 
+ * BAIPROJECT is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3
+ * only, as published by the Free Software Foundation.
+ * 
+ * BAIPROJECT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License version 3 for more details
+ * (a copy is included in the LICENSE file that accompanied this code).
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
+ * for a copy of the AGPLv3 License.
+ * 
+ *******************************************************************************/
+
+/*******************************************************************************
  *
  * File Name: ORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a8b 14-June-2012
+ * Project Version: 3a11b 09-July-2012
  *
  *******************************************************************************/
 
@@ -16,15 +36,15 @@
 #include "XMLrulesClass.h"
 #include "ORrules.h"
 
-	//for mkdir, chdir, etc	[CreateDirectory, SetCurrentDirectory]	
+	//for mkdir, chdir, etc	[CreateDirectory, SetCurrentDirectory]
 #ifdef LINUX
-	#include <sys/stat.h> 
+	#include <sys/stat.h>
 	#include <sys/types.h>
 #else
 	#include <windows.h>
 #endif
-	
-	
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
@@ -36,7 +56,7 @@
 using namespace std;
 
 
-static char errmessage[] = "Usage:  OR.exe [options]\n\n\twhere options are any of the following\n"
+static char errmessage[] = "Usage:  OpenOR.exe [options]\n\n\twhere options are any of the following\n"
 "\n\t-trainortest [int]     : 0; input data is compared with current trained database, 1; data is added to database, 2; data is both added and compared"
 "\n\t-object [string]       : input object name (def: object)"
 "\n\t-imageext [string]     : input image extension name (def: .png) [all standard image formats]"
@@ -48,7 +68,7 @@ static char errmessage[] = "Usage:  OR.exe [options]\n\n\twhere options are any 
 "\n\t-sqlpassword [string]  : password of MySQL Server BAI database"
 "\n\t-cleartrain            : clear train database"
 "\n\t-workingfolder [string]: working directory name for input files (def: same as exe)"
-"\n\t-exefolder [string]    : exe directory name for executables OR.exe and FD.exe (def: same as exe)"
+"\n\t-exefolder [string]    : exe directory name for executables OpenOR.exe and FD.exe (def: same as exe)"
 "\n\t-tempfolder [string]    : temp directory name for temporary and output files (def: same as exe)"
 "\n\n single view options only \n"
 "\n\t-view [int]            : input object view number (def: 0) [if > 0, must append \".viewX\" to file name]"
@@ -84,24 +104,24 @@ int main(int argc,char **argv)
 	char timeAndDateString[100];
 	sprintf(timeAndDateString, "%i:%i:%i %i/%.2i/%i", current->tm_hour, current->tm_min, current->tm_sec, current->tm_mday, (current->tm_mon+1), (current->tm_year + TM_STRUCT_YEAR_OFFSET));
 	cout << "OR execution time: " << timeAndDateString << " (start)" << endl;
-	
+
 	char currentFolder[EXE_FOLDER_PATH_MAX_LENGTH];
 
 	#ifdef LINUX
-	getcwd(currentFolder, EXE_FOLDER_PATH_MAX_LENGTH);					
+	getcwd(currentFolder, EXE_FOLDER_PATH_MAX_LENGTH);
 	#else
 	::GetCurrentDirectory(EXE_FOLDER_PATH_MAX_LENGTH, currentFolder);
 	#endif
 
 	//cout << "currentFolder = " << currentFolder << endl;
-			
+
 	if (exists_argument(argc,argv,"-workingfolder"))
 	{
 		workingFolderCharStar=get_char_argument(argc,argv,"-workingfolder");
 	}
 	else
 	{
-		workingFolderCharStar = currentFolder;		
+		workingFolderCharStar = currentFolder;
 	}
 	if (exists_argument(argc,argv,"-exefolder"))
 	{
@@ -119,20 +139,20 @@ int main(int argc,char **argv)
 	{
 		tempFolderCharStar = currentFolder;
 	}
-	
-	/*	
-	cout << "workingFolderCharStar = " << workingFolderCharStar << endl;	
-	cout << "exeFolderCharStar = " << exeFolderCharStar << endl;	
+
+	/*
+	cout << "workingFolderCharStar = " << workingFolderCharStar << endl;
+	cout << "exeFolderCharStar = " << exeFolderCharStar << endl;
 	cout << "tempFolderCharStar = " << tempFolderCharStar << endl;
 	*/
-	
+
 	#ifdef LINUX
-	chdir(workingFolderCharStar);						
+	chdir(workingFolderCharStar);
 	#else
 	::SetCurrentDirectory(workingFolderCharStar);
 	#endif
-		
-	
+
+
 	if(!parseORRulesXMLFile())
 	{
 		cout << "error: no rules file detected" << endl;
@@ -141,11 +161,11 @@ int main(int argc,char **argv)
 	fillInORRulesExternVariables();
 
 	#ifdef LINUX
-	chdir(tempFolderCharStar);						
+	chdir(tempFolderCharStar);
 	#else
 	::SetCurrentDirectory(tempFolderCharStar);
 	#endif
-		
+
 	int dimension;
 	if (exists_argument(argc,argv,"-od3"))
 	{
@@ -165,17 +185,17 @@ int main(int argc,char **argv)
 	{
 		clearTrainTable = false;
 	}
-	
+
 	int trainOrTest;
 	if (exists_argument(argc,argv,"-trainortest"))
 	{
 		trainOrTest = int(get_float_argument(argc,argv,"-trainortest"));
-		
+
 		if(!((trainOrTest == TEST) || (trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST)))
 		{
 			cout << "error: trainortest value is illegal" << endl;
 			printORCommandLineErrorMessage();
-			exit(0);		
+			exit(0);
 		}
 	}
 	else
@@ -183,7 +203,7 @@ int main(int argc,char **argv)
 		cout << "error: trainortest is not defined" << endl;
 		printORCommandLineErrorMessage();
 		exit(0);
-		
+
 	}
 
 	#ifndef OR_METHOD3DOD_TEST
@@ -192,7 +212,7 @@ int main(int argc,char **argv)
 	string sqlpassword;
 	char * sqlipaddressCharStar = new char[100];
 	char * sqlusernameCharStar = new char[100];
-	char * sqlpasswordCharStar = new char[100];	
+	char * sqlpasswordCharStar = new char[100];
 	if (exists_argument(argc,argv,"-sqlipaddress"))
 	{
 		sqlipaddressCharStar=get_char_argument(argc,argv,"-sqlipaddress");
@@ -213,7 +233,7 @@ int main(int argc,char **argv)
 		printORCommandLineErrorMessage();
 		exit(0);
 	}
-	
+
 	if (exists_argument(argc,argv,"-sqlpassword"))
 	{
 		sqlpasswordCharStar=get_char_argument(argc,argv,"-sqlpassword");
@@ -231,7 +251,7 @@ int main(int argc,char **argv)
 
 
 
-	
+
 	view_info vi;
 	string ObjectNameArray[10];
 	int imageWidthFacingPoly;
@@ -327,7 +347,7 @@ int main(int argc,char **argv)
 		multViewListFileNameWithFullPath = multViewListFileNameWithFullPath + workingFolderCharStar + "/" + multViewListFileName;
 		numberOfViewIndiciesPerObject = createViFromMultiViewList(&tempViewInfo, multViewListFileNameWithFullPath, 0, dimension);
 		cout << "countNumViFromMultiViewList numberOfViewIndiciesPerObject = " << numberOfViewIndiciesPerObject << endl;
-		
+
 		objectDataSource = OR_OBJECT_DATA_SOURCE_USER_LIST;
 
 		/*
@@ -360,7 +380,7 @@ int main(int argc,char **argv)
 
 	if (exists_argument(argc,argv,"-version"))
 	{
-		cout << "OR.exe - Project Version: 3a8b 14-June-2012" << endl;
+		cout << "OpenOR.exe - Project Version: 3a11b 09-July-2012" << endl;
 		exit(1);
 	}
 
@@ -412,7 +432,7 @@ int main(int argc,char **argv)
 
 	bool missingaPOVDescriptor = false;
 	bool missingDepthMapExtensionDescriptor = false;
-	
+
 	char * depthExtensionNameCharStar = new char[100];
 	string depthExtensionName;
 	if(exists_argument(argc,argv,"-depthext"))
@@ -548,14 +568,14 @@ int main(int argc,char **argv)
 	if (exists_argument(argc,argv,"-view"))
 	{
 		viewNumber=get_float_argument(argc,argv,"-view");
-		
+
 		if(useMultViewList)
 		{
 			cout << "error: cannot specify both a multview list and a single view view number" << endl;
 			exit(0);
 		}
 	}
-	
+
 	if(missingDepthMapExtensionDescriptor && !useMultViewList && (dimension == OR_METHOD3DOD_DIMENSIONS))
 	{
 		cout << "error: must either specify an input depth map extension and POV parameters (if not wanting defaults), or a mult (object/) view list for 3DOD" << endl;
@@ -563,7 +583,7 @@ int main(int argc,char **argv)
 		//exit(0);
 	}
 
-	
+
 	if(trainOrTest == TRAIN)
 	{
 		if(!ORMethodTrain(dimension, numberOfObjects, ObjectNameArray, numberOfPolys, objectDataSource, &vi, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, numberOfViewIndiciesPerObject, numberOfViewIndiciesPerObjectWithUniquePolygons, numberOfZoomIndicies, trainOrTest, sqlipaddress, sqlusername, sqlpassword, clearTrainTable, viewNumber, multViewListFileName))
@@ -589,12 +609,12 @@ int main(int argc,char **argv)
 			cout << "ORMethodTest completed" << endl;
 		}
 	}
-	
+
 	//print execution time (end)
 	time(&now);
 	current = localtime(&now);
 	sprintf(timeAndDateString, "%i:%i:%i %i/%.2i/%i", current->tm_hour, current->tm_min, current->tm_sec, current->tm_mday, (current->tm_mon+1), (current->tm_year + TM_STRUCT_YEAR_OFFSET));
-	cout << "OR execution time: " << timeAndDateString << " (finish)" << endl;	
+	cout << "OR execution time: " << timeAndDateString << " (finish)" << endl;
 }
 
 void printORCommandLineErrorMessage()

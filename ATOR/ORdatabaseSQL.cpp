@@ -1,9 +1,29 @@
 /*******************************************************************************
+ * 
+ * This file is part of BAIPROJECT.
+ * 
+ * BAIPROJECT is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3
+ * only, as published by the Free Software Foundation.
+ * 
+ * BAIPROJECT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License version 3 for more details
+ * (a copy is included in the LICENSE file that accompanied this code).
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
+ * for a copy of the AGPLv3 License.
+ * 
+ *******************************************************************************/
+
+/*******************************************************************************
  *
  * File Name: ORdatabaseSQL.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a8b 14-June-2012
+ * Project Version: 3a11b 09-July-2012
  *
  *******************************************************************************/
 
@@ -46,7 +66,7 @@ long databaseTableSizeDecisionTree;
 void convertSnapshotMapsToStringForSQLdatabaseEntry(int imageWidthFacingPoly, int imageHeightFacingPoly, unsigned char * rgbMapFacingPoly, double * rgbDevIEnormalisedHueContrastMapFacingPoly, double * depthMapFacingPoly, int smallImageWidth, int smallImageHeight, unsigned char * rgbMapSmallFacingPoly, double * rgbDevIEnormalisedHueContrastMapSmallFacingPoly, double * depthMapSmallFacingPoly, int dimension, char * snapshotMapsText, double depthScale, bool compareRgbDevMapsNotRgbMaps, int * stringSize)
 {
 	int index=0;
-	
+
 	if(!compareRgbDevMapsNotRgbMaps)
 	{
 		for(int y = 0; y < imageHeightFacingPoly; y++)
@@ -80,7 +100,7 @@ void convertSnapshotMapsToStringForSQLdatabaseEntry(int imageWidthFacingPoly, in
 		for(int y = 0; y < imageHeightFacingPoly; y++)
 		{
   			for(int x = 0; x < imageWidthFacingPoly; x++)
-			{		
+			{
 				colour depthMap24BitPixelValue;
 				double depth = getLumOrContrastOrDepthMapValue(x, y, imageWidthFacingPoly, depthMapFacingPoly);
 				calculate24BitDepthPixmapPixelFromDepth(depth, depthScale, 0.0, &depthMap24BitPixelValue);
@@ -121,12 +141,12 @@ void convertSnapshotMapsToStringForSQLdatabaseEntry(int imageWidthFacingPoly, in
 		}
 	}
 	if(dimension == OR_METHOD3DOD_DIMENSIONS)
-	{	
+	{
 		for(int y = 0; y < smallImageHeight; y++)
 		{
   			for(int x = 0; x < smallImageWidth; x++)
-			{	
-				colour depthMap24BitPixelValue;	
+			{
+				colour depthMap24BitPixelValue;
 				double depth = getLumOrContrastOrDepthMapValue(x, y, smallImageWidth, rgbDevIEnormalisedHueContrastMapSmallFacingPoly);
 				calculate24BitDepthPixmapPixelFromDepth(depth, depthScale, 0.0, &depthMap24BitPixelValue);
 				snapshotMapsText[index++] = depthMap24BitPixelValue.r;
@@ -134,8 +154,8 @@ void convertSnapshotMapsToStringForSQLdatabaseEntry(int imageWidthFacingPoly, in
 				snapshotMapsText[index++] = depthMap24BitPixelValue.b;
 			}
 		}
-	}	
-	
+	}
+
 	*stringSize = index;
 }
 
@@ -143,7 +163,7 @@ void convertSnapshotMapsToStringForSQLdatabaseEntry(int imageWidthFacingPoly, in
 void convertSQLdatabaseStringToSnapshotMaps(int imageWidthFacingPoly, int imageHeightFacingPoly, unsigned char * rgbMapFacingPoly, double * rgbDevIEnormalisedHueContrastMapFacingPoly, double * depthMapFacingPoly, int smallImageWidth, int smallImageHeight, unsigned char * rgbMapSmallFacingPoly, double * rgbDevIEnormalisedHueContrastMapSmallFacingPoly, double * depthMapSmallFacingPoly, int dimension, char * snapshotMapsText, double depthScale, bool compareRgbDevMapsNotRgbMaps)
 {
 	int index=0;
-	
+
 	if(!compareRgbDevMapsNotRgbMaps)
 	{
 		for(int y = 0; y < imageHeightFacingPoly; y++)
@@ -153,7 +173,7 @@ void convertSQLdatabaseStringToSnapshotMaps(int imageWidthFacingPoly, int imageH
 				colour col;
 				col.r = snapshotMapsText[index++];
 				col.g = snapshotMapsText[index++];
-				col.b = snapshotMapsText[index++];				
+				col.b = snapshotMapsText[index++];
 				setRGBMapValues(x, y, imageWidthFacingPoly, &col, rgbMapFacingPoly);
 			}
 		}
@@ -178,11 +198,11 @@ void convertSQLdatabaseStringToSnapshotMaps(int imageWidthFacingPoly, int imageH
 		for(int y = 0; y < imageHeightFacingPoly; y++)
 		{
   			for(int x = 0; x < imageWidthFacingPoly; x++)
-			{		
-				colour depthMap24BitPixelValue;	
+			{
+				colour depthMap24BitPixelValue;
 				depthMap24BitPixelValue.r = snapshotMapsText[index++];
 				depthMap24BitPixelValue.g = snapshotMapsText[index++];
-				depthMap24BitPixelValue.b = snapshotMapsText[index++];				
+				depthMap24BitPixelValue.b = snapshotMapsText[index++];
 				double depth = calculateDepthFrom24BitDepthValue(&depthMap24BitPixelValue,  depthScale, 0.0);
 				setLumOrContrastOrDepthMapValue(x, y, imageWidthFacingPoly, depth, depthMapFacingPoly);
 			}
@@ -198,7 +218,7 @@ void convertSQLdatabaseStringToSnapshotMaps(int imageWidthFacingPoly, int imageH
 				colour col;
 				col.r = snapshotMapsText[index++];
 				col.g = snapshotMapsText[index++];
-				col.b = snapshotMapsText[index++];				
+				col.b = snapshotMapsText[index++];
 				setRGBMapValues(x, y, smallImageWidth, &col, rgbMapSmallFacingPoly);
 			}
 		}
@@ -223,11 +243,11 @@ void convertSQLdatabaseStringToSnapshotMaps(int imageWidthFacingPoly, int imageH
 		for(int y = 0; y < smallImageHeight; y++)
 		{
   			for(int x = 0; x < smallImageWidth; x++)
-			{		
-				colour depthMap24BitPixelValue;	
+			{
+				colour depthMap24BitPixelValue;
 				depthMap24BitPixelValue.r = snapshotMapsText[index++];
 				depthMap24BitPixelValue.g = snapshotMapsText[index++];
-				depthMap24BitPixelValue.b = snapshotMapsText[index++];				
+				depthMap24BitPixelValue.b = snapshotMapsText[index++];
 				double depth = calculateDepthFrom24BitDepthValue(&depthMap24BitPixelValue, depthScale, 0.0);
 				setLumOrContrastOrDepthMapValue(x, y, smallImageWidth, depth, depthMapSmallFacingPoly);
 			}
@@ -268,7 +288,7 @@ void createFeatureListUsingDatabaseQuery(Feature * firstFeatureInList, bool crea
 	sprintf(testsideIndexString, "%d", testSideIndex);
 
 	//cout << "asd1" << endl;
-	
+
 	if(useTestID)
 	{
 		sqlSelectCommandP7 = sqlSelectCommandP7 + " WHERE (" + OR_MYSQL_FIELD_NAME_ID + " = " + testIDString + ");";	//only query train objects
@@ -284,7 +304,7 @@ void createFeatureListUsingDatabaseQuery(Feature * firstFeatureInList, bool crea
 		sqlSelectCommandP11 = sqlSelectCommandP11 + " AND " + OR_MYSQL_FIELD_NAME_POLYNUM + " = " + testpolygonIndexString;
 		sqlSelectCommandP12 = sqlSelectCommandP12 + " AND " + OR_MYSQL_FIELD_NAME_SIDENUM + " = " + testsideIndexString + ");";
 	}
-	
+
 	int numFeatures = OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE;	//this value is already dependent upon whether ignoreOTfeatures is true of false
 	createSQLSelectRowCommand(sqlSelectCommandP2, numFeatures);
 
@@ -296,7 +316,7 @@ void createFeatureListUsingDatabaseQuery(Feature * firstFeatureInList, bool crea
 	char * sqlSelectCommandCharStar = const_cast<char*>(sqlSelectCommand.c_str());
 
 	//cout << "asd2" << endl;
-	
+
 	query_state = mysql_query(connection, sqlSelectCommandCharStar);
 	//cout << "select qeuery performed" << endl;
 	//cout << "s-2" << endl;
@@ -328,15 +348,15 @@ void createFeatureListUsingDatabaseQuery(Feature * firstFeatureInList, bool crea
 				cout << "testviewIndexString = " << testviewIndexString << endl;
 				cout << "testzoomIndexString = " << testzoomIndexString << endl;
 				cout << "testpolygonIndexString = " << testpolygonIndexString << endl;
-				cout << "testsideIndexString = " << testsideIndexString << endl;      
+				cout << "testsideIndexString = " << testsideIndexString << endl;
 				*/
 				exit(0);
-				
+
 			}
 			//cout << "asd3" << endl;
 			addSQLRowDataToFeatureList(row, firstFeatureInList, createFeatureObjects, ignoreOTfeatures, numFeatures);
 			tableIndex++;
-			
+
 			/*
 			if(tableIndex > 1)
 			{
@@ -345,13 +365,13 @@ void createFeatureListUsingDatabaseQuery(Feature * firstFeatureInList, bool crea
 				cout << "testviewIndexString = " << testviewIndexString << endl;
 				cout << "testzoomIndexString = " << testzoomIndexString << endl;
 				cout << "testpolygonIndexString = " << testpolygonIndexString << endl;
-				cout << "testsideIndexString = " << testsideIndexString << endl;			
+				cout << "testsideIndexString = " << testsideIndexString << endl;
 				exit(0);
 			}
 			*/
 
 		}
-		
+
 	}
 	mysql_free_result(result);
 }
@@ -368,7 +388,7 @@ void createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(FeatureCon
 	string sqlSelectCommandClose = "";
 	string sqlSelectCommandSelect = "SELECT ";
 	char sqlSelectCommandSelectContents[OR_IMAGE_COMPARISON_SQL_DATABASE_TEST_AND_TRAIN_TABLES_GET_QUERY_MAX_LENGTH];
-	
+
 #ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL_DIRECT_ACCESS_USE_JOIN_OPT
 	cout << "SQL join optimisation not yet coded" << endl;
 	exit(0);
@@ -378,10 +398,10 @@ void createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(FeatureCon
 	string sqlSelectCommandWhereClose = "));";
 
 	//cout << "asd1" << endl;
-	
+
 	sqlSelectCommandFrom = sqlSelectCommandFrom + " FROM " + OR_MYSQL_TABLE_NAME_TRAIN;
 	sqlSelectCommandWhereOpen = sqlSelectCommandWhereOpen + " WHERE (" + OR_MYSQL_FIELD_NAME_ID + " IN (";	//only query train objects
-	
+
 	int numFeatures = OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE;	//this value is already dependent upon whether ignoreOTfeatures is true of false
 	createSQLSelectRowCommand(sqlSelectCommandSelectContents, numFeatures);
 
@@ -402,12 +422,12 @@ void createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(FeatureCon
 	else if(trainOrTest == TRAIN_AND_TEST)
 	{
 		char maxDecisionTreeTableRowString[25];
-		sprintf(maxDecisionTreeTableRowString, "%ld", databaseTableSizeDecisionTreeInitial);		
-		sqlSelectCommandWhereContentsWhereOpen = sqlSelectCommandWhereContentsWhereOpen + " WHERE (" + OR_MYSQL_FIELD_NAME_ID + " <= " + maxDecisionTreeTableRowString + " AND " + OR_MYSQL_FIELD_NAME_DECISIONTREE_BIN + " = ";	
+		sprintf(maxDecisionTreeTableRowString, "%ld", databaseTableSizeDecisionTreeInitial);
+		sqlSelectCommandWhereContentsWhereOpen = sqlSelectCommandWhereContentsWhereOpen + " WHERE (" + OR_MYSQL_FIELD_NAME_ID + " <= " + maxDecisionTreeTableRowString + " AND " + OR_MYSQL_FIELD_NAME_DECISIONTREE_BIN + " = ";
 	}
-		
+
 	//cout << "asd1c" << endl;
-	
+
 		//must be done this way as decisionTreeBinText may contain null characters
 	int sqlSelectCommandWhereContentsWhereContentsLength = 0;
 	sqlSelectCommandWhereContentsWhereContents[sqlSelectCommandWhereContentsWhereContentsLength] = '\'';
@@ -420,7 +440,7 @@ void createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(FeatureCon
 	sqlSelectCommandClose = sqlSelectCommandWhereContentsWhereClose + sqlSelectCommandWhereClose;
 
 	//cout << "asd1d" << endl;
-	
+
 	char sqlSelectCommandCharStar[OR_IMAGE_COMPARISON_SQL_DATABASE_TEST_AND_TRAIN_TABLES_GET_QUERY_MAX_LENGTH + OR_IMAGE_COMPARISON_DECISION_TREE_STRING_MAX_LENGTH];
 	int sqlSelectCommandCharStarIndex = 0;
 	for(int i=0; i <sqlSelectCommandOpen.length(); i++)
@@ -432,12 +452,12 @@ void createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(FeatureCon
 	{
 	 	sqlSelectCommandCharStar[sqlSelectCommandCharStarIndex] = sqlSelectCommandWhereContentsWhereContents[i];
 		sqlSelectCommandCharStarIndex++;
-	}	
+	}
 	for(int i=0; i <sqlSelectCommandClose.length(); i++)
 	{
 	 	sqlSelectCommandCharStar[sqlSelectCommandCharStarIndex] = sqlSelectCommandClose[i];
 		sqlSelectCommandCharStarIndex++;
-	}	
+	}
 #endif
 
 	/*
@@ -457,7 +477,7 @@ void createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(FeatureCon
 	#endif
 
 	//cout << "asd2" << endl;
-	
+
 	query_state = mysql_real_query(connection, sqlSelectCommandCharStar, sqlSelectCommandCharStarIndex);
 	//cout << "select qeuery performed" << endl;
 	//cout << "s-2" << endl;
@@ -476,25 +496,25 @@ void createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(FeatureCon
 		//cout << "s0b" << endl;
 
 		FeatureContainer * currentFeatureContainerInTestFeatureMatchingTrainBin = firstFeatureContainerInTestFeatureMatchingTrainBin;
-	
+
 		while((row = mysql_fetch_row(result)) != NULL)
 		{//only use first matching feature; nb that when train table is separated from test table every feature will have a unique objectname, viewnum, zoomnum, polynum and testside
 			//cout << "s1" << endl;
 			//exit(0);
 
 			//cout << "asd3" << endl;
-			
+
 			Feature * firstNewFeature = new Feature();
-			currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList = firstNewFeature;													
+			currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList = firstNewFeature;
 			addSQLRowDataToFeatureList(row, firstNewFeature, true, ignoreOTfeatures, numFeatures);
 			FeatureContainer * newFeatureContainer = new FeatureContainer();
 			currentFeatureContainerInTestFeatureMatchingTrainBin->next = newFeatureContainer;
 			currentFeatureContainerInTestFeatureMatchingTrainBin = currentFeatureContainerInTestFeatureMatchingTrainBin->next;
-																					
+
 			tableIndex++;
 
 		}
-		
+
 	}
 	mysql_free_result(result);
 }
@@ -522,12 +542,12 @@ void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTree(string sqlDatabaseDeci
 
 	sqlInsertCommandP4 = sqlInsertCommandP4 + OR_MYSQL_FIELD_NAME_ID + ", " + OR_MYSQL_FIELD_NAME_DECISIONTREE_SNAPSHOT_REF_ID + ", " + OR_MYSQL_FIELD_NAME_DECISIONTREE_BIN;
 	sqlInsertCommandP6 = sqlInsertCommandP6 + tableIDString + ", " + snapshotReferenceIDString + ", ";
-	
+
 	sqlInsertCommand = sqlInsertCommandP1 + sqlInsertCommandP2 + sqlInsertCommandP3 + sqlInsertCommandP4 + sqlInsertCommandP5 + sqlInsertCommandP6;
 	char sqlInsertCommandCharStar[1000];
 	int i;
-	
-	
+
+
 	//cout << "sqlInsertCommand.length() = " << sqlInsertCommand.length() << endl;
 	for(i=0; i <sqlInsertCommand.length(); i++)
 	{
@@ -537,7 +557,7 @@ void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTree(string sqlDatabaseDeci
 	//cout << "i1 = " << i << endl;
 		//must be done this way as decisionTreeBinText may contain null characters
 
-	#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DO_NOT_USE_REAL_SQL_QUERY 
+	#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DO_NOT_USE_REAL_SQL_QUERY
 	//cout << "decisionTreeBinTextLength = " << decisionTreeBinTextLength << endl;
 	for(int q=0; q <decisionTreeBinTextLength; q++)
 	{
@@ -545,7 +565,7 @@ void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTree(string sqlDatabaseDeci
 	 	//cout << "sqlInsertCommandCharStar[i] = " << sqlInsertCommandCharStar[i] << endl;
 		sqlInsertCommandCharStar[i] = decisionTreeBinText[q];
 		i++;
-	}	
+	}
 	#else
 	sqlInsertCommandCharStar[i] = '\'';
 	i++;
@@ -553,38 +573,38 @@ void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTree(string sqlDatabaseDeci
 	sqlInsertCommandCharStar[i] = '\'';
 	i++;
 	#endif
-	sqlInsertCommandCharStar[i] = ')'; 
+	sqlInsertCommandCharStar[i] = ')';
 	i++;
 	sqlInsertCommandCharStar[i] = ';';
-	i++;	
+	i++;
 
 	/*OLD;
-	for(int j=0; j<decisionTreeBinTextLength; j++) 
+	for(int j=0; j<decisionTreeBinTextLength; j++)
 	{
 		cout << int(decisionTreeBinText[j]) << endl;
 		sqlInsertCommandCharStar[i] = decisionTreeBinText[j];
-		i++; 
+		i++;
 	}
 	cout << "i2 = " << i << endl;
-	sqlInsertCommandCharStar[i] = ')'; 
+	sqlInsertCommandCharStar[i] = ')';
 	i++;
 	sqlInsertCommandCharStar[i] = ';';
-	i++;	
-	
+	i++;
+
 	for(int q=0;q<i;q++)
 	{
 		cout << "c = " << sqlInsertCommandCharStar[q] << endl;
 	}
 	*/
-	
+
 	/*
 	for(int q=0;q<i;q++)
 	{
 		cout << "c = " << sqlInsertCommandCharStar[q] << endl;
 	}
 	*/
-	
-	
+
+
 	#ifdef OR_SQL_DATABASE_DEBUG
 	cout << "sqlInsertCommandCharStar = " << sqlInsertCommandCharStar << endl;
 	//exit(0);
@@ -609,9 +629,9 @@ void insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeStart(string sqlDat
 
 
 	sqlInsertCommandP4 = sqlInsertCommandP4 + OR_MYSQL_FIELD_NAME_ID + ", " + OR_MYSQL_FIELD_NAME_DECISIONTREE_SNAPSHOT_REF_ID + ", " + OR_MYSQL_FIELD_NAME_DECISIONTREE_BIN;
-	
+
 	sqlInsertCommand = sqlInsertCommandP1 + sqlInsertCommandP2 + sqlInsertCommandP3 + sqlInsertCommandP4 + sqlInsertCommandP5;
-	
+
 	for(int j=0; j<sqlInsertCommand.length(); j++)
 	{
 		decisionTreeultipleRowInsertQueryTextCharStar[*decisionTreeSQLMultipleRowInsertQueryLength] = sqlInsertCommand[j];
@@ -623,7 +643,7 @@ void insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeStart(string sqlDat
 	//cout << "sqlInsertCommand = " << sqlInsertCommand << endl;
 	//exit(0);
 	#endif
-		
+
 }
 
 
@@ -642,8 +662,8 @@ void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTreeIteration(char * decisi
 	sqlInsertCommand = sqlInsertCommandP6;
 	char sqlInsertCommandCharStar[1000];
 	int i;
-	
-	
+
+
 	//cout << "sqlInsertCommand.length() = " << sqlInsertCommand.length() << endl;
 	for(i=0; i <sqlInsertCommand.length(); i++)
 	{
@@ -653,7 +673,7 @@ void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTreeIteration(char * decisi
 	//cout << "i1 = " << i << endl;
 		//must be done this way as decisionTreeBinText may contain null characters
 
-	#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DO_NOT_USE_REAL_SQL_QUERY 
+	#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DO_NOT_USE_REAL_SQL_QUERY
 	//cout << "decisionTreeBinTextLength = " << decisionTreeBinTextLength << endl;
 	for(int q=0; q <decisionTreeBinTextLength; q++)
 	{
@@ -661,19 +681,19 @@ void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTreeIteration(char * decisi
 	 	//cout << "sqlInsertCommandCharStar[i] = " << sqlInsertCommandCharStar[i] << endl;
 		sqlInsertCommandCharStar[i] = decisionTreeBinText[q];
 		i++;
-	}	
+	}
 	#else
 	sqlInsertCommandCharStar[i] = '\'';
 	i++;
 	i = i + mysql_real_escape_string(&mysql, &(sqlInsertCommandCharStar[i]), decisionTreeBinText, decisionTreeBinTextLength);
 	sqlInsertCommandCharStar[i] = '\'';
 	i++;
-	#endif	
-	sqlInsertCommandCharStar[i] = ')'; 
+	#endif
+	sqlInsertCommandCharStar[i] = ')';
 	i++;
 	sqlInsertCommandCharStar[i] = ',';
 	i++;
-			
+
 	for(int j=0; j<i; j++)
 	{
 		decisionTreeultipleRowInsertQueryTextCharStar[*decisionTreeSQLMultipleRowInsertQueryLength] = sqlInsertCommandCharStar[j];
@@ -684,8 +704,8 @@ void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTreeIteration(char * decisi
 	//cout << "decisionTreeultipleRowInsertQueryTextCharStar = " << decisionTreeultipleRowInsertQueryTextCharStar << endl;
 	//exit(0);
 	#endif
-	
-	
+
+
 	*databaseTableSize = *databaseTableSize + 1;
 }
 
@@ -702,7 +722,7 @@ void insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeEnd(char * decision
 		for(int i=0; i<sqlInsertCommand.length(); i++)
 		{
 	 		decisionTreeultipleRowInsertQueryTextCharStar[(*decisionTreeSQLMultipleRowInsertQueryLength)-1] = sqlInsertCommand[i];	//-1 is to overwrite previous ','
-			*decisionTreeSQLMultipleRowInsertQueryLength = *decisionTreeSQLMultipleRowInsertQueryLength+1; 
+			*decisionTreeSQLMultipleRowInsertQueryLength = *decisionTreeSQLMultipleRowInsertQueryLength+1;
 		}
 		*decisionTreeSQLMultipleRowInsertQueryLength = *decisionTreeSQLMultipleRowInsertQueryLength-1;
 
@@ -711,7 +731,7 @@ void insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeEnd(char * decision
 		//cout << "decisionTreeultipleRowInsertQueryTextCharStar = " << decisionTreeultipleRowInsertQueryTextCharStar << endl;
 		//exit(0);
 		//#endif
-		performSQLRealInsertQuery(decisionTreeultipleRowInsertQueryTextCharStar, *decisionTreeSQLMultipleRowInsertQueryLength);	
+		performSQLRealInsertQuery(decisionTreeultipleRowInsertQueryTextCharStar, *decisionTreeSQLMultipleRowInsertQueryLength);
 	}
 	else
 	{
@@ -726,7 +746,7 @@ void insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeStart(char * decisi
 	string sqlInsertCommandP1 = "INSERT ALL ";
 
 	sqlInsertCommand = sqlInsertCommandP1;
-	
+
 	for(int i=0; i<sqlInsertCommand.length(); i++)
 	{
 	 	decisionTreeultipleRowInsertQueryTextCharStar[decisionTreeSQLMultipleRowInsertQueryLength+i] = sqlInsertCommand[i];
@@ -754,12 +774,12 @@ void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTreeIteration(string sqlDat
 
 	sqlInsertCommandP4 = sqlInsertCommandP4 + OR_MYSQL_FIELD_NAME_ID + ", " + OR_MYSQL_FIELD_NAME_DECISIONTREE_SNAPSHOT_REF_ID + ", " + OR_MYSQL_FIELD_NAME_DECISIONTREE_BIN;
 	sqlInsertCommandP6 = sqlInsertCommandP6 + tableIDString + ", " + snapshotReferenceIDString + ", ";
-	
+
 	sqlInsertCommand = sqlInsertCommandP1 + sqlInsertCommandP2 + sqlInsertCommandP3 + sqlInsertCommandP4 + sqlInsertCommandP5 + sqlInsertCommandP6;
 	char sqlInsertCommandCharStar[1000];
 	int i;
-	
-	
+
+
 	//cout << "sqlInsertCommand.length() = " << sqlInsertCommand.length() << endl;
 	for(i=0; i <sqlInsertCommand.length(); i++)
 	{
@@ -769,7 +789,7 @@ void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTreeIteration(string sqlDat
 	//cout << "i1 = " << i << endl;
 		//must be done this way as decisionTreeBinText may contain null characters
 
-	#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DO_NOT_USE_REAL_SQL_QUERY 
+	#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DO_NOT_USE_REAL_SQL_QUERY
 	//cout << "decisionTreeBinTextLength = " << decisionTreeBinTextLength << endl;
 	for(int q=0; q <decisionTreeBinTextLength; q++)
 	{
@@ -777,15 +797,15 @@ void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTreeIteration(string sqlDat
 	 	//cout << "sqlInsertCommandCharStar[i] = " << sqlInsertCommandCharStar[i] << endl;
 		sqlInsertCommandCharStar[i] = decisionTreeBinText[q];
 		i++;
-	}	
+	}
 	#else
 	sqlInsertCommandCharStar[i] = '\'';
 	i++;
 	i = i + mysql_real_escape_string(&mysql, &(sqlInsertCommandCharStar[i]), decisionTreeBinText, decisionTreeBinTextLength);
 	sqlInsertCommandCharStar[i] = '\'';
 	i++;
-	#endif	
-	
+	#endif
+
 	for(int j=0; j<i; j++)
 	{
 		decisionTreeultipleRowInsertQueryTextCharStar[decisionTreeSQLMultipleRowInsertQueryLength] = sqlInsertCommandCharStar[j];
@@ -803,7 +823,7 @@ void createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(Snapsho
 {
 	int query_state;
 	MYSQL_ROW row;
-	
+
 	string sqlSelectCommand = "";	//eg SELECT `pBinxy` FROM `objectRecog`.`snapshot` WHERE ( ( `pBinxy` = 823 ) );
 	string sqlSelectCommandP1 = "SELECT ";
 	string sqlSelectCommandP2 = "";
@@ -819,7 +839,7 @@ void createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(Snapsho
 	string sqlSelectCommandP12 = "";
 
 	//cout << "asd1" << endl;
-	
+
 	sqlSelectCommandP2 = OR_MYSQL_FIELD_NAME_DECISIONTREE_SNAPSHOT_REF_ID;
 
 
@@ -830,19 +850,19 @@ void createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(Snapsho
 	else if(trainOrTest == TRAIN_AND_TEST)
 	{
 		char maxDecisionTreeTableRowString[25];
-		sprintf(maxDecisionTreeTableRowString, "%ld", databaseTableSizeDecisionTreeInitial);		
-		sqlSelectCommandP7 = sqlSelectCommandP7 + " WHERE (" + OR_MYSQL_FIELD_NAME_ID + " <= " + maxDecisionTreeTableRowString + " AND " + OR_MYSQL_FIELD_NAME_DECISIONTREE_BIN + " = ";	
+		sprintf(maxDecisionTreeTableRowString, "%ld", databaseTableSizeDecisionTreeInitial);
+		sqlSelectCommandP7 = sqlSelectCommandP7 + " WHERE (" + OR_MYSQL_FIELD_NAME_ID + " <= " + maxDecisionTreeTableRowString + " AND " + OR_MYSQL_FIELD_NAME_DECISIONTREE_BIN + " = ";
 	}
-	
+
 	sqlSelectCommand = sqlSelectCommandP1 + sqlSelectCommandP2 + sqlSelectCommandP3 + sqlSelectCommandP4 + sqlSelectCommandP5 + sqlSelectCommandP6 + sqlSelectCommandP7;
-	
+
 	char sqlSelectCommandCharStar[OR_IMAGE_COMPARISON_DECISION_TREE_STRING_MAX_LENGTH];
 	int i;
 	for(i=0; i <sqlSelectCommand.length(); i++)
 	{
 	 	sqlSelectCommandCharStar[i] = sqlSelectCommand[i];
 	}
-	
+
 	//cout << "i1 = " << i << endl;
 		//must be done this way as decisionTreeBinText may contain null characters
 
@@ -852,7 +872,7 @@ void createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(Snapsho
 	{
 	 	sqlSelectCommandCharStar[i] = decisionTreeBinText[q];
 		i++;
-	}	
+	}
 	#else
 	sqlSelectCommandCharStar[i] = '\'';
 	i++;
@@ -860,10 +880,10 @@ void createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(Snapsho
 	sqlSelectCommandCharStar[i] = '\'';
 	i++;
 	#endif
-	sqlSelectCommandCharStar[i] = ')'; 
+	sqlSelectCommandCharStar[i] = ')';
 	i++;
 	sqlSelectCommandCharStar[i] = ';';
-	i++;	
+	i++;
 
 	/*
 	for(int q=0;q<i;q++)
@@ -872,15 +892,15 @@ void createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(Snapsho
 	}
 	cout << "" << endl;
 	*/
-	
+
 	/*OLD;
 		//must be done this way as decisionTreeBinText may contain null characters
-	for(int j=0; j<decisionTreeBinTextLength; j++) 
+	for(int j=0; j<decisionTreeBinTextLength; j++)
 	{
 		sqlSelectCommandCharStar[i] = decisionTreeBinText[j];
-		i++; 
+		i++;
 	}
-	sqlSelectCommandCharStar[i] = ')'; 
+	sqlSelectCommandCharStar[i] = ')';
 	i++;
 	sqlSelectCommandCharStar[i] = ';';
 	i++;
@@ -892,8 +912,8 @@ void createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(Snapsho
 		cout << sqlSelectCommandCharStar[q] << endl;
 	}
 	*/
-	
-	
+
+
 	#ifdef OR_SQL_DATABASE_DEBUG
 	cout << "sqlSelectCommandCharStar = " << sqlSelectCommandCharStar << endl;
 	//exit(0);
@@ -904,7 +924,7 @@ void createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(Snapsho
 	#endif
 
 	//cout << "asd2" << endl;
-	
+
 	query_state = mysql_real_query(connection, sqlSelectCommandCharStar, i);
 	//cout << "select qeuery performed" << endl;
 	//cout << "s-2" << endl;
@@ -916,15 +936,15 @@ void createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(Snapsho
 	else
 	{
 		//cout << "s0" << endl;
-		
+
 		int tableIndex = 0;
 		result = mysql_store_result(connection);
 
 		//cout << "s0b" << endl;
 
 		SnapshotIDReferenceList * currentReferenceInSnapshotIDReferenceList = firstReferenceInSnapshotIDReferenceList;
-	
-		
+
+
 		while((row = mysql_fetch_row(result)) != NULL)
 		{//only use first matching feature; nb that when train table is separated from test table every feature will have a unique objectname, viewnum, zoomnum, polynum and testside
 			//cout << "s1" << endl;
@@ -933,7 +953,7 @@ void createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(Snapsho
 			char * tableIDCharStar;
 			tableIDCharStar = row[0];
 			long tableID = (long)(atof(tableIDCharStar));
-				
+
 			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_LOOKUP_DO_NOT_ALLOW_REPEATS
 			//test for multiple references to same object ID added by RBB 23Mar10
 			bool snapshotIDReferenceAlreadyAddedToList = false;
@@ -963,11 +983,11 @@ void createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(Snapsho
 			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_LOOKUP_DO_NOT_ALLOW_REPEATS
 			}
 			#endif
-			
+
 			tableIndex++;
 
 		}
-		
+
 	}
 	mysql_free_result(result);
 }
@@ -1018,8 +1038,8 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * 
 	else if(trainOrTest == TRAIN_AND_TEST)
 	{
 		char maxTrainTableRowString[25];
-		sprintf(maxTrainTableRowString, "%ld", databaseTableSizeTrainInitial);		
-		sqlSelectCommandP7 = sqlSelectCommandP7 + " WHERE (" + OR_MYSQL_FIELD_NAME_ID + " <= " + maxTrainTableRowString + " AND " + OR_MYSQL_FIELD_NAME_TRAINORTESTNUM + " = " + OR_MYSQL_FIELD_NAME_TRAINORTESTNUM_TRAIN;	//only query train objects	
+		sprintf(maxTrainTableRowString, "%ld", databaseTableSizeTrainInitial);
+		sqlSelectCommandP7 = sqlSelectCommandP7 + " WHERE (" + OR_MYSQL_FIELD_NAME_ID + " <= " + maxTrainTableRowString + " AND " + OR_MYSQL_FIELD_NAME_TRAINORTESTNUM + " = " + OR_MYSQL_FIELD_NAME_TRAINORTESTNUM_TRAIN;	//only query train objects
 	}
 	else
 	{
@@ -1028,19 +1048,19 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * 
 	}
 
 
-#ifdef OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK 
+#ifdef OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK
 	unsigned long linearCombination = 0;
 	convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(concatonatedSignedDctCoeffArrayRequirement, pBinxRequirement, pBinyRequirement, &linearCombination);
 	//cout << "linearCombination = " << linearCombination << endl;
-	//exit(0);	
+	//exit(0);
 	char linearCombinationString[100];
 	sprintf(linearCombinationString, "%ld", linearCombination);
 	//cout << "linearCombinationString = " << linearCombinationString << endl;
-		
+
 	sqlSelectCommandP8 = sqlSelectCommandP8 + " AND " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL + " >= (" + linearCombinationString + " - " + OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK_MAX_DIFF + ")" " AND " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL + " <= (" + linearCombinationString + " + " + OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK_MAX_DIFF + ")";
 	cout << "sqlSelectCommandP8 = " << sqlSelectCommandP8 << endl;
-#else 
-	
+#else
+
 	if(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING)
 	{
 	#ifdef OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_REQUIREMENT_V1
@@ -1368,7 +1388,7 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * 
 			char dctCoeffArrayBinnedString[1000];
 			int DCTCoeff64BitValueStringLengthNOTUSED = 0;	//not used
 			int concatonatedDctCoeffArrayBiasIntNOTUSED[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS];
-			convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(firstFeatureInList->dctCoeff, dctCoeffNumValString, &DCTCoeff64BitValueStringLengthNOTUSED, concatonatedDctCoeffArrayBiasIntNOTUSED);	
+			convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(firstFeatureInList->dctCoeff, dctCoeffNumValString, &DCTCoeff64BitValueStringLengthNOTUSED, concatonatedDctCoeffArrayBiasIntNOTUSED);
 			#else
 			char dctCoeffNumValString[1000];
 			int DCTCoeff64BitValueStringLengthNOTUSED = 0;	//not used
@@ -1376,7 +1396,7 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * 
 			#endif
 		#else
 			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
-			int concatonatedDctCoeffArrayBiasIntNOTUSED[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS];		
+			int concatonatedDctCoeffArrayBiasIntNOTUSED[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS];
 			unsigned long dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(concatonatedSignedDctCoeffArrayRequirement, concatonatedDctCoeffArrayBiasIntNOTUSED);
 			#else
 			unsigned long dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(concatonatedSignedDctCoeffArrayRequirement);
@@ -1532,10 +1552,10 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * 
 							}
 							*/
 						}
-							
+
 					}
 					mysql_free_result(result);
-					
+
 					if(numberOfSmallImagecomparisons >= 1)
 					{
 						numberOfSuccessfulSmallImagecomparisons++;
@@ -1612,7 +1632,7 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * 
 
 	}
 	mysql_free_result(result);
-			
+
 		#ifdef OR_IMAGE_COMPARISON_SQL_DB_USE_RGB_8BIT_SMALL_MAP_QUERY_REQUIREMENT_V3
 		}
 		#endif
@@ -1669,7 +1689,7 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 	//#ifdef OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE
 	char * allTextCharStar;
 	//#endif
-	
+
 
 	long tableID;
 	int trainOrTest;
@@ -1707,7 +1727,7 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 	sideIndexStringCharStar = row[fieldIndex++];
 
 	//cout << "asd3" << endl;
-	
+
 	/*
 	cout << "tableIDCharStar = " << tableIDCharStar << endl;
 	cout << "trainOrTestStringCharStar = " << trainOrTestStringCharStar << endl;
@@ -1717,7 +1737,7 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 	cout << "polyIndexStringCharStar = " << polyIndexStringCharStar << endl;
 	cout << "sideIndexStringCharStar = " << sideIndexStringCharStar << endl;
 	*/
-	
+
 	tableID = (long)(atof(tableIDCharStar));
 	objectName = objectNameCharStar;
 	trainOrTest = (bool)(atof(trainOrTestStringCharStar));
@@ -1728,10 +1748,10 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 
 	//cout << "s2" << endl;
 
-	int numFoundFeatures = 0;	//added 14 June 2012 (for the case where there is less features recorded in sql than expected / eg 4] 
+	int numFoundFeatures = 0;	//added 14 June 2012 (for the case where there is less features recorded in sql than expected / eg 4]
 	bool stillFindingFeatures = true;
 	unsigned long * lengths;
-	lengths = mysql_fetch_lengths(result);	
+	lengths = mysql_fetch_lengths(result);
 	for(int featureNum=0; featureNum<numFeatures; featureNum++)
 	{
 		//cout << "lengths[fieldIndex]  = " << lengths[fieldIndex+1]  << endl;
@@ -1739,7 +1759,7 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 		{
 			stillFindingFeatures = false;
 		}
-		
+
 		#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 		OTpointIndexStringCharStar = row[fieldIndex++];
 		#endif
@@ -1751,7 +1771,7 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 		pointyCharStar = row[fieldIndex++];
 		pointzCharStar = row[fieldIndex++];
 		#endif
-			
+
 		if(stillFindingFeatures)
 		{
 			#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
@@ -1764,13 +1784,13 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 			point[featureNum].x = atof(pointxCharStar);
 			point[featureNum].y = atof(pointyCharStar);
 			point[featureNum].z = atof(pointzCharStar);
-			#endif						
+			#endif
 			numFoundFeatures++;
 		}
 	}
 
 	//cout << "asd4" << endl;
-	
+
 	if(OR_IMAGE_COMPARISON_GEOMETRIC_COMPARISON_BINNING)
 	{
 		//cout << "s3" << endl;
@@ -1800,7 +1820,7 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 	}
 
 	//cout << "asd5" << endl;
-	
+
 
 	if(OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING)
 	{
@@ -1825,7 +1845,7 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 		//cout << "firstFeatureInList->snapshotMapsText = " << endl;
 		//cout << firstFeatureInList->snapshotMapsText << endl;
 	}
-	
+
 	/*old; non real query
 	if(OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE)
 	{
@@ -1836,9 +1856,9 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 		fieldIndex++;
 	}
 	*/
-	
+
 	//cout << "\n\nadding features to list\n\n" << endl;
-	
+
 	for(int featureNum=0; featureNum<numFoundFeatures; featureNum++)
 	{
 		if((!ignoreOTfeatures) || (OTpointIndex[featureNum] == 0))
@@ -1867,7 +1887,7 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 				currentFeatureInList->avgCol.r = colAvg.r;
 				currentFeatureInList->avgCol.g = colAvg.g;
 				currentFeatureInList->avgCol.b = colAvg.b;
-				
+
 				/*
 				cout << "currentFeatureInList->avgCol.r = " << currentFeatureInList->avgCol.r << endl;
 				cout << "currentFeatureInList->avgCol.g = " << currentFeatureInList->avgCol.g << endl;
@@ -1928,7 +1948,7 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 			currentFeatureInList=currentFeatureInList->next;
 		}
 	}
-	
+
 	//cout << "asd7" << endl;
 
 
@@ -1969,7 +1989,7 @@ void createSQLSelectRowCommand(char sqlSelectRowCommand[], int numFeatures)
 		}
 		sqlSelectCommandP2 = sqlSelectCommandP2 + ", " + OR_MYSQL_FIELD_NAME_GEO_BINS_XY;
 	}
-	
+
 	if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
 	{
 		for(int dctCoeffNum = 0; dctCoeffNum <OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; dctCoeffNum++)
@@ -1986,10 +2006,10 @@ void createSQLSelectRowCommand(char sqlSelectRowCommand[], int numFeatures)
 	{
 		sqlSelectCommandP2 = sqlSelectCommandP2 + ", " + OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_R_BINS + ", " + OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_G_BINS + ", " + OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_B_BINS + ", " + OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_RGB_BINS;
 	}
-	
+
 	if(OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE)
 	{
-		sqlSelectCommandP2 = sqlSelectCommandP2 + ", " + OR_MYSQL_FIELD_NAME_ALL_IMAGE_TEXT;	
+		sqlSelectCommandP2 = sqlSelectCommandP2 + ", " + OR_MYSQL_FIELD_NAME_ALL_IMAGE_TEXT;
 	}
 
 	int i;
@@ -2010,9 +2030,9 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 {
 	Feature * currentFeatureInTempList = firstFeatureInList;
 		//now bin the features;
-	
+
 	int findex1 = 0;
-	
+
 	while((currentFeatureInTempList->next != NULL) && (findex1 < maxNumFeaturePermutations))
 	{
 
@@ -2039,7 +2059,7 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 						}
 						*/
 						//cout << "asd35" << endl;
-						
+
 						string sqlInsertCommand = "";	//eg INSERT INTO snapshot (pBinxy) VALUES (430);
 						string sqlInsertCommandP1 = "INSERT INTO ";
 						string sqlInsertCommandP2 = tableName;
@@ -2057,7 +2077,7 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 						char sideIndexString[10];
 
 						//cout << "asd35b" << endl;
-						
+
 						sprintf(tableIDString, "%ld", *databaseTableSize);
 						sprintf(trainOrTestString, "%d", ((int)trainOrTest));
 						sprintf(viewIndexString, "%d", viewIndex);
@@ -2068,15 +2088,15 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 						//cout << "OR_MYSQL_FIELD_NAME_ID = " << OR_MYSQL_FIELD_NAME_ID << endl;
 						//cout << "OR_MYSQL_FIELD_NAME_OBJECTNAME = " << OR_MYSQL_FIELD_NAME_OBJECTNAME << endl;
 						//sqlInsertCommandP4 = sqlInsertCommandP4 + OR_MYSQL_FIELD_NAME_ID + ", " + OR_MYSQL_FIELD_NAME_OBJECTNAME;
-						
+
 						//cout << "asd35c" << endl;
-						
+
 						sqlInsertCommandP4 = sqlInsertCommandP4 + OR_MYSQL_FIELD_NAME_ID + ", " + OR_MYSQL_FIELD_NAME_OBJECTNAME + ", " + OR_MYSQL_FIELD_NAME_TRAINORTESTNUM + ", " + OR_MYSQL_FIELD_NAME_VIEWNUM + ", " + OR_MYSQL_FIELD_NAME_ZOOMNUM + ", " + OR_MYSQL_FIELD_NAME_POLYNUM + ", " + OR_MYSQL_FIELD_NAME_SIDENUM;
 						sqlInsertCommandP6 = sqlInsertCommandP6 + tableIDString + ", " + "'" + objectName + "'" + ", " + trainOrTestString + ", " + viewIndexString + ", " + zoomIndexString + ", " + polygonIndexString + ", " + sideIndexString;
 
 
 						//cout << "asd35d" << endl;
-						
+
 						bool insideBin = false;
 
 						int geoxBin[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS];
@@ -2087,22 +2107,22 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 						geoyBin[1] = determineGeoBinY(currentFeatureInTempList2->pointTransformed.y);
 
 
-						
+
 						//cout << "asd36" << endl;
-						
+
 						if(addPermutationsOfTrainFeaturesForGeoBinning)
 						{
 							//cout << "3" << endl;
 
-							if((geoxBin[0] >= 0) 
-							&& (geoxBin[0] < OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS) 
-							&& (geoyBin[0] >= 0) 
+							if((geoxBin[0] >= 0)
+							&& (geoxBin[0] < OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS)
+							&& (geoyBin[0] >= 0)
 							&& (geoyBin[0] < OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS)
 							&& (geoxBin[1] >= 0)
 							&& (geoxBin[1] < OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS)
 							&& (geoyBin[1] >= 0)
 							&& (geoyBin[1] < OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS))
-							{				
+							{
 								insideBin = true;
 								//this passes; cout << "inside bin during array formation - good" << endl;
 							}
@@ -2157,7 +2177,7 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 									currentFeature = currentFeature->next;
 
 								}
-	
+
 								if(OR_IMAGE_COMPARISON_GEOMETRIC_COMPARISON_BINNING)
 								{
 									for(int geobinDimension=0; geobinDimension<OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS; geobinDimension++)
@@ -2182,7 +2202,7 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 						}
 
 						//cout << "asd37" << endl;
-						
+
 						Feature * currentFeature = firstFeatureInList;
 
 						bool storeAllNearbyAndOTFeaturesDuringTrain;
@@ -2254,8 +2274,8 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 
 
 						//cout << "asd38" << endl;
-						
-						//what is the following used for??? (OR_MYSQL_FIELD_NAME_GEO_BINS_X/OR_MYSQL_FIELD_NAME_GEO_BINS_Y data from test table in SQL database should not be used - I guess it is for a succssful SQL select query only - may as well place dummy data into here)  
+
+						//what is the following used for??? (OR_MYSQL_FIELD_NAME_GEO_BINS_X/OR_MYSQL_FIELD_NAME_GEO_BINS_Y data from test table in SQL database should not be used - I guess it is for a succssful SQL select query only - may as well place dummy data into here)
 						if(OR_IMAGE_COMPARISON_GEOMETRIC_COMPARISON_BINNING)
 						{
 							if(!addPermutationsOfTrainFeaturesForGeoBinning)
@@ -2295,8 +2315,8 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 								}
 							}
 						}
-					
-						
+
+
 
 						if(!addPermutationsOfTrainFeaturesForGeoBinning || insideBin)
 						{
@@ -2310,7 +2330,7 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 								sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + OR_MYSQL_FIELD_NAME_GEO_BINS_XY;
 								sqlInsertCommandP6 = sqlInsertCommandP6 + ", " + geobinxyString;
 							}
-							
+
 							//cout << "geoxyBin = " << geoxyBin << endl;
 
 							if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
@@ -2327,20 +2347,20 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 									sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BINS + dctCoeffNumString;
 									sqlInsertCommandP6 = sqlInsertCommandP6 + ", " + dctCoeffValString;
 								}
-								
+
 								#ifdef OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK
-								
+
 								unsigned long linearCombination = 0;
 								convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(currentFeature->dctCoeff, geoxBin, geoyBin, &linearCombination);
-								
+
 								char dctCoeffArrayBinnedString[100];
 								sprintf(dctCoeffArrayBinnedString, "%ld", linearCombination);
 								//cout << "linearCombination = " << linearCombination << endl;
 								sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL;
 								sqlInsertCommandP6 = sqlInsertCommandP6 + ", " + dctCoeffArrayBinnedString;
-															
+
 								//exit(0);
-								#else								
+								#else
 								//cout << "Q; currentFeature->dctCoeffArrayBinned = " << currentFeature->dctCoeffArrayBinned << endl;
 								char dctCoeffArrayBinnedString[25];
 								sprintf(dctCoeffArrayBinnedString, "%ld", currentFeature->dctCoeffArrayBinned);
@@ -2411,10 +2431,10 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 								}
 								#endif
 							}
-							
-							
+
+
 							//cout << "asd" << endl;
-							
+
 							if(!OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE)
 							{
 
@@ -2429,19 +2449,19 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 								char * sqlInsertCommandCharStar = const_cast<char*>(sqlInsertCommand.c_str());
 								performSQLInsertQuery(sqlInsertCommandCharStar);
 								*databaseTableSize = *databaseTableSize + 1;
-							
+
 							}
 							else
 							{
-							
-								
+
+
 								sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + OR_MYSQL_FIELD_NAME_ALL_IMAGE_TEXT;
 								sqlInsertCommandP6 = sqlInsertCommandP6 + ", ";
 								sqlInsertCommand = sqlInsertCommandP1 + sqlInsertCommandP2 + sqlInsertCommandP3 + sqlInsertCommandP4 + sqlInsertCommandP5 + sqlInsertCommandP6;
 								char sqlInsertCommandCharStar[OR_IMAGE_COMPARISON_SQL_DATABASE_TEST_AND_TRAIN_TABLES_INSERT_QUERY_MAX_LENGTH];
 								int i;
 
-								
+
 								//cout << "sqlInsertCommand.length() = " << sqlInsertCommand.length() << endl;
 								for(i=0; i <sqlInsertCommand.length(); i++)
 								{
@@ -2461,12 +2481,12 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 								sqlInsertCommandCharStar[i] = '\'';
 								i++;
 
-								sqlInsertCommandCharStar[i] = ')'; 
+								sqlInsertCommandCharStar[i] = ')';
 								i++;
 								sqlInsertCommandCharStar[i] = ';';
-								i++;	
+								i++;
 								//cout << "i2 = " << i << endl;
-								
+
 								#ifdef OR_SQL_DATABASE_DEBUG
 								cout << "sqlInsertCommand = " << sqlInsertCommandCharStar << endl;
 								//exit(0);
@@ -2526,14 +2546,14 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 	#else
 	unsigned long dctCoeffArrayBinned = 0;
 	#endif
-	
+
 	for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; i++)
 	{
 		int arrayValueSigned = concatonatedSignedDctCoeffArray[i];
 		//cout << " concatonatedSignedDctCoeffArray[i] = " << int(concatonatedSignedDctCoeffArray[i]) << endl;
-		
+
 		/*OLD; perform interpolation before signed to unsigned conversion
-		
+
 			//perform binning only if necessary/requested
 		int numDistintValsPerColumn = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
 		if(numDistintValsPerColumn != 1)
@@ -2541,10 +2561,10 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 			double arrayValueSignedDouble = double(arrayValueSigned)/double(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL);
 			arrayValueSigned = arrayValueSigned/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
-			
+
 			//cout << "arrayValueSignedDouble = " << arrayValueSignedDouble << endl;
 			//cout << "arrayValueSigned = " << arrayValueSigned << endl;
-			
+
 			if(arrayValueSigned >= 0)
 			{
 				if(arrayValueSignedDouble >= (double(arrayValueSigned)+0.5-DOUBLE_MIN_PRECISION+OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD))
@@ -2564,7 +2584,7 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 			}
 			else
 			{//arrayValueSigned < 0
-			
+
 				if(arrayValueSignedDouble >= (double(arrayValueSigned)+0.5-DOUBLE_MIN_PRECISION+OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD))
 				{
 					concatonatedDctCoeffArrayBiasInt[i] = OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_POS;
@@ -2578,37 +2598,37 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 				else
 				{
 					concatonatedDctCoeffArrayBiasInt[i] = OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_SAME;
-				}			
-			}			
+				}
+			}
 			#else
 			arrayValueSigned = arrayValueSigned/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
 			#endif
 		}
-		
+
 		if(arrayValueSigned > OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET)
 		{
-			arrayValueSigned = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET; 
+			arrayValueSigned = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET;
 		}
 		else if(arrayValueSigned < -OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET)
 		{
-			arrayValueSigned = -OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET; 
+			arrayValueSigned = -OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET;
 		}
 		int arrayValueUnsigned = arrayValueSigned + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET;	//convert to unsigned
-		
+
 		*/
-		
+
 		//cout << "arrayValueSigned = " << arrayValueSigned << endl;
-		
+
 		double arrayValueUnsignedDouble;
 		unsigned int arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);	//used to be int
-		
+
 		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 		int numDistintValsPerColumn = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
 		if(numDistintValsPerColumn != 1)
-		{			
+		{
 			//cout << "arrayValueUnsignedDouble = " << arrayValueUnsignedDouble << endl;
 			//cout << "arrayValueUnsigned = " << arrayValueUnsigned << endl;
-			
+
 			if(arrayValueUnsignedDouble >= (double(arrayValueUnsigned)+0.5-DOUBLE_MIN_PRECISION+OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD))
 			{
 				concatonatedDctCoeffArrayBiasInt[i] = OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_POS;
@@ -2623,12 +2643,12 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 			{
 				concatonatedDctCoeffArrayBiasInt[i] = OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_SAME;
 			}
-		}		
+		}
 		#endif
-		
+
 		//cout << "arrayValueUnsigned = " << arrayValueUnsigned << endl;
-				
-		
+
+
 	#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
 		//cout << "arrayValueUnsigned = " << arrayValueUnsigned << endl;
 		for(int q=0; q<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_IN_BITS; q++)
@@ -2642,7 +2662,7 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 				*DCTCoeff64BitValueStringLength = *DCTCoeff64BitValueStringLength + 1;
 				binaryConvertedToChar = 0x00;
 			}
-			
+
 			bool bitValue = false;
 			int arrayValueUnsignedAfterBitShift = int(arrayValueUnsigned) >> q;
 			//cout << "arrayValueUnsignedAfterBitShift = " << arrayValueUnsignedAfterBitShift << endl;
@@ -2656,7 +2676,7 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 				bitValue =  true;
 				//cout << "true" << endl;
 			}
-			 
+
 			if(bitValue)
 			{
 				binaryConvertedToChar = binaryConvertedToChar | (0x01 << index);
@@ -2665,8 +2685,8 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 			{
 				binaryConvertedToChar = binaryConvertedToChar | (0x00 << index);
 			}
-			
-			index++;			
+
+			index++;
 		}
 
 	#else
@@ -2675,8 +2695,8 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 		dctCoeffArrayBinned = dctCoeffArrayBinned + long(arrayValueUnsigned)*powLong(10, power);
 		//cout << i << ": arrayValueUnsigned = " << arrayValueUnsigned << ", dctCoeffArrayBinned = " << dctCoeffArrayBinned << endl;
 	#endif
-		
-		
+
+
 	}
 
 	#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
@@ -2688,17 +2708,17 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 		DCTCoeff64BitValueString[*DCTCoeff64BitValueStringLength] = binaryConvertedToChar;
 		*DCTCoeff64BitValueStringLength = *DCTCoeff64BitValueStringLength + 1;
 	}
-	
+
 	//add null character onto end of string
-	DCTCoeff64BitValueString[*DCTCoeff64BitValueStringLength] = '\0';	
+	DCTCoeff64BitValueString[*DCTCoeff64BitValueStringLength] = '\0';
 	*DCTCoeff64BitValueStringLength = *DCTCoeff64BitValueStringLength + 1;
 	#else
 	//cout << "fin dctCoeffArrayBinned = " << dctCoeffArrayBinned << endl;
 	return dctCoeffArrayBinned;
 	#endif
-	
 
-	
+
+
 }
 
 
@@ -2736,7 +2756,7 @@ void convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(signed char
 {
 	//int linearCombinationArray[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS + OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2];
 	int linearCombinationArray[OR_LINEAR_COMBINATION_ARRAY_MAX_SIZE];
-	
+
 	int index = 0;
 	for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; i++)
 	{
@@ -2745,7 +2765,7 @@ void convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(signed char
 
 		double arrayValueUnsignedDouble;
 		unsigned int arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);		//used to be int
-			
+
 		linearCombinationArray[index] = arrayValueUnsigned;
 		//cout << "linearCombinationArray[index] = " << linearCombinationArray[index] << endl;
 		index++;
@@ -2754,12 +2774,12 @@ void convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(signed char
 	{
 		linearCombinationArray[index] =  int(geoxBin[i]);
 		index++;
-	}	
+	}
 	for(int i=0; i<OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS; i++)
 	{
 		linearCombinationArray[index] = int(geoyBin[i]);
 		index++;
-	}	
+	}
 	//*linearCombination = 1;
 	double linearCombinationDouble = 1;
 	for(int i=0; i<index; i++)
@@ -2777,12 +2797,12 @@ void convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(signed char
 		}
 			//*linearCombination = (*linearCombination) * subset;
 		linearCombinationDouble = linearCombinationDouble * subsetDouble;
-		
+
 			//cout << "\tlinearCombination = " << *linearCombination << endl;
-		//cout << "\tlinearCombinationDouble = " << linearCombinationDouble << endl;	
-	}	
+		//cout << "\tlinearCombinationDouble = " << linearCombinationDouble << endl;
+	}
 	*linearCombination = (unsigned long)(linearCombinationDouble/OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK_DOUBLE_TO_U_LONG_CONVERSION);
-	//cout << "linearCombination = " << *linearCombination << endl;	
+	//cout << "linearCombination = " << *linearCombination << endl;
 }
 
 
@@ -2819,10 +2839,10 @@ unsigned int determineDCTBinUnsigned(int arrayValueSigned, double * arrayValueUn
 	}
 	else if(arrayValueSigned < -OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL)
 	{
-		arrayValueSigned = -OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL; 
+		arrayValueSigned = -OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
 	}
 
-	unsigned int arrayValueUnsigned; 
+	unsigned int arrayValueUnsigned;
 	int numDistintValsPerColumn = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
 	if(numDistintValsPerColumn != 1)
 	{
@@ -2833,7 +2853,7 @@ unsigned int determineDCTBinUnsigned(int arrayValueSigned, double * arrayValueUn
 	{
 		arrayValueUnsigned = arrayValueSigned + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET;
 	}
-	
+
 	return arrayValueUnsigned;
 }
 

@@ -1,9 +1,29 @@
 /*******************************************************************************
+ * 
+ * This file is part of BAIPROJECT.
+ * 
+ * BAIPROJECT is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3
+ * only, as published by the Free Software Foundation.
+ * 
+ * BAIPROJECT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License version 3 for more details
+ * (a copy is included in the LICENSE file that accompanied this code).
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
+ * for a copy of the AGPLv3 License.
+ * 
+ *******************************************************************************/
+
+/*******************************************************************************
  *
  * File Name: ORdatabaseFileIO.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a8b 14-June-2012
+ * Project Version: 3a11b 09-July-2012
  *
  *******************************************************************************/
 
@@ -41,9 +61,9 @@ bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList,
 		/*
 		#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
 		testcurrentFeatureInNearestFeatureList->matchFound = false;
-		#endif	
+		#endif
 		*/
-		
+
 		bool testpassedDimensionCheck = true;
 		if(dimension == OR_METHOD2DOD_DIMENSIONS)
 		{//NB do not compare transformed object triangle features if OR_METHOD2DOD_DIMENSIONS, as these will always be set to a predefined object triangle
@@ -63,9 +83,9 @@ bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList,
 				/*
 				#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
 				traincurrentFeatureInNearestFeatureList->matchFound = false;
-				#endif	
+				#endif
 				*/
-							
+
 				bool trainpassedDimensionCheck = true;
 				if(dimension == OR_METHOD2DOD_DIMENSIONS)
 				{//NB do not compare transformed object triangle features if OR_METHOD2DOD_DIMENSIONS, as these will always be set to a predefined object triangle
@@ -85,7 +105,7 @@ bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList,
 					#else
 						requiredMaxError = OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR;
 					#endif
-									
+
 					if(compareVectorsArbitraryError(&(testcurrentFeatureInNearestFeatureList->pointTransformed), &(traincurrentFeatureInNearestFeatureList->pointTransformed), requiredMaxError))
 					{
 						numberOfFeatureGeoMatches++;
@@ -94,21 +114,21 @@ bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList,
 						traincurrentFeatureInNearestFeatureList->matchFound = true;
 						#endif
 					}
-					
+
 					int trainxBin = determineGeoBinX(traincurrentFeatureInNearestFeatureList->pointTransformed.x);
 					int trainyBin = determineGeoBinY(traincurrentFeatureInNearestFeatureList->pointTransformed.y);
 					int testxBin = determineGeoBinX(testcurrentFeatureInNearestFeatureList->pointTransformed.x);
-					int testyBin = determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);	
+					int testyBin = determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);
 					//cout << "\ntrainxBin = " << trainxBin << endl;
 					//cout << "trainyBin = " << trainyBin << endl;
 					//cout << "testxBin = " << testxBin << endl;
 					//cout << "testyBin = " << testyBin << endl;
 					//cout << testxBin << "\t" << testyBin << "\t" << trainxBin << "\t" << trainyBin << endl;
-					if((trainxBin == testxBin) && (trainyBin == testyBin))	
+					if((trainxBin == testxBin) && (trainyBin == testyBin))
 					{
 						numberOfFeatureGeoBinnedExactMatches++;
-						//cout << "\tnumberOfFeatureGeoBinnedExactMatches = " << numberOfFeatureGeoBinnedExactMatches << endl;						
-					}		
+						//cout << "\tnumberOfFeatureGeoBinnedExactMatches = " << numberOfFeatureGeoBinnedExactMatches << endl;
+					}
 
 				}
 				traincurrentFeatureInNearestFeatureList = traincurrentFeatureInNearestFeatureList->next;
@@ -125,7 +145,7 @@ bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList,
 	if(numberOfFeatureGeoBinnedExactMatches >= OR_GEOMETRIC_CHECK_MIN_NUMBER_PASSES)
 	{
 		*exactMatchFound = true;
-	}	
+	}
 	return passedGeometricCheck;
 
 }
@@ -450,17 +470,17 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 
 					#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
 					currentFeatureInList->matchFound = false;
-					#endif	
-				
+					#endif
+
 					if(createFeatureObjects)
 					{
 						Feature * newFeature = new Feature();
 						currentFeatureInList->next = newFeature;
 					}
-					
+
 					currentFeatureInList->lastFilledFeatureInList = false;		//added 8 June 2012 to combat overrun bug
 					currentFeatureInList->next->lastFilledFeatureInList = true;		//added 8 June 2012 to combat overrun bug
-					
+
 					currentFeatureInList=currentFeatureInList->next;
 				}
 				objectNameString[0] = '\0';
