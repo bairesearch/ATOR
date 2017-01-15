@@ -26,7 +26,7 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e3a 01-September-2014
+ * Project Version: 3e3b 01-September-2014
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -402,6 +402,10 @@ bool ORmethodExit()
 	endMySQLserverConnection();
 	#endif
 
+	#ifdef USE_OPENGL
+	exitOpenGL();
+	#endif
+	
 	return true;
 }
 
@@ -1061,7 +1065,7 @@ bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 			#endif
 
 			//delete firstReferenceInInterpolatedMesh;
-			cout << "deleted firstReferenceInInterpolatedMesh" << endl;
+			//cout << "deleted firstReferenceInInterpolatedMesh" << endl;
 
 			/*
 			//NEED TO FIX THIS - MEM ISSUE
