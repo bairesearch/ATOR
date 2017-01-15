@@ -2,9 +2,9 @@
 
 CC=g++
 #CFLAGS=-c -Wall
-CFLAGS=-c -W --no-warn -I/usr/include/mysql
+CFLAGS=-c -W --no-warn -I. -I../RT/RT -I/usr/include/mysql
 LDFLAGS=-lmysqlclient -ljpeg -lglut -lGL -lGLU
-SOURCES= ATORmain.cpp ATORmethod.cpp ATORmethod3DOD.cpp ATORmethod2DOD.cpp ATORoperations.cpp ATORpixelMaps.cpp ATORpolygonList.cpp ATORfeatureGeneration.cpp ATORquadraticFit.cpp ATORcomparison.cpp ATORimagecomparison.cpp ATORdatabaseFileIO.cpp ATORdatabaseSQL.cpp ATORdatabaseDecisionTree.cpp ATORrules.cpp ATORglobalDefs.cpp RTscene.cpp RToperations.cpp RTparser.cpp RTppm.cpp RTraytracer.cpp RTreferenceManipulation.cpp RTpixelMaps.cpp RTviewinfo.cpp LDparser.cpp LDreferenceManipulation.cpp LDreferenceClass.cpp LDmysql.cpp LDjpeg.cpp LDopengl.cpp SHAREDglobalDefs.cpp SHAREDvector.cpp SHAREDvars.cpp XMLparserClass.cpp XMLrulesClass.cpp
+SOURCES= ATORmain.cpp ATORmethod.cpp ATORmethod3DOD.cpp ATORmethod2DOD.cpp ATORoperations.cpp ATORpixelMaps.cpp ATORpolygonList.cpp ATORfeatureGeneration.cpp ATORquadraticFit.cpp ATORcomparison.cpp ATORimagecomparison.cpp ATORdatabaseFileIO.cpp ATORdatabaseSQL.cpp ATORdatabaseDecisionTree.cpp ATORrules.cpp ATORglobalDefs.cpp ../RT/RT/RTscene.cpp ../RT/RT/RToperations.cpp ../RT/RT/RTparser.cpp ../RT/RT/RTppm.cpp ../RT/RT/RTraytracer.cpp ../RT/RT/RTreferenceManipulation.cpp ../RT/RT/RTpixelMaps.cpp ../RT/RT/RTviewinfo.cpp ../RT/RT/LDparser.cpp ../RT/RT/LDreferenceManipulation.cpp ../RT/RT/LDreferenceClass.cpp ../RT/RT/LDmysql.cpp ../RT/RT/LDjpeg.cpp ../RT/RT/LDopengl.cpp ../RT/RT/SHAREDglobalDefs.cpp ../RT/RT/SHAREDvector.cpp ../RT/RT/SHAREDvars.cpp ../RT/RT/XMLparserClass.cpp ../RT/RT/XMLrulesClass.cpp
 
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=ATOR.exe
