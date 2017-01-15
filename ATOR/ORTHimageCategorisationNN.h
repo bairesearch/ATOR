@@ -3,7 +3,7 @@
  * File Name: ORTHimageCategorisationNN.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2010 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a5g 01-Nov-2011
+ * Project Version: 3a6a 20-Mar-2012
  * Test Harness for OR Image Categorisation NN method (not yet implemented)
  *******************************************************************************/
 
