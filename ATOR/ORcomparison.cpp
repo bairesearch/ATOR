@@ -23,7 +23,7 @@
  * File Name: ORcomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a12a 31-July-2012
+ * Project Version: 3b1a 05-August-2012
  *
  *******************************************************************************/
 
@@ -238,6 +238,14 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 #endif
 {
 
+	char currentTempFolder[EXE_FOLDER_PATH_MAX_LENGTH];
+	#ifdef LINUX
+	getcwd(currentTempFolder, EXE_FOLDER_PATH_MAX_LENGTH);
+	#else
+	::GetCurrentDirectory(EXE_FOLDER_PATH_MAX_LENGTH, currentTempFolder);
+	#endif
+		
+
 	ObjectReferenceList * firstReferenceInSnapshotMatchObjectReferenceList = new ObjectReferenceList();
 
 	bool useGeneratedTestPixmapFiles = false;
@@ -348,7 +356,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3a12a 31-July-2012<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3b1a 05-August-2012<p>";
 		}
 		else
 		{
@@ -2034,7 +2042,13 @@ char * trainsnapshotMapsText;
 
 											if(useGeneratedTrainPixmapFiles)
 											{
-
+												#ifdef OR_USE_DATABASE
+												#ifdef OR_DATABASE_DEBUG
+												cout << "DBgenerateFolderName: trainObjectString = " << trainObjectString << endl;
+												#endif
+												DBgenerateFolderName(&trainObjectString, true);												
+												#endif
+		
 												string trainrgbMapFacingPolyFileNameCPlusWithoutExt = traininterpolatedRGBMapFileNameForRayTracing + RGB_MAP_PPM_EXTENSION_PART + TRAIN_STRING;
 
 												string trainrgbMapFacingPolyFileNameCPlus = traininterpolatedRGBMapFileNameForRayTracing + RGB_MAP_PPM_EXTENSION_PART + TRAIN_STRING + PPM_EXTENSION;
@@ -2051,6 +2065,14 @@ char * trainsnapshotMapsText;
 												readImage(trainrgbMapSmallFacingPolyFileName, trainrgbMapSmall);
 												//cout << "h6" << endl;
 											#endif
+											
+												#ifdef OR_USE_DATABASE
+												#ifdef LINUX
+												chdir(currentTempFolder);
+												#else
+												::SetCurrentDirectory(currentTempFolder);
+												#endif
+												#endif											
 											}
 											else
 											{
@@ -2546,7 +2568,7 @@ char * trainsnapshotMapsText;
 										string traininterpolatedRGBMapFileNameForRayTracing;
 										string testinterpolatedRGBMapFileNameForRayTracing;
 
-									#ifdef TEMPTEST3GEOACCURACY
+									#ifdef TEMPTEST3GEOACCURACY	//doesn't work with OR_USE_DATABASE
 										cout << "TEMPTEST3GEOACCURACY Part 3" << endl;
 
 										#ifdef OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML_PRINT_OBJECT_NAMES
@@ -2645,8 +2667,10 @@ char * trainsnapshotMapsText;
 										}
 										*/
 
+										#ifdef DEBUG_OR_OUTPUT_DT_BIN
 										string DTbin = DTbinWithLowestErrorRecord[s];
-
+										#endif
+										
 										string trainImgSrcHtmlTags = "";
 										string testImgSrcHtmlTags = "";
 										char imageWidthFacingPolyString[10];
