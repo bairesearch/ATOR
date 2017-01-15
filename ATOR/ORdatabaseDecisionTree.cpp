@@ -23,7 +23,7 @@
  * File Name: ORdatabaseDecisionTree.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3b2a 27-September-2012
+ * Project Version: 3b1a 05-August-2012
  *
  *******************************************************************************/
 

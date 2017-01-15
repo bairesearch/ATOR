@@ -23,7 +23,7 @@
  * File Name: ORdatabaseFileIO.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3b2a 27-September-2012
+ * Project Version: 3b1a 05-August-2012
  *
  *******************************************************************************/
 
@@ -58,15 +58,6 @@
 
 #define OR_DATABASE_TEST_FOLDER_NAME "test"
 #define OR_DATABASE_TRAIN_FOLDER_NAME "train"
-
-#ifdef OR_USE_DATABASE
-bool directoryExists(string * folderName);
-bool makeDirectory(string * folderName);
-bool setCurrentDirectory(string * folderName);
-bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string * folderName);
-string DBgenerateServerName(string * objectName, bool trainOrTest);
-string DBgenerateFolderName(string * objectName, bool trainOrTest);
-#endif
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
 	bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList, Feature * trainfirstFeatureInNearestFeatureList, int dimension, bool * exactMatchFound);

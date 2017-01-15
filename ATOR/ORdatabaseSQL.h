@@ -23,7 +23,7 @@
  * File Name: ORdatabaseSQL.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3b2a 27-September-2012
+ * Project Version: 3b1a 05-August-2012
  *
  *******************************************************************************/
 
@@ -61,6 +61,14 @@ extern long databaseTableSizeDecisionTree;
 int countIncrements(int maxIncrement);
 
 
+#ifdef OR_USE_DATABASE
+bool directoryExists(string * folderName);
+bool makeDirectory(string * folderName);
+bool setCurrentDirectory(string * folderName);
+bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string * folderName);
+string DBgenerateServerName(string * objectName, bool trainOrTest);
+string DBgenerateFolderName(string * objectName, bool trainOrTest);
+#endif
 
 //#ifdef OR_IMAGE_COMPARISON_DECISION_TREE
 void createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(FeatureContainer * firstFeatureContainerInTestFeatureMatchingTrainBin, bool ignoreOTfeatures, char * decisionTreeBinText, int decisionTreeBinTextLength, int trainOrTest);
