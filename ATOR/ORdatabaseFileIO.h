@@ -1,9 +1,9 @@
 /*******************************************************************************
  *
  * File Name: ORdatabaseFileIO.h
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2010 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a6c 07-May-2012
+ * Project Version: 3a7a 06-June-2012
  *
  *******************************************************************************/
 
@@ -12,7 +12,7 @@
 #ifndef HEADER_OR_DATABASE_FILEIO
 #define HEADER_OR_DATABASE_FILEIO
 
-#include "SHAREDglobalDefs.h"
+#include "ORglobalDefs.h"
 #include "SHAREDvars.h"
 #include "ORpolygonList.h"
 	#include <stdio.h>

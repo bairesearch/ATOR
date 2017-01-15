@@ -1,14 +1,14 @@
 /*******************************************************************************
  *
  * File Name: ORmethod.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2010 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a6c 07-May-2012
+ * Project Version: 3a7a 06-June-2012
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
 #include "ORmethod.h"
-#include "SHAREDglobalDefs.h"
+#include "ORglobalDefs.h"
 #include "ORmethod3DOD.h"
 #include "ORmethod2DOD.h"
 #include "ORpixelMaps.h"
@@ -316,7 +316,7 @@ bool ORMethodInitialise(int imageWidthFacingPoly, int imageHeightFacingPoly, boo
 		cout << "OpenGL Hardware Acceleration: preconditions" << endl;
 		cout << "\t 1. freeglut is installed" << endl;
 	}
-	initiateOpenGL(imageWidthFacingPoly+(cropWidth*2), imageHeightFacingPoly+(cropHeight*2));
+	initiateOpenGL(imageWidthFacingPoly+(cropWidth*2), imageHeightFacingPoly+(cropHeight*2), OR_SNAPSHOT_WINDOW_POSITION_X, OR_SNAPSHOT_WINDOW_POSITION_Y, OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS);
 	#endif
 
 	if(OR_IMAGE_COMPARISON_DECISION_TREE)

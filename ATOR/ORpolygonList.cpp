@@ -1,14 +1,15 @@
 /*******************************************************************************
  *
  * File Name: ORpolygonList.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2010 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a6c 07-May-2012
+ * Project Version: 3a7a 06-June-2012
  *
  *******************************************************************************/
 
 #include "ORpolygonList.h"
 #include "SHAREDvector.h"
+#include "RTglobalDefs.h"	//required for ESTIMATE_MAX_DEPTH_T_REAL
 
 #include <stdio.h>
 #include <stdlib.h>

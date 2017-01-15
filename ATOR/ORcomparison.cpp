@@ -1,9 +1,9 @@
 /*******************************************************************************
  *
  * File Name: ORcomparison.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2010 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a6c 07-May-2012
+ * Project Version: 3a7a 06-June-2012
  *
  *******************************************************************************/
 
@@ -310,7 +310,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE></HEAD><BODY>Results<p>Source Version 2d2g<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE></HEAD><BODY>Results<p>Source Version 3a7a<p>";
 		}
 		else
 		{
@@ -978,11 +978,11 @@ char * trainsnapshotMapsText;
 						system(convertPPMtoPNGCommand2.c_str());
 					}
 
-					string ICRNewTestViewIndexRow3 = "<TR><TD>" + testObjectNameArray[testObjectIndex] + "</TD><TD>" + testviewIndexStringTemp + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD><img src=\"" + mapFileName + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING + PNG_EXTENSION + "\" border=0> </TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD></TR>";
+					string ICRNewTestViewIndexRow3 = "<TR><TD>" + testObjectNameArray[testObjectIndex] + "</TD><TD>" + testviewIndexStringTemp + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD><img src=\"" + mapFileName + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING + PNG_EXTENSION + "\" border=0> </TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD></TR>";
 					writeStringToFileObject2(ICRNewTestViewIndexRow3, &writeFileObject);
 					if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL)
 					{
-						string ICRNewTestViewIndexRow4 = "<TR><TD>" + testObjectNameArray[testObjectIndex] + "</TD><TD>" + testviewIndexStringTemp + "</TD><TD>" + blank + "</TD><TD>" + "</TD><TD>" + blank + blank + "</TD><TD><img src=\"" + mapFileName + FEATURESMAP_PPM_EXTENSION_PART + TEST_STRING + PNG_EXTENSION + "\" border=0> </TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD></TR>";
+						string ICRNewTestViewIndexRow4 = "<TR><TD>" + testObjectNameArray[testObjectIndex] + "</TD><TD>" + testviewIndexStringTemp + "</TD><TD>" + blank + "</TD><TD>" + "</TD><TD><img src=\"" + mapFileName + FEATURESMAP_PPM_EXTENSION_PART + TEST_STRING + PNG_EXTENSION + "\" border=0> </TD><TD>" + blank + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD></TR>";
 						writeStringToFileObject2(ICRNewTestViewIndexRow4, &writeFileObject);
 					}
 				}
