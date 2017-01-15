@@ -3,7 +3,7 @@
  * File Name: ORcomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7d 11-June-2012
+ * Project Version: 3a7e 12-June-2012
  *
  *******************************************************************************/
 
@@ -328,7 +328,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3a7d 11-June-2012<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3a7e 12-June-2012<p>";
 		}
 		else
 		{
@@ -341,11 +341,11 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		string ICRtableStart = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL)
 		{
-			ICRtableStart = ICRtableStart + "<TABLE width=\"100%\" cellpadding=\"10\" cellspacing=\"0\" border=\"1\"><TR><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>Test</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>Train</TD></TR><TR><TD>Object</TD><TD>View</TD><TD>Zoom</TD><TD>PolygonBAI</TD><TD>Side</TD><TD>Image</TD><TD>Object</TD><TD>View</TD><TD>Zoom</TD><TD>PolygonBAI</TD><TD>Side</TD><TD>Image</TD></TR>";
+			ICRtableStart = ICRtableStart + "<TABLE width=\"100%\" cellpadding=\"3\" cellspacing=\"0\" border=\"1\"><TR><TD colspan=\"6\">Test</TD><TD colspan=\"6\">Train</TD><TD></TD></TR><TR><TD>Object</TD><TD>View</TD><TD>Zoom</TD><TD>PolygonBAI</TD><TD>Side</TD><TD>Image</TD><TD>Object</TD><TD>View</TD><TD>Zoom</TD><TD>PolygonBAI</TD><TD>Side</TD><TD>Image</TD><TD></TD></TR>";
 		}
 		else
 		{
-			ICRtableStart = ICRtableStart + "<TABLE width=\"100%\" cellpadding=\"10\" cellspacing=\"0\" border=\"1\"><TR><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>Test</TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD>Train</TD></TR><TR><TD>Object</TD><TD>View</TD><TD>Zoom</TD><TD>X</TD><TD>Y</TD><TD>Image</TD><TD>Object</TD><TD>View</TD><TD>Zoom</TD><TD>X</TD><TD>Y</TD><TD>Image</TD></TR>";
+			ICRtableStart = ICRtableStart + "<TABLE width=\"100%\" cellpadding=\"3\" cellspacing=\"0\" border=\"1\"><TR><TD colspan=\"6\">Test</TD><TD colspan=\"6\">Train</TD><TD></TD></TR><TR><TD>Object</TD><TD>View</TD><TD>Zoom</TD><TD>X</TD><TD>Y</TD><TD>Image</TD><TD>Object</TD><TD>View</TD><TD>Zoom</TD><TD>X</TD><TD>Y</TD><TD>Image</TD><TD></TD></TR>";
 		}
 		writeStringToFileObject2(ICRtableStart, &writeFileObject);
 
@@ -924,15 +924,6 @@ char * trainsnapshotMapsText;
 					}
 					system(convertPPMtoPNGCommand2.c_str());
 				}
-
-				string ICRNewTestViewIndexRow1 = "<TR><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + testObjectNameArray[testObjectIndex] + "</TD><TD>" + trainviewIndexStringTemp + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD><img src=\"" + mapFileName + RGB_MAP_PPM_EXTENSION_PART + TRAIN_STRING + PNG_EXTENSION + "\" border=0> </TD></TR>";
-				writeStringToFileObject2(ICRNewTestViewIndexRow1, &writeFileObject);
-
-				if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL)
-				{
-					string ICRNewTestViewIndexRow2 = "<TR><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + testObjectNameArray[testObjectIndex] + "</TD><TD>" + trainviewIndexStringTemp + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD><img src=\"" + mapFileName + FEATURESMAP_PPM_EXTENSION_PART + TRAIN_STRING + PNG_EXTENSION + "\" border=0> </TD></TR>";
-					writeStringToFileObject2(ICRNewTestViewIndexRow2, &writeFileObject);
-				}
 			}
 		#endif
 
@@ -994,11 +985,11 @@ char * trainsnapshotMapsText;
 						system(convertPPMtoPNGCommand2.c_str());
 					}
 
-					string ICRNewTestViewIndexRow3 = "<TR><TD>" + testObjectNameArray[testObjectIndex] + "</TD><TD>" + testviewIndexStringTemp + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD><img src=\"" + mapFileName + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING + PNG_EXTENSION + "\" border=0> </TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD></TR>";
+					string ICRNewTestViewIndexRow3 = "<TR><TD colspan=\"6\"><img src=\"" + mapFileName + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING + PNG_EXTENSION + "\" border=0> </TD><TD colspan=\"6\"><img src=\"" + mapFileName + RGB_MAP_PPM_EXTENSION_PART + TRAIN_STRING + PNG_EXTENSION + "\" border=0> </TD><TD></TD></TR>";
 					writeStringToFileObject2(ICRNewTestViewIndexRow3, &writeFileObject);
 					if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL)
 					{
-						string ICRNewTestViewIndexRow4 = "<TR><TD>" + testObjectNameArray[testObjectIndex] + "</TD><TD>" + testviewIndexStringTemp + "</TD><TD>" + blank + "</TD><TD>" + "</TD><TD><img src=\"" + mapFileName + FEATURESMAP_PPM_EXTENSION_PART + TEST_STRING + PNG_EXTENSION + "\" border=0> </TD><TD>" + blank + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD><TD>" + blank + "</TD></TR>";
+						string ICRNewTestViewIndexRow4 = "<TR><TD colspan=\"6\"><img src=\"" + mapFileName + FEATURESMAP_PPM_EXTENSION_PART + TEST_STRING + PNG_EXTENSION + "\" border=0> </TD><TD colspan=\"6\"><img src=\"" + mapFileName + FEATURESMAP_PPM_EXTENSION_PART + TRAIN_STRING + PNG_EXTENSION + "\" border=0> </TD><TD></TD></TR>";
 						writeStringToFileObject2(ICRNewTestViewIndexRow4, &writeFileObject);
 					}
 				}
@@ -1025,10 +1016,12 @@ char * trainsnapshotMapsText;
 					#ifndef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 					bool foundMatchRecord[3];	//for each test side
 					double currentLowestErrorRecord[3];
+					string trainObjectNameWithLowestErrorRecord[3];
 					for(int i=0; i<3; i++)
 					{
 						foundMatchRecord[i] = false;
 						currentLowestErrorRecord[i] = -1.0;
+						trainObjectNameWithLowestErrorRecord[i] = "";
 					}
 					#endif
 					
@@ -1040,7 +1033,7 @@ char * trainsnapshotMapsText;
 					#endif
 					
 					#ifdef OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML_PRINT_OBJECT_NAMES
-					string trainObjectNameWithLowestErrorRecord;
+					string trainObjectNameWithLowestErrorRecordAcrossAllSides;
 					#endif
 
 					double averageMatchErrorAcrossSides = 0.0;
@@ -2170,7 +2163,10 @@ char * trainsnapshotMapsText;
 
 
 														#ifdef OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML_PRINT_OBJECT_NAMES
-															trainObjectNameWithLowestErrorRecord = trainObjectString;
+															trainObjectNameWithLowestErrorRecordAcrossAllSides = trainObjectString;
+															#ifndef OR_ASSERT_MATCHES_FOR_ALL_SIDES
+															trainObjectNameWithLowestErrorRecord[testSideIndex] = trainObjectString;
+															#endif
 														#else
 															trainPolyIndexWithLowestErrorRecord[testSideIndex][0] = trainObjectIndex;
 														#endif
@@ -2351,7 +2347,7 @@ char * trainsnapshotMapsText;
 							cout << "testPolyIndex = " << testPolyIndex << endl;
 							cout << "testSideIndex = " << testSideIndex << endl;
 							#ifdef OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML_PRINT_OBJECT_NAMES
-								cout << "trainObjectNameWithLowestError = " << trainObjectNameWithLowestErrorRecord << endl;
+								cout << "trainObjectNameWithLowestError = " << trainObjectNameWithLowestErrorRecordAcrossAllSides << endl;
 							#else
 								cout << "trainObjectIndexWithLowestError = " << trainPolyIndexWithLowestErrorRecord[0][0] << endl;
 							#endif
@@ -2391,9 +2387,9 @@ char * trainsnapshotMapsText;
 							#ifdef OR_DEBUG_COMPARISON_ALLOW_SAME_OBJECT_AND_SAME_VIEW_TO_BE_COMPARED
 							if(1)
 							#elif defined OR_DEBUG_COMPARISON_ALLOW_SAME_OBJECT_BUT_DIFFERENT_VIEWS_TO_BE_COMPARED
-							if(!((trainObjectNameWithLowestErrorRecord == testObjectNameArray[testObjectIndex]) && (trainPolyIndexWithLowestErrorRecord[0][1] == testViewIndex+testViewNumber)))
+							if(!((trainObjectNameWithLowestErrorRecordAcrossAllSides == testObjectNameArray[testObjectIndex]) && (trainPolyIndexWithLowestErrorRecord[0][1] == testViewIndex+testViewNumber)))
 							#else
-							if(trainObjectNameWithLowestErrorRecord != testObjectNameArray[testObjectIndex])
+							if(trainObjectNameWithLowestErrorRecordAcrossAllSides != testObjectNameArray[testObjectIndex])
 							#endif
 							{//object name and object view are not both the same
 								
@@ -2412,7 +2408,7 @@ char * trainsnapshotMapsText;
 									cout << "testPolyIndex = " << testPolyIndex << endl;
 									cout << "testSideIndex = 0, 1, 2" << endl;
 									#ifdef OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML_PRINT_OBJECT_NAMES
-										cout << "trainObjectNameWithLowestError = " << trainObjectNameWithLowestErrorRecord << endl;
+										cout << "trainObjectNameWithLowestError = " << trainObjectNameWithLowestErrorRecordAcrossAllSides << endl;
 									#else
 										cout << "trainObjectIndexWithLowestError = " << trainPolyIndexWithLowestErrorRecord[0][0] << endl;
 									#endif
@@ -2423,16 +2419,17 @@ char * trainsnapshotMapsText;
 									cout << "error of match = " << averageMatchErrorAcrossSides << endl;
 								}
 
-
+								#ifdef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 								//see if object exists, and if it does, increment number of successful snapshots
 								ObjectReferenceList * currentReferenceInSnapshotMatchObjectReferenceList = firstReferenceInSnapshotMatchObjectReferenceList;
 								bool foundObjectNameInObjectReferenceList = false;
 								while(currentReferenceInSnapshotMatchObjectReferenceList->next != NULL)
 								{
-									if(currentReferenceInSnapshotMatchObjectReferenceList->objectName == trainObjectNameWithLowestErrorRecord)
+									if(currentReferenceInSnapshotMatchObjectReferenceList->objectName == trainObjectNameWithLowestErrorRecordAcrossAllSides)
 									{
 										currentReferenceInSnapshotMatchObjectReferenceList->numMatchingSnapshots = currentReferenceInSnapshotMatchObjectReferenceList->numMatchingSnapshots + 1;
 										foundObjectNameInObjectReferenceList = true;
+										//cout << "numMatchingSnapshots++" << endl;
 									}	
 
 
@@ -2440,11 +2437,13 @@ char * trainsnapshotMapsText;
 								}
 								if(!foundObjectNameInObjectReferenceList)
 								{
-									currentReferenceInSnapshotMatchObjectReferenceList->objectName = trainObjectNameWithLowestErrorRecord;
+									//cout << "!foundObjectNameInObjectReferenceList:" << trainObjectNameWithLowestErrorRecordAcrossAllSides << endl;
+									currentReferenceInSnapshotMatchObjectReferenceList->objectName = trainObjectNameWithLowestErrorRecordAcrossAllSides;
 									currentReferenceInSnapshotMatchObjectReferenceList->numMatchingSnapshots = 1;
 									ObjectReferenceList * newObjectReference = new ObjectReferenceList();
 									currentReferenceInSnapshotMatchObjectReferenceList->next = newObjectReference;
 								}
+								#endif
 
 								//cout << "h0" << endl;
 								for(int s=0; s<OR_METHOD_POLYGON_NUMBER_OF_SIDES; s++)
@@ -2452,8 +2451,37 @@ char * trainsnapshotMapsText;
 									#ifndef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 									if(foundMatchRecord[s])
 									{
+									if(currentLowestErrorRecord[s] < OR_IMAGE_COMPARITOR_MATCH_ERROR_THRESHOLD)
+									{									
 									#endif
 									
+									
+									#ifndef OR_ASSERT_MATCHES_FOR_ALL_SIDES
+									//see if object exists, and if it does, increment number of successful snapshots
+									ObjectReferenceList * currentReferenceInSnapshotMatchObjectReferenceList = firstReferenceInSnapshotMatchObjectReferenceList;
+									bool foundObjectNameInObjectReferenceList = false;
+									while(currentReferenceInSnapshotMatchObjectReferenceList->next != NULL)
+									{
+										if(currentReferenceInSnapshotMatchObjectReferenceList->objectName == trainObjectNameWithLowestErrorRecord[s])
+										{
+											currentReferenceInSnapshotMatchObjectReferenceList->numMatchingSnapshots = currentReferenceInSnapshotMatchObjectReferenceList->numMatchingSnapshots + 1;
+											foundObjectNameInObjectReferenceList = true;
+											//cout << "numMatchingSnapshots++" << endl;
+										}	
+
+
+										currentReferenceInSnapshotMatchObjectReferenceList = currentReferenceInSnapshotMatchObjectReferenceList->next;
+									}
+									if(!foundObjectNameInObjectReferenceList)
+									{
+										//cout << "!foundObjectNameInObjectReferenceList:" << trainObjectNameWithLowestErrorRecord[s] << endl;
+										currentReferenceInSnapshotMatchObjectReferenceList->objectName = trainObjectNameWithLowestErrorRecord[s];
+										currentReferenceInSnapshotMatchObjectReferenceList->numMatchingSnapshots = 1;
+										ObjectReferenceList * newObjectReference = new ObjectReferenceList();
+										currentReferenceInSnapshotMatchObjectReferenceList->next = newObjectReference;
+									}
+									#endif
+																	
 									if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML)
 									{
 
@@ -2468,7 +2496,7 @@ char * trainsnapshotMapsText;
 
 										#ifdef OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML_PRINT_OBJECT_NAMES
 											//cout << "h03" << endl;
-											string trainobjectIndexString = trainObjectNameWithLowestErrorRecord;
+											string trainobjectIndexString = trainObjectNameWithLowestErrorRecordAcrossAllSides;
 											//cout << "h04" << endl;
 										#else
 											char trainobjectIndexString[10];
@@ -2848,6 +2876,7 @@ char * trainsnapshotMapsText;
 
 									}
 									#ifndef OR_ASSERT_MATCHES_FOR_ALL_SIDES
+									}
 									}
 									#endif
 								}

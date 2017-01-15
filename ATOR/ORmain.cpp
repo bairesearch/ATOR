@@ -3,9 +3,12 @@
  * File Name: ORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7d 11-June-2012
+ * Project Version: 3a7e 12-June-2012
  *
  *******************************************************************************/
+
+#include <ctime>
+#define TM_STRUCT_YEAR_OFFSET 1900
 
 #include "ORmain.h"
 #include "ORmethod.h"
@@ -73,6 +76,15 @@ int main(int argc,char **argv)
 {
 	bool result = true;
 
+	//print execution time
+	struct tm *current;
+	time_t now;
+	time(&now);
+	current = localtime(&now);
+	char timeAndDateString[100];
+	sprintf(timeAndDateString, "%i:%i:%i %i/%.2i/%i", current->tm_hour, current->tm_min, current->tm_sec, current->tm_mday, (current->tm_mon+1), (current->tm_year + TM_STRUCT_YEAR_OFFSET));
+	cout << "OR execution time: " << timeAndDateString << " (start)" << endl;
+	
 	char currentFolder[EXE_FOLDER_PATH_MAX_LENGTH];
 
 	#ifdef LINUX
@@ -347,7 +359,7 @@ int main(int argc,char **argv)
 
 	if (exists_argument(argc,argv,"-version"))
 	{
-		cout << "OR.exe - Project Version: 3a7d 11-June-2012" << endl;
+		cout << "OR.exe - Project Version: 3a7e 12-June-2012" << endl;
 		exit(1);
 	}
 
@@ -576,6 +588,12 @@ int main(int argc,char **argv)
 			cout << "ORMethodTest completed" << endl;
 		}
 	}
+	
+	//print execution time (end)
+	time(&now);
+	current = localtime(&now);
+	sprintf(timeAndDateString, "%i:%i:%i %i/%.2i/%i", current->tm_hour, current->tm_min, current->tm_sec, current->tm_mday, (current->tm_mon+1), (current->tm_year + TM_STRUCT_YEAR_OFFSET));
+	cout << "OR execution time: " << timeAndDateString << " (finish)" << endl;	
 }
 
 void printORCommandLineErrorMessage()

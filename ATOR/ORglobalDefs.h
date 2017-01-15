@@ -3,7 +3,7 @@
  * File Name: ORglobalDefs.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3a7d 11-June-2012
+ * Project Version: 3a7e 12-June-2012
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
