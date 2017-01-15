@@ -3,7 +3,7 @@
  * File Name: ORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a8a 14-June-2012
+ * Project Version: 3a8b 14-June-2012
  *
  *******************************************************************************/
 
@@ -359,7 +359,7 @@ int main(int argc,char **argv)
 
 	if (exists_argument(argc,argv,"-version"))
 	{
-		cout << "OR.exe - Project Version: 3a8a 14-June-2012" << endl;
+		cout << "OR.exe - Project Version: 3a8b 14-June-2012" << endl;
 		exit(1);
 	}
 

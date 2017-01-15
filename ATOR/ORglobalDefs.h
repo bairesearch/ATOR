@@ -3,7 +3,7 @@
  * File Name: ORglobalDefs.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3a8a 14-June-2012
+ * Project Version: 3a8b 14-June-2012
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
@@ -1709,7 +1709,7 @@ OR METHOD 3DOD VARIABLES;
 
 #define OR_OVERWRITE_POINT_MAP_USING_CONSISTENT_POINT_MAP_CREATION
 
-#define OR_METHOD_3DOD_IGNORE_OT_FEATURES_DURING_GEO_COMPARISON		//NB transformed 3DOD OT features only differ from each other in terms of they scaling, where as transformed 2DOD OT features do not differ at all. All other 3DOD/2DOD transformed features differ.
+//#define OR_METHOD_3DOD_IGNORE_OT_FEATURES_DURING_GEO_COMPARISON		//NB transformed 3DOD OT features only differ from each other in terms of they scaling, where as transformed 2DOD OT features do not differ at all. All other 3DOD/2DOD transformed features differ.
 
 #define OR_METHOD_3DOD_USE_FORMAL_TRANSFORMATION_METHOD		//when all issues related to this are resolved and this becomes the default, an inverse definition name should be implemented for clarity
 //#define OR_DEBUG_METHOD_3DOD
