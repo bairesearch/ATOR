@@ -26,7 +26,7 @@
  * File Name: ORglobalDefs.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2016 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3i17a 20-September-2016
+ * Project Version: 3i18a 21-September-2016
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
@@ -294,8 +294,8 @@
  *				(MySQL can be downloaded from http://dev.mysql.com/downloads/windows/installer/5.6.html)
  *			Select "I accept the license terms". Click Next
  *			Select Custom. Click Next.
- *			Add MySQL Servers - MySQL Server - MySQL Server 5.6 - MySQL Server 5.6.28 - X86 (ie 32bit server). Click Next. 
- *				Alternatively, a 64 bit MySQL server could be installed so long as the MySQL client libraries added to VC match the compilation version of OR (ie 32bit). 
+ *			Add MySQL Servers - MySQL Server - MySQL Server 5.6 - MySQL Server 5.6.28 - X86 (ie 32bit server). Click Next.
+ *				Alternatively, a 64 bit MySQL server could be installed so long as the MySQL client libraries added to VC match the compilation version of OR (ie 32bit).
  *				These can be downloaded separately here; http://dev.mysql.com/downloads/mysql/ (within mysql-5.6.29-win32.zip).
  *			Click Execute
  *			Click Next, Click Next, to Type and Networking
@@ -311,7 +311,7 @@
  *			Create folder C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\mysql
  *			Copy all files in C:\Program Files (x86)\MySQL\MySQL Server 5.6\Include to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\mysql
  *			Copy all files in C:\Program Files (x86)\MySQL\MySQL Server 5.6\lib to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib
- *		
+ *
  *		Restart PC
  *
  *		5b. Part ii)
