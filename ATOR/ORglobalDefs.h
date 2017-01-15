@@ -25,20 +25,22 @@
  * File Name: ORglobalDefs.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3d2d 14-April-2014
+ * Project Version: 3d2e 14-April-2014
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
  *
  *	Install External Package 1 - Heitger Feature Detection
- *  	{FD v0.5b/c executable (Eg Linux El5.4: FD.exe [linux], Windows: FD.exe [win])
+ *  	{FD v0.5b/c executable (Eg Linux: FD.exe, Windows: FD.exe)
  *		"heitger feature detection with RBB Endian Mod v0.5b" is
  *		olof Henricsson 96-06-07 release of Friedrich Heitger's SE binary with
- *			a) ras format endian swap, b) ras format relaxed,
- *			c) multiple endian outputs for Keypoints exe, d) Windows VS compatibility,
+ *			a) ras format endian swap, 
+ *			b) ras format relaxed,
+ *			c) multiple endian outputs for Keypoints exe, 
+ *			d) Windows VS compatibility,
  *			e) change of binary name from SE to FD.exe};
  *
- *		(Linux Ubuntu 13.1 Only)
+ *		(Linux Ubuntu 14.01 Only)
  *		copy (Linux Ubuntu x86_64 compiled) FD.exe to OpenOR.exe working folder
  *
  *		(Linux EL5 Only)
@@ -47,15 +49,22 @@
  *		(Linux EL6 Only)
  *		copy (Linux EL6 x86_64 compiled) FD.exe to OpenOR.exe working folder
  *
- *		(Windows Only)
+ *		(Windows XP Only)
  *		copy (Windows XP i386 compiled) FD.exe to OpenOR.exe working folder
  *
  *		(Windows 7/8 x86_64 Only)
  *		copy (Windows 7/8 x86_64 compiled) FD.exe to OpenOR.exe working folder
  *
+ *		This version of Heitger FD may be downloaded via;
+ *
+ *			(Linux) http://www.baxterai.com/utils/misc/heitgerFD/heitgerFD-2012b.zip [bin/linux/FD.exe]
+ *			(Windows) http://www.baxterai.com/utils/misc/heitgerFD/heitgerFD-2012b.zip [bin/win/FD.exe]
+ *			(Linux) http://www.baxterai.com/utils/misc/heitgerFD/heitgerFD-2014a.zip [bin/linux/FD.exe]
+ *			(Windows) http://www.baxterai.com/utils/misc/heitgerFD/heitgerFD-2014a.zip [bin/win/FD.exe]
+ *
  *	Install External Package 2 - Freeglut;
  *
- *		(Linux Ubuntu 13.1 Only)
+ *		(Linux Ubuntu 14.01 Only)
  *		sudo apt-get install freeglut3 OR;
  *		sudo dpkg -i freeglut3_2.8.1-1_amd64.deb
  *
@@ -75,14 +84,14 @@
  *		unzip freeglut 2.6.0 (compiled).zip
  * 		copy freeglut.dll from freeglut 2.6.0 (compiled) - 32bit.zip to: C:\WINDOWS\SysWOW64 [or System32]
  *
- *	Freeglut may be downloaded via;
+ *		Freeglut may be downloaded via;
  *
- *	* (Linux) distribution repository
- *	* (Windows) see http://tempvariable.blogspot.com.au/2008/02/installing-freeglut-on-visual-studio.html / http://www.transmissionzero.co.uk/software/freeglut-devel/
+ *			(Linux) distribution repository
+ *			(Windows) see http://tempvariable.blogspot.com.au/2008/02/installing-freeglut-on-visual-studio.html / http://www.transmissionzero.co.uk/software/freeglut-devel/
  *
  *	Install External Package 3 - ImageMagik;
  *
- *		(Linux Ubuntu 13.1 Only)
+ *		(Linux Ubuntu 14.01 Only)
  *		sudo apt-get install imagemagick? OR;
  *		sudo dpkg -i imagemagick_6.7.7.10-5ubuntu3_amd64.deb?
  *
@@ -103,9 +112,14 @@
  *		(Windows 8 x86_64 Only)
  *		install ImageMagick-6.8.9-0-Q16-x64-dll.exe (use default settings)
  *
+ *		ImageMagick may be downloaded via;
+ *
+ * 			(Linux) yum install ImageMagick 
+ * 			(Windows) see http://www.imagemagick.org/script/binary-releases.php#windows
+ *
  *	Install External Package 4 - JPEG development libraries (Independent JPEG Group)
  *
- *		(Linux Ubuntu 13.1 Only)
+ *		(Linux Ubuntu 14.01 Only)
  *		sudo apt-get install libjpeg-dev OR;
  *		sudo dpkg -i libjpeg-dev_8c-2ubuntu8_amd64.deb
  *
@@ -122,26 +136,32 @@
  *		rpm -i libjpeg-devel-6b-46.el6.x86_64.rpm
  *
  *		(Windows XP Only)
- *		Is there any?
+ *		[May only be required for development]
  *		copy jpeg.lib in JPEG\Release folder to C:\Program Files\Microsoft Visual Studio 9.0\VC\lib\
  *		copy jpeglib.h, jconfig.h, and jmorecfg.h in JPEG folder to C:\Program Files\Microsoft Visual Studio 9.0\VC\Include\
  *		ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *
  *		(Windows 7 x86_64 Only)
- *		Is there any?
+ *		[May only be required for development]
  *		copy jpeg.lib [in JPEG\Release folder] to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib
  *		copy jpeglib.h, jconfig.h, and jmorecfg.h [in JPEG folder] to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\
  *		ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *
  *		(Windows 8 x86_64 Only)
- *		Is there any?
+ *		[May only be required for development]
  *		copy jpeg.lib [in JPEG\Release folder] to C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\lib
  *		copy jpeglib.h, jconfig.h, and jmorecfg.h [in JPEG folder] to C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\Include\
  *		ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *
+ *		JPEG library may be downloaded via;
+ *
+ * 			(Linux) apt-get install libjpeg-dev / yum install libjpeg libjpeg-devel
+ * 			(Windows) <http://www.baxterai.com/utils/misc/libjpeg/JPEG source - with visual studio 6 Sept 11aSMALL.zip> 
+ * 			Alternatively, the raw source may be downloaded from http://www.ijg.org/files/jpegsr7.zip (release 7 / 27-Jun-2009)
+ *
  *	Install External Package 5a - MySQL Client
  *
- *		(Linux Ubuntu 13.1 Only)
+ *		(Linux Ubuntu 14.01 Only)
  *		sudo apt-get install mysql-client OR;
  * 		sudo dpkg -i mysql-client-5.5_5.5.35-0ubuntu0.13.10.2_amd64.deb
  *
@@ -157,7 +177,7 @@
  *
  *		5b. Part i)
  *
- *		(Linux Ubuntu 13.1 Only) On the MySQL Server perform the following actions to initiate the server;
+ *		(Linux Ubuntu 14.01 Only) On the MySQL Server perform the following actions to initiate the server;
  *		sudo apt-get install mysql-server OR;
  * 		sudo dpkg -i mysql-server-5.5_5.5.35-0ubuntu0.13.10.2_amd64.deb
  *		enter the mysql server root password when prompted (chooseamysqlrootpassword)
@@ -233,9 +253,10 @@
  *
  *		Either A) create them automatically using the following method;
  * 			Open Command Line
- *				Linux EL5/EL6/Ubuntu:
+ *				edit createBAIORmysqlDatabase.sql (from OpenOR source) and specify MYSQLUSERNAME and MYSQLPASSWORD 
+ *				Linux EL5/EL6/Ubuntu 14.04:
  *					open terminal (system - gnome-terminal)
- *					cd c:\home\user\source\source\
+ *					cd /home/user/pathofcreateBAIORmysqlDatabase/
  *					mysql -u root -p < createBAIORmysqlDatabase.sql
  *				Windows
  *					open command prompt (Start - All Programs - Accessories - Command Prompt)
@@ -474,6 +495,10 @@
  *				srID			BigInt [BIGINT]
  *				dtBin			TINYTEXT
  *
+ * 		MySQL Server+Client may be downloaded via;
+ *
+ * 			(Linux) sudo apt-get install mysql-server mysql-client / yum install mysql-server mysql-client
+ * 			(Windows) download mysql-5.1.41-win32.msi from http://dev.mysql.com/downloads/
  *
  * 2. Object Recognition Software Development Installation Instructions;
  *
@@ -502,7 +527,7 @@
  *		(Windows 8 x86_64 Only)
  *		Install MS Visual Studio Express 2013 for Windows Desktop (VS2013_RTM_DskExp_ENU.iso / wdexpress_full.exe)
  *
- *	Compile FD executable
+ *	Compile/Link External Package 1 - Heitger Feature Detection (FD)
  *
  *		(Linux Only)
  *		nedit FDdefs.h, and uncomment the LINUX preprocessor def
@@ -515,9 +540,9 @@
  *		Build All
  *		This will create FD.exe in the Release folder
  *
- *	Install Freeglut development libraries
+ *	Compile/Link External Package 2 - Freeglut development libraries
  *
- *		(Linux Ubuntu 13.1 Only)
+ *		(Linux Ubuntu 14.01 Only)
  *		sudo apt-get install freeglut3-dev OR;
  *		sudo dpkg -i freeglut3-dev_2.8.1-1_amd64.deb
  *
@@ -553,14 +578,18 @@
  * 		copy freeglut.lib to: C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\lib\
  * 		copy freeglut.dll to: C:\WINDOWS\SysWOW64 [or System32]
  *
- *	Freeglut may be downloaded via;
+ *		Freeglut may be downloaded via;
  *
- *	* (Linux) distribution repository
- *	* (Windows) see http://tempvariable.blogspot.com.au/2008/02/installing-freeglut-on-visual-studio.html / http://www.transmissionzero.co.uk/software/freeglut-devel/
+ *			(Linux) distribution repository
+ *			(Windows) see http://tempvariable.blogspot.com.au/2008/02/installing-freeglut-on-visual-studio.html / http://www.transmissionzero.co.uk/software/freeglut-devel/
  *
- *	Install JPEG Development libraries (Independent JPEG Group)
+ * 	Compile/Link External Package 3 -  ImageMagik
  *
- *		(Linux Ubuntu 13.1 Only)
+ *		No further installation required for development (ImageMagik is called externally rather than linked)
+ *
+ *	Compile/Link External Package 4 -  JPEG development libraries (Independent JPEG Group)
+ *
+ *		(Linux Ubuntu 14.01 Only)
  *		sudo apt-get install libjpeg-dev OR;
  *		sudo dpkg -i libjpeg-dev_8c-2ubuntu8_amd64.deb
  *
@@ -595,9 +624,15 @@
  *			copy jpeglib.h, jconfig.h, and jmorecfg.h in JPEG folder to C:\Program Files\Microsoft Visual Studio 9.0\VC\Include\
  *			ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *
- *	Install MySQL Development Libraries
+ *		JPEG library may be downloaded via;
  *
- *		(Linux Ubuntu 13.1 Only)
+ *			(Linux) sudo apt-get install libjpeg libjpeg-devel / yum install libjpeg libjpeg-devel
+ *			(Windows) <http://www.baxterai.com/utils/misc/libjpeg/JPEG source - with visual studio 6 Sept 11aSMALL.zip> 
+ * 			Alternatively, the raw source may be downloaded from http://www.ijg.org/files/jpegsr7.zip
+ *
+ *	Compile/Link External Package 5 -  Install MySQL Development Libraries
+ *
+ *		(Linux Ubuntu 14.01 Only)
  *		sudo apt-get install libmysqlclient-dev OR;
  * 		sudo dpkg -i libmysqlclient-dev_5.5.35-0ubuntu0.13.10.2_amd64
  *
@@ -629,13 +664,20 @@
  *		ensure libmysql.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *		Copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.dll to working folder (location of OpenOR.exe)
  *
- *	Compile OpenOR.exe
+ * 		MySQL Server+Client may be downloaded via;
+ *
+ * 			(Linux) sudo apt-get install mysql-server mysql-client / yum install mysql-server mysql-client
+ * 			(Windows) download mysql-5.1.41-win32.msi from http://dev.mysql.com/downloads/
+ *
+ *	OpenOR Compilation 
+ *		
+ *		Compile OpenOR.exe
  *
  *		(Linux Only)
  *		open SHAREDglobalDefs.h,
  *			ensure #define LINUX is added
  *			ensure only #define COMPILE_OR is uncommented
- *		cp makefile.OR.EL6 makefile (or cp makefile.OR.UB13 makefile)
+ *		cp makefile.OR makefile
  *		./clear.bat (rm *.o)
  *		make
  *
@@ -645,10 +687,6 @@
  *			ensure only #define COMPILE_OR is uncommented
  *		Open OR.sln
  *		Build All
- *
- * Post Conditions;
- *
- *  	depends upon project being compiled (OR, RT, ANN, CS, FD, etc)
  *
  * Important preprocessor definitions to consider before compilation;
  *
