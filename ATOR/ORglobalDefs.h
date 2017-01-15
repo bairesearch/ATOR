@@ -26,7 +26,7 @@
  * File Name: ORglobalDefs.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3f5b 21-July-2015
+ * Project Version: 3f5c 21-July-2015
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
@@ -87,7 +87,6 @@
  *
  *		Freeglut may be downloaded via;
  *
- *			(Linux) distribution repository
  *			(Windows) see http://tempvariable.blogspot.com.au/2008/02/installing-freeglut-on-visual-studio.html / http://www.transmissionzero.co.uk/software/freeglut-devel/
  *
  *	Install External Package 3 - ImageMagik;
@@ -115,7 +114,6 @@
  *
  *		ImageMagick may be downloaded via;
  *
- * 			(Linux) yum install ImageMagick 
  * 			(Windows) see http://www.imagemagick.org/script/binary-releases.php#windows
  *
  *	Install External Package 4 - JPEG development libraries (Independent JPEG Group)
@@ -150,7 +148,6 @@
  *
  *		JPEG library may be downloaded via;
  *
- * 			(Linux) apt-get install libjpeg-dev / yum install libjpeg libjpeg-devel
  * 			(Windows) <http://www.baxterai.com/utils/misc/libjpeg/JPEG source - with visual studio 6 Sept 11aSMALL.zip> 
  * 			Alternatively, the raw source may be downloaded from http://www.ijg.org/files/jpegsr7.zip (release 7 / 27-Jun-2009)
  *
@@ -216,7 +213,7 @@
  *			[NB on Windows XP, may need to place MySQL libraries in ... otherwise follow development installation instructions]
  *
  *		(Windows 7/8 x86_64 Only) On the MySQL Server perform the following actions to initiate the server;
- *		For example. install mysql-5.5.15-win32.msi (NB 32 bit mysql installation is required assuming Microsoft Visual Studio Express [2008/2010/2013] with 32bit only compilation)
+ *		For example. install mysql-5.5.15-win32.msi (NB 32 bit mysql installation is required assuming Microsoft Visual Studio Express [2008/2010] with 32bit only compilation)
  *			{During installation ensure the following configurations; select 'c include files / libraries' [for development], and select 'include bin directory in Windows PATH'}
  *			Click Next
  *			Select 'Custom' setup type. Click Next
@@ -255,10 +252,11 @@
  *					mysql -u root -p < createBAIORmysqlDatabase.sql
  *				Windows
  *					open command prompt (Start - All Programs - Accessories - Command Prompt)
+ *					cd X:/.../pathofcreateBAIORmysqlDatabase/
  *					mysql -u root -p < createBAIORmysqlDatabase.sql
  *					restart computer
  *
- *					(where createBAIORmysqlDatabase.sql contains the following text;)
+ *				Note createBAIORmysqlDatabase.sql contains the following text;
  *
  *				CREATE DATABASE objectRecog;
  *				CREATE USER 'MYSQLUSERNAME'@'localhost' IDENTIFIED BY 'MYSQLPASSWORD';
@@ -418,15 +416,14 @@
  *			CREATE USER 'MYSQLUSERNAME'@'localhost' IDENTIFIED BY 'MYSQLPASSWORD';
  *			GRANT ALL ON* .* TO 'MYSQLUSERNAME'@'localhost';
  *			exit (exit mysql command line interface)
- *			Install OpenOffice.org Base MySQL Access Point (this is a useful procedure for developers, even if they install the mysql database via the script B);
+ *			Install OpenOffice.org Base MySQL Access Point (this is a useful procedure for developers, even if they install the mysql database via the script/A);
  * 				Install Java Jave Run-time environment (JRE):
  *					Linux Ubuntu:
  *						sudo apt-get install openjdk-7-jdk OR;
  *						sudo dpkg -i openjdk-7-jdk_7u51-2.4.4-0ubuntu0.13.10.1_amd64.deb (and dependencies)
  *					Linux EL5/EL6:
  *						yum install java-1.6.0-openjdk java-1.6.0-openjdk-devel OR;
- *						rpm -i java-1.6.0-openjdk...rpm
- *						rpm -i java-1.6.0-openjdk-devel...rpm
+ *						rpm -i java-1.6.0-openjdk...rpm java-1.6.0-openjdk-devel...rpm
  *					Windows
  *						install jre-6u20-windows-i586-s.exe
  *				on either Platform (windows or Linux);
@@ -492,14 +489,13 @@
  *
  * 		MySQL Server+Client may be downloaded via;
  *
- * 			(Linux) sudo apt-get install mysql-server mysql-client / yum install mysql-server mysql-client
  * 			(Windows) download mysql-5.1.41-win32.msi from http://dev.mysql.com/downloads/
  *
  * 2. Object Recognition Software Development Installation Instructions;
  *
  *	Unzip Source Archive
  *
- *	Ensure that all source ANSI files are either Windows/PC (ASCII) or UNIX formated
+ *	Ensure that all source ANSI files are either Windows/PC (ASCII) or UNIX formatted
  *
  *		(Linux Only)
  *		dos2unix* .cpp* .c* .h* .txt* .ldr* .tal* .DAT* .dat* .data* .xml* .backup
@@ -516,11 +512,8 @@
  *		(Windows XP Only)
  *		Install MS Visual Studio C++ 2008 Express Edition (VS2008ExpressWithSP1ENUX.iso / vcsetup.exe / vcsetup2008.exe)
  *
- *		(Windows 7 x86_64 Only)
+ *		(Windows 7/8 x86_64 Only)
  *		Install MS Visual Studio C++ 2010 Express Edition (VS2010Express1.iso / vcsetup.exe)
- *
- *		(Windows 8 x86_64 Only)
- *		Install MS Visual Studio Express 2013 for Windows Desktop (VS2013_RTM_DskExp_ENU.iso / wdexpress_full.exe)
  *
  *	Compile/Link External Package 1 - Heitger ORfeature Detection (FD)
  *
@@ -530,10 +523,17 @@
  *		This will create FD.exe in the current folder
  *
  *		(Windows Only)
- *		Open FD.sln using MS Visual Studio C++ 2008/2010/2013 Express Edition
+ *		Open FD.sln using MS Visual Studio C++ 2008/2010 Express Edition
  *		edit FDdefs.h, and comment out the LINUX preprocessor def
  *		Build All
  *		This will create FD.exe in the Release folder
+ *
+ *		This version of Heitger FD may be downloaded via;
+ *
+ *			(Linux) http://www.baxterai.com/utils/misc/heitgerFD/heitgerFD-2012b.zip [bin/linux/FD.exe]
+ *			(Windows) http://www.baxterai.com/utils/misc/heitgerFD/heitgerFD-2012b.zip [bin/win/FD.exe]
+ *			(Linux) http://www.baxterai.com/utils/misc/heitgerFD/heitgerFD-2014a.zip [bin/linux/FD.exe]
+ *			(Windows) http://www.baxterai.com/utils/misc/heitgerFD/heitgerFD-2014a.zip [bin/win/FD.exe]
  *
  *	Compile/Link External Package 2 - Freeglut development libraries
  *
@@ -567,7 +567,6 @@
  *
  *		Freeglut may be downloaded via;
  *
- *			(Linux) distribution repository
  *			(Windows) see http://tempvariable.blogspot.com.au/2008/02/installing-freeglut-on-visual-studio.html / http://www.transmissionzero.co.uk/software/freeglut-devel/
  *
  * 	Compile/Link External Package 3 -  ImageMagik
@@ -581,14 +580,14 @@
  *		sudo dpkg -i libjpeg-dev_8c-2ubuntu8_amd64.deb
  *
  *		(Linux EL5 Only);
- *		yum install libjpeg-devel
- *		rpm - i libjpeg-devel-6b-37.x86-64.rpm/libjpeg-devel-6b-38.x86-64.rpm
+ *		yum install libjpeg-devel OR;
+ *		rpm - i libjpeg-devel-6b-37.x86-64.rpm
  *
  *		(Linux EL6 Only);
- *		yum install libjpeg-devel
+ *		yum install libjpeg-devel OR;
  *		rpm - i libjpeg-devel-6b-46.el6.x86_64.rpm
  *
- * 		(Windows XP / Windows 7 / Windows 8 x86_64 Only)
+ * 		(Windows XP / Windows 7 x86_64 / Windows 8 x86_64 Only)
  *		Build JPEG Libraries from source;
  *			Either A) unzip the BAI JPEG development package, Eg 'JPEG source - with visual studio 6 Sept 11a.zip / JPEG v7 source - with visual studio 17 April 10a.zip / JPEG source - with visual studio 12 Oct 09a.zip'
  *				copy jconfig.h.microsoftvisualstudio jconfig.h (ie, overwrite jconfig.h with jconfig.h.microsoftvisualstudio)
@@ -613,7 +612,6 @@
  *
  *		JPEG library may be downloaded via;
  *
- *			(Linux) sudo apt-get install libjpeg libjpeg-devel / yum install libjpeg libjpeg-devel
  *			(Windows) <http://www.baxterai.com/utils/misc/libjpeg/JPEG source - with visual studio 6 Sept 11aSMALL.zip> 
  * 			Alternatively, the raw source may be downloaded from http://www.ijg.org/files/jpegsr7.zip
  *
@@ -624,10 +622,11 @@
  * 		sudo dpkg -i libmysqlclient-dev_5.5.35-0ubuntu0.13.10.2_amd64
  *
  *		(Linux EL5 Only)
+ *		yum install mysql-devel OR;
  *		rpm -i mysql-devel-5.0.77-3.el5.x86_64.rpm
- *		(MySQL development libraries already installed?)
  *
  *		(Linux EL6 Only)
+ *		yum install mysql-devel OR;
  *		rpm -i mysql-devel-5.1.52-1.el6_0.1.i686.rpm
  *
  *		(Windows XP Only)
@@ -646,7 +645,6 @@
  *
  * 		MySQL Server+Client may be downloaded via;
  *
- * 			(Linux) sudo apt-get install mysql-server mysql-client / yum install mysql-server mysql-client
  * 			(Windows) download mysql-5.1.41-win32.msi from http://dev.mysql.com/downloads/
  *
  *	OpenOR Compilation 
