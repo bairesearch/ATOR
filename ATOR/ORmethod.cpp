@@ -26,7 +26,7 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3f2b 22-June-2015
+ * Project Version: 3f3a 10-July-2015
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -807,7 +807,7 @@ bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 					//overwrite view info with multiview reference;
 					viMultiView = new RTviewInfo();
 					string multViewListFileNameWithFullPath = "";
-					multViewListFileNameWithFullPath = multViewListFileNameWithFullPath + workingFolderCharStar + "/" + multViewListFileName;
+					multViewListFileNameWithFullPath = multViewListFileNameWithFullPath + workingFolder + "/" + multViewListFileName;
 					createViFromMultiViewList(viMultiView, multViewListFileNameWithFullPath, multiViewViewIndex, dimension);
 					objectDataSourceForThisView = OR_OBJECT_DATA_SOURCE_USER_FILE;
 				}
@@ -1433,7 +1433,7 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 		string rgbMapFileName = mapFileName + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 
 		string convertPNGtoPPMCommand = "";
-		convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolderCharStar + "/" + preexistingImageFileName + " " + rgbMapFileName;
+		convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolder + "/" + preexistingImageFileName + " " + rgbMapFileName;
 		cout << "system(" << convertPNGtoPPMCommand << ");" << endl;
 		system(convertPNGtoPPMCommand.c_str());
 
@@ -1509,7 +1509,7 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 		string rgbMapFileName = mapFileName + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 
 		string convertPNGtoPPMCommand = "";
-		convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolderCharStar + "/" + objectImageName + " " + rgbMapFileName;
+		convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolder + "/" + objectImageName + " " + rgbMapFileName;
 		if(OR_PRINT_ALGORITHM_PROGRESS)
 		{
 			cout << "system(" << convertPNGtoPPMCommand << ");" << endl;
@@ -1549,7 +1549,7 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 			string depthMap24BitFileName = mapFileName + DEPTHMAP24BIT_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 
 			string convertPNGtoPPMCommand = "";
-			convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolderCharStar + "/" + objectDepthName + " " + depthMap24BitFileName;
+			convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolder + "/" + objectDepthName + " " + depthMap24BitFileName;
 			if(OR_PRINT_ALGORITHM_PROGRESS)
 			{
 				cout << "system(" << convertPNGtoPPMCommand << ");" << endl;
@@ -2974,8 +2974,7 @@ bool checkIfFeatureContainerWithSameFeatureIndiciesExists(ORfeatureContainer* fi
 
 bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rgbMap, ORfeature* firstFeatureInList, int trainOrTest, string mapFileName, double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, bool interpixelRGBmapType)
 {
-	char currentTempFolder[EXE_FOLDER_PATH_MAX_LENGTH];
-	getCurrentDirectory(currentTempFolder);
+	string currentTempFolder = getCurrentDirectory();
 
 	bool result = true;
 
@@ -3065,9 +3064,9 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 
 	string convertRGBRAStoFeatureRASCommand = "";
 #ifdef LINUX
-	convertRGBRAStoFeatureRASCommand = convertRGBRAStoFeatureRASCommand + exeFolderCharStar + "/FD.exe" + " -workingfolder " + currentTempFolder + " -i " + rgbMapFileNameRas + " -o " + baseName + " -keypoints -quality -sigma 2.25 -raster";
+	convertRGBRAStoFeatureRASCommand = convertRGBRAStoFeatureRASCommand + exeFolder + "/FD.exe" + " -workingfolder " + currentTempFolder + " -i " + rgbMapFileNameRas + " -o " + baseName + " -keypoints -quality -sigma 2.25 -raster";
 #else
-	convertRGBRAStoFeatureRASCommand = convertRGBRAStoFeatureRASCommand + exeFolderCharStar + "/FD.exe" + " -workingfolder " + currentTempFolder + " -i " + rgbMapFileNameRas + " -o " + baseName + " -keypoints -quality -sigma 2.25 -raster";
+	convertRGBRAStoFeatureRASCommand = convertRGBRAStoFeatureRASCommand + exeFolder + "/FD.exe" + " -workingfolder " + currentTempFolder + " -i " + rgbMapFileNameRas + " -o " + baseName + " -keypoints -quality -sigma 2.25 -raster";
 #endif
 	string convertFeatureRAStoFeaturePPMCommand = "convert -depth 8 " + featureMapFileNameRas + " " + featureMapFileName;
 
@@ -3077,7 +3076,7 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 	}
 	system(convertRGBPPMtoRGBRASCommand.c_str());
 
-	setCurrentDirectory(exeFolderCharStar);
+	setCurrentDirectory(exeFolder);
 	if(OR_PRINT_ALGORITHM_PROGRESS)
 	{
 		cout << "system(" << convertRGBRAStoFeatureRASCommand << ");" << endl;

@@ -26,7 +26,7 @@
  * File Name: ORdatabaseFileIO.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3f2b 22-June-2015
+ * Project Version: 3f3a 10-July-2015
  *
  *******************************************************************************/
 
@@ -54,7 +54,7 @@ void initialiseDatabase(string newDatabaseFolderName)
 
 bool DBdirectoryExists(string* folderName)
 {
-	bool folderExists = directoryExists(folderName->c_str());
+	bool folderExists = directoryExists(folderName);
 	if(folderExists)
 	{
 		#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
@@ -72,7 +72,7 @@ bool DBcreateDirectory(string* folderName)
 	#endif
 	bool result = true;
 
-	createDirectory(folderName->c_str());
+	createDirectory(folderName);
 	/*removed debug support for Windows;
 	#ifndef LINUX
 	if(CreateDirectory(folderName->c_str(), 0) == 0)	//if( _mkdir(folderName->c_str()) != 0)	//
@@ -91,10 +91,10 @@ bool DBsetCurrentDirectory(string* folderName)
 	#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
 	cout << "\tDBsetCurrentDirectory: folderName = " <<* folderName << endl;
 	#endif
-	setCurrentDirectory(folderName->c_str());
+	setCurrentDirectory(folderName);
 	/*removed debug support for Windows;
 	#ifndef LINUX
-	if(SetCurrentDirectory(folderName->c_str()) == 0)
+	if(SetCurrentDirectory(folderName) == 0)
 	{
 		result = false;
 	}
@@ -160,7 +160,7 @@ string DBgenerateServerDatabaseName(string* objectName, bool trainOrTest)
 
 string DBgenerateFolderName(string* objectName, bool trainOrTest)
 {
-	string tempFolder = tempFolderCharStar;
+	string tempFolder = tempFolder;
 
 	//eg network/server/ORdatabase/e/x/a/example/...
 

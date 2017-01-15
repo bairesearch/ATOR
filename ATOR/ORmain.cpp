@@ -26,7 +26,7 @@
  * File Name: ORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3f2b 22-June-2015
+ * Project Version: 3f3a 10-July-2015
  *
  *******************************************************************************/
 
@@ -94,8 +94,7 @@ int main(int argc,char* *argv)
 	sprintf(timeAndDateString, "%i:%i:%i %i/%.2i/%i", current->tm_hour, current->tm_min, current->tm_sec, current->tm_mday, (current->tm_mon+1), (current->tm_year + TM_STRUCT_YEAR_OFFSET));
 	cout << "OR execution time: " << timeAndDateString << " (start)" << endl;
 
-	char currentFolder[EXE_FOLDER_PATH_MAX_LENGTH];
-	getCurrentDirectory(currentFolder);
+	string currentFolder = getCurrentDirectory();
 
 	#ifdef OR_USE_DATABASE
 	string databaseFolderName =  OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME + OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME;
@@ -103,30 +102,30 @@ int main(int argc,char* *argv)
 
 	if(argumentExists(argc,argv,"-workingfolder"))
 	{
-		workingFolderCharStar=getCharArgument(argc,argv,"-workingfolder");
+		workingFolder = getStringArgument(argc,argv,"-workingfolder");
 	}
 	else
 	{
-		workingFolderCharStar = currentFolder;
+		workingFolder = currentFolder;
 	}
 	if(argumentExists(argc,argv,"-exefolder"))
 	{
-		exeFolderCharStar=getCharArgument(argc,argv,"-exefolder");
+		exeFolder = getStringArgument(argc,argv,"-exefolder");
 	}
 	else
 	{
-		exeFolderCharStar = currentFolder;
+		exeFolder = currentFolder;
 	}
 	if(argumentExists(argc,argv,"-tempfolder"))
 	{
-		tempFolderCharStar=getCharArgument(argc,argv,"-tempfolder");
+		tempFolder = getStringArgument(argc,argv,"-tempfolder");
 	}
 	else
 	{
-		tempFolderCharStar = currentFolder;
+		tempFolder = currentFolder;
 	}
 
-	setCurrentDirectory(workingFolderCharStar);
+	setCurrentDirectory(workingFolder);
 
 	if(!parseORrulesXMLfile())
 	{
@@ -135,7 +134,7 @@ int main(int argc,char* *argv)
 	}
 	fillInORrulesExternVariables();
 
-	setCurrentDirectory(tempFolderCharStar);
+	setCurrentDirectory(tempFolder);
 
 	int dimension;
 	if(argumentExists(argc,argv,"-od3"))
@@ -178,15 +177,12 @@ int main(int argc,char* *argv)
 	}
 
 	#ifndef OR_METHOD3DOD_TEST
-	string sqlIPaddress;
-	string sqlUsername;
-	string sqlPassword;
-	char* sqlipaddressCharStar = new char[100];
-	char* sqlusernameCharStar = new char[100];
-	char* sqlpasswordCharStar = new char[100];
+	string sqlIPaddress = "";
+	string sqlUsername = "";
+	string sqlPassword = "";
 	if(argumentExists(argc,argv,"-sqlipaddress"))
 	{
-		sqlipaddressCharStar=getCharArgument(argc,argv,"-sqlipaddress");
+		sqlIPaddress = getStringArgument(argc,argv,"-sqlipaddress");
 	}
 	else
 	{
@@ -196,7 +192,7 @@ int main(int argc,char* *argv)
 	}
 	if(argumentExists(argc,argv,"-sqlusername"))
 	{
-		sqlusernameCharStar=getCharArgument(argc,argv,"-sqlusername");
+		sqlUsername = getStringArgument(argc,argv,"-sqlusername");
 	}
 	else
 	{
@@ -207,7 +203,7 @@ int main(int argc,char* *argv)
 
 	if(argumentExists(argc,argv,"-sqlpassword"))
 	{
-		sqlpasswordCharStar=getCharArgument(argc,argv,"-sqlpassword");
+		sqlPassword = getStringArgument(argc,argv,"-sqlpassword");
 	}
 	else
 	{
@@ -215,9 +211,6 @@ int main(int argc,char* *argv)
 		printORcommandLineErrorMessage();
 		exit(0);
 	}
-	sqlIPaddress = sqlipaddressCharStar;
-	sqlUsername = sqlusernameCharStar;
-	sqlPassword = sqlpasswordCharStar;
 	#endif
 
 	RTviewInfo vi;
@@ -300,19 +293,17 @@ int main(int argc,char* *argv)
 		exit(0);
 	}
 
-	string multViewList;
-	char* multViewListFileNameCharStar = new char[100];
-	string multViewListFileName;
+	string multViewList = "";
+	string multViewListFileName = "";
 	bool useMultViewList = false;
 	if(argumentExists(argc,argv,"-multview"))
 	{
-		multViewListFileNameCharStar=getCharArgument(argc,argv,"-multview");
-		multViewListFileName = multViewListFileNameCharStar;
+		multViewListFileName = getStringArgument(argc,argv,"-multview");
 		useMultViewList = true;
 
 		RTviewInfo tempViewInfo;
 		string multViewListFileNameWithFullPath = "";
-		multViewListFileNameWithFullPath = multViewListFileNameWithFullPath + workingFolderCharStar + "/" + multViewListFileName;
+		multViewListFileNameWithFullPath = multViewListFileNameWithFullPath + workingFolder + "/" + multViewListFileName;
 		numberOfViewIndiciesPerObject = createViFromMultiViewList(&tempViewInfo, multViewListFileNameWithFullPath, 0, dimension);
 		cout << "countNumViFromMultiViewList numberOfViewIndiciesPerObject = " << numberOfViewIndiciesPerObject << endl;
 
@@ -323,12 +314,10 @@ int main(int argc,char* *argv)
 		objectDataSource = OR_OBJECT_DATA_SOURCE_USER_FILE;
 	}
 
-	char* imageFileNameCharStar = new char[100];
-	string imageFileName;
+	string imageFileName = "";
 	if(argumentExists(argc,argv,"-object"))
 	{
-		imageFileNameCharStar=getCharArgument(argc,argv,"-object");
-		imageFileName = imageFileNameCharStar;
+		imageFileName = getStringArgument(argc,argv,"-object");
 		ObjectNameArray[0] = imageFileName;
 		vi.objectName = imageFileName;
 	}
@@ -341,16 +330,14 @@ int main(int argc,char* *argv)
 
 	if(argumentExists(argc,argv,"-version"))
 	{
-		cout << "OpenOR.exe - Project Version: 3f2b 22-June-2015" << endl;
+		cout << "OpenOR.exe - Project Version: 3f3a 10-July-2015" << endl;
 		exit(1);
 	}
 
-	char* imageExtensionNameCharStar = new char[100];
-	string imageExtensionName;
+	string imageExtensionName = "";
 	if(argumentExists(argc,argv,"-imageext"))
 	{
-		imageExtensionNameCharStar=getCharArgument(argc,argv,"-imageext");
-		imageExtensionName = imageExtensionNameCharStar;
+		imageExtensionName = getStringArgument(argc,argv,"-imageext");
 		vi.imageExtensionName = imageExtensionName;
 	}
 	else
@@ -394,12 +381,10 @@ int main(int argc,char* *argv)
 	bool missingaPOVDescriptor = false;
 	bool missingDepthMapExtensionDescriptor = false;
 
-	char* depthExtensionNameCharStar = new char[100];
-	string depthExtensionName;
+	string depthExtensionName = "";
 	if(argumentExists(argc,argv,"-depthext"))
 	{
-		depthExtensionNameCharStar=getCharArgument(argc,argv,"-depthext");
-		depthExtensionName = depthExtensionNameCharStar;
+		depthExtensionName = getStringArgument(argc,argv,"-depthext");
 		vi.depthExtensionName = depthExtensionName;
 	}
 	else
@@ -540,7 +525,7 @@ int main(int argc,char* *argv)
 	#ifdef OR_USE_DATABASE
 	if(argumentExists(argc,argv,"-dbfolder"))
 	{
-		databaseFolderName=getCharArgument(argc,argv,"-dbfolder");
+		databaseFolderName = getStringArgument(argc,argv,"-dbfolder");
 		databaseFolderName = databaseFolderName + '/';
 	}
 	initialiseDatabase(databaseFolderName);

@@ -26,7 +26,7 @@
  * File Name: ORcomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3f2b 22-June-2015
+ * Project Version: 3f3a 10-July-2015
  *
  *******************************************************************************/
 
@@ -228,8 +228,7 @@ double compareNormalisedSnapshots(int numberOfTestPolys[], int numberOfTestViewI
 double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPolys[], int numberOfTrainViewIndicies, int numberOfTestViewIndicies, int imageWidthFacingPoly, int imageHeightFacingPoly, string trainObjectNameArray[], int numberOfTrainObjects, string testObjectNameArray[], int numberOfTestObjects, int dimension, int numberOfTrainZoomIndicies, int numberOfTestZoomIndicies, int testViewNumber)
 #endif
 {
-	char currentTempFolder[EXE_FOLDER_PATH_MAX_LENGTH];
-	getCurrentDirectory(currentTempFolder);
+	string currentTempFolder = getCurrentDirectory();
 
 	ORobjectReferenceList* firstReferenceInSnapshotMatchObjectReferenceList = new ORobjectReferenceList();
 
@@ -334,7 +333,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3f2b 22-June-2015<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3f3a 10-July-2015<p>";
 		}
 		else
 		{

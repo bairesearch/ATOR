@@ -26,7 +26,7 @@
  * File Name: ORdatabaseDecisionTree.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3f2b 22-June-2015
+ * Project Version: 3f3a 10-July-2015
  *
  *******************************************************************************/
 
@@ -61,25 +61,25 @@ void createAndOrParseIntoDirectory(string* folderNameFullPath, string* folderNam
 	{
 		if(relativeOrAbsolute)
 		{
-			createDirectory(folderName->c_str());
-			setCurrentDirectory(folderName->c_str());
+			createDirectory(folderName);
+			setCurrentDirectory(folderName);
 		}
 		else
 		{
 			//create;
-			createDirectory(folderNameFullPath->c_str());
-			setCurrentDirectory(folderNameFullPath->c_str());
+			createDirectory(folderNameFullPath);
+			setCurrentDirectory(folderNameFullPath);
 		}
 	}
 	else
 	{
 		if(relativeOrAbsolute)
 		{
-			setCurrentDirectory(folderName->c_str());
+			setCurrentDirectory(folderName);
 		}
 		else
 		{
-			setCurrentDirectory(folderNameFullPath->c_str());
+			setCurrentDirectory(folderNameFullPath);
 		}
 	}
 }
