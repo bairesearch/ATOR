@@ -26,7 +26,7 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2016 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3i16a 27-August-2016
+ * Project Version: 3i17a 20-September-2016
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -1437,21 +1437,21 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 
 		string convertPNGtoPPMCommand = "";
 		convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolder + "/" + preexistingImageFileName + " " + rgbMapFileName;
-		cout << "system(" << convertPNGtoPPMCommand << ");" << endl;
+		cout << "system{" << convertPNGtoPPMCommand << "};" << endl;
 		system(convertPNGtoPPMCommand.c_str());
 
 
 		pixmap* rgbPixMap;
 		if(OR_PRINT_ALGORITHM_PROGRESS)
 		{
-			cout << "rgbPixMap = loadPPM(" << rgbMapFileName << ");" << endl;
+			cout << "rgbPixMap = loadPPM{" << rgbMapFileName << "};" << endl;
 		}
 		rgbPixMap = loadPPM(rgbMapFileName);
 		if(OR_PRINT_ALGORITHM_PROGRESS)
 		{
 			cout << "imageWidth = " << imageWidth << endl;
 			cout << "imageHeight = " << imageHeight << endl;
-			cout << "createRGBMapFromPixmapImage(rgbPixMap, rgbMap);" << endl;
+			cout << "createRGBMapFromPixmapImage{rgbPixMap, rgbMap};" << endl;
 		}
 		createRGBMapFromPixmapImage(rgbPixMap, rgbMap);
 		freePixmap(rgbPixMap);
@@ -1515,21 +1515,21 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 		convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolder + "/" + objectImageName + " " + rgbMapFileName;
 		if(OR_PRINT_ALGORITHM_PROGRESS)
 		{
-			cout << "system(" << convertPNGtoPPMCommand << ");" << endl;
+			cout << "system{" << convertPNGtoPPMCommand << "};" << endl;
 		}
 		system(convertPNGtoPPMCommand.c_str());
 
 		pixmap* rgbPixMap;
 		if(OR_PRINT_ALGORITHM_PROGRESS)
 		{
-			cout << "rgbPixMap = loadPPM(" << rgbMapFileName << ");" << endl;
+			cout << "rgbPixMap = loadPPM{" << rgbMapFileName << "};" << endl;
 		}
 		rgbPixMap = loadPPM(rgbMapFileName);
 		if(OR_PRINT_ALGORITHM_PROGRESS)
 		{
 			cout << "imageWidth = " << imageWidth << endl;
 			cout << "imageHeight = " << imageHeight << endl;
-			cout << "createRGBMapFromPixmapImage(rgbPixMap, rgbMap);" << endl;
+			cout << "createRGBMapFromPixmapImage{rgbPixMap, rgbMap};" << endl;
 		}
 		createRGBMapFromPixmapImage(rgbPixMap, rgbMap);
 		freePixmap(rgbPixMap);
@@ -1555,7 +1555,7 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 			convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolder + "/" + objectDepthName + " " + depthMap24BitFileName;
 			if(OR_PRINT_ALGORITHM_PROGRESS)
 			{
-				cout << "system(" << convertPNGtoPPMCommand << ");" << endl;
+				cout << "system{" << convertPNGtoPPMCommand << "};" << endl;
 			}
 			system(convertPNGtoPPMCommand.c_str());
 
@@ -1563,14 +1563,14 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 			pixmap* depth24BitPixMap;
 			if(OR_PRINT_ALGORITHM_PROGRESS)
 			{
-				cout << "depth24BitPixMap = loadPPM(" << depthMap24BitFileName << ");" << endl;
+				cout << "depth24BitPixMap = loadPPM{" << depthMap24BitFileName << "};" << endl;
 			}
 			depth24BitPixMap = loadPPM(depthMap24BitFileName);
 			if(OR_PRINT_ALGORITHM_PROGRESS)
 			{
 				cout << "imageWidth = " << imageWidth << endl;
 				cout << "imageHeight = " << imageHeight << endl;
-				cout << "createDepthMapFromDepth24BitPixmapImage(depth24BitPixMap, depthMap);" << endl;
+				cout << "createDepthMapFromDepth24BitPixmapImage{depth24BitPixMap, depthMap};" << endl;
 			}
 			createDepthMapFromDepth24BitPixmapImage(depth24BitPixMap, depthMap, vi->depthScale, 0.0);
 			freePixmap(depth24BitPixMap);
@@ -3058,7 +3058,7 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 
 		if(OR_PRINT_ALGORITHM_PROGRESS)
 		{
-			cout << "generatePixmapFromRGBmap(" << rgbMapFileNameTEMP << ", imageWidth, imageHeight, rgbMapTEMP);" << endl;
+			cout << "generatePixmapFromRGBmap{" << rgbMapFileNameTEMP << ", imageWidth, imageHeight, rgbMapTEMP};" << endl;
 		}
 		generatePixmapFromRGBmap(charstarRgbMapTEMPFileName, 1600, 800, rgbMapTEMP);
 		string convertRGBPPMtoRGBRASCommand = "convert " + rgbMapFileNameTEMP + " " + rgbMapFileNameRas;
@@ -3076,34 +3076,34 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 
 	if(OR_PRINT_ALGORITHM_PROGRESS)
 	{
-		cout << "system(" << convertRGBPPMtoRGBRASCommand << ");" << endl;
+		cout << "system{" << convertRGBPPMtoRGBRASCommand << "};" << endl;
 	}
 	system(convertRGBPPMtoRGBRASCommand.c_str());
 
 	setCurrentDirectory(exeFolder);
 	if(OR_PRINT_ALGORITHM_PROGRESS)
 	{
-		cout << "system(" << convertRGBRAStoFeatureRASCommand << ");" << endl;
+		cout << "system{" << convertRGBRAStoFeatureRASCommand << "};" << endl;
 	}
 	system(convertRGBRAStoFeatureRASCommand.c_str());
 	setCurrentDirectory(currentTempFolder);
 
 	if(OR_PRINT_ALGORITHM_PROGRESS)
 	{
-		cout << "system(" << convertFeatureRAStoFeaturePPMCommand << ");" << endl;
+		cout << "system{" << convertFeatureRAStoFeaturePPMCommand << "};" << endl;
 	}
 	system(convertFeatureRAStoFeaturePPMCommand.c_str());
 	pixmap* featurePixMap;
 	if(OR_PRINT_ALGORITHM_PROGRESS)
 	{
-		cout << "featurePixMapTrain = loadPPM(" << featureMapFileName << ");" << endl;
+		cout << "featurePixMapTrain = loadPPM{" << featureMapFileName << "};" << endl;
 	}
 	featurePixMap = loadPPM(featureMapFileName);
 
 	#ifdef TEMP_TEST_HEITGER_FEATURE_THRESHOLD_IMAGE_SIZE_DEPENDENCE
 		if(OR_PRINT_ALGORITHM_PROGRESS)
 		{
-			cout << "createRGBMapFromPixmapImage(featurePixMap, featureRgbMapTEMP);" << endl;
+			cout << "createRGBMapFromPixmapImage{featurePixMap, featureRgbMapTEMP};" << endl;
 		}
 		createRGBMapFromPixmapImage(featurePixMap, featureRgbMapTEMP);
 		freePixmap(featurePixMap);
@@ -3121,7 +3121,7 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 	#else
 	if(OR_PRINT_ALGORITHM_PROGRESS)
 	{
-		cout << "createRGBMapFromPixmapImage(featurePixMap, featureRgbMap);" << endl;
+		cout << "createRGBMapFromPixmapImage{featurePixMap, featureRgbMap};" << endl;
 		cout << "imageWidth = " << imageWidth << endl;
 		cout << "imageHeight = " << imageHeight << endl;
 	}
@@ -3135,7 +3135,7 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 		string convertFeatureRAStoFeatureAsciiCommand = "./Keypoints -i " + baseName + " -ascii -thresh 40.0";	//40.0
 		if(OR_PRINT_ALGORITHM_PROGRESS)
 		{
-			cout << "system(" << convertFeatureRAStoFeatureAsciiCommand << ");" << endl;
+			cout << "system{" << convertFeatureRAStoFeatureAsciiCommand << "};" << endl;
 		}
 		system(convertFeatureRAStoFeatureAsciiCommand.c_str());
 		generateFeatureListFromHeitgerFeatureAsciiMap(firstNewFeatureInList, featureMapFileNameAscii, zoom, RTviewInfo* vi);
@@ -3144,15 +3144,15 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 		#ifdef USE_RBB_QUADRATIC_FIT_KEYPOINT_GENERATION
 			if(OR_PRINT_ALGORITHM_PROGRESS)
 			{
-				cout << "generateFeatureListFromHeitgerFeatureRGBmapWithQuadraticFit(firstFeatureInList, featureRgbMap, imageWidth, imageHeight, sensitivity, dimension, pointMap, depthMap);" << endl;
+				cout << "generateFeatureListFromHeitgerFeatureRGBmapWithQuadraticFit{firstFeatureInList, featureRgbMap, imageWidth, imageHeight, sensitivity, dimension, pointMap, depthMap};" << endl;
 			}
 			generateFeatureListFromHeitgerFeatureRGBmapWithQuadraticFit(firstNewFeatureInList, featureRgbMap, imageWidth, imageHeight, sensitivity, dimension, pointMap, depthMap, zoom, vi, interpixelRGBmapType);
 		#elif defined USE_RBB_BASIC_KEYPOINT_GENERATION
 			if(OR_PRINT_ALGORITHM_PROGRESS)
 			{
-				cout << "generateFeatureListFromHeitgerFeatureRGBMap(firstFeatureInList, featureRgbMap, imageWidth, imageHeight, rgbMap,  sensitivity, dimension, pointMap, depthMap);" << endl;
+				cout << "generateFeatureListFromHeitgerFeatureRGBMap{firstFeatureInList, featureRgbMap, imageWidth, imageHeight, rgbMap,  sensitivity, dimension, pointMap, depthMap};" << endl;
 			}
-			generateFeatureListFromHeitgerFeatureRGBMap(firstNewFeatureInList, featureRgbMap, imageWidth, imageHeight, rgbMap, sensitivity, dimension, pointMap, depthMap, zoom, vi,);
+			generateFeatureListFromHeitgerFeatureRGBMap(firstNewFeatureInList, featureRgbMap, imageWidth, imageHeight, rgbMap, sensitivity, dimension, pointMap, depthMap, zoom, vi);
 		#else
 			cout << "error: some form of keypoint generation must be defined" << end;
 			exit(0);
@@ -3160,7 +3160,7 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 	#endif
 #else
 	//unsigned char* featureRgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
-	generateFeatureListFromRGBMap(firstFeatureInList, rgbMap, imageWidth, imageHeight, zoom, trainOrTestString, mapFileName, dimension, pointMap, depthMap, vi);
+	generateFeatureListFromRGBMap(firstFeatureInList, rgbMap, imageWidth, imageHeight, zoom, trainOrTestString, mapFileName, vi);
 
 #endif
 

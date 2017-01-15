@@ -26,7 +26,7 @@
  * File Name: ORfeature.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2016 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3i16a 27-August-2016
+ * Project Version: 3i17a 20-September-2016
  *
  * Assumes that depth information is less accurate than image information
  *
@@ -191,7 +191,7 @@ void generateFeatureListFromHeitgerFeatureRGBmapWithQuadraticFit(ORfeature* firs
 					currentFeatureInList->point.y = xyzWorld.y;
 					currentFeatureInList->point.z = xyzWorld.z;
 				#else
-					cout << "error: generateFeatureListFromHeitgerFeatureRGBmapWithQuadraticFit() requires OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH when compiling with 3DOD/use3DODonObjectForegroundDepthCheck" << endl;
+					cout << "error: generateFeatureListFromHeitgerFeatureRGBmapWithQuadraticFit{} requires OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH when compiling with 3DOD/use3DODonObjectForegroundDepthCheck" << endl;
 					vec xyzWorld;
 					getPointMapValue(int(xPos), int(yPos), imageWidth*zoom, pointMap, &xyzWorld);
 					currentFeatureInList->point.x = xyzWorld.x;
@@ -314,7 +314,7 @@ void generateEdgeListFromContrastMapWithQuadraticFit(double* contrastMap, bool* 
 				currentZeroCrossingInList->point.y = xyzWorld.y;
 				currentZeroCrossingInList->point.z = xyzWorld.z;
 				#else
-				cout << "error: generateEdgeListFromContrastMapWithQuadraticFit() requires OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH when compiling with 3DOD/use3DODonObjectForegroundDepthCheck" << endl;
+				cout << "error: generateEdgeListFromContrastMapWithQuadraticFit{} requires OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH when compiling with 3DOD/use3DODonObjectForegroundDepthCheck" << endl;
 				vec xyzWorld;
 				getPointMapValue(int(yPos), int(yPos), imageWidth*zoom, pointMap, &xyzWorld);
 				currentZeroCrossingInList->point.x = xyzWorld.x;
@@ -2011,7 +2011,7 @@ bool defineRegionCheckNextPixelNonRecursive(ORpixelContiguous* firstInPixelConti
 							calculatePointMapValue((x+pixelXOffset)*zoom, (y+pixelYOffset)*zoom, depth, &xyzWorld, vi);
 
 						#else
-							cout << "error: traceEdgeCheckNextPixelRecursive() requires OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH when compiling with 3DOD/use3DODonObjectForegroundDepthCheck" << endl;
+							cout << "error: traceEdgeCheckNextPixelRecursive{} requires OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH when compiling with 3DOD/use3DODonObjectForegroundDepthCheck" << endl;
 							vec xyzWorld;
 							getPointMapValue((x+pixelXOffset)*zoom, (y+pixelYOffset)*zoom, imageWidth*zoom, pointMap, &xyzWorld);
 						#endif
@@ -2659,7 +2659,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 					calculatePointMapValue(xposInitial, yposInitial, depth, &xyzWorld, vi);
 
 				#else
-					cout << "error: traceEdgeCheckNextPixelRecursive() requires OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH when compiling with 3DOD/use3DODonObjectForegroundDepthCheck" << endl;
+					cout << "error: traceEdgeCheckNextPixelRecursive{} requires OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH when compiling with 3DOD/use3DODonObjectForegroundDepthCheck" << endl;
 
 					getPointMapValue(int(xposInitial), int(yposInitial), imageWidth, pointMap, &xyzWorld);
 				#endif
@@ -2880,7 +2880,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 									calculatePointMapValue(xpos*zoom, ypos*zoom, depth, &xyzWorld, vi);
 
 								#else
-									cout << "error: traceEdgeCheckNextPixelRecursive() requires OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH when compiling with 3DOD/use3DODonObjectForegroundDepthCheck" << endl;
+									cout << "error: traceEdgeCheckNextPixelRecursive{} requires OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH when compiling with 3DOD/use3DODonObjectForegroundDepthCheck" << endl;
 
 									getPointMapValue(int(xpos)*zoom, int(ypos)*zoom, imageWidth*zoom, pointMap, &xyzWorld);
 								#endif
@@ -4144,7 +4144,7 @@ void traceEdgeCheckNextPixelRecursive(int xCurrent, int yCurrent, int alreadyPro
 							calculatePointMapValue(x*zoom, y*zoom, depth, &xyzWorld, vi);
 
 						#else
-							cout << "error: traceEdgeCheckNextPixelRecursive() requires OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH when compiling with 3DOD/use3DODonObjectForegroundDepthCheck" << endl;
+							cout << "error: traceEdgeCheckNextPixelRecursive{} requires OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH when compiling with 3DOD/use3DODonObjectForegroundDepthCheck" << endl;
 							vec xyzWorld;
 							getPointMapValue(x*zoom, y*zoom, imageWidth*zoom, pointMap, &xyzWorld);
 						#endif

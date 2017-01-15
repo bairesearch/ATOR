@@ -26,7 +26,7 @@
  * File Name: ORfeature.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2016 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3i16a 27-August-2016
+ * Project Version: 3i17a 20-September-2016
  *
  *******************************************************************************/
 
@@ -79,7 +79,6 @@ bool addCentredFeaturesToFeatureListUsingMeshList(ORfeature* firstFeatureInFeatu
 /*Old high level methods - point ORfeature methods*/
 void generateFeatureListFromHeitgerFeatureRGBMap(ORfeature* firstFeatureInFeatureList, unsigned char* featureRgbMap, int imageWidth, int imageHeight, unsigned char* rgbMap, double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, RTviewInfo* vi);
 #ifndef OR_USE_HEITGER_OBJECT_FEATURE_CALCULATION_CODE
-//void generateFeatureListFromRGBMap(ORfeature* firstFeatureInFeatureList, unsigned char* rgbMap, int imageWidth, int imageHeight);
 void generateFeatureListFromRGBMap(ORfeature* firstFeatureInFeatureList, unsigned char* rgbMap, int imageWidth, int imageHeight, int zoom, string trainOrTestString, string mapFileName, RTviewInfo* vi);
 #endif
 void generateFeatureListFromHeitgerFeatureAsciiMap(ORfeature* firstFeatureInFeatureList, string featureMapFileNameAscii, int zoom, RTviewInfo* vi);
