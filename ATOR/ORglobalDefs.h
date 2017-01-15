@@ -23,7 +23,7 @@
  * File Name: ORglobalDefs.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3a12a 31-July-2012
+ * Project Version: 3b1a 05-August-2012
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
@@ -612,6 +612,7 @@
 
 #include "SHAREDglobalDefs.h"
 
+#define OR_USE_DATABASE	//this needs to be debugged (not yet tested)
 
 //#define OR_ASSERT_MATCHES_FOR_ALL_SIDES		//removed 10 June 2012
 
@@ -624,31 +625,39 @@ OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_
 OR_METHOD_3DOD_IGNORE_OT_FEATURES_DURING_GEO_COMPARISON
 */
 
-#define DEBUG_OR_OUTPUT_DT_BIN
-#ifdef DEBUG_OR_OUTPUT_DT_BIN
-	//#define DEBUG_OR_OUTPUT_DT_BIN_WRITE_TO_FILE
-	#ifdef DEBUG_OR_OUTPUT_DT_BIN_WRITE_TO_FILE
-		#define DEBUG_OR_OUTPUT_DT_BIN_WRITE_TO_FILE_ONLY_WRITE_MATCHES_NOT_REQUIRING_INTELLIGENT_BINNING
-		#define OR_ASSERT_MATCHES_FOR_ALL_SIDES		//this is only enabled for debugging purposes [such that it is clear to the user reading the html file which sets of 3 have at least one match]
-	#endif
-	//#define DEBUG_OR_OUTPUT_DT_BIN_READ_FROM_FILE_AND_WORK_OUT_WHY_BIN_IS_NOT_BEING_DETECTED
-	#ifdef DEBUG_OR_OUTPUT_DT_BIN_READ_FROM_FILE_AND_WORK_OUT_WHY_BIN_IS_NOT_BEING_DETECTED
-		#define MAX_NUMBER_DT_BIN_RECORDS (10000)
-		#define DT_BIN_RECORD_MAX_LENGTH (255) //from MYSQL_FIELD_TYPE_TINYTEXT - is there another preprocessor definition defining this?
-	#endif
+#ifdef OR_USE_DATABASE
+	//#define OR_DATABASE_DEBUG
+	//#define OR_DATABASE_DEBUG_FILESYSTEM_IO
 #endif
 
+#ifndef OR_USE_DATABASE
+	#define DEBUG_OR_OUTPUT_DT_BIN
+	#ifdef DEBUG_OR_OUTPUT_DT_BIN
+		//#define DEBUG_OR_OUTPUT_DT_BIN_WRITE_TO_FILE
+		#ifdef DEBUG_OR_OUTPUT_DT_BIN_WRITE_TO_FILE
+			#define DEBUG_OR_OUTPUT_DT_BIN_WRITE_TO_FILE_ONLY_WRITE_MATCHES_NOT_REQUIRING_INTELLIGENT_BINNING
+			#define OR_ASSERT_MATCHES_FOR_ALL_SIDES		//this is only enabled for debugging purposes [such that it is clear to the user reading the html file which sets of 3 have at least one match]
+		#endif
+		//#define DEBUG_OR_OUTPUT_DT_BIN_READ_FROM_FILE_AND_WORK_OUT_WHY_BIN_IS_NOT_BEING_DETECTED
+		#ifdef DEBUG_OR_OUTPUT_DT_BIN_READ_FROM_FILE_AND_WORK_OUT_WHY_BIN_IS_NOT_BEING_DETECTED
+			#define MAX_NUMBER_DT_BIN_RECORDS (10000)
+			#define DT_BIN_RECORD_MAX_LENGTH (255) //from MYSQL_FIELD_TYPE_TINYTEXT - is there another preprocessor definition defining this?
+		#endif
+	#endif
+#endif
 
 	/**********
 	OR DECISION TREE RGB DEV MAP COMPARISON DEBUG VARS - COMMENT THESE OUT FOR for proper/formal/release software build;
 	***********/
 
-#define DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD	//displays contrast thresholded RGB maps
-#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
-	#define DEBUG_OR_OUTPUT_SMALL_IMAGES
-	#define DEBUG_OR_OUTPUT_DECISION_TREE_IMAGES
-	#ifdef DEBUG_OR_OUTPUT_DECISION_TREE_IMAGES
-		#define DEBUG_OR_OUTPUT_DECISION_TREE_IMAGES_DIFF
+#ifndef OR_USE_DATABASE
+	#define DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD	//displays contrast thresholded RGB maps
+	#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
+		#define DEBUG_OR_OUTPUT_SMALL_IMAGES
+		#define DEBUG_OR_OUTPUT_DECISION_TREE_IMAGES
+		#ifdef DEBUG_OR_OUTPUT_DECISION_TREE_IMAGES
+			#define DEBUG_OR_OUTPUT_DECISION_TREE_IMAGES_DIFF
+		#endif
 	#endif
 #endif
 //#define DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON_THRESHOLD
