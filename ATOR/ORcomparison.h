@@ -26,7 +26,7 @@
  * File Name: ORcomparison.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3d6a 05-August-2014
+ * Project Version: 3e2a 29-August-2014
  *
  *******************************************************************************/
 
@@ -67,10 +67,6 @@ double compareNormalisedSnapshots(int numberOfTestPolys[], int numberOfTestViewI
 #else
 double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPolys[], int numberOfTrainViewIndicies, int numberOfTestViewIndicies, int imageWidthFacingPoly, int imageHeightFacingPoly, string trainObjectNameArray[], int numberOfTrainObjects, string testObjectNameArray[], int numberOfTestObjects, int dimension, int numberOfTrainZoomIndicies, int numberOfTestZoomIndicies, int testViewNumber);
 #endif
-
-//#ifdef OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML
-void writeStringToFileObject2(string s, ofstream * writeFileObject);
-//#endif
 
 //#ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING
 void convertNormalisedHueDeviationMapTo3x8bitMap(int imageWidth, int imageHeight, double * rgbDevIEnormalisedHueContrastMapSmallFacingPoly, unsigned char * rgbDev8BitSmallMapFacingPoly);

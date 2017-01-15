@@ -26,7 +26,7 @@
  * File Name: ORcomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3d6a 05-August-2014
+ * Project Version: 3e2a 29-August-2014
  *
  *******************************************************************************/
 
@@ -40,6 +40,7 @@
 #include "ORpixelMaps.h"
 #include "ORoperations.h"
 #include "LDreferenceManipulation.h"
+#include "SHAREDvars.h"	//required for writeStringToFileObject
 
 #include "LDjpeg.h"
 
@@ -345,7 +346,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3d6a 05-August-2014<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3e2a 29-August-2014<p>";
 		}
 		else
 		{
@@ -353,7 +354,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		}
 
 
-		writeStringToFileObject2(ICRheader, &writeFileObject);
+		writeStringToFileObject(ICRheader, &writeFileObject);
 
 		string ICRtableStart = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL)
@@ -364,7 +365,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		{
 			ICRtableStart = ICRtableStart + "<TABLE width=\"100%\" cellpadding=\"3\" cellspacing=\"0\" border=\"1\"><TR><TD colspan=\"6\">Test</TD><TD colspan=\"6\">Train</TD><TD></TD></TR><TR><TD>Object</TD><TD>View</TD><TD>Zoom</TD><TD>X</TD><TD>Y</TD><TD>Image</TD><TD>Object</TD><TD>View</TD><TD>Zoom</TD><TD>X</TD><TD>Y</TD><TD>Image</TD><TD></TD></TR>";
 		}
-		writeStringToFileObject2(ICRtableStart, &writeFileObject);
+		writeStringToFileObject(ICRtableStart, &writeFileObject);
 
 	}
 
@@ -929,11 +930,11 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 					}
 
 					string ICRNewTestViewIndexRow3 = "<TR><TD colspan=\"6\"><img src=\"" + mapFileName + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING + PNG_EXTENSION + "\" border=0> </TD><TD colspan=\"6\"><img src=\"" + mapFileName + RGB_MAP_PPM_EXTENSION_PART + TRAIN_STRING + PNG_EXTENSION + "\" border=0> </TD><TD></TD></TR>";
-					writeStringToFileObject2(ICRNewTestViewIndexRow3, &writeFileObject);
+					writeStringToFileObject(ICRNewTestViewIndexRow3, &writeFileObject);
 					if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL)
 					{
 						string ICRNewTestViewIndexRow4 = "<TR><TD colspan=\"6\"><img src=\"" + mapFileName + FEATURESMAP_PPM_EXTENSION_PART + TEST_STRING + PNG_EXTENSION + "\" border=0> </TD><TD colspan=\"6\"><img src=\"" + mapFileName + FEATURESMAP_PPM_EXTENSION_PART + TRAIN_STRING + PNG_EXTENSION + "\" border=0> </TD><TD></TD></TR>";
-						writeStringToFileObject2(ICRNewTestViewIndexRow4, &writeFileObject);
+						writeStringToFileObject(ICRNewTestViewIndexRow4, &writeFileObject);
 					}
 				}
 				#endif
@@ -2612,7 +2613,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 											if(DTbinEqualsOrigTrainDTbin)
 											{
 											#endif
-												writeStringToFileObject2(DTbin + "\n", &writeFileObjectDTbinDebug);
+												writeStringToFileObject(DTbin + "\n", &writeFileObjectDTbinDebug);
 											#ifdef DEBUG_OR_OUTPUT_DT_BIN_WRITE_TO_FILE_ONLY_WRITE_MATCHES_NOT_REQUIRING_INTELLIGENT_BINNING
 											}
 											#endif
@@ -2642,7 +2643,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 										ICRmatchRow = ICRmatchRow + "<TD>" + currentLowestErrorString + "</TD></TR>";
 										#endif
 
-										writeStringToFileObject2(ICRmatchRow, &writeFileObject);
+										writeStringToFileObject(ICRmatchRow, &writeFileObject);
 									}
 									#ifndef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 									}
@@ -2702,7 +2703,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 	if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML)
 	{
 		string ICRtableEnd = "</TABLE>";
-		writeStringToFileObject2(ICRtableEnd, &writeFileObject);
+		writeStringToFileObject(ICRtableEnd, &writeFileObject);
 
 		string ICRfooter  = "</BODY></HTML>";
 	}
@@ -2800,15 +2801,7 @@ void convertImageFileType(string * imageBaseFileName, string * imageBaseFileName
 
 
 
-//#ifdef OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML
-void writeStringToFileObject2(string s, ofstream * writeFileObject)
-{
-	for(int i=0; i < s.size(); i++)
-	{
-		writeFileObject->put(s[i]);
-	}
-}
-//#endif
+
 
 
 
