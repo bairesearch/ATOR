@@ -3,7 +3,7 @@
  * File Name: ORfeature.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7e 12-June-2012
+ * Project Version: 3a8a 14-June-2012
  *
  * Assumes that depth information is less accurate than image information
  *
@@ -957,6 +957,8 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 
 	double pixelXOffset;
 	double pixelYOffset;
+	int kernelWidthForegroundCheck;
+	int kernelHeightForegroundCheck;	
 	int xBoundaryMax;
 	int xBoundaryMin;
 	int yBoundaryMax;
@@ -970,6 +972,8 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 		xBoundaryMin = 0;
 		yBoundaryMax = imageHeight-1;
 		yBoundaryMin = 0;
+		kernelWidthForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_WIDTH_NO_INTERPIXEL;
+		kernelHeightForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_WIDTH_NO_INTERPIXEL;		
 	}
 	else if(interpixelContrastMapType == INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST)
 	{
@@ -980,6 +984,8 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 		xBoundaryMin = 0;
 		yBoundaryMax = imageHeight-2;
 		yBoundaryMin = 0;
+		kernelWidthForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_WIDTH_INTERPIXEL;
+		kernelHeightForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_HEIGHT_INTERPIXEL;		
 	}
 	else if(interpixelContrastMapType == INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST)
 	{
@@ -990,7 +996,11 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 		xBoundaryMin = 1;
 		yBoundaryMax = imageHeight-2;
 		yBoundaryMin = 1;
+		kernelWidthForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_WIDTH_NO_INTERPIXEL;
+		kernelHeightForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_HEIGHT_NO_INTERPIXEL;		
 	}
+
+
 
 
 	//added by RBB 3 Oct 09
@@ -1370,6 +1380,7 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 									{
 										currentFeatureInList->pointNonWorldCoord.x = (boundaryaveragex)*zoom;
 										currentFeatureInList->pointNonWorldCoord.y = (boundaryaveragey)*zoom;
+										currentFeatureInList->pointNonWorldCoord.z = getDepthValueWithOrWithoutForegroundCheck(currentFeatureInList->pointNonWorldCoord.x, currentFeatureInList->pointNonWorldCoord.y, imageWidth, imageHeight, kernelWidthForegroundCheck, kernelHeightForegroundCheck, depthMap, zoom);
 
 										currentFeatureInList->point.x = boundarysumpos.x;
 										currentFeatureInList->point.y = boundarysumpos.y;
@@ -1388,6 +1399,7 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 									{
 										currentFeatureInList->pointNonWorldCoord.x = (regionaveragex)*zoom;
 										currentFeatureInList->pointNonWorldCoord.y = (regionaveragey)*zoom;
+										currentFeatureInList->pointNonWorldCoord.z = getDepthValueWithOrWithoutForegroundCheck(currentFeatureInList->pointNonWorldCoord.x, currentFeatureInList->pointNonWorldCoord.y, imageWidth, imageHeight, kernelWidthForegroundCheck, kernelHeightForegroundCheck, depthMap, zoom);
 
 										currentFeatureInList->point.x = regionsumpos.x;
 										currentFeatureInList->point.y = regionsumpos.y;
@@ -1425,15 +1437,30 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 
 							currentFeatureInList->xViewport = regionaveragex*zoom;
 							currentFeatureInList->yViewport = regionaveragey*zoom;
-
+							
+							/*
+							cout << "regionaveragex= " << regionaveragex << endl;
+							cout << "regionaveragey " << regionaveragey << endl;
+							cout << "zoom = " << zoom << endl;
+							*/
 							if(dimension == OR_METHOD3DOD_DIMENSIONS)
-							{
-								currentFeatureInList->pointNonWorldCoord.x = (regionaveragex)*zoom;
-								currentFeatureInList->pointNonWorldCoord.y = (regionaveragey)*zoom;
-
+							{			
 								currentFeatureInList->point.x = regionsumpos.x;
 								currentFeatureInList->point.y = regionsumpos.y;
 								currentFeatureInList->point.z = regionsumpos.z;
+								
+								currentFeatureInList->pointNonWorldCoord.x = (regionaveragex)*zoom;
+								currentFeatureInList->pointNonWorldCoord.y = (regionaveragey)*zoom;
+								currentFeatureInList->pointNonWorldCoord.z = getDepthValueWithOrWithoutForegroundCheck(currentFeatureInList->pointNonWorldCoord.x, currentFeatureInList->pointNonWorldCoord.y, imageWidth, imageHeight, kernelWidthForegroundCheck, kernelHeightForegroundCheck, depthMap, zoom);
+							
+								/*
+								calculateDepthMapValue(&(currentFeatureInList->point), &(currentFeatureInList->pointNonWorldCoord), vi);
+								*/
+								/*
+								currentFeatureInList->pointNonWorldCoord.x = 
+								currentFeatureInList->pointNonWorldCoord.y = 
+								currentFeatureInList->pointNonWorldCoord.z = 						
+								*/
 							}
 							else
 							{
@@ -1485,6 +1512,27 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 
 	return result;
 }
+
+double getDepthValueWithOrWithoutForegroundCheck(double pointNonWorldCoordx, double pointNonWorldCoordy, int imageWidth, int imageHeight, int kernelWidthForegroundCheck, int kernelHeightForegroundCheck, double depthMap[], int zoom)
+{	
+	//depth calculations added 13 June 2012 - check these....
+	#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS
+		vec xyzNearbyPointOnObject;
+		double depth = calculateForegroundMinimumDepthWithinKernel(int(pointNonWorldCoordx), int(pointNonWorldCoordy), imageWidth, imageHeight, kernelWidthForegroundCheck, kernelHeightForegroundCheck, depthMap, &xyzNearbyPointOnObject, zoom);
+	#else
+		double depth = getLumOrContrastOrDepthMapValue(int(pointNonWorldCoordx), int(pointNonWorldCoordy), imageWidth, depthMap);
+	#endif
+	return depth;
+}
+
+/*
+void calculateDepthMapValue(vec * xyzWorld, vec * pointNonWorldCoord, view_info * vi)
+{	//see calculatePointMapValue
+
+}
+*/
+
+
 
 bool addCentredFeaturesToFeatureListUsingMeshList(Feature * firstFeatureInFeatureList, double sensitivity, int dimension, MeshPoint * firstMeshPointInMeshList, int contrastValChosen, bool useEdgeZeroCrossingMap)
 {

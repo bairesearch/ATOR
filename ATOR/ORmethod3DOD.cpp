@@ -3,7 +3,7 @@
  * File Name: ORmethod3DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7e 12-June-2012
+ * Project Version: 3a8a 14-June-2012
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -49,7 +49,25 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	transformedObjectTriangle->point3.y = currentPolygonInList->point3.y;
 	transformedObjectTriangle->point3.z = currentPolygonInList->point3.z;
 
+	/*
+	cout << "polygon = " << endl;
+	cout << "currentPolygonInList->point1.x = " << currentPolygonInList->point1.x << endl;
+	cout << "currentPolygonInList->point1.y = " << currentPolygonInList->point1.y << endl;
+	cout << "currentPolygonInList->point1.z = " << currentPolygonInList->point1.z << endl;
+	cout << "currentPolygonInList->point2.x = " << currentPolygonInList->point2.x << endl;
+	cout << "currentPolygonInList->point2.y = " << currentPolygonInList->point2.y << endl;
+	cout << "currentPolygonInList->point2.z = " << currentPolygonInList->point2.z << endl;
+	cout << "currentPolygonInList->point3.x = " << currentPolygonInList->point3.x << endl;
+	cout << "currentPolygonInList->point3.y = " << currentPolygonInList->point3.y << endl;
+	cout << "currentPolygonInList->point3.z = " << currentPolygonInList->point3.z << endl;
+	*/
+
+
+	
+	
 #ifdef OR_DEBUG_METHOD_3DOD
+
+			
 	cout << "\n \t starting to tranform object triangle " << endl;
 	cout << "0. currentPolygonInList without transformation " << endl;
 	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
@@ -61,33 +79,97 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	cout << "transformedObjectTriangle->point3.x = " << transformedObjectTriangle->point3.x << endl;
 	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
 	cout << "transformedObjectTriangle->point3.z = " << transformedObjectTriangle->point3.z << endl;
+	cout << transformedObjectTriangle->point1.x << " " << transformedObjectTriangle->point1.y << " " << transformedObjectTriangle->point1.z << endl;
+	cout << transformedObjectTriangle->point2.x << " " << transformedObjectTriangle->point2.y << " " << transformedObjectTriangle->point2.z << endl;
+	cout << transformedObjectTriangle->point3.x << " " << transformedObjectTriangle->point3.y << " " << transformedObjectTriangle->point3.z << endl;	
 #endif
 
 
-
-
-
-
-
-
-	//1aa. Rotate object data on X axis such that the object triangle side face normal is parallel the new Z axis
-	vec pt2MinusPt1;
-	vec pt3MinusPt1;
-	vec normalBeforeXRotation;
-	subtractVectorsRT(&(transformedObjectTriangle->point2), &(transformedObjectTriangle->point1), &pt2MinusPt1);
-	subtractVectorsRT(&(transformedObjectTriangle->point3), &(transformedObjectTriangle->point1), &pt3MinusPt1);
-	calculateNormal(&pt2MinusPt1, &pt3MinusPt1, &normalBeforeXRotation);
-	vec normalBeforeXRotationNormalised;	//not required
-	normaliseVectorRT(&normalBeforeXRotation, &normalBeforeXRotationNormalised);	//not required
-	double xRotationFactor1a = calculateAngleOfVector3D(&normalBeforeXRotationNormalised, AXIS_X);
+	//1. Perform All Rotations (X, Y, Z, such that object triangle side is parallel with x axis, and object triangle normal is parallel with z axis)
+	
+	vec normalBeforeRotation;
+	calculateNormalOfTri(&(currentPolygonInList->point1), &(currentPolygonInList->point2), &(currentPolygonInList->point3), &normalBeforeRotation);
+	vec normalBeforeRotationNormalised;	//not required
+	normaliseVectorRT(&normalBeforeRotation, &normalBeforeRotationNormalised);	//not required	
+		
+	mat xyzRotationMatrix12;
+	vec eye;
+	vec at;
+	vec up;
+	eye.x = 0.0;
+	eye.y = 0.0;
+	eye.z = 0.0;
+	at.x = normalBeforeRotationNormalised.x;
+	at.y = normalBeforeRotationNormalised.y;
+	at.z = normalBeforeRotationNormalised.z;
+	if(side == 0)
+	{	
+		subtractVectorsRT(&(currentPolygonInList->point1), &(currentPolygonInList->point2), &up);
+	}
+	else if(side == 1)
+	{
+		subtractVectorsRT(&(currentPolygonInList->point2), &(currentPolygonInList->point3), &up);
+	}
+	else if(side == 2)
+	{
+		subtractVectorsRT(&(currentPolygonInList->point1), &(currentPolygonInList->point3), &up);
+	}
+	else
+	{
+		cout << "error: illegal side" << endl;
+		exit(0);
+	}			
+	generateLookAtRotationMatrix(&at, &eye, &up, &xyzRotationMatrix12);
+	
+	transposeMatrix(&xyzRotationMatrix12);
+	
+	/*
+	vec normalBeforeRotation;
+	calculateNormalOfTri(&(transformedObjectTriangle->point1), &(transformedObjectTriangle->point2), &(transformedObjectTriangle->point3), &normalBeforeRotation);	
+	//normalBeforeRotation.x = -normalBeforeRotation.x;
+	//normalBeforeRotation.y = -normalBeforeRotation.y;
+	//normalBeforeRotation.z = -normalBeforeRotation.z;
+	vec normalBeforeRotationNormalised;	//not required
+	normaliseVectorRT(&normalBeforeRotation, &normalBeforeRotationNormalised);	//not required	
+	//mat xyzRotationMatrix12;
+	//generateXYZRotationMatrix(&normalBeforeRotationNormalised, &xyzRotationMatrix12);
+	
+	vec rotationVector;
+	calculateRotationVectorFromVector(&normalBeforeRotationNormalised, &rotationVector);	//added 14 June 2012
+	//double xRotationFactor1a = calculateAngleOfVector3D(&normalBeforeRotationNormalised, AXIS_X);	//should be negative (- ....)?		//euler angle x
+	//double yRotationFactor1b = calculateAngleOfVector3D(&normalBeforeRotationNormalised, AXIS_Y);	//should be negative (- ....)?		//euler angle y
+	//double zRotationFactor2a = calculateAngleOfVector3D(&normalBeforeRotationNormalised, AXIS_Z);	//should be negative (- ....)?		//euler angle y
+	double xRotationFactor1a = rotationVector.x;
+	double yRotationFactor1b = rotationVector.y;
+	double zRotationFactor2a = rotationVector.z;
+	
 	mat xRotationMatrix1a;
 	createIdentityMatrix(&xRotationMatrix1a);
 	createRotatationMatrix(&xRotationMatrix1a, AXIS_X, xRotationFactor1a);
+	mat yRotationMatrix1b;
+	createIdentityMatrix(&yRotationMatrix1b);
+	createRotatationMatrix(&yRotationMatrix1b, AXIS_Y, yRotationFactor1b);
+	mat zRotationMatrix2a;
+	createIdentityMatrix(&zRotationMatrix2a);
+	createRotatationMatrix(&zRotationMatrix2a, AXIS_Z, zRotationFactor2a);
+	
+	//M = Rz(B1)Ry(B2)Rx(B3)
+	//so M = Ry(B2)Rx(B3)
+	mat xyRotationMatrix1;
+	mat xyzRotationMatrix12;
+	createIdentityMatrix(&xyRotationMatrix1);
+	createIdentityMatrix(&xyzRotationMatrix12);
+	multiplyMatricies(&xyRotationMatrix1, &yRotationMatrix1b, &xRotationMatrix1a);
+	multiplyMatricies(&xyzRotationMatrix12, &zRotationMatrix2a, &xyRotationMatrix1);
+	
+	*/
+	
+	
+			
 
 #ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 	//openglUseMatrix = true;
-	opengl3DMatrixTransformation1aXRotationFactor = xRotationFactor1a;
-
+	//opengl3DMatrixTransformation1aXRotationFactor = xRotationFactor1a;
 #else
 	if(first)
 	{
@@ -101,32 +183,34 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 #endif
 
 	#ifdef OR_DEBUG_METHOD_3DOD
-	cout << "1a. Rotate object data on X axis such that the object triangle side face normal is parallel with Z axis" << endl;
-	cout << "normalBeforeXRotation.x = " << normalBeforeXRotation.x << endl;
-	cout << "normalBeforeXRotation.y = " << normalBeforeXRotation.y << endl;
-	cout << "normalBeforeXRotation.z = " << normalBeforeXRotation.z << endl;
-	cout << "normalBeforeXRotationNormalised.x = " << normalBeforeXRotationNormalised.x << endl;
-	cout << "normalBeforeXRotationNormalised.y = " << normalBeforeXRotationNormalised.y << endl;
-	cout << "normalBeforeXRotationNormalised.z = " << normalBeforeXRotationNormalised.z << endl;
-	cout << "xRotationFactor1a = " << xRotationFactor1a << endl;
-	cout << "xRotationMatrix1a.a.x = " << xRotationMatrix1a.a.x << endl;
-	cout << "xRotationMatrix1a.a.y = " << xRotationMatrix1a.a.y << endl;
-	cout << "xRotationMatrix1a.a.z = " << xRotationMatrix1a.a.z << endl;
-	cout << "xRotationMatrix1a.b.x = " << xRotationMatrix1a.b.x << endl;
-	cout << "xRotationMatrix1a.b.y = " << xRotationMatrix1a.b.y << endl;
-	cout << "xRotationMatrix1a.b.z = " << xRotationMatrix1a.b.z << endl;
-	cout << "xRotationMatrix1a.c.x = " << xRotationMatrix1a.c.x << endl;
-	cout << "xRotationMatrix1a.c.y = " << xRotationMatrix1a.c.y << endl;
-	cout << "xRotationMatrix1a.c.z = " << xRotationMatrix1a.c.z << endl;
+	cout << "1.+2. Rotate object data on XYZ axis such that the object triangle side face normal is parallel with Z axis" << endl;
+	cout << "normalBeforeRotation.x = " << normalBeforeRotation.x << endl;
+	cout << "normalBeforeRotation.y = " << normalBeforeRotation.y << endl;
+	cout << "normalBeforeRotation.z = " << normalBeforeRotation.z << endl;
+	cout << "normalBeforeRotationNormalised.x = " << normalBeforeRotationNormalised.x << endl;
+	cout << "normalBeforeRotationNormalised.y = " << normalBeforeRotationNormalised.y << endl;
+	cout << "normalBeforeRotationNormalised.z = " << normalBeforeRotationNormalised.z << endl;
+	//cout << "xRotationFactor1a = " << xRotationFactor1a << endl;
+	//cout << "yRotationFactor1b = " << yRotationFactor1b << endl;
+	//cout << "zRotationFactor2a = " << zRotationFactor2a << endl;	
+	cout << "xyzRotationMatrix12.a.x = " << xyzRotationMatrix12.a.x << endl;
+	cout << "xyzRotationMatrix12.a.y = " << xyzRotationMatrix12.a.y << endl;
+	cout << "xyzRotationMatrix12.a.z = " << xyzRotationMatrix12.a.z << endl;
+	cout << "xyzRotationMatrix12.b.x = " << xyzRotationMatrix12.b.x << endl;
+	cout << "xyzRotationMatrix12.b.y = " << xyzRotationMatrix12.b.y << endl;
+	cout << "xyzRotationMatrix12.b.z = " << xyzRotationMatrix12.b.z << endl;
+	cout << "xyzRotationMatrix12.c.x = " << xyzRotationMatrix12.c.x << endl;
+	cout << "xyzRotationMatrix12.c.y = " << xyzRotationMatrix12.c.y << endl;
+	cout << "xyzRotationMatrix12.c.z = " << xyzRotationMatrix12.c.z << endl;
 	#endif
 
-	//1ab. tranform object triangle;
+	//1b. tranform object triangle;
 	vec vecNew;
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &xRotationMatrix1a);
+	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &xyzRotationMatrix12);
 	copyVectors(&(transformedObjectTriangle->point1), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point2), &xRotationMatrix1a);
+	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point2), &xyzRotationMatrix12);
 	copyVectors(&(transformedObjectTriangle->point2), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &xRotationMatrix1a);
+	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &xyzRotationMatrix12);
 	copyVectors(&(transformedObjectTriangle->point3), &vecNew);
 
 	#ifdef OR_DEBUG_METHOD_3DOD
@@ -139,9 +223,12 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	cout << "transformedObjectTriangle->point3.x = " << transformedObjectTriangle->point3.x << endl;
 	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
 	cout << "transformedObjectTriangle->point3.z = " << transformedObjectTriangle->point3.z << endl;
+	cout << transformedObjectTriangle->point1.x << " " << transformedObjectTriangle->point1.y << " " << transformedObjectTriangle->point1.z << endl;
+	cout << transformedObjectTriangle->point2.x << " " << transformedObjectTriangle->point2.y << " " << transformedObjectTriangle->point2.z << endl;
+	cout << transformedObjectTriangle->point3.x << " " << transformedObjectTriangle->point3.y << " " << transformedObjectTriangle->point3.z << endl;	
 	#endif
 
-	//1ac. tranform nearest features
+	//1c. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
 		//cout << "h1" << endl;
@@ -169,7 +256,7 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 			#endif
 
 			copyVectors(&(currentFeature->pointTransformed), &(currentFeature->point));		//startup
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &xRotationMatrix1a);
+			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &xyzRotationMatrix12);
 			copyVectors(&(currentFeature->pointTransformed), &vecNew);
 			currentFeature = currentFeature->next;
 		}
@@ -201,279 +288,19 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 			#endif
 
 			copyVectors(&(currentFeature->pointTransformed), &(currentFeature->point));		//startup
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &xRotationMatrix1a);
+			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &xyzRotationMatrix12);
 			copyVectors(&(currentFeature->pointTransformed), &vecNew);
 			currentFeature = currentFeature->next;
 		}
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-	//1ba. Rotate object data on Y axis such that the object triangle side face normal is parallel with the new Z axis
-	vec normalBeforeYRotation;
-	subtractVectorsRT(&(transformedObjectTriangle->point2), &(transformedObjectTriangle->point1), &pt2MinusPt1);
-	subtractVectorsRT(&(transformedObjectTriangle->point3), &(transformedObjectTriangle->point1), &pt3MinusPt1);
-	calculateNormal(&pt2MinusPt1, &pt3MinusPt1, &normalBeforeYRotation);
-	vec normalBeforeYRotationNormalised;	//not required
-	normaliseVectorRT(&normalBeforeYRotation, &normalBeforeYRotationNormalised);	//not required
-	double yRotationFactor1b = calculateAngleOfVector3D(&normalBeforeYRotationNormalised, AXIS_Y);
-	mat yRotationMatrix1b;
-	createIdentityMatrix(&yRotationMatrix1b);
-	createRotatationMatrix(&yRotationMatrix1b, AXIS_Y, yRotationFactor1b);
-
-#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
-	opengl3DMatrixTransformation1bYRotationFactor = yRotationFactor1b;
-
-#endif
-
-
+	/*
 	#ifdef OR_DEBUG_METHOD_3DOD
-	cout << "1b. Rotate object data on Y axis such that the object triangle side face normal is parallel with the new Z axis" << endl;
-	cout << "yRotationFactor1b = " << yRotationFactor1b << endl;
-	cout << "yRotationMatrix1b.a.x = " << yRotationMatrix1b.a.x << endl;
-	cout << "yRotationMatrix1b.a.y = " << yRotationMatrix1b.a.y << endl;
-	cout << "yRotationMatrix1b.a.z = " << yRotationMatrix1b.a.z << endl;
-	cout << "yRotationMatrix1b.b.x = " << yRotationMatrix1b.b.x << endl;
-	cout << "yRotationMatrix1b.b.y = " << yRotationMatrix1b.b.y << endl;
-	cout << "yRotationMatrix1b.b.z = " << yRotationMatrix1b.b.z << endl;
-	cout << "yRotationMatrix1b.c.x = " << yRotationMatrix1b.c.x << endl;
-	cout << "yRotationMatrix1b.c.y = " << yRotationMatrix1b.c.y << endl;
-	cout << "yRotationMatrix1b.c.z = " << yRotationMatrix1b.c.z << endl;
+	exit(0);
 	#endif
-
-	//1bb. tranform object triangle;
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &yRotationMatrix1b);
-	copyVectors(&(transformedObjectTriangle->point1), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point2), &yRotationMatrix1b);
-	copyVectors(&(transformedObjectTriangle->point2), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &yRotationMatrix1b);
-	copyVectors(&(transformedObjectTriangle->point3), &vecNew);
-
-	#ifdef OR_DEBUG_METHOD_3DOD
-	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
-	cout << "transformedObjectTriangle->point1.y = " << transformedObjectTriangle->point1.y << endl;
-	cout << "transformedObjectTriangle->point1.z = " << transformedObjectTriangle->point1.z << endl;
-	cout << "transformedObjectTriangle->point2.x = " << transformedObjectTriangle->point2.x << endl;
-	cout << "transformedObjectTriangle->point2.y = " << transformedObjectTriangle->point2.y << endl;
-	cout << "transformedObjectTriangle->point2.z = " << transformedObjectTriangle->point2.z << endl;
-	cout << "transformedObjectTriangle->point3.x = " << transformedObjectTriangle->point3.x << endl;
-	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
-	cout << "transformedObjectTriangle->point3.z = " << transformedObjectTriangle->point3.z << endl;
-	#endif
-
-	//1bc. tranform nearest features
-	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
-	{
-		//cout << "h1" << endl;
-		Feature * currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
-		while(currentFeature->next != NULL)
-		{
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &yRotationMatrix1b);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
-			currentFeature = currentFeature->next;
-		}
-		//cout << "h2" << endl;
-	}
-	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
-	{
-		Feature * currentFeature = firstFeatureInList;
-		while(currentFeature->next != NULL)
-		{
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &yRotationMatrix1b);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
-			currentFeature = currentFeature->next;
-		}
-	}
+	*/
 
 
 
-
-
-
-
-
-
-
-
-
-	//2ia. Rotate object data on Z axis such that the object triangle side is parallel with the new X axis
-	vec normalBeforeZRotation;
-	subtractVectorsRT(&(transformedObjectTriangle->point2), &(transformedObjectTriangle->point1), &pt2MinusPt1);
-	subtractVectorsRT(&(transformedObjectTriangle->point3), &(transformedObjectTriangle->point1), &pt3MinusPt1);
-	calculateNormal(&pt2MinusPt1, &pt3MinusPt1, &normalBeforeZRotation);
-	vec normalBeforeZRotationNormalised;	//not required
-	normaliseVectorRT(&normalBeforeZRotation, &normalBeforeZRotationNormalised);	//not required
-	double zRotationFactor2a = calculateAngleOfVector3D(&normalBeforeZRotationNormalised, AXIS_Z);
-	mat zRotationMatrix2a;
-	createIdentityMatrix(&zRotationMatrix2a);
-	createRotatationMatrix(&zRotationMatrix2a, AXIS_Z, zRotationFactor2a);
-
-#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
-	opengl3DMatrixTransformation2iZRotationFactor = zRotationFactor2a;
-#endif
-
-	#ifdef OR_DEBUG_METHOD_3DOD
-	cout << "2a. Rotate object data on Z axis such that the object triangle side is parallel with the new X axis" << endl;
-	cout << "zRotationFactor2a = " << zRotationFactor2a << endl;
-	cout << "zRotationMatrix2a.a.x = " << zRotationMatrix2a.a.x << endl;
-	cout << "zRotationMatrix2a.a.y = " << zRotationMatrix2a.a.y << endl;
-	cout << "zRotationMatrix2a.a.z = " << zRotationMatrix2a.a.z << endl;
-	cout << "zRotationMatrix2a.b.x = " << zRotationMatrix2a.b.x << endl;
-	cout << "zRotationMatrix2a.b.y = " << zRotationMatrix2a.b.y << endl;
-	cout << "zRotationMatrix2a.b.z = " << zRotationMatrix2a.b.z << endl;
-	cout << "zRotationMatrix2a.c.x = " << zRotationMatrix2a.c.x << endl;
-	cout << "zRotationMatrix2a.c.y = " << zRotationMatrix2a.c.y << endl;
-	cout << "zRotationMatrix2a.c.z = " << zRotationMatrix2a.c.z << endl;
-	#endif
-
-	//2ib. tranform object triangle;
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &zRotationMatrix2a);
-	copyVectors(&(transformedObjectTriangle->point1), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point2), &zRotationMatrix2a);
-	copyVectors(&(transformedObjectTriangle->point2), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &zRotationMatrix2a);
-	copyVectors(&(transformedObjectTriangle->point3), &vecNew);
-
-	#ifdef OR_DEBUG_METHOD_3DOD
-	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
-	cout << "transformedObjectTriangle->point1.y = " << transformedObjectTriangle->point1.y << endl;
-	cout << "transformedObjectTriangle->point1.z = " << transformedObjectTriangle->point1.z << endl;
-	cout << "transformedObjectTriangle->point2.x = " << transformedObjectTriangle->point2.x << endl;
-	cout << "transformedObjectTriangle->point2.y = " << transformedObjectTriangle->point2.y << endl;
-	cout << "transformedObjectTriangle->point2.z = " << transformedObjectTriangle->point2.z << endl;
-	cout << "transformedObjectTriangle->point3.x = " << transformedObjectTriangle->point3.x << endl;
-	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
-	cout << "transformedObjectTriangle->point3.z = " << transformedObjectTriangle->point3.z << endl;
-	#endif
-
-	//2ic. tranform nearest features
-	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
-	{
-		//cout << "h1" << endl;
-		Feature * currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
-		while(currentFeature->next != NULL)
-		{
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &zRotationMatrix2a);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
-			currentFeature = currentFeature->next;
-		}
-		//cout << "h2" << endl;
-	}
-	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
-	{
-		Feature * currentFeature = firstFeatureInList;
-		while(currentFeature->next != NULL)
-		{
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &zRotationMatrix2a);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
-			currentFeature = currentFeature->next;
-		}
-	}
-
-
-	//2ii. now if necessary, rotate by 180 degrees...
-	bool rotationBy180DegreesNecessary = false;
-
-	if(side == 0)
-	{
-		if(transformedObjectTriangle->point3.y > transformedObjectTriangle->point1.y)
-		{
-			rotationBy180DegreesNecessary = true;
-		}
-	}
-	else if(side == 1)
-	{
-		if(transformedObjectTriangle->point1.y > transformedObjectTriangle->point2.y)
-		{
-			rotationBy180DegreesNecessary = true;
-		}
-	}
-	else if(side == 2)
-	{
-		if(transformedObjectTriangle->point2.y > transformedObjectTriangle->point3.y)
-		{
-			rotationBy180DegreesNecessary = true;
-		}
-	}
-	else
-	{
-		cout << "error: illegal side" << endl;
-		exit(0);
-	}
-
-
-	double zRotationFactor2ii;
-
-	if(rotationBy180DegreesNecessary)
-	{
-		zRotationFactor2ii = PI;
-	}
-	else
-	{
-		zRotationFactor2ii = 0.0;
-	}
-
-	//2iia. now if necessary, rotate by 180 degrees...
-	mat zRotateMatrix2ii;
-	createIdentityMatrix(&zRotateMatrix2ii);
-	createRotatationMatrix(&zRotateMatrix2ii, AXIS_Z, zRotationFactor2ii);
-
-
-#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
-	opengl3DMatrixTransformation2iiZRotationFactor = zRotationFactor2ii;
-#endif
-
-	//2iib. tranform object triangle; rotate object triangle by 180 degrees if necessary
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &zRotateMatrix2ii);
-	copyVectors(&(transformedObjectTriangle->point1), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point2), &zRotateMatrix2ii);
-	copyVectors(&(transformedObjectTriangle->point2), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &zRotateMatrix2ii);
-	copyVectors(&(transformedObjectTriangle->point3), &vecNew);
-
-	//2iic. tranform nearest features
-	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
-	{
-		Feature * currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
-		while(currentFeature->next != NULL)
-		{
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &zRotateMatrix2ii);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
-			currentFeature = currentFeature->next;
-		}
-	}
-	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
-	{
-		Feature * currentFeature = firstFeatureInList;
-		while(currentFeature->next != NULL)
-		{
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &zRotateMatrix2ii);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
-			currentFeature = currentFeature->next;
-		}
-	}
-
-	#ifdef OR_DEBUG_METHOD_3DOD
-	cout << "zRotationFactor2a = " << zRotationFactor2ii << endl;
-	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
-	cout << "transformedObjectTriangle->point1.y = " << transformedObjectTriangle->point1.y << endl;
-	cout << "transformedObjectTriangle->point1.z = " << transformedObjectTriangle->point1.z << endl;
-	cout << "transformedObjectTriangle->point2.x = " << transformedObjectTriangle->point2.x << endl;
-	cout << "transformedObjectTriangle->point2.y = " << transformedObjectTriangle->point2.y << endl;
-	cout << "transformedObjectTriangle->point2.z = " << transformedObjectTriangle->point2.z << endl;
-	cout << "transformedObjectTriangle->point3.x = " << transformedObjectTriangle->point3.x << endl;
-	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
-	cout << "transformedObjectTriangle->point3.z = " << transformedObjectTriangle->point3.z << endl;
-	#endif
 
 
 
@@ -509,16 +336,22 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 		mat multipliedMatrix;
 		mat matTemp;
 		createIdentityMatrixRT(&multipliedMatrix);
-
+		
+		multiplyMatricies(&matTemp, &multipliedMatrix, &xyzRotationMatrix12);
+		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);		
+		/*
 		multiplyMatricies(&matTemp, &multipliedMatrix, &zRotateMatrix2ii);
 		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
+		multiplyMatricies(&matTemp, &multipliedMatrix, &xyzRotationMatrix12);
+		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);		
 		multiplyMatricies(&matTemp, &multipliedMatrix, &zRotationMatrix2a);
 		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
 		multiplyMatricies(&matTemp, &multipliedMatrix, &yRotationMatrix1b);
 		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
 		multiplyMatricies(&matTemp, &multipliedMatrix, &xRotationMatrix1a);
 		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
-
+		*/
+		
 		copyMatrix2IntoMatrix1(&opengl3DMultiplicationMatrix, &multipliedMatrix);
 
 	#endif
@@ -558,15 +391,16 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 #endif
 
 	//3a. transform object triangle
-	transformedObjectTriangle->point1.x = transformedObjectTriangle->point1.x + translationVector.x;
-	transformedObjectTriangle->point1.y = transformedObjectTriangle->point1.y + translationVector.y;
-	transformedObjectTriangle->point1.z = transformedObjectTriangle->point1.z + translationVector.z;
-	transformedObjectTriangle->point2.x = transformedObjectTriangle->point2.x + translationVector.x;
-	transformedObjectTriangle->point2.y = transformedObjectTriangle->point2.y + translationVector.y;
-	transformedObjectTriangle->point2.z = transformedObjectTriangle->point2.z + translationVector.z;
-	transformedObjectTriangle->point3.x = transformedObjectTriangle->point3.x + translationVector.x;
-	transformedObjectTriangle->point3.y = transformedObjectTriangle->point3.y + translationVector.y;
-	transformedObjectTriangle->point3.z = transformedObjectTriangle->point3.z + translationVector.z;
+	transformedObjectTriangle->point1.x = transformedObjectTriangle->point1.x - translationVector.x;
+	transformedObjectTriangle->point1.y = transformedObjectTriangle->point1.y - translationVector.y;
+	transformedObjectTriangle->point1.z = transformedObjectTriangle->point1.z - translationVector.z;
+	transformedObjectTriangle->point2.x = transformedObjectTriangle->point2.x - translationVector.x;
+	transformedObjectTriangle->point2.y = transformedObjectTriangle->point2.y - translationVector.y;
+	transformedObjectTriangle->point2.z = transformedObjectTriangle->point2.z - translationVector.z;
+	transformedObjectTriangle->point3.x = transformedObjectTriangle->point3.x - translationVector.x;
+	transformedObjectTriangle->point3.y = transformedObjectTriangle->point3.y - translationVector.y;
+	transformedObjectTriangle->point3.z = transformedObjectTriangle->point3.z - translationVector.z;
+
 
 #ifdef OR_DEBUG_METHOD_3DOD
 	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
@@ -578,6 +412,9 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	cout << "transformedObjectTriangle->point3.x = " << transformedObjectTriangle->point3.x << endl;
 	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
 	cout << "transformedObjectTriangle->point3.z = " << transformedObjectTriangle->point3.z << endl;
+	cout << transformedObjectTriangle->point1.x << " " << transformedObjectTriangle->point1.y << " " << transformedObjectTriangle->point1.z << endl;
+	cout << transformedObjectTriangle->point2.x << " " << transformedObjectTriangle->point2.y << " " << transformedObjectTriangle->point2.z << endl;
+	cout << transformedObjectTriangle->point3.x << " " << transformedObjectTriangle->point3.y << " " << transformedObjectTriangle->point3.z << endl;
 	//TEMPprintReferenceListVertexPositions3DOD(firstReferenceInInterpolated2DRGBMap);
 	//exit(0);
 #endif

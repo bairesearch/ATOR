@@ -156,7 +156,7 @@
 
 
 		<miscellaneousItem name="OR_SNAPSHOT_WINDOW_POSITION_X" stringValue="" fractionalValue="0" />
-		<miscellaneousItem name="OR_SNAPSHOT_WINDOW_POSITION_Y" stringValue="" fractionalValue="950" />
+		<miscellaneousItem name="OR_SNAPSHOT_WINDOW_POSITION_Y" stringValue="" fractionalValue="600" />
 		
 		<miscellaneousItem name="OR_IMAGE_COMPARISON_HAS_LOCAL_CONTRAST_MIN_AVERAGE_COL_DEVIATION" stringValue="" fractionalValue="0.0" />
 		<miscellaneousItem name="OR_IMAGE_COMPARISON_HAS_STARK_LOCAL_CONTRAST_MIN_AVERAGE_COL_DEVIATION" stringValue="" fractionalValue="0.0" />

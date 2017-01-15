@@ -3,7 +3,7 @@
  * File Name: ORfeature.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7e 12-June-2012
+ * Project Version: 3a8a 14-June-2012
  *
  *******************************************************************************/
 
@@ -59,6 +59,7 @@ void generateEdgeListFromRGBMapWithQuadraticFit(unsigned char * rgbMap, bool * e
 bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFeatureList, int imageWidth, int imageHeight, double contrastMap[], double sensitivity, int dimension, double pointMap[], double depthMap[], int zoom, view_info * vi, bool useEdgeZeroCrossingMap, int interpixelContrastMapType);
 	bool defineRegionCheckNextPixelNonRecursive(PixelContiguous * firstInPixelContiguousStack, int xInitial, int yInitial, bool edgeBoolMap[], QFZeroCrossing * edgeZeroCrossingMap[], int alreadyProcessed[], int imageWidth, int imageHeight, double * regionSize, int * sumx, int * sumy, vec * sumpos, int dimension, double pointMap[], double depthMap[], int zoom, bool useEdgeZeroCrossingMap, view_info * vi, int * maxXx, int * maxXy, int interpixelContrastMapType);
 	bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnBoundary, int alreadyProcessed[], QFZeroCrossing * edgeZeroCrossingMap[], bool useEdgeZeroCrossingMap, int imageWidth, int imageHeight, double * sumx, double * sumy, vec * sumpos, int * numberOfCounts, int minRegionCircumferenceForRegion, int dimension, double pointMap[], double depthMap[], int zoom, PixelContiguous * firstInPixelContiguousBoundaryStack, view_info * vi, int interpixelContrastMapType);
+	double getDepthValueWithOrWithoutForegroundCheck(double pointNonWorldCoordx, double pointNonWorldCoordy, int imageWidth, int imageHeight, int kernelWidthForegroundCheck, int kernelHeightForegroundCheck, double depthMap[], int zoom);
 
 bool addCentredFeaturesToFeatureListUsingMeshList(Feature * firstFeatureInFeatureList, double sensitivity, int dimension, MeshPoint * firstMeshPointInMeshList, int contrastValChosen, bool useEdgeZeroCrossingMap);
 	bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(PixelContiguous * firstInPixelContiguousStack, MeshPoint * firstMeshPoint, double * regionSize, int contrastValChosen, int * sumx, int * sumy, vec * sumpos, bool useEdgeZeroCrossingMap, MeshPoint * aMeshPointOnTheBoundary, double sensitivity);

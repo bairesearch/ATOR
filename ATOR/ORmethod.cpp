@@ -3,7 +3,7 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7e 12-June-2012
+ * Project Version: 3a8a 14-June-2012
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -1320,6 +1320,26 @@ bool createOrAddToInterpolatedMeshAndFeaturesList(Reference * initialReferenceIn
 	MeshPoint * currentMeshPointInMeshList = firstMeshPointInMeshList;
 
 
+	/*
+	//debug
+	#define OR_DEBUG_PRINT_DEPTH_MAP
+	for(int y = 0; y < imageHeight; y++)
+	{
+		for(int x = 0; x < imageWidth; x++)
+		{
+			double depth = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
+			
+			#ifdef OR_DEBUG_PRINT_DEPTH_MAP
+			cout << depth << " ";
+			#endif
+		}
+		#ifdef OR_DEBUG_PRINT_DEPTH_MAP
+		cout << "\n" << endl;
+		#endif
+	}
+	*/
+	
+	
 	if(!createOrAddPointsToFeaturesList(pointMap, rgbMap, depthMap, firstFeatureInList, vi, trainOrTest, viewIndex, objectName, dimension, numberOfZoomIndicies, firstMeshPointUsedToCalculateCentredFeatures, meshPointArray, useEdgeZeroCrossingMap))
 	{
 		result = false;
@@ -2509,7 +2529,6 @@ bool createOrAddPointsToFeaturesList(double * pointMap, unsigned char * rgbMap, 
 					{
 						if(OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION)
 						{
-
 							if(OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST)
 							{
 								if(!addCornerFeaturesToFeatureListUsingRGBMap(vi, pointNormalContrastMapConvertedToRgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST))
@@ -2606,7 +2625,6 @@ bool createOrAddPointsToFeaturesList(double * pointMap, unsigned char * rgbMap, 
 									result = false;
 								}
 							}
-
 						}
 					}
 

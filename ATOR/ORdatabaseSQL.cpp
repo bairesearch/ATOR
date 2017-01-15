@@ -3,7 +3,7 @@
  * File Name: ORdatabaseSQL.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7e 12-June-2012
+ * Project Version: 3a8a 14-June-2012
  *
  *******************************************************************************/
 
@@ -1717,7 +1717,7 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 	cout << "polyIndexStringCharStar = " << polyIndexStringCharStar << endl;
 	cout << "sideIndexStringCharStar = " << sideIndexStringCharStar << endl;
 	*/
-
+	
 	tableID = (long)(atof(tableIDCharStar));
 	objectName = objectNameCharStar;
 	trainOrTest = (bool)(atof(trainOrTestStringCharStar));
@@ -1728,27 +1728,45 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 
 	//cout << "s2" << endl;
 
-
+	int numFoundFeatures = 0;	//added 14 June 2012 (for the case where there is less features recorded in sql than expected / eg 4] 
+	bool stillFindingFeatures = true;
+	unsigned long * lengths;
+	lengths = mysql_fetch_lengths(result);	
 	for(int featureNum=0; featureNum<numFeatures; featureNum++)
 	{
+		//cout << "lengths[fieldIndex]  = " << lengths[fieldIndex+1]  << endl;
+		if(lengths[fieldIndex+1] == 0)	//index of pointTransformedxCharStar [as if this is empty, then the entire feature entry is empty]
+		{
+			stillFindingFeatures = false;
+		}
+		
 		#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 		OTpointIndexStringCharStar = row[fieldIndex++];
-		OTpointIndex[featureNum] = (int)(atof(OTpointIndexStringCharStar));
 		#endif
 		pointTransformedxCharStar = row[fieldIndex++];
 		pointTransformedyCharStar = row[fieldIndex++];
-		pointTransformedzCharStar = row[fieldIndex++];
-		pointTransformed[featureNum].x = atof(pointTransformedxCharStar);
-		pointTransformed[featureNum].y = atof(pointTransformedyCharStar);
-		pointTransformed[featureNum].z = atof(pointTransformedzCharStar);
+		pointTransformedzCharStar = row[fieldIndex++];;
 		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
 		pointxCharStar = row[fieldIndex++];
 		pointyCharStar = row[fieldIndex++];
 		pointzCharStar = row[fieldIndex++];
-		point[featureNum].x = atof(pointxCharStar);
-		point[featureNum].y = atof(pointyCharStar);
-		point[featureNum].z = atof(pointzCharStar);
 		#endif
+			
+		if(stillFindingFeatures)
+		{
+			#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
+			OTpointIndex[featureNum] = (int)(atof(OTpointIndexStringCharStar));
+			#endif
+			pointTransformed[featureNum].x = atof(pointTransformedxCharStar);
+			pointTransformed[featureNum].y = atof(pointTransformedyCharStar);
+			pointTransformed[featureNum].z = atof(pointTransformedzCharStar);
+			#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+			point[featureNum].x = atof(pointxCharStar);
+			point[featureNum].y = atof(pointyCharStar);
+			point[featureNum].z = atof(pointzCharStar);
+			#endif						
+			numFoundFeatures++;
+		}
 	}
 
 	//cout << "asd4" << endl;
@@ -1821,7 +1839,7 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 	
 	//cout << "\n\nadding features to list\n\n" << endl;
 	
-	for(int featureNum=0; featureNum<numFeatures; featureNum++)
+	for(int featureNum=0; featureNum<numFoundFeatures; featureNum++)
 	{
 		if((!ignoreOTfeatures) || (OTpointIndex[featureNum] == 0))
 		{
@@ -1849,6 +1867,7 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 				currentFeatureInList->avgCol.r = colAvg.r;
 				currentFeatureInList->avgCol.g = colAvg.g;
 				currentFeatureInList->avgCol.b = colAvg.b;
+				
 				/*
 				cout << "currentFeatureInList->avgCol.r = " << currentFeatureInList->avgCol.r << endl;
 				cout << "currentFeatureInList->avgCol.g = " << currentFeatureInList->avgCol.g << endl;

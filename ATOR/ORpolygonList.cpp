@@ -3,7 +3,7 @@
  * File Name: ORpolygonList.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7e 12-June-2012
+ * Project Version: 3a8a 14-June-2012
  *
  *******************************************************************************/
 
@@ -136,7 +136,7 @@ Feature::Feature(void)
 	#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
 	matchFound = false;
 	#endif
-	
+		
 #endif
 
 //#ifdef OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
@@ -161,6 +161,8 @@ Feature::Feature(void)
 	
 	lastFilledFeatureInList = true;
 	next = NULL;
+	
+	//nearestFeatureActive = false;
 	
 	
 }

@@ -3,7 +3,7 @@
  * File Name: ORglobalDefs.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3a7e 12-June-2012
+ * Project Version: 3a8a 14-June-2012
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
@@ -589,6 +589,7 @@ OR_ASSERT_MATCHES_FOR_ALL_SIDES
 OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
 OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+OR_METHOD_3DOD_IGNORE_OT_FEATURES_DURING_GEO_COMPARISON
 */
 
 #define DEBUG_OR_OUTPUT_DT_BIN
@@ -1527,23 +1528,6 @@ extern double OR_RULES_XML_SPARE_PARAMETER_2;	//this needs to be made dynamic in
 
 
 
-
-
-
-	/**********
-	OR RAYTRACER ACCURACY RESOLUTION VARIABLES
-	***********/
-
-//#define OLDcalculateLuminosityLevelFromRGBMap
-#define RT_CONVERT_LDR_OBJECT_SCALES_PROPERLY
-#define RT_CONVERT_LDR_OBJECT_ROTATION_PROPERLY
-
-//#define TRY_UNTESTED_SOFTWARE	//all the following are seriously untested
-#ifdef TRY_UNTESTED_SOFTWARE
-	#define RT_CONVERT_LDR_OBJECT_TRANSLATION_PROPERLY_VERSIONB (untested - may overcome no draw centre pixel line/column of object issue with RT_CONVERT_LDR_OBJECT_TRANSLATION_PROPERLY)
-#else
-	#define RT_CONVERT_LDR_OBJECT_TRANSLATION_PROPERLY
-#endif
 
 
 	/**********

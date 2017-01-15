@@ -3,7 +3,7 @@
  * File Name: ORoperations.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7e 12-June-2012
+ * Project Version: 3a8a 14-June-2012
  *
  *******************************************************************************/
 
@@ -671,17 +671,23 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 			*/
 
 			Feature *  firstFeatureInNearestFeatureList = new Feature();
-			generateNearestFeaturesList(firstFeatureInNearestFeatureList, numberOfNearestFeatures);
+			//generateNearestFeaturesList(firstFeatureInNearestFeatureList, numberOfNearestFeatures);
 			firstFeatureInNearestFeatureList->point.x = currentFeatureInList1->point.x;
 			firstFeatureInNearestFeatureList->point.y = currentFeatureInList1->point.y;
 			firstFeatureInNearestFeatureList->point.z = currentFeatureInList1->point.z;
-
+			firstFeatureInNearestFeatureList->pointNonWorldCoord.x = currentFeatureInList1->pointNonWorldCoord.x;
+			firstFeatureInNearestFeatureList->pointNonWorldCoord.y = currentFeatureInList1->pointNonWorldCoord.y;
+			firstFeatureInNearestFeatureList->pointNonWorldCoord.z = currentFeatureInList1->pointNonWorldCoord.z;
+			Feature * secondFeatureInNearestFeatureList = new Feature();
+			firstFeatureInNearestFeatureList->next = secondFeatureInNearestFeatureList;
+			
 			double previousDistanceToNearestFeatureFromFeatureList2 = 0.0;
-
-			Feature * currentFeatureInNearestFeatureList = firstFeatureInNearestFeatureList->next;	//do not use first point
-			while(currentFeatureInNearestFeatureList->next != NULL)
+			
+			Feature * currentFeatureInNearestFeatureList = secondFeatureInNearestFeatureList;	//do not use first point
+			int currentNearestFeatureIndex = 1;
+			bool stillFindingNearestFeatures = true;
+			while((currentNearestFeatureIndex < numberOfNearestFeatures) && stillFindingNearestFeatures)
 			{
-
 				double distanceToNearestFeatureFromFeatureList2 = REALLY_FAR_AWAY;
 
 				//add corner 2 to nearest corner list
@@ -703,6 +709,15 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 								copyVectors(&(currentFeatureInNearestFeatureList->point), &(currentFeatureInList2->point));
 								copyVectors(&(currentFeatureInNearestFeatureList->pointNonWorldCoord), &(currentFeatureInList2->pointNonWorldCoord));
 								foundASpot = true;
+								/*
+								cout << "ADDING NEAREST FEATURE:" << endl;
+								cout << "currentFeatureInNearestFeatureList->point.x = " << currentFeatureInNearestFeatureList->point.x << endl;
+								cout << "currentFeatureInNearestFeatureList->point.y = " << currentFeatureInNearestFeatureList->point.y << endl;
+								cout << "currentFeatureInNearestFeatureList->point.z = " << currentFeatureInNearestFeatureList->point.z << endl;
+								cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.x = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.x << endl;
+								cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.y = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.y << endl;
+								cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.z = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.z << endl;								
+								*/
 							}
 						}
 					}
@@ -715,27 +730,39 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 
 				if(!foundASpot)
 				{
-					cout << "error: !foundASpot" << endl;
+					stillFindingNearestFeatures = false;
+					//cout << "error: !foundASpot" << endl;
 				}
-
-				currentFeatureInNearestFeatureList=currentFeatureInNearestFeatureList->next;
+				else
+				{
+					Feature * newFeature = new Feature();
+					currentFeatureInNearestFeatureList->next = newFeature;
+					currentFeatureInNearestFeatureList = currentFeatureInNearestFeatureList->next;
+					currentNearestFeatureIndex++;				
+				}
 			}
 
 			//#define DEBUG_NEAREST_FEATURE_FIND
 			#ifdef DEBUG_NEAREST_FEATURE_FIND
 
 			cout << "DEBUG_NEAREST_FEATURE_FIND:" << endl;
-			cout << "currentFeatureInList1->point.x" << currentFeatureInList1->point.x << endl;
-			cout << "currentFeatureInList1->point.y" << currentFeatureInList1->point.y << endl;
-			cout << "currentFeatureInList1->point.z" << currentFeatureInList1->point.z << endl;
+			cout << "currentFeatureInList1->point.x = " << currentFeatureInList1->point.x << endl;
+			cout << "currentFeatureInList1->point.y = " << currentFeatureInList1->point.y << endl;
+			cout << "currentFeatureInList1->point.z = " << currentFeatureInList1->point.z << endl;
+			cout << "currentFeatureInList1->pointNonWorldCoord.x = " << currentFeatureInList1->pointNonWorldCoord.x << endl;
+			cout << "currentFeatureInList1->pointNonWorldCoord.y = " << currentFeatureInList1->pointNonWorldCoord.y << endl;
+			cout << "currentFeatureInList1->pointNonWorldCoord.z = " << currentFeatureInList1->pointNonWorldCoord.z << endl;			
 			currentFeatureInNearestFeatureList = firstFeatureInNearestFeatureList;
 			while(currentFeatureInNearestFeatureList->next != NULL)
 			{
 				cout << "a nearest corner;" << endl;
-				cout << "currentFeatureInNearestFeatureList->point.x" << currentFeatureInNearestFeatureList->point.x << endl;
-				cout << "currentFeatureInNearestFeatureList->point.y" << currentFeatureInNearestFeatureList->point.y << endl;
-				cout << "currentFeatureInNearestFeatureList->point.z" << currentFeatureInNearestFeatureList->point.z << endl;
-
+				cout << "currentFeatureInNearestFeatureList->point.x = " << currentFeatureInNearestFeatureList->point.x << endl;
+				cout << "currentFeatureInNearestFeatureList->point.y = " << currentFeatureInNearestFeatureList->point.y << endl;
+				cout << "currentFeatureInNearestFeatureList->point.z = " << currentFeatureInNearestFeatureList->point.z << endl;
+				cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.x = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.x << endl;
+				cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.y = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.y << endl;
+				cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.z = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.z << endl;
+				
 				currentFeatureInNearestFeatureList=currentFeatureInNearestFeatureList->next;
 			}
 			#endif
@@ -767,29 +794,32 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 		}
 
 
-
-
+		//#define DEBUG_POLYGON_GENERATION
+		#ifdef DEBUG_POLYGON_GENERATION
+			
+		cout << "DEBUG_POLYGON_GENERATION:" << endl;
 		int numSidesPerPolygon = 3;
 		int numberOfPolygons = 0;
 		currentPolygonInList = &(firstPolygonInList[trainZoomIndex]);
 		while(currentPolygonInList->next != NULL)
 		{
 			numberOfPolygons++;
-			//cout << "numberOfPolygons++" << endl;	//DEBUG;
-			/*
-			cout << "currentPolygonInList->point1.x" << currentPolygonInList->point1.x << endl;
-			cout << "currentPolygonInList->point1.y" << currentPolygonInList->point1.y << endl;
-			cout << "currentPolygonInList->point1.z" << currentPolygonInList->point1.z << endl;
-			cout << "currentPolygonInList->point2.x" << currentPolygonInList->point2.x << endl;
-			cout << "currentPolygonInList->point2.y" << currentPolygonInList->point2.y << endl;
-			cout << "currentPolygonInList->point2.z" << currentPolygonInList->point2.z << endl;
-			cout << "currentPolygonInList->point3.x" << currentPolygonInList->point3.x << endl;
-			cout << "currentPolygonInList->point3.y" << currentPolygonInList->point3.y << endl;
-			cout << "currentPolygonInList->point3.z" << currentPolygonInList->point3.z << endl;
-			*/
+			cout << "polygon = " << numberOfPolygons << endl;
+			cout << "currentPolygonInList->point1.x = " << currentPolygonInList->point1.x << endl;
+			cout << "currentPolygonInList->point1.y = " << currentPolygonInList->point1.y << endl;
+			cout << "currentPolygonInList->point1.z = " << currentPolygonInList->point1.z << endl;
+			cout << "currentPolygonInList->point2.x = " << currentPolygonInList->point2.x << endl;
+			cout << "currentPolygonInList->point2.y = " << currentPolygonInList->point2.y << endl;
+			cout << "currentPolygonInList->point2.z = " << currentPolygonInList->point2.z << endl;
+			cout << "currentPolygonInList->point3.x = " << currentPolygonInList->point3.x << endl;
+			cout << "currentPolygonInList->point3.y = " << currentPolygonInList->point3.y << endl;
+			cout << "currentPolygonInList->point3.z = " << currentPolygonInList->point3.z << endl;
+			
 			currentPolygonInList=currentPolygonInList->next;
 		}
-		//cout << "numberOfPolygons = " << numberOfPolygons << endl;
+		cout << "numberOfPolygons = " << numberOfPolygons << endl;
+		
+		#endif
 	}
 
 	return result;

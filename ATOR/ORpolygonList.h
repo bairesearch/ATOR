@@ -3,7 +3,7 @@
  * File Name: ORpolygonList.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7e 12-June-2012
+ * Project Version: 3a8a 14-June-2012
  *
  *******************************************************************************/
 
@@ -109,6 +109,8 @@ public:
 
 	bool lastFilledFeatureInList;	//added 8 June 2012 to fix overrun
 	Feature * next;
+
+	//bool nearestFeatureActive;	//added 13 June 2012 to prevent non-filled existent features from being used to create polys	
 
 };
 
