@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORoperations.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  *
  *******************************************************************************/
 
@@ -53,7 +53,7 @@ double minObjectDepthAsDeterminedByCurrentFocus = MIN_OBJECT_DEPTH_AS_DETERMINED
 
 
 
-void createPointMapFromDepthMap(int imageWidth, int imageHeight, double * depthMap, double * pointMap, ViewInfo * vi)
+void createPointMapFromDepthMap(int imageWidth, int imageHeight, double* depthMap, double* pointMap, ViewInfo* vi)
 {
 	//fill luminosityMap
 	for(int y = 0; y < imageHeight; y++)
@@ -81,7 +81,7 @@ void createPointMapFromDepthMap(int imageWidth, int imageHeight, double * depthM
 	}
 }
 
-void printvi(ViewInfo * vi)
+void printvi(ViewInfo* vi)
 {
 	cout << "printvi()" << endl;
 
@@ -102,7 +102,7 @@ void printvi(ViewInfo * vi)
 }
 
 
-void printPointMap(int imageWidth, int imageHeight, double * pointMap)
+void printPointMap(int imageWidth, int imageHeight, double* pointMap)
 {
 	cout << "printPointMap()" << endl;
 
@@ -122,7 +122,7 @@ void printPointMap(int imageWidth, int imageHeight, double * pointMap)
 	}
 }
 
-void printDepthMap(int imageWidth, int imageHeight, double * depthMap)
+void printDepthMap(int imageWidth, int imageHeight, double* depthMap)
 {
 	cout << "printDepthMap()" << endl;
 
@@ -146,11 +146,11 @@ void printDepthMap(int imageWidth, int imageHeight, double * depthMap)
 
 
 
-bool addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec * proposedFeature, Feature * firstFeatureInList, double maxFeatureDistanceError, bool checkAlsoZ)
+bool addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec* proposedFeature, Feature* firstFeatureInList, double maxFeatureDistanceError, bool checkAlsoZ)
 {
 	bool foundCommonFeature = false;
 
-	Feature * currentFeatureInList = firstFeatureInList;
+	Feature* currentFeatureInList = firstFeatureInList;
 
 	if(currentFeatureInList->next != NULL)
 	{
@@ -198,7 +198,7 @@ bool addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec * proposedFeature, 
 			currentFeatureInList->point.x = proposedFeature->x;
 			currentFeatureInList->point.y = proposedFeature->y;
 			currentFeatureInList->point.z = proposedFeature->z;
-			Feature * newFeature = new Feature();
+			Feature* newFeature = new Feature();
 			currentFeatureInList->next = newFeature;
 			currentFeatureInList = currentFeatureInList->next;
 		}
@@ -211,7 +211,7 @@ bool addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec * proposedFeature, 
 		currentFeatureInList->point.x = proposedFeature->x;
 		currentFeatureInList->point.y = proposedFeature->y;
 		currentFeatureInList->point.z = proposedFeature->z;
-		Feature * newFeature = new Feature();
+		Feature* newFeature = new Feature();
 		currentFeatureInList->next = newFeature;
 		currentFeatureInList = currentFeatureInList->next;
 
@@ -223,11 +223,11 @@ bool addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec * proposedFeature, 
 
 
 
-bool checkFeatureListForCommonFeature(vec * corner, Feature * firstFeatureInList, double maxFeatureDistanceError, bool checkAlsoZ)
+bool checkFeatureListForCommonFeature(vec* corner, Feature* firstFeatureInList, double maxFeatureDistanceError, bool checkAlsoZ)
 {
 	bool foundCommonFeature = false;
 
-	Feature * currentFeatureInList = firstFeatureInList;
+	Feature* currentFeatureInList = firstFeatureInList;
 
 	if(currentFeatureInList->next != NULL)
 	{
@@ -273,7 +273,7 @@ bool checkFeatureListForCommonFeature(vec * corner, Feature * firstFeatureInList
 }
 
 
-void generateBooleanMapFromFeatureList(int imageWidth, int imageHeight, Feature * firstFeatureInList,  bool * featuresMap, ViewInfo * vi, int zoom)
+void generateBooleanMapFromFeatureList(int imageWidth, int imageHeight, Feature* firstFeatureInList,  bool* featuresMap, ViewInfo* vi, int zoom)
 {
 	//initialise featuresMap
 	for(int y = 0; y < imageHeight; y++)
@@ -284,7 +284,7 @@ void generateBooleanMapFromFeatureList(int imageWidth, int imageHeight, Feature 
 		}
 	}
 
-	Feature * currentFeatureInList = firstFeatureInList;
+	Feature* currentFeatureInList = firstFeatureInList;
 	while(currentFeatureInList->next != NULL)
 	{
 		#ifdef OR_DEBUG
@@ -312,7 +312,7 @@ void generateBooleanMapFromFeatureList(int imageWidth, int imageHeight, Feature 
 }
 
 
-void generateBooleanMapFromFeatureListOLD(int imageWidth, int imageHeight, Feature * firstFeatureInList,  bool * featuresMap)
+void generateBooleanMapFromFeatureListOLD(int imageWidth, int imageHeight, Feature* firstFeatureInList,  bool* featuresMap)
 {
 	//initialise featuresMap
 	for(int y = 0; y < imageHeight; y++)
@@ -323,7 +323,7 @@ void generateBooleanMapFromFeatureListOLD(int imageWidth, int imageHeight, Featu
 		}
 	}
 
-	Feature * currentFeatureInList = firstFeatureInList;
+	Feature* currentFeatureInList = firstFeatureInList;
 	while(currentFeatureInList->next != NULL)
 	{
 		int x = currentFeatureInList->point.x;
@@ -334,11 +334,11 @@ void generateBooleanMapFromFeatureListOLD(int imageWidth, int imageHeight, Featu
 }
 
 
-bool checkPolygonListForCommonPolygon(PolygonBAI * polygon, PolygonBAI * firstPolygonInList)
+bool checkPolygonListForCommonPolygon(PolygonBAI* polygon, PolygonBAI* firstPolygonInList)
 {
 	bool foundCommonPolygon = false;
 
-	PolygonBAI * currentPolygonInList = firstPolygonInList;
+	PolygonBAI* currentPolygonInList = firstPolygonInList;
 
 	if(currentPolygonInList->next != NULL)
 	{
@@ -431,11 +431,11 @@ bool checkPolygonListForCommonPolygon(PolygonBAI * polygon, PolygonBAI * firstPo
 
 }
 
-bool checkFeatureListForCommonFeatureBasic(Feature * corner, Feature * firstFeatureInList)
+bool checkFeatureListForCommonFeatureBasic(Feature* corner, Feature* firstFeatureInList)
 {
 	bool foundCommonFeature = false;
 
-	Feature * currentFeatureInList = firstFeatureInList;
+	Feature* currentFeatureInList = firstFeatureInList;
 
 	while(currentFeatureInList->next != NULL)
 	{
@@ -452,16 +452,16 @@ bool checkFeatureListForCommonFeatureBasic(Feature * corner, Feature * firstFeat
 
 
 
-PolygonBAI * addPolysToListForGivenFeatureAndNearestFeatureList(PolygonBAI * firstCurrentPolygonInList, PolygonBAI * firstPolygonInList, Feature * firstFeatureInNearestFeatureList, int numberOfPolygonsPerFeature, int dimension)
+PolygonBAI* addPolysToListForGivenFeatureAndNearestFeatureList(PolygonBAI* firstCurrentPolygonInList, PolygonBAI* firstPolygonInList, Feature* firstFeatureInNearestFeatureList, int numberOfPolygonsPerFeature, int dimension)
 {
-	PolygonBAI * currentPolygonInList = firstCurrentPolygonInList;
+	PolygonBAI* currentPolygonInList = firstCurrentPolygonInList;
 	int count = 0;
 
-	Feature * currentFeature = firstFeatureInNearestFeatureList;
-	Feature * currentFeatureInNearestFeatureList = firstFeatureInNearestFeatureList->next;
+	Feature* currentFeature = firstFeatureInNearestFeatureList;
+	Feature* currentFeatureInNearestFeatureList = firstFeatureInNearestFeatureList->next;
 	while(currentFeatureInNearestFeatureList->next != NULL)
 	{
-		Feature * currentFeatureInNearestFeatureList2 = firstFeatureInNearestFeatureList;
+		Feature* currentFeatureInNearestFeatureList2 = firstFeatureInNearestFeatureList;
 		while(currentFeatureInNearestFeatureList2->next != NULL)
 		{
 			//make sure poly uses different points;
@@ -499,7 +499,7 @@ PolygonBAI * addPolysToListForGivenFeatureAndNearestFeatureList(PolygonBAI * fir
 						*/
 						#endif
 
-						double minAngleAllowedRadians = (POLYGON_MIN_ANGLE_DEGREES / 180.0) * PI;
+						double minAngleAllowedRadians = (POLYGON_MIN_ANGLE_DEGREES / 180.0)* PI;
 						if((absDouble(internalAngle1) < minAngleAllowedRadians) || (absDouble(internalAngle2) < minAngleAllowedRadians) || (absDouble(internalAngle3) < minAngleAllowedRadians))
 						{
 							minAngleTest = false;
@@ -551,7 +551,7 @@ PolygonBAI * addPolysToListForGivenFeatureAndNearestFeatureList(PolygonBAI * fir
 						double internalAngle3 = calculateInteriorAngleOfAPolygonVertex(&(currentFeatureInNearestFeatureList2->point), &(currentFeatureInNearestFeatureList->point), &(currentFeature->point));
 
 						bool minAngleTest = true;
-						double minAngleAllowedRadians = (POLYGON_MIN_ANGLE_DEGREES / 180.0) * PI;
+						double minAngleAllowedRadians = (POLYGON_MIN_ANGLE_DEGREES / 180.0)* PI;
 						if((absDouble(internalAngle1) < minAngleAllowedRadians) || (absDouble(internalAngle2) < minAngleAllowedRadians) || (absDouble(internalAngle3) < minAngleAllowedRadians))
 						{
 							minAngleTest = false;
@@ -603,7 +603,7 @@ PolygonBAI * addPolysToListForGivenFeatureAndNearestFeatureList(PolygonBAI * fir
 							copyVectorRT(&(currentPolygonInList->point2), &(currentFeatureInNearestFeatureList->point));
 							copyVectorRT(&(currentPolygonInList->point3), &(currentFeatureInNearestFeatureList2->point));
 
-							PolygonBAI * newPolygon = new PolygonBAI();
+							PolygonBAI* newPolygon = new PolygonBAI();
 							currentPolygonInList->next = newPolygon;
 							currentPolygonInList = currentPolygonInList->next;
 
@@ -649,12 +649,12 @@ int calculateNumberOfNearestFeatures(int numberOfPolygonsPerFeature, int numberO
 
 
 
-void generateNearestFeaturesList(Feature * firstFeatureInNearestFeatureList, int numberOfNearestFeatures)
+void generateNearestFeaturesList(Feature* firstFeatureInNearestFeatureList, int numberOfNearestFeatures)
 {
-	Feature * currentFeatureInNearestFeatureList = firstFeatureInNearestFeatureList;
+	Feature* currentFeatureInNearestFeatureList = firstFeatureInNearestFeatureList;
 	for(int i=0; i<numberOfNearestFeatures; i++)
 	{
-		Feature * newFeature = new Feature();
+		Feature* newFeature = new Feature();
 		currentFeatureInNearestFeatureList->point.x = REALLY_FAR_AWAY;
 		currentFeatureInNearestFeatureList->point.y = REALLY_FAR_AWAY;
 		currentFeatureInNearestFeatureList->point.z = REALLY_FAR_AWAY;
@@ -670,8 +670,8 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 
 	for(int trainZoomIndex=0; trainZoomIndex < numberOfZoomIndicies; trainZoomIndex++)
 	{
-		PolygonBAI * currentPolygonInList = &(firstPolygonInList[trainZoomIndex]);
-		Feature * currentFeatureInList1 = &(firstFeatureInList[trainZoomIndex]);
+		PolygonBAI* currentPolygonInList = &(firstPolygonInList[trainZoomIndex]);
+		Feature* currentFeatureInList1 = &(firstFeatureInList[trainZoomIndex]);
 
 		int cornerIndexList1 = 0;
 		while(currentFeatureInList1->next != NULL)
@@ -686,7 +686,7 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 			*/
 			#endif
 
-			Feature *  firstFeatureInNearestFeatureList = new Feature();
+			Feature* firstFeatureInNearestFeatureList = new Feature();
 			//generateNearestFeaturesList(firstFeatureInNearestFeatureList, numberOfNearestFeatures);
 			firstFeatureInNearestFeatureList->point.x = currentFeatureInList1->point.x;
 			firstFeatureInNearestFeatureList->point.y = currentFeatureInList1->point.y;
@@ -694,12 +694,12 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 			firstFeatureInNearestFeatureList->pointNonWorldCoord.x = currentFeatureInList1->pointNonWorldCoord.x;
 			firstFeatureInNearestFeatureList->pointNonWorldCoord.y = currentFeatureInList1->pointNonWorldCoord.y;
 			firstFeatureInNearestFeatureList->pointNonWorldCoord.z = currentFeatureInList1->pointNonWorldCoord.z;
-			Feature * secondFeatureInNearestFeatureList = new Feature();
+			Feature* secondFeatureInNearestFeatureList = new Feature();
 			firstFeatureInNearestFeatureList->next = secondFeatureInNearestFeatureList;
 
 			double previousDistanceToNearestFeatureFromFeatureList2 = 0.0;
 
-			Feature * currentFeatureInNearestFeatureList = secondFeatureInNearestFeatureList;	//do not use first point
+			Feature* currentFeatureInNearestFeatureList = secondFeatureInNearestFeatureList;	//do not use first point
 			int currentNearestFeatureIndex = 1;
 			bool stillFindingNearestFeatures = true;
 			while((currentNearestFeatureIndex < numberOfNearestFeatures) && stillFindingNearestFeatures)
@@ -707,7 +707,7 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 				double distanceToNearestFeatureFromFeatureList2 = REALLY_FAR_AWAY;
 
 				//add corner 2 to nearest corner list
-				Feature * currentFeatureInList2 = &(firstFeatureInList[trainZoomIndex]);
+				Feature* currentFeatureInList2 = &(firstFeatureInList[trainZoomIndex]);
 				int cornerIndexList2 = 0;
 				bool foundASpot = false;
 
@@ -755,7 +755,7 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 				}
 				else
 				{
-					Feature * newFeature = new Feature();
+					Feature* newFeature = new Feature();
 					currentFeatureInNearestFeatureList->next = newFeature;
 					currentFeatureInNearestFeatureList = currentFeatureInNearestFeatureList->next;
 					currentNearestFeatureIndex++;
@@ -788,14 +788,14 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 			#endif
 
 			//#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES
-			PolygonBAI * backupOfOldCurrentPolygon = currentPolygonInList;
+			PolygonBAI* backupOfOldCurrentPolygon = currentPolygonInList;
 			//#endif
 
 			currentPolygonInList = addPolysToListForGivenFeatureAndNearestFeatureList(currentPolygonInList, firstPolygonInList, firstFeatureInNearestFeatureList, NUMBER_OF_POLYGONS_PER_FEATURE, dimension);
 
 			if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
 			{
-				PolygonBAI * tempCurrentPolygonInList = backupOfOldCurrentPolygon;
+				PolygonBAI* tempCurrentPolygonInList = backupOfOldCurrentPolygon;
 				while(tempCurrentPolygonInList->next != NULL)
 				{
 					tempCurrentPolygonInList->firstFeatureInNearestFeatureList = firstFeatureInNearestFeatureList;
@@ -848,19 +848,19 @@ bool generatePolygonListUsingFeatureList(int imageWidth, int imageHeight, Featur
 
 	for(int trainZoomIndex=0; trainZoomIndex < numberOfZoomIndicies; trainZoomIndex++)
 	{
-		PolygonBAI * currentPolygonInList = &(firstPolygonInList[trainZoomIndex]);
-		Feature * currentFeatureInList1 = &(firstFeatureInList[trainZoomIndex]);
+		PolygonBAI* currentPolygonInList = &(firstPolygonInList[trainZoomIndex]);
+		Feature* currentFeatureInList1 = &(firstFeatureInList[trainZoomIndex]);
 
 		int cornerIndexList1 = 0;
 		while(currentFeatureInList1->next != NULL)
 		{
 			//add corner 2 to polygon
-			Feature * currentFeatureInList2 = &(firstFeatureInList[trainZoomIndex]);
+			Feature* currentFeatureInList2 = &(firstFeatureInList[trainZoomIndex]);
 			int cornerIndexList2 = 0;
 			while(currentFeatureInList2->next != NULL)
 			{
 				//add corner 3 to polygon
-				Feature * currentFeatureInList3 = &(firstFeatureInList[trainZoomIndex]);
+				Feature* currentFeatureInList3 = &(firstFeatureInList[trainZoomIndex]);
 				int cornerIndexList3 = 0;
 				while(currentFeatureInList3->next != NULL)
 				{
@@ -895,7 +895,7 @@ bool generatePolygonListUsingFeatureList(int imageWidth, int imageHeight, Featur
 							copyVectorRT(&(currentPolygonInList->point1), &(currentFeatureInList1->point));
 							copyVectorRT(&(currentPolygonInList->point2), &(currentFeatureInList2->point));
 							copyVectorRT(&(currentPolygonInList->point3), &(currentFeatureInList3->point));
-							PolygonBAI * newPolygon = new PolygonBAI();
+							PolygonBAI* newPolygon = new PolygonBAI();
 							currentPolygonInList->next = newPolygon;
 							currentPolygonInList = currentPolygonInList->next;
 						}
@@ -932,7 +932,7 @@ bool generatePolygonListUsingFeatureList(int imageWidth, int imageHeight, Featur
 
 }
 
-void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int imageHeight, double * depthMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3])
+void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int imageHeight, double* depthMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3])
 {
 	//Added by RBB - for polygon calculations [ONLY USE COMPLETE DATA FOR THESE CALCULATIONS];
 
@@ -1148,7 +1148,7 @@ void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int 
 
 
 
-void createInterpolatedPointMap(int imageWidth, int imageHeight, double * pointMap, double * pointMapInterpolated)
+void createInterpolatedPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointMapInterpolated)
 {
 	//initialise featuresMap
 	for(int y = -1; y < imageHeight; y++)
@@ -1203,7 +1203,7 @@ void createInterpolatedPointMap(int imageWidth, int imageHeight, double * pointM
 
 
 /*
-void createInterpolatedDepthMap(int imageWidth, int imageHeight, double * depthMap, double * depthMapInterpolated)
+void createInterpolatedDepthMap(int imageWidth, int imageHeight, double* depthMap, double* depthMapInterpolated)
 {
 	//initialise featuresMap
 	for(int y = -1; y < imageHeight; y++)
@@ -1244,9 +1244,9 @@ void createInterpolatedDepthMap(int imageWidth, int imageHeight, double * depthM
 
 
 
-void applyTransformationMatrixToAllReferencesIn2Dlist(Reference * firstReferenceInInterpolated2DrgbMap, mat * transformationMatrix)
+void applyTransformationMatrixToAllReferencesIn2Dlist(Reference* firstReferenceInInterpolated2DrgbMap, mat* transformationMatrix)
 {
-	Reference * currentReference = firstReferenceInInterpolated2DrgbMap;
+	Reference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 		vec vecNew;
@@ -1263,9 +1263,9 @@ void applyTransformationMatrixToAllReferencesIn2Dlist(Reference * firstReference
 	}
 }
 
-void applyTranslationToAllReferencesIn2Dlist(Reference * firstReferenceInInterpolated2DrgbMap, vec * translationVector)
+void applyTranslationToAllReferencesIn2Dlist(Reference* firstReferenceInInterpolated2DrgbMap, vec* translationVector)
 {
-	Reference * currentReference = firstReferenceInInterpolated2DrgbMap;
+	Reference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 		currentReference->vertex1absolutePosition.x = currentReference->vertex1absolutePosition.x + translationVector->x;
@@ -1286,9 +1286,9 @@ void applyTranslationToAllReferencesIn2Dlist(Reference * firstReferenceInInterpo
 }
 
 
-void restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(Reference * firstReferenceInInterpolated2DrgbMap)
+void restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(Reference* firstReferenceInInterpolated2DrgbMap)
 {
-	Reference * currentReference = firstReferenceInInterpolated2DrgbMap;
+	Reference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 		currentReference->vertex1absolutePosition.x = currentReference->vertex1absolutePositionBackup.x;
@@ -1308,9 +1308,9 @@ void restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(Reference * firstRe
 	}
 }
 
-void storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(Reference * firstReferenceInInterpolated2DrgbMap)
+void storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(Reference* firstReferenceInInterpolated2DrgbMap)
 {
-	Reference * currentReference = firstReferenceInInterpolated2DrgbMap;
+	Reference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 		currentReference->vertex1absolutePositionBackup.x = currentReference->vertex1absolutePosition.x;

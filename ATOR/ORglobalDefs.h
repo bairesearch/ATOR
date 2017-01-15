@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORglobalDefs.h
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
@@ -268,7 +268,7 @@
  *
  *				CREATE DATABASE objectRecog;
  *				CREATE USER 'MYSQLUSERNAME'@'localhost' IDENTIFIED BY 'MYSQLPASSWORD';
- *				GRANT ALL ON *.* TO 'MYSQLUSERNAME'@'localhost';
+ *				GRANT ALL ON* .* TO 'MYSQLUSERNAME'@'localhost';
  *				use objectRecog;
  *
  *				CREATE TABLE s (ID BIGINT, PRIMARY KEY (ID));
@@ -422,7 +422,7 @@
  *			enter root password previously assigned during Mysql server installation, chooseamysqlrootpassword
  *			CREATE DATABASE objectRecog;
  *			CREATE USER 'MYSQLUSERNAME'@'localhost' IDENTIFIED BY 'MYSQLPASSWORD';
- *			GRANT ALL ON *.* TO 'MYSQLUSERNAME'@'localhost';
+ *			GRANT ALL ON* .* TO 'MYSQLUSERNAME'@'localhost';
  *			exit (exit mysql command line interface)
  *			Install OpenOffice.org Base MySQL Access Point (this is a useful procedure for developers, even if they install the mysql database via the script B);
  * 				Install Java Jave Run-time environment (JRE):
@@ -508,10 +508,10 @@
  *	Ensure that all source ANSI files are either Windows/PC (ASCII) or UNIX formated
  *
  *		(Linux Only)
- *		dos2unix *.cpp *.c *.h *.txt *.ldr *.tal *.DAT *.dat *.data *.xml *.backup
+ *		dos2unix* .cpp* .c* .h* .txt* .ldr* .tal* .DAT* .dat* .data* .xml* .backup
  *
  *		(Windows Only)
- *		ToDos.exe *.cpp *.c *.h *.ldr *.DAT *.dat *.data *.xml *.backup
+ *		ToDos.exe* .cpp* .c* .h* .ldr* .DAT* .dat* .data* .xml* .backup
  *			[download convert.zip from http://www.textpad.com/add-ons/]
  *
  *	Install Compiler
@@ -679,7 +679,7 @@
  *			ensure #define LINUX is added
  *			ensure only #define COMPILE_OR is uncommented
  *		cp makefile.OR makefile
- *		./clear.bat (rm *.o)
+ *		./clear.bat (rm* .o)
  *		make
  *
  *		(Windows Only)
@@ -1757,7 +1757,7 @@ extern double OR_RULES_XML_SPARE_PARAMETER_2;	//this needs to be made dynamic in
 	#endif
 
 
-	/***** OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING *****/
+	/***** OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING* ****/
 
 			//available methods;
 		//#define OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_HIGH_REDUNDANCY_DETERMINISTIC_BY_ITERATING_OVER_ALL_ADJACENT_BINS_FAST_RECOG_BUT_USE_MORE_HD		//option 2
@@ -1795,11 +1795,11 @@ extern double OR_RULES_XML_SPARE_PARAMETER_2;	//this needs to be made dynamic in
 
 
 
-	/***** OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING *****/
+	/***** OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING* ****/
 
 
 
-	/*****  OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING *****/
+	/***** OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING* ****/
 
 			//available methods;
 		//#define OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD		//option 1
@@ -1835,7 +1835,7 @@ extern double OR_RULES_XML_SPARE_PARAMETER_2;	//this needs to be made dynamic in
 		#endif
 
 
-	/***** OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON *****/
+	/***** OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON* ****/
 
 		#define OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
 		#define OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD_METHOD_1_ALL_RGB_COMPONENTS_WITH_DIRECTION		//highest discrimination [recog speed], lowest redundancy
@@ -1960,7 +1960,7 @@ OR SQL VARIABLES;
 	#define OR_MYSQL_FIELD_TYPE_SIDENUM (MYSQL_FIELD_TYPE_TINY_INT_8BIT)
 	#define OR_MYSQL_FIELD_TYPE_OTNUM  (MYSQL_FIELD_TYPE_TINY_INT_8BIT)
 	#define OR_MYSQL_FIELD_NAME_LENGTH_MAX (10)
-	#define OR_MYSQL_FIELD_NAME_BASICS_MAX_LENGTH ((10 + OR_MYSQL_FIELD_NAME_SPACING_BETWEEN_SQL_COMMAND_FIELD_REFERENCES) * OR_MYSQL_FIELD_NAME_LENGTH_MAX)
+	#define OR_MYSQL_FIELD_NAME_BASICS_MAX_LENGTH ((10 + OR_MYSQL_FIELD_NAME_SPACING_BETWEEN_SQL_COMMAND_FIELD_REFERENCES)* OR_MYSQL_FIELD_NAME_LENGTH_MAX)
 	#define OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDX "pxT"
 	#define OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDY "pyT"
 	#define OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDZ "pzT"
@@ -1970,7 +1970,7 @@ OR SQL VARIABLES;
 	#define OR_MYSQL_FIELD_NAME_POINTZ "pz"
 	#define OR_MYSQL_FIELD_TYPE_POINT (MYSQL_FIELD_TYPE_REAL_FLOAT_32BIT)
 	#define OR_MYSQL_FIELD_NAME_POINT_LENGTH (5 + OR_MYSQL_FIELD_NAME_SPACING_BETWEEN_SQL_COMMAND_FIELD_REFERENCES)
-	#define OR_MYSQL_FIELD_NAME_POINT_MAX_LENGTH (OR_MYSQL_FIELD_NAME_POINT_LENGTH * 6)
+	#define OR_MYSQL_FIELD_NAME_POINT_MAX_LENGTH (OR_MYSQL_FIELD_NAME_POINT_LENGTH* 6)
 	#define OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BINS "d"			//not yet implemented - see JPEG code
 	#define OR_MYSQL_FIELD_TYPE_DCT_COEFFICIENT_BINS (MYSQL_FIELD_TYPE_TINY_INT_8BIT)
 	#define OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL "dBin"		//combination of d0->d15
@@ -2028,7 +2028,7 @@ OR SQL VARIABLES;
 	#define OR_METHOD_3DOD_USE_SNAPSHOT_DEPTH_MAPS_ADVANCED_RESAMPLING
 
 
-	/***** OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING *****/
+	/***** OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING* ****/
 
 		//#define OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_REQUIREMENT_V1	//this has been tested		//ATTENTION: this option is no longer supported as OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NO_EXPLICIT_FOR_LOOPS is now enforced as true with decition tree code enabled
 		#define OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_REQUIREMENT_V2	//this has been tested
@@ -2053,7 +2053,7 @@ OR SQL VARIABLES;
 
 
 
-	/***** OR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_DEV_BINNING *****/
+	/***** OR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_DEV_BINNING* ****/
 
 		//#define OR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_DEV_BINNING_REQUIREMENT_V2
 		#define OR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_DEV_BINNING_REQUIREMENT_V3		//try this and speed compare with V2
@@ -2063,11 +2063,11 @@ OR SQL VARIABLES;
 		#define OR_MYSQL_FIELD_TYPE_GEO_BINS_MAX_LENGTH (OR_MYSQL_FIELD_NAME_GEO_BINS_LENGTH*4 + OR_MYSQL_FIELD_NAME_GEO_BINS_XY_LENGTH)
 
 
-	/***** OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING *****/
+	/***** OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING* ****/
 
 
 
-	/***** OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING *****/
+	/***** OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING* ****/
 
 		#define OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_REQUIREMENT_V2	//dont use this it is guarenteed to be very slow; 3^16 comparisons
 		//#define OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_REQUIREMENT_V3
@@ -2076,7 +2076,7 @@ OR SQL VARIABLES;
 		#define OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_REQUIREMENT_V3_MIN_NUM_SUCC_COMPARISONS_REUQIRED_NORMALISED (2.0/3.0)
 
 
-		/***** OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING *****/
+		/***** OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING* ****/
 
 		//#define OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT		//temporarily disabled for testing... [results in longer DT (decision tree) index]
 
@@ -2096,9 +2096,9 @@ OR SQL VARIABLES;
 
 		/*
 		DCT-Y values used;
-		-1      *-5      *0       -1      -1      0       0       0
-		*3       *0       *-2      0       0       0       0       0
-		*2       *1       0       0       0       0       0       0
+		-1     * -5     * 0       -1      -1      0       0       0
+		*3      * 0      * -2      0       0       0       0       0
+		*2      * 1       0       0       0       0       0       0
 		-3      0       1       1       0       0       0       0
 		1       0       0       0       0       0       0       0
 		0       0       0       0       0       0       0       0
@@ -2106,7 +2106,7 @@ OR SQL VARIABLES;
 		0       0       0       0       0       0       0       0
 
 		DCT-YCb values used;
-		*-1     *1       1       0       0       0       0       0
+		*-1    * 1       1       0       0       0       0       0
 		*2      0       0       0       0       0       0       0
 		1       0       0       0       0       0       0       0
 		0       0       0       0       0       0       0       0
@@ -2116,7 +2116,7 @@ OR SQL VARIABLES;
 		0       0       0       0       0       0       0       0
 
 		DCT-YCr values used;
-		*-4     *2       1       0       0       0       0       0
+		*-4    * 2       1       0       0       0       0       0
 		*0      0       0       0       0       0       0       0
 		0       0       0       0       0       0       0       0
 		0       0       0       0       0       0       0       0
@@ -2129,38 +2129,38 @@ OR SQL VARIABLES;
 		*/
 
 		#define OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_DATA_LENGTH (1*30 + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS*4)
-			//number dct bins * signed 8bit decimal [-256 -> +256, 4 characters in length]
+			//number dct bins* signed 8bit decimal [-256 -> +256, 4 characters in length]
 		#define OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_MAX_LENGTH (OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BINS_LENGTH + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL_LENGTH)
 
 
 
 
-	/***** OR_IMAGE_COMPARISON_SQL_SMALL_HUE_DEV_MAP_COMPARISON *****/
+	/***** OR_IMAGE_COMPARISON_SQL_SMALL_HUE_DEV_MAP_COMPARISON* ****/
 
 		//#define OR_IMAGE_COMPARISON_SQL_DB_USE_RGB_8BIT_SMALL_MAP_QUERY_REQUIREMENT_V2
 		//#define OR_IMAGE_COMPARISON_SQL_DB_USE_RGB_8BIT_SMALL_MAP_QUERY_REQUIREMENT_V3
 		//#define OR_IMAGE_COMPARISON_SQL_DB_USE_RGB_8BIT_SMALL_MAP_QUERY_REQUIREMENT_V2_OR_V3
 		#define OR_IMAGE_COMPARISON_SQL_DB_USE_RGB_8BIT_SMALL_MAP_QUERY_REQUIREMENT_V3_MIN_NUM_SUCC_COMPARISONS_REUQIRED_NORMALISED (2.0/3.0)
 		#define OR_IMAGE_COMPARISON_SQL_SMALL_HUE_DEV_MAP_COMPARISON_MAX_ELEMENT_LENGTH (3)	//0->256, 3 characters
-		#define OR_IMAGE_COMPARISON_SQL_SMALL_HUE_DEV_MAP_COMPARISON_MAX_DATA_LENGTH (OR_METHOD_XDOD_SNAPSHOT_SMALL_IMAGE_SIZE_MAX*3*OR_IMAGE_COMPARISON_SQL_SMALL_HUE_DEV_MAP_COMPARISON_MAX_ELEMENT_LENGTH)	//size * 8bit * 3 colours
-		#define OR_MYSQL_FIELD_NAME_SMALL_IMAGE_MAX_LENGTH (OR_MYSQL_FIELD_NAME_SMALL_IMAGE_LENGTH * OR_METHOD_XDOD_SNAPSHOT_SMALL_IMAGE_SIZE_MAX*3)
+		#define OR_IMAGE_COMPARISON_SQL_SMALL_HUE_DEV_MAP_COMPARISON_MAX_DATA_LENGTH (OR_METHOD_XDOD_SNAPSHOT_SMALL_IMAGE_SIZE_MAX*3*OR_IMAGE_COMPARISON_SQL_SMALL_HUE_DEV_MAP_COMPARISON_MAX_ELEMENT_LENGTH)	//size* 8bit* 3 colours
+		#define OR_MYSQL_FIELD_NAME_SMALL_IMAGE_MAX_LENGTH (OR_MYSQL_FIELD_NAME_SMALL_IMAGE_LENGTH* OR_METHOD_XDOD_SNAPSHOT_SMALL_IMAGE_SIZE_MAX*3)
 
 
 
 
 	#define OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_MAX_DATA_LENGTH (OR_METHOD_XDOD_SNAPSHOT_SIZE_MAX*3 + OR_METHOD_XDOD_SNAPSHOT_SIZE_MAX*3 + OR_METHOD_XDOD_SNAPSHOT_SMALL_IMAGE_SIZE_MAX*3 + OR_METHOD_XDOD_SNAPSHOT_SMALL_IMAGE_SIZE_MAX*3)
 		/* for
- 		unsigned char * rgbMapFacingPoly = new unsigned char[imageWidthFacingPoly*imageHeightFacingPoly*RGB_NUM];	OR;
-		double * rgbDevIEnormalisedHueContrastMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly*VEC_MAP_VEC_NUM_DIMENSIONS];
-		double * depthMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly];			//24bit to 3x8bit
- 		unsigned char * rgbMapSmallFacingPoly = new unsigned char[smallImageWidth*smallImageHeight*RGB_NUM];	OR;
- 		unsigned char * depthRGBMapSmallFacingPoly = new unsigned char[smallImageWidth*smallImageHeight];	//24bit to 3x8bit
-		double * rgbDevIEnormalisedHueContrastMapSmallFacingPoly = new double[smallImageWidth*smallImageHeight*VEC_MAP_VEC_NUM_DIMENSIONS];
+ 		unsigned char* rgbMapFacingPoly = new unsigned char[imageWidthFacingPoly*imageHeightFacingPoly*RGB_NUM];	OR;
+		double* rgbDevIEnormalisedHueContrastMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly*VEC_MAP_VEC_NUM_DIMENSIONS];
+		double* depthMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly];			//24bit to 3x8bit
+ 		unsigned char* rgbMapSmallFacingPoly = new unsigned char[smallImageWidth*smallImageHeight*RGB_NUM];	OR;
+ 		unsigned char* depthRGBMapSmallFacingPoly = new unsigned char[smallImageWidth*smallImageHeight];	//24bit to 3x8bit
+		double* rgbDevIEnormalisedHueContrastMapSmallFacingPoly = new double[smallImageWidth*smallImageHeight*VEC_MAP_VEC_NUM_DIMENSIONS];
 		*/
 
 
 	#define OR_MYSQL_FIELD_NAME_BASICS_MAX_LENGTH (1*30 + 9*3)	//1*64bit + 9*8bit
-	#define OR_MYSQL_FIELD_NAME_POINT_MAX_LENGTH (10 * 6 * 10)	//max 10 significant figures
+	#define OR_MYSQL_FIELD_NAME_POINT_MAX_LENGTH (10* 6* 10)	//max 10 significant figures
 	#define OR_IMAGE_COMPARISON_SQL_DATABASE_TEST_AND_TRAIN_TABLES_MAX_DATA_LENGTH (1000 + OR_IMAGE_COMPARISON_SQL_BASICS_MAX_DATA_LENGTH + OR_IMAGE_COMPARISON_SQL_POINT_MAX_DATA_LENGTH + OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_MAX_DATA_LENGTH + OR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_DEV_BINNING_MAX_DATA_LENGTH + OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_DATA_LENGTH + OR_IMAGE_COMPARISON_SQL_SMALL_HUE_DEV_MAP_COMPARISON_MAX_DATA_LENGTH + OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_MAX_DATA_LENGTH*2)
 	#define OR_IMAGE_COMPARISON_SQL_DATABASE_TEST_AND_TRAIN_TABLES_MAX_FIELD_DATA_LENGTH (1000 + OR_MYSQL_FIELD_NAME_BASICS_MAX_LENGTH + OR_MYSQL_FIELD_NAME_POINT_MAX_LENGTH + OR_MYSQL_FIELD_TYPE_GEO_BINS_MAX_LENGTH + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_MAX_LENGTH + OR_MYSQL_FIELD_TYPE_COLOUR_AVERAGE_MAX_LENGTH + OR_MYSQL_FIELD_NAME_SMALL_IMAGE_MAX_LENGTH)
 	//#define OR_IMAGE_COMPARISON_SQL_DATABASE_TEST_AND_TRAIN_TABLES_INSERT_QUERY_MAX_LENGTH (OR_IMAGE_COMPARISON_SQL_DATABASE_TEST_AND_TRAIN_TABLES_MAX_FIELD_DATA_LENGTH + OR_IMAGE_COMPARISON_SQL_DATABASE_TEST_AND_TRAIN_TABLES_MAX_FIELD_DATA_LENGTH)

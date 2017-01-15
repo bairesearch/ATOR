@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORcomparison.h
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  *
  *******************************************************************************/
 
@@ -69,23 +69,23 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 #endif
 
 //#ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING
-void convertNormalisedHueDeviationMapTo3x8bitMap(int imageWidth, int imageHeight, double * rgbDevIEnormalisedHueContrastMapSmallFacingPoly, unsigned char * rgbDev8BitSmallMapFacingPoly);
-	void cullAndBinNormalisedHueContrast(vec * normalisedHueContrast, colour * culledNormalisedHueContrast);
+void convertNormalisedHueDeviationMapTo3x8bitMap(int imageWidth, int imageHeight, double* rgbDevIEnormalisedHueContrastMapSmallFacingPoly, unsigned char* rgbDev8BitSmallMapFacingPoly);
+	void cullAndBinNormalisedHueContrast(vec* normalisedHueContrast, colour* culledNormalisedHueContrast);
 //#endif
 //#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
 void convertDCTcoeffIndividualArraysToConcatonatedSignedDCTcoeffArray(signed char dctCoeffArrayY[], signed char dctCoeffArrayYcr[], signed char dctCoeffArrayYcb[], signed char concatonatedSignedDctCoeffArray[]);
 //#endif
 
-void convertImageFileType(string * imageBaseFileName, string * imageBaseFileNameConverted, string imageExtension, string imageExtensionConverted);
+void convertImageFileType(string* imageBaseFileName, string* imageBaseFileNameConverted, string imageExtension, string imageExtensionConverted);
 #ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
-void createGeoTableHTMLfromFeatureList(Feature * firstFeatureInNearestFeatureList, bool applyBinning, string * geoTableHTMLoutputString);
+void createGeoTableHTMLfromFeatureList(Feature* firstFeatureInNearestFeatureList, bool applyBinning, string* geoTableHTMLoutputString);
 #endif
 /*
 #ifdef DEBUG_OR_OUTPUT_DT_BIN
-bool determineIfGeoBinningIdenticalMatchFound(Feature * firstFeatureInNearestFeatureList, int pBinxRequirement[], int pBinyRequirement[]);
+bool determineIfGeoBinningIdenticalMatchFound(Feature* firstFeatureInNearestFeatureList, int pBinxRequirement[], int pBinyRequirement[]);
 #endif
 */
-void readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(string * rgbMapSmallFacingPolyFileNamePPM, string * rgbMapSmallFacingPolyFileNameJPEG, signed char * concatonatedSignedDctCoeffArrayRequirement, bool printOutput);
+void readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(string* rgbMapSmallFacingPolyFileNamePPM, string* rgbMapSmallFacingPolyFileNameJPEG, signed char* concatonatedSignedDctCoeffArrayRequirement, bool printOutput);
 
 
 #endif

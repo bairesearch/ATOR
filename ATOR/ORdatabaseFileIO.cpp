@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORdatabaseFileIO.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  *
  *******************************************************************************/
 
@@ -62,23 +62,23 @@ void initialiseDatabase(string newDatabaseFolderName)
 	databaseFolderName = newDatabaseFolderName;
 }
 
-bool DBdirectoryExists(string * folderName)
+bool DBdirectoryExists(string* folderName)
 {
 	bool folderExists = directoryExists(folderName->c_str());
 	if(folderExists)
 	{
 		#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
-		cout << "\tdirectoryExists: folderName = " << *folderName << endl;
+		cout << "\tdirectoryExists: folderName = " <<* folderName << endl;
 		#endif
 	}
 
 	return folderExists;
 }
 
-bool DBcreateDirectory(string * folderName)
+bool DBcreateDirectory(string* folderName)
 {
 	#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
-	cout << "\tDBcreateDirectory: folderName = " << *folderName << endl;
+	cout << "\tDBcreateDirectory: folderName = " <<* folderName << endl;
 	#endif
 	bool result = true;
 
@@ -95,11 +95,11 @@ bool DBcreateDirectory(string * folderName)
 	return result;
 }
 
-bool DBsetCurrentDirectory(string * folderName)
+bool DBsetCurrentDirectory(string* folderName)
 {
 	bool result = true;
 	#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
-	cout << "\tDBsetCurrentDirectory: folderName = " << *folderName << endl;
+	cout << "\tDBsetCurrentDirectory: folderName = " <<* folderName << endl;
 	#endif
 	setCurrentDirectory(folderName->c_str());
 	/*removed debug support for Windows;
@@ -113,11 +113,11 @@ bool DBsetCurrentDirectory(string * folderName)
 	return result;
 }
 
-bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string * folderName)
+bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string* folderName)
 {
 	bool result = true;
 	#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
-	cout << "checkIfFolderExistsAndIfNotMakeAndSetAsCurrent: folderName = " << *folderName << endl;
+	cout << "checkIfFolderExistsAndIfNotMakeAndSetAsCurrent: folderName = " <<* folderName << endl;
 	#endif
 	if(!DBdirectoryExists(folderName))
 	{
@@ -128,7 +128,7 @@ bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string * folderName)
 	return result;
 }
 
-string DBgenerateServerDatabaseName(string * objectName, bool trainOrTest)
+string DBgenerateServerDatabaseName(string* objectName, bool trainOrTest)
 {
 	string databaseName;
 	if(!trainOrTest)
@@ -138,7 +138,7 @@ string DBgenerateServerDatabaseName(string * objectName, bool trainOrTest)
 	else
 	{
 		#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
-		//cout << "entityName = " << *entityName << endl;
+		//cout << "entityName = " <<* entityName << endl;
 		#endif
 
 		#ifdef GIA_DATABASE_FILESYSTEM_USE_MULTIPLE_SERVERS
@@ -146,7 +146,7 @@ string DBgenerateServerDatabaseName(string * objectName, bool trainOrTest)
 		if((entityFirstCharacter < ASCII_TABLE_INDEX_OF_a) || (entityFirstCharacter > ASCII_TABLE_INDEX_OF_z))
 		{
 			cout << "determineServerName error: (entityFirstCharacter < ASCII_TABLE_INDEX_OF_a) || (entityFirstCharacter > ASCII_TABLE_INDEX_OF_z)" << endl;
-			cout << "entityName = " << *entityName << endl;
+			cout << "entityName = " <<* entityName << endl;
 			exit(0);
 		}
 
@@ -168,7 +168,7 @@ string DBgenerateServerDatabaseName(string * objectName, bool trainOrTest)
 }
 
 
-string DBgenerateFolderName(string * objectName, bool trainOrTest)
+string DBgenerateFolderName(string* objectName, bool trainOrTest)
 {
 	string tempFolder = tempFolderCharStar;
 
@@ -191,7 +191,7 @@ string DBgenerateFolderName(string * objectName, bool trainOrTest)
 	else
 	{
 		#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
-		cout << "*objectName = " << *objectName << endl;
+		cout << "*objectName = " <<* objectName << endl;
 		#endif
 
 		fileName = fileName + OR_DATABASE_TRAIN_FOLDER_NAME + "/";
@@ -214,7 +214,7 @@ string DBgenerateFolderName(string * objectName, bool trainOrTest)
 			fileName = fileName + folderName + "/";
 			checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&folderName);
 		}
-		fileName = fileName + *objectName + "/";
+		fileName = fileName +* objectName + "/";
 		checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(objectName);
 
 		#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
@@ -233,12 +233,12 @@ string DBgenerateFolderName(string * objectName, bool trainOrTest)
 
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
-bool compareFeaturesListForMatch(Feature * testFirstFeatureInNearestFeatureList, Feature * trainFirstFeatureInNearestFeatureList, int dimension, bool * exactMatchFound)
+bool compareFeaturesListForMatch(Feature* testFirstFeatureInNearestFeatureList, Feature* trainFirstFeatureInNearestFeatureList, int dimension, bool* exactMatchFound)
 {
 	int numberOfFeatureGeoMatches = 0;
 	int numberOfFeatureGeoBinnedExactMatches = 0;
 	bool passedGeometricCheck = false;
-	Feature * testcurrentFeatureInNearestFeatureList = testFirstFeatureInNearestFeatureList;
+	Feature* testcurrentFeatureInNearestFeatureList = testFirstFeatureInNearestFeatureList;
 	while((testcurrentFeatureInNearestFeatureList->next != NULL) && !(testcurrentFeatureInNearestFeatureList->lastFilledFeatureInList))
 	{
 		bool testpassedDimensionCheck = true;
@@ -252,7 +252,7 @@ bool compareFeaturesListForMatch(Feature * testFirstFeatureInNearestFeatureList,
 
 		if(testpassedDimensionCheck)
 		{
-			Feature * traincurrentFeatureInNearestFeatureList = trainFirstFeatureInNearestFeatureList;
+			Feature* traincurrentFeatureInNearestFeatureList = trainFirstFeatureInNearestFeatureList;
 			while((traincurrentFeatureInNearestFeatureList->next != NULL) && !(traincurrentFeatureInNearestFeatureList->lastFilledFeatureInList))
 			{
 				bool trainpassedDimensionCheck = true;
@@ -268,7 +268,7 @@ bool compareFeaturesListForMatch(Feature * testFirstFeatureInNearestFeatureList,
 					double requiredMaxError;
 					#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
 						double minwidthheightOfOriginalTriangleTestAndTrain = minDouble(testcurrentFeatureInNearestFeatureList->minWidthAndHeightOfOrigOT, traincurrentFeatureInNearestFeatureList->minWidthAndHeightOfOrigOT);
-						requiredMaxError = (1.0/(maxDouble((minwidthheightOfOriginalTriangleTestAndTrain - OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT), OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT)/(double)OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT)) * OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR;
+						requiredMaxError = (1.0/(maxDouble((minwidthheightOfOriginalTriangleTestAndTrain - OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT), OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT)/(double)OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT))* OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR;
 					#else
 						requiredMaxError = OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR;
 					#endif
@@ -322,9 +322,9 @@ bool compareFeaturesListForMatch(Feature * testFirstFeatureInNearestFeatureList,
 }
 
 
-void addFeatureToEndOfFeatureList(Feature * firstFeatureInList, Feature * featureToAdd)
+void addFeatureToEndOfFeatureList(Feature* firstFeatureInList, Feature* featureToAdd)
 {
-	Feature * currentFeatureInList = firstFeatureInList;
+	Feature* currentFeatureInList = firstFeatureInList;
 
 	// go to last feature in list (ie append to list if list already has items)
 	while(currentFeatureInList->next != NULL)
@@ -342,7 +342,7 @@ void addFeatureToEndOfFeatureList(Feature * firstFeatureInList, Feature * featur
 	#endif
 	copyVectors(&(currentFeatureInList->pointTransformed), &(featureToAdd->pointTransformed));
 
-	Feature * newFeature = new Feature();
+	Feature* newFeature = new Feature();
 	currentFeatureInList->next = newFeature;
 
 }
@@ -350,9 +350,9 @@ void addFeatureToEndOfFeatureList(Feature * firstFeatureInList, Feature * featur
 
 
 
-void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeatureInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures)
+void createFeaturesListUsingFeaturesFile(string fileName, Feature* firstFeatureInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures)
 {
-	Feature * currentFeatureInList = firstFeatureInList;
+	Feature* currentFeatureInList = firstFeatureInList;
 
 	if(appendToList)
 	{//if creatingFeatureObjects, go to last feature in list (ie append to list if list already has items)
@@ -597,7 +597,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 
 					if(createFeatureObjects)
 					{
-						Feature * newFeature = new Feature();
+						Feature* newFeature = new Feature();
 						currentFeatureInList->next = newFeature;
 					}
 
@@ -680,11 +680,11 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 
 
 
-void createTransformedFeaturesFile(Feature * firstFeatureInList, string fileName, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest)
+void createTransformedFeaturesFile(Feature* firstFeatureInList, string fileName, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest)
 {
 	ofstream writeFileObject(fileName.c_str());
 
-	Feature * currentFeature = firstFeatureInList;
+	Feature* currentFeature = firstFeatureInList;
 	while(currentFeature->next != NULL)
 	{
 		char polygonIndexString[10];

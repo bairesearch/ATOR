@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORquadraticFit.cpp (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  *
  * Assumes that depth information is less accurate than image information
  *******************************************************************************/
@@ -114,7 +114,7 @@ static int globalImageWidth;
 
 
 
-void generateZeroCrossingList(double * luminosityContrastMap, int imageWidth, int imageHeight, QFzeroCrossing * firstZeroCrossingInList, bool edgeDetect, double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, int interpixelMapType)
+void generateZeroCrossingList(double* luminosityContrastMap, int imageWidth, int imageHeight, QFzeroCrossing* firstZeroCrossingInList, bool edgeDetect, double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, int interpixelMapType)
 {
 	globalImageWidth = imageWidth;
 
@@ -325,15 +325,15 @@ double calculateAreaOfOneSideOfEdgeInPixel(int xDevPointOnSide, int yDevPointOnS
 		{
 			double triangleBoundaryY = maxDouble(edgeIntersectBoundary[0].y, edgeIntersectBoundary[1].y);
 			double heightPart1 = absDouble(edgeIntersectBoundary[0].y - edgeIntersectBoundary[1].y);
-			areaPart1 = 0.5 * heightPart1 * (HALF_PIXEL_WIDTH*2.0);	//0.5B*W
-			areaPart2 = (HALF_PIXEL_WIDTH-triangleBoundaryY) * (HALF_PIXEL_WIDTH*2.0);	//B*W
+			areaPart1 = 0.5* heightPart1* (HALF_PIXEL_WIDTH*2.0);	//0.5B*W
+			areaPart2 = (HALF_PIXEL_WIDTH-triangleBoundaryY)* (HALF_PIXEL_WIDTH*2.0);	//B*W
 		}
 		else
 		{
 			double triangleBoundaryY = minDouble(edgeIntersectBoundary[0].y, edgeIntersectBoundary[1].y);
 			double heightPart1 = absDouble(edgeIntersectBoundary[0].y - edgeIntersectBoundary[1].y);
-			areaPart1 = 0.5 * heightPart1 * (HALF_PIXEL_WIDTH*2.0);	//0.5B*W
-			areaPart2 = (HALF_PIXEL_WIDTH+triangleBoundaryY) * (HALF_PIXEL_WIDTH*2.0);	//B*W
+			areaPart1 = 0.5* heightPart1* (HALF_PIXEL_WIDTH*2.0);	//0.5B*W
+			areaPart2 = (HALF_PIXEL_WIDTH+triangleBoundaryY)* (HALF_PIXEL_WIDTH*2.0);	//B*W
 		}
 		area = areaPart1 + areaPart2;
 		areaIsJustTriangle = false;
@@ -395,15 +395,15 @@ double calculateAreaOfOneSideOfEdgeInPixel(int xDevPointOnSide, int yDevPointOnS
 		{
 			double triangleBoundaryX = maxDouble(edgeIntersectBoundary[0].x, edgeIntersectBoundary[1].x);
 			double widthPart1 = absDouble(edgeIntersectBoundary[0].x - edgeIntersectBoundary[1].x);
-			areaPart1 = 0.5 * widthPart1 * (HALF_PIXEL_WIDTH*2.0);	//0.5B*W
-			areaPart2 = (HALF_PIXEL_WIDTH-triangleBoundaryX) * (HALF_PIXEL_WIDTH*2.0);	//B*W
+			areaPart1 = 0.5* widthPart1* (HALF_PIXEL_WIDTH*2.0);	//0.5B*W
+			areaPart2 = (HALF_PIXEL_WIDTH-triangleBoundaryX)* (HALF_PIXEL_WIDTH*2.0);	//B*W
 		}
 		else
 		{
 			double triangleBoundaryX = minDouble(edgeIntersectBoundary[0].x, edgeIntersectBoundary[1].x);
 			double widthPart1 = absDouble(edgeIntersectBoundary[0].x - edgeIntersectBoundary[1].x);
-			areaPart1 = 0.5 * widthPart1 * (HALF_PIXEL_WIDTH*2.0);	//0.5B*W
-			areaPart2 = (HALF_PIXEL_WIDTH-triangleBoundaryX) * (HALF_PIXEL_WIDTH*2.0);	//B*W
+			areaPart1 = 0.5* widthPart1* (HALF_PIXEL_WIDTH*2.0);	//0.5B*W
+			areaPart2 = (HALF_PIXEL_WIDTH-triangleBoundaryX)* (HALF_PIXEL_WIDTH*2.0);	//B*W
 		}
 		area = areaPart1 + areaPart2;
 		areaIsJustTriangle = false;
@@ -510,7 +510,7 @@ double calculateAreaOfOneSideOfEdgeInPixel(int xDevPointOnSide, int yDevPointOnS
 }
 
 
-/*************************************** Edgise Frame High Level ('EdgiseFrameStandard') Methods ************************************/
+/*************************************** Edgise Frame High Level ('EdgiseFrameStandard') Methods* ***********************************/
 
 /****
  * edgiseData()
@@ -523,7 +523,7 @@ double calculateAreaOfOneSideOfEdgeInPixel(int xDevPointOnSide, int yDevPointOnS
  ****/
 
 //pointMap not currently used
-void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, QFzeroCrossing * currentZeroCrossingInList, int imageWidth, int imageHeight, double luminosityContrastMap[], double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, int interpixelMapType)
+void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, QFzeroCrossing* currentZeroCrossingInList, int imageWidth, int imageHeight, double luminosityContrastMap[], double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, int interpixelMapType)
 {
 	int kernelWidthForegroundCheck;
 	int kernelHeightForegroundCheck;
@@ -554,7 +554,7 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 	int enhancedImageWidth = imageWidth*enhancementFactor;
 	int enhancedImageHeight = imageHeight*enhancementFactor;
 	int enhancedImageSize = enhancedImageWidth*enhancedImageHeight;
-	unsigned char * quadraticFitMapEnhancedRGB = new unsigned char[enhancedImageSize*RGB_NUM];
+	unsigned char* quadraticFitMapEnhancedRGB = new unsigned char[enhancedImageSize*RGB_NUM];
 
 	if(createEnhancedImageDisplayingQuadraticFitInfo)
 	{
@@ -566,9 +566,9 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 				 {
 					 for(int ex=0; ex < enhancementFactor; ex++)
 					 {
-						quadraticFitMapEnhancedRGB[((y*enhancementFactor)+ey)*enhancedImageWidth*RGB_NUM + ((x*enhancementFactor) + ex)*RGB_NUM + RGB_RED] = luminosityContrastMap[y*imageWidth  + x] / MAX_LUMINOSITY_CONTRAST * MAX_RGB_VAL;
-				 		quadraticFitMapEnhancedRGB[((y*enhancementFactor)+ey)*enhancedImageWidth*RGB_NUM + ((x*enhancementFactor) + ex)*RGB_NUM + RGB_GREEN] = luminosityContrastMap[y*imageWidth  + x] / MAX_LUMINOSITY_CONTRAST * MAX_RGB_VAL;
-						quadraticFitMapEnhancedRGB[((y*enhancementFactor)+ey)*enhancedImageWidth*RGB_NUM + ((x*enhancementFactor) + ex)*RGB_NUM + RGB_BLUE] = luminosityContrastMap[y*imageWidth  + x] / MAX_LUMINOSITY_CONTRAST * MAX_RGB_VAL;
+						quadraticFitMapEnhancedRGB[((y*enhancementFactor)+ey)*enhancedImageWidth*RGB_NUM + ((x*enhancementFactor) + ex)*RGB_NUM + RGB_RED] = luminosityContrastMap[y*imageWidth  + x] / MAX_LUMINOSITY_CONTRAST* MAX_RGB_VAL;
+				 		quadraticFitMapEnhancedRGB[((y*enhancementFactor)+ey)*enhancedImageWidth*RGB_NUM + ((x*enhancementFactor) + ex)*RGB_NUM + RGB_GREEN] = luminosityContrastMap[y*imageWidth  + x] / MAX_LUMINOSITY_CONTRAST* MAX_RGB_VAL;
+						quadraticFitMapEnhancedRGB[((y*enhancementFactor)+ey)*enhancedImageWidth*RGB_NUM + ((x*enhancementFactor) + ex)*RGB_NUM + RGB_BLUE] = luminosityContrastMap[y*imageWidth  + x] / MAX_LUMINOSITY_CONTRAST* MAX_RGB_VAL;
 					 }
 				 }
 			 }
@@ -584,7 +584,7 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 
 	/*finished clearing all lists*/
 
-	float * coefficient = new float[NUMBER_OF_COEFFICIENTS];
+	float* coefficient = new float[NUMBER_OF_COEFFICIENTS];
 
 	//This loop determines the coefficients of the fit for each pixel in the AdviseFrame
 	//If the edgise process is enabled, this loop fills in the edgisedData Array necessary
@@ -861,7 +861,7 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 							}
 							#endif
 
-							QFzeroCrossing * zc = new QFzeroCrossing();
+							QFzeroCrossing* zc = new QFzeroCrossing();
 							currentZeroCrossingInList->next = zc;
 							currentZeroCrossingInList = currentZeroCrossingInList->next;
 						}
@@ -971,7 +971,7 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 							}
 							#endif
 
-							QFzeroCrossing * zc = new QFzeroCrossing();
+							QFzeroCrossing* zc = new QFzeroCrossing();
 							currentZeroCrossingInList->next = zc;
 							currentZeroCrossingInList = currentZeroCrossingInList->next;
 						}
@@ -1006,7 +1006,7 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 
 
 	//x, y are redundant
-bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, QFzeroCrossing * currentZeroCrossingInList)
+bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, QFzeroCrossing* currentZeroCrossingInList)
 {
 	//Summary:
 	// calculates eigen values of the C coefficient in coefficients[], an eigen vector, alpha, beta,
@@ -1019,20 +1019,20 @@ bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], bool
 		//the fit will be recorded/displayed..
 	bool passedThreshold;
 
-	float * eigenValues = new float[2];
+	float* eigenValues = new float[2];
 
 	calculateEigenValues(coefficient, eigenValues);
 
 	float minEigenValue = getSmallestEigenValue(eigenValues);
 
-	float * eigenVector = new float[2];
+	float* eigenVector = new float[2];
 	calculateEigenVector(coefficient, minEigenValue, eigenVector);
 
 	float alpha = (float)atan2(eigenVector[1], eigenVector[0]);	//tan(^-1)(y/x)
 
 	float beta = alpha + ((float)PI)/2.0;
 
-	float * zeroCrossing = new float[2];
+	float* zeroCrossing = new float[2];
 	if(edgeDetect)
 	{
 		calculateEdgeZeroCrossing(coefficient, beta, zeroCrossing);
@@ -1079,7 +1079,7 @@ bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], bool
 
 
 
-/************************************ End Edgise Frame High Level ('EdgiseFrameStandard') Methods ***********************************/
+/************************************ End Edgise Frame High Level ('EdgiseFrameStandard') Methods* **********************************/
 
 
 
@@ -1100,7 +1100,7 @@ float getPixelFloat(int x, int y, double luminosityContrastMap[])
 
 
 
-/*********************************** Fit Methods *******************************/
+/*********************************** Fit Methods* ******************************/
 
 
 
@@ -1158,7 +1158,7 @@ void calculateQuadraticFitCoefficients3x3(int x, int y, float coefficient[], dou
 			+ sxp + sxn;
 			//0,3,7
 
-	coefficient[0] = zeroPointFive * stot - (sxn+sxp+syn+syp)/3.0;
+	coefficient[0] = zeroPointFive* stot - (sxn+sxp+syn+syp)/3.0;
 	coefficient[1] = (sxp - sxn)/6.0;
 	coefficient[2] = (syp - syn)/6.0;
 	coefficient[3] = (sxp + sxn)/2.0 - stot/3.0;
@@ -1178,21 +1178,21 @@ void calculateQuadraticFitCoefficients5x5(int x, int y, float coefficient[], dou
 
 
 	/*--------------------------------------------------------------------------*/
-	/* 2D second order fit in 5x5 neighbourhood                                 */
-	/* f(x,y) = a0 + a1 x * a2 y + a3 x^2 + a4 y^2 + a5 xy                      */
-	/* 5x5 surround index definition and offsets                                */
-	/*  -------------------------                                               */
-	/* | 15 | 14 | 13 | 12 | 11 |                                               */
-	/* | 16 |  4 |  3 |  2 | 10 |                                               */
-	/* | 17 |  5 |  0 |  1 |  9 |          Matrix Indices                       */
-	/* | 18 |  6 |  7 |  8 | 24 |                                               */
-	/* | 19 | 20 | 21 | 22 | 23 |                                               */
-	/* -------------------------                                                */
-	/* Constants:                                                               */
-	/* 27/175 = 0.1542857143                                                    */
-	/* 1/35   = 0.0285714286                                                    */
-	/* 1/50   = 0.02                                                            */
-	/* 1/70   = 0.0142857143                                                    */
+	/* 2D second order fit in 5x5 neighbourhood                                */
+	/* f(x,y) = a0 + a1 x* a2 y + a3 x^2 + a4 y^2 + a5 xy                     */
+	/* 5x5 surround index definition and offsets                               */
+	/* -------------------------                                              */
+	/* | 15 | 14 | 13 | 12 | 11 |                                              */
+	/* | 16 |  4 |  3 |  2 | 10 |                                              */
+	/* | 17 |  5 |  0 |  1 |  9 |          Matrix Indices                      */
+	/* | 18 |  6 |  7 |  8 | 24 |                                              */
+	/* | 19 | 20 | 21 | 22 | 23 |                                              */
+	/* -------------------------                                               */
+	/* Constants:                                                              */
+	/* 27/175 = 0.1542857143                                                   */
+	/* 1/35   = 0.0285714286                                                   */
+	/* 1/50   = 0.02                                                           */
+	/* 1/70   = 0.0142857143                                                   */
 
 
 	// float coefficient[6] are coefficients of fit equations around pixel centred x,y
@@ -1201,53 +1201,53 @@ void calculateQuadraticFitCoefficients5x5(int x, int y, float coefficient[], dou
 	float sx0, sxp1, sxn1, syp1, syn1,  sxp2, sxn2, syp2, syn2, stot;
 
 
-	sx0  = getPixelFloat(x   ,  y   ,luminosityContrastMap)	+getPixelFloat(x   , (y+1),luminosityContrastMap)+getPixelFloat(x   , (y-1),luminosityContrastMap) + /* 0,3,7   */
-					getPixelFloat(x   , (y+2),luminosityContrastMap)+getPixelFloat(x   , (y-2),luminosityContrastMap);                    /* 13,21   */
+	sx0  = getPixelFloat(x   ,  y   ,luminosityContrastMap)	+getPixelFloat(x   , (y+1),luminosityContrastMap)+getPixelFloat(x   , (y-1),luminosityContrastMap) + /* 0,3,7  */
+					getPixelFloat(x   , (y+2),luminosityContrastMap)+getPixelFloat(x   , (y-2),luminosityContrastMap);                    /* 13,21  */
 
-	sxp1 = getPixelFloat(x+1 ,  y   ,luminosityContrastMap)+getPixelFloat(x+1 , (y+1),luminosityContrastMap)+getPixelFloat(x+1 , (y-1),luminosityContrastMap) + /* 1,2,8   */
-					getPixelFloat(x+1 , (y+2),luminosityContrastMap)+getPixelFloat(x+1 , (y-2), luminosityContrastMap);                    /* 12,22   */
-	sxn1 = getPixelFloat(x-1 , (y+1),luminosityContrastMap)+getPixelFloat(x-1 ,  y   ,luminosityContrastMap)+getPixelFloat(x-1 , (y-1),luminosityContrastMap) + /* 4,5,6   */
-					getPixelFloat(x-1 , (y+2),luminosityContrastMap)+getPixelFloat(x-1 , (y-2),luminosityContrastMap);                    /* 14,20   */
-	sxp2 = getPixelFloat(x+2 , (y+2),luminosityContrastMap)+getPixelFloat(x+2 , (y+1),luminosityContrastMap)+getPixelFloat(x+2 ,  y   ,luminosityContrastMap) + /* 11,10,9 */
-			 		getPixelFloat(x+2 , (y-1),luminosityContrastMap)+getPixelFloat(x+2 , (y-2),luminosityContrastMap);                    /* 24,23   */
+	sxp1 = getPixelFloat(x+1 ,  y   ,luminosityContrastMap)+getPixelFloat(x+1 , (y+1),luminosityContrastMap)+getPixelFloat(x+1 , (y-1),luminosityContrastMap) + /* 1,2,8  */
+					getPixelFloat(x+1 , (y+2),luminosityContrastMap)+getPixelFloat(x+1 , (y-2), luminosityContrastMap);                    /* 12,22  */
+	sxn1 = getPixelFloat(x-1 , (y+1),luminosityContrastMap)+getPixelFloat(x-1 ,  y   ,luminosityContrastMap)+getPixelFloat(x-1 , (y-1),luminosityContrastMap) + /* 4,5,6  */
+					getPixelFloat(x-1 , (y+2),luminosityContrastMap)+getPixelFloat(x-1 , (y-2),luminosityContrastMap);                    /* 14,20  */
+	sxp2 = getPixelFloat(x+2 , (y+2),luminosityContrastMap)+getPixelFloat(x+2 , (y+1),luminosityContrastMap)+getPixelFloat(x+2 ,  y   ,luminosityContrastMap) + /* 11,10,9*/
+			 		getPixelFloat(x+2 , (y-1),luminosityContrastMap)+getPixelFloat(x+2 , (y-2),luminosityContrastMap);                    /* 24,23  */
 	sxn2 = getPixelFloat(x-2 , (y+2),luminosityContrastMap)+getPixelFloat(x-2 , (y+1),luminosityContrastMap)+getPixelFloat(x-2 ,  y   ,luminosityContrastMap) + /* 15,16,17*/
-			 		getPixelFloat(x-2 , (y-1),luminosityContrastMap)+getPixelFloat(x-2 , (y-2),luminosityContrastMap);                    /* 18,19   */
+			 		getPixelFloat(x-2 , (y-1),luminosityContrastMap)+getPixelFloat(x-2 , (y-2),luminosityContrastMap);                    /* 18,19  */
 
-	syp1 = getPixelFloat(x-1 , (y+1),luminosityContrastMap)+getPixelFloat(x   , (y+1),luminosityContrastMap)+getPixelFloat(x+1 , (y+1),luminosityContrastMap) + /* 4,3,2   */
-			 		getPixelFloat(x-2 , (y+1),luminosityContrastMap)+getPixelFloat(x+2 , (y+1),luminosityContrastMap);                    /* 16,10   */
-	syn1 = getPixelFloat(x-1 , (y-1),luminosityContrastMap)+getPixelFloat(x   , (y-1),luminosityContrastMap)+getPixelFloat(x+1 , (y-1),luminosityContrastMap) + /* 6,7,8   */
-			 		getPixelFloat(x-2 , (y-1),luminosityContrastMap)+getPixelFloat(x+2 , (y-1),luminosityContrastMap);                    /* 18,24   */
+	syp1 = getPixelFloat(x-1 , (y+1),luminosityContrastMap)+getPixelFloat(x   , (y+1),luminosityContrastMap)+getPixelFloat(x+1 , (y+1),luminosityContrastMap) + /* 4,3,2  */
+			 		getPixelFloat(x-2 , (y+1),luminosityContrastMap)+getPixelFloat(x+2 , (y+1),luminosityContrastMap);                    /* 16,10  */
+	syn1 = getPixelFloat(x-1 , (y-1),luminosityContrastMap)+getPixelFloat(x   , (y-1),luminosityContrastMap)+getPixelFloat(x+1 , (y-1),luminosityContrastMap) + /* 6,7,8  */
+			 		getPixelFloat(x-2 , (y-1),luminosityContrastMap)+getPixelFloat(x+2 , (y-1),luminosityContrastMap);                    /* 18,24  */
 	syp2 = getPixelFloat(x-2 , (y+2),luminosityContrastMap)+getPixelFloat(x-1 , (y+2),luminosityContrastMap)+getPixelFloat(x   , (y+2),luminosityContrastMap) + /* 15,14,13*/
-			 		getPixelFloat(x+1 , (y+2),luminosityContrastMap)+getPixelFloat(x+2 , (y+2),luminosityContrastMap);                    /* 12,11   */
+			 		getPixelFloat(x+1 , (y+2),luminosityContrastMap)+getPixelFloat(x+2 , (y+2),luminosityContrastMap);                    /* 12,11  */
 	syn2 = getPixelFloat(x-2 , (y-2),luminosityContrastMap)+getPixelFloat(x-1 , (y-2),luminosityContrastMap)+getPixelFloat(x   , (y-2),luminosityContrastMap) + /* 19,20,21*/
-			 		getPixelFloat(x+1 , (y-2),luminosityContrastMap)+getPixelFloat(x+2 , (y-2),luminosityContrastMap);                    /* 22,23   */
+			 		getPixelFloat(x+1 , (y-2),luminosityContrastMap)+getPixelFloat(x+2 , (y-2),luminosityContrastMap);                    /* 22,23  */
 
 	stot = sx0 + sxp1 + sxp2 + sxn1 + sxn2;
 
-	coefficient[0] =  0.1542857143 * stot - 0.0285714286 * (sxn1+sxp1+syn1+syp1 + 4.0*(sxn2+sxp2+syn2+syp2));
-	coefficient[1] =  0.02 * (sxp1 - sxn1 + 2.0*(sxp2 - sxn2));
-	coefficient[2] =  0.02 * (syp1 - syn1 + 2.0*(syp2 - syn2));
-	coefficient[3] =  0.0142857143 * (sxp1 + sxn1 + 4.0*(sxp2 + sxn2)) - 0.0285714286 * stot;
-	coefficient[4] =  0.0142857143 * (syp1 + syn1 + 4.0*(syp2 + syn2)) - 0.0285714286 * stot;
-	coefficient[5] = 0.01 * (4.0 *(getPixelFloat(x-2 , (y-2),luminosityContrastMap) + getPixelFloat(x+2 , (y+2),luminosityContrastMap) - 		/* 19,11 */
-						getPixelFloat(x-2 , (y+2),luminosityContrastMap) - getPixelFloat(x+2 , (y-2),luminosityContrastMap)) + 			/* 15,23 */
-						2.0 *(getPixelFloat(x-2 , (y-1),luminosityContrastMap) + getPixelFloat(x-1 , (y-2),luminosityContrastMap) + 	/* 18,20 */
-						getPixelFloat(x+1 , (y+2),luminosityContrastMap) + getPixelFloat(x+2 , (y+1),luminosityContrastMap) -  			/* 12,10 */
-						getPixelFloat(x-1 , (y+2),luminosityContrastMap) - getPixelFloat(x-2 , (y+1),luminosityContrastMap) -  			/* 14,16 */
-						getPixelFloat(x+1 , (y-2),luminosityContrastMap) - getPixelFloat(x+2 , (y-1),luminosityContrastMap)) + 			/* 22,24 */
-						getPixelFloat(x+1 , (y+1),luminosityContrastMap) + getPixelFloat(x-1 , (y-1),luminosityContrastMap) -  			/*  2,6 */
-						getPixelFloat(x-1 , (y+1),luminosityContrastMap) - getPixelFloat(x+1 , (y-1),luminosityContrastMap));  			/*  4,8 */
+	coefficient[0] =  0.1542857143* stot - 0.0285714286* (sxn1+sxp1+syn1+syp1 + 4.0*(sxn2+sxp2+syn2+syp2));
+	coefficient[1] =  0.02* (sxp1 - sxn1 + 2.0*(sxp2 - sxn2));
+	coefficient[2] =  0.02* (syp1 - syn1 + 2.0*(syp2 - syn2));
+	coefficient[3] =  0.0142857143* (sxp1 + sxn1 + 4.0*(sxp2 + sxn2)) - 0.0285714286* stot;
+	coefficient[4] =  0.0142857143* (syp1 + syn1 + 4.0*(syp2 + syn2)) - 0.0285714286* stot;
+	coefficient[5] = 0.01* (4.0* (getPixelFloat(x-2 , (y-2),luminosityContrastMap) + getPixelFloat(x+2 , (y+2),luminosityContrastMap) - 		/* 19,11*/
+						getPixelFloat(x-2 , (y+2),luminosityContrastMap) - getPixelFloat(x+2 , (y-2),luminosityContrastMap)) + 			/* 15,23*/
+						2.0* (getPixelFloat(x-2 , (y-1),luminosityContrastMap) + getPixelFloat(x-1 , (y-2),luminosityContrastMap) + 	/* 18,20*/
+						getPixelFloat(x+1 , (y+2),luminosityContrastMap) + getPixelFloat(x+2 , (y+1),luminosityContrastMap) -  			/* 12,10*/
+						getPixelFloat(x-1 , (y+2),luminosityContrastMap) - getPixelFloat(x-2 , (y+1),luminosityContrastMap) -  			/* 14,16*/
+						getPixelFloat(x+1 , (y-2),luminosityContrastMap) - getPixelFloat(x+2 , (y-1),luminosityContrastMap)) + 			/* 22,24*/
+						getPixelFloat(x+1 , (y+1),luminosityContrastMap) + getPixelFloat(x-1 , (y-1),luminosityContrastMap) -  			/* 2,6*/
+						getPixelFloat(x-1 , (y+1),luminosityContrastMap) - getPixelFloat(x+1 , (y-1),luminosityContrastMap));  			/* 4,8*/
 
 }
 
-/*********************************** End Fit Methods *******************************/
+/*********************************** End Fit Methods* ******************************/
 
 
 
 
 
 
-/********************************** Pixel Checking methods *******************************/
+/********************************** Pixel Checking methods* ******************************/
 
 
 
@@ -1296,7 +1296,7 @@ bool checkTotalNegativeCurvatureAbovePointThreshold(float a3, float a4)
 
 
 
-/********************************** End Pixel Checking methods *******************************/
+/********************************** End Pixel Checking methods* ******************************/
 
 
 
@@ -1309,14 +1309,14 @@ bool checkTotalNegativeCurvatureAbovePointThreshold(float a3, float a4)
 
 
 
-/********************************** Zero Crossing Checking methods ***********************************/
+/********************************** Zero Crossing Checking methods* **********************************/
 
 
 /* 2 kinds of methods are provided. Part A for Object Passing, Part B other for non-object passing*/
 
 
 
-/********************************** Part A (object passing) *******************************/
+/********************************** Part A (object passing)* ******************************/
 
 
 
@@ -1326,7 +1326,7 @@ bool checkTotalNegativeCurvatureAbovePointThreshold(float a3, float a4)
 
 
 
-bool checkPointZeroCrossingObjectPassesThreshold(QFzeroCrossing * zc)
+bool checkPointZeroCrossingObjectPassesThreshold(QFzeroCrossing* zc)
 {
 	bool passedThreshold;
 
@@ -1385,10 +1385,10 @@ bool checkPointZeroCrossingObjectPassesThreshold(QFzeroCrossing * zc)
 /***
  * FOR LOW EFFICIENCY ZEROCROSSING CALCULATIONS (with passing of zeroCrossing object)
  *
- * checkEdgeZeroCrossingObjectPassesThreshold(QFzeroCrossing * zc)
+ * checkEdgeZeroCrossingObjectPassesThreshold(QFzeroCrossing* zc)
  */
 
-bool checkEdgeZeroCrossingObjectPassesThreshold(QFzeroCrossing * zc)
+bool checkEdgeZeroCrossingObjectPassesThreshold(QFzeroCrossing* zc)
 {
 	bool passedThreshold;
 
@@ -1445,10 +1445,10 @@ bool checkEdgeZeroCrossingObjectPassesThreshold(QFzeroCrossing * zc)
 /***
  * FOR LOW EFFICIENCY ZEROCROSSING CALCULATIONS (with passing of zeroCrossing object)
  *
- * checkEdgeZeroCrossingObjectContrastGradients(QFzeroCrossing * zc)
+ * checkEdgeZeroCrossingObjectContrastGradients(QFzeroCrossing* zc)
  */
 
-bool checkEdgeZeroCrossingObjectContrastGradients(QFzeroCrossing * zc)
+bool checkEdgeZeroCrossingObjectContrastGradients(QFzeroCrossing* zc)
 {
 
 	/********************THEORY***********************************************************
@@ -1566,7 +1566,7 @@ bool checkEdgeZeroCrossingObjectContrastGradients(QFzeroCrossing * zc)
 	 //	}
 	 //
 	 ///////////////////////////////////////////////////////////////////////////////////
-	 ************************************************************************************/
+	* ***********************************************************************************/
 
 
 	float alpha = zc->alpha;
@@ -1663,7 +1663,7 @@ bool checkEdgeZeroCrossingObjectContrastGradients(QFzeroCrossing * zc)
 
 
 
-/********************************** Matrix Manipulation methods ***********************************/
+/********************************** Matrix Manipulation methods* **********************************/
 
 
 float getSmallestEigenValue(float eigenValue[])
@@ -1739,7 +1739,7 @@ void calculateEdgeZeroCrossing(float coefficient[], float beta, float zc[])
 	 //												+ (sin(beta)*(2*a[4]*tan(beta) + a[5])))
 	 //
 	 /////////////////////////////////////////////////////////////////////////////////////
-	 ************************************************************************************/
+	* ***********************************************************************************/
 
 	//float alpha = beta - ((float)PI)/2.0;
 
@@ -1787,7 +1787,7 @@ void calculatePointZeroCrossing(float coefficient[], float zc[])
 	 //             x = -a[1]/(2*a[3]) - (a[5]*y)/(2*a[3])
 	 //
 	 /////////////////////////////////////////////////////////////////////////////////////
-	 ************************************************************************************/
+	* ***********************************************************************************/
 
 	float y = (coefficient[2]/coefficient[5] + coefficient[1]/(2.0*coefficient[3])) / (-((2.0*coefficient[4])/coefficient[5] + coefficient[5]/(2.0*coefficient[3])));
 	float x = (-coefficient[1])/(2.0*coefficient[3]) - (coefficient[5]*y)/(2.0*coefficient[3]);
@@ -1816,7 +1816,7 @@ void calculateEigenVector(float coefficient[], float ev, float eigenVector[])
 
 							A*eigenVector	=	Lambda*eigenVector
 
-			[A-(I*Lambda)] * eigenVector	= 	0
+			[A-(I*Lambda)]* eigenVector	= 	0
 
 		therefore;
 
@@ -1837,7 +1837,7 @@ void calculateEigenVector(float coefficient[], float ev, float eigenVector[])
 	//
 	// let x1 = 1
 	//
-	// then from equation 1, 					x2 	= (0 - ((a[3] - ev) * 1)) / (a[5]/2)
+	// then from equation 1, 					x2 	= (0 - ((a[3] - ev)* 1)) / (a[5]/2)
 	//
 	//////////////////////////////////////////////////////////////////////////////////////
 	*************************************************************************************/
@@ -1867,7 +1867,7 @@ void calculateEigenValues(float coefficient[], float ev[])
 		where A			= 	a	b				and I 		=	1	0
 							c	d								0	1
 
-		I*Lambda		=	1	0 * Lambda 	=	Lambda 	 0
+		I*Lambda		=	1	0* Lambda 	=	Lambda 	 0
 							0	1				0  		 Lambda
 
 		A-(I*Lambda) 	= 	a-Lamba	b
@@ -1904,14 +1904,14 @@ void calculateEigenValues(float coefficient[], float ev[])
 
 	float coeffA = 1;
 	float coeffB = -coefficient[3]  -coefficient[4];
-	float coeffC =  coefficient[3] * coefficient[4] - (coefficient[5]/2.0) * (coefficient[5]/2.0);
+	float coeffC =  coefficient[3]* coefficient[4] - (coefficient[5]/2.0)* (coefficient[5]/2.0);
 
 	ev[0]   = (-coeffB + (float)sqrt(coeffB*coeffB - 4.0*coeffA*coeffC)) / (2.0*coeffA);
 	ev[1]   = (-coeffB - (float)sqrt(coeffB*coeffB - 4.0*coeffA*coeffC)) / (2.0*coeffA);
 
 }
 
-/********************************** End Matrix Manipulation methods ***********************************/
+/********************************** End Matrix Manipulation methods* **********************************/
 
 
 

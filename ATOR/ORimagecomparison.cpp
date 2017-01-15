@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORimagecomparison.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  *
  *******************************************************************************/
 
@@ -51,7 +51,7 @@ using namespace std;
 #include "ORpixelMaps.h"
 #include "ORoperations.h"
 
-void disablePixelsThatAreNotContainedInTheObjectTriangle2DOD(int imageWidth, int imageHeight, unsigned char * rgbMap)
+void disablePixelsThatAreNotContainedInTheObjectTriangle2DOD(int imageWidth, int imageHeight, unsigned char* rgbMap)
 {
 	colour disabledColour;
 	disabledColour.r = OR_SNAPSHOT_BACKGROUND_COLOUR_R;
@@ -89,23 +89,23 @@ void disablePixelsThatAreNotContainedInTheObjectTriangle2DOD(int imageWidth, int
 }
 
 
-void applyGaussianKernelToRGBmap(int imageWidth, int imageHeight, double sigma, unsigned char * rgbMap, unsigned char * rgbMapWithGaussianApplied)
+void applyGaussianKernelToRGBmap(int imageWidth, int imageHeight, double sigma, unsigned char* rgbMap, unsigned char* rgbMapWithGaussianApplied)
 {
 	applyGaussianKernelToLuminosityMapOrRGBmapComponent(imageWidth, imageHeight, sigma, NULL, NULL, rgbMap, rgbMapWithGaussianApplied, true, RGB_RED);
 	applyGaussianKernelToLuminosityMapOrRGBmapComponent(imageWidth, imageHeight, sigma, NULL, NULL, rgbMap, rgbMapWithGaussianApplied, true, RGB_GREEN);
 	applyGaussianKernelToLuminosityMapOrRGBmapComponent(imageWidth, imageHeight, sigma, NULL, NULL, rgbMap, rgbMapWithGaussianApplied, true, RGB_BLUE);
 }
 
-void applyGaussianKernelToLuminosityMapOrRGBmapComponent(int imageWidth, int imageHeight, double sigma, double * luminosityMap, double * luminosityMapWithGaussianApplied, unsigned char * rgbMap, unsigned char * rgbMapWithGaussianApplied, bool useRGBmapComponent, int rgbMapComponentNumber)
+void applyGaussianKernelToLuminosityMapOrRGBmapComponent(int imageWidth, int imageHeight, double sigma, double* luminosityMap, double* luminosityMapWithGaussianApplied, unsigned char* rgbMap, unsigned char* rgbMapWithGaussianApplied, bool useRGBmapComponent, int rgbMapComponentNumber)
 {
 	double s;
 	int support,i, j, k, kk, x, y;
 
-	support = (int) (3.0*sigma);              /* set support size for gaussian */
+	support = (int) (3.0*sigma);              /* set support size for gaussian*/
 
-	double * mask = new double[support +1];
-	double * buf2 = new double[imageWidth*imageHeight];
-	double * buf = new double[imageWidth*imageHeight];
+	double* mask = new double[support +1];
+	double* buf2 = new double[imageWidth*imageHeight];
+	double* buf = new double[imageWidth*imageHeight];
 
 	for(y = 0; y< imageHeight; y++)
 	{
@@ -122,37 +122,37 @@ void applyGaussianKernelToLuminosityMapOrRGBmapComponent(int imageWidth, int ima
 		}
 	}
 
-	for(i=0; i <= support; i++)								/* one-sided gaussian mask */
+	for(i=0; i <= support; i++)								/* one-sided gaussian mask*/
 	{
 		mask[i]=1.0F/((double)sqrt(2.0F*(double)PI)*(sigma)*(sigma))*(double)exp((-0.5F*((double)i / sigma)*((double)i / sigma)));
 	}
 
 	for(j = 0; j < imageWidth*imageHeight; j+=imageWidth)
-	{           /* filter all lines */
+	{           /* filter all lines*/
 		s = mask[0];
-		for(i = j+support; i < j+imageWidth-support; i++)		/* initialize vector with */
-		buf2[i] = buf[i] * s;									/* central weight */
+		for(i = j+support; i < j+imageWidth-support; i++)		/* initialize vector with*/
+		buf2[i] = buf[i]* s;									/* central weight*/
 
 		for(k=1; k<=support; k++)
-		{/* sum up remain. weighted */
-			s = mask[k];										/* vectors */
+		{/* sum up remain. weighted*/
+			s = mask[k];										/* vectors*/
 			for(i=j+support; i < j+imageWidth-support; i++)
-			buf2[i] += (buf[i+k] + buf[i-k]) * s;
+			buf2[i] += (buf[i+k] + buf[i-k])* s;
 		}
 	}
 
 	for(j = support*imageWidth; j < (imageHeight-support)*imageWidth; j+=imageWidth)
-	{ /* filter all columns */
+	{ /* filter all columns*/
 		s = mask[0];
-		for(i = j+support; i < j+imageWidth-support; i++)		/* initialize vector */
-		buf[i] = buf2[i] * s;                       			/* central weight */
+		for(i = j+support; i < j+imageWidth-support; i++)		/* initialize vector*/
+		buf[i] = buf2[i]* s;                       			/* central weight*/
 
 		for(k=1, kk=imageWidth; kk<=support*imageWidth; kk+=imageWidth, k++)
-		{ /* sum up remaining  */
-			s = mask[k];                               			/* weighted vectors */
+		{ /* sum up remaining */
+			s = mask[k];                               			/* weighted vectors*/
 
 			for(i=j+support; i < j+imageWidth-support; i++)
-			buf[i] += (buf2[i+kk] + buf2[i-kk]) * s;
+			buf[i] += (buf2[i+kk] + buf2[i-kk])* s;
 		}
 	}
 
@@ -192,7 +192,7 @@ void applyGaussianKernelToLuminosityMapOrRGBmapComponent(int imageWidth, int ima
 }
 
 
-void createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(int imageWidth, int imageHeight, unsigned char * rgbMap, double * normalisedHueContrastMap, double * normalisedAverageHueContrastR, double * normalisedAverageHueContrastG, double * normalisedAverageHueContrastB, double * averageContrastWithRespectToAverageColour, double * averageStarkContrastWithRespectToAverageColour, double * averageLocalContrast, double * averageLocalStarkContrast)
+void createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(int imageWidth, int imageHeight, unsigned char* rgbMap, double* normalisedHueContrastMap, double* normalisedAverageHueContrastR, double* normalisedAverageHueContrastG, double* normalisedAverageHueContrastB, double* averageContrastWithRespectToAverageColour, double* averageStarkContrastWithRespectToAverageColour, double* averageLocalContrast, double* averageLocalStarkContrast)
 {
 	int totalR = 0;
 	int totalG = 0;
@@ -486,11 +486,11 @@ void createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(int 
 	cout << "averageRHueContrast = " << averageRHueContrast << endl;
 	cout << "averageGHueContrast = " << averageGHueContrast << endl;
 	cout << "averageBHueContrast = " << averageBHueContrast << endl;
-	cout << "normalisedAverageHueContrastR = " << *normalisedAverageHueContrastR << endl;
-	cout << "normalisedAverageHueContrastG = " << *normalisedAverageHueContrastG << endl;
-	cout << "normalisedAverageHueContrastB = " << *normalisedAverageHueContrastB << endl;
-	cout << "*averageLocalContrast  = " << *averageLocalContrast << endl;
-	cout << "*averageContrastWithRespectToAverageColour = " << *averageContrastWithRespectToAverageColour << endl;
+	cout << "normalisedAverageHueContrastR = " <<* normalisedAverageHueContrastR << endl;
+	cout << "normalisedAverageHueContrastG = " <<* normalisedAverageHueContrastG << endl;
+	cout << "normalisedAverageHueContrastB = " <<* normalisedAverageHueContrastB << endl;
+	cout << "*averageLocalContrast  = " <<* averageLocalContrast << endl;
+	cout << "*averageContrastWithRespectToAverageColour = " <<* averageContrastWithRespectToAverageColour << endl;
 	cout << "OR_IMAGE_COMPARISON_HAS_CONTRAST_WRT_AVERAGE_COLOUR_MIN_AVERAGE_COL_DEVIATION = " << OR_IMAGE_COMPARISON_HAS_CONTRAST_WRT_AVERAGE_COLOUR_MIN_AVERAGE_COL_DEVIATION << endl;
 	cout << "OR_IMAGE_COMPARISON_HAS_CONTRAST_WRT_AVERAGE_COLOUR_MIN_AVERAGE_COL_DEVIATION = " << OR_IMAGE_COMPARISON_HAS_CONTRAST_WRT_AVERAGE_COLOUR_MIN_AVERAGE_COL_DEVIATION << endl;
 	*/
@@ -523,7 +523,7 @@ bool checkImageHasContrastValuesOnly(double averageContrastWithRespectToAverageC
 
 //compareImagesRGBwithPosDevAndLocalStarkContAndHueDev or compareImagesRGBWithPosDevAndLocalStarkContAndLumDev [assumes light source is always white]
 
-void calculateAverageColour(int imageWidth, int imageHeight, unsigned char * rgbMap, colour * avgCol)
+void calculateAverageColour(int imageWidth, int imageHeight, unsigned char* rgbMap, colour* avgCol)
 {
 	double totalColr = 0.0;
 	double totalColg = 0.0;
@@ -547,7 +547,7 @@ void calculateAverageColour(int imageWidth, int imageHeight, unsigned char * rgb
 }
 
 
-double compareImagesRGBwithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly(int imageWidth, int imageHeight, unsigned char * rgbMapTest, unsigned char * rgbMapTrain, double * averageHueDeviationR, double * averageHueDeviationG, double * averageHueDeviationB, double * averageXkernelRelativePositionForLowestErrorMatch, double * averageYkernelRelativePositionForLowestErrorMatch)
+double compareImagesRGBwithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly(int imageWidth, int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain, double* averageHueDeviationR, double* averageHueDeviationG, double* averageHueDeviationB, double* averageXkernelRelativePositionForLowestErrorMatch, double* averageYkernelRelativePositionForLowestErrorMatch)
 {
 	double totalStarkLocalDeviation = 0.0;
 	int starkLocalDeviationIndex = 0;
@@ -710,7 +710,7 @@ double compareImagesRGBwithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly
 
 
 
-double compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(int imageWidth, int imageHeight, unsigned char * rgbMapTest, unsigned char * rgbMapTrain)
+double compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(int imageWidth, int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain)
 {
 	double totalStarkLocalDeviation = 0.0;
 	int starkLocalDeviationIndex = 0;
@@ -936,7 +936,7 @@ double compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(int imageWidth, int 
 
 
 
-double compareImagesRGBsmallNoKernel(int imageWidth, int imageHeight, unsigned char * rgbMapTest, unsigned char * rgbMapTrain)
+double compareImagesRGBsmallNoKernel(int imageWidth, int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain)
 {
 	double totalMatchError = 0.0;
 	int matchErrorIndex = 0;
@@ -994,7 +994,7 @@ double compareImagesRGBsmallNoKernel(int imageWidth, int imageHeight, unsigned c
 
 
 #ifndef OR_IMAGE_COMPARISON_USE_NEW_COMPARITOR
-double compareImagesRGBwithPosDevAndLocalStarkCont(int imageWidth, int imageHeight, unsigned char * rgbMapTest, unsigned char * rgbMapTrain)
+double compareImagesRGBwithPosDevAndLocalStarkCont(int imageWidth, int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain)
 {
 	double totalStarkLocalDeviation = 0.0;
 	int starkLocalDeviationIndex = 0;
@@ -1148,7 +1148,7 @@ double compareImagesRGBwithPosDevAndLocalStarkCont(int imageWidth, int imageHeig
 
 
 
-double compareImagesRGBwithPosDev(int imageWidth, int imageHeight, unsigned char * rgbMapTest, unsigned char * rgbMapTrain)
+double compareImagesRGBwithPosDev(int imageWidth, int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain)
 {
 	double totalMatchError = 0.0;
 	int matchErrorIndex = 0;
@@ -1291,7 +1291,7 @@ double compareImagesRGBwithPosDev(int imageWidth, int imageHeight, unsigned char
 
 #ifndef OR_METHOD_CHECK_SNAPSHOT_CONTRAST_BEFORE_SAVING_SNAPSHOT
 		//NEW; 1sXy; do not accept images with no contrast - ie all same colour
-bool checkImageHasContrast(int imageWidth, int imageHeight, unsigned char * rgbMap)
+bool checkImageHasContrast(int imageWidth, int imageHeight, unsigned char* rgbMap)
 {
 	bool result;
 
@@ -1445,7 +1445,7 @@ bool checkImageHasContrast(int imageWidth, int imageHeight, unsigned char * rgbM
 
 #ifndef OR_USE_HEITGER_OBJECT_FEATURE_CALCULATION_CODE
 	//this function is designed to be independant of lighting conditions
-void calculateHueError(colour * testImagePixelColour, colour * trainImagePixelColour, double * hueError, double * nonHueError)
+void calculateHueError(colour* testImagePixelColour, colour* trainImagePixelColour, double* hueError, double* nonHueError)
 {
 	int redError = testImagePixelColour->r - trainImagePixelColour->r;
 	int greenError = testImagePixelColour->g - trainImagePixelColour->g;
@@ -1485,7 +1485,7 @@ void calculateHueError(colour * testImagePixelColour, colour * trainImagePixelCo
 #ifdef OR_IMAGE_COMPARISON_USE_BAD_CODE
 	//this function is designed to be independant of lighting conditions
 	//hue error is normalised based upon colour satuation, if low colour satuation then calculate error more on luminosity contrast rather than hue/colour contrast	[not yet tested]
-double calculateHueErrorNormalisedBAD(colour * testImagePixelColour, colour * trainImagePixelColour, double * hueError, double * nonHueErrorNormalised)
+double calculateHueErrorNormalisedBAD(colour* testImagePixelColour, colour* trainImagePixelColour, double* hueError, double* nonHueErrorNormalised)
 {
 	int redError = testImagePixelColour->r - trainImagePixelColour->r;
 	int greenError = testImagePixelColour->g - trainImagePixelColour->g;
@@ -1536,7 +1536,7 @@ double calculateHueErrorNormalisedBAD(colour * testImagePixelColour, colour * tr
 
 	//this function is designed to be independant of lighting conditions
 	//hue error is normalised based upon colour satuation, if low colour satuation then calculate error more on luminosity contrast rather than hue/colour contrast	[not yet tested]
-double compareRGBpixelsForMatchBAD(colour * testImagePixelColour, colour * trainImagePixelColour)
+double compareRGBpixelsForMatchBAD(colour* testImagePixelColour, colour* trainImagePixelColour)
 {
 	/*OLD;
 	double hueError;
@@ -1561,7 +1561,7 @@ double compareRGBpixelsForMatchBAD(colour * testImagePixelColour, colour * train
 
 #ifndef OR_USE_HEITGER_OBJECT_FEATURE_CALCULATION_CODE
 	//this function is designed to be independant of lighting conditions
-double compareRGBpixelsForMatchHueOnly(colour * testImagePixelColour, colour * trainImagePixelColour)
+double compareRGBpixelsForMatchHueOnly(colour* testImagePixelColour, colour* trainImagePixelColour)
 {
 	double hueError;
 	double nonHueError;
@@ -1579,7 +1579,7 @@ double compareRGBpixelsForMatchHueOnly(colour * testImagePixelColour, colour * t
 	return pixelError;
 }
 
-double compareRGBpixelsForMatchLumContrastOnly(colour * testImagePixelColour, colour * trainImagePixelColour)
+double compareRGBpixelsForMatchLumContrastOnly(colour* testImagePixelColour, colour* trainImagePixelColour)
 {
 	double hueError;
 	double nonHueError;
@@ -1599,7 +1599,7 @@ double compareRGBpixelsForMatchLumContrastOnly(colour * testImagePixelColour, co
 #endif
 
 /*
-double compareRGBPixelsForMatchDirectional(colour * testImagePixelColour, colour * trainImagePixelColour)
+double compareRGBPixelsForMatchDirectional(colour* testImagePixelColour, colour* trainImagePixelColour)
 {
 	double hueError;
 	double nonHueError;
@@ -1622,7 +1622,7 @@ double compareRGBPixelsForMatchDirectional(colour * testImagePixelColour, colour
 
 
 #ifdef OR_IMAGE_COMPARISON_USE_BAD_CODE
-void createColourHueContrastVecMapFromRGBMapNOTUSED(int imageWidth, int imageHeight, unsigned char * rgbMap, double * colourHueContrastVectorMap, int * colourHueContrastCategoryIntMap)
+void createColourHueContrastVecMapFromRGBMapNOTUSED(int imageWidth, int imageHeight, unsigned char* rgbMap, double* colourHueContrastVectorMap, int* colourHueContrastCategoryIntMap)
 {
 	//now lead a 3x3 kernel across image and calculate areas of high contrast
 	for(int y = 0; y < (imageHeight-1); y++)
@@ -1639,7 +1639,7 @@ void createColourHueContrastVecMapFromRGBMapNOTUSED(int imageWidth, int imageHei
 }
 
 
-void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixelY, unsigned char * rgbMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight, vec * colourHueContrastVecVal, int * colourHueContrastCategoryIntVal)
+void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixelY, unsigned char* rgbMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight, vec* colourHueContrastVecVal, int* colourHueContrastCategoryIntVal)
 {
 	colourHueContrastVecVal->x = 0.0;
 	colourHueContrastVecVal->y = 0.0;
@@ -1864,7 +1864,7 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 
 
 /*
-void createColourHueContrastMapFromRGBMap(int imageWidth, int imageHeight, unsigned char * rgbMap, double * colourHueContrastMap)
+void createColourHueContrastMapFromRGBMap(int imageWidth, int imageHeight, unsigned char* rgbMap, double* colourHueContrastMap)
 {
 	//now lead a 3x3 kernel across image and calculate areas of high contrast
 	for(int y = 0; y < height; y++)
@@ -1879,7 +1879,7 @@ void createColourHueContrastMapFromRGBMap(int imageWidth, int imageHeight, unsig
 
 
 
-double calculateColourHueContrastLevelWithinKernel(int pixelX, int pixelY, unsigned char * rgbMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight)
+double calculateColourHueContrastLevelWithinKernel(int pixelX, int pixelY, unsigned char* rgbMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight)
 {
 	double contrastLevel = 0.0;
 
@@ -1933,7 +1933,7 @@ double calculateColourHueContrastLevelWithinKernel(int pixelX, int pixelY, unsig
 */
 
 
-double calculateColourHueSumContrastWithinKernelNOTUSED(int pixelX, int pixelY, unsigned char * rgbMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight)
+double calculateColourHueSumContrastWithinKernelNOTUSED(int pixelX, int pixelY, unsigned char* rgbMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight)
 {
 	double sumContrast = 0.0;
 
@@ -1973,7 +1973,7 @@ double calculateColourHueSumContrastWithinKernelNOTUSED(int pixelX, int pixelY, 
 }
 
 
-double calculateColourHueRadialSumContrastWithinKernelNOTUSED(int pixelX, int pixelY, unsigned char * rgbMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight)
+double calculateColourHueRadialSumContrastWithinKernelNOTUSED(int pixelX, int pixelY, unsigned char* rgbMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight)
 {
 	double sumContrast = 0.0;
 

@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORquadraticFit.h (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  *
  *******************************************************************************/
 
@@ -104,7 +104,7 @@ class QFzeroCrossing{
 		float alpha;
 		float beta;
 		float coefficient[NUMBER_OF_COEFFICIENTS];
-		QFzeroCrossing * next;
+		QFzeroCrossing* next;
 
 		float dzAlpha;
 		float dzBeta;
@@ -126,46 +126,46 @@ class QFzeroCrossing{
 double calculateAreaOfOneSideOfEdgeInPixel(int xDevPointOnSide, int yDevPointOnSide, double zeroCrossingValueX, double zeroCrossingValueY, double alpha);
 
 
-/*************************************** Edgise Frame High Level ('EdgiseFrameStandard') Methods ************************************/
-	void generateZeroCrossingList(double * luminosityContrastMap, int imageWidth, int imageHeight, QFzeroCrossing * firstZeroCrossingInList, bool edgeDetect, double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, int interpixelMapType);
-		void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, QFzeroCrossing * currentZeroCrossingInList, int imageWidth, int imageHeight, double luminosityContrastMap[], double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, int interpixelMapType);
-			bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, QFzeroCrossing * currentZeroCrossingInList);
-/************************************ End Edgise Frame High Level ('EdgiseFrameStandard') Methods ***********************************/
+/*************************************** Edgise Frame High Level ('EdgiseFrameStandard') Methods* ***********************************/
+	void generateZeroCrossingList(double* luminosityContrastMap, int imageWidth, int imageHeight, QFzeroCrossing* firstZeroCrossingInList, bool edgeDetect, double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, int interpixelMapType);
+		void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, QFzeroCrossing* currentZeroCrossingInList, int imageWidth, int imageHeight, double luminosityContrastMap[], double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, int interpixelMapType);
+			bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, QFzeroCrossing* currentZeroCrossingInList);
+/************************************ End Edgise Frame High Level ('EdgiseFrameStandard') Methods* **********************************/
 
 
 
-/*********************************** Fit Methods *******************************/
+/*********************************** Fit Methods* ******************************/
 void calculateQuadraticFitCoefficients(int x, int y, float coefficient[], double luminosityContrastMap[]);
 void calculateQuadraticFitCoefficients3x3(int x, int y, float coefficient[], double luminosityContrastMap[]);
 void calculateQuadraticFitCoefficients5x5(int x, int y, float coefficient[], double luminosityContrastMap[]);
-/*********************************** End Fit Methods *******************************/
+/*********************************** End Fit Methods* ******************************/
 
-/********************************** Pixel Checking methods *******************************/
+/********************************** Pixel Checking methods* ******************************/
 bool checkForTotalPositiveCurvature(float a3, float a4);
 bool checkForTotalNegativeCurvature(float a3, float a4);
 bool checkTotalNegativeCurvatureAbovePointThreshold(float a3, float a4);
-/********************************** End Pixel Checking methods *******************************/
+/********************************** End Pixel Checking methods* ******************************/
 
-/********************************** Zero Crossing Checking methods ***********************************/
-bool checkEdgeZeroCrossingObjectPassesThreshold(QFzeroCrossing * zc);
-	bool checkEdgeZeroCrossingObjectContrastGradients(QFzeroCrossing * zc);
-bool checkPointZeroCrossingObjectPassesThreshold(QFzeroCrossing * zc);
+/********************************** Zero Crossing Checking methods* **********************************/
+bool checkEdgeZeroCrossingObjectPassesThreshold(QFzeroCrossing* zc);
+	bool checkEdgeZeroCrossingObjectContrastGradients(QFzeroCrossing* zc);
+bool checkPointZeroCrossingObjectPassesThreshold(QFzeroCrossing* zc);
 	//bool checkTotalNegativeCurvatureAbovePointThreshold(float a3, float a4);
 
-/********************************** End Zero Crossing Checking methods ***********************************/
+/********************************** End Zero Crossing Checking methods* **********************************/
 
-/********************************** Matrix Manipulation methods ***********************************/
+/********************************** Matrix Manipulation methods* **********************************/
 float getSmallestEigenValue(float eigenValue[]);
 void calculateEdgeZeroCrossing(float coefficient[], float beta, float zc[]);
 void calculatePointZeroCrossing(float coefficient[], float zc[]);
 void calculateEigenVector(float coefficient[], float ev, float eigenVector[]);
 void calculateEigenValues(float coefficient[], float ev[]);
-/********************************** End Matrix Manipulation methods ***********************************/
+/********************************** End Matrix Manipulation methods* **********************************/
 
-/*************************************** Get/Set Methods ************************************/
+/*************************************** Get/Set Methods* ***********************************/
 float getPixelFloat(int x, int y, double luminosityContrastMap[]);
 
-/*************************************** End Get/Set Methods ********************************/
+/*************************************** End Get/Set Methods* *******************************/
 
 
 

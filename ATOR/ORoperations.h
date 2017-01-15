@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORoperations.h
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  *
  *******************************************************************************/
 
@@ -67,36 +67,36 @@
 
 
 
-void printPointMap(int imageWidth, int imageHeight, double * pointMap);
-void printDepthMap(int imageWidth, int imageHeight, double * depthMap);
-void printvi(ViewInfo * vi);
+void printPointMap(int imageWidth, int imageHeight, double* pointMap);
+void printDepthMap(int imageWidth, int imageHeight, double* depthMap);
+void printvi(ViewInfo* vi);
 
 
-void createPointMapFromDepthMap(int imageWidth, int imageHeight, double * depthMap, double * pointMap, ViewInfo * vi);
+void createPointMapFromDepthMap(int imageWidth, int imageHeight, double* depthMap, double* pointMap, ViewInfo* vi);
 
 
-	bool checkFeatureListForCommonFeature(vec * corner, Feature * firstFeatureInList, double maxFeatureDistanceError, bool checkAlsoZ);
-void generateBooleanMapFromFeatureList(int imageWidth, int imageHeight, Feature * firstFeatureInList,  bool * featuresMap, ViewInfo * vi, int zoom);
-void generateBooleanMapFromFeatureListOLD(int imageWidth, int imageHeight, Feature * firstFeatureInList,  bool * featuresMap);
+	bool checkFeatureListForCommonFeature(vec* corner, Feature* firstFeatureInList, double maxFeatureDistanceError, bool checkAlsoZ);
+void generateBooleanMapFromFeatureList(int imageWidth, int imageHeight, Feature* firstFeatureInList,  bool* featuresMap, ViewInfo* vi, int zoom);
+void generateBooleanMapFromFeatureListOLD(int imageWidth, int imageHeight, Feature* firstFeatureInList,  bool* featuresMap);
 bool generatePolygonListUsingFeatureList(int imageWidth, int imageHeight, Feature firstFeatureInList[], PolygonBAI firstPolygonInList[], int numberOfZoomIndicies);
 bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeight, Feature firstFeatureInList[], PolygonBAI firstPolygonInList[], int numberOfZoomIndicies, int dimension);
 	int calculateNumberOfNearestFeatures(int numberOfPolygonsPerFeature, int numberOfNearbyFeaturesToTransform);
-	void generateNearestFeaturesList(Feature * firstFeatureInNearestFeatureList, int numberOfNearestFeatures);
-	PolygonBAI * addPolysToListForGivenFeatureAndNearestFeatureList(PolygonBAI * firstCurrentPolygonInList, PolygonBAI * firstPolygonInList, Feature * firstFeatureInNearestFeatureList, int numberOfPolygonsPerFeature, int dimension);
-	bool checkFeatureListForCommonFeatureBasic(Feature * corner, Feature * firstFeatureInList);
+	void generateNearestFeaturesList(Feature* firstFeatureInNearestFeatureList, int numberOfNearestFeatures);
+	PolygonBAI* addPolysToListForGivenFeatureAndNearestFeatureList(PolygonBAI* firstCurrentPolygonInList, PolygonBAI* firstPolygonInList, Feature* firstFeatureInNearestFeatureList, int numberOfPolygonsPerFeature, int dimension);
+	bool checkFeatureListForCommonFeatureBasic(Feature* corner, Feature* firstFeatureInList);
 
-	bool checkPolygonListForCommonPolygon(PolygonBAI * polygon, PolygonBAI * firstPolygonInList);
+	bool checkPolygonListForCommonPolygon(PolygonBAI* polygon, PolygonBAI* firstPolygonInList);
 
-bool addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec * proposedFeature, Feature * firstFeatureInList, double maxFeatureDistanceError, bool checkAlsoZ);
-
-
-void createInterpolatedPointMap(int imageWidth, int imageHeight, double * pointMap, double * pointMapInterpolated);
+bool addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec* proposedFeature, Feature* firstFeatureInList, double maxFeatureDistanceError, bool checkAlsoZ);
 
 
-void storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(Reference * firstReferenceInInterpolated2DrgbMap);
-void restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(Reference * firstReferenceInInterpolated2DrgbMap);
-void applyTransformationMatrixToAllReferencesIn2Dlist(Reference * firstReferenceInInterpolated2DrgbMap, mat * transformationMatrix);
-void applyTranslationToAllReferencesIn2Dlist(Reference * firstReferenceInInterpolated2DrgbMap, vec * translationVector);
+void createInterpolatedPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointMapInterpolated);
+
+
+void storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(Reference* firstReferenceInInterpolated2DrgbMap);
+void restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(Reference* firstReferenceInInterpolated2DrgbMap);
+void applyTransformationMatrixToAllReferencesIn2Dlist(Reference* firstReferenceInInterpolated2DrgbMap, mat* transformationMatrix);
+void applyTranslationToAllReferencesIn2Dlist(Reference* firstReferenceInInterpolated2DrgbMap, vec* translationVector);
 
 
 

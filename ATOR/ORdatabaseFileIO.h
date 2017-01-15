@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORdatabaseFileIO.h
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  *
  *******************************************************************************/
 
@@ -64,20 +64,20 @@
 
 #ifdef OR_USE_DATABASE
 void initialiseDatabase(string newDatabaseFolderName);
-bool DBdirectoryExists(string * folderName);
-bool DBcreateDirectory(string * folderName);
-bool DBsetCurrentDirectory(string * folderName);
-bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string * folderName);
-string DBgenerateServerDatabaseName(string * objectName, bool trainOrTest);
-string DBgenerateFolderName(string * objectName, bool trainOrTest);
+bool DBdirectoryExists(string* folderName);
+bool DBcreateDirectory(string* folderName);
+bool DBsetCurrentDirectory(string* folderName);
+bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string* folderName);
+string DBgenerateServerDatabaseName(string* objectName, bool trainOrTest);
+string DBgenerateFolderName(string* objectName, bool trainOrTest);
 #endif
 
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
-	bool compareFeaturesListForMatch(Feature * testFirstFeatureInNearestFeatureList, Feature * trainFirstFeatureInNearestFeatureList, int dimension, bool * exactMatchFound);
-	void addFeatureToEndOfFeatureList(Feature * firstFeatureInList, Feature * featureToAdd);
-	void createTransformedFeaturesFile(Feature * firstFeatureInList, string fileName, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest);
-	void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeatureInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures);
+	bool compareFeaturesListForMatch(Feature* testFirstFeatureInNearestFeatureList, Feature* trainFirstFeatureInNearestFeatureList, int dimension, bool* exactMatchFound);
+	void addFeatureToEndOfFeatureList(Feature* firstFeatureInList, Feature* featureToAdd);
+	void createTransformedFeaturesFile(Feature* firstFeatureInList, string fileName, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest);
+	void createFeaturesListUsingFeaturesFile(string fileName, Feature* firstFeatureInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures);
 #endif
 
 #endif

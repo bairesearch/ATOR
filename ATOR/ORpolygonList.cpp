@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORpolygonList.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  *
  *******************************************************************************/
 
@@ -342,7 +342,7 @@ PixelContiguous::PixelContiguous(void)
 	readyToDelete = true;
 }
 
-PixelContiguous::PixelContiguous(int newX, int newY, PixelContiguous * newPrevious)
+PixelContiguous::PixelContiguous(int newX, int newY, PixelContiguous* newPrevious)
 {
 	xInt = newX;
 	yInt = newY;
@@ -370,7 +370,7 @@ PixelContiguous::PixelContiguous(int newX, int newY, PixelContiguous * newPrevio
 	previous->readyToDelete = false;
 }
 
-PixelContiguous::PixelContiguous(MeshPoint * newMeshPoint, PixelContiguous * newPrevious)
+PixelContiguous::PixelContiguous(MeshPoint* newMeshPoint, PixelContiguous* newPrevious)
 {
 	xInt = 0;
 	yInt = 0;
@@ -437,12 +437,12 @@ PixelContiguous::~PixelContiguous()
 	}
 	cout << "finished del" << endl;
 	*/
-	PixelContiguous * currentPixelContiguous = this;
+	PixelContiguous* currentPixelContiguous = this;
 	bool stillMoreToDelete = true;
 	while(stillMoreToDelete)
 	{
 		bool foundAPixelContiguousToParseInto = false;
-		PixelContiguous * pixelContiguousToParseInto;
+		PixelContiguous* pixelContiguousToParseInto;
 		for(int q=0;q<9;q++)
 		{
 			if(q != 4)
@@ -487,12 +487,12 @@ PixelContiguous::~PixelContiguous()
 }
 
 
-MeshPoint * findMeshPointIntInMesh(MeshPoint * firstMeshPointInMeshList, int x, int y, bool * hasFoundMeshPoint)
+MeshPoint* findMeshPointIntInMesh(MeshPoint* firstMeshPointInMeshList, int x, int y, bool* hasFoundMeshPoint)
 {
-	MeshPoint * foundMeshPoint = NULL;
+	MeshPoint* foundMeshPoint = NULL;
 	*hasFoundMeshPoint = false;
 
-	MeshPoint * currentMeshPointInMesh = firstMeshPointInMeshList;
+	MeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	while(currentMeshPointInMesh->next != NULL)
 	{
 		if((currentMeshPointInMesh->xInt == x) && (currentMeshPointInMesh->yInt == y))
@@ -506,13 +506,13 @@ MeshPoint * findMeshPointIntInMesh(MeshPoint * firstMeshPointInMeshList, int x, 
 	return foundMeshPoint;
 }
 
-MeshPoint * findMeshPointIntInMesh(MeshPoint * firstMeshPointInMeshList, vec * point, bool * hasFoundMeshPoint, int meshZoneLimit)
+MeshPoint* findMeshPointIntInMesh(MeshPoint* firstMeshPointInMeshList, vec* point, bool* hasFoundMeshPoint, int meshZoneLimit)
 {
-	MeshPoint * foundMeshPoint = NULL;
+	MeshPoint* foundMeshPoint = NULL;
 	*hasFoundMeshPoint = false;
 	int numMeshPointsCounted = 0;
 
-	MeshPoint * currentMeshPointInMesh = firstMeshPointInMeshList;
+	MeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	while((currentMeshPointInMesh->next != NULL) && (numMeshPointsCounted < meshZoneLimit))
 	{
 		if(compareVectors(&(currentMeshPointInMesh->point), point))
@@ -527,9 +527,9 @@ MeshPoint * findMeshPointIntInMesh(MeshPoint * firstMeshPointInMeshList, vec * p
 	return foundMeshPoint;
 }
 
-MeshPoint * findMeshPointIntInMesh(MeshPoint * firstMeshPointInMeshList, int position)
+MeshPoint* findMeshPointIntInMesh(MeshPoint* firstMeshPointInMeshList, int position)
 {
-	MeshPoint * currentMeshPointInMesh = firstMeshPointInMeshList;
+	MeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	for(int i=0; i < position; i++)
 	{
 		currentMeshPointInMesh = currentMeshPointInMesh->next;
@@ -546,7 +546,7 @@ MeshPoint * findMeshPointIntInMesh(MeshPoint * firstMeshPointInMeshList, int pos
 //vec meshPointNormals[4];	//from 4 tris creating using mesh point and two out of four surrounding meshpoints, x-, x+, y-, y+
 //vec meshPointNormal; 		//average of four calculated meshpoint normals
 //no boundary checks - these can easily be implemented using adjacentMeshPointFilled
-void calculateMeshPointInterpixelNormal(MeshPoint * meshPoint)
+void calculateMeshPointInterpixelNormal(MeshPoint* meshPoint)
 {
 	/*
 	2 4
@@ -565,10 +565,10 @@ void calculateMeshPointInterpixelNormal(MeshPoint * meshPoint)
 	averageNormalVector.y = 0.0;
 	averageNormalVector.z = 0.0;
 
-	vec * point1;
-	vec * point2;
-	vec * point3;
-	vec * point4;
+	vec* point1;
+	vec* point2;
+	vec* point3;
+	vec* point4;
 
 	point1 = &(meshPoint->adjacentMeshPoint[3]->point);
 	point2 = &(meshPoint->adjacentMeshPoint[0]->point);
@@ -602,7 +602,7 @@ void calculateMeshPointInterpixelNormal(MeshPoint * meshPoint)
 
 //see calculateMeshPointNormalsUsingPointMap
 //no boundary checks - these can easily be implemented using adjacentMeshPointFilled
-void calculateMeshPointInterpixelNormalContrast(MeshPoint * meshPoint)
+void calculateMeshPointInterpixelNormalContrast(MeshPoint* meshPoint)
 {
 	/*
 	q;
@@ -625,9 +625,9 @@ void calculateMeshPointInterpixelNormalContrast(MeshPoint * meshPoint)
 		//cout << "y = " << y << endl;
 		int q;
 		q = qMapping[0][y];
-		vec * interpixelNormalValue = &(meshPoint->adjacentMeshPoint[q]->interpixelMeshPoint->point);
+		vec* interpixelNormalValue = &(meshPoint->adjacentMeshPoint[q]->interpixelMeshPoint->point);
 		q = qMapping[1][y];
-		vec * adjacentInterpixelNormalValue = &(meshPoint->adjacentMeshPoint[q]->interpixelMeshPoint->point);
+		vec* adjacentInterpixelNormalValue = &(meshPoint->adjacentMeshPoint[q]->interpixelMeshPoint->point);
 
 		double currentContrastLevelX = absDouble(interpixelNormalValue->x - adjacentInterpixelNormalValue->x);
 		double currentContrastLevelY = absDouble(interpixelNormalValue->y - adjacentInterpixelNormalValue->y);
@@ -641,9 +641,9 @@ void calculateMeshPointInterpixelNormalContrast(MeshPoint * meshPoint)
 		//cout << "x = " << x << endl;
 		int q;
 		q = qMapping[x][0];
-		vec * interpixelNormalValue = &(meshPoint->adjacentMeshPoint[q]->interpixelMeshPoint->point);
+		vec* interpixelNormalValue = &(meshPoint->adjacentMeshPoint[q]->interpixelMeshPoint->point);
 		q = qMapping[x][1];
-		vec * adjacentInterpixelNormalValue = &(meshPoint->adjacentMeshPoint[q]->interpixelMeshPoint->point);
+		vec* adjacentInterpixelNormalValue = &(meshPoint->adjacentMeshPoint[q]->interpixelMeshPoint->point);
 
 		double currentContrastLevelX = absDouble(interpixelNormalValue->x - adjacentInterpixelNormalValue->x);
 		double currentContrastLevelY = absDouble(interpixelNormalValue->y - adjacentInterpixelNormalValue->y);
@@ -655,7 +655,7 @@ void calculateMeshPointInterpixelNormalContrast(MeshPoint * meshPoint)
 	meshPoint->meshPointNormalContrast = contrastLevel;
 }
 
-void calculateMeshPointInterpixelLuminosityContrast(MeshPoint * meshPoint)
+void calculateMeshPointInterpixelLuminosityContrast(MeshPoint* meshPoint)
 {
 	/*
 	q;
@@ -669,10 +669,10 @@ void calculateMeshPointInterpixelLuminosityContrast(MeshPoint * meshPoint)
 
 	double contrastLevel = 0.0;
 
-	vec * point1;
-	vec * point2;
-	vec * point3;
-	vec * point4;
+	vec* point1;
+	vec* point2;
+	vec* point3;
+	vec* point4;
 
 	int qMapping[2][2];
 	qMapping[0][0] = 0;
@@ -712,7 +712,7 @@ void calculateMeshPointInterpixelLuminosityContrast(MeshPoint * meshPoint)
 	meshPoint->interpixelMeshPoint->luminosityContrast = contrastLevel;
 }
 
-void calculateMeshPointInterpixelDepth(MeshPoint * meshPoint)
+void calculateMeshPointInterpixelDepth(MeshPoint* meshPoint)
 {
 	/*
 	q;
@@ -723,7 +723,7 @@ void calculateMeshPointInterpixelDepth(MeshPoint * meshPoint)
 
 	double averageDepth = 0.0;
 
-	vec * centrePixelNormal = &(meshPoint->meshPointNormal);
+	vec* centrePixelNormal = &(meshPoint->meshPointNormal);
 
 	double point1Depth;
 	double point2Depth;
@@ -740,7 +740,7 @@ void calculateMeshPointInterpixelDepth(MeshPoint * meshPoint)
 
 }
 
-void calculateMeshPointInterpixelDepthWithForegroundDepthCheck(MeshPoint * meshPoint)
+void calculateMeshPointInterpixelDepthWithForegroundDepthCheck(MeshPoint* meshPoint)
 {
 	/*
 	q;
@@ -772,7 +772,7 @@ void calculateMeshPointInterpixelDepthWithForegroundDepthCheck(MeshPoint * meshP
 }
 
 
-void calculateMeshPointInterpixelDepthWithForegroundDepthCheckOLD(MeshPoint * meshPoint)
+void calculateMeshPointInterpixelDepthWithForegroundDepthCheckOLD(MeshPoint* meshPoint)
 {
 	double averageDepth = 0.0;
 	int numberOfDepthValsRecorded = 0;
@@ -875,7 +875,7 @@ void calculateMeshPointInterpixelDepthWithForegroundDepthCheckOLD(MeshPoint * me
 //vec meshPointNormals[4];	//from 4 tris creating using mesh point and two out of four surrounding meshpoints, x-, x+, y-, y+
 //vec meshPointNormal; 		//average of four calculated meshpoint normals
 //no boundary checks - these can easily be implemented using adjacentMeshPointFilled
-void calculateMeshPointNormal(MeshPoint * meshPoint)
+void calculateMeshPointNormal(MeshPoint* meshPoint)
 {
 	vec averageNormalVector;
 	averageNormalVector.x = 0.0;
@@ -913,14 +913,14 @@ void calculateMeshPointNormal(MeshPoint * meshPoint)
 
 //see calculateMeshPointNormalsUsingPointMap
 //no boundary checks - these can easily be implemented using adjacentMeshPointFilled
-void calculateMeshPointNormalContrast(MeshPoint * meshPoint)
+void calculateMeshPointNormalContrast(MeshPoint* meshPoint)
 {
 	double contrastLevel = 0.0;
 
-	vec * centrePixelNormal = &(meshPoint->meshPointNormal);
+	vec* centrePixelNormal = &(meshPoint->meshPointNormal);
 	for(int q = 1; q < 9; q=q+2)
 	{
-		vec * currentPixelNormal = &(meshPoint->adjacentMeshPoint[q]->meshPointNormal);
+		vec* currentPixelNormal = &(meshPoint->adjacentMeshPoint[q]->meshPointNormal);
 
 		//calc point normal vector diff between centre pixel and current surrounding kernel pixel
 		vec diff;
@@ -931,7 +931,7 @@ void calculateMeshPointNormalContrast(MeshPoint * meshPoint)
 }
 //#endif
 
-void calculateMeshPointLuminosityContrast(MeshPoint * meshPoint)
+void calculateMeshPointLuminosityContrast(MeshPoint* meshPoint)
 {
 	double contrastLevel = 0.0;
 

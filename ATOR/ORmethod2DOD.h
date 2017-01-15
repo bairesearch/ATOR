@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORmethod2DOD.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  *
  *******************************************************************************/
 #ifndef HEADER_OR_METHOD_2DOD
@@ -41,26 +41,26 @@
 #define OD2D_INTERPOLATED_MESH_PIXEL_HEIGHT (1.0)
 #define OD2D_INTERPOLATED_MESH_PIXEL_SIZE (OD2D_INTERPOLATED_MESH_PIXEL_WIDTH)
 
-void createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, int imageHeight, unsigned char * rgbMap, Reference * firstReferenceInInterpolatedMap);
-void create2DmeshUsingRGBmap2DOD(int imageWidth, int imageHeight, double imageXOffset, double imageYOffset, unsigned char * rgbMap, MeshPoint * firstMeshPointInMeshList, MeshPoint * meshPointArray[], bool useEdgeZeroCrossingMap);
+void createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, int imageHeight, unsigned char* rgbMap, Reference* firstReferenceInInterpolatedMap);
+void create2DmeshUsingRGBmap2DOD(int imageWidth, int imageHeight, double imageXOffset, double imageYOffset, unsigned char* rgbMap, MeshPoint* firstMeshPointInMeshList, MeshPoint* meshPointArray[], bool useEdgeZeroCrossingMap);
 
 
 
 
 
 
-void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DrgbMap, PolygonBAI * currentPolygonInList, int side, bool first, Feature * firstFeatureInList);
-	double calculateXYorientationOfSide(PolygonBAI * currentPolygonInList, int side);
-	double calculateXYlengthOfSide(PolygonBAI * currentPolygonInList, int side);
-	double calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(PolygonBAI * transformedObjectTriangle, int side);
-	double calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(PolygonBAI * transformedObjectTriangle, int side);
+void transformObjectData2DOD(Reference* firstReferenceInInterpolated2DrgbMap, PolygonBAI* currentPolygonInList, int side, bool first, Feature* firstFeatureInList);
+	double calculateXYorientationOfSide(PolygonBAI* currentPolygonInList, int side);
+	double calculateXYlengthOfSide(PolygonBAI* currentPolygonInList, int side);
+	double calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(PolygonBAI* transformedObjectTriangle, int side);
+	double calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(PolygonBAI* transformedObjectTriangle, int side);
 
-	void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * firstReferenceInInterpolated2DrgbMap, PolygonBAI * currentPolygonInList);
-	//void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(Reference * firstReferenceInInterpolated2DrgbMap, PolygonBAI * currentPolygonInList, bool padBoundary);
-	//void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced2(Reference * firstReferenceInInterpolated2DrgbMap, PolygonBAI * currentPolygonInList, vec * point4, vec * point5, bool padBoundary);
-	void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(Reference * firstReferenceInInterpolated2DrgbMap, PolygonBAI * currentPolygonInList, bool padBoundary, int side, double shearFactor);
+	void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference* firstReferenceInInterpolated2DrgbMap, PolygonBAI* currentPolygonInList);
+	//void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(Reference* firstReferenceInInterpolated2DrgbMap, PolygonBAI* currentPolygonInList, bool padBoundary);
+	//void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced2(Reference* firstReferenceInInterpolated2DrgbMap, PolygonBAI* currentPolygonInList, vec* point4, vec* point5, bool padBoundary);
+	void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(Reference* firstReferenceInInterpolated2DrgbMap, PolygonBAI* currentPolygonInList, bool padBoundary, int side, double shearFactor);
 
-		void TEMPprintReferenceListVertexPositions2DOD(Reference * firstReferenceInInterpolated2DrgbMap);
+		void TEMPprintReferenceListVertexPositions2DOD(Reference* firstReferenceInInterpolated2DrgbMap);
 
 
 

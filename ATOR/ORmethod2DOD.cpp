@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORmethod2DOD.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -52,7 +52,7 @@ using namespace std;
 
 
 
-double calculateXYorientationOfSide(PolygonBAI * currentPolygonInList, int side)
+double calculateXYorientationOfSide(PolygonBAI* currentPolygonInList, int side)
 {
 	double orientationOfSide;
 
@@ -76,7 +76,7 @@ double calculateXYorientationOfSide(PolygonBAI * currentPolygonInList, int side)
 	return orientationOfSide;
 }
 
-double calculateXYlengthOfSide(PolygonBAI * currentPolygonInList, int side)
+double calculateXYlengthOfSide(PolygonBAI* currentPolygonInList, int side)
 {
 	double lengthOfSide;
 
@@ -100,7 +100,7 @@ double calculateXYlengthOfSide(PolygonBAI * currentPolygonInList, int side)
 	return lengthOfSide;
 }
 
-double calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(PolygonBAI * transformedObjectTriangle, int side)
+double calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(PolygonBAI* transformedObjectTriangle, int side)
 {
 	double perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide;
 
@@ -127,7 +127,7 @@ double calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(Pol
 	return perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide;
 }
 
-double calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(PolygonBAI * transformedObjectTriangle, int side)
+double calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(PolygonBAI* transformedObjectTriangle, int side)
 {
 	double xAxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex;
 
@@ -191,9 +191,9 @@ double calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(Pol
 
 
 
-void TEMPprintReferenceListVertexPositions2DOD(Reference * firstReferenceInInterpolated2DrgbMap)
+void TEMPprintReferenceListVertexPositions2DOD(Reference* firstReferenceInInterpolated2DrgbMap)
 {
-	Reference * currentReference = firstReferenceInInterpolated2DrgbMap;
+	Reference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 		cout << "TESTX currentReference->vertex1absolutePosition.x  = " << currentReference->vertex1absolutePosition.x  << endl;
@@ -210,7 +210,7 @@ void TEMPprintReferenceListVertexPositions2DOD(Reference * firstReferenceInInter
 
 
 
-void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DrgbMap, PolygonBAI * currentPolygonInList, int side, bool first, Feature * firstFeatureInList)
+void transformObjectData2DOD(Reference* firstReferenceInInterpolated2DrgbMap, PolygonBAI* currentPolygonInList, int side, bool first, Feature* firstFeatureInList)
 {
 	long time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart;
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
@@ -223,7 +223,7 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DrgbMap, P
 	}
 
 
-	PolygonBAI * transformedObjectTriangle = new PolygonBAI();	//equilateral triangle
+	PolygonBAI* transformedObjectTriangle = new PolygonBAI();	//equilateral triangle
 	transformedObjectTriangle->point1.x = currentPolygonInList->point1.x;
 	transformedObjectTriangle->point1.y = currentPolygonInList->point1.y;
 	transformedObjectTriangle->point2.x = currentPolygonInList->point2.x;
@@ -232,7 +232,7 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DrgbMap, P
 	transformedObjectTriangle->point3.y = currentPolygonInList->point3.y;
 
 
-	PolygonBAI * predefinedTriangle = new PolygonBAI();	//equilateral triangle
+	PolygonBAI* predefinedTriangle = new PolygonBAI();	//equilateral triangle
 	predefinedTriangle->point1.x = 0;
 	predefinedTriangle->point1.y = 0;
 	predefinedTriangle->point2.x = 1;
@@ -332,7 +332,7 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DrgbMap, P
 	//1c. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		Feature * currentFeature;	//startup
+		Feature* currentFeature;	//startup
 		currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
@@ -367,7 +367,7 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DrgbMap, P
 
 	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
-		Feature * currentFeature;
+		Feature* currentFeature;
 		currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
@@ -439,7 +439,7 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DrgbMap, P
 	//2ic. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		Feature * currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
+		Feature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
 			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2i);
@@ -452,7 +452,7 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DrgbMap, P
 	}
 	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
-		Feature * currentFeature = firstFeatureInList;
+		Feature* currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
 			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2i);
@@ -533,7 +533,7 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DrgbMap, P
 	//2iic. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		Feature * currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
+		Feature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
 			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2ii);
@@ -546,7 +546,7 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DrgbMap, P
 	}
 	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
-		Feature * currentFeature = firstFeatureInList;
+		Feature* currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
 			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2ii);
@@ -626,7 +626,7 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DrgbMap, P
 	//3c. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		Feature * currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
+		Feature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
 			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &scaleMatrix3a);
@@ -639,7 +639,7 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DrgbMap, P
 	}
 	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
-		Feature * currentFeature = firstFeatureInList;
+		Feature* currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
 			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &scaleMatrix3a);
@@ -704,7 +704,7 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DrgbMap, P
 	//4c. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		Feature * currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
+		Feature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
 			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &shearMatrix4a);
@@ -717,7 +717,7 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DrgbMap, P
 	}
 	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
-		Feature * currentFeature = firstFeatureInList;
+		Feature* currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
 			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &shearMatrix4a);
@@ -896,7 +896,7 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DrgbMap, P
 	//5c. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		Feature * currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
+		Feature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
 			currentFeature->pointTransformed.x = currentFeature->pointTransformed.x + translationVector.x;
@@ -909,7 +909,7 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DrgbMap, P
 	}
 	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
-		Feature * currentFeature = firstFeatureInList;
+		Feature* currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
 			currentFeature->pointTransformed.x = currentFeature->pointTransformed.x + translationVector.x;
@@ -1034,7 +1034,7 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DrgbMap, P
 
 
 
- /*NEWEST, Barycentric Technique; */
+ /*NEWEST, Barycentric Technique;*/
 double maxDoubles(double a, double b)
 {
 	if(a > b)
@@ -1062,7 +1062,7 @@ double minDoubles(double a, double b)
 
 
 
-void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(Reference * firstReferenceInInterpolated2DrgbMap, PolygonBAI * currentPolygonInList, bool padBoundary, int side, double shearFactor)
+void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(Reference* firstReferenceInInterpolated2DrgbMap, PolygonBAI* currentPolygonInList, bool padBoundary, int side, double shearFactor)
 {
 
 	vec A;
@@ -1197,20 +1197,20 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(Reference
 	{
 		double xPadding = (maxx-minx)*OR_IMAGE_COMPARISON_PREPROCESS_BOUNDARY_RATIO;
 		double yPadding = (maxy-miny)*OR_IMAGE_COMPARISON_PREPROCESS_BOUNDARY_RATIO;
-		maxx = (maxxOrig + xPadding) + (xdiff * OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
-		minx = (minxOrig - xPadding) - (xdiff * OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
-		maxy = (maxyOrig + yPadding) + (ydiff * OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
-		miny = (minyOrig - yPadding) - (ydiff * OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
+		maxx = (maxxOrig + xPadding) + (xdiff* OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
+		minx = (minxOrig - xPadding) - (xdiff* OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
+		maxy = (maxyOrig + yPadding) + (ydiff* OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
+		miny = (minyOrig - yPadding) - (ydiff* OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
 	}
 	else
 	{
-		maxx = maxxOrig + (xdiff * OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
-		minx = minxOrig - (xdiff * OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
-		maxy = maxyOrig + (ydiff * OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
-		miny = minyOrig - (ydiff * OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
+		maxx = maxxOrig + (xdiff* OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
+		minx = minxOrig - (xdiff* OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
+		maxy = maxyOrig + (ydiff* OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
+		miny = minyOrig - (ydiff* OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
 	}
 
-	Reference * currentReference = firstReferenceInInterpolated2DrgbMap;
+	Reference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 		bool currentReferenceLiesInsideObjectSquare;
@@ -1257,7 +1257,7 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(Reference
 
 
 /*
-void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced2(Reference * firstReferenceInInterpolated2DrgbMap, PolygonBAI * currentPolygonInList, vec * point4, vec * point5, bool padBoundary)
+void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced2(Reference* firstReferenceInInterpolated2DrgbMap, PolygonBAI* currentPolygonInList, vec* point4, vec* point5, bool padBoundary)
 {
 	vec A;
 	vec B;
@@ -1312,7 +1312,7 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced2(Referenc
 		miny = minyOrig;
 	}
 
-	Reference * currentReference = firstReferenceInInterpolated2DrgbMap;
+	Reference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 		bool currentReferenceLiesInsideObjectSquare;
@@ -1357,7 +1357,7 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced2(Referenc
 
 
 
-void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(Reference * firstReferenceInInterpolated2DrgbMap, PolygonBAI * currentPolygonInList, bool padBoundary)
+void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(Reference* firstReferenceInInterpolated2DrgbMap, PolygonBAI* currentPolygonInList, bool padBoundary)
 {
 	vec A;
 	vec B;
@@ -1399,7 +1399,7 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(Reference * first
 		miny = minyOrig;
 	}
 
-	Reference * currentReference = firstReferenceInInterpolated2DrgbMap;
+	Reference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 
@@ -1448,7 +1448,7 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(Reference * first
 */
 
 
-void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * firstReferenceInInterpolated2DrgbMap, PolygonBAI * currentPolygonInList)
+void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference* firstReferenceInInterpolated2DrgbMap, PolygonBAI* currentPolygonInList)
 {
 	vec A;
 	vec B;
@@ -1471,7 +1471,7 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 	double miny = minDoubles(minDoubles(A.y, B.y), C.y);
 
 
-	Reference * currentReference = firstReferenceInInterpolated2DrgbMap;
+	Reference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 		bool currentReferenceLiesInsideObjectTriangle;
@@ -1517,9 +1517,9 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 			double dot12 = dotProduct(&v1, &v2);
 
 			// Compute barycentric coordinates
-			double invDenom = 1.0 / ((dot00 * dot11) - (dot01 * dot01));
-			double u = ((dot11 * dot02) - (dot01 * dot12)) * invDenom;
-			double v = ((dot00 * dot12) - (dot01 * dot02)) * invDenom;
+			double invDenom = 1.0 / ((dot00* dot11) - (dot01* dot01));
+			double u = ((dot11* dot02) - (dot01* dot12))* invDenom;
+			double v = ((dot00* dot12) - (dot01* dot02))* invDenom;
 
 			// Check if point is in triangle
 			if((u > 0) && (v > 0) && (u + v < 1))
@@ -1554,9 +1554,9 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 
 /*NEWER, Barycentric Technique - descriptive but less efficient;
 
-void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * firstReferenceInInterpolated2DrgbMap, PolygonBAI * currentPolygonInList)
+void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference* firstReferenceInInterpolated2DrgbMap, PolygonBAI* currentPolygonInList)
 {
-	Reference * currentReference = firstReferenceInInterpolated2DrgbMap;
+	Reference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 		bool currentReferenceLiesInsideObjectTriangle;
@@ -1610,9 +1610,9 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 		double dot12 = dotProduct(&v1, &v2);
 
 		// Compute barycentric coordinates
-		double invDenom = 1.0 / ((dot00 * dot11) - (dot01 * dot01));
-		double u = ((dot11 * dot02) - (dot01 * dot12)) * invDenom;
-		double v = ((dot00 * dot12) - (dot01 * dot02)) * invDenom;
+		double invDenom = 1.0 / ((dot00* dot11) - (dot01* dot01));
+		double u = ((dot11* dot02) - (dot01* dot12))* invDenom;
+		double v = ((dot00* dot12) - (dot01* dot02))* invDenom;
 
 		// Check if point is in triangle
 		if((u > 0) && (v > 0) && (u + v < 1))
@@ -1661,9 +1661,9 @@ function PointInTriangle(p, a,b,c)
 
 //NEWER, use triangle area test, but still inefficient method;
 /*
-void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * firstReferenceInInterpolated2DrgbMap, PolygonBAI * currentPolygonInList)
+void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference* firstReferenceInInterpolated2DrgbMap, PolygonBAI* currentPolygonInList)
 {
-	Reference * currentReference = firstReferenceInInterpolated2DrgbMap;
+	Reference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 		bool currentReferenceLiesInsideObjectTriangle;
@@ -1743,9 +1743,9 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 
 /*OLD thorough but inefficient method;
 
-void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * firstReferenceInInterpolated2DrgbMap, PolygonBAI * currentPolygonInList)
+void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference* firstReferenceInInterpolated2DrgbMap, PolygonBAI* currentPolygonInList)
 {
-	Reference * currentReference = firstReferenceInInterpolated2DrgbMap;
+	Reference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 
@@ -1886,9 +1886,9 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 
 
 
-void createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, int imageHeight, unsigned char * rgbMap, Reference * firstReferenceInInterpolatedMap)
+void createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, int imageHeight, unsigned char* rgbMap, Reference* firstReferenceInInterpolatedMap)
 {
-	Reference * currentReferenceInInterpolated2DMap = firstReferenceInInterpolatedMap;
+	Reference* currentReferenceInInterpolated2DMap = firstReferenceInInterpolatedMap;
 
 	for(int y = 0; y < (imageHeight); y++)
 	{
@@ -1947,7 +1947,7 @@ void createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, int im
 			*/
 			#endif
 
-			Reference * newReference = new Reference();
+			Reference* newReference = new Reference();
 			currentReferenceInInterpolated2DMap->next = newReference;
 			currentReferenceInInterpolated2DMap = currentReferenceInInterpolated2DMap->next;
 		}
@@ -1955,19 +1955,19 @@ void createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, int im
 }
 
 
-void create2DmeshUsingRGBmap2DOD(int imageWidth, int imageHeight, double imageXOffset, double imageYOffset, unsigned char * rgbMap, MeshPoint * firstMeshPointInMeshList, MeshPoint * meshPointArray[], bool useEdgeZeroCrossingMap)
+void create2DmeshUsingRGBmap2DOD(int imageWidth, int imageHeight, double imageXOffset, double imageYOffset, unsigned char* rgbMap, MeshPoint* firstMeshPointInMeshList, MeshPoint* meshPointArray[], bool useEdgeZeroCrossingMap)
 {
 	//#ifdef OR_USE_CONTRAST_CALC_METHOD_C
 #ifndef LINUX
-	MeshPoint ** meshPointInterpixelArray = new MeshPoint *[imageWidth*imageHeight];
-	QFzeroCrossing ** edgeZeroCrossingMap = new QFzeroCrossing *[imageWidth*imageHeight];
+	MeshPoint** meshPointInterpixelArray = new MeshPoint* [imageWidth*imageHeight];
+	QFzeroCrossing** edgeZeroCrossingMap = new QFzeroCrossing* [imageWidth*imageHeight];
 #else
-	MeshPoint * meshPointInterpixelArray[imageWidth*imageHeight];
-	QFzeroCrossing * edgeZeroCrossingMap[imageWidth*imageHeight];
+	MeshPoint* meshPointInterpixelArray[imageWidth*imageHeight];
+	QFzeroCrossing* edgeZeroCrossingMap[imageWidth*imageHeight];
 #endif
 
 	int interpixelContrastMapType = INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST;
-	bool * edgeBoolMap = new bool[imageWidth*imageHeight];
+	bool* edgeBoolMap = new bool[imageWidth*imageHeight];
 	if(OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
 	{
 		if(useEdgeZeroCrossingMap)
@@ -1981,7 +1981,7 @@ void create2DmeshUsingRGBmap2DOD(int imageWidth, int imageHeight, double imageXO
 		}
 	}
 
-	MeshPoint * currentMeshPointInMesh = firstMeshPointInMeshList;
+	MeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	int numMeshPointsInExistingMesh = 0;
 	while(currentMeshPointInMesh->next != NULL)
 	{
@@ -1989,10 +1989,10 @@ void create2DmeshUsingRGBmap2DOD(int imageWidth, int imageHeight, double imageXO
 		currentMeshPointInMesh = currentMeshPointInMesh->next;
 	}
 
-	MeshPoint * firstNewMeshPointInMesh = currentMeshPointInMesh;
+	MeshPoint* firstNewMeshPointInMesh = currentMeshPointInMesh;
 	currentMeshPointInMesh = firstNewMeshPointInMesh;
 
-	MeshPoint * firstMeshPointInInterpixelMesh = new MeshPoint();
+	MeshPoint* firstMeshPointInInterpixelMesh = new MeshPoint();
 	if(OR_USE_CONTRAST_CALC_METHOD_C)
 	{
 		firstNewMeshPointInMesh->interpixelMeshPointFilled = true;	// x+0.5, y+0.5
@@ -2005,7 +2005,7 @@ void create2DmeshUsingRGBmap2DOD(int imageWidth, int imageHeight, double imageXO
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			MeshPoint * currentMeshPointInInterpixelMesh;
+			MeshPoint* currentMeshPointInInterpixelMesh;
 			if(OR_USE_CONTRAST_CALC_METHOD_C)
 			{
 				currentMeshPointInInterpixelMesh = currentMeshPointInMesh->interpixelMeshPoint;
@@ -2045,13 +2045,13 @@ void create2DmeshUsingRGBmap2DOD(int imageWidth, int imageHeight, double imageXO
 
 			meshPointArray[y*imageWidth + x] = currentMeshPointInMesh;	//required for speed
 
-			MeshPoint * newMeshPoint = new MeshPoint();
+			MeshPoint* newMeshPoint = new MeshPoint();
 			currentMeshPointInMesh->next = newMeshPoint;
 			currentMeshPointInMesh = currentMeshPointInMesh->next;
 
 			if(OR_USE_CONTRAST_CALC_METHOD_C)
 			{
-				MeshPoint * newMeshPointInInterpixelMesh = new MeshPoint();
+				MeshPoint* newMeshPointInInterpixelMesh = new MeshPoint();
 				currentMeshPointInInterpixelMesh->next = newMeshPointInInterpixelMesh;
 				currentMeshPointInMesh->interpixelMeshPointFilled = true;	// x+0.5, y+0.5
 				currentMeshPointInMesh->interpixelMeshPoint = newMeshPointInInterpixelMesh;
@@ -2063,7 +2063,7 @@ void create2DmeshUsingRGBmap2DOD(int imageWidth, int imageHeight, double imageXO
 
 	currentMeshPointInMesh = firstNewMeshPointInMesh;
 
-	MeshPoint * currentMeshPointInInterpixelMesh;
+	MeshPoint* currentMeshPointInInterpixelMesh;
 	if(OR_USE_CONTRAST_CALC_METHOD_C)
 	{
 		currentMeshPointInInterpixelMesh = firstMeshPointInInterpixelMesh;
@@ -2181,7 +2181,7 @@ void create2DmeshUsingRGBmap2DOD(int imageWidth, int imageHeight, double imageXO
 						borderPoint.y = y+imageYOffset;
 						borderPoint.z = 0.0;
 
-						MeshPoint * nearestMeshpointInExistingMesh;
+						MeshPoint* nearestMeshpointInExistingMesh;
 						bool hasFoundMeshPoint = false;
 						nearestMeshpointInExistingMesh = findMeshPointIntInMesh(firstMeshPointInMeshList, &borderPoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
 						if(hasFoundMeshPoint == false)
@@ -2190,7 +2190,7 @@ void create2DmeshUsingRGBmap2DOD(int imageWidth, int imageHeight, double imageXO
 							exit(0);
 						}
 
-						MeshPoint * meshpointInAdditionalMesh;
+						MeshPoint* meshpointInAdditionalMesh;
 						meshpointInAdditionalMesh = meshPointArray[y*imageWidth + x];
 
 						/*old inefficient;

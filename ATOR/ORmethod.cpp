@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORmethod.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -158,7 +158,7 @@ long time5NormalisedSnapshotComparisonIndex = 0.0;
 
 
 
-bool ORTHmethod(int dimension, int numberOfTrainObjects, string trainObjectNameArray[], int numberOfTestObjects, string testObjectNameArray[], int * numberOfTrainPolys, int * numberOfTestPolys, int objectDataSource, ViewInfo * viTrain, ViewInfo * viTest, int imageWidthFacingPoly, int imageHeightFacingPoly, int maxNumberOfPolygonsTrain, int maxNumberOfPolygonsTest, int numberOfTrainViewIndiciesPerObject, int numberOfTestViewIndiciesPerObject, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, int numberOfTestZoomIndicies)
+bool ORTHmethod(int dimension, int numberOfTrainObjects, string trainObjectNameArray[], int numberOfTestObjects, string testObjectNameArray[], int* numberOfTrainPolys, int* numberOfTestPolys, int objectDataSource, ViewInfo* viTrain, ViewInfo* viTest, int imageWidthFacingPoly, int imageHeightFacingPoly, int maxNumberOfPolygonsTrain, int maxNumberOfPolygonsTest, int numberOfTrainViewIndiciesPerObject, int numberOfTestViewIndiciesPerObject, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, int numberOfTestZoomIndicies)
 {
 	bool result = true;
 
@@ -189,8 +189,8 @@ bool ORTHmethod(int dimension, int numberOfTrainObjects, string trainObjectNameA
 	string testUI2;
 
 #ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
-	Experience * firstExperienceInTrainList = new Experience();
-	Experience * firstExperienceInTestList = new Experience();
+	Experience* firstExperienceInTrainList = new Experience();
+	Experience* firstExperienceInTestList = new Experience();
 #endif
 
 	//train
@@ -202,8 +202,8 @@ bool ORTHmethod(int dimension, int numberOfTrainObjects, string trainObjectNameA
 				#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 
 					//int numSidesPerPolygon = OR_METHOD_POLYGON_NUMBER_OF_SIDES;
-					NeuronContainer * firstInputNeuronInNetwork = new NeuronContainer();
-					NeuronContainer * firstOutputNeuronInNetwork;
+					NeuronContainer* firstInputNeuronInNetwork = new NeuronContainer();
+					NeuronContainer* firstOutputNeuronInNetwork;
 					int numberOfInputNeurons;
 					int numberOfOutputNeurons = numberOfTrainPolys*OR_METHOD_POLYGON_NUMBER_OF_SIDES;
 				#ifdef OR_DEBUG_WORRY_ABOUT_DISPLAYING_2D_NET_PROPERLY
@@ -217,11 +217,11 @@ bool ORTHmethod(int dimension, int numberOfTrainObjects, string trainObjectNameA
 					bool addSprites = false;
 					bool allowRaytrace = false;
 					string XMLNNSceneFileName = "ORNN.xml";
-					char * charstarvectorGraphicsLDRNNSceneFileName = "ORNN.ldr";
-					char * charstarvectorGraphicsLDRNNSceneFileNameWithSprites = "ORNNwithSprites.ldr";
-					char * charstarvectorGraphicsTALNNSceneFileName = "ORNN.tal";
-					char * charstarraytracedImagePPMNNSceneFileName = "ORNN.ppm";
-					char * charstarexperienceNNSceneFileName = "ORNN.data";
+					char* charstarvectorGraphicsLDRNNSceneFileName = "ORNN.ldr";
+					char* charstarvectorGraphicsLDRNNSceneFileNameWithSprites = "ORNNwithSprites.ldr";
+					char* charstarvectorGraphicsTALNNSceneFileName = "ORNN.tal";
+					char* charstarraytracedImagePPMNNSceneFileName = "ORNN.ppm";
+					char* charstarexperienceNNSceneFileName = "ORNN.data";
 					bool useFoldsDuringTraining;
 					int maxOrSetNumEpochs;
 					useFoldsDuringTraining = false;
@@ -258,7 +258,7 @@ bool ORTHmethod(int dimension, int numberOfTrainObjects, string trainObjectNameA
 #ifdef OR_IMAGE_COMPARISON_SQL
 
 
-bool ORmethodTrain(int dimension, int numberOfTrainObjects, string trainObjectNameArray[], int * numberOfTrainPolys, int objectDataSource, ViewInfo * viTrain, int imageWidthFacingPoly, int imageHeightFacingPoly, int maxNumberOfPolygonsTrain, int numberOfTrainViewIndiciesPerObject, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, int trainOrTest, string sqlIPaddress, string sqlUsername, string sqlPassword, bool clearTrainTable, int viewNumber, string multViewListFileName)
+bool ORmethodTrain(int dimension, int numberOfTrainObjects, string trainObjectNameArray[], int* numberOfTrainPolys, int objectDataSource, ViewInfo* viTrain, int imageWidthFacingPoly, int imageHeightFacingPoly, int maxNumberOfPolygonsTrain, int numberOfTrainViewIndiciesPerObject, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, int trainOrTest, string sqlIPaddress, string sqlUsername, string sqlPassword, bool clearTrainTable, int viewNumber, string multViewListFileName)
 {
 	bool result = true;
 
@@ -282,7 +282,7 @@ bool ORmethodTrain(int dimension, int numberOfTrainObjects, string trainObjectNa
 	return result;
 }
 
-bool ORmethodTest(int dimension, int numberOfTestObjects, string testObjectNameArray[], int * numberOfTestPolys, int objectDataSource, ViewInfo * viTest, int imageWidthFacingPoly, int imageHeightFacingPoly, int maxNumberOfPolygonsTest, int numberOfTestViewIndiciesPerObject, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTestZoomIndicies, int trainOrTest, string sqlIPaddress, string sqlUsername, string sqlPassword, bool clearTrainTable, int viewNumber, string multViewListFileName)
+bool ORmethodTest(int dimension, int numberOfTestObjects, string testObjectNameArray[], int* numberOfTestPolys, int objectDataSource, ViewInfo* viTest, int imageWidthFacingPoly, int imageHeightFacingPoly, int maxNumberOfPolygonsTest, int numberOfTestViewIndiciesPerObject, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTestZoomIndicies, int trainOrTest, string sqlIPaddress, string sqlUsername, string sqlPassword, bool clearTrainTable, int viewNumber, string multViewListFileName)
 {
 	bool result = true;
 
@@ -357,9 +357,9 @@ bool ORmethodInitialise(int imageWidthFacingPoly, int imageHeightFacingPoly, boo
 		cout << "\t 1. MySQL server is installed on a PC on the network with the default BAI OR layout" << endl;
 		cout << "\t 2. MySQL client is installed on this PC, including development files (headers and libraries)" << endl;
 	}
-	char * sqlipaddressCharStar = const_cast<char*>(sqlIPaddress.c_str());
-	char * sqlusernameCharStar = const_cast<char*>(sqlUsername.c_str());
-	char * sqlpasswordCharStar = const_cast<char*>(sqlPassword.c_str());
+	char* sqlipaddressCharStar = const_cast<char*>(sqlIPaddress.c_str());
+	char* sqlusernameCharStar = const_cast<char*>(sqlUsername.c_str());
+	char* sqlpasswordCharStar = const_cast<char*>(sqlPassword.c_str());
 	initiateMySQLserverConnection(sqlipaddressCharStar, sqlusernameCharStar, sqlpasswordCharStar, OR_MYSQL_DATABASE_NAME);
 	performSQLdeleteAllRowsQuery(OR_MYSQL_TABLE_NAME_TEST);
 	databaseTableSizeTest = 0;
@@ -412,9 +412,9 @@ bool ORmethodExit()
 
 
 #ifdef OR_IMAGE_COMPARISON_SQL
-bool ORmethodCompareTestWithTrain(int dimension, int numberOfTestObjects, string testObjectNameArray[], int imageWidthFacingPoly, int imageHeightFacingPoly, int * numberOfTestPolys, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTestZoomIndicies, int trainOrTest, int testViewNumber)
+bool ORmethodCompareTestWithTrain(int dimension, int numberOfTestObjects, string testObjectNameArray[], int imageWidthFacingPoly, int imageHeightFacingPoly, int* numberOfTestPolys, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTestZoomIndicies, int trainOrTest, int testViewNumber)
 #else
-bool ORmethodCompareTestWithTrain(int dimension, int numberOfTrainObjects, string trainObjectNameArray[], int numberOfTestObjects, string testObjectNameArray[], int imageWidthFacingPoly, int imageHeightFacingPoly, int * numberOfTrainPolys, int * numberOfTestPolys, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, int numberOfTestZoomIndicies, int testViewNumber)
+bool ORmethodCompareTestWithTrain(int dimension, int numberOfTrainObjects, string trainObjectNameArray[], int numberOfTestObjects, string testObjectNameArray[], int imageWidthFacingPoly, int imageHeightFacingPoly, int* numberOfTrainPolys, int* numberOfTestPolys, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, int numberOfTestZoomIndicies, int testViewNumber)
 #endif
 {
 	bool result = true;
@@ -718,7 +718,7 @@ bool ORmethodCompareTestWithTrain(int dimension, int numberOfTrainObjects, strin
 
 
 
-bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameArray[], int objectDataSource, ViewInfo * vi, int imageWidthFacingPoly, int imageHeightFacingPoly, int maxNumberOfPolygons, int numberOfViewIndiciesPerObject, int numberOfViewIndiciesPerObjectWithUniquePolygons, int * numberOfPolys, int trainOrTest, int numberOfZoomIndicies, int viewNumber, string multViewListFileName)
+bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameArray[], int objectDataSource, ViewInfo* vi, int imageWidthFacingPoly, int imageHeightFacingPoly, int maxNumberOfPolygons, int numberOfViewIndiciesPerObject, int numberOfViewIndiciesPerObjectWithUniquePolygons, int* numberOfPolys, int trainOrTest, int numberOfZoomIndicies, int viewNumber, string multViewListFileName)
 {
 	bool result = true;
 
@@ -739,8 +739,8 @@ bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 		string objectSceneFileNameCollapsed = objectNameArray[o] + "CollapsedForRaytracing" + SCENE_FILE_NAME_EXTENSION;
 		string topLevelSceneFileName = objectSceneFileName;
 		string topLevelSceneFileNameCollapsed = objectSceneFileName;
-		Reference * initialReferenceInSceneFile = new Reference();
-		Reference * topLevelReferenceInSceneFile = new Reference(topLevelSceneFileName, 1, true);	//The information in this object is not required or meaningful, but needs to be passed into the parseFile/parseReferenceList recursive function
+		Reference* initialReferenceInSceneFile = new Reference();
+		Reference* topLevelReferenceInSceneFile = new Reference(topLevelSceneFileName, 1, true);	//The information in this object is not required or meaningful, but needs to be passed into the parseFile/parseReferenceList recursive function
 		if(objectDataSource == OR_OBJECT_DATA_SOURCE_GENERATE_DATA)
 		{
 			long time1aALTERNATEODgenerationParseVectorGraphicsFileStart;
@@ -792,10 +792,10 @@ bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 				}
 			}
 
-			Reference * firstReferenceInInterpolatedMesh = new Reference();
-			MeshPoint * firstMeshPointInMeshList = new MeshPoint();
-			Feature * firstFeatureInList = new Feature[numberOfZoomIndicies];
-			PolygonBAI * firstPolygonInList = new PolygonBAI[numberOfZoomIndicies];
+			Reference* firstReferenceInInterpolatedMesh = new Reference();
+			MeshPoint* firstMeshPointInMeshList = new MeshPoint();
+			Feature* firstFeatureInList = new Feature[numberOfZoomIndicies];
+			PolygonBAI* firstPolygonInList = new PolygonBAI[numberOfZoomIndicies];
 
 			for(int multiViewViewIndex = 0; multiViewViewIndex < numberOfViewIndiciesPerObject; multiViewViewIndex++)
 			{
@@ -804,7 +804,7 @@ bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 					cout << "\t\t  multiViewViewIndex = " << multiViewViewIndex << endl;
 				}
 
-				ViewInfo * viMultiView;
+				ViewInfo* viMultiView;
 				int objectDataSourceForThisView = objectDataSource;
 
 				if(objectDataSource == OR_OBJECT_DATA_SOURCE_GENERATE_DATA)
@@ -872,7 +872,7 @@ bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 						{
 							//now find centred features using entire 3Dmesh
 							int sensitivity = 1.0;
-							MeshPoint * firstMeshPointUsedToCalculateCentredFeatures;
+							MeshPoint* firstMeshPointUsedToCalculateCentredFeatures;
 							if(OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
 							{
 								if(OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION)
@@ -945,7 +945,7 @@ bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 						{
 							//now find centred features using entire 2Dmesh
 							int sensitivity = 1.0;
-							MeshPoint * firstMeshPointUsedToCalculateCentredFeatures;
+							MeshPoint* firstMeshPointUsedToCalculateCentredFeatures;
 
 							if(OR_USE_CONTRAST_CALC_METHOD_C)
 							{
@@ -1031,7 +1031,7 @@ bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 				time3NormalisedSnapshotGenerationStart = getTimeAsLong();
 			}
 				//the following is required to be used instead for shapes with rounded edges [eg cylinders] - ie shapes with large numbers of polygons;
-				//void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int imageHeight, double * depthMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3])
+				//void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int imageHeight, double* depthMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3])
 			#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 			if(!generateNormalisedSnapshotsExperienceListUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, firstExperienceInList, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+0*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList))
 			#else
@@ -1098,10 +1098,10 @@ bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 				time1ODgenerationStart = getTimeAsLong();
 			}
 
-			Reference * firstReferenceInInterpolatedMesh = new Reference();
-			MeshPoint * firstMeshPointInMeshList = new MeshPoint();
-			Feature * firstFeatureInList = new Feature[numberOfZoomIndicies];
-			PolygonBAI * firstPolygonInList = new PolygonBAI[numberOfZoomIndicies];
+			Reference* firstReferenceInInterpolatedMesh = new Reference();
+			MeshPoint* firstMeshPointInMeshList = new MeshPoint();
+			Feature* firstFeatureInList = new Feature[numberOfZoomIndicies];
+			PolygonBAI* firstPolygonInList = new PolygonBAI[numberOfZoomIndicies];
 
 			vi->viewUp.x = viviewupInitial + (viewIndex*10);
 
@@ -1199,7 +1199,7 @@ bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 			}
 
 				//the following is required to be used instead for shapes with rounded edges [eg cylinders] - ie shapes with large numbers of polygons;
-				//void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int imageHeight, double * depthMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3])
+				//void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int imageHeight, double* depthMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3])
 			#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 			if(!generateNormalisedSnapshotsExperienceListUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, firstExperienceInList, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+viewIndex*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList))
 			#else
@@ -1260,18 +1260,18 @@ bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 
 
 
-bool createOrAddToInterpolatedMeshAndFeaturesList(Reference * initialReferenceInSceneFile, ViewInfo * vi, Reference * firstReferenceInInterpolatedMesh, MeshPoint * firstMeshPointInMeshList, Feature firstFeatureInList[], int trainOrTest, int viewIndex, string objectName, int dimension, int objectDataSource, int numberOfZoomIndicies, bool useEdgeZeroCrossingMap)
+bool createOrAddToInterpolatedMeshAndFeaturesList(Reference* initialReferenceInSceneFile, ViewInfo* vi, Reference* firstReferenceInInterpolatedMesh, MeshPoint* firstMeshPointInMeshList, Feature firstFeatureInList[], int trainOrTest, int viewIndex, string objectName, int dimension, int objectDataSource, int numberOfZoomIndicies, bool useEdgeZeroCrossingMap)
 {
 	bool result = true;
 
 	int imageWidth = vi->imageWidth;
 	int imageHeight = vi->imageHeight;
 
-	double * pointMap = new double[imageWidth*imageHeight*VEC_MAP_VEC_NUM_DIMENSIONS];	//NOT USED for 2D!
-	unsigned char * rgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
-	double * depthMap = new double[imageWidth*imageHeight];					//NOT USED for 2D!
+	double* pointMap = new double[imageWidth*imageHeight*VEC_MAP_VEC_NUM_DIMENSIONS];	//NOT USED for 2D!
+	unsigned char* rgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
+	double* depthMap = new double[imageWidth*imageHeight];					//NOT USED for 2D!
 
-	MeshPoint * firstMeshPointUsedToCalculateCentredFeatures = NULL;
+	MeshPoint* firstMeshPointUsedToCalculateCentredFeatures = NULL;
 
 	if(!createRGBandPointMap(initialReferenceInSceneFile, pointMap, rgbMap, depthMap, vi, trainOrTest, viewIndex, objectName, dimension, objectDataSource))
 	{
@@ -1288,9 +1288,9 @@ bool createOrAddToInterpolatedMeshAndFeaturesList(Reference * initialReferenceIn
 
 
 #ifndef LINUX
-	MeshPoint ** meshPointArray = new MeshPoint *[imageWidth*imageHeight];
+	MeshPoint** meshPointArray = new MeshPoint* [imageWidth*imageHeight];
 #else
-	MeshPoint * meshPointArray[imageWidth*imageHeight];	//not currently used in ORmethod.cpp - could be used in sub function to enhance efficiency of FD algorithms [contains same MeshPoints as Mesh list]
+	MeshPoint* meshPointArray[imageWidth*imageHeight];	//not currently used in ORmethod.cpp - could be used in sub function to enhance efficiency of FD algorithms [contains same MeshPoints as Mesh list]
 #endif
 	if(OR_METHOD_USE_MESH_LISTS)
 	{
@@ -1328,7 +1328,7 @@ bool createOrAddToInterpolatedMeshAndFeaturesList(Reference * initialReferenceIn
 		}
 	}
 
-	MeshPoint * currentMeshPointInMeshList = firstMeshPointInMeshList;
+	MeshPoint* currentMeshPointInMeshList = firstMeshPointInMeshList;
 
 	#ifdef OR_DEBUG
 	/*
@@ -1363,7 +1363,7 @@ bool createOrAddToInterpolatedMeshAndFeaturesList(Reference * initialReferenceIn
 
 
 
-bool createRGBandPointMap(Reference * initialReferenceInSceneFile, double * pointMap, unsigned char * rgbMap, double * depthMap, ViewInfo * vi, int trainOrTest, int viewIndex, string objectName, int dimension, int objectDataSource)
+bool createRGBandPointMap(Reference* initialReferenceInSceneFile, double* pointMap, unsigned char* rgbMap, double* depthMap, ViewInfo* vi, int trainOrTest, int viewIndex, string objectName, int dimension, int objectDataSource)
 {
 	bool result = true;
 
@@ -1385,24 +1385,24 @@ bool createRGBandPointMap(Reference * initialReferenceInSceneFile, double * poin
 	int imageWidth = vi->imageWidth;
 	int imageHeight = vi->imageHeight;
 
-	double * normalMap = new double[imageWidth*imageHeight*VEC_MAP_VEC_NUM_DIMENSIONS];	//NOT USED for 2D!
-	double * luminosityMap = new double[imageWidth*imageHeight];
-	bool * luminosityBooleanMap = new bool[imageWidth*imageHeight];
-	double * luminosityContrastMap = new double[imageWidth * imageHeight];
-	bool * luminosityContrastBooleanMap = new bool[imageWidth*imageHeight];
-	bool * foregroundDepthCheckLuminosityContrastBooleanMap = new bool[imageWidth*imageHeight];
+	double* normalMap = new double[imageWidth*imageHeight*VEC_MAP_VEC_NUM_DIMENSIONS];	//NOT USED for 2D!
+	double* luminosityMap = new double[imageWidth*imageHeight];
+	bool* luminosityBooleanMap = new bool[imageWidth*imageHeight];
+	double* luminosityContrastMap = new double[imageWidth* imageHeight];
+	bool* luminosityContrastBooleanMap = new bool[imageWidth*imageHeight];
+	bool* foregroundDepthCheckLuminosityContrastBooleanMap = new bool[imageWidth*imageHeight];
 
-	double * depthContrastMap = new double[imageWidth * imageHeight];	//NOT USED FOR 2D!
-	bool * depthContrastBooleanMap = new bool[imageWidth*imageHeight];	//NOT USED FOR 2D!
-	bool * foregroundDepthCheckDepthContrastBooleanMap = new bool[imageWidth*imageHeight];
-	double * depthGradientMap = new double[imageWidth*imageHeight*DEPTH_GRADIENT_MAP_VEC_NUM_DIMENSIONS];	//NOT USED FOR 2D!
-	double * depthGradientContrastMap = new double[imageWidth*imageHeight];		//NOT USED FOR 2D!
-	bool * depthGradientContrastBooleanMap = new bool[imageWidth*imageHeight];		//NOT USED FOR 2D!
-	bool * luminosityContrastMapMinusDepthContrastMap = new bool[imageWidth*imageHeight];	//NOT USED FOR 2D!
+	double* depthContrastMap = new double[imageWidth* imageHeight];	//NOT USED FOR 2D!
+	bool* depthContrastBooleanMap = new bool[imageWidth*imageHeight];	//NOT USED FOR 2D!
+	bool* foregroundDepthCheckDepthContrastBooleanMap = new bool[imageWidth*imageHeight];
+	double* depthGradientMap = new double[imageWidth*imageHeight*DEPTH_GRADIENT_MAP_VEC_NUM_DIMENSIONS];	//NOT USED FOR 2D!
+	double* depthGradientContrastMap = new double[imageWidth*imageHeight];		//NOT USED FOR 2D!
+	bool* depthGradientContrastBooleanMap = new bool[imageWidth*imageHeight];		//NOT USED FOR 2D!
+	bool* luminosityContrastMapMinusDepthContrastMap = new bool[imageWidth*imageHeight];	//NOT USED FOR 2D!
 
-	double * pointNormalMap = new double[imageWidth*imageHeight*VECTOR_NUM_VALUES];		//NOT USED FOR 2D!
-	double * pointNormalContrastMap = new double[imageWidth*imageHeight];			//NOT USED FOR 2D!
-	bool * pointNormalContrastBooleanMap = new bool[imageWidth*imageHeight];		//NOT USED FOR 2D!
+	double* pointNormalMap = new double[imageWidth*imageHeight*VECTOR_NUM_VALUES];		//NOT USED FOR 2D!
+	double* pointNormalContrastMap = new double[imageWidth*imageHeight];			//NOT USED FOR 2D!
+	bool* pointNormalContrastBooleanMap = new bool[imageWidth*imageHeight];		//NOT USED FOR 2D!
 
 	if(objectDataSource == OR_OBJECT_DATA_SOURCE_PREEXISTING_DATA)
 	{
@@ -1450,7 +1450,7 @@ bool createRGBandPointMap(Reference * initialReferenceInSceneFile, double * poin
 		system(convertPNGtoPPMCommand.c_str());
 
 
-		pixmap * rgbPixMap;
+		pixmap* rgbPixMap;
 		if(OR_PRINT_ALGORITHM_PROGRESS)
 		{
 			cout << "rgbPixMap = loadPPM(" << rgbMapFileName << ");" << endl;
@@ -1528,7 +1528,7 @@ bool createRGBandPointMap(Reference * initialReferenceInSceneFile, double * poin
 		}
 		system(convertPNGtoPPMCommand.c_str());
 
-		pixmap * rgbPixMap;
+		pixmap* rgbPixMap;
 		if(OR_PRINT_ALGORITHM_PROGRESS)
 		{
 			cout << "rgbPixMap = loadPPM(" << rgbMapFileName << ");" << endl;
@@ -1569,7 +1569,7 @@ bool createRGBandPointMap(Reference * initialReferenceInSceneFile, double * poin
 			system(convertPNGtoPPMCommand.c_str());
 
 
-			pixmap * depth24BitPixMap;
+			pixmap* depth24BitPixMap;
 			if(OR_PRINT_ALGORITHM_PROGRESS)
 			{
 				cout << "depth24BitPixMap = loadPPM(" << depthMap24BitFileName << ");" << endl;
@@ -1632,10 +1632,10 @@ bool createRGBandPointMap(Reference * initialReferenceInSceneFile, double * poin
 		}
 
 		string interpolatedMapFileNameForRayTracingTAL = mapFileName + trainOrTestString + TAL_EXTENSION;
-		/* //TEMP REPLACED FOR DEBUG
+		/*//TEMP REPLACED FOR DEBUG
 		string interpolatedMapFileNameForRayTracingTAL = mapFileName + TAL_EXTENSION;
 		*/
-		char * charstarinterpolatedMapFileNameForRayTracingTAL = const_cast<char*>(interpolatedMapFileNameForRayTracingTAL.c_str());
+		char* charstarinterpolatedMapFileNameForRayTracingTAL = const_cast<char*>(interpolatedMapFileNameForRayTracingTAL.c_str());
 
 
 
@@ -1797,7 +1797,7 @@ bool createRGBandPointMap(Reference * initialReferenceInSceneFile, double * poin
 
 
 
-bool createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMap(double * pointMap, unsigned char * rgbMap, Reference * firstReferenceInInterpolatedMesh, ViewInfo * vi, string objectName, int trainOrTest, int dimension, int viewIndex)
+bool createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMap(double* pointMap, unsigned char* rgbMap, Reference* firstReferenceInInterpolatedMesh, ViewInfo* vi, string objectName, int trainOrTest, int dimension, int viewIndex)
 {
 	bool result = true;
 
@@ -1822,16 +1822,16 @@ bool createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMap(double * poin
 	int imageHeight = vi->imageHeight;
 
 
-	double * pointMapInterpolated = new double[(imageWidth+1)*(imageHeight+1)*VEC_MAP_VEC_NUM_DIMENSIONS];	//NOT USED FOR 2D!
+	double* pointMapInterpolated = new double[(imageWidth+1)*(imageHeight+1)*VEC_MAP_VEC_NUM_DIMENSIONS];	//NOT USED FOR 2D!
 
 	//set reference to last reference in list [so as to add references onto reference list];
-	Reference * currentReferenceInList = firstReferenceInInterpolatedMesh;
+	Reference* currentReferenceInList = firstReferenceInInterpolatedMesh;
 	while(currentReferenceInList->next != NULL)
 	{
 		//cout << "currentReferenceInList->name = " << currentReferenceInList->name << endl;
 		currentReferenceInList = currentReferenceInList->next;
 	}
-	Reference * firstNewReferenceInList = currentReferenceInList;
+	Reference* firstNewReferenceInList = currentReferenceInList;
 
 
 	if(dimension == OR_METHOD3DOD_DIMENSIONS)
@@ -1876,7 +1876,7 @@ bool createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMap(double * poin
 
 	string interpolatedMeshFileName = objectName + "interpolatedMesh";
 	string interpolatedMeshFileNameLDR = interpolatedMeshFileName + trainOrTestString + SCENE_FILE_NAME_EXTENSION;
-	char * charstarinterpolatedMeshFileNameLDR = const_cast<char*>(interpolatedMeshFileNameLDR.c_str());
+	char* charstarinterpolatedMeshFileNameLDR = const_cast<char*>(interpolatedMeshFileNameLDR.c_str());
 
 
 	//add map to reference list
@@ -1899,9 +1899,9 @@ static int interpolatedMeshPointUsageSelection[4][2];
 
 
 #define MIN_NUMBER_OF_POINTS_TO_CREATE_INTERPOLATED_POINT (2)
-Reference * convertMeshPointToReferences3DOD(MeshPoint * currentMeshPointInMeshList, Reference * firstNewReferenceInInterpolatedMesh)
+Reference* convertMeshPointToReferences3DOD(MeshPoint* currentMeshPointInMeshList, Reference* firstNewReferenceInInterpolatedMesh)
 {
-	Reference * currentReferenceInInterpolatedMesh = firstNewReferenceInInterpolatedMesh;
+	Reference* currentReferenceInInterpolatedMesh = firstNewReferenceInInterpolatedMesh;
 
 	vec nullPointVector;
 	nullPointVector.x = 0.0;
@@ -1999,7 +1999,7 @@ Reference * convertMeshPointToReferences3DOD(MeshPoint * currentMeshPointInMeshL
 				*/
 				#endif
 
-				Reference * newReference = new Reference();
+				Reference* newReference = new Reference();
 				currentReferenceInInterpolatedMesh->next = newReference;
 				currentReferenceInInterpolatedMesh = currentReferenceInInterpolatedMesh->next;
 			}
@@ -2010,9 +2010,9 @@ Reference * convertMeshPointToReferences3DOD(MeshPoint * currentMeshPointInMeshL
 }
 
 
-Reference * convertMeshPointToReferences2DOD(MeshPoint * currentMeshPointInMeshList, Reference * firstNewReferenceInInterpolatedMesh)
+Reference* convertMeshPointToReferences2DOD(MeshPoint* currentMeshPointInMeshList, Reference* firstNewReferenceInInterpolatedMesh)
 {
-	Reference * currentReferenceInInterpolatedMesh = firstNewReferenceInInterpolatedMesh;
+	Reference* currentReferenceInInterpolatedMesh = firstNewReferenceInInterpolatedMesh;
 
 	vec v1;
 	vec v2;
@@ -2084,7 +2084,7 @@ Reference * convertMeshPointToReferences2DOD(MeshPoint * currentMeshPointInMeshL
 	*/
 	#endif
 
-	Reference * newReference = new Reference();
+	Reference* newReference = new Reference();
 	currentReferenceInInterpolatedMesh->next = newReference;
 	currentReferenceInInterpolatedMesh = currentReferenceInInterpolatedMesh->next;
 
@@ -2095,7 +2095,7 @@ Reference * convertMeshPointToReferences2DOD(MeshPoint * currentMeshPointInMeshL
 
 
 
-bool createInterpolatedMeshReferenceListUsingMeshList(MeshPoint * firstMeshPointInMeshList, Reference * firstReferenceInInterpolatedMesh, ViewInfo * vi, string objectName, int trainOrTest, int dimension)
+bool createInterpolatedMeshReferenceListUsingMeshList(MeshPoint* firstMeshPointInMeshList, Reference* firstReferenceInInterpolatedMesh, ViewInfo* vi, string objectName, int trainOrTest, int dimension)
 {
 	bool result = true;
 
@@ -2145,8 +2145,8 @@ bool createInterpolatedMeshReferenceListUsingMeshList(MeshPoint * firstMeshPoint
 	int imageWidth = vi->imageWidth;
 	int imageHeight = vi->imageHeight;
 
-	MeshPoint * currentMeshPointInMeshList = firstMeshPointInMeshList;
-	Reference * currentReferenceInInterpolatedMesh = firstReferenceInInterpolatedMesh;
+	MeshPoint* currentMeshPointInMeshList = firstMeshPointInMeshList;
+	Reference* currentReferenceInInterpolatedMesh = firstReferenceInInterpolatedMesh;
 
 	while(currentMeshPointInMeshList->next != NULL)
 	{
@@ -2186,7 +2186,7 @@ bool createInterpolatedMeshReferenceListUsingMeshList(MeshPoint * firstMeshPoint
 
 	string interpolatedMeshFileName = objectName + "interpolatedMesh";
 	string interpolatedMeshFileNameLDR = interpolatedMeshFileName + trainOrTestString + SCENE_FILE_NAME_EXTENSION;
-	char * charstarinterpolatedMeshFileNameLDR = const_cast<char*>(interpolatedMeshFileNameLDR.c_str());
+	char* charstarinterpolatedMeshFileNameLDR = const_cast<char*>(interpolatedMeshFileNameLDR.c_str());
 
 
 	//add map to reference list
@@ -2203,7 +2203,7 @@ bool createInterpolatedMeshReferenceListUsingMeshList(MeshPoint * firstMeshPoint
 
 
 
-void printInterpolatedMeshReferenceList(Reference * firstReferenceInInterpolatedMesh, ViewInfo * vi, string objectName, int trainOrTest, int dimension, int viewIndex)
+void printInterpolatedMeshReferenceList(Reference* firstReferenceInInterpolatedMesh, ViewInfo* vi, string objectName, int trainOrTest, int dimension, int viewIndex)
 {
 	//ray trace interpolated map at new eye position;
 
@@ -2231,10 +2231,10 @@ void printInterpolatedMeshReferenceList(Reference * firstReferenceInInterpolated
 	string TEMPinterpolatedRGBMapFileNameForRayTracingPPMContrast = TEMPinterpolatedRGBMapFileNameForRayTracing + LUMINOSITY_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 
 
-	char * TEMPcharstarinterpolatedMapFileNameForRayTracingTAL = const_cast<char*>(TEMPinterpolatedMapFileNameForRayTracingTAL.c_str());
-	char * TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMRGB = const_cast<char*>(TEMPinterpolatedRGBMapFileNameForRayTracingPPMRGB.c_str());
-	char * TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMLuminosity = const_cast<char*>(TEMPinterpolatedRGBMapFileNameForRayTracingPPMLuminosity.c_str());
-	char * TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMContrast = const_cast<char*>(TEMPinterpolatedRGBMapFileNameForRayTracingPPMContrast.c_str());
+	char* TEMPcharstarinterpolatedMapFileNameForRayTracingTAL = const_cast<char*>(TEMPinterpolatedMapFileNameForRayTracingTAL.c_str());
+	char* TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMRGB = const_cast<char*>(TEMPinterpolatedRGBMapFileNameForRayTracingPPMRGB.c_str());
+	char* TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMLuminosity = const_cast<char*>(TEMPinterpolatedRGBMapFileNameForRayTracingPPMLuminosity.c_str());
+	char* TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMContrast = const_cast<char*>(TEMPinterpolatedRGBMapFileNameForRayTracingPPMContrast.c_str());
 
 
 
@@ -2314,7 +2314,7 @@ void printInterpolatedMeshReferenceList(Reference * firstReferenceInInterpolated
 }
 
 
-bool createOrAddPointsToFeaturesList(double * pointMap, unsigned char * rgbMap, double * depthMap, Feature firstFeatureInList[], ViewInfo * vi, int trainOrTest, int viewIndex, string objectName, int dimension, int numberOfZoomIndicies, MeshPoint * firstMeshPointInMeshList, MeshPoint * meshPointArray[], bool useEdgeZeroCrossingMap)
+bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, double* depthMap, Feature firstFeatureInList[], ViewInfo* vi, int trainOrTest, int viewIndex, string objectName, int dimension, int numberOfZoomIndicies, MeshPoint* firstMeshPointInMeshList, MeshPoint* meshPointArray[], bool useEdgeZeroCrossingMap)
 {
 	bool result = true;
 
@@ -2390,18 +2390,18 @@ bool createOrAddPointsToFeaturesList(double * pointMap, unsigned char * rgbMap, 
 
 		//#ifdef OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION
 			//#ifdef OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST
-			double * pointNormalMap = new double[imageWidth*imageHeight*VECTOR_NUM_VALUES];
-			double * pointNormalContrastMap = new double[imageWidth*imageHeight];
+			double* pointNormalMap = new double[imageWidth*imageHeight*VECTOR_NUM_VALUES];
+			double* pointNormalContrastMap = new double[imageWidth*imageHeight];
 			//must use contrast maps with heitger here - check these work - ie points are detected by heitger on lines of contrast
 			createPointNormalMapFromPointMap(imageWidth, imageHeight, pointMap, pointNormalMap);
 			createPointNormalContrastMapFromPointNormalMap(imageWidth, imageHeight, pointNormalMap, pointNormalContrastMap);
-			unsigned char * pointNormalContrastMapConvertedToRgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
+			unsigned char* pointNormalContrastMapConvertedToRgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
 			generateRGBmapFromPointNormalContrastMap(imageWidth, imageHeight, pointNormalContrastMap, pointNormalContrastMapConvertedToRgbMap);
 			//#else
-			double * depthGradientMap = new double[imageWidth*imageHeight*DEPTH_GRADIENT_MAP_VEC_NUM_DIMENSIONS];	//NOT USED FOR 2D!
+			double* depthGradientMap = new double[imageWidth*imageHeight*DEPTH_GRADIENT_MAP_VEC_NUM_DIMENSIONS];	//NOT USED FOR 2D!
 			createDepthGradientMapFromDepthMap(imageWidth, imageHeight, depthMap, depthGradientMap);
-			unsigned char * depthMapConvertedToRgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
-			unsigned char * depthGradientMapConvertedToRgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
+			unsigned char* depthMapConvertedToRgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
+			unsigned char* depthGradientMapConvertedToRgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
 			generateRGBMapFromDepthMapOrDepthContrastMap(imageWidth, imageHeight, depthMap, depthMapConvertedToRgbMap);
 			generateRGBmapFromDepthGradientMap(imageWidth, imageHeight, depthGradientMap, depthGradientMapConvertedToRgbMap);		//will not work properly in a single special case; ie where there is an equal and opposite depth change in both x and y [because this will result in an equal and opposite r and b change, and the heitger feature detection only works with luminosity, r + g]
 			//#endif
@@ -2411,20 +2411,20 @@ bool createOrAddPointsToFeaturesList(double * pointMap, unsigned char * rgbMap, 
 
 		//#ifdef OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION
 			//#ifndef OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST
-			double * depthContrastMap = new double[imageWidth * imageHeight];
-			double * depthGradientContrastMap = new double[imageWidth*imageHeight];
+			double* depthContrastMap = new double[imageWidth* imageHeight];
+			double* depthGradientContrastMap = new double[imageWidth*imageHeight];
 			#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS_OLD
-			bool * depthContrastBooleanMap = new bool[imageWidth*imageHeight];
-			bool * foregroundDepthCheckDepthContrastBooleanMap = new bool[imageWidth*imageHeight];
+			bool* depthContrastBooleanMap = new bool[imageWidth*imageHeight];
+			bool* foregroundDepthCheckDepthContrastBooleanMap = new bool[imageWidth*imageHeight];
 			#endif
 			//#endif
 		//#else
 
-			double * luminosityMap = new double[imageWidth * imageHeight];
-			double * luminosityContrastMap = new double[imageWidth * imageHeight];
+			double* luminosityMap = new double[imageWidth* imageHeight];
+			double* luminosityContrastMap = new double[imageWidth* imageHeight];
 			#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS_OLD
-			bool * luminosityContrastBooleanMap = new bool[imageWidth*imageHeight];
-			bool * foregroundDepthCheckLuminosityhContrastBooleanMap = new bool[imageWidth*imageHeight];
+			bool* luminosityContrastBooleanMap = new bool[imageWidth*imageHeight];
+			bool* foregroundDepthCheckLuminosityhContrastBooleanMap = new bool[imageWidth*imageHeight];
 			#endif
 		//#endif
 
@@ -2577,16 +2577,16 @@ bool createOrAddPointsToFeaturesList(double * pointMap, unsigned char * rgbMap, 
 			else
 			{//now scale the maps before performing feature detection
 
-				unsigned char * rgbMapResampled = new unsigned char[resampledWidth*resampledHeight*RGB_NUM];
+				unsigned char* rgbMapResampled = new unsigned char[resampledWidth*resampledHeight*RGB_NUM];
 				resampleRGBmap(rgbMap, imageWidth, imageHeight, rgbMapResampled, zoom, OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_OFF);
 
 			//#ifdef OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION
 				//#ifdef OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST
-				unsigned char * pointNormalContrastMapConvertedToRgbMapResampled = new unsigned char[resampledWidth*resampledHeight*RGB_NUM];
+				unsigned char* pointNormalContrastMapConvertedToRgbMapResampled = new unsigned char[resampledWidth*resampledHeight*RGB_NUM];
 				resampleRGBmap(pointNormalContrastMapConvertedToRgbMap, imageWidth, imageHeight, pointNormalContrastMapConvertedToRgbMapResampled, zoom, OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_OFF);
 				//#else
-				unsigned char * depthMapConvertedToRgbMapResampled = new unsigned char[resampledWidth*resampledHeight*RGB_NUM];
-				unsigned char * depthGradientMapConvertedToRgbMapResampled = new unsigned char[resampledWidth*resampledHeight*RGB_NUM];
+				unsigned char* depthMapConvertedToRgbMapResampled = new unsigned char[resampledWidth*resampledHeight*RGB_NUM];
+				unsigned char* depthGradientMapConvertedToRgbMapResampled = new unsigned char[resampledWidth*resampledHeight*RGB_NUM];
 				resampleRGBmap(depthMapConvertedToRgbMap, imageWidth, imageHeight, depthMapConvertedToRgbMapResampled, zoom, OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_OFF);
 				resampleRGBmap(depthGradientMapConvertedToRgbMap, imageWidth, imageHeight, depthGradientMapConvertedToRgbMapResampled, zoom, OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_OFF);
 				//#endif
@@ -2599,16 +2599,16 @@ bool createOrAddPointsToFeaturesList(double * pointMap, unsigned char * rgbMap, 
 		//#ifndef OR_METHOD_USE_MESH_LISTS
 			//#ifdef OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION
 				//#ifdef OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST
-				double * pointNormalMapResampled = new double[resampledWidth*resampledHeight*VECTOR_NUM_VALUES];
-				double * pointNormalContrastMapResampled = new double[resampledWidth*resampledHeight];
+				double* pointNormalMapResampled = new double[resampledWidth*resampledHeight*VECTOR_NUM_VALUES];
+				double* pointNormalContrastMapResampled = new double[resampledWidth*resampledHeight];
 				//#else
-				double * depthContrastMapResampled = new double[resampledWidth * resampledHeight];
-				double * depthGradientContrastMapResampled = new double[resampledWidth*resampledHeight];
+				double* depthContrastMapResampled = new double[resampledWidth* resampledHeight];
+				double* depthGradientContrastMapResampled = new double[resampledWidth*resampledHeight];
 				//#endif
 			//#else
 
-				double * luminosityMapResampled = new double[resampledWidth * resampledHeight];
-				double * luminosityContrastMapResampled = new double[resampledWidth * resampledHeight];
+				double* luminosityMapResampled = new double[resampledWidth* resampledHeight];
+				double* luminosityContrastMapResampled = new double[resampledWidth* resampledHeight];
 			//#endif
 		//#endif
 	//#endif
@@ -2655,7 +2655,7 @@ bool createOrAddPointsToFeaturesList(double * pointMap, unsigned char * rgbMap, 
 
 
 				string resampledRGBMapFileName = mapFileNameWithZoom + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//FEATUREMAP_PPM_EXTENSION_PART
-				char * resampledRGBAtDesiredzoomCharFileName = const_cast<char*>(resampledRGBMapFileName.c_str());
+				char* resampledRGBAtDesiredzoomCharFileName = const_cast<char*>(resampledRGBMapFileName.c_str());
 				generatePixmapFromRGBmap(resampledRGBAtDesiredzoomCharFileName, resampledWidth, resampledHeight, rgbMapResampled);
 				if(OR_PRINT_ALGORITHM_PROGRESS)
 				{
@@ -2844,8 +2844,8 @@ bool createOrAddPointsToFeaturesList(double * pointMap, unsigned char * rgbMap, 
 					}
 					else
 					{
-						double * luminosityMap = new double[imageWidth * imageHeight];
-						double * luminosityContrastMap = new double[imageWidth * imageHeight];
+						double* luminosityMap = new double[imageWidth* imageHeight];
+						double* luminosityContrastMap = new double[imageWidth* imageHeight];
 						createLuminosityMapFromRGBMap(imageWidth, imageHeight, rgbMap, luminosityMap);
 						createContrastMapFromMap(imageWidth, imageHeight, luminosityMap, luminosityContrastMap);
 						if(!addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, luminosityContrastMap, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
@@ -2861,11 +2861,11 @@ bool createOrAddPointsToFeaturesList(double * pointMap, unsigned char * rgbMap, 
 			else
 			{
 
-				unsigned char * rgbMapResampled = new unsigned char[resampledWidth*resampledHeight*RGB_NUM];
+				unsigned char* rgbMapResampled = new unsigned char[resampledWidth*resampledHeight*RGB_NUM];
 				resampleRGBmap(rgbMap, imageWidth, imageHeight, rgbMapResampled, zoom, OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_OFF);
 
 				string resampledRGBMapFileName = mapFileNameWithZoom + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-				char * resampledRGBAtDesiredzoomCharFileName = const_cast<char*>(resampledRGBMapFileName.c_str());
+				char* resampledRGBAtDesiredzoomCharFileName = const_cast<char*>(resampledRGBMapFileName.c_str());
 				generatePixmapFromRGBmap(resampledRGBAtDesiredzoomCharFileName, resampledWidth, resampledHeight, rgbMapResampled);
 				if(OR_PRINT_ALGORITHM_PROGRESS)
 				{
@@ -2887,8 +2887,8 @@ bool createOrAddPointsToFeaturesList(double * pointMap, unsigned char * rgbMap, 
 				{
 					if(!OR_METHOD_USE_MESH_LISTS)
 					{
-						double * luminosityMapResampled = new double[resampledWidth * resampledHeight];
-						double * luminosityContrastMapResampled = new double[resampledWidth * resampledHeight];
+						double* luminosityMapResampled = new double[resampledWidth* resampledHeight];
+						double* luminosityContrastMapResampled = new double[resampledWidth* resampledHeight];
 						createLuminosityMapFromRGBMap(resampledWidth, resampledHeight, rgbMapResampled, luminosityMapResampled);
 						createContrastMapFromMap(resampledWidth, resampledHeight, luminosityMapResampled, luminosityContrastMapResampled);
 						if(!addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), resampledWidth, resampledHeight, luminosityContrastMapResampled, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
@@ -2915,7 +2915,7 @@ bool createOrAddPointsToFeaturesList(double * pointMap, unsigned char * rgbMap, 
 
 		if(OR_PRINT_ALGORITHM_PROGRESS)
 		{
-			Feature * currentFeatureInList = &(firstFeatureInList[zoomIndex]);
+			Feature* currentFeatureInList = &(firstFeatureInList[zoomIndex]);
 			int numberOfFeatures = 0;
 			while(currentFeatureInList->next != NULL)
 			{
@@ -2926,7 +2926,7 @@ bool createOrAddPointsToFeaturesList(double * pointMap, unsigned char * rgbMap, 
 			cout << "numberOfFeatures at zoom " << zoom << " = " << numberOfFeatures << endl;
 		}
 
-		bool * featuresMapCompleteOfficial = new bool[resampledWidth*resampledHeight];
+		bool* featuresMapCompleteOfficial = new bool[resampledWidth*resampledHeight];
 		generateBooleanMapFromFeatureList(resampledWidth, resampledHeight, &(firstFeatureInList[zoomIndex]), featuresMapCompleteOfficial, vi, zoom);
 		string featuresMapCompleteOfficialFileName = mapFileNameWithZoom + FEATURESMAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 		generatePixmapFromBooleanMap(featuresMapCompleteOfficialFileName, resampledWidth, resampledHeight, featuresMapCompleteOfficial);
@@ -2958,11 +2958,11 @@ bool createOrAddPointsToFeaturesList(double * pointMap, unsigned char * rgbMap, 
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
 
-bool checkIfFeatureContainerWithSameFeatureIndiciesExists(FeatureContainer * firstFeatureContainerInBestMatchList, FeatureContainer * currentFeatureContainerInMatchListcurrentFeatureContainerInMatchList)
+bool checkIfFeatureContainerWithSameFeatureIndiciesExists(FeatureContainer* firstFeatureContainerInBestMatchList, FeatureContainer* currentFeatureContainerInMatchListcurrentFeatureContainerInMatchList)
 {
 	bool exists = false;
 
-	FeatureContainer * currentFeatureContainerInBestMatchList = firstFeatureContainerInBestMatchList;
+	FeatureContainer* currentFeatureContainerInBestMatchList = firstFeatureContainerInBestMatchList;
 
 	while(currentFeatureContainerInBestMatchList->next != NULL)
 	{
@@ -2984,7 +2984,7 @@ bool checkIfFeatureContainerWithSameFeatureIndiciesExists(FeatureContainer * fir
 #endif
 
 
-bool addCornerFeaturesToFeatureListUsingRGBmap(ViewInfo * vi, unsigned char * rgbMap, Feature * firstFeatureInList, int trainOrTest, string mapFileName, double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, bool interpixelRGBmapType)
+bool addCornerFeaturesToFeatureListUsingRGBmap(ViewInfo* vi, unsigned char* rgbMap, Feature* firstFeatureInList, int trainOrTest, string mapFileName, double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, bool interpixelRGBmapType)
 {
 	char currentTempFolder[EXE_FOLDER_PATH_MAX_LENGTH];
 	getCurrentDirectory(currentTempFolder);
@@ -2992,12 +2992,12 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(ViewInfo * vi, unsigned char * rg
 	bool result = true;
 
 	//added by RBB 3 Oct 09
-	Feature * currentFeatureInList = firstFeatureInList;
+	Feature* currentFeatureInList = firstFeatureInList;
 	while(currentFeatureInList->next != NULL)
 	{
 		currentFeatureInList = currentFeatureInList->next;
 	}
-	Feature * firstNewFeatureInList = currentFeatureInList;
+	Feature* firstNewFeatureInList = currentFeatureInList;
 
 
 	string trainOrTestString;
@@ -3030,18 +3030,18 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(ViewInfo * vi, unsigned char * rg
 
 	string rgbMapFileName = mapFileName + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 	string featureMapFileName = mapFileName + FEATUREMAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-	unsigned char * featureRgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
+	unsigned char* featureRgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
 
 
 	#ifdef TEMP_TEST_HEITGER_FEATURE_THRESHOLD_IMAGE_SIZE_DEPENDENCE
 
 		string featureMapFileNameTEMP = mapFileName + FEATUREMAP_PPM_EXTENSION_PART + trainOrTestString + "TEMP" + PPM_EXTENSION;
-		char * charstarfeatureMapTEMPFileName = const_cast<char*>(featureMapFileNameTEMP.c_str());
-		unsigned char * featureRgbMapTEMP = new unsigned char[1600*800*RGB_NUM];
+		char* charstarfeatureMapTEMPFileName = const_cast<char*>(featureMapFileNameTEMP.c_str());
+		unsigned char* featureRgbMapTEMP = new unsigned char[1600*800*RGB_NUM];
 
 		string rgbMapFileNameTEMP = mapFileName + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + "TEMP" + PPM_EXTENSION;
-		char * charstarRgbMapTEMPFileName = const_cast<char*>(rgbMapFileNameTEMP.c_str());
-		unsigned char * rgbMapTEMP = new unsigned char[1600*800*RGB_NUM];
+		char* charstarRgbMapTEMPFileName = const_cast<char*>(rgbMapFileNameTEMP.c_str());
+		unsigned char* rgbMapTEMP = new unsigned char[1600*800*RGB_NUM];
 
 		colour black;
 		black.r = 0;
@@ -3102,7 +3102,7 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(ViewInfo * vi, unsigned char * rg
 		cout << "system(" << convertFeatureRAStoFeaturePPMCommand << ");" << endl;
 	}
 	system(convertFeatureRAStoFeaturePPMCommand.c_str());
-	pixmap * featurePixMap;
+	pixmap* featurePixMap;
 	if(OR_PRINT_ALGORITHM_PROGRESS)
 	{
 		cout << "featurePixMapTrain = loadPPM(" << featureMapFileName << ");" << endl;
@@ -3147,7 +3147,7 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(ViewInfo * vi, unsigned char * rg
 			cout << "system(" << convertFeatureRAStoFeatureAsciiCommand << ");" << endl;
 		}
 		system(convertFeatureRAStoFeatureAsciiCommand.c_str());
-		generateFeatureListFromHeitgerFeatureAsciiMap(firstNewFeatureInList, featureMapFileNameAscii, zoom, ViewInfo * vi);
+		generateFeatureListFromHeitgerFeatureAsciiMap(firstNewFeatureInList, featureMapFileNameAscii, zoom, ViewInfo* vi);
 
 	#else
 		#ifdef USE_RBB_QUADRATIC_FIT_KEYPOINT_GENERATION
@@ -3168,7 +3168,7 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(ViewInfo * vi, unsigned char * rg
 		#endif
 	#endif
 #else
-	//unsigned char * featureRgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
+	//unsigned char* featureRgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
 	generateFeatureListFromRGBMap(firstFeatureInList, rgbMap, imageWidth, imageHeight, zoom, trainOrTestString, mapFileName, dimension, pointMap, depthMap, vi);
 
 #endif
@@ -3184,9 +3184,9 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(ViewInfo * vi, unsigned char * rg
 
 	//this code assumes Test Plan 1; a) no parallax processing and b) all virtual [no real life data]
 #ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
-bool generateNormalisedSnapshotsExperienceListUsingPolyList(Reference * firstReferenceInInterpolatedMesh, PolygonBAI * firstPolygonInList, int imageWidthFacingPoly, int imageHeightFacingPoly, int maxNumberOfPolygonsTrainOrTest, Experience * firstExperienceInList, int * numberOfTrainOrTestPolys, int trainOrTest, int viewIndex, string objectName, int dimension, Feature * firstFeatureInList)
+bool generateNormalisedSnapshotsExperienceListUsingPolyList(Reference* firstReferenceInInterpolatedMesh, PolygonBAI* firstPolygonInList, int imageWidthFacingPoly, int imageHeightFacingPoly, int maxNumberOfPolygonsTrainOrTest, Experience* firstExperienceInList, int* numberOfTrainOrTestPolys, int trainOrTest, int viewIndex, string objectName, int dimension, Feature* firstFeatureInList)
 #else
-bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterpolatedMesh, PolygonBAI firstPolygonInList[], int imageWidthFacingPoly, int imageHeightFacingPoly, int maxNumberOfPolygonsTrainOrTest, int numberOfTrainOrTestPolys[], int trainOrTest, int viewIndex, string objectName, int dimension, Feature * firstFeatureInList, int numberOfZoomIndicies)
+bool generateNormalisedSnapshotsUsingPolyList(Reference* firstReferenceInInterpolatedMesh, PolygonBAI firstPolygonInList[], int imageWidthFacingPoly, int imageHeightFacingPoly, int maxNumberOfPolygonsTrainOrTest, int numberOfTrainOrTestPolys[], int trainOrTest, int viewIndex, string objectName, int dimension, Feature* firstFeatureInList, int numberOfZoomIndicies)
 #endif
 {
 	bool generatePixmapFiles = false;
@@ -3342,70 +3342,70 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 	}
 	#endif
 
-	unsigned char * rgbMapUncroppedFacingPoly = new unsigned char[uncroppedWidth*uncroppedHeight*RGB_NUM];
- 	unsigned char * rgbMapFacingPoly = new unsigned char[imageWidthFacingPoly*imageHeightFacingPoly*RGB_NUM];
+	unsigned char* rgbMapUncroppedFacingPoly = new unsigned char[uncroppedWidth*uncroppedHeight*RGB_NUM];
+ 	unsigned char* rgbMapFacingPoly = new unsigned char[imageWidthFacingPoly*imageHeightFacingPoly*RGB_NUM];
 
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_GAUSSIAN_PREPROCESSOR_METHOD1
-	unsigned char * rgbMapFacingPolyWithGaussianApplied = new unsigned char[(imageWidthFacingPoly+(OR_IMAGE_COMPARISON_DECISION_TREE_GAUSSIAN_KERNEL_SIZE/2))*(imageHeightFacingPoly+(OR_IMAGE_COMPARISON_DECISION_TREE_GAUSSIAN_KERNEL_SIZE/2))*RGB_NUM];
-	unsigned char * rgbMapFacingPolyWithGaussianAppliedCropped = new unsigned char[imageWidthFacingPoly*imageHeightFacingPoly*RGB_NUM];
+	unsigned char* rgbMapFacingPolyWithGaussianApplied = new unsigned char[(imageWidthFacingPoly+(OR_IMAGE_COMPARISON_DECISION_TREE_GAUSSIAN_KERNEL_SIZE/2))*(imageHeightFacingPoly+(OR_IMAGE_COMPARISON_DECISION_TREE_GAUSSIAN_KERNEL_SIZE/2))*RGB_NUM];
+	unsigned char* rgbMapFacingPolyWithGaussianAppliedCropped = new unsigned char[imageWidthFacingPoly*imageHeightFacingPoly*RGB_NUM];
 	#endif
 
-	double * rgbDevIEnormalisedHueContrastMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly*VEC_MAP_VEC_NUM_DIMENSIONS];
+	double* rgbDevIEnormalisedHueContrastMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly*VEC_MAP_VEC_NUM_DIMENSIONS];
 //#ifdef OR_METHOD_USE_SMALL_IMAGE_FIRST_COMPARISON
 	int smallImageWidth = imageWidthFacingPoly/smallImageRatio;
 	int smallImageHeight = imageHeightFacingPoly/smallImageRatio;
- 	unsigned char * rgbMapSmallFacingPoly = new unsigned char[smallImageWidth*smallImageHeight*RGB_NUM];
+ 	unsigned char* rgbMapSmallFacingPoly = new unsigned char[smallImageWidth*smallImageHeight*RGB_NUM];
 	//#ifdef OR_METHOD_3DOD_USE_SNAPSHOT_DEPTH_MAPS
 	#ifdef OR_METHOD_3DOD_USE_SNAPSHOT_DEPTH_MAPS_ADVANCED_RESAMPLING
-	double * depthMapSmallFacingPoly = new double[smallImageWidth*smallImageHeight];
+	double* depthMapSmallFacingPoly = new double[smallImageWidth*smallImageHeight];
 	#else
-	unsigned char * tempDepthRGBMapFacingPoly = new unsigned char[imageWidthFacingPoly*imageHeightFacingPoly*RGB_NUM];
- 	unsigned char * depthRGBMapSmallFacingPoly = new unsigned char[smallImageWidth*smallImageHeight];
+	unsigned char* tempDepthRGBMapFacingPoly = new unsigned char[imageWidthFacingPoly*imageHeightFacingPoly*RGB_NUM];
+ 	unsigned char* depthRGBMapSmallFacingPoly = new unsigned char[smallImageWidth*smallImageHeight];
 	#endif
 	//#endif
 	//#ifdef OR_IMAGE_COMPARISON_SMALL_HUE_DEV_MAP_COMPARISON
-	double * rgbDevIEnormalisedHueContrastMapSmallFacingPoly = new double[smallImageWidth*smallImageHeight*VEC_MAP_VEC_NUM_DIMENSIONS];
-	unsigned char * rgbDev8BitSmallMapFacingPoly = new unsigned char[smallImageWidth*smallImageHeight*RGB_NUM];
+	double* rgbDevIEnormalisedHueContrastMapSmallFacingPoly = new double[smallImageWidth*smallImageHeight*VEC_MAP_VEC_NUM_DIMENSIONS];
+	unsigned char* rgbDev8BitSmallMapFacingPoly = new unsigned char[smallImageWidth*smallImageHeight*RGB_NUM];
 	//#endif
 //#endif
 
 //#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
-	signed char * dctCoeffArrayY = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
-	signed char * dctCoeffArrayYcr = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
-	signed char * dctCoeffArrayYcb = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
-	signed char * dctCoeffArrayYDummy = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
-	signed char * dctCoeffArrayYCrDummy = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
-	signed char * dctCoeffArrayYCbDummy = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
+	signed char* dctCoeffArrayY = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
+	signed char* dctCoeffArrayYcr = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
+	signed char* dctCoeffArrayYcb = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
+	signed char* dctCoeffArrayYDummy = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
+	signed char* dctCoeffArrayYCrDummy = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
+	signed char* dctCoeffArrayYCbDummy = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
 
 //#endif
 
 
-	double * luminosityMapFacingPoly = new double[imageWidthFacingPoly * imageHeightFacingPoly];
-	bool * luminosityBooleanMapFacingPoly = new bool[imageWidthFacingPoly*imageHeightFacingPoly];
-	double * luminosityContrastMapFacingPoly = new double[imageWidthFacingPoly * imageHeightFacingPoly];
-	bool * luminosityContrastBooleanMapFacingPoly = new bool[imageWidthFacingPoly * imageHeightFacingPoly];
-	bool * foregroundDepthCheckLuminosityContrastBooleanMap = new bool[imageWidthFacingPoly * imageHeightFacingPoly];
-	double * normalMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly*VEC_MAP_VEC_NUM_DIMENSIONS];
+	double* luminosityMapFacingPoly = new double[imageWidthFacingPoly* imageHeightFacingPoly];
+	bool* luminosityBooleanMapFacingPoly = new bool[imageWidthFacingPoly*imageHeightFacingPoly];
+	double* luminosityContrastMapFacingPoly = new double[imageWidthFacingPoly* imageHeightFacingPoly];
+	bool* luminosityContrastBooleanMapFacingPoly = new bool[imageWidthFacingPoly* imageHeightFacingPoly];
+	bool* foregroundDepthCheckLuminosityContrastBooleanMap = new bool[imageWidthFacingPoly* imageHeightFacingPoly];
+	double* normalMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly*VEC_MAP_VEC_NUM_DIMENSIONS];
 
-	double * depthMapUncroppedFacingPoly = new double[uncroppedWidth*uncroppedHeight];
-	double * depthMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly];					//NOT USED for 2D!
-	double * depthContrastMapFacingPoly = new double[imageWidthFacingPoly * imageHeightFacingPoly];					//NOT USED for 2D!
-	bool * depthContrastBooleanMapFacingPoly = new bool[imageWidthFacingPoly*imageHeightFacingPoly];				//NOT USED for 2D!
-	bool * foregroundDepthCheckDepthContrastBooleanMap = new bool[imageWidthFacingPoly*imageHeightFacingPoly];				//NOT USED for 2D!
-	double * depthGradientMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly*XY_VECTOR_MAP_NUM_DIMENSIONS];	//NOT USED for 2D!
-	double * depthGradientContrastMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly];			//NOT USED for 2D!
-	bool * depthGradientContrastBooleanMapFacingPoly = new bool[imageWidthFacingPoly*imageHeightFacingPoly];		//NOT USED for 2D!
+	double* depthMapUncroppedFacingPoly = new double[uncroppedWidth*uncroppedHeight];
+	double* depthMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly];					//NOT USED for 2D!
+	double* depthContrastMapFacingPoly = new double[imageWidthFacingPoly* imageHeightFacingPoly];					//NOT USED for 2D!
+	bool* depthContrastBooleanMapFacingPoly = new bool[imageWidthFacingPoly*imageHeightFacingPoly];				//NOT USED for 2D!
+	bool* foregroundDepthCheckDepthContrastBooleanMap = new bool[imageWidthFacingPoly*imageHeightFacingPoly];				//NOT USED for 2D!
+	double* depthGradientMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly*XY_VECTOR_MAP_NUM_DIMENSIONS];	//NOT USED for 2D!
+	double* depthGradientContrastMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly];			//NOT USED for 2D!
+	bool* depthGradientContrastBooleanMapFacingPoly = new bool[imageWidthFacingPoly*imageHeightFacingPoly];		//NOT USED for 2D!
 
 
 
-	double * pointMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly*VEC_MAP_VEC_NUM_DIMENSIONS];	//NOT USED for 2D!
+	double* pointMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly*VEC_MAP_VEC_NUM_DIMENSIONS];	//NOT USED for 2D!
 
 
 
 
 
 #ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
-	Experience * currentExperience = firstExperienceInList;
+	Experience* currentExperience = firstExperienceInList;
 #endif
 
 	#ifdef OR_TEST_ORI_AND_POS_NOISE_DURING_TRANING_AND_TESTING
@@ -3434,18 +3434,18 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 		char snapshotMapsText[imageWidthFacingPoly*imageHeightFacingPoly*3 + imageWidthFacingPoly*imageHeightFacingPoly*3 + imageWidthFacingPoly*imageHeightFacingPoly + smallImageWidth*smallImageHeight*3 + smallImageWidth*smallImageHeight*3 + smallImageWidth*smallImageHeight];
 		*/
 			/* for
- 			unsigned char * rgbMapFacingPoly = new unsigned char[imageWidthFacingPoly*imageHeightFacingPoly*RGB_NUM];
-			double * rgbDevIEnormalisedHueContrastMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly*VEC_MAP_VEC_NUM_DIMENSIONS];
-			double * depthMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly];					//NOT USED for 2D!
- 			unsigned char * rgbMapSmallFacingPoly = new unsigned char[smallImageWidth*smallImageHeight*RGB_NUM];
- 			unsigned char * depthRGBMapSmallFacingPoly = new unsigned char[smallImageWidth*smallImageHeight];
-			double * rgbDevIEnormalisedHueContrastMapSmallFacingPoly = new double[smallImageWidth*smallImageHeight*VEC_MAP_VEC_NUM_DIMENSIONS];
+ 			unsigned char* rgbMapFacingPoly = new unsigned char[imageWidthFacingPoly*imageHeightFacingPoly*RGB_NUM];
+			double* rgbDevIEnormalisedHueContrastMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly*VEC_MAP_VEC_NUM_DIMENSIONS];
+			double* depthMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly];					//NOT USED for 2D!
+ 			unsigned char* rgbMapSmallFacingPoly = new unsigned char[smallImageWidth*smallImageHeight*RGB_NUM];
+ 			unsigned char* depthRGBMapSmallFacingPoly = new unsigned char[smallImageWidth*smallImageHeight];
+			double* rgbDevIEnormalisedHueContrastMapSmallFacingPoly = new double[smallImageWidth*smallImageHeight*VEC_MAP_VEC_NUM_DIMENSIONS];
 			*/
 
 		numberOfTrainOrTestPolys[zoomIndex] = 0;
 
 		int polygonIndex = 0;
-		PolygonBAI * currentPolygonInList = &(firstPolygonInList[zoomIndex]);
+		PolygonBAI* currentPolygonInList = &(firstPolygonInList[zoomIndex]);
 		//for every polygon
 			//rotate the camera about the interpolated 3D Map such that the polygon is facing the camera, and at a distance U
 		while(currentPolygonInList->next != NULL)
@@ -4019,7 +4019,7 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 
 										convertImageToSmallImageCommand = convertImageToSmallImageCommand + "convert " + "-depth 8 -resize '" + resizePercentageString + "%' " + rgbMapFacingPolyFileName + " " + rgbMapFacingPolySmallFileName;
 										system(convertImageToSmallImageCommand.c_str());
-										pixmap * rgbPixMapSmall;
+										pixmap* rgbPixMapSmall;
 										rgbPixMapSmall = loadPPM(rgbMapFacingPolySmallFileName);
 										createRGBMapFromPixmapImage(rgbPixMapSmall, rgbMapSmallFacingPoly);
 										freePixmap(rgbPixMapSmall);
@@ -4185,10 +4185,10 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 									}
 									if(OR_METHOD_CREATE_OT_FEATURES_FILE)
 									{
-										Feature * firstFeatureInTransformedObjectTriangleList = new Feature();
-										Feature * secondFeatureInTransformedObjectTriangleList = new Feature();
-										Feature * thirdFeatureInTransformedObjectTriangleList = new Feature();
-										Feature * lastFeatureInTransformedObjectTriangleList = new Feature();
+										Feature* firstFeatureInTransformedObjectTriangleList = new Feature();
+										Feature* secondFeatureInTransformedObjectTriangleList = new Feature();
+										Feature* thirdFeatureInTransformedObjectTriangleList = new Feature();
+										Feature* lastFeatureInTransformedObjectTriangleList = new Feature();
 										firstFeatureInTransformedObjectTriangleList->pointTransformed.x = currentPolygonInList->point1Transformed.x;
 										firstFeatureInTransformedObjectTriangleList->pointTransformed.y = currentPolygonInList->point1Transformed.y;
 										firstFeatureInTransformedObjectTriangleList->pointTransformed.z = currentPolygonInList->point1Transformed.z;
@@ -4209,7 +4209,7 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 									//e. input snapshot data into sql
 									#ifdef OR_IMAGE_COMPARISON_SQL
 
-									unsigned char * rgb8bitSmallMapForInstantDBqueryAccess;
+									unsigned char* rgb8bitSmallMapForInstantDBqueryAccess;
 									if(OR_IMAGE_COMPARISON_SMALL_HUE_DEV_MAP_COMPARISON)
 									{
 										#ifdef OR_IMAGE_COMPARISON_SQL_DB_USE_RGB_8BIT_SMALL_MAP_QUERY_REQUIREMENT_V2_OR_V3
@@ -4438,7 +4438,7 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 							#endif
 
 								//add experience to experience list
-								Experience * newExperience = new Experience();
+								Experience* newExperience = new Experience();
 								currentExperience->next = newExperience;
 								currentExperience = currentExperience->next;
 
@@ -4471,7 +4471,7 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 		while(currentExperience->next != NULL)
 		{
 			cout << "currentExperience->classTargetValue = " << currentExperience->classTargetValue << endl;
-			ExperienceInput * currentExperienceInput = currentExperience->firstExperienceInput;
+			ExperienceInput* currentExperienceInput = currentExperience->firstExperienceInput;
 			while(currentExperienceInput->next != NULL)
 			{
 				cout << "currentExperienceInput->inputValue = " << currentExperienceInput->inputValue << endl;
@@ -4530,9 +4530,9 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 
 #ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 
-NeuronContainer * initialiseNormalisedSnapshotNeuralNetwork(NeuronContainer * firstInputNeuronInNetwork, int * numberOfInputNeurons, int numberOfOutputNeurons, int imageWidth, int imageHeight)
+NeuronContainer* initialiseNormalisedSnapshotNeuralNetwork(NeuronContainer* firstInputNeuronInNetwork, int* numberOfInputNeurons, int numberOfOutputNeurons, int imageWidth, int imageHeight)
 {
-	NeuronContainer * firstOutputNeuronInNetwork;
+	NeuronContainer* firstOutputNeuronInNetwork;
 
 	long numberOfLayers = OR_NUMBER_OF_NN_LAYERS;
 	int layerDivergenceType = LAYER_DIVERGENCE_TYPE_LINEAR_CONVERGING_SQUARE2D;
@@ -4540,45 +4540,45 @@ NeuronContainer * initialiseNormalisedSnapshotNeuralNetwork(NeuronContainer * fi
 	double probabilityNeuronConnectionWithPreviousLayerNeuron = 1.0;
 	double probabilityNeuronConnectionWithAllPreviousLayersNeurons = 0.0;
 
-	Experience * tempExperience = new Experience;
+	Experience* tempExperience = new Experience;
 #ifdef OR_FEED_RGB_MAP
-	*numberOfInputNeurons = imageWidth * imageHeight * RGB_NUM;
+	*numberOfInputNeurons = imageWidth* imageHeight* RGB_NUM;
 #elif defined OR_FEED_LUMINOSITY_MAP
-	*numberOfInputNeurons = imageWidth * imageHeight;
+	*numberOfInputNeurons = imageWidth* imageHeight;
 #elif defined OR_FEED_LUMINOSITY_BOOLEAN_MAP
-	*numberOfInputNeurons = imageWidth * imageHeight;
+	*numberOfInputNeurons = imageWidth* imageHeight;
 #elif defined OR_FEED_LUMINOSITY_CONTRAST_MAP
-	*numberOfInputNeurons = imageWidth * imageHeight;
+	*numberOfInputNeurons = imageWidth* imageHeight;
 #elif defined OR_FEED_LUMINOSITY_CONTRAST_BOOLEAN_MAP
-	*numberOfInputNeurons = imageWidth * imageHeight;
+	*numberOfInputNeurons = imageWidth* imageHeight;
 #elif defined OR_FEED_DEPTH_MAP
-	*numberOfInputNeurons = imageWidth * imageHeight;
+	*numberOfInputNeurons = imageWidth* imageHeight;
 #elif defined OR_FEED_DEPTH_CONTRAST_MAP
-	*numberOfInputNeurons = imageWidth * imageHeight;
+	*numberOfInputNeurons = imageWidth* imageHeight;
 #elif defined OR_FEED_DEPTH_CONTRAST_BOOLEAN_MAP
-	*numberOfInputNeurons = imageWidth * imageHeight;
+	*numberOfInputNeurons = imageWidth* imageHeight;
 #elif defined OR_FEED_DEPTH_GRADIENT_CONTRAST_MAP
-	*numberOfInputNeurons = imageWidth * imageHeight;
+	*numberOfInputNeurons = imageWidth* imageHeight;
 #elif defined OR_FEED_DEPTH_GRADIENT_CONTRAST_BOOLEAN_MAP
-	*numberOfInputNeurons = imageWidth * imageHeight;
+	*numberOfInputNeurons = imageWidth* imageHeight;
 #else
 	cout << "Error: no feed defined" << endl;
 	exit(0);
 #endif
 
-	firstOutputNeuronInNetwork = formNeuralNet(firstInputNeuronInNetwork, *numberOfInputNeurons, numberOfOutputNeurons, numberOfLayers, layerDivergenceType, meanLayerDivergenceFactor, probabilityNeuronConnectionWithPreviousLayerNeuron, probabilityNeuronConnectionWithAllPreviousLayersNeurons);
+	firstOutputNeuronInNetwork = formNeuralNet(firstInputNeuronInNetwork,* numberOfInputNeurons, numberOfOutputNeurons, numberOfLayers, layerDivergenceType, meanLayerDivergenceFactor, probabilityNeuronConnectionWithPreviousLayerNeuron, probabilityNeuronConnectionWithAllPreviousLayersNeurons);
 
 	return firstOutputNeuronInNetwork;
 }
 
 
 	//NB this function only works properly if the the neural network was trained on the object at all angles.
-double compareNormalisedSnapshotExperienceListWithNeuralNetwork(Experience * firstExperienceInTestList, NeuronContainer * firstInputNeuronInNetwork, NeuronContainer * firstOutputNeuronInNetwork, int numberOfInputNeurons, int numberOfOutputNeurons, int numberOfTrainPolySides)
+double compareNormalisedSnapshotExperienceListWithNeuralNetwork(Experience* firstExperienceInTestList, NeuronContainer* firstInputNeuronInNetwork, NeuronContainer* firstOutputNeuronInNetwork, int numberOfInputNeurons, int numberOfOutputNeurons, int numberOfTrainPolySides)
 {
 	double averageMinNNErrorFound = 0.0;
 	double minMinNNErrorFound = MAX_ANN_BACK_PROPAGATION_ERROR;
 
-	Experience * currentExperience = firstExperienceInTestList;
+	Experience* currentExperience = firstExperienceInTestList;
 	int testSnapshotIndex = 0;
 	while(currentExperience->next != NULL)
 	{
@@ -4707,7 +4707,7 @@ void setNoiseArraysMethod2DOD()
 
 
 
-int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewIndex, int dimension)
+int createViFromMultiViewList(ViewInfo* vi, string fileName, int multiViewViewIndex, int dimension)
 {
 	cout << "createViFromMultiViewList(): multiViewViewIndex = " << multiViewViewIndex << endl;
 

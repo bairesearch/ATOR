@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORpolygonList.h
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  *
  *******************************************************************************/
 
@@ -60,7 +60,7 @@ public:
 	string objectName;
 	int numMatchingSnapshots;
 
-	ObjectReferenceList * next;
+	ObjectReferenceList* next;
 };
 
 
@@ -75,8 +75,8 @@ public:
 
 	long referenceID;
 
-	SnapshotIDreferenceList * next;
-	SnapshotIDreferenceList * previous;	//only used for ORdatabaseDecisionTree.cpp
+	SnapshotIDreferenceList* next;
+	SnapshotIDreferenceList* previous;	//only used for ORdatabaseDecisionTree.cpp
 };
 
 
@@ -131,7 +131,7 @@ public:
 	int snapshotMapsTextLength;
 
 	bool lastFilledFeatureInList;	//added 8 June 2012 to fix overrun
-	Feature * next;
+	Feature* next;
 
 	//bool nearestFeatureActive;	//added 13 June 2012 to prevent non-filled existent features from being used to create polys
 
@@ -148,10 +148,10 @@ public:
 	vec point1;
 	vec point2;
 	vec point3;
-	PolygonBAI * next;
+	PolygonBAI* next;
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
-	Feature * firstFeatureInNearestFeatureList;
+	Feature* firstFeatureInNearestFeatureList;
 #endif
 
 //#ifdef OR_METHOD_TRANSFORM_KEY_OT_FEATURES
@@ -174,8 +174,8 @@ public:
 	int numVotes;
 	double error;
 
-	Feature * firstFeatureInFeatureList;
-	FeatureContainer * next;
+	Feature* firstFeatureInFeatureList;
+	FeatureContainer* next;
 };
 #endif
 
@@ -202,11 +202,11 @@ public:
 	double luminosityContrast;	//[emulates luminosity contrast map]
 
 	//#ifdef OR_USE_CONTRAST_CALC_METHOD_C
-	MeshPoint * interpixelMeshPoint;	//used to store contrast mesh as a submesh of an rgb mesh with a 0.5/0.5 offset
+	MeshPoint* interpixelMeshPoint;	//used to store contrast mesh as a submesh of an rgb mesh with a 0.5/0.5 offset
 	bool interpixelMeshPointFilled;
 	//#endif
 
-	MeshPoint * adjacentMeshPoint[9];	//y:0,x:0->3, y:1,x:0->3, y:2,x:0->3
+	MeshPoint* adjacentMeshPoint[9];	//y:0,x:0->3, y:1,x:0->3, y:2,x:0->3
 	bool adjacentMeshPointFilled[9]; 	//to specify the boundary conditions of the meshpoint
 
 	//#ifdef OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST
@@ -237,25 +237,25 @@ public:
 
 
 
-	MeshPoint * next;
+	MeshPoint* next;
 };
 
-MeshPoint * findMeshPointIntInMesh(MeshPoint * firstMeshPointInMeshList, int x, int y, bool * hasFoundMeshPoint);
-MeshPoint * findMeshPointIntInMesh(MeshPoint * firstMeshPointInMeshList, vec * point, bool * hasFoundMeshPoint, int meshZoneLimit);
-MeshPoint * findMeshPointIntInMesh(MeshPoint * firstMeshPointInMeshList, int position);
+MeshPoint* findMeshPointIntInMesh(MeshPoint* firstMeshPointInMeshList, int x, int y, bool* hasFoundMeshPoint);
+MeshPoint* findMeshPointIntInMesh(MeshPoint* firstMeshPointInMeshList, vec* point, bool* hasFoundMeshPoint, int meshZoneLimit);
+MeshPoint* findMeshPointIntInMesh(MeshPoint* firstMeshPointInMeshList, int position);
 
 //#ifdef OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST
-void calculateMeshPointNormal(MeshPoint * meshPoint);
-void calculateMeshPointNormalContrast(MeshPoint * meshPoint);
+void calculateMeshPointNormal(MeshPoint* meshPoint);
+void calculateMeshPointNormalContrast(MeshPoint* meshPoint);
 //#ifdef OR_USE_CONTRAST_CALC_METHOD_C
-void calculateMeshPointInterpixelNormal(MeshPoint * meshPoint);
-void calculateMeshPointInterpixelNormalContrast(MeshPoint * meshPoint);
-void calculateMeshPointInterpixelLuminosityContrast(MeshPoint * meshPoint);
-void calculateMeshPointInterpixelDepth(MeshPoint * meshPoint);
-void calculateMeshPointInterpixelDepthWithForegroundDepthCheck(MeshPoint * meshPoint);
+void calculateMeshPointInterpixelNormal(MeshPoint* meshPoint);
+void calculateMeshPointInterpixelNormalContrast(MeshPoint* meshPoint);
+void calculateMeshPointInterpixelLuminosityContrast(MeshPoint* meshPoint);
+void calculateMeshPointInterpixelDepth(MeshPoint* meshPoint);
+void calculateMeshPointInterpixelDepthWithForegroundDepthCheck(MeshPoint* meshPoint);
 //#endif
 //#endif
-void calculateMeshPointLuminosityContrast(MeshPoint * meshPoint);
+void calculateMeshPointLuminosityContrast(MeshPoint* meshPoint);
 
 
 
@@ -265,8 +265,8 @@ private:
 public:
 
 	PixelContiguous(void); // constructor declaration
-	PixelContiguous(int newX, int newY, PixelContiguous * newPrevious);
-	PixelContiguous(MeshPoint * newMeshPoint, PixelContiguous * newPrevious);
+	PixelContiguous(int newX, int newY, PixelContiguous* newPrevious);
+	PixelContiguous(MeshPoint* newMeshPoint, PixelContiguous* newPrevious);
 	~PixelContiguous();	//  and destructor.
 
 	bool pathAlreadyCrawled;
@@ -276,10 +276,10 @@ public:
 	vec point;			//only used by non MeshPoint functions
 	vec pointNonWorldCoord;		//only used by non MeshPoint functions
 
-	MeshPoint * meshPoint;	//only used by MeshPoint functions
+	MeshPoint* meshPoint;	//only used by MeshPoint functions
 
-	PixelContiguous * next[9];
-	PixelContiguous * previous;
+	PixelContiguous* next[9];
+	PixelContiguous* previous;
 
 	bool readyToDelete;
 };

@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORrules.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  *
  *******************************************************************************/
 
@@ -77,7 +77,7 @@ void fillInORrulesExternVariables()
 {
 
 
-	/************** 0. PREPARE STANDARD XML RULES (SET DEFAULTS) *********************/
+	/************** 0. PREPARE STANDARD XML RULES (SET DEFAULTS)* ********************/
 
 
 	//OR_IMAGE_COMPARISON_DECISION_TREE...
@@ -272,11 +272,11 @@ void fillInORrulesExternVariables()
 	OR_RULES_XML_SPARE_PARAMETER_2 = (0.0);
 
 
-	/************** 1. PARSE STANDARD XML RULES *********************/
+	/************** 1. PARSE STANDARD XML RULES* ********************/
 
 
 	//Standard OR Rules Entries;
-	RulesClass * currentReferenceRulesClass = ORrulesObjectRecognition;
+	RulesClass* currentReferenceRulesClass = ORrulesObjectRecognition;
 	while(currentReferenceRulesClass->next != NULL)
 	{
 		//OR_IMAGE_COMPARISON_DECISION_TREE...
@@ -744,7 +744,7 @@ void fillInORrulesExternVariables()
 
 	}
 
-	/************** 2. POST PROCESSES STANDARD XML RULES *********************/
+	/************** 2. POST PROCESSES STANDARD XML RULES* ********************/
 
 	//OR_IMAGE_COMPARISON_DECISION_TREE...
 
@@ -1031,13 +1031,13 @@ void fillInORrulesExternVariables()
 
 	//OR_IMAGE_COMPARISON...
 
-	IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR = (IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR_BASE * 3);
+	IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR = (IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR_BASE* 3);
 	//#define OR_IMAGE_COMPARISON_MIN_TOTAL_NUM_STARK_LOCAL_CONTRASTS (100.0/(28*28/2))
 
 
 
 	//OR_OPERATIONS...
-	MAX_FEATURE_DISTANCE_ERROR_USING_POINT_MAP_METHOD = (XYCOORDINATES_CONVERSION_INTO_PIXELS * MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD);	//in world units		//OLD;(0.001)
+	MAX_FEATURE_DISTANCE_ERROR_USING_POINT_MAP_METHOD = (XYCOORDINATES_CONVERSION_INTO_PIXELS* MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD);	//in world units		//OLD;(0.001)
 
 
 
@@ -1102,7 +1102,7 @@ void fillInORrulesExternVariables()
 
 
 
-	/************** 3. PREPARE OPTIONAL XML RULES (SET DEFAULTS)  *********************/
+	/************** 3. PREPARE OPTIONAL XML RULES (SET DEFAULTS) * ********************/
 
 
 	//OR_FEATURES...
@@ -1403,7 +1403,7 @@ void fillInORrulesExternVariables()
 
 
 
-	/************** 4. SET OPTIONAL XML RULES *********************/
+	/************** 4. SET OPTIONAL XML RULES* ********************/
 
 	//Extra OR Rules Entries;
 		//now allow for override of default dependencies;
@@ -1795,7 +1795,7 @@ void fillInORrulesExternVariables()
 
 
 
-	/************** 5.  POST PROCESSES OPTIONAL XML RULES *********************/
+	/************** 5.  POST PROCESSES OPTIONAL XML RULES* ********************/
 
 
 	//OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING...

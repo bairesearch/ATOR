@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORpixelMaps.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  *
  *******************************************************************************/
 
@@ -47,12 +47,12 @@ using namespace std;
 
 
 
-//double * pointNormalMap = new double[(imageWidth-2)*(imageHeight-2)*VECTOR_MAP_NUM_DIMENSIONS];
+//double* pointNormalMap = new double[(imageWidth-2)*(imageHeight-2)*VECTOR_MAP_NUM_DIMENSIONS];
 
 //requires;
 //vec meshPointNormals[4];	//from 4 tris creating using mesh point and two out of four surrounding meshpoints, x-, x+, y-, y+
 //vec meshPointNormal; 		//average of four calculated meshpoint normals
-void calculateMeshPointNormalsUsingPointMap(int x, int y, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight, double *  pointMap, vec * meshPointNormal, vec meshPointNormals[])
+void calculateMeshPointNormalsUsingPointMap(int x, int y, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight, double* pointMap, vec* meshPointNormal, vec meshPointNormals[])
 {
 	vec averageNormalVector;
 	averageNormalVector.x = 0.0;
@@ -181,7 +181,7 @@ void calculateMeshPointNormalsUsingPointMap(int x, int y, int kernelWidth, int k
 	copyVectors(meshPointNormal,  &averageNormalVector);
 }
 
-void createPointNormalMapFromPointMap(int imageWidth, int imageHeight, double *  pointMap, double * pointNormalMap)
+void createPointNormalMapFromPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointNormalMap)
 {
 	int kernelWidth = DEFAULT_NORMAL_MAP_GENERATION_KERNEL_WIDTH;
 	int kernelHeight = DEFAULT_NORMAL_MAP_GENERATION_KERNEL_HEIGHT;
@@ -207,7 +207,7 @@ void createPointNormalMapFromPointMap(int imageWidth, int imageHeight, double * 
 	}
 }
 
-void createPointNormalContrastMapFromPointNormalMap(int imageWidth, int imageHeight, double *  pointNormalMap, double * pointNormalContrastMap)
+void createPointNormalContrastMapFromPointNormalMap(int imageWidth, int imageHeight, double* pointNormalMap, double* pointNormalContrastMap)
 {
 	for(int y = 1; y < imageHeight-1; y++)
 	{
@@ -219,7 +219,7 @@ void createPointNormalContrastMapFromPointNormalMap(int imageWidth, int imageHei
 	}
 }
 
-double calculatePointNormalContrastLevelWithinKernel(int pixelX, int pixelY, double * pointNormalMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight)
+double calculatePointNormalContrastLevelWithinKernel(int pixelX, int pixelY, double* pointNormalMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight)
 {
 	double contrastLevel = 0.0;
 
@@ -325,7 +325,7 @@ double calculatePointNormalContrastLevelWithinKernel(int pixelX, int pixelY, dou
 
 
 
-void cropRGBmap(int originalImageWidth, int originalImageHeight, int cropXPos, int cropYPos, int croppedWidth, int croppedHeight, unsigned char * rgbMapUncropped, unsigned char * rgbMap)
+void cropRGBmap(int originalImageWidth, int originalImageHeight, int cropXPos, int cropYPos, int croppedWidth, int croppedHeight, unsigned char* rgbMapUncropped, unsigned char* rgbMap)
 {
 	int croppedYPos = 0;
 	for(int y = cropYPos; y < cropYPos+croppedHeight; y++)
@@ -343,7 +343,7 @@ void cropRGBmap(int originalImageWidth, int originalImageHeight, int cropXPos, i
 	}
 }
 
-void cropDepthMap(int originalImageWidth, int originalImageHeight, int cropXPos, int cropYPos, int croppedWidth, int croppedHeight, double * depthMapUncropped, double * depthMap)
+void cropDepthMap(int originalImageWidth, int originalImageHeight, int cropXPos, int cropYPos, int croppedWidth, int croppedHeight, double* depthMapUncropped, double* depthMap)
 {
 	int croppedYPos = 0;
 	for(int y = cropYPos; y < cropYPos+croppedHeight; y++)
@@ -368,13 +368,13 @@ void cropDepthMap(int originalImageWidth, int originalImageHeight, int cropXPos,
 
 
 
-void setXYvectorMapValue(int x, int y, int imageWidth, vec * XYvectorVal, double * XYvectorMap)
+void setXYvectorMapValue(int x, int y, int imageWidth, vec* XYvectorVal, double* XYvectorMap)
 {
 	XYvectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_X] = XYvectorVal->x;
 	XYvectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_Y] = XYvectorVal->y;
 }
 
-void getXYvectorMapValue(int x, int y, int imageWidth, double * XYvectorMap, vec * XYvectorVal)
+void getXYvectorMapValue(int x, int y, int imageWidth, double* XYvectorMap, vec* XYvectorVal)
 {
 	XYvectorVal->x = XYvectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_X];
 	XYvectorVal->y = XYvectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_Y];
@@ -384,7 +384,7 @@ void getXYvectorMapValue(int x, int y, int imageWidth, double * XYvectorMap, vec
 
 
 
-void generateRGBmapFromDepthGradientMap(int imageWidth, int imageHeight, double * depthGradientMap, unsigned char * rgbMap)
+void generateRGBmapFromDepthGradientMap(int imageWidth, int imageHeight, double* depthGradientMap, unsigned char* rgbMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -430,7 +430,7 @@ void generateRGBmapFromDepthGradientMap(int imageWidth, int imageHeight, double 
 
 
 
-void generateRGBmapFromDepthGradientContrastMap(int imageWidth, int imageHeight, double * depthGradientContrastMap, unsigned char * rgbMap)
+void generateRGBmapFromDepthGradientContrastMap(int imageWidth, int imageHeight, double* depthGradientContrastMap, unsigned char* rgbMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -450,7 +450,7 @@ void generateRGBmapFromDepthGradientContrastMap(int imageWidth, int imageHeight,
 	}
 }
 
-void generatePixmapFromDepthGradientContrastMap(string imageFileName, int imageWidth, int imageHeight, double * depthGradientContrastMap)
+void generatePixmapFromDepthGradientContrastMap(string imageFileName, int imageWidth, int imageHeight, double* depthGradientContrastMap)
 {
 	int x,y;
 	pixmap* pm;
@@ -472,7 +472,7 @@ void generatePixmapFromDepthGradientContrastMap(string imageFileName, int imageW
 }
 
 
-void generatePixmapFromDepthGradientMap(string imageFileName, int imageWidth, int imageHeight, double * depthGradientMap)
+void generatePixmapFromDepthGradientMap(string imageFileName, int imageWidth, int imageHeight, double* depthGradientMap)
 {
 	int x,y;
 	pixmap* pm;
@@ -576,7 +576,7 @@ void generatePixmapFromDepthGradientMap(string imageFileName, int imageWidth, in
 
 
 
-double calculateForegroundMinimumDepthWithinKernel(int pixelX, int pixelY, int imageWidth, int imageHeight, int kernelWidth, int kernelHeight, double * depthMap, vec * nearbyPointOfMinimumDepth, int zoom)
+double calculateForegroundMinimumDepthWithinKernel(int pixelX, int pixelY, int imageWidth, int imageHeight, int kernelWidth, int kernelHeight, double* depthMap, vec* nearbyPointOfMinimumDepth, int zoom)
 {
 	double minDepthForNearbyPoints = REALLY_FAR_AWAY;
 
@@ -629,7 +629,7 @@ double calculateForegroundMinimumDepthWithinKernel(int pixelX, int pixelY, int i
 
 
 
-void createContrastMapFromMapWithForegroundDepthCheckOLD(int imageWidth, int imageHeight, double * luminosityOrDepthMap, double * depthMap, double * contrastMap, bool * contrastBooleanMap, bool * foregroundDepthCheckContrastBooleanMap, double mapThreshold)
+void createContrastMapFromMapWithForegroundDepthCheckOLD(int imageWidth, int imageHeight, double* luminosityOrDepthMap, double* depthMap, double* contrastMap, bool* contrastBooleanMap, bool* foregroundDepthCheckContrastBooleanMap, double mapThreshold)
 {
 	int kernelWidth = DEFAULT_CONTRAST_MAP_GENERATION_KERNEL_WIDTH;
 	int kernelHeight = DEFAULT_CONTRAST_MAP_GENERATION_KERNEL_HEIGHT;
@@ -680,7 +680,7 @@ void createContrastMapFromMapWithForegroundDepthCheckOLD(int imageWidth, int ima
 	}
 }
 
-double calculateContrastLevelWithinKernelWithForegroundDepthCheckOLD(int pixelX, int pixelY, double * luminosityOrDepthMap, double * depthMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight, bool * foregroundDepthCheckContrastBooleanMap, double mapThreshold)
+double calculateContrastLevelWithinKernelWithForegroundDepthCheckOLD(int pixelX, int pixelY, double* luminosityOrDepthMap, double* depthMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight, bool* foregroundDepthCheckContrastBooleanMap, double mapThreshold)
 {
 	double contrastLevel = 0.0;
 
@@ -889,7 +889,7 @@ double calculateContrastLevelWithinKernelWithForegroundDepthCheckOLD(int pixelX,
 
 
 /*
-void createContrastBooleanMapFromContrastMapWithForegroundDepthCheck(int imageWidth, int imageHeight, double * contrastMap, double * depthMap, bool * contrastBooleanMap, bool * foregroundDepthCheckContrastBooleanMap, double mapThreshold)
+void createContrastBooleanMapFromContrastMapWithForegroundDepthCheck(int imageWidth, int imageHeight, double* contrastMap, double* depthMap, bool* contrastBooleanMap, bool* foregroundDepthCheckContrastBooleanMap, double mapThreshold)
 {
 	int kernelWidth;
 	int kernelHeight;
@@ -949,7 +949,7 @@ void createContrastBooleanMapFromContrastMapWithForegroundDepthCheck(int imageWi
 	}
 }
 
-double getContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixelY, double * contrastMap, double * depthMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight, bool * foregroundDepthCheckContrastBooleanMap, double mapThreshold)
+double getContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixelY, double* contrastMap, double* depthMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight, bool* foregroundDepthCheckContrastBooleanMap, double mapThreshold)
 {
 	double contrastLevel = 0.0;
 
@@ -1145,7 +1145,7 @@ double getContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixe
 
 /*
 	//untested counters aliasing;
-double calculateContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixelY, double * luminosityMap, double * depthMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight)
+double calculateContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixelY, double* luminosityMap, double* depthMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight)
 {
 	double contrastLevel = 0.0;
 	double centrePixelDepth = getLumOrContrastOrDepthMapValue(pixelX, pixelY, imageWidth, depthMap);
@@ -1199,7 +1199,7 @@ double calculateContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, in
 */
 
 
-void createDepthGradientMapFromDepthMap(int imageWidth, int imageHeight, double * depthMap, double * depthGradientMap)
+void createDepthGradientMapFromDepthMap(int imageWidth, int imageHeight, double* depthMap, double* depthGradientMap)
 {
 	int kernelWidth = DEFAULT_DEPTH_GRADIENT_MAP_GENERATION_KERNEL_WIDTH;
 	int kernelHeight = DEFAULT_DEPTH_GRADIENT_MAP_GENERATION_KERNEL_HEIGHT;
@@ -1217,7 +1217,7 @@ void createDepthGradientMapFromDepthMap(int imageWidth, int imageHeight, double 
 
 
 
-double calculateDepthGradientValueWithinKernel(int pixelX, int pixelY, double * depthMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight, vec * depthGradientVal)
+double calculateDepthGradientValueWithinKernel(int pixelX, int pixelY, double* depthMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight, vec* depthGradientVal)
 {
 	double xGradient = 0;
 	double yGradient = 0;
@@ -1317,7 +1317,7 @@ double calculateDepthGradientValueWithinKernel(int pixelX, int pixelY, double * 
 	return 0.0;
 }
 
-void subtractBooleanMaps(int imageWidth, int imageHeight, bool * booleanMap1, bool * booleanMap2, bool * booleanMap1MinusBooleanMap2)
+void subtractBooleanMaps(int imageWidth, int imageHeight, bool* booleanMap1, bool* booleanMap2, bool* booleanMap1MinusBooleanMap2)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1344,7 +1344,7 @@ void subtractBooleanMaps(int imageWidth, int imageHeight, bool * booleanMap1, bo
 }
 
 
-void addBooleanMaps(int imageWidth, int imageHeight, bool * booleanMap1, bool * booleanMap2, bool * booleanMap1PlusBooleanMap2)
+void addBooleanMaps(int imageWidth, int imageHeight, bool* booleanMap1, bool* booleanMap2, bool* booleanMap1PlusBooleanMap2)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1374,12 +1374,12 @@ void addBooleanMaps(int imageWidth, int imageHeight, bool * booleanMap1, bool * 
 
 
 	//NB this function uses createContrastMapFromMap... (however it really should
-void createDepthGradientContrastMapFromDepthGradientMap(int imageWidth, int imageHeight, double * depthGradientMap, double * depthGradientContrastMap)
+void createDepthGradientContrastMapFromDepthGradientMap(int imageWidth, int imageHeight, double* depthGradientMap, double* depthGradientContrastMap)
 {
 	createDepthGradientContrastMapFromMap(imageWidth, imageHeight, depthGradientMap, depthGradientContrastMap);
 }
 
-void createDepthGradientContrastMapFromMap(int imageWidth, int imageHeight, double * depthGradientMap, double * depthGradientContrastMap)
+void createDepthGradientContrastMapFromMap(int imageWidth, int imageHeight, double* depthGradientMap, double* depthGradientContrastMap)
 {
 	int kernelWidth = DEFAULT_DEPTH_GRADIENT_MAP_GENERATION_KERNEL_WIDTH;
 	int kernelHeight = DEFAULT_DEPTH_GRADIENT_MAP_GENERATION_KERNEL_HEIGHT;
@@ -1397,7 +1397,7 @@ void createDepthGradientContrastMapFromMap(int imageWidth, int imageHeight, doub
 
 
 
-double calculateDepthGradientContrastValueWithinKernel(int pixelX, int pixelY, double * depthGradientMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight)
+double calculateDepthGradientContrastValueWithinKernel(int pixelX, int pixelY, double* depthGradientMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight)
 {
 	//METHOD1/2
 	double contrastLevel = 0;
@@ -1532,12 +1532,12 @@ double calculateDepthGradientContrastValueWithinKernel(int pixelX, int pixelY, d
 }
 
 
-double calculateDepthGradientContrastValueWithinKernelWRONG(int pixelX, int pixelY, double * depthGradientMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight)
+double calculateDepthGradientContrastValueWithinKernelWRONG(int pixelX, int pixelY, double* depthGradientMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight)
 {
 	//METHOD3;
 	#define DEPTH_GRADIENT_SIMILARITY_INDICATOR_UNDEFINED (0)
-	//double * depthGradientList = new double[DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_HEIGHT_NUMBER_SAMPLES * DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_WIDTH_NUMBER_SAMPLES * XY_VECTOR_MAP_NUM_DIMENSIONS];
-	int depthGradientSimilarityArray[DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_HEIGHT_NUMBER_SAMPLES * DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_WIDTH_NUMBER_SAMPLES];
+	//double* depthGradientList = new double[DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_HEIGHT_NUMBER_SAMPLES* DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_WIDTH_NUMBER_SAMPLES* XY_VECTOR_MAP_NUM_DIMENSIONS];
+	int depthGradientSimilarityArray[DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_HEIGHT_NUMBER_SAMPLES* DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_WIDTH_NUMBER_SAMPLES];
 	for(int y = 0; y<DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_HEIGHT_NUMBER_SAMPLES; y++)
 	{
 		for(int x = 0; x<DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_WIDTH_NUMBER_SAMPLES; x++)
@@ -1705,7 +1705,7 @@ bool checkIfMeetDepthGradientContrastThreshold(double depthGradientContrastValue
 
 
 
-void createDepthGradientContrastBooleanMap(int imageWidth, int imageHeight, double * depthGradientContrastMap, bool * depthGradientContrastBooleanMap)
+void createDepthGradientContrastBooleanMap(int imageWidth, int imageHeight, double* depthGradientContrastMap, bool* depthGradientContrastBooleanMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1727,7 +1727,7 @@ void createDepthGradientContrastBooleanMap(int imageWidth, int imageHeight, doub
 }
 
 
-void createDepthContrastBooleanMap(int imageWidth, int imageHeight, double * depthContrastMap, bool * depthContrastBooleanMap)
+void createDepthContrastBooleanMap(int imageWidth, int imageHeight, double* depthContrastMap, bool* depthContrastBooleanMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1765,7 +1765,7 @@ void createDepthContrastBooleanMap(int imageWidth, int imageHeight, double * dep
 
 
 
-void createArbitraryContrastBooleanMap(int imageWidth, int imageHeight, double * contrastMap, bool * contrastBooleanMap, double sensitivity)
+void createArbitraryContrastBooleanMap(int imageWidth, int imageHeight, double* contrastMap, bool* contrastBooleanMap, double sensitivity)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1805,7 +1805,7 @@ void createArbitraryContrastBooleanMap(int imageWidth, int imageHeight, double *
 
 
 
-void createPointNormalContrastBooleanMap(int imageWidth, int imageHeight, double * pointNormalContrastMap, bool * pointNormalContrastBooleanMap)
+void createPointNormalContrastBooleanMap(int imageWidth, int imageHeight, double* pointNormalContrastMap, bool* pointNormalContrastBooleanMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1835,7 +1835,7 @@ void createPointNormalContrastBooleanMap(int imageWidth, int imageHeight, double
 	}
 }
 
-void generateRGBmapFromPointNormalContrastMap(int imageWidth, int imageHeight, double * pointNormalContrastMap, unsigned char * rgbMap)
+void generateRGBmapFromPointNormalContrastMap(int imageWidth, int imageHeight, double* pointNormalContrastMap, unsigned char* rgbMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1864,7 +1864,7 @@ void generateRGBmapFromPointNormalContrastMap(int imageWidth, int imageHeight, d
 }
 
 
-void generatePixmapFromPointNormalContrastMap(string imageFileName, int imageWidth, int imageHeight, double * pointNormalContrastMap)
+void generatePixmapFromPointNormalContrastMap(string imageFileName, int imageWidth, int imageHeight, double* pointNormalContrastMap)
 {
 	int x,y;
 	pixmap* pm;
@@ -1898,12 +1898,12 @@ void generatePixmapFromPointNormalContrastMap(string imageFileName, int imageWid
 
 
 //NOT YET FINISHED
-void createNormalMap(int imageWidth, int imageHeight, double * luminosityContrastMapEye1, double * depthMap, double * depthContrastMap, double * depthGradientContrastMap, double * normalMap)
+void createNormalMap(int imageWidth, int imageHeight, double* luminosityContrastMapEye1, double* depthMap, double* depthContrastMap, double* depthGradientContrastMap, double* normalMap)
 {
 
 }
 //NOT YET FINISHED
-double findDepthOfGivenPixel(int xEye1, int yEye1, int imageWidth, int imageHeight, double * luminosityContrastMapEye1, double * luminosityContrastMapEye2, unsigned char * rgbMapEye1, unsigned char * rgbMapEye2, double * calculatedxEye2, double * calculatedyEye2)
+double findDepthOfGivenPixel(int xEye1, int yEye1, int imageWidth, int imageHeight, double* luminosityContrastMapEye1, double* luminosityContrastMapEye2, unsigned char* rgbMapEye1, unsigned char* rgbMapEye2, double* calculatedxEye2, double* calculatedyEye2)
 {
 	double calculatedDepthOfEye1Pixel;
 
@@ -1920,13 +1920,13 @@ double findDepthOfGivenPixel(int xEye1, int yEye1, int imageWidth, int imageHeig
 
 
 //this function should probably be moved elsewhere
-void resampleRGBmap(unsigned char * rgbMap, int imageWidth, int imageHeight, unsigned char * resampledRGBmapAtDesiredZoomChar, int zoom, int ignoreBackgroundComparisonMethod)
+void resampleRGBmap(unsigned char* rgbMap, int imageWidth, int imageHeight, unsigned char* resampledRGBmapAtDesiredZoomChar, int zoom, int ignoreBackgroundComparisonMethod)
 {
 	int resampledWidth = (imageWidth/zoom);
 	int resampledHeight = (imageHeight/zoom);
 
-	int * resampledRGBMapAtDesiredzoomInt = new int[resampledWidth*resampledHeight*RGB_NUM];
-	bool * resampledRGBMapAtDesiredzoomBool = new bool[resampledWidth*resampledHeight];
+	int* resampledRGBMapAtDesiredzoomInt = new int[resampledWidth*resampledHeight*RGB_NUM];
+	bool* resampledRGBMapAtDesiredzoomBool = new bool[resampledWidth*resampledHeight];
 
 	if(ignoreBackgroundComparisonMethod == OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE_COMPLETELY)
 	{
@@ -1939,7 +1939,7 @@ void resampleRGBmap(unsigned char * rgbMap, int imageWidth, int imageHeight, uns
 		}
 	}
 
-	int * resampledRGBMapAtDesiredzoomCount = new int[resampledWidth*resampledHeight];
+	int* resampledRGBMapAtDesiredzoomCount = new int[resampledWidth*resampledHeight];
 	if(ignoreBackgroundComparisonMethod == OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE)
 	{
 		for(int y = 0; y < resampledHeight; y++)
@@ -2099,14 +2099,14 @@ void resampleRGBmap(unsigned char * rgbMap, int imageWidth, int imageHeight, uns
 
 
 //this function should probably be moved elsewhere
-void resampleLumOrContrastOrDepthMap(double * lumOrContrastOrDepthMap, int imageWidth, int imageHeight, double * resampledLumOrContrastOrDepthMapAtDesiredZoomChar, int zoom, double offMapValue)
+void resampleLumOrContrastOrDepthMap(double* lumOrContrastOrDepthMap, int imageWidth, int imageHeight, double* resampledLumOrContrastOrDepthMapAtDesiredZoomChar, int zoom, double offMapValue)
 {
 	int resampledWidth = (imageWidth/zoom);
 	int resampledHeight = (imageHeight/zoom);
 
-	int * resampledMapAtDesiredzoomInt = new int[resampledWidth*resampledHeight];
+	int* resampledMapAtDesiredzoomInt = new int[resampledWidth*resampledHeight];
 
-	bool * resampledMapAtDesiredzoomBool = new bool[resampledWidth*resampledHeight];
+	bool* resampledMapAtDesiredzoomBool = new bool[resampledWidth*resampledHeight];
 	if(OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON)
 	{
 		for(int y = 0; y < resampledHeight; y++)
@@ -2118,7 +2118,7 @@ void resampleLumOrContrastOrDepthMap(double * lumOrContrastOrDepthMap, int image
 		}
 	}
 #ifdef OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_V2
-	int * resampledMapAtDesiredzoomCount = new int[resampledWidth*resampledHeight];
+	int* resampledMapAtDesiredzoomCount = new int[resampledWidth*resampledHeight];
 	for(int y = 0; y < resampledHeight; y++)
 	{
   		for(int x = 0; x < resampledWidth; x++)

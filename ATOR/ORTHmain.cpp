@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORTHmain.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -57,10 +57,10 @@ int main
 {
 	int imageWidth = 768;
 	int imageHeight = 576;
-	unsigned char * rgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
-	bool * edgeBoolMap = new bool[imageWidth*imageHeight];
+	unsigned char* rgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
+	bool* edgeBoolMap = new bool[imageWidth*imageHeight];
 	string rgbMapFileName = "testedge.ppm";
-	pixmap * rgbPixMap;
+	pixmap* rgbPixMap;
 	cout << "rgbPixMap = loadPPM(" << rgbMapFileName << ");" << endl;
 	rgbPixMap = loadPPM(rgbMapFileName);
 	cout << "imageWidth = " << imageWidth << endl;
@@ -68,8 +68,8 @@ int main
 	cout << "createRGBMapFromPixmapImage(rgbPixMap, rgbMap);" << endl;
 	createRGBMapFromPixmapImage(rgbPixMap, rgbMap);
 	freePixmap(rgbPixMap);
-	double * nullpointer = NULL;
-	ViewInfo * vi = NULL;
+	double* nullpointer = NULL;
+	ViewInfo* vi = NULL;
 
 	generateEdgeListFromRGBmapWithQuadraticFit(rgbMap, edgeBoolMap, imageWidth, imageHeight, 1.0, false, nullpointer, nullpointer, 1, vi);
 }
@@ -173,8 +173,8 @@ int main()
 			numberOfTestViewIndiciesPerObjectWithUniquePolygons = numberOfTestViewIndiciesPerObject;
 		}
 
-		int * numberOfTrainPolys = new int[numberOfTrainObjects*numberOfTrainViewIndiciesPerObjectWithUniquePolygons*numberOfTrainZoomIndicies];
-		int * numberOfTestPolys = new int[numberOfTestObjects*numberOfTestViewIndiciesPerObjectWithUniquePolygons*numberOfTestZoomIndicies];
+		int* numberOfTrainPolys = new int[numberOfTrainObjects*numberOfTrainViewIndiciesPerObjectWithUniquePolygons*numberOfTrainZoomIndicies];
+		int* numberOfTestPolys = new int[numberOfTestObjects*numberOfTestViewIndiciesPerObjectWithUniquePolygons*numberOfTestZoomIndicies];
 
 		ORTHmethod(dimension, numberOfTrainObjects, trainObjectNameArray, numberOfTestObjects, testObjectNameArray, numberOfTrainPolys, numberOfTestPolys, objectDataSource, &viTrain, &viTest, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTrain, maxNumberOfPolygonsTest, numberOfTrainViewIndiciesPerObject, numberOfTestViewIndiciesPerObject, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTrainZoomIndicies, numberOfTestZoomIndicies);
 
@@ -266,8 +266,8 @@ int main()
 			numberOfTestViewIndiciesPerObjectWithUniquePolygons = numberOfTestViewIndiciesPerObject;
 		}
 
-		int * numberOfTrainPolys = new int[numberOfTrainObjects*numberOfTrainViewIndiciesPerObjectWithUniquePolygons*numberOfTrainZoomIndicies];
-		int * numberOfTestPolys = new int[numberOfTestObjects*numberOfTestViewIndiciesPerObjectWithUniquePolygons*numberOfTestZoomIndicies];
+		int* numberOfTrainPolys = new int[numberOfTrainObjects*numberOfTrainViewIndiciesPerObjectWithUniquePolygons*numberOfTrainZoomIndicies];
+		int* numberOfTestPolys = new int[numberOfTestObjects*numberOfTestViewIndiciesPerObjectWithUniquePolygons*numberOfTestZoomIndicies];
 
 		ORTHmethod(dimension, numberOfTrainObjects, trainObjectNameArray, numberOfTestObjects, testObjectNameArray, numberOfTrainPolys, numberOfTestPolys, objectDataSource, &viTrain, &viTest, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTrain, maxNumberOfPolygonsTest, numberOfTrainViewIndiciesPerObject, numberOfTestViewIndiciesPerObject, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTrainZoomIndicies, numberOfTestZoomIndicies);
 	#else

@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORmain.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  *
  *******************************************************************************/
 
@@ -93,12 +93,12 @@ static char errmessage[] = "Usage:  OpenOR.exe [options]\n\n\twhere options are 
 "\n\n\t-version        : print version"
 "\n\n\tThis program either adds an object (imaged from a particular viewpoint) to a BAI OR database, or finds the closest matching object already existent in the BAI OR database.\n\n";
 
-int main(int argc,char **argv)
+int main(int argc,char* *argv)
 {
 	bool result = true;
 
 	//print execution time
-	struct tm *current;
+	struct tm* current;
 	time_t now;
 	time(&now);
 	current = localtime(&now);
@@ -193,9 +193,9 @@ int main(int argc,char **argv)
 	string sqlIPaddress;
 	string sqlUsername;
 	string sqlPassword;
-	char * sqlipaddressCharStar = new char[100];
-	char * sqlusernameCharStar = new char[100];
-	char * sqlpasswordCharStar = new char[100];
+	char* sqlipaddressCharStar = new char[100];
+	char* sqlusernameCharStar = new char[100];
+	char* sqlpasswordCharStar = new char[100];
 	if(argumentExists(argc,argv,"-sqlipaddress"))
 	{
 		sqlipaddressCharStar=getCharArgument(argc,argv,"-sqlipaddress");
@@ -241,7 +241,7 @@ int main(int argc,char **argv)
 	int numberOfObjects;
 	int numberOfZoomIndicies;
 	int numberOfViewIndiciesPerObjectWithUniquePolygons;
-	int * numberOfPolys;
+	int* numberOfPolys;
 	int objectDataSource;
 
 	//set defaults before overwriting with user specific values;
@@ -313,7 +313,7 @@ int main(int argc,char **argv)
 	}
 
 	string multViewList;
-	char * multViewListFileNameCharStar = new char[100];
+	char* multViewListFileNameCharStar = new char[100];
 	string multViewListFileName;
 	bool useMultViewList = false;
 	if(argumentExists(argc,argv,"-multview"))
@@ -335,7 +335,7 @@ int main(int argc,char **argv)
 		objectDataSource = OR_OBJECT_DATA_SOURCE_USER_FILE;
 	}
 
-	char * imageFileNameCharStar = new char[100];
+	char* imageFileNameCharStar = new char[100];
 	string imageFileName;
 	if(argumentExists(argc,argv,"-object"))
 	{
@@ -353,11 +353,11 @@ int main(int argc,char **argv)
 
 	if(argumentExists(argc,argv,"-version"))
 	{
-		cout << "OpenOR.exe - Project Version: 3e6a 07-September-2014" << endl;
+		cout << "OpenOR.exe - Project Version: 3e7a 27-January-2015" << endl;
 		exit(1);
 	}
 
-	char * imageExtensionNameCharStar = new char[100];
+	char* imageExtensionNameCharStar = new char[100];
 	string imageExtensionName;
 	if(argumentExists(argc,argv,"-imageext"))
 	{
@@ -406,7 +406,7 @@ int main(int argc,char **argv)
 	bool missingaPOVDescriptor = false;
 	bool missingDepthMapExtensionDescriptor = false;
 
-	char * depthExtensionNameCharStar = new char[100];
+	char* depthExtensionNameCharStar = new char[100];
 	string depthExtensionName;
 	if(argumentExists(argc,argv,"-depthext"))
 	{

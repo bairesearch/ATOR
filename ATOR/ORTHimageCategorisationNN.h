@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORTHimageCategorisationNN.h
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e6a 07-September-2014
+ * Project Version: 3e7a 27-January-2015
  * Test Harness for OR Image Categorisation NN method (not yet implemented)
  *******************************************************************************/
 
@@ -134,18 +134,18 @@ public:
 	string fileName1;
 	string fileName2;
 
-	FileNameMatch * next;
+	FileNameMatch* next;
 };
 
 
 int main();
 void deriveDCTcoefficients(string exampleImageFileName, signed char dctCoeff[]);
-NeuronContainer * initialiseImageNeuralNetwork(int NNtypeBeingTested, NeuronContainer * firstInputNeuronInNetwork, long * numberOfInputNeurons, long numberOfOutputNeurons, string exampleImageFileName);
-bool generateDCTarrayExperienceFromImage(string imageFileName, Experience * currentExperience, int objectDecision);
-bool generatePixelMapExperienceFromImage(string imageFileName, Experience * currentExperience, int objectDecision);
-void generateExperienceFromOneArray(double * array, int arrayLength, double maxInputValueForNormalisation, Experience * tempExperience, int objectDecision);
+NeuronContainer* initialiseImageNeuralNetwork(int NNtypeBeingTested, NeuronContainer* firstInputNeuronInNetwork, long* numberOfInputNeurons, long numberOfOutputNeurons, string exampleImageFileName);
+bool generateDCTarrayExperienceFromImage(string imageFileName, Experience* currentExperience, int objectDecision);
+bool generatePixelMapExperienceFromImage(string imageFileName, Experience* currentExperience, int objectDecision);
+void generateExperienceFromOneArray(double* array, int arrayLength, double maxInputValueForNormalisation, Experience* tempExperience, int objectDecision);
 int ORTHimageCategorisationNN();
-void createImageFileNameMatchListFromMatchFile(string fileName, FileNameMatch * firstMatchInList);
+void createImageFileNameMatchListFromMatchFile(string fileName, FileNameMatch* firstMatchInList);
 
 
 #endif
