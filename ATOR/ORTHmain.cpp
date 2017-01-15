@@ -184,8 +184,8 @@ int main()
 		viTrain.viewat.y = TH_OR_METHOD3DOD_DEFAULT_VIEWAT_Y;
 		viTrain.viewat.z = TH_OR_METHOD3DOD_DEFAULT_VIEWAT_Z;
 		viTrain.viewup.x = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_X;
-		viTrain.viewup.y = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_Y;
-		viTrain.viewup.z = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_Z;
+		viTrain.viewup.y = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_Y;	//[house3DOD1: 0 / 50 (view1) / 100 (view2)] / [house3DOD2: 0 / 50 (view1) / 100 (view2)]
+		viTrain.viewup.z = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_Z;	//[house3DOD1: 100] / [house3DOD2: -100]
 
 		int maxNumberOfPolygonsTest = OR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TEST;
 		int numberOfTestViewIndiciesPerObject = OR_METHOD3DOD_NUMBER_OF_VIEWINDICIES_TEST;

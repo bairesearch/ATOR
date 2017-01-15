@@ -186,6 +186,7 @@ int main(int argc,char **argv)
 		
 	}
 
+	#ifndef OR_METHOD3DOD_TEST
 	string sqlipaddress;
 	string sqlusername;
 	string sqlpassword;
@@ -226,7 +227,7 @@ int main(int argc,char **argv)
 	sqlipaddress = sqlipaddressCharStar;
 	sqlusername = sqlusernameCharStar;
 	sqlpassword = sqlpasswordCharStar;
-
+	#endif
 
 
 

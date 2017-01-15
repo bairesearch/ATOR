@@ -1502,7 +1502,6 @@ extern double OR_RULES_XML_SPARE_PARAMETER_2;	//this needs to be made dynamic in
 	***********/
 
 //#define DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DO_NOT_USE_REAL_SQL_QUERY
-//#define OR_METHOD3DOD_TEST	//temporary
 //#define TEST_GEO		//temp (reduces number of objects and view points for software testing)
 //#define OR_LOW_RAM		//only effects OR Test Harness
 //#define DO_NOT_NORMALISE_POINT_NORMAL_MAP

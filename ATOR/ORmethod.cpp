@@ -327,6 +327,7 @@ bool ORMethodInitialise(int imageWidthFacingPoly, int imageHeightFacingPoly, boo
 		#endif
 	}
 	
+	#ifndef OR_METHOD3DOD_TEST
 	#ifdef OR_IMAGE_COMPARISON_SQL
 	if(OR_PRINT_ALGORITHM_PROGRESS)
 	{
@@ -362,6 +363,7 @@ bool ORMethodInitialise(int imageWidthFacingPoly, int imageHeightFacingPoly, boo
 		cout << "databaseTableSizeTest = " << databaseTableSizeTest << endl;
 		cout << "databaseTableSizeDecisionTree = " << databaseTableSizeDecisionTree << endl;
 	}
+	#endif
 	#endif
 	
 	if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
@@ -4924,6 +4926,8 @@ void setNoiseArraysMethod2DOD()
 
 int createViFromMultiViewList(view_info * vi, string fileName, int multiViewViewIndex, int dimension)
 {
+	cout << "createViFromMultiViewList(): multiViewViewIndex = " << multiViewViewIndex << endl;
+	
 	int lineCount = 0;
 	
 	char * fileNamecharstar = const_cast<char*>(fileName.c_str());
@@ -5309,30 +5313,30 @@ int createViFromMultiViewList(view_info * vi, string fileName, int multiViewView
 						cout << "illegal dimension" << endl;
 						exit(0);
 					}
-				}
-				
-				
-				cout << "vi->objectName = " << vi->objectName << endl;
-				cout << "vi->imageExtensionName = " << vi->imageExtensionName << endl;
-				cout << "vi->imgwidth = " << vi->imgwidth << endl;
-				cout << "vi->imgheight = " << vi->imgheight << endl;
-				cout << "vi->xoffset = " << vi->xoffset << endl;
-				cout << "vi->yoffset = " << vi->yoffset << endl;
-				cout << "vi->depthExtensionName = " << vi->depthExtensionName << endl;
-				cout << "vi->eye.x = " << vi->eye.x << endl;
-				cout << "vi->eye.y = " << vi->eye.y << endl;
-				cout << "vi->eye.z = " << vi->eye.z << endl;
-				cout << "vi->viewat.x = " << vi->viewat.x << endl;
-				cout << "vi->viewat.y = " << vi->viewat.y << endl;
-				cout << "vi->viewat.z = " << vi->viewat.z << endl;
-				cout << "vi->viewup.x = " << vi->viewup.x << endl;
-				cout << "vi->viewup.y = " << vi->viewup.y << endl;
-				cout << "vi->viewup.z = " << vi->viewup.z << endl;
-				cout << "vi->focal_length = " << vi->focal_length << endl;
-				cout << "vi->viewwidth = " << vi->viewwidth << endl;
-				cout << "vi->viewheight = " << vi->viewheight << endl;
-				cout << "vi->depthscale = " << vi->depthscale << endl;
-				
+					
+					cout << "finalise:" << endl;
+					cout << "vi->objectName = " << vi->objectName << endl;
+					cout << "vi->imageExtensionName = " << vi->imageExtensionName << endl;
+					cout << "vi->imgwidth = " << vi->imgwidth << endl;
+					cout << "vi->imgheight = " << vi->imgheight << endl;
+					cout << "vi->xoffset = " << vi->xoffset << endl;
+					cout << "vi->yoffset = " << vi->yoffset << endl;
+					cout << "vi->depthExtensionName = " << vi->depthExtensionName << endl;
+					cout << "vi->eye.x = " << vi->eye.x << endl;
+					cout << "vi->eye.y = " << vi->eye.y << endl;
+					cout << "vi->eye.z = " << vi->eye.z << endl;
+					cout << "vi->viewat.x = " << vi->viewat.x << endl;
+					cout << "vi->viewat.y = " << vi->viewat.y << endl;
+					cout << "vi->viewat.z = " << vi->viewat.z << endl;
+					cout << "vi->viewup.x = " << vi->viewup.x << endl;
+					cout << "vi->viewup.y = " << vi->viewup.y << endl;
+					cout << "vi->viewup.z = " << vi->viewup.z << endl;
+					cout << "vi->focal_length = " << vi->focal_length << endl;
+					cout << "vi->viewwidth = " << vi->viewwidth << endl;
+					cout << "vi->viewheight = " << vi->viewheight << endl;
+					cout << "vi->depthscale = " << vi->depthscale << endl;
+									
+				}	
 				
 				objectNameString[0] = '\0';
 				imageextString[0] = '\0';
