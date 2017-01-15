@@ -268,7 +268,7 @@ int ORTHimageCategorisationNN()
 			}
 			else
 			{
-				cout << "error: initialiseImageNeuralNetwork(): illegal NNtypeBeingTested" << endl;
+				cout << "error: initialiseImageNeuralNetwork{}: illegal NNtypeBeingTested" << endl;
 				exit(0);
 			}
 
@@ -521,7 +521,7 @@ ANNneuronContainer* initialiseImageNeuralNetwork(int NNtypeBeingTested, ANNneuro
 	}
 	else
 	{
-		cout << "error: initialiseImageNeuralNetwork(): illegal NNtypeBeingTested" << endl;
+		cout << "error: initialiseImageNeuralNetwork{}: illegal NNtypeBeingTested" << endl;
 		exit(0);
 	}
 

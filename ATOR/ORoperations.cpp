@@ -73,7 +73,7 @@ void createPointMapFromDepthMap(int imageWidth, int imageHeight, double* depthMa
 
 void printvi(RTviewInfo* vi)
 {
-	cout << "printvi()" << endl;
+	cout << "printvi{}" << endl;
 
 	cout << "vi->viewAt.x = " << vi->viewAt.x << endl;
 	cout << "vi->viewAt.y = " << vi->viewAt.y << endl;
@@ -94,7 +94,7 @@ void printvi(RTviewInfo* vi)
 
 void printPointMap(int imageWidth, int imageHeight, double* pointMap)
 {
-	cout << "printPointMap()" << endl;
+	cout << "printPointMap{}" << endl;
 
 	//fill luminosityMap
 	for(int y = 0; y < imageHeight; y++)
@@ -114,7 +114,7 @@ void printPointMap(int imageWidth, int imageHeight, double* pointMap)
 
 void printDepthMap(int imageWidth, int imageHeight, double* depthMap)
 {
-	cout << "printDepthMap()" << endl;
+	cout << "printDepthMap{}" << endl;
 
 	//fill luminosityMap
 	for(int y = 0; y < imageHeight; y++)

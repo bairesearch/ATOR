@@ -4697,7 +4697,7 @@ void setNoiseArraysMethod2DOD()
 
 int createViFromMultiViewList(RTviewInfo* vi, string fileName, int multiViewViewIndex, int dimension)
 {
-	cout << "createViFromMultiViewList(): multiViewViewIndex = " << multiViewViewIndex << endl;
+	cout << "createViFromMultiViewList{}: multiViewViewIndex = " << multiViewViewIndex << endl;
 
 	int lineCount = 0;
 

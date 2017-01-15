@@ -566,7 +566,7 @@ void insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart(string sqlDat
 	}
 
 	#ifdef OR_SQL_DATABASE_DEBUG
-	//cout << "insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart()" << endl;
+	//cout << "insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart{}" << endl;
 	//cout << "sqlInsertCommand = " << sqlInsertCommand << endl;
 	#endif
 
@@ -621,7 +621,7 @@ void insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration(char* decisio
 		*decisionTreeSQLmultipleRowInsertQueryLength = *decisionTreeSQLmultipleRowInsertQueryLength + 1;
 	}
 	#ifdef OR_SQL_DATABASE_DEBUG
-	//cout << "insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration()" << endl;
+	//cout << "insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration{}" << endl;
 	//cout << "decisionTreeMultipleRowInsertQueryTextCharStar = " << decisionTreeMultipleRowInsertQueryTextCharStar << endl;
 	#endif
 
