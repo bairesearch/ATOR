@@ -26,7 +26,7 @@
  * File Name: ORdatabaseFileIO.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1a 14-January-2017
+ * Project Version: 3j1b 14-January-2017
  *
  *******************************************************************************/
 
@@ -37,6 +37,9 @@
 #include "ORglobalDefs.h"
 #include "SHAREDvars.h"
 #include "ORpolygonList.h"
+#include "ORdatabaseSQL.h"	//required for determineGeoBinX()/determineGeoBinY() only ... - these functions and/or compareFeaturesListForMatch() should probably be moved elsewhere instead, say to "ORdatabaseOperations.cpp"
+#include "SHAREDvector.h"
+#include "LDreferenceManipulation.h"
 
 #define OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME ((string)"ORdatabase/")
 #define OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME "/home/systemusername/source/"
@@ -50,21 +53,29 @@
 #define OR_DATABASE_TRAIN_FOLDER_NAME "train"
 
 #ifdef OR_USE_DATABASE
-void initialiseDatabase(const string newDatabaseFolderName);
-bool DBdirectoryExists(string* folderName);
-bool DBcreateDirectory(string* folderName);
-bool DBsetCurrentDirectory(string* folderName);
-bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string* folderName);
-string DBgenerateServerDatabaseName(const string* objectName, const bool trainOrTest);
-string DBgenerateFolderName(string* objectName, const bool trainOrTest);
+class ORdatabaseFileIOClass
+{
+	private: SHAREDvarsClass SHAREDvars;
+	private: SHAREDvectorClass SHAREDvector;
+	private: ORdatabaseSQLClass ORdatabaseSQL;
+	private: LDreferenceManipulationClass LDreferenceManipulation;
+	public: void initialiseDatabase(const string newDatabaseFolderName);
+	private: bool DBdirectoryExists(string* folderName);
+	private: bool DBcreateDirectory(string* folderName);
+	private: bool DBsetCurrentDirectory(string* folderName);
+	private: bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string* folderName);
+	private: string DBgenerateServerDatabaseName(const string* objectName, const bool trainOrTest);
+	public: string DBgenerateFolderName(string* objectName, const bool trainOrTest);
 #endif
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
-	bool compareFeaturesListForMatch(ORfeature* testFirstFeatureInNearestFeatureList, ORfeature* trainFirstFeatureInNearestFeatureList, const int dimension, bool* exactMatchFound);
-	void addFeatureToEndOfFeatureList(ORfeature* firstFeatureInList, ORfeature* featureToAdd);
-	void createTransformedFeaturesFile(const ORfeature* firstFeatureInList, const string fileName, const string objectName, const int viewIndex, const int zoomIndex, const int polyIndex, const int sideIndex, const int trainOrTest);
-	void createFeaturesListUsingFeaturesFile(const string fileName, ORfeature* firstFeatureInList, const bool createFeatureObjects, const bool appendToList, const bool ignoreOTfeatures);
+		public: bool compareFeaturesListForMatch(ORfeature* testFirstFeatureInNearestFeatureList, ORfeature* trainFirstFeatureInNearestFeatureList, const int dimension, bool* exactMatchFound);
+		private: void addFeatureToEndOfFeatureList(ORfeature* firstFeatureInList, ORfeature* featureToAdd);
+		public: void createTransformedFeaturesFile(const ORfeature* firstFeatureInList, const string fileName, const string objectName, const int viewIndex, const int zoomIndex, const int polyIndex, const int sideIndex, const int trainOrTest);
+		public: void createFeaturesListUsingFeaturesFile(const string fileName, ORfeature* firstFeatureInList, const bool createFeatureObjects, const bool appendToList, const bool ignoreOTfeatures);
 #endif
+
+};
 
 #endif
 

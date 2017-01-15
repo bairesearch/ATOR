@@ -26,34 +26,30 @@
  * File Name: ORmethod2DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1a 14-January-2017
+ * Project Version: 3j1b 14-January-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
 
 #include "ORmethod2DOD.h"
-#include "SHAREDvector.h"
-#include "ORpixelMaps.h"
-#include "ORoperations.h"
 #ifdef USE_OPENGL
-	#include "LDopengl.h"
 #endif
 
-double calculateXYorientationOfSide(const ORpolygon* currentPolygonInList, const int side)
+double ORmethod2DODClass::calculateXYorientationOfSide(const ORpolygon* currentPolygonInList, const int side)
 {
 	double orientationOfSide;
 
 	if(side == 0)
 	{
-		orientationOfSide = calculateAngleBetweenVectors2D(&(currentPolygonInList->point1), &(currentPolygonInList->point2));
+		orientationOfSide = SHAREDvector.calculateAngleBetweenVectors2D(&(currentPolygonInList->point1), &(currentPolygonInList->point2));
 	}
 	else if(side == 1)
 	{
-		orientationOfSide = calculateAngleBetweenVectors2D(&(currentPolygonInList->point2), &(currentPolygonInList->point3));
+		orientationOfSide = SHAREDvector.calculateAngleBetweenVectors2D(&(currentPolygonInList->point2), &(currentPolygonInList->point3));
 	}
 	else if(side == 2)
 	{
-		orientationOfSide = calculateAngleBetweenVectors2D(&(currentPolygonInList->point3), &(currentPolygonInList->point1));
+		orientationOfSide = SHAREDvector.calculateAngleBetweenVectors2D(&(currentPolygonInList->point3), &(currentPolygonInList->point1));
 	}
 	else
 	{
@@ -63,21 +59,21 @@ double calculateXYorientationOfSide(const ORpolygon* currentPolygonInList, const
 	return orientationOfSide;
 }
 
-double calculateXYlengthOfSide(const ORpolygon* currentPolygonInList, const int side)
+double ORmethod2DODClass::calculateXYlengthOfSide(const ORpolygon* currentPolygonInList, const int side)
 {
 	double lengthOfSide;
 
 	if(side == 0)
 	{
-		lengthOfSide = calculateTheDistanceBetweenTwoPointsXYOnly(&(currentPolygonInList->point1), &(currentPolygonInList->point2));
+		lengthOfSide = SHAREDvector.calculateTheDistanceBetweenTwoPointsXYOnly(&(currentPolygonInList->point1), &(currentPolygonInList->point2));
 	}
 	else if(side == 1)
 	{
-		lengthOfSide = calculateTheDistanceBetweenTwoPointsXYOnly(&(currentPolygonInList->point2), &(currentPolygonInList->point3));
+		lengthOfSide = SHAREDvector.calculateTheDistanceBetweenTwoPointsXYOnly(&(currentPolygonInList->point2), &(currentPolygonInList->point3));
 	}
 	else if(side == 2)
 	{
-		lengthOfSide = calculateTheDistanceBetweenTwoPointsXYOnly(&(currentPolygonInList->point3), &(currentPolygonInList->point1));
+		lengthOfSide = SHAREDvector.calculateTheDistanceBetweenTwoPointsXYOnly(&(currentPolygonInList->point3), &(currentPolygonInList->point1));
 	}
 	else
 	{
@@ -87,7 +83,7 @@ double calculateXYlengthOfSide(const ORpolygon* currentPolygonInList, const int 
 	return lengthOfSide;
 }
 
-double calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(const ORpolygon* transformedObjectTriangle, const int side)
+double ORmethod2DODClass::calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(const ORpolygon* transformedObjectTriangle, const int side)
 {
 	double perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide;
 
@@ -114,7 +110,7 @@ double calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(con
 	return perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide;
 }
 
-double calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(const ORpolygon* transformedObjectTriangle, const int side)
+double ORmethod2DODClass::calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(const ORpolygon* transformedObjectTriangle, const int side)
 {
 	double xAxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex;
 
@@ -178,7 +174,7 @@ double calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(con
 
 
 
-void TEMPprintReferenceListVertexPositions2DOD(const LDreference* firstReferenceInInterpolated2DrgbMap)
+void ORmethod2DODClass::TEMPprintReferenceListVertexPositions2DOD(const LDreference* firstReferenceInInterpolated2DrgbMap)
 {
 	const LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
@@ -197,7 +193,7 @@ void TEMPprintReferenceListVertexPositions2DOD(const LDreference* firstReference
 
 
 
-void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ORpolygon* currentPolygonInList, const int side, const bool first, ORfeature* firstFeatureInList)
+void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ORpolygon* currentPolygonInList, const int side, const bool first, ORfeature* firstFeatureInList)
 {
 	long time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart;
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
@@ -206,7 +202,7 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 		{
 			cout << "\t\t\t\t start: 3ai. 2DOD normalised snapshot generation - transform data wrt polygon - matrix calc" << endl;
 		}
-		time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart = getTimeAsLong();
+		time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart = SHAREDvars.getTimeAsLong();
 	}
 
 
@@ -250,9 +246,9 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
 	#endif
 
-	double orientationOfObjectTriangleSide = calculateXYorientationOfSide(currentPolygonInList, side);
-	double lengthOfObjectTriangleSide = calculateXYlengthOfSide(currentPolygonInList, side);
-	double lengthOfPredefinedTriangleSide = calculateTheDistanceBetweenTwoPointsXYOnly(&(predefinedTriangle->point1), &(predefinedTriangle->point2));	//=1 for equilateral triangle
+	double orientationOfObjectTriangleSide = this->calculateXYorientationOfSide(currentPolygonInList, side);
+	double lengthOfObjectTriangleSide = this->calculateXYlengthOfSide(currentPolygonInList, side);
+	double lengthOfPredefinedTriangleSide = SHAREDvector.calculateTheDistanceBetweenTwoPointsXYOnly(&(predefinedTriangle->point1), &(predefinedTriangle->point2));	//=1 for equilateral triangle
 
 
 	//1a. Scale object data such that the object triangle side is of same length as a predefined side of a predefined triangle
@@ -260,7 +256,7 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 
 
 	mat scaleMatrix1a;
-	createScaleMatrix2D(&scaleMatrix1a, scaleFactor1a);
+	SHAREDvector.createScaleMatrix2D(&scaleMatrix1a, scaleFactor1a);
 
 	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 	//openglUseMatrix = true;
@@ -269,13 +265,13 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 	#else
 	if(first)
 	{
-		storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap);
+		ORoperations.storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap);
 	}
 	else
 	{
-		restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap);
+		ORoperations.restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap);
 	}
-	//applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &scaleMatrix1a);
+	//ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &scaleMatrix1a);
 	#endif
 
 	#ifdef OR_DEBUG_METHOD_2DOD
@@ -293,18 +289,18 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 
 	//1b. tranform object triangle; Scale object triangle such that the object triangle side is of same length as a predefined side of a predefined triangle
 	vec vecNew;
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &scaleMatrix1a);
-	copyVectors(&(transformedObjectTriangle->point1), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point2), &scaleMatrix1a);
-	copyVectors(&(transformedObjectTriangle->point2), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &scaleMatrix1a);
-	copyVectors(&(transformedObjectTriangle->point3), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &scaleMatrix1a);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point1), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point2), &scaleMatrix1a);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point2), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &scaleMatrix1a);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point3), &vecNew);
 
 	/*
-	multiplyVectorByMatrix(&vecNew, &(point4), &scaleMatrix1a);
-	copyVectors(&(point4), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(point5), &scaleMatrix1a);
-	copyVectors(&(point5), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(point4), &scaleMatrix1a);
+	SHAREDvector.copyVectors(&(point4), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(point5), &scaleMatrix1a);
+	SHAREDvector.copyVectors(&(point5), &vecNew);
 	*/
 
 	#ifdef OR_DEBUG_METHOD_2DOD
@@ -324,15 +320,15 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 		while(currentFeature->next != NULL)
 		{
 			#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-			if(compareVectors(&(currentFeature->point), &(currentPolygonInList->point1)))
+			if(SHAREDvector.compareVectors(&(currentFeature->point), &(currentPolygonInList->point1)))
 			{
 				currentFeature->OTpointIndex = 1;
 			}
-			else if(compareVectors(&(currentFeature->point), &(currentPolygonInList->point2)))
+			else if(SHAREDvector.compareVectors(&(currentFeature->point), &(currentPolygonInList->point2)))
 			{
 				currentFeature->OTpointIndex = 2;
 			}
-			else if(compareVectors(&(currentFeature->point), &(currentPolygonInList->point3)))
+			else if(SHAREDvector.compareVectors(&(currentFeature->point), &(currentPolygonInList->point3)))
 			{
 				currentFeature->OTpointIndex = 3;
 			}
@@ -342,9 +338,9 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 			}
 			#endif
 
-			copyVectors(&(currentFeature->pointTransformed), &(currentFeature->point));		//startup
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &scaleMatrix1a);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
+			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &(currentFeature->point));		//startup
+			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &scaleMatrix1a);
+			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &vecNew);
 			#ifdef OR_DEBUG_METHOD_2DOD
 			cout << "nearest currentFeature->pointTransformed: x = " << currentFeature->pointTransformed.x << ", y = " << currentFeature->pointTransformed.y << ", z = " << currentFeature->pointTransformed.z << endl;
 			#endif
@@ -359,15 +355,15 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 		while(currentFeature->next != NULL)
 		{
 			#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-			if(compareVectors(&(currentFeature->point), &(currentPolygonInList->point1)))
+			if(SHAREDvector.compareVectors(&(currentFeature->point), &(currentPolygonInList->point1)))
 			{
 				currentFeature->OTpointIndex = 1;
 			}
-			else if(compareVectors(&(currentFeature->point), &(currentPolygonInList->point2)))
+			else if(SHAREDvector.compareVectors(&(currentFeature->point), &(currentPolygonInList->point2)))
 			{
 				currentFeature->OTpointIndex = 2;
 			}
-			else if(compareVectors(&(currentFeature->point), &(currentPolygonInList->point3)))
+			else if(SHAREDvector.compareVectors(&(currentFeature->point), &(currentPolygonInList->point3)))
 			{
 				currentFeature->OTpointIndex = 3;
 			}
@@ -377,9 +373,9 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 			}
 			#endif
 
-			copyVectors(&(currentFeature->pointTransformed), &(currentFeature->point));		//startup
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &scaleMatrix1a);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
+			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &(currentFeature->point));		//startup
+			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &scaleMatrix1a);
+			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &vecNew);
 			currentFeature = currentFeature->next;
 		}
 	}
@@ -389,11 +385,11 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 	double rotationFactor2i = -orientationOfObjectTriangleSide;
 
 	mat rotateMatrix2i;
-	createRotationMatrix2D(&rotateMatrix2i, rotationFactor2i);
+	SHAREDvector.createRotationMatrix2D(&rotateMatrix2i, rotationFactor2i);
 	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 	opengl2DmatrixTransformation2iRotationFactor = rotationFactor2i;
 	#else
-	//applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &rotateMatrix2i);
+	//ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &rotateMatrix2i);
 	#endif
 	#ifdef OR_DEBUG_METHOD_2DOD
 	cout << "2. rotate object data such that the object triangle side is parallel with X axis" << endl;
@@ -409,18 +405,18 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 	#endif
 
 	//2ib. tranform object triangle;  rotate object triangle such that the object triangle side is parallel with X axis
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &rotateMatrix2i);
-	copyVectors(&(transformedObjectTriangle->point1), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point2), &rotateMatrix2i);
-	copyVectors(&(transformedObjectTriangle->point2), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &rotateMatrix2i);
-	copyVectors(&(transformedObjectTriangle->point3), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &rotateMatrix2i);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point1), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point2), &rotateMatrix2i);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point2), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &rotateMatrix2i);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point3), &vecNew);
 
 	/*
-	multiplyVectorByMatrix(&vecNew, &(point4), &rotateMatrix2i);
-	copyVectors(&(point4), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(point5), &rotateMatrix2i);
-	copyVectors(&(point5), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(point4), &rotateMatrix2i);
+	SHAREDvector.copyVectors(&(point4), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(point5), &rotateMatrix2i);
+	SHAREDvector.copyVectors(&(point5), &vecNew);
 	*/
 
 	//2ic. tranform nearest features
@@ -429,8 +425,8 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 		ORfeature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2i);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
+			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2i);
+			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &vecNew);
 			#ifdef OR_DEBUG_METHOD_2DOD
 			cout << "nearest currentFeature->pointTransformed: x = " << currentFeature->pointTransformed.x << ", y = " << currentFeature->pointTransformed.y << ", z = " << currentFeature->pointTransformed.z << endl;
 			#endif
@@ -442,8 +438,8 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 		ORfeature* currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2i);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
+			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2i);
+			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &vecNew);
 			currentFeature = currentFeature->next;
 		}
 	}
@@ -494,27 +490,27 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 
 	//2iia. now if necessary, rotate by 180 degrees...
 	mat rotateMatrix2ii;
-	createRotationMatrix2D(&rotateMatrix2ii, rotationFactor2ii);
+	SHAREDvector.createRotationMatrix2D(&rotateMatrix2ii, rotationFactor2ii);
 
 	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 	opengl2DmatrixTransformation2iiRotationFactor = rotationFactor2ii;
 	#else
-	//applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &rotateMatrix2ii);
+	//ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &rotateMatrix2ii);
 	#endif
 
 	//2iib. tranform object triangle; rotate object triangle by 180 degrees if necessary
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &rotateMatrix2ii);
-	copyVectors(&(transformedObjectTriangle->point1), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point2), &rotateMatrix2ii);
-	copyVectors(&(transformedObjectTriangle->point2), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &rotateMatrix2ii);
-	copyVectors(&(transformedObjectTriangle->point3), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &rotateMatrix2ii);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point1), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point2), &rotateMatrix2ii);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point2), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &rotateMatrix2ii);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point3), &vecNew);
 
 	/*
-	multiplyVectorByMatrix(&vecNew, &(point4), &rotateMatrix2ii);
-	copyVectors(&(point4), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(point5), &rotateMatrix2ii);
-	copyVectors(&(point5), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(point4), &rotateMatrix2ii);
+	SHAREDvector.copyVectors(&(point4), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(point5), &rotateMatrix2ii);
+	SHAREDvector.copyVectors(&(point5), &vecNew);
 	*/
 
 	//2iic. tranform nearest features
@@ -523,8 +519,8 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 		ORfeature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2ii);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
+			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2ii);
+			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &vecNew);
 			#ifdef OR_DEBUG_METHOD_2DOD
 			cout << "nearest currentFeature->pointTransformed: x = " << currentFeature->pointTransformed.x << ", y = " << currentFeature->pointTransformed.y << ", z = " << currentFeature->pointTransformed.z << endl;
 			#endif
@@ -536,8 +532,8 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 		ORfeature* currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2ii);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
+			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2ii);
+			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &vecNew);
 			currentFeature = currentFeature->next;
 		}
 	}
@@ -559,18 +555,18 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 #ifndef OR_METHOD_2DOD_ASSUME_NO_3D_ROTATION
 
 	//3a. Scale object data on Y axis such that the third apex is the same perpendicular distance away from the side as is the case for the predefined triangle.
-	double perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide = calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(transformedObjectTriangle, side);
+	double perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide = this->calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(transformedObjectTriangle, side);
 
 	mat scaleMatrix3a;
 	double scaleFactor3a = perpendicularDistanceBetweenThirdApexOfPredefinedTriangleAndSide/perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide;
 
-	//OLD: createYAxisScaleMatrix2D(&scaleMatrix3a, lengthOfPredefinedTriangleSide/perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide);
-	createYAxisScaleMatrix2D(&scaleMatrix3a, scaleFactor3a);
+	//OLD: SHAREDvector.createYAxisScaleMatrix2D(&scaleMatrix3a, lengthOfPredefinedTriangleSide/perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide);
+	SHAREDvector.createYAxisScaleMatrix2D(&scaleMatrix3a, scaleFactor3a);
 
 	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 	opengl2DmatrixTransformation3aScaleFactor = scaleFactor3a;
 	#else
-	//applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &scaleMatrix3a);
+	//ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &scaleMatrix3a);
 	#endif
 
 	#ifdef OR_DEBUG_METHOD_2DOD
@@ -587,18 +583,18 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 	#endif
 
 	//3b. tranform object triangle; Scale object triangle on Y axis such that the third apex is the same perpendicular distance away from the side as is the case for the predefined triangle.
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &scaleMatrix3a);
-	copyVectors(&(transformedObjectTriangle->point1), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point2), &scaleMatrix3a);
-	copyVectors(&(transformedObjectTriangle->point2), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &scaleMatrix3a);
-	copyVectors(&(transformedObjectTriangle->point3), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &scaleMatrix3a);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point1), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point2), &scaleMatrix3a);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point2), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &scaleMatrix3a);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point3), &vecNew);
 
 	/*
-	multiplyVectorByMatrix(&vecNew, &(point4), &scaleMatrix3a);
-	copyVectors(&(point4), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(point5), &scaleMatrix3a);
-	copyVectors(&(point5), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(point4), &scaleMatrix3a);
+	SHAREDvector.copyVectors(&(point4), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(point5), &scaleMatrix3a);
+	SHAREDvector.copyVectors(&(point5), &vecNew);
 	*/
 
 	#ifdef OR_DEBUG_METHOD_2DOD
@@ -616,8 +612,8 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 		ORfeature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &scaleMatrix3a);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
+			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &scaleMatrix3a);
+			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &vecNew);
 			#ifdef OR_DEBUG_METHOD_2DOD
 			cout << "nearest currentFeature->pointTransformed: x = " << currentFeature->pointTransformed.x << ", y = " << currentFeature->pointTransformed.y << ", z = " << currentFeature->pointTransformed.z << endl;
 			#endif
@@ -629,26 +625,26 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 		ORfeature* currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &scaleMatrix3a);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
+			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &scaleMatrix3a);
+			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &vecNew);
 			currentFeature = currentFeature->next;
 		}
 	}
 
 
 	//4a. shear object data along X axis such that object triangle apexes are coincident with predefined triangle apexes
-	double xAxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex = calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(transformedObjectTriangle, side);
+	double xAxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex = this->calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(transformedObjectTriangle, side);
 		//double shearRequired = (xAxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex - (lengthOfPredefinedTriangleSide/2))/lengthOfPredefinedTriangleSide;	OLD
 	double shearRequired4a = (xAxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex - (lengthOfPredefinedTriangleSide/2))/perpendicularDistanceBetweenThirdApexOfPredefinedTriangleAndSide;
 
 
 	mat shearMatrix4a;
-	createXAxisShearMatrix2D(&shearMatrix4a, shearRequired4a);
+	SHAREDvector.createXAxisShearMatrix2D(&shearMatrix4a, shearRequired4a);
 
 	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 	opengl2DmatrixTransformation4aShearFactor = shearRequired4a;
 	#else
-	//applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &shearMatrix4a);
+	//ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &shearMatrix4a);
 	#endif
 
 	#ifdef OR_DEBUG_METHOD_2DOD
@@ -665,18 +661,18 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 	#endif
 
 	//4b. tranform object triangle; shear object trianlge along X axis such that object triangle apexes are coincident with predefined triangle apexes
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &shearMatrix4a);
-	copyVectors(&(transformedObjectTriangle->point1), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point2), &shearMatrix4a);
-	copyVectors(&(transformedObjectTriangle->point2), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &shearMatrix4a);
-	copyVectors(&(transformedObjectTriangle->point3), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &shearMatrix4a);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point1), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point2), &shearMatrix4a);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point2), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &shearMatrix4a);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point3), &vecNew);
 
 	/*
-	multiplyVectorByMatrix(&vecNew, &(point4), &shearMatrix4a);
-	copyVectors(&(point4), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(point5), &shearMatrix4a);
-	copyVectors(&(point5), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(point4), &shearMatrix4a);
+	SHAREDvector.copyVectors(&(point4), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(point5), &shearMatrix4a);
+	SHAREDvector.copyVectors(&(point5), &vecNew);
 	*/
 
 	#ifdef OR_DEBUG_METHOD_2DOD
@@ -694,8 +690,8 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 		ORfeature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &shearMatrix4a);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
+			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &shearMatrix4a);
+			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &vecNew);
 			#ifdef OR_DEBUG_METHOD_2DOD
 			cout << "nearest currentFeature->pointTransformed: x = " << currentFeature->pointTransformed.x << ", y = " << currentFeature->pointTransformed.y << ", z = " << currentFeature->pointTransformed.z << endl;
 			#endif
@@ -707,8 +703,8 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 		ORfeature* currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &shearMatrix4a);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
+			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &shearMatrix4a);
+			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &vecNew);
 			currentFeature = currentFeature->next;
 		}
 	}
@@ -774,38 +770,38 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 
 	mat multipliedMatrix;
 	mat matTemp;
-	createIdentityMatrixRT(&multipliedMatrix);
+	SHAREDvector.createIdentityMatrixRT(&multipliedMatrix);
 
 	#ifndef OR_METHOD_2DOD_ASSUME_NO_3D_ROTATION
-	multiplyMatricies(&matTemp, &multipliedMatrix, &shearMatrix4a);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
-	multiplyMatricies(&matTemp, &multipliedMatrix, &scaleMatrix3a);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &shearMatrix4a);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &scaleMatrix3a);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
 	#endif
-	multiplyMatricies(&matTemp, &multipliedMatrix, &rotateMatrix2ii);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
-	multiplyMatricies(&matTemp, &multipliedMatrix, &rotateMatrix2i);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
-	multiplyMatricies(&matTemp, &multipliedMatrix, &scaleMatrix1a);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &rotateMatrix2ii);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &rotateMatrix2i);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &scaleMatrix1a);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
 
-	copyMatrixTwoIntoMatrixOne(&opengl2DmultiplicationMatrix, &multipliedMatrix);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&opengl2DmultiplicationMatrix, &multipliedMatrix);
 
 	/*
 	//now create inverted matrix;
 	mat multipliedMatrixInverted;
-	createIdentityMatrixRT(&multipliedMatrixInverted);
+	SHAREDvector.createIdentityMatrixRT(&multipliedMatrixInverted);
 
-	multiplyMatricies(&matTemp, &multipliedMatrixInverted, &scaleMatrix1a);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrixInverted, &matTemp);
-	multiplyMatricies(&matTemp, &multipliedMatrixInverted, &rotateMatrix2i);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrixInverted, &matTemp);
-	multiplyMatricies(&matTemp, &multipliedMatrixInverted, &rotateMatrix2ii);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrixInverted, &matTemp);
-	multiplyMatricies(&matTemp, &multipliedMatrixInverted, &scaleMatrix3a);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrixInverted, &matTemp);
-	multiplyMatricies(&matTemp, &multipliedMatrixInverted, &shearMatrix4a);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrixInverted, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrixInverted, &scaleMatrix1a);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrixInverted, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrixInverted, &rotateMatrix2i);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrixInverted, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrixInverted, &rotateMatrix2ii);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrixInverted, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrixInverted, &scaleMatrix3a);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrixInverted, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrixInverted, &shearMatrix4a);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrixInverted, &matTemp);
 
 	ptp4.x = ptp4.x + translationVector.x;
 	ptp4.y = ptp4.y + translationVector.y;
@@ -834,24 +830,24 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 
 	mat multipliedMatrix;
 	mat matTemp;
-	createIdentityMatrixRT(&multipliedMatrix);
+	SHAREDvector.createIdentityMatrixRT(&multipliedMatrix);
 
 	#ifndef OR_METHOD_2DOD_ASSUME_NO_3D_ROTATION
-	multiplyMatricies(&matTemp, &multipliedMatrix, &shearMatrix4a);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
-	multiplyMatricies(&matTemp, &multipliedMatrix, &scaleMatrix3a);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &shearMatrix4a);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &scaleMatrix3a);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
 	#endif
-	multiplyMatricies(&matTemp, &multipliedMatrix, &rotateMatrix2ii);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
-	multiplyMatricies(&matTemp, &multipliedMatrix, &rotateMatrix2i);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
-	multiplyMatricies(&matTemp, &multipliedMatrix, &scaleMatrix1a);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &rotateMatrix2ii);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &rotateMatrix2i);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &scaleMatrix1a);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
 
-	applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &multipliedMatrix);
+	ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &multipliedMatrix);
 
-	applyTranslationToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &translationVector);
+	ORoperations.applyTranslationToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &translationVector);
 #endif
 
 	#ifdef OR_DEBUG_METHOD_2DOD
@@ -913,7 +909,7 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 			cout << "\t\t\t\t end: 3ai. 2DOD normalised snapshot generation - transform data wrt polygon - matrix calc" << endl;
 		}
 		long time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd;
-		time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd = getTimeAsLong();
+		time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd = SHAREDvars.getTimeAsLong();
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
 		{
 			cout << "\t\t\t\t time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygon = " << time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd-time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart << endl;
@@ -928,12 +924,12 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 			cout << "\t\t\t\t start: 3aii. 2DOD normalised snapshot generation - transform data wrt polygon - cull" << endl;
 		}
 
-		time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart = getTimeAsLong();
+		time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart = SHAREDvars.getTimeAsLong();
 	}
 
 #ifdef USE_OPENGL_OPTIMISED_TRIANGLE_RENDERING
 	//setViewPort(100, 100, transformedObjectTriangle->point1.x, transformedObjectTriangle->point1.y);
-	setViewPort2Dortho(-1.0, 1.0, -1.0, 1.0);
+	LDopengl.setViewPort2Dortho(-1.0, 1.0, -1.0, 1.0);
 #else
 	//6. Disable References That Are Not Contained In The Triangle [these won't be raytraced / generated / fed into neural network]
 	if(!OR_METHOD_DO_NOT_CULL_SNAPSHOT_EXTREME)
@@ -948,13 +944,13 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 				padBoundary = true;
 				#endif
 				//disableReferencesThatAreNotContainedInTheObjectSquare2DOD(firstReferenceInInterpolated2DrgbMap, currentPolygonInList, padBoundary);
-				disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(firstReferenceInInterpolated2DrgbMap, currentPolygonInList, padBoundary, side, shearRequired4a);
+				this->disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(firstReferenceInInterpolated2DrgbMap, currentPolygonInList, padBoundary, side, shearRequired4a);
 				//disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced2(firstReferenceInInterpolated2DrgbMap, currentPolygonInList, &point4, &point5, padBoundary);
 
 			}
 			else
 			{
-				disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(firstReferenceInInterpolated2DrgbMap, currentPolygonInList);
+				this->disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(firstReferenceInInterpolated2DrgbMap, currentPolygonInList);
 			}
 		}
 	}
@@ -973,13 +969,13 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 #ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
 	//now add minWidthAndHeightOfOrigOT information
 
-	double minXOfTriangle = minDouble(minDouble(currentPolygonInList->point1.x, currentPolygonInList->point2.x), currentPolygonInList->point3.x);
-	double minYOfTriangle = minDouble(minDouble(currentPolygonInList->point1.y, currentPolygonInList->point2.y), currentPolygonInList->point3.y);
-	double maxXOfTriangle = maxDouble(maxDouble(currentPolygonInList->point1.x, currentPolygonInList->point2.x), currentPolygonInList->point3.x);
-	double maxYOfTriangle =  maxDouble(maxDouble(currentPolygonInList->point1.y, currentPolygonInList->point2.y), currentPolygonInList->point3.y);
-	double widthOfOriginalTriangle = absDouble(minXOfTriangle - maxXOfTriangle);
-	double heightOfOriginalTriangle = absDouble(minYOfTriangle - maxYOfTriangle);
-	double minwidthheightOfOriginalTriangle = minDouble(widthOfOriginalTriangle, heightOfOriginalTriangle);
+	double minXOfTriangle = SHAREDvars.minDouble(SHAREDvars.minDouble(currentPolygonInList->point1.x, currentPolygonInList->point2.x), currentPolygonInList->point3.x);
+	double minYOfTriangle = SHAREDvars.minDouble(SHAREDvars.minDouble(currentPolygonInList->point1.y, currentPolygonInList->point2.y), currentPolygonInList->point3.y);
+	double maxXOfTriangle = SHAREDvars.maxDouble(SHAREDvars.maxDouble(currentPolygonInList->point1.x, currentPolygonInList->point2.x), currentPolygonInList->point3.x);
+	double maxYOfTriangle =  SHAREDvars.maxDouble(SHAREDvars.maxDouble(currentPolygonInList->point1.y, currentPolygonInList->point2.y), currentPolygonInList->point3.y);
+	double widthOfOriginalTriangle = SHAREDvars.absDouble(minXOfTriangle - maxXOfTriangle);
+	double heightOfOriginalTriangle = SHAREDvars.absDouble(minYOfTriangle - maxYOfTriangle);
+	double minwidthheightOfOriginalTriangle = SHAREDvars.minDouble(widthOfOriginalTriangle, heightOfOriginalTriangle);
 
 
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
@@ -1010,7 +1006,7 @@ void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, 
 			cout << "\t\t\t\t end: 3aii. 2DOD normalised snapshot generation - transform data wrt polygon - cull" << endl;
 		}
 		long time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd;
-		time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd = getTimeAsLong();
+		time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd = SHAREDvars.getTimeAsLong();
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
 		{
 			cout << "\t\t\t\t time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygon = " << time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd-time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart << endl;
@@ -1049,7 +1045,7 @@ double minDoubles(double a, double b)
 
 
 
-void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList, const bool padBoundary, const int side, const double shearFactor)
+void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList, const bool padBoundary, const int side, const double shearFactor)
 {
 
 	vec A;
@@ -1058,7 +1054,7 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(LDreferen
 	vec D;
 
 	vec pointApexOfTri;
-	initialiseVector(&pointApexOfTri);
+	SHAREDvector.initialiseVector(&pointApexOfTri);
 
 	if(side == 0)
 	{
@@ -1102,23 +1098,23 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(LDreferen
 		exit(0);
 	}
 
-	initialiseVector(&C);
-	initialiseVector(&D);
+	SHAREDvector.initialiseVector(&C);
+	SHAREDvector.initialiseVector(&D);
 
 	vec parallelVectorToTriangleBase;
-	initialiseVector(&parallelVectorToTriangleBase);
-	subtractVectorsRT(&(B), &(A), &parallelVectorToTriangleBase);		//vect = vect1 - vect2
+	SHAREDvector.initialiseVector(&parallelVectorToTriangleBase);
+	SHAREDvector.subtractVectorsRT(&(B), &(A), &parallelVectorToTriangleBase);		//vect = vect1 - vect2
 
-	multiplyVectorByScalar(&parallelVectorToTriangleBase, (1.0/shearFactor));		//NB 1.2 is to compensate for aliasing errors
+	SHAREDvector.multiplyVectorByScalar(&parallelVectorToTriangleBase, (1.0/shearFactor));		//NB 1.2 is to compensate for aliasing errors
 
 	vec p3plusparallelVectorToTriangleBase;
 	vec p3minusparallelVectorToTriangleBase;
 
-	initialiseVector(&p3plusparallelVectorToTriangleBase);
-	initialiseVector(&p3minusparallelVectorToTriangleBase);
+	SHAREDvector.initialiseVector(&p3plusparallelVectorToTriangleBase);
+	SHAREDvector.initialiseVector(&p3minusparallelVectorToTriangleBase);
 
-	addVectorsRT(&(pointApexOfTri), &parallelVectorToTriangleBase, &p3plusparallelVectorToTriangleBase);
-	subtractVectorsRT(&(pointApexOfTri), &parallelVectorToTriangleBase, &p3minusparallelVectorToTriangleBase);
+	SHAREDvector.addVectorsRT(&(pointApexOfTri), &parallelVectorToTriangleBase, &p3plusparallelVectorToTriangleBase);
+	SHAREDvector.subtractVectorsRT(&(pointApexOfTri), &parallelVectorToTriangleBase, &p3minusparallelVectorToTriangleBase);
 
 	C.x = p3plusparallelVectorToTriangleBase.x;
 	C.y = p3plusparallelVectorToTriangleBase.y;
@@ -1439,7 +1435,7 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(LDreference* firs
 */
 
 
-void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList)
+void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList)
 {
 	vec A;
 	vec B;
@@ -1494,18 +1490,18 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* fi
 			vec v2;
 
 			//v0 = C - A
-			subtractVectorsRT(&C, &A, &v0);	//vect = vect1 - vect2
+			SHAREDvector.subtractVectorsRT(&C, &A, &v0);	//vect = vect1 - vect2
 			//v1 = B - A
-			subtractVectorsRT(&B, &A, &v1);	//vect = vect1 - vect2
+			SHAREDvector.subtractVectorsRT(&B, &A, &v1);	//vect = vect1 - vect2
 			//v2 = P - A
-			subtractVectorsRT(&P, &A, &v2);	//vect = vect1 - vect2
+			SHAREDvector.subtractVectorsRT(&P, &A, &v2);	//vect = vect1 - vect2
 
 			// Compute dot products
-			double dot00 = dotProduct(&v0, &v0);
-			double dot01 = dotProduct(&v0, &v1);
-			double dot02 = dotProduct(&v0, &v2);
-			double dot11 = dotProduct(&v1, &v1);
-			double dot12 = dotProduct(&v1, &v2);
+			double dot00 = SHAREDvector.dotProduct(&v0, &v0);
+			double dot01 = SHAREDvector.dotProduct(&v0, &v1);
+			double dot02 = SHAREDvector.dotProduct(&v0, &v2);
+			double dot11 = SHAREDvector.dotProduct(&v1, &v1);
+			double dot12 = SHAREDvector.dotProduct(&v1, &v2);
 
 			// Compute barycentric coordinates
 			double invDenom = 1.0 / ((dot00* dot11) - (dot01* dot01));
@@ -1547,7 +1543,7 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* fi
 
 /*NEWER, Barycentric Technique - descriptive but less efficient;
 
-void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList)
+void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList)
 {
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
@@ -1656,7 +1652,7 @@ function PointInTriangle(p, a,b,c)
 
 //NEWER, use triangle area test, but still inefficient method;
 /*
-void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList)
+void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList)
 {
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
@@ -1746,7 +1742,7 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* fi
 
 /*OLD thorough but inefficient method;
 
-void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList)
+void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList)
 {
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
@@ -1895,7 +1891,7 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* fi
 
 
 
-void createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, const int imageHeight, unsigned char* rgbMap, LDreference* firstReferenceInInterpolatedMap)
+void ORmethod2DODClass::createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, const int imageHeight, unsigned char* rgbMap, LDreference* firstReferenceInInterpolatedMap)
 {
 	LDreference* currentReferenceInInterpolated2DMap = firstReferenceInInterpolatedMap;
 
@@ -1922,17 +1918,17 @@ void createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, const 
 			v4.z = 0.0;
 
 			currentReferenceInInterpolated2DMap->type = REFERENCE_TYPE_QUAD;
-			copyVectors(&(currentReferenceInInterpolated2DMap->vertex1relativePosition), &v1);
-			copyVectors(&(currentReferenceInInterpolated2DMap->vertex2relativePosition), &v2);
-			copyVectors(&(currentReferenceInInterpolated2DMap->vertex3relativePosition), &v3);
-			copyVectors(&(currentReferenceInInterpolated2DMap->vertex4relativePosition), &v4);
-			copyVectors(&(currentReferenceInInterpolated2DMap->vertex1absolutePosition), &v1);
-			copyVectors(&(currentReferenceInInterpolated2DMap->vertex2absolutePosition), &v2);
-			copyVectors(&(currentReferenceInInterpolated2DMap->vertex3absolutePosition), &v3);
-			copyVectors(&(currentReferenceInInterpolated2DMap->vertex4absolutePosition), &v4);
+			SHAREDvector.copyVectors(&(currentReferenceInInterpolated2DMap->vertex1relativePosition), &v1);
+			SHAREDvector.copyVectors(&(currentReferenceInInterpolated2DMap->vertex2relativePosition), &v2);
+			SHAREDvector.copyVectors(&(currentReferenceInInterpolated2DMap->vertex3relativePosition), &v3);
+			SHAREDvector.copyVectors(&(currentReferenceInInterpolated2DMap->vertex4relativePosition), &v4);
+			SHAREDvector.copyVectors(&(currentReferenceInInterpolated2DMap->vertex1absolutePosition), &v1);
+			SHAREDvector.copyVectors(&(currentReferenceInInterpolated2DMap->vertex2absolutePosition), &v2);
+			SHAREDvector.copyVectors(&(currentReferenceInInterpolated2DMap->vertex3absolutePosition), &v3);
+			SHAREDvector.copyVectors(&(currentReferenceInInterpolated2DMap->vertex4absolutePosition), &v4);
 
 			colour col;
-			getRGBMapValues(x, y, imageWidth, rgbMap, &col);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMap, &col);
 
 			unsigned int colByte1 = (unsigned int)DAT_FILE_FIRST_RGB_COLOUR << (unsigned int)24;
 			unsigned int colByte2 = (unsigned int)col.r << (unsigned int)16;
@@ -1964,7 +1960,7 @@ void createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, const 
 }
 
 
-void create2DmeshUsingRGBmap2DOD(int imageWidth, const int imageHeight, double imageXOffset, double imageYOffset, unsigned char* rgbMap, ORmeshPoint* firstMeshPointInMeshList, ORmeshPoint* meshPointArray[], const bool useEdgeZeroCrossingMap)
+void ORmethod2DODClass::create2DmeshUsingRGBmap2DOD(int imageWidth, const int imageHeight, double imageXOffset, double imageYOffset, unsigned char* rgbMap, ORmeshPoint* firstMeshPointInMeshList, ORmeshPoint* meshPointArray[], const bool useEdgeZeroCrossingMap)
 {
 	//#ifdef OR_USE_CONTRAST_CALC_METHOD_C
 #ifndef LINUX
@@ -1986,7 +1982,7 @@ void create2DmeshUsingRGBmap2DOD(int imageWidth, const int imageHeight, double i
 			{
 				edgeZeroCrossingMap[i] = NULL;
 			}
-			generateEdgeListFromRGBmapWithQuadraticFit(rgbMap, edgeBoolMap, edgeZeroCrossingMap, imageWidth, imageHeight, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, OR_METHOD2DOD_DIMENSIONS, NULL, NULL, 1.0, NULL, interpixelContrastMapType);
+			ORfeatureGeneration.generateEdgeListFromRGBmapWithQuadraticFit(rgbMap, edgeBoolMap, edgeZeroCrossingMap, imageWidth, imageHeight, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, OR_METHOD2DOD_DIMENSIONS, NULL, NULL, 1.0, NULL, interpixelContrastMapType);
 		}
 	}
 
@@ -2026,7 +2022,7 @@ void create2DmeshUsingRGBmap2DOD(int imageWidth, const int imageHeight, double i
 			}
 
 			colour col;
-			getRGBMapValues(x, y, imageWidth, rgbMap, &col);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMap, &col);
 
 			currentMeshPointInMesh->col.r = col.r;
 			currentMeshPointInMesh->col.g = col.g;
@@ -2036,7 +2032,7 @@ void create2DmeshUsingRGBmap2DOD(int imageWidth, const int imageHeight, double i
 			currentMeshPointInMesh->point.z = 0.0;
 			currentMeshPointInMesh->xInt = x;
 			currentMeshPointInMesh->yInt = y;
-			currentMeshPointInMesh->luminosity = calculateLuminosityLevelFromRGBVal(&col);
+			currentMeshPointInMesh->luminosity = RTpixelMaps.calculateLuminosityLevelFromRGBVal(&col);
 
 			if(OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
 			{
@@ -2130,7 +2126,7 @@ void create2DmeshUsingRGBmap2DOD(int imageWidth, const int imageHeight, double i
 		{
 			for(int x = 1; x < (imageWidth-1); x++)
 			{
-				calculateMeshPointInterpixelLuminosityContrast(meshPointArray[y*imageWidth + x]);
+				ORpolygonList.calculateMeshPointInterpixelLuminosityContrast(meshPointArray[y*imageWidth + x]);
 			}
 		}
 	}
@@ -2140,7 +2136,7 @@ void create2DmeshUsingRGBmap2DOD(int imageWidth, const int imageHeight, double i
 		{
 			for(int x = 1; x < (imageWidth-1); x++)
 			{
-				calculateMeshPointLuminosityContrast(meshPointArray[y*imageWidth + x]);
+				ORpolygonList.calculateMeshPointLuminosityContrast(meshPointArray[y*imageWidth + x]);
 			}
 		}
 	}
@@ -2192,7 +2188,7 @@ void create2DmeshUsingRGBmap2DOD(int imageWidth, const int imageHeight, double i
 
 						ORmeshPoint* nearestMeshpointInExistingMesh;
 						bool hasFoundMeshPoint = false;
-						nearestMeshpointInExistingMesh = findMeshPointIntInMesh(firstMeshPointInMeshList, &borderPoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
+						nearestMeshpointInExistingMesh = ORpolygonList.findMeshPointIntInMesh(firstMeshPointInMeshList, &borderPoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
 						if(hasFoundMeshPoint == false)
 						{
 							cout << "error: cannot find adjacent meshpoint" << endl;
@@ -2204,7 +2200,7 @@ void create2DmeshUsingRGBmap2DOD(int imageWidth, const int imageHeight, double i
 
 						/*old inefficient;
 						hasFoundMeshPoint = false;
-						meshpointInAdditionalMesh = findMeshPointIntInMesh(firstNewMeshPointInMesh, x, y, &hasFoundMeshPoint);
+						meshpointInAdditionalMesh = ORpolygonList.findMeshPointIntInMesh(firstNewMeshPointInMesh, x, y, &hasFoundMeshPoint);
 						if(hasFoundMeshPoint == false)
 						{
 							cout << "error: cannot find adjacent meshpoint" << endl;
@@ -2212,7 +2208,7 @@ void create2DmeshUsingRGBmap2DOD(int imageWidth, const int imageHeight, double i
 						}
 						*/
 
-						if(calculateTheDistanceBetweenTwoPoints(&(nearestMeshpointInExistingMesh->point), &(meshpointInAdditionalMesh->point)) < OR_METHOD_2DOD_USE_ADVANCED_INTERP_MESH_JOINING_MAXIMUM_RECONCILIATION_DISTANCE)
+						if(SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(nearestMeshpointInExistingMesh->point), &(meshpointInAdditionalMesh->point)) < OR_METHOD_2DOD_USE_ADVANCED_INTERP_MESH_JOINING_MAXIMUM_RECONCILIATION_DISTANCE)
 						{
 							//now redirect all mesh points surrounding the mesh point of the existing mesh to the corresponding mesh point of the additional mesh
 							for(int q = 0; q< 4; q++)

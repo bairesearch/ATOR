@@ -26,15 +26,12 @@
  * File Name: ORdatabaseFileIO.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1a 14-January-2017
+ * Project Version: 3j1b 14-January-2017
  *
  *******************************************************************************/
 
 
 #include "ORdatabaseFileIO.h"
-#include "ORdatabaseSQL.h"	//required for determineGeoBinX()/determineGeoBinY() only ... - these functions and/or compareFeaturesListForMatch() should probably be moved elsewhere instead, say to "ORdatabaseOperations.cpp"
-#include "SHAREDvector.h"
-#include "LDreferenceManipulation.h"
 
 #ifdef LINUX
 #include <sys/stat.h>
@@ -47,14 +44,14 @@
 
 static string databaseFolderName;
 
-void initialiseDatabase(const string newDatabaseFolderName)
+void ORdatabaseFileIOClass::initialiseDatabase(const string newDatabaseFolderName)
 {
 	databaseFolderName = newDatabaseFolderName;
 }
 
-bool DBdirectoryExists(string* folderName)
+bool ORdatabaseFileIOClass::DBdirectoryExists(string* folderName)
 {
-	bool folderExists = directoryExists(folderName);
+	bool folderExists = SHAREDvars.directoryExists(folderName);
 	if(folderExists)
 	{
 		#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
@@ -65,14 +62,14 @@ bool DBdirectoryExists(string* folderName)
 	return folderExists;
 }
 
-bool DBcreateDirectory(string* folderName)
+bool ORdatabaseFileIOClass::DBcreateDirectory(string* folderName)
 {
 	#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
 	cout << "\tDBcreateDirectory: folderName = " <<* folderName << endl;
 	#endif
 	bool result = true;
 
-	createDirectory(folderName);
+	SHAREDvars.createDirectory(folderName);
 	/*removed debug support for Windows;
 	#ifndef LINUX
 	if(CreateDirectory(folderName->c_str(), 0) == 0)	//if( _mkdir(folderName->c_str()) != 0)	//
@@ -85,13 +82,13 @@ bool DBcreateDirectory(string* folderName)
 	return result;
 }
 
-bool DBsetCurrentDirectory(string* folderName)
+bool ORdatabaseFileIOClass::DBsetCurrentDirectory(string* folderName)
 {
 	bool result = true;
 	#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
 	cout << "\tDBsetCurrentDirectory: folderName = " <<* folderName << endl;
 	#endif
-	setCurrentDirectory(folderName);
+	SHAREDvars.setCurrentDirectory(folderName);
 	/*removed debug support for Windows;
 	#ifndef LINUX
 	if(SetCurrentDirectory(folderName) == 0)
@@ -103,22 +100,22 @@ bool DBsetCurrentDirectory(string* folderName)
 	return result;
 }
 
-bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string* folderName)
+bool ORdatabaseFileIOClass::checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string* folderName)
 {
 	bool result = true;
 	#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
 	cout << "checkIfFolderExistsAndIfNotMakeAndSetAsCurrent: folderName = " <<* folderName << endl;
 	#endif
-	if(!DBdirectoryExists(folderName))
+	if(!this->DBdirectoryExists(folderName))
 	{
-		DBcreateDirectory(folderName);
+		this->DBcreateDirectory(folderName);
 	}
-	DBsetCurrentDirectory(folderName);
+	this->DBsetCurrentDirectory(folderName);
 
 	return result;
 }
 
-string DBgenerateServerDatabaseName(const string* objectName, const bool trainOrTest)
+string ORdatabaseFileIOClass::DBgenerateServerDatabaseName(const string* objectName, const bool trainOrTest)
 {
 	string databaseName;
 	if(!trainOrTest)
@@ -158,23 +155,23 @@ string DBgenerateServerDatabaseName(const string* objectName, const bool trainOr
 }
 
 
-string DBgenerateFolderName(string* objectName, const bool trainOrTest)
+string ORdatabaseFileIOClass::DBgenerateFolderName(string* objectName, const bool trainOrTest)
 {
 	//eg network/server/ORdatabase/e/x/a/example/...
 
-	string databaseName = DBgenerateServerDatabaseName(objectName, trainOrTest);
+	string databaseName = this->DBgenerateServerDatabaseName(objectName, trainOrTest);
 	string fileName = databaseName;
 
 	#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
 	cout << "1fileName = " << fileName << endl;
 	#endif
-	DBsetCurrentDirectory(&fileName);
+	this->DBsetCurrentDirectory(&fileName);
 
 	if(!trainOrTest)
 	{
 		fileName = fileName + OR_DATABASE_TEST_FOLDER_NAME + "/";
 		string testFolderName = OR_DATABASE_TEST_FOLDER_NAME;
-		checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&testFolderName);
+		this->checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&testFolderName);
 	}
 	else
 	{
@@ -184,7 +181,7 @@ string DBgenerateFolderName(string* objectName, const bool trainOrTest)
 
 		fileName = fileName + OR_DATABASE_TRAIN_FOLDER_NAME + "/";
 		string trainFolderName = OR_DATABASE_TRAIN_FOLDER_NAME;
-		checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&trainFolderName);
+		this->checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&trainFolderName);
 
 		int numberOfEntityNameLevels;
 		if(objectName->length() < OR_DATABASE_CONCEPT_NAME_SUBDIRECTORY_INDEX_NUMBER_OF_LEVELS)
@@ -200,10 +197,10 @@ string DBgenerateFolderName(string* objectName, const bool trainOrTest)
 			string folderName = "";
 			folderName = folderName + objectName->at(level);
 			fileName = fileName + folderName + "/";
-			checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&folderName);
+			this->checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&folderName);
 		}
 		fileName = fileName +* objectName + "/";
-		checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(objectName);
+		this->checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(objectName);
 
 		#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
 		cout << "2fileName = " << fileName << endl;
@@ -221,7 +218,7 @@ string DBgenerateFolderName(string* objectName, const bool trainOrTest)
 
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
-bool compareFeaturesListForMatch(ORfeature* testFirstFeatureInNearestFeatureList, ORfeature* trainFirstFeatureInNearestFeatureList, const int dimension, bool* exactMatchFound)
+bool ORdatabaseFileIOClass::compareFeaturesListForMatch(ORfeature* testFirstFeatureInNearestFeatureList, ORfeature* trainFirstFeatureInNearestFeatureList, const int dimension, bool* exactMatchFound)
 {
 	int numberOfFeatureGeoMatches = 0;
 	int numberOfFeatureGeoBinnedExactMatches = 0;
@@ -255,13 +252,13 @@ bool compareFeaturesListForMatch(ORfeature* testFirstFeatureInNearestFeatureList
 				{
 					double requiredMaxError;
 					#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
-						double minwidthheightOfOriginalTriangleTestAndTrain = minDouble(testcurrentFeatureInNearestFeatureList->minWidthAndHeightOfOrigOT, traincurrentFeatureInNearestFeatureList->minWidthAndHeightOfOrigOT);
-						requiredMaxError = (1.0/(maxDouble((minwidthheightOfOriginalTriangleTestAndTrain - OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT), OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT)/(double)OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT))* OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR;
+						double minwidthheightOfOriginalTriangleTestAndTrain = SHAREDvars.minDouble(testcurrentFeatureInNearestFeatureList->minWidthAndHeightOfOrigOT, traincurrentFeatureInNearestFeatureList->minWidthAndHeightOfOrigOT);
+						requiredMaxError = (1.0/(SHAREDvars.maxDouble((minwidthheightOfOriginalTriangleTestAndTrain - OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT), OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT)/(double)OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT))* OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR;
 					#else
 						requiredMaxError = OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR;
 					#endif
 
-					if(compareVectorsArbitraryError(&(testcurrentFeatureInNearestFeatureList->pointTransformed), &(traincurrentFeatureInNearestFeatureList->pointTransformed), requiredMaxError))
+					if(SHAREDvector.compareVectorsArbitraryError(&(testcurrentFeatureInNearestFeatureList->pointTransformed), &(traincurrentFeatureInNearestFeatureList->pointTransformed), requiredMaxError))
 					{
 						numberOfFeatureGeoMatches++;
 						#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
@@ -270,10 +267,10 @@ bool compareFeaturesListForMatch(ORfeature* testFirstFeatureInNearestFeatureList
 						#endif
 					}
 
-					int trainxBin = determineGeoBinX(traincurrentFeatureInNearestFeatureList->pointTransformed.x);
-					int trainyBin = determineGeoBinY(traincurrentFeatureInNearestFeatureList->pointTransformed.y);
-					int testxBin = determineGeoBinX(testcurrentFeatureInNearestFeatureList->pointTransformed.x);
-					int testyBin = determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);
+					int trainxBin = ORdatabaseSQL.determineGeoBinX(traincurrentFeatureInNearestFeatureList->pointTransformed.x);
+					int trainyBin = ORdatabaseSQL.determineGeoBinY(traincurrentFeatureInNearestFeatureList->pointTransformed.y);
+					int testxBin = ORdatabaseSQL.determineGeoBinX(testcurrentFeatureInNearestFeatureList->pointTransformed.x);
+					int testyBin = ORdatabaseSQL.determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);
 					#ifdef OR_DEBUG
 					//cout << "\ntrainxBin = " << trainxBin << endl;
 					//cout << "trainyBin = " << trainyBin << endl;
@@ -310,7 +307,7 @@ bool compareFeaturesListForMatch(ORfeature* testFirstFeatureInNearestFeatureList
 }
 
 
-void addFeatureToEndOfFeatureList(ORfeature* firstFeatureInList, ORfeature* featureToAdd)
+void ORdatabaseFileIOClass::addFeatureToEndOfFeatureList(ORfeature* firstFeatureInList, ORfeature* featureToAdd)
 {
 	ORfeature* currentFeatureInList = firstFeatureInList;
 
@@ -328,7 +325,7 @@ void addFeatureToEndOfFeatureList(ORfeature* firstFeatureInList, ORfeature* feat
 	#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 	currentFeatureInList->OTpointIndex = featureToAdd->OTpointIndex;
 	#endif
-	copyVectors(&(currentFeatureInList->pointTransformed), &(featureToAdd->pointTransformed));
+	SHAREDvector.copyVectors(&(currentFeatureInList->pointTransformed), &(featureToAdd->pointTransformed));
 
 	ORfeature* newFeature = new ORfeature();
 	currentFeatureInList->next = newFeature;
@@ -338,7 +335,7 @@ void addFeatureToEndOfFeatureList(ORfeature* firstFeatureInList, ORfeature* feat
 
 
 
-void createFeaturesListUsingFeaturesFile(const string fileName, ORfeature* firstFeatureInList, const bool createFeatureObjects, const bool appendToList, const bool ignoreOTfeatures)
+void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fileName, ORfeature* firstFeatureInList, const bool createFeatureObjects, const bool appendToList, const bool ignoreOTfeatures)
 {
 	ORfeature* currentFeatureInList = firstFeatureInList;
 
@@ -528,27 +525,27 @@ void createFeaturesListUsingFeaturesFile(const string fileName, ORfeature* first
 		#endif
 			{
 
-				if(!ignoreOTfeatures || ((int)(convertStringToDouble(OTpointIndexString)) == 0))
+				if(!ignoreOTfeatures || ((int)(SHAREDvars.convertStringToDouble(OTpointIndexString)) == 0))
 				{
 					currentFeatureInList->objectName = objectNameString;
-					currentFeatureInList->trainOrTest = (bool)(convertStringToDouble(trainOrTestString));
-					currentFeatureInList->viewIndex = (int)(convertStringToDouble(viewIndexString));
-					currentFeatureInList->zoomIndex = (int)(convertStringToDouble(zoomIndexString));
-					currentFeatureInList->polyIndex = (int)(convertStringToDouble(polyIndexString));
-					currentFeatureInList->sideIndex = (int)(convertStringToDouble(sideIndexString));
+					currentFeatureInList->trainOrTest = (bool)(SHAREDvars.convertStringToDouble(trainOrTestString));
+					currentFeatureInList->viewIndex = (int)(SHAREDvars.convertStringToDouble(viewIndexString));
+					currentFeatureInList->zoomIndex = (int)(SHAREDvars.convertStringToDouble(zoomIndexString));
+					currentFeatureInList->polyIndex = (int)(SHAREDvars.convertStringToDouble(polyIndexString));
+					currentFeatureInList->sideIndex = (int)(SHAREDvars.convertStringToDouble(sideIndexString));
 					#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-					currentFeatureInList->OTpointIndex = (int)(convertStringToDouble(OTpointIndexString));
+					currentFeatureInList->OTpointIndex = (int)(SHAREDvars.convertStringToDouble(OTpointIndexString));
 					#endif
 					#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
-					currentFeatureInList->minWidthAndHeightOfOrigOT = (int)(convertStringToDouble(minWidthAndHeightOfOrigOTString));
+					currentFeatureInList->minWidthAndHeightOfOrigOT = (int)(SHAREDvars.convertStringToDouble(minWidthAndHeightOfOrigOTString));
 					#endif
-					currentFeatureInList->pointTransformed.x = (convertStringToDouble(transformedPointXString));
-					currentFeatureInList->pointTransformed.y = (convertStringToDouble(transformedPointYString));
-					currentFeatureInList->pointTransformed.z = (convertStringToDouble(transformedPointZString));
+					currentFeatureInList->pointTransformed.x = (SHAREDvars.convertStringToDouble(transformedPointXString));
+					currentFeatureInList->pointTransformed.y = (SHAREDvars.convertStringToDouble(transformedPointYString));
+					currentFeatureInList->pointTransformed.z = (SHAREDvars.convertStringToDouble(transformedPointZString));
 					#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
-					currentFeatureInList->point.x = (convertStringToDouble(PointXString));
-					currentFeatureInList->point.y = (convertStringToDouble(PointYString));
-					currentFeatureInList->point.z = (convertStringToDouble(PointZString));
+					currentFeatureInList->point.x = (SHAREDvars.convertStringToDouble(PointXString));
+					currentFeatureInList->point.y = (SHAREDvars.convertStringToDouble(PointYString));
+					currentFeatureInList->point.z = (SHAREDvars.convertStringToDouble(PointZString));
 					#endif
 
 
@@ -668,27 +665,27 @@ void createFeaturesListUsingFeaturesFile(const string fileName, ORfeature* first
 
 
 
-void createTransformedFeaturesFile(const ORfeature* firstFeatureInList, const string fileName, const string objectName, const int viewIndex, const int zoomIndex, const int polyIndex, const int sideIndex, const int trainOrTest)
+void ORdatabaseFileIOClass::createTransformedFeaturesFile(const ORfeature* firstFeatureInList, const string fileName, const string objectName, const int viewIndex, const int zoomIndex, const int polyIndex, const int sideIndex, const int trainOrTest)
 {
 	ofstream writeFileObject(fileName.c_str());
 
 	const ORfeature* currentFeature = firstFeatureInList;
 	while(currentFeature->next != NULL)
 	{
-		string polygonIndexString = convertIntToString(polyIndex);
-		string sideIndexString = convertIntToString(sideIndex);
-		string viewIndexString = convertIntToString(viewIndex);
-		string zoomIndexString = convertIntToString(zoomIndex);
+		string polygonIndexString = SHAREDvars.convertIntToString(polyIndex);
+		string sideIndexString = SHAREDvars.convertIntToString(sideIndex);
+		string viewIndexString = SHAREDvars.convertIntToString(viewIndex);
+		string zoomIndexString = SHAREDvars.convertIntToString(zoomIndex);
 		#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-		string OTpointIndexString = convertIntToString(currentFeature->OTpointIndex);
+		string OTpointIndexString = SHAREDvars.convertIntToString(currentFeature->OTpointIndex);
 		#endif
 		#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
-		string minWidthAndHeightOfOrigOTString = convertIntToString(currentFeature->minWidthAndHeightOfOrigOT);
+		string minWidthAndHeightOfOrigOTString = SHAREDvars.convertIntToString(currentFeature->minWidthAndHeightOfOrigOT);
 		#endif
-		string trainOrTestString = convertIntToString(((int)trainOrTest));
-		string transformedpositionCoordinatesString = convertPositionCoordinatesToString(&(currentFeature->pointTransformed));
+		string trainOrTestString = SHAREDvars.convertIntToString(((int)trainOrTest));
+		string transformedpositionCoordinatesString = LDreferenceManipulation.convertPositionCoordinatesToString(&(currentFeature->pointTransformed));
 		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
-		string positionCoordinatesString = convertPositionCoordinatesToString(&(currentFeature->point));
+		string positionCoordinatesString = LDreferenceManipulation.convertPositionCoordinatesToString(&(currentFeature->point));
 		#endif
 
 		#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES

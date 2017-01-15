@@ -26,7 +26,7 @@
  * File Name: ORquadraticFit.h (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3j1a 14-January-2017
+ * Project Version: 3j1b 14-January-2017
  *
  *******************************************************************************/
 
@@ -36,6 +36,11 @@
 
 #include "ORglobalDefs.h"
 #include "SHAREDvars.h"
+#include "SHAREDvector.h"
+#include "RTpixelMaps.h"
+#include "ORpixelMaps.h"
+#include "RTscene.h"
+#include "float.h"
 
 	//For a quadratic fit there are 7 coefficients; a[0]..a[6]. but a[5] = a[6])
 #define NUMBER_OF_COEFFICIENTS (6)
@@ -122,49 +127,57 @@ class ORQFzeroCrossing{
 		//#endif
 };
 
-double calculateAreaOfOneSideOfEdgeInPixel(const int xDevPointOnSide, const int yDevPointOnSide, const double zeroCrossingValueX, const double zeroCrossingValueY, const double alpha);
+class ORquadraticFitClass
+{
+	private: SHAREDvarsClass SHAREDvars;
+	private: SHAREDvectorClass SHAREDvector;
+	private: RTpixelMapsClass RTpixelMaps;
+	private: ORpixelMapsClass ORpixelMaps;
+	public: double calculateAreaOfOneSideOfEdgeInPixel(const int xDevPointOnSide, const int yDevPointOnSide, const double zeroCrossingValueX, const double zeroCrossingValueY, const double alpha);
 
 
 /*************************************** Edgise Frame High Level ('EdgiseFrameStandard') Methods* ***********************************/
-	void generateZeroCrossingList(const double* luminosityContrastMap, const int imageWidth, const int imageHeight, ORQFzeroCrossing* firstZeroCrossingInList, const bool edgeDetect, const double sensitivity, const int dimension, const double* pointMap, const double* depthMap, const int zoom, const int interpixelMapType);
-		void edgiseData(const bool edgeDetect, const bool createEnhancedImageDisplayingQuadraticFitInfo, ORQFzeroCrossing* currentZeroCrossingInList, const int imageWidth, const int imageHeight, const double luminosityContrastMap[], const double sensitivity, const int dimension, const double* pointMap, const double* depthMap, const int zoom, const int interpixelMapType);
-			bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], const bool edgeDetect, const bool createEnhancedImageDisplayingQuadraticFitInfo, ORQFzeroCrossing* currentZeroCrossingInList);
+		public: void generateZeroCrossingList(const double* luminosityContrastMap, const int imageWidth, const int imageHeight, ORQFzeroCrossing* firstZeroCrossingInList, const bool edgeDetect, const double sensitivity, const int dimension, const double* pointMap, const double* depthMap, const int zoom, const int interpixelMapType);
+			private: void edgiseData(const bool edgeDetect, const bool createEnhancedImageDisplayingQuadraticFitInfo, ORQFzeroCrossing* currentZeroCrossingInList, const int imageWidth, const int imageHeight, const double luminosityContrastMap[], const double sensitivity, const int dimension, const double* pointMap, const double* depthMap, const int zoom, const int interpixelMapType);
+				private: bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], const bool edgeDetect, const bool createEnhancedImageDisplayingQuadraticFitInfo, ORQFzeroCrossing* currentZeroCrossingInList);
 /************************************ End Edgise Frame High Level ('EdgiseFrameStandard') Methods* **********************************/
 
 
 
 /*********************************** Fit Methods* ******************************/
-void calculateQuadraticFitCoefficients(const int x, const int y, float coefficient[], const double luminosityContrastMap[]);
-void calculateQuadraticFitCoefficients3x3(const int x, const int y, float coefficient[], const double luminosityContrastMap[]);
-void calculateQuadraticFitCoefficients5x5(const int x, const int y, float coefficient[], const double luminosityContrastMap[]);
+	private: void calculateQuadraticFitCoefficients(const int x, const int y, float coefficient[], const double luminosityContrastMap[]);
+	private: void calculateQuadraticFitCoefficients3x3(const int x, const int y, float coefficient[], const double luminosityContrastMap[]);
+	private: void calculateQuadraticFitCoefficients5x5(const int x, const int y, float coefficient[], const double luminosityContrastMap[]);
 /*********************************** End Fit Methods* ******************************/
 
 /********************************** Pixel Checking methods* ******************************/
-bool checkForTotalPositiveCurvature(const float a3, const float a4);
-bool checkForTotalNegativeCurvature(const float a3, const float a4);
-bool checkTotalNegativeCurvatureAbovePointThreshold(const float a3, const float a4);
+	private: bool checkForTotalPositiveCurvature(const float a3, const float a4);
+	private: bool checkForTotalNegativeCurvature(const float a3, const float a4);
+	private: bool checkTotalNegativeCurvatureAbovePointThreshold(const float a3, const float a4);
 /********************************** End Pixel Checking methods* ******************************/
 
 /********************************** Zero Crossing Checking methods* **********************************/
-bool checkEdgeZeroCrossingObjectPassesThreshold(ORQFzeroCrossing* zc);
-	bool checkEdgeZeroCrossingObjectContrastGradients(ORQFzeroCrossing* zc);
-bool checkPointZeroCrossingObjectPassesThreshold(const ORQFzeroCrossing* zc);
-	//bool checkTotalNegativeCurvatureAbovePointThreshold(const float a3, const float a4);
+	private: bool checkEdgeZeroCrossingObjectPassesThreshold(ORQFzeroCrossing* zc);
+		private: bool checkEdgeZeroCrossingObjectContrastGradients(ORQFzeroCrossing* zc);
+	private: bool checkPointZeroCrossingObjectPassesThreshold(const ORQFzeroCrossing* zc);
+	//	private: bool checkTotalNegativeCurvatureAbovePointThreshold(const float a3, const float a4);
 
 /********************************** End Zero Crossing Checking methods* **********************************/
 
 /********************************** Matrix Manipulation methods* **********************************/
-float getSmallestEigenValue(const float eigenValue[]);
-void calculateEdgeZeroCrossing(const float coefficient[], const float beta, float zc[]);
-void calculatePointZeroCrossing(const float coefficient[], float zc[]);
-void calculateEigenVector(const float coefficient[], const float ev, float eigenVector[]);
-void calculateEigenValues(const float coefficient[], float ev[]);
+	private: float getSmallestEigenValue(const float eigenValue[]);
+	private: void calculateEdgeZeroCrossing(const float coefficient[], const float beta, float zc[]);
+	private: void calculatePointZeroCrossing(const float coefficient[], float zc[]);
+	private: void calculateEigenVector(const float coefficient[], const float ev, float eigenVector[]);
+	private: void calculateEigenValues(const float coefficient[], float ev[]);
 /********************************** End Matrix Manipulation methods* **********************************/
 
 /*************************************** Get/Set Methods* ***********************************/
-float getPixelFloat(const int x, const int y, const double luminosityContrastMap[]);
-
+	private: float getPixelFloat(const int x, const int y, const double luminosityContrastMap[]);
 /*************************************** End Get/Set Methods* *******************************/
+
+};
+
 
 
 

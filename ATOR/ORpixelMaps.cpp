@@ -26,21 +26,18 @@
  * File Name: ORpixelMaps.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1a 14-January-2017
+ * Project Version: 3j1b 14-January-2017
  *
  *******************************************************************************/
 
-#include "ORglobalDefs.h"
 #include "ORpixelMaps.h"
-#include "RTpixelMaps.h"
-#include "SHAREDvector.h"
 
 //double* pointNormalMap = new double[(imageWidth-2)*(imageHeight-2)*VECTOR_MAP_NUM_DIMENSIONS];
 
 //requires;
 //vec meshPointNormals[4];	//from 4 tris creating using mesh point and two out of four surrounding meshpoints, x-, x+, y-, y+
 //vec meshPointNormal; 		//average of four calculated meshpoint normals
-void calculateMeshPointNormalsUsingPointMap(int x, int y, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight, double* pointMap, vec* meshPointNormal, vec meshPointNormals[])
+void ORpixelMapsClass::calculateMeshPointNormalsUsingPointMap(int x, int y, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight, double* pointMap, vec* meshPointNormal, vec meshPointNormals[])
 {
 	vec averageNormalVector;
 	averageNormalVector.x = 0.0;
@@ -57,7 +54,7 @@ void calculateMeshPointNormalsUsingPointMap(int x, int y, const int kernelWidth,
 			{//check kernel pix is within image
 
 				vec point1;
-				getPointMapValue(x, y, imageWidth, pointMap, &point1);
+				RTpixelMaps.getPointMapValue(x, y, imageWidth, pointMap, &point1);
 
 				for(int q=1; q<9; q=q+2)
 				{
@@ -67,20 +64,20 @@ void calculateMeshPointNormalsUsingPointMap(int x, int y, const int kernelWidth,
 					int point2x = x + q%3 - 1;
 					int point2y = y + q/3 - 1;
 
-					getPointMapValue(point2x, point2y, imageWidth, pointMap, &point2);
+					RTpixelMaps.getPointMapValue(point2x, point2y, imageWidth, pointMap, &point2);
 
 					int r=(q+2)%8;
 
 					int point3x = x + r%3 - 1;
 					int point3y = y + r/3 - 1;
 
-					getPointMapValue(point3x, point3y, imageWidth, pointMap, &point3);
+					RTpixelMaps.getPointMapValue(point3x, point3y, imageWidth, pointMap, &point3);
 
 					//calculate normal of vector using 3 points
 					vec currentNormalVec;
-					calculateNormalOfTri(&point1, &point2, &point3, &currentNormalVec);
+					SHAREDvector.calculateNormalOfTri(&point1, &point2, &point3, &currentNormalVec);
 
-					copyVectors(&(meshPointNormals[(q-1)/2]),  &currentNormalVec);
+					SHAREDvector.copyVectors(&(meshPointNormals[(q-1)/2]),  &currentNormalVec);
 
 					averageNormalVector.x = averageNormalVector.x + currentNormalVec.x;
 					averageNormalVector.y = averageNormalVector.y + currentNormalVec.y;
@@ -92,7 +89,7 @@ void calculateMeshPointNormalsUsingPointMap(int x, int y, const int kernelWidth,
 				averageNormalVector.z = averageNormalVector.z/4.0;
 
 				#ifndef DO_NOT_NORMALISE_POINT_NORMAL_MAP
-				normaliseVector(&averageNormalVector);
+				SHAREDvector.normaliseVector(&averageNormalVector);
 				#endif
 
 			}
@@ -117,25 +114,25 @@ void calculateMeshPointNormalsUsingPointMap(int x, int y, const int kernelWidth,
 				vec point3;
 				vec point4;
 
-				getPointMapValue(x, y, imageWidth, pointMap, &point1);
-				getPointMapValue(x, y+1, imageWidth, pointMap, &point2);
-				getPointMapValue(x+1, y, imageWidth, pointMap, &point3);
-				getPointMapValue(x+1, y+1, imageWidth, pointMap, &point4);
+				RTpixelMaps.getPointMapValue(x, y, imageWidth, pointMap, &point1);
+				RTpixelMaps.getPointMapValue(x, y+1, imageWidth, pointMap, &point2);
+				RTpixelMaps.getPointMapValue(x+1, y, imageWidth, pointMap, &point3);
+				RTpixelMaps.getPointMapValue(x+1, y+1, imageWidth, pointMap, &point4);
 
 				vec currentNormalVec;
-				calculateNormalOfTri(&point1, &point2, &point3, &currentNormalVec);
-				copyVectors(&(meshPointNormals[0]),  &currentNormalVec);
+				SHAREDvector.calculateNormalOfTri(&point1, &point2, &point3, &currentNormalVec);
+				SHAREDvector.copyVectors(&(meshPointNormals[0]),  &currentNormalVec);
 
 				averageNormalVector.x = averageNormalVector.x + currentNormalVec.x;
 				averageNormalVector.y = averageNormalVector.y + currentNormalVec.y;
 				averageNormalVector.z = averageNormalVector.z + currentNormalVec.z;
 
 				#ifndef DO_NOT_NORMALISE_POINT_NORMAL_MAP
-				normaliseVector(&averageNormalVector);
+				SHAREDvector.normaliseVector(&averageNormalVector);
 				#endif
 
-				calculateNormalOfTri(&point3, &point2, &point4, &currentNormalVec);
-				copyVectors(&(meshPointNormals[1]),  &currentNormalVec);
+				SHAREDvector.calculateNormalOfTri(&point3, &point2, &point4, &currentNormalVec);
+				SHAREDvector.copyVectors(&(meshPointNormals[1]),  &currentNormalVec);
 
 				averageNormalVector.x = averageNormalVector.x + currentNormalVec.x;
 				averageNormalVector.y = averageNormalVector.y + currentNormalVec.y;
@@ -143,7 +140,7 @@ void calculateMeshPointNormalsUsingPointMap(int x, int y, const int kernelWidth,
 
 
 				#ifndef DO_NOT_NORMALISE_POINT_NORMAL_MAP
-				normaliseVector(&averageNormalVector);
+				SHAREDvector.normaliseVector(&averageNormalVector);
 				#endif
 			}
 			else
@@ -166,10 +163,10 @@ void calculateMeshPointNormalsUsingPointMap(int x, int y, const int kernelWidth,
 		exit(0);
 	}
 
-	copyVectors(meshPointNormal,  &averageNormalVector);
+	SHAREDvector.copyVectors(meshPointNormal,  &averageNormalVector);
 }
 
-void createPointNormalMapFromPointMap(int imageWidth, const int imageHeight, double* pointMap, double* pointNormalMap)
+void ORpixelMapsClass::createPointNormalMapFromPointMap(int imageWidth, const int imageHeight, double* pointMap, double* pointNormalMap)
 {
 	int kernelWidth = DEFAULT_NORMAL_MAP_GENERATION_KERNEL_WIDTH;
 	int kernelHeight = DEFAULT_NORMAL_MAP_GENERATION_KERNEL_HEIGHT;
@@ -180,9 +177,9 @@ void createPointNormalMapFromPointMap(int imageWidth, const int imageHeight, dou
 		{
 			vec meshPointNormals[4];	//from 4 tris creating using mesh point and two out of four surrounding meshpoints, x-, x+, y-, y+
 			vec meshPointNormal; 		//average of four calculated meshpoint normals
-			calculateMeshPointNormalsUsingPointMap(x, y, kernelWidth, kernelHeight, imageWidth, imageHeight, pointMap, &meshPointNormal, meshPointNormals);
+			this->calculateMeshPointNormalsUsingPointMap(x, y, kernelWidth, kernelHeight, imageWidth, imageHeight, pointMap, &meshPointNormal, meshPointNormals);
 
-			setVectorMapValue(x, y, imageWidth, &meshPointNormal, pointNormalMap);
+			RTpixelMaps.setVectorMapValue(x, y, imageWidth, &meshPointNormal, pointNormalMap);
 
 			#ifdef OR_DEBUG
 			/*
@@ -195,26 +192,26 @@ void createPointNormalMapFromPointMap(int imageWidth, const int imageHeight, dou
 	}
 }
 
-void createPointNormalContrastMapFromPointNormalMap(int imageWidth, const int imageHeight, double* pointNormalMap, double* pointNormalContrastMap)
+void ORpixelMapsClass::createPointNormalContrastMapFromPointNormalMap(int imageWidth, const int imageHeight, double* pointNormalMap, double* pointNormalContrastMap)
 {
 	for(int y = 1; y < imageHeight-1; y++)
 	{
 		for(int x = 1; x < imageWidth-1; x++)
 		{
-			double contrastVal = calculatePointNormalContrastLevelWithinKernel(x, y, pointNormalMap, DEFAULT_NORMAL_MAP_GENERATION_KERNEL_WIDTH, DEFAULT_NORMAL_MAP_GENERATION_KERNEL_HEIGHT, imageWidth, imageHeight);
-			setLumOrContrastOrDepthMapValue(x, y, imageWidth, contrastVal, pointNormalContrastMap);
+			double contrastVal = this->calculatePointNormalContrastLevelWithinKernel(x, y, pointNormalMap, DEFAULT_NORMAL_MAP_GENERATION_KERNEL_WIDTH, DEFAULT_NORMAL_MAP_GENERATION_KERNEL_HEIGHT, imageWidth, imageHeight);
+			RTpixelMaps.setLumOrContrastOrDepthMapValue(x, y, imageWidth, contrastVal, pointNormalContrastMap);
 		}
 	}
 }
 
-double calculatePointNormalContrastLevelWithinKernel(int pixelX, int pixelY, double* pointNormalMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight)
+double ORpixelMapsClass::calculatePointNormalContrastLevelWithinKernel(int pixelX, int pixelY, double* pointNormalMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight)
 {
 	double contrastLevel = 0.0;
 
 	if((kernelWidth >= 3) && (kernelHeight >= 3))
 	{//point normal contrast map is defined for pixels
 		vec centrePixelNormal;
-		getVectorMapValue(pixelX, pixelY, imageWidth, pointNormalMap, &centrePixelNormal);
+		RTpixelMaps.getVectorMapValue(pixelX, pixelY, imageWidth, pointNormalMap, &centrePixelNormal);
 
 		for(int y = pixelY-(kernelHeight/2); y<= pixelY+(kernelHeight/2); y++)
 		{
@@ -233,12 +230,12 @@ double calculatePointNormalContrastLevelWithinKernel(int pixelX, int pixelY, dou
 						else
 						{
 							vec currentPixelNormal;
-							getVectorMapValue(x, y, imageWidth, pointNormalMap, &currentPixelNormal);
+							RTpixelMaps.getVectorMapValue(x, y, imageWidth, pointNormalMap, &currentPixelNormal);
 
 							//calc point normal vector diff between centre pixel and current surrounding kernel pixel
-							double currentContrastLevelX = absDouble(centrePixelNormal.x - currentPixelNormal.x);
-							double currentContrastLevelY = absDouble(centrePixelNormal.y - currentPixelNormal.y);
-							double currentContrastLevelZ = absDouble(centrePixelNormal.z - currentPixelNormal.z);
+							double currentContrastLevelX = SHAREDvars.absDouble(centrePixelNormal.x - currentPixelNormal.x);
+							double currentContrastLevelY = SHAREDvars.absDouble(centrePixelNormal.y - currentPixelNormal.y);
+							double currentContrastLevelZ = SHAREDvars.absDouble(centrePixelNormal.z - currentPixelNormal.z);
 
 							if(OR_USE_CONTRAST_CALC_METHOD_B)
 							{
@@ -246,7 +243,7 @@ double calculatePointNormalContrastLevelWithinKernel(int pixelX, int pixelY, dou
 							}
 							else
 							{
-								contrastLevel = maxDouble(contrastLevel, (currentContrastLevelX+currentContrastLevelY+currentContrastLevelZ));
+								contrastLevel = SHAREDvars.maxDouble(contrastLevel, (currentContrastLevelX+currentContrastLevelY+currentContrastLevelZ));
 							}
 						}
 					}
@@ -266,13 +263,13 @@ double calculatePointNormalContrastLevelWithinKernel(int pixelX, int pixelY, dou
 				for(int y = (pixelY-1); y<= (pixelY+1)-1; y++)
 				{
 					vec interpixelNormalValue;
-					getXYvectorMapValue((pixelX-1), y, imageWidth, pointNormalMap, &interpixelNormalValue);
+					this->getXYvectorMapValue((pixelX-1), y, imageWidth, pointNormalMap, &interpixelNormalValue);
 					vec adjacentInterpixelNormalValue;
-					getXYvectorMapValue((pixelX-1)+1, y, imageWidth, pointNormalMap, &adjacentInterpixelNormalValue);
+					this->getXYvectorMapValue((pixelX-1)+1, y, imageWidth, pointNormalMap, &adjacentInterpixelNormalValue);
 
-					double currentContrastLevelX = absDouble(interpixelNormalValue.x - adjacentInterpixelNormalValue.x);
-					double currentContrastLevelY = absDouble(interpixelNormalValue.y - adjacentInterpixelNormalValue.y);
-					double currentContrastLevelZ = absDouble(interpixelNormalValue.z - adjacentInterpixelNormalValue.z);
+					double currentContrastLevelX = SHAREDvars.absDouble(interpixelNormalValue.x - adjacentInterpixelNormalValue.x);
+					double currentContrastLevelY = SHAREDvars.absDouble(interpixelNormalValue.y - adjacentInterpixelNormalValue.y);
+					double currentContrastLevelZ = SHAREDvars.absDouble(interpixelNormalValue.z - adjacentInterpixelNormalValue.z);
 
 					contrastLevel = contrastLevel + currentContrastLevelX+currentContrastLevelY+currentContrastLevelZ;
 				}
@@ -280,13 +277,13 @@ double calculatePointNormalContrastLevelWithinKernel(int pixelX, int pixelY, dou
 				for(int x = (pixelX-1); x<= (pixelX+1)-1; x++)
 				{
 					vec interpixelNormalValue;
-					getXYvectorMapValue(x, (pixelY-1), imageWidth, pointNormalMap, &interpixelNormalValue);
+					this->getXYvectorMapValue(x, (pixelY-1), imageWidth, pointNormalMap, &interpixelNormalValue);
 					vec adjacentInterpixelNormalValue;
-					getXYvectorMapValue(x, (pixelY-1)+1, imageWidth, pointNormalMap, &adjacentInterpixelNormalValue);
+					this->getXYvectorMapValue(x, (pixelY-1)+1, imageWidth, pointNormalMap, &adjacentInterpixelNormalValue);
 
-					double currentContrastLevelX = absDouble(interpixelNormalValue.x - adjacentInterpixelNormalValue.x);
-					double currentContrastLevelY = absDouble(interpixelNormalValue.y - adjacentInterpixelNormalValue.y);
-					double currentContrastLevelZ = absDouble(interpixelNormalValue.z - adjacentInterpixelNormalValue.z);
+					double currentContrastLevelX = SHAREDvars.absDouble(interpixelNormalValue.x - adjacentInterpixelNormalValue.x);
+					double currentContrastLevelY = SHAREDvars.absDouble(interpixelNormalValue.y - adjacentInterpixelNormalValue.y);
+					double currentContrastLevelZ = SHAREDvars.absDouble(interpixelNormalValue.z - adjacentInterpixelNormalValue.z);
 
 					contrastLevel = contrastLevel + currentContrastLevelX+currentContrastLevelY+currentContrastLevelZ;
 				}
@@ -313,7 +310,7 @@ double calculatePointNormalContrastLevelWithinKernel(int pixelX, int pixelY, dou
 
 
 
-void cropRGBmap(int originalImageWidth, const int originalImageHeight, const int cropXPos, const int cropYPos, const int croppedWidth, const int croppedHeight, unsigned char* rgbMapUncropped, unsigned char* rgbMap)
+void ORpixelMapsClass::cropRGBmap(int originalImageWidth, const int originalImageHeight, const int cropXPos, const int cropYPos, const int croppedWidth, const int croppedHeight, unsigned char* rgbMapUncropped, unsigned char* rgbMap)
 {
 	int croppedYPos = 0;
 	for(int y = cropYPos; y < cropYPos+croppedHeight; y++)
@@ -322,8 +319,8 @@ void cropRGBmap(int originalImageWidth, const int originalImageHeight, const int
 		for(int x = cropXPos; x < cropXPos+croppedWidth; x++)
 		{
 			colour col;
-			getRGBMapValues(x, y, originalImageWidth, rgbMapUncropped, &col);
-			setRGBMapValues(croppedXPos, croppedYPos, croppedWidth, &col, rgbMap);
+			RTpixelMaps.getRGBMapValues(x, y, originalImageWidth, rgbMapUncropped, &col);
+			RTpixelMaps.setRGBMapValues(croppedXPos, croppedYPos, croppedWidth, &col, rgbMap);
 
 			croppedXPos++;
 		}
@@ -331,7 +328,7 @@ void cropRGBmap(int originalImageWidth, const int originalImageHeight, const int
 	}
 }
 
-void cropDepthMap(const int originalImageWidth, const int originalImageHeight, const int cropXPos, const int cropYPos, const int croppedWidth, const int croppedHeight, const double* depthMapUncropped, double* depthMap)
+void ORpixelMapsClass::cropDepthMap(const int originalImageWidth, const int originalImageHeight, const int cropXPos, const int cropYPos, const int croppedWidth, const int croppedHeight, const double* depthMapUncropped, double* depthMap)
 {
 	int croppedYPos = 0;
 	for(int y = cropYPos; y < cropYPos+croppedHeight; y++)
@@ -340,8 +337,8 @@ void cropDepthMap(const int originalImageWidth, const int originalImageHeight, c
 		for(int x = cropXPos; x < cropXPos+croppedWidth; x++)
 		{
 			double depthVal;
-			depthVal = getLumOrContrastOrDepthMapValue(x, y, originalImageWidth, depthMapUncropped);
-			setLumOrContrastOrDepthMapValue(croppedXPos, croppedYPos, croppedWidth, depthVal, depthMap);
+			depthVal = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, originalImageWidth, depthMapUncropped);
+			RTpixelMaps.setLumOrContrastOrDepthMapValue(croppedXPos, croppedYPos, croppedWidth, depthVal, depthMap);
 
 			croppedXPos++;
 		}
@@ -356,13 +353,13 @@ void cropDepthMap(const int originalImageWidth, const int originalImageHeight, c
 
 
 
-void setXYvectorMapValue(const int x, const int y, const int imageWidth, vec* XYvectorVal, double* XYvectorMap)
+void ORpixelMapsClass::setXYvectorMapValue(const int x, const int y, const int imageWidth, vec* XYvectorVal, double* XYvectorMap)
 {
 	XYvectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_X] = XYvectorVal->x;
 	XYvectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_Y] = XYvectorVal->y;
 }
 
-void getXYvectorMapValue(int x, int y, int imageWidth, double* XYvectorMap, vec* XYvectorVal)
+void ORpixelMapsClass::getXYvectorMapValue(int x, int y, int imageWidth, double* XYvectorMap, vec* XYvectorVal)
 {
 	XYvectorVal->x = XYvectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_X];
 	XYvectorVal->y = XYvectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_Y];
@@ -372,21 +369,21 @@ void getXYvectorMapValue(int x, int y, int imageWidth, double* XYvectorMap, vec*
 
 
 
-void generateRGBmapFromDepthGradientMap(int imageWidth, const int imageHeight, double* depthGradientMap, unsigned char* rgbMap)
+void ORpixelMapsClass::generateRGBmapFromDepthGradientMap(int imageWidth, const int imageHeight, double* depthGradientMap, unsigned char* rgbMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
   		for(int x = 0; x < imageWidth; x++)
 		{
 			vec depthGradient;
-			getXYvectorMapValue(x, y, imageWidth,depthGradientMap,&depthGradient);
+			this->getXYvectorMapValue(x, y, imageWidth,depthGradientMap,&depthGradient);
 
 
 			int r;
 			int g;
 			int b;
 
-			if((absDouble(depthGradient.x) > ESTIMATE_MAX_DEPTH_GRADIENT) || (absDouble(depthGradient.y) >ESTIMATE_MAX_DEPTH_GRADIENT))
+			if((SHAREDvars.absDouble(depthGradient.x) > ESTIMATE_MAX_DEPTH_GRADIENT) || (SHAREDvars.absDouble(depthGradient.y) >ESTIMATE_MAX_DEPTH_GRADIENT))
 			{
 				r = 255;
 				g = 255;
@@ -406,7 +403,7 @@ void generateRGBmapFromDepthGradientMap(int imageWidth, const int imageHeight, d
 			col.r = r;
 			col.g = g;
 			col.b = b;
-			setRGBMapValues(x, y, imageWidth, &col, rgbMap);
+			RTpixelMaps.setRGBMapValues(x, y, imageWidth, &col, rgbMap);
 
 		}
 	}
@@ -418,68 +415,68 @@ void generateRGBmapFromDepthGradientMap(int imageWidth, const int imageHeight, d
 
 
 
-void generateRGBmapFromDepthGradientContrastMap(const int imageWidth, const int imageHeight, const double* depthGradientContrastMap, unsigned char* rgbMap)
+void ORpixelMapsClass::generateRGBmapFromDepthGradientContrastMap(const int imageWidth, const int imageHeight, const double* depthGradientContrastMap, unsigned char* rgbMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
   		for(int x = 0; x < imageWidth; x++)
 		{
 			double depthGradientContrastVal;
-			depthGradientContrastVal = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthGradientContrastMap);
-			int depthGradientContrastValNormalised = minInt((int)(depthGradientContrastVal/ESTIMATE_MAX_DEPTH_GRADIENT_CONTRAST*255.0), 255);
+			depthGradientContrastVal = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthGradientContrastMap);
+			int depthGradientContrastValNormalised = SHAREDvars.minInt((int)(depthGradientContrastVal/ESTIMATE_MAX_DEPTH_GRADIENT_CONTRAST*255.0), 255);
 
 			colour col;
 			col.r = depthGradientContrastValNormalised;
 			col.g = depthGradientContrastValNormalised;
 			col.b = depthGradientContrastValNormalised;
-			setRGBMapValues(x, y, imageWidth, &col, rgbMap);
+			RTpixelMaps.setRGBMapValues(x, y, imageWidth, &col, rgbMap);
 
 		}
 	}
 }
 
-void generatePixmapFromDepthGradientContrastMap(const string imageFileName, const int imageWidth, const int imageHeight, const double* depthGradientContrastMap)
+void ORpixelMapsClass::generatePixmapFromDepthGradientContrastMap(const string imageFileName, const int imageWidth, const int imageHeight, const double* depthGradientContrastMap)
 {
 	int x,y;
 	pixmap* pm;
 
-	pm = newPixmap(imageWidth, imageHeight);
+	pm = RTppm.newPixmap(imageWidth, imageHeight);
 
 	for(y = 0; y < imageHeight; y++)
 	{
   		for(x = 0; x < imageWidth; x++)
 		{
 			double depthGradientContrastVal;
-			depthGradientContrastVal = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthGradientContrastMap);
-			int depthGradientContrastValNormalised = minInt((int)(depthGradientContrastVal/ESTIMATE_MAX_DEPTH_GRADIENT_CONTRAST*255.0), 255);
-			placepointPPM(pm, x, y, depthGradientContrastValNormalised, depthGradientContrastValNormalised, depthGradientContrastValNormalised);
+			depthGradientContrastVal = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthGradientContrastMap);
+			int depthGradientContrastValNormalised = SHAREDvars.minInt((int)(depthGradientContrastVal/ESTIMATE_MAX_DEPTH_GRADIENT_CONTRAST*255.0), 255);
+			RTppm.placepointPPM(pm, x, y, depthGradientContrastValNormalised, depthGradientContrastValNormalised, depthGradientContrastValNormalised);
 		}
 	}
 
-	writeImage(imageFileName, pm);
+	RTpixelMaps.writeImage(imageFileName, pm);
 }
 
 
-void generatePixmapFromDepthGradientMap(const string imageFileName, int imageWidth, const int imageHeight, double* depthGradientMap)
+void ORpixelMapsClass::generatePixmapFromDepthGradientMap(const string imageFileName, int imageWidth, const int imageHeight, double* depthGradientMap)
 {
 	int x,y;
 	pixmap* pm;
 
-	pm = newPixmap(imageWidth, imageHeight);
+	pm = RTppm.newPixmap(imageWidth, imageHeight);
 
 	for(y = 0; y < imageHeight; y++)
 	{
   		for(x = 0; x < imageWidth; x++)
 		{
 			vec depthGradient;
-			getXYvectorMapValue(x, y, imageWidth,depthGradientMap,&depthGradient);
+			this->getXYvectorMapValue(x, y, imageWidth,depthGradientMap,&depthGradient);
 
 
 			int r;
 			int g;
 			int b;
 
-			if((absDouble(depthGradient.x) > ESTIMATE_MAX_DEPTH_GRADIENT) || (absDouble(depthGradient.y) >ESTIMATE_MAX_DEPTH_GRADIENT))
+			if((SHAREDvars.absDouble(depthGradient.x) > ESTIMATE_MAX_DEPTH_GRADIENT) || (SHAREDvars.absDouble(depthGradient.y) >ESTIMATE_MAX_DEPTH_GRADIENT))
 			{
 				r = 255;
 				g = 255;
@@ -516,13 +513,13 @@ void generatePixmapFromDepthGradientMap(const string imageFileName, int imageWid
 			}
 
 
-			placepointPPM(pm, x, y, r, g, b);
-			//placepointPPM(nm, x, y, (int)((depthGradient.x+1.0)*128.0), (int)((depthGradient.y+1.0)*128.0), 0);
+			RTppm.placepointPPM(pm, x, y, r, g, b);
+			//RTppm.placepointPPM(nm, x, y, (int)((depthGradient.x+1.0)*128.0), (int)((depthGradient.y+1.0)*128.0), 0);
 
 		}
 	}
 
-	writeImage(imageFileName, pm);
+	RTpixelMaps.writeImage(imageFileName, pm);
 }
 
 
@@ -564,7 +561,7 @@ void generatePixmapFromDepthGradientMap(const string imageFileName, int imageWid
 
 
 
-double calculateForegroundMinimumDepthWithinKernel(const int pixelX, const int pixelY, const int imageWidth, const int imageHeight, const int kernelWidth, const int kernelHeight, const double* depthMap, vec* nearbyPointOfMinimumDepth, const int zoom)
+double ORpixelMapsClass::calculateForegroundMinimumDepthWithinKernel(const int pixelX, const int pixelY, const int imageWidth, const int imageHeight, const int kernelWidth, const int kernelHeight, const double* depthMap, vec* nearbyPointOfMinimumDepth, const int zoom)
 {
 	double minDepthForNearbyPoints = REALLY_FAR_AWAY;
 
@@ -578,10 +575,10 @@ double calculateForegroundMinimumDepthWithinKernel(const int pixelX, const int p
 			}
 			else
 			{
-				double depthVal = getLumOrContrastOrDepthMapValue(kx*zoom, ky*zoom, imageWidth*zoom, depthMap);
+				double depthVal = RTpixelMaps.getLumOrContrastOrDepthMapValue(kx*zoom, ky*zoom, imageWidth*zoom, depthMap);
 
 				#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
-				if(!compareDoubles(depthVal, RT_RAYTRACE_NO_HIT_DEPTH_T))	//NEW official [2 june 09] {ensures the pixel is not a background pixel}
+				if(!SHAREDvars.compareDoubles(depthVal, RT_RAYTRACE_NO_HIT_DEPTH_T))	//NEW official [2 june 09] {ensures the pixel is not a background pixel}
 				{//off object
 
 					if(depthVal < minDepthForNearbyPoints)
@@ -617,7 +614,7 @@ double calculateForegroundMinimumDepthWithinKernel(const int pixelX, const int p
 
 
 
-void createContrastMapFromMapWithForegroundDepthCheckOLD(const int imageWidth, const int imageHeight, const double* luminosityOrDepthMap, const double* depthMap, double* contrastMap, bool* contrastBooleanMap, bool* foregroundDepthCheckContrastBooleanMap, const double mapThreshold)
+void ORpixelMapsClass::createContrastMapFromMapWithForegroundDepthCheckOLD(const int imageWidth, const int imageHeight, const double* luminosityOrDepthMap, const double* depthMap, double* contrastMap, bool* contrastBooleanMap, bool* foregroundDepthCheckContrastBooleanMap, const double mapThreshold)
 {
 	int kernelWidth = DEFAULT_CONTRAST_MAP_GENERATION_KERNEL_WIDTH;
 	int kernelHeight = DEFAULT_CONTRAST_MAP_GENERATION_KERNEL_HEIGHT;
@@ -626,8 +623,8 @@ void createContrastMapFromMapWithForegroundDepthCheckOLD(const int imageWidth, c
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			setBooleanMapValue(x, y, imageWidth, false, contrastBooleanMap);
-			setBooleanMapValue(x, y, imageWidth, false, foregroundDepthCheckContrastBooleanMap);
+			RTpixelMaps.setBooleanMapValue(x, y, imageWidth, false, contrastBooleanMap);
+			RTpixelMaps.setBooleanMapValue(x, y, imageWidth, false, foregroundDepthCheckContrastBooleanMap);
 		}
 	}
 
@@ -637,10 +634,10 @@ void createContrastMapFromMapWithForegroundDepthCheckOLD(const int imageWidth, c
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			double contrastVal = calculateContrastLevelWithinKernelWithForegroundDepthCheckOLD(x, y, luminosityOrDepthMap, depthMap, kernelWidth, kernelHeight, imageWidth, imageHeight, foregroundDepthCheckContrastBooleanMap, mapThreshold);
+			double contrastVal = this->calculateContrastLevelWithinKernelWithForegroundDepthCheckOLD(x, y, luminosityOrDepthMap, depthMap, kernelWidth, kernelHeight, imageWidth, imageHeight, foregroundDepthCheckContrastBooleanMap, mapThreshold);
 			//double contrastVal = calculateContrastLevelWithinKernel(x, y, luminosityOrDepthMap, kernelWidth, kernelHeight, imageWidth, imageHeight);
 
-			setLumOrContrastOrDepthMapValue(x, y, imageWidth, contrastVal, contrastMap);
+			RTpixelMaps.setLumOrContrastOrDepthMapValue(x, y, imageWidth, contrastVal, contrastMap);
 
 			if(contrastVal > mapThreshold)
 			{
@@ -662,24 +659,24 @@ void createContrastMapFromMapWithForegroundDepthCheckOLD(const int imageWidth, c
 					contrastValPassedThreshold = true;
 				}
 
-				setBooleanMapValue(x, y, imageWidth, contrastValPassedThreshold, contrastBooleanMap);
+				RTpixelMaps.setBooleanMapValue(x, y, imageWidth, contrastValPassedThreshold, contrastBooleanMap);
 			}
 		}
 	}
 }
 
-double calculateContrastLevelWithinKernelWithForegroundDepthCheckOLD(const int pixelX, const int pixelY, const double* luminosityOrDepthMap, const double* depthMap, const int kernelWidth, const int kernelHeight, const int imageWidth, const int imageHeight, bool* foregroundDepthCheckContrastBooleanMap, const double mapThreshold)
+double ORpixelMapsClass::calculateContrastLevelWithinKernelWithForegroundDepthCheckOLD(const int pixelX, const int pixelY, const double* luminosityOrDepthMap, const double* depthMap, const int kernelWidth, const int kernelHeight, const int imageWidth, const int imageHeight, bool* foregroundDepthCheckContrastBooleanMap, const double mapThreshold)
 {
 	double contrastLevel = 0.0;
 
 	if((kernelWidth >= 3) && (kernelHeight >= 3))
 	{//contrast map is defined for pixels
-		double centrePixelDepth = getLumOrContrastOrDepthMapValue(pixelX, pixelY, imageWidth, depthMap);
-		double centrePixelVal = getLumOrContrastOrDepthMapValue(pixelX, pixelY, imageWidth, luminosityOrDepthMap);
+		double centrePixelDepth = RTpixelMaps.getLumOrContrastOrDepthMapValue(pixelX, pixelY, imageWidth, depthMap);
+		double centrePixelVal = RTpixelMaps.getLumOrContrastOrDepthMapValue(pixelX, pixelY, imageWidth, luminosityOrDepthMap);
 
 		#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
 		bool centrePixelNoHit = false;
-		if(compareDoubles(centrePixelDepth, RT_RAYTRACE_NO_HIT_DEPTH_T))	//NEW official [4 Nov 08] {ensures the pixel is not a background pixel}
+		if(SHAREDvars.compareDoubles(centrePixelDepth, RT_RAYTRACE_NO_HIT_DEPTH_T))	//NEW official [4 Nov 08] {ensures the pixel is not a background pixel}
 		{
 			centrePixelNoHit = true;
 		}
@@ -712,14 +709,14 @@ double calculateContrastLevelWithinKernelWithForegroundDepthCheckOLD(const int p
 						}
 						else
 						{
-							double kernelPixelVal = getLumOrContrastOrDepthMapValue(x, y, imageWidth, luminosityOrDepthMap);
-							double currentContrastLevel = absDouble(centrePixelVal - kernelPixelVal);
+							double kernelPixelVal = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, luminosityOrDepthMap);
+							double currentContrastLevel = SHAREDvars.absDouble(centrePixelVal - kernelPixelVal);
 
 							//calc diff lum diff between centre pixel and current surrounding kernel pixel
 
-							double kernelPixelDepth = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
+							double kernelPixelDepth = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
 							#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
-							if(compareDoubles(kernelPixelDepth, RT_RAYTRACE_NO_HIT_DEPTH_T))	//NEW official [4 Nov 08] {ensures the pixel is not a background pixel}
+							if(SHAREDvars.compareDoubles(kernelPixelDepth, RT_RAYTRACE_NO_HIT_DEPTH_T))	//NEW official [4 Nov 08] {ensures the pixel is not a background pixel}
 							{
 								kernelPixelDepth = ESTIMATE_MAX_DEPTH_T_REAL;
 							}
@@ -738,12 +735,12 @@ double calculateContrastLevelWithinKernelWithForegroundDepthCheckOLD(const int p
 									}
 									else
 									{
-										contrastLevel = maxDouble(contrastLevel, currentContrastLevel);
+										contrastLevel = SHAREDvars.maxDouble(contrastLevel, currentContrastLevel);
 									}
 
 									if(currentContrastLevel > mapThreshold)	//mapThreshold/((kernelWidth*kernelHeight) - 1
 									{
-										setBooleanMapValue(x, y, imageWidth, true, foregroundDepthCheckContrastBooleanMap);
+										RTpixelMaps.setBooleanMapValue(x, y, imageWidth, true, foregroundDepthCheckContrastBooleanMap);
 									}
 								#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
 								}
@@ -772,33 +769,33 @@ double calculateContrastLevelWithinKernelWithForegroundDepthCheckOLD(const int p
 
 				for(int y = pixelY; y<= pixelY+1; y++)
 				{
-					double pixelDepthMeasurement = getLumOrContrastOrDepthMapValue(pixelX, y, imageWidth, depthMap);
-					double pixelValMeasurement = getLumOrContrastOrDepthMapValue(pixelX, y, imageWidth, luminosityOrDepthMap);
+					double pixelDepthMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(pixelX, y, imageWidth, depthMap);
+					double pixelValMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(pixelX, y, imageWidth, luminosityOrDepthMap);
 
 					#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
-					if(compareDoubles(pixelDepthMeasurement, RT_RAYTRACE_NO_HIT_DEPTH_T))
+					if(SHAREDvars.compareDoubles(pixelDepthMeasurement, RT_RAYTRACE_NO_HIT_DEPTH_T))
 					{
 						pixelDepthMeasurement = ESTIMATE_MAX_DEPTH_T_REAL;
 					}
 					#endif
 
-					double adjacentPixelDepthMeasurement = getLumOrContrastOrDepthMapValue(pixelX+1, y, imageWidth, depthMap);
-					double adjacentPixelValMeasurement = getLumOrContrastOrDepthMapValue(pixelX+1, y, imageWidth, luminosityOrDepthMap);
+					double adjacentPixelDepthMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(pixelX+1, y, imageWidth, depthMap);
+					double adjacentPixelValMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(pixelX+1, y, imageWidth, luminosityOrDepthMap);
 
 					#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
-					if(compareDoubles(adjacentPixelDepthMeasurement, RT_RAYTRACE_NO_HIT_DEPTH_T))
+					if(SHAREDvars.compareDoubles(adjacentPixelDepthMeasurement, RT_RAYTRACE_NO_HIT_DEPTH_T))
 					{
 						adjacentPixelDepthMeasurement = ESTIMATE_MAX_DEPTH_T_REAL;
 					}
 					#endif
 
-					double currentContrastLevel = absDouble(pixelValMeasurement - adjacentPixelValMeasurement);
+					double currentContrastLevel = SHAREDvars.absDouble(pixelValMeasurement - adjacentPixelValMeasurement);
 
 					if(pixelDepthMeasurement < adjacentPixelDepthMeasurement)
 					{
 						if(currentContrastLevel > mapThreshold)		// mapThreshold/4.0
 						{
-							setBooleanMapValue(pixelX, y, imageWidth, true, foregroundDepthCheckContrastBooleanMap);
+							RTpixelMaps.setBooleanMapValue(pixelX, y, imageWidth, true, foregroundDepthCheckContrastBooleanMap);
 
 						}
 						contrastLevel = contrastLevel + currentContrastLevel;
@@ -807,7 +804,7 @@ double calculateContrastLevelWithinKernelWithForegroundDepthCheckOLD(const int p
 					{
 						if(currentContrastLevel > mapThreshold)		// mapThreshold/4.0
 						{
-							setBooleanMapValue(pixelX+1, y, imageWidth, true, foregroundDepthCheckContrastBooleanMap);
+							RTpixelMaps.setBooleanMapValue(pixelX+1, y, imageWidth, true, foregroundDepthCheckContrastBooleanMap);
 
 						}
 						contrastLevel = contrastLevel + currentContrastLevel;
@@ -816,33 +813,33 @@ double calculateContrastLevelWithinKernelWithForegroundDepthCheckOLD(const int p
 
 				for(int x = pixelX; x<= pixelX+1; x++)
 				{
-					double pixelDepthMeasurement = getLumOrContrastOrDepthMapValue(x, pixelY, imageWidth, depthMap);
-					double pixelValMeasurement = getLumOrContrastOrDepthMapValue(x, pixelY, imageWidth, luminosityOrDepthMap);
+					double pixelDepthMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, pixelY, imageWidth, depthMap);
+					double pixelValMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, pixelY, imageWidth, luminosityOrDepthMap);
 
 					#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
-					if(compareDoubles(pixelDepthMeasurement, RT_RAYTRACE_NO_HIT_DEPTH_T))
+					if(SHAREDvars.compareDoubles(pixelDepthMeasurement, RT_RAYTRACE_NO_HIT_DEPTH_T))
 					{
 						pixelDepthMeasurement = ESTIMATE_MAX_DEPTH_T_REAL;
 					}
 					#endif
 
-					double adjacentPixelDepthMeasurement = getLumOrContrastOrDepthMapValue(x, pixelY+1, imageWidth, depthMap);
-					double adjacentPixelValMeasurement = getLumOrContrastOrDepthMapValue(x, pixelY+1, imageWidth, luminosityOrDepthMap);
+					double adjacentPixelDepthMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, pixelY+1, imageWidth, depthMap);
+					double adjacentPixelValMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, pixelY+1, imageWidth, luminosityOrDepthMap);
 
 					#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
-					if(compareDoubles(adjacentPixelDepthMeasurement, RT_RAYTRACE_NO_HIT_DEPTH_T))
+					if(SHAREDvars.compareDoubles(adjacentPixelDepthMeasurement, RT_RAYTRACE_NO_HIT_DEPTH_T))
 					{
 						adjacentPixelDepthMeasurement = ESTIMATE_MAX_DEPTH_T_REAL;
 					}
 					#endif
 
-					double currentContrastLevel = absDouble(pixelValMeasurement - adjacentPixelValMeasurement);
+					double currentContrastLevel = SHAREDvars.absDouble(pixelValMeasurement - adjacentPixelValMeasurement);
 
 					if(pixelDepthMeasurement < adjacentPixelDepthMeasurement)
 					{
 						if(currentContrastLevel > mapThreshold)		// mapThreshold/4.0
 						{
-							setBooleanMapValue(x, pixelY, imageWidth, true, foregroundDepthCheckContrastBooleanMap);
+							RTpixelMaps.setBooleanMapValue(x, pixelY, imageWidth, true, foregroundDepthCheckContrastBooleanMap);
 						}
 						contrastLevel = contrastLevel + currentContrastLevel;
 					}
@@ -850,7 +847,7 @@ double calculateContrastLevelWithinKernelWithForegroundDepthCheckOLD(const int p
 					{
 						if(currentContrastLevel > mapThreshold)		// mapThreshold/4.0
 						{
-							setBooleanMapValue(x, pixelY+1, imageWidth, true, foregroundDepthCheckContrastBooleanMap);
+							RTpixelMaps.setBooleanMapValue(x, pixelY+1, imageWidth, true, foregroundDepthCheckContrastBooleanMap);
 						}
 						contrastLevel = contrastLevel + currentContrastLevel;
 					}
@@ -1191,7 +1188,7 @@ double calculateContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, in
 */
 
 
-void createDepthGradientMapFromDepthMap(const int imageWidth, const int imageHeight, const double* depthMap, double* depthGradientMap)
+void ORpixelMapsClass::createDepthGradientMapFromDepthMap(const int imageWidth, const int imageHeight, const double* depthMap, double* depthGradientMap)
 {
 	int kernelWidth = DEFAULT_DEPTH_GRADIENT_MAP_GENERATION_KERNEL_WIDTH;
 	int kernelHeight = DEFAULT_DEPTH_GRADIENT_MAP_GENERATION_KERNEL_HEIGHT;
@@ -1201,15 +1198,15 @@ void createDepthGradientMapFromDepthMap(const int imageWidth, const int imageHei
 		for(int x = 0; x < imageWidth; x++)
 		{
 			vec depthGradientVal;
-			calculateDepthGradientValueWithinKernel(x, y, depthMap, kernelWidth, kernelHeight, imageWidth, imageHeight, &depthGradientVal);
-			setXYvectorMapValue(x, y, imageWidth, &depthGradientVal, depthGradientMap);
+			this->calculateDepthGradientValueWithinKernel(x, y, depthMap, kernelWidth, kernelHeight, imageWidth, imageHeight, &depthGradientVal);
+			this->setXYvectorMapValue(x, y, imageWidth, &depthGradientVal, depthGradientMap);
 		}
 	}
 }
 
 
 
-double calculateDepthGradientValueWithinKernel(const int pixelX, const int pixelY, const double* depthMap, const int kernelWidth, const int kernelHeight, const int imageWidth, const int imageHeight, vec* depthGradientVal)
+double ORpixelMapsClass::calculateDepthGradientValueWithinKernel(const int pixelX, const int pixelY, const double* depthMap, const int kernelWidth, const int kernelHeight, const int imageWidth, const int imageHeight, vec* depthGradientVal)
 {
 	double xGradient = 0;
 	double yGradient = 0;
@@ -1234,8 +1231,8 @@ double calculateDepthGradientValueWithinKernel(const int pixelX, const int pixel
 						{
 							//calc diff lum diff between centre pixel and current surrounding kernel pixel
 
-							double centrePixelPositionInDepthMapDepth = getLumOrContrastOrDepthMapValue(pixelX, pixelY, imageWidth, depthMap);
-							double kernelCurrentPixelPositionInDepthMapDepth = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
+							double centrePixelPositionInDepthMapDepth = RTpixelMaps.getLumOrContrastOrDepthMapValue(pixelX, pixelY, imageWidth, depthMap);
+							double kernelCurrentPixelPositionInDepthMapDepth = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
 
 							if(x < pixelX)
 							{
@@ -1271,16 +1268,16 @@ double calculateDepthGradientValueWithinKernel(const int pixelX, const int pixel
 
 				for(int y = pixelY; y<= pixelY+1; y++)
 				{
-					double pixelDepthMeasurement = getLumOrContrastOrDepthMapValue(pixelX, y, imageWidth, depthMap);
-					double adjacentPixelDepthMeasurement = getLumOrContrastOrDepthMapValue(pixelX+1, y, imageWidth, depthMap);
+					double pixelDepthMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(pixelX, y, imageWidth, depthMap);
+					double adjacentPixelDepthMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(pixelX+1, y, imageWidth, depthMap);
 
 					xGradient = xGradient + (adjacentPixelDepthMeasurement - pixelDepthMeasurement);
 				}
 
 				for(int x = pixelX; x<= pixelX+1; x++)
 				{
-					double pixelDepthMeasurement = getLumOrContrastOrDepthMapValue(x, pixelY, imageWidth, depthMap);
-					double adjacentPixelDepthMeasurement = getLumOrContrastOrDepthMapValue(x, pixelY+1, imageWidth, depthMap);
+					double pixelDepthMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, pixelY, imageWidth, depthMap);
+					double adjacentPixelDepthMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, pixelY+1, imageWidth, depthMap);
 
 					yGradient = yGradient + (adjacentPixelDepthMeasurement - pixelDepthMeasurement);
 				}
@@ -1309,7 +1306,7 @@ double calculateDepthGradientValueWithinKernel(const int pixelX, const int pixel
 	return 0.0;
 }
 
-void subtractBooleanMaps(const int imageWidth, const int imageHeight, const bool* booleanMap1, const bool* booleanMap2, bool* booleanMap1MinusBooleanMap2)
+void ORpixelMapsClass::subtractBooleanMaps(const int imageWidth, const int imageHeight, const bool* booleanMap1, const bool* booleanMap2, bool* booleanMap1MinusBooleanMap2)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1317,8 +1314,8 @@ void subtractBooleanMaps(const int imageWidth, const int imageHeight, const bool
 		{
 			bool booleanMap1MinusBooleanMap2Val;
 
-			bool booleanMap1Val = getBooleanMapValue(x, y, imageWidth, booleanMap1);
-			bool booleanMap2Val = getBooleanMapValue(x, y, imageWidth, booleanMap2);
+			bool booleanMap1Val = RTpixelMaps.getBooleanMapValue(x, y, imageWidth, booleanMap1);
+			bool booleanMap2Val = RTpixelMaps.getBooleanMapValue(x, y, imageWidth, booleanMap2);
 
 			if(booleanMap1Val && !booleanMap2Val)
 			{
@@ -1329,14 +1326,14 @@ void subtractBooleanMaps(const int imageWidth, const int imageHeight, const bool
 				booleanMap1MinusBooleanMap2Val = false;
 			}
 
-			setBooleanMapValue(x, y, imageWidth, booleanMap1MinusBooleanMap2Val, booleanMap1MinusBooleanMap2);
+			RTpixelMaps.setBooleanMapValue(x, y, imageWidth, booleanMap1MinusBooleanMap2Val, booleanMap1MinusBooleanMap2);
 
 		}
 	}
 }
 
 
-void addBooleanMaps(const int imageWidth, const int imageHeight, const bool* booleanMap1, const bool* booleanMap2, bool* booleanMap1PlusBooleanMap2)
+void ORpixelMapsClass::addBooleanMaps(const int imageWidth, const int imageHeight, const bool* booleanMap1, const bool* booleanMap2, bool* booleanMap1PlusBooleanMap2)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1344,8 +1341,8 @@ void addBooleanMaps(const int imageWidth, const int imageHeight, const bool* boo
 		{
 			bool booleanMap1PlusBooleanMap2Val;
 
-			bool booleanMap1Val = getBooleanMapValue(x, y, imageWidth, booleanMap1);
-			bool booleanMap2Val = getBooleanMapValue(x, y, imageWidth, booleanMap2);
+			bool booleanMap1Val = RTpixelMaps.getBooleanMapValue(x, y, imageWidth, booleanMap1);
+			bool booleanMap2Val = RTpixelMaps.getBooleanMapValue(x, y, imageWidth, booleanMap2);
 
 			if(booleanMap1Val || booleanMap2Val)
 			{
@@ -1356,7 +1353,7 @@ void addBooleanMaps(const int imageWidth, const int imageHeight, const bool* boo
 				booleanMap1PlusBooleanMap2Val = false;
 			}
 
-			setBooleanMapValue(x, y, imageWidth, booleanMap1PlusBooleanMap2Val, booleanMap1PlusBooleanMap2);
+			RTpixelMaps.setBooleanMapValue(x, y, imageWidth, booleanMap1PlusBooleanMap2Val, booleanMap1PlusBooleanMap2);
 
 		}
 	}
@@ -1366,12 +1363,12 @@ void addBooleanMaps(const int imageWidth, const int imageHeight, const bool* boo
 
 
 	//NB this function uses createContrastMapFromMap... (however it really should
-void createDepthGradientContrastMapFromDepthGradientMap(int imageWidth, const int imageHeight, double* depthGradientMap, double* depthGradientContrastMap)
+void ORpixelMapsClass::createDepthGradientContrastMapFromDepthGradientMap(int imageWidth, const int imageHeight, double* depthGradientMap, double* depthGradientContrastMap)
 {
-	createDepthGradientContrastMapFromMap(imageWidth, imageHeight, depthGradientMap, depthGradientContrastMap);
+	this->createDepthGradientContrastMapFromMap(imageWidth, imageHeight, depthGradientMap, depthGradientContrastMap);
 }
 
-void createDepthGradientContrastMapFromMap(int imageWidth, const int imageHeight, double* depthGradientMap, double* depthGradientContrastMap)
+void ORpixelMapsClass::createDepthGradientContrastMapFromMap(int imageWidth, const int imageHeight, double* depthGradientMap, double* depthGradientContrastMap)
 {
 	int kernelWidth = DEFAULT_DEPTH_GRADIENT_MAP_GENERATION_KERNEL_WIDTH;
 	int kernelHeight = DEFAULT_DEPTH_GRADIENT_MAP_GENERATION_KERNEL_HEIGHT;
@@ -1380,8 +1377,8 @@ void createDepthGradientContrastMapFromMap(int imageWidth, const int imageHeight
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			double contrastVal = calculateDepthGradientContrastValueWithinKernel(x, y, depthGradientMap, kernelWidth, kernelHeight, imageWidth, imageHeight);
-			setLumOrContrastOrDepthMapValue(x, y, imageWidth, contrastVal, depthGradientContrastMap);
+			double contrastVal = this->calculateDepthGradientContrastValueWithinKernel(x, y, depthGradientMap, kernelWidth, kernelHeight, imageWidth, imageHeight);
+			RTpixelMaps.setLumOrContrastOrDepthMapValue(x, y, imageWidth, contrastVal, depthGradientContrastMap);
 		}
 	}
 
@@ -1389,7 +1386,7 @@ void createDepthGradientContrastMapFromMap(int imageWidth, const int imageHeight
 
 
 
-double calculateDepthGradientContrastValueWithinKernel(int pixelX, int pixelY, double* depthGradientMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight)
+double ORpixelMapsClass::calculateDepthGradientContrastValueWithinKernel(int pixelX, int pixelY, double* depthGradientMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight)
 {
 	//METHOD1/2
 	double contrastLevel = 0;
@@ -1415,50 +1412,50 @@ double calculateDepthGradientContrastValueWithinKernel(int pixelX, int pixelY, d
 							//METHOD2OLD - works but does not detect features;
 
 							vec kernelCurrentPixelPositionInDepthGradientMapGradient;
-							getXYvectorMapValue(x, y, imageWidth, depthGradientMap, &kernelCurrentPixelPositionInDepthGradientMapGradient);
+							this->getXYvectorMapValue(x, y, imageWidth, depthGradientMap, &kernelCurrentPixelPositionInDepthGradientMapGradient);
 							vec centrePixelPositionInDepthGradientMapGradient;
-							getXYvectorMapValue(pixelX, pixelY, imageWidth, depthGradientMap, &centrePixelPositionInDepthGradientMapGradient);
+							this->getXYvectorMapValue(pixelX, pixelY, imageWidth, depthGradientMap, &centrePixelPositionInDepthGradientMapGradient);
 
 							double currentContrastLevel = 0.0;
-							double currentContrastLevelX = absDouble(centrePixelPositionInDepthGradientMapGradient.x - kernelCurrentPixelPositionInDepthGradientMapGradient.x);
-							double currentContrastLevelY = absDouble(centrePixelPositionInDepthGradientMapGradient.y - kernelCurrentPixelPositionInDepthGradientMapGradient.y);
+							double currentContrastLevelX = SHAREDvars.absDouble(centrePixelPositionInDepthGradientMapGradient.x - kernelCurrentPixelPositionInDepthGradientMapGradient.x);
+							double currentContrastLevelY = SHAREDvars.absDouble(centrePixelPositionInDepthGradientMapGradient.y - kernelCurrentPixelPositionInDepthGradientMapGradient.y);
 
 							currentContrastLevel = currentContrastLevelX + currentContrastLevelY;
 							if(OR_USE_CONTRAST_CALC_METHOD_B)
 							{
-								contrastLevel = contrastLevel + absDouble(contrastLevel - currentContrastLevel);
+								contrastLevel = contrastLevel + SHAREDvars.absDouble(contrastLevel - currentContrastLevel);
 							}
 							else
 							{
-								contrastLevel = maxDouble(contrastLevel, currentContrastLevel);
+								contrastLevel = SHAREDvars.maxDouble(contrastLevel, currentContrastLevel);
 							}
 
 							/*
 							//METHOD1OLD;
 							vec kernelCurrentPixelPositionInDepthGradientMapGradient;
-							getXYvectorMapValue(x, y, imageWidth, depthGradientMap, &kernelCurrentPixelPositionInDepthGradientMapGradient);
+							this->getXYvectorMapValue(x, y, imageWidth, depthGradientMap, &kernelCurrentPixelPositionInDepthGradientMapGradient);
 							vec centrePixelPositionInDepthGradientMapGradient;
-							getXYvectorMapValue(pixelX, pixelY, imageWidth, depthGradientMap, &centrePixelPositionInDepthGradientMapGradient);
+							this->getXYvectorMapValue(pixelX, pixelY, imageWidth, depthGradientMap, &centrePixelPositionInDepthGradientMapGradient);
 
 							double currentContrastLevel = 0.0;
 							if((centrePixelPositionInDepthGradientMapGradient.x > 0) && (kernelCurrentPixelPositionInDepthGradientMapGradient.x < 0))
 							{
-								currentContrastLevel = currentContrastLevel + absDouble(centrePixelPositionInDepthGradientMapGradient.x - kernelCurrentPixelPositionInDepthGradientMapGradient.x);
+								currentContrastLevel = currentContrastLevel + SHAREDvars.absDouble(centrePixelPositionInDepthGradientMapGradient.x - kernelCurrentPixelPositionInDepthGradientMapGradient.x);
 							}
 							else if((centrePixelPositionInDepthGradientMapGradient.x < 0) && (kernelCurrentPixelPositionInDepthGradientMapGradient.x > 0))
 							{
-								currentContrastLevel = currentContrastLevel + absDouble(centrePixelPositionInDepthGradientMapGradient.x - kernelCurrentPixelPositionInDepthGradientMapGradient.x);
+								currentContrastLevel = currentContrastLevel + SHAREDvars.absDouble(centrePixelPositionInDepthGradientMapGradient.x - kernelCurrentPixelPositionInDepthGradientMapGradient.x);
 							}
 
 							if((centrePixelPositionInDepthGradientMapGradient.y > 0) && (kernelCurrentPixelPositionInDepthGradientMapGradient.y < 0))
 							{
-								currentContrastLevel = currentContrastLevel + absDouble(centrePixelPositionInDepthGradientMapGradient.y - kernelCurrentPixelPositionInDepthGradientMapGradient.y);
+								currentContrastLevel = currentContrastLevel + SHAREDvars.absDouble(centrePixelPositionInDepthGradientMapGradient.y - kernelCurrentPixelPositionInDepthGradientMapGradient.y);
 							}
 							else if((centrePixelPositionInDepthGradientMapGradient.y < 0) && (kernelCurrentPixelPositionInDepthGradientMapGradient.y > 0))
 							{
-								currentContrastLevel = currentContrastLevel + absDouble(centrePixelPositionInDepthGradientMapGradient.y - kernelCurrentPixelPositionInDepthGradientMapGradient.y);
+								currentContrastLevel = currentContrastLevel + SHAREDvars.absDouble(centrePixelPositionInDepthGradientMapGradient.y - kernelCurrentPixelPositionInDepthGradientMapGradient.y);
 							}
-							contrastLevel = maxDouble(contrastLevel, currentContrastLevel);
+							contrastLevel = SHAREDvars.maxDouble(contrastLevel, currentContrastLevel);
 							*/
 
 						}
@@ -1479,12 +1476,12 @@ double calculateDepthGradientContrastValueWithinKernel(int pixelX, int pixelY, d
 				for(int y = (pixelY-1); y<= (pixelY+1)-1; y++)
 				{
 					vec interpixelGradientValue;
-					getXYvectorMapValue((pixelX-1), y, imageWidth, depthGradientMap, &interpixelGradientValue);
+					this->getXYvectorMapValue((pixelX-1), y, imageWidth, depthGradientMap, &interpixelGradientValue);
 					vec adjacentInterpixelGradientValue;
-					getXYvectorMapValue((pixelX-1)+1, y, imageWidth, depthGradientMap, &adjacentInterpixelGradientValue);
+					this->getXYvectorMapValue((pixelX-1)+1, y, imageWidth, depthGradientMap, &adjacentInterpixelGradientValue);
 
-					double currentContrastLevelX = absDouble(interpixelGradientValue.x - adjacentInterpixelGradientValue.x);
-					double currentContrastLevelY = absDouble(interpixelGradientValue.y - adjacentInterpixelGradientValue.y);
+					double currentContrastLevelX = SHAREDvars.absDouble(interpixelGradientValue.x - adjacentInterpixelGradientValue.x);
+					double currentContrastLevelY = SHAREDvars.absDouble(interpixelGradientValue.y - adjacentInterpixelGradientValue.y);
 					double currentContrastLevel = currentContrastLevelX + currentContrastLevelY;
 
 					contrastLevel = contrastLevel + currentContrastLevel;
@@ -1493,12 +1490,12 @@ double calculateDepthGradientContrastValueWithinKernel(int pixelX, int pixelY, d
 				for(int x = (pixelX-1); x<= (pixelX+1)-1; x++)
 				{
 					vec interpixelGradientValue;
-					getXYvectorMapValue(x, (pixelY-1), imageWidth, depthGradientMap, &interpixelGradientValue);
+					this->getXYvectorMapValue(x, (pixelY-1), imageWidth, depthGradientMap, &interpixelGradientValue);
 					vec adjacentInterpixelGradientValue;
-					getXYvectorMapValue(x, (pixelY-1)+1, imageWidth, depthGradientMap, &adjacentInterpixelGradientValue);
+					this->getXYvectorMapValue(x, (pixelY-1)+1, imageWidth, depthGradientMap, &adjacentInterpixelGradientValue);
 
-					double currentContrastLevelX = absDouble(interpixelGradientValue.x - adjacentInterpixelGradientValue.x);
-					double currentContrastLevelY = absDouble(interpixelGradientValue.y - adjacentInterpixelGradientValue.y);
+					double currentContrastLevelX = SHAREDvars.absDouble(interpixelGradientValue.x - adjacentInterpixelGradientValue.x);
+					double currentContrastLevelY = SHAREDvars.absDouble(interpixelGradientValue.y - adjacentInterpixelGradientValue.y);
 					double currentContrastLevel = currentContrastLevelX + currentContrastLevelY;
 
 					contrastLevel = contrastLevel + currentContrastLevel;
@@ -1524,7 +1521,7 @@ double calculateDepthGradientContrastValueWithinKernel(int pixelX, int pixelY, d
 }
 
 
-double calculateDepthGradientContrastValueWithinKernelWRONG(const int pixelX, const int pixelY, double* depthGradientMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight)
+double ORpixelMapsClass::calculateDepthGradientContrastValueWithinKernelWRONG(const int pixelX, const int pixelY, double* depthGradientMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight)
 {
 	//METHOD3;
 	#define DEPTH_GRADIENT_SIMILARITY_INDICATOR_UNDEFINED (0)
@@ -1565,7 +1562,7 @@ double calculateDepthGradientContrastValueWithinKernelWRONG(const int pixelX, co
 					if(depthGradientSimilarityArray[yDiff*DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_WIDTH_NUMBER_SAMPLES+xDiff] == DEPTH_GRADIENT_SIMILARITY_INDICATOR_UNDEFINED)
 					{
 						vec kernelCurrentPixelPositionInDepthGradientMapGradient;
-						getXYvectorMapValue(x, y, imageWidth, depthGradientMap, &kernelCurrentPixelPositionInDepthGradientMapGradient);
+						this->getXYvectorMapValue(x, y, imageWidth, depthGradientMap, &kernelCurrentPixelPositionInDepthGradientMapGradient);
 
 
 						for(int y2 = pixelY-(kernelHeight/(DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_HEIGHT_NUMBER_SAMPLES-1)); y2<= pixelY+(kernelHeight/(DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_HEIGHT_NUMBER_SAMPLES-1)); y2=y2+(kernelHeight/(DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_HEIGHT_NUMBER_SAMPLES-1)))
@@ -1591,11 +1588,11 @@ double calculateDepthGradientContrastValueWithinKernelWRONG(const int pixelX, co
 										if(depthGradientSimilarityArray[yDiff2*DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_WIDTH_NUMBER_SAMPLES+xDiff2] == DEPTH_GRADIENT_SIMILARITY_INDICATOR_UNDEFINED)
 										{
 											vec kernelCurrentPixelPositionInDepthGradientMapGradient2;
-											getXYvectorMapValue(x2, y2, imageWidth, depthGradientMap, &kernelCurrentPixelPositionInDepthGradientMapGradient2);
+											this->getXYvectorMapValue(x2, y2, imageWidth, depthGradientMap, &kernelCurrentPixelPositionInDepthGradientMapGradient2);
 
 											double currentContrastLevelX = kernelCurrentPixelPositionInDepthGradientMapGradient2.x - kernelCurrentPixelPositionInDepthGradientMapGradient.x;
 											double currentContrastLevelY = kernelCurrentPixelPositionInDepthGradientMapGradient2.y - kernelCurrentPixelPositionInDepthGradientMapGradient.y;
-											if(!checkIfMeetDepthGradientContrastThreshold(absDouble(currentContrastLevelX)) && !checkIfMeetDepthGradientContrastThreshold(absDouble(currentContrastLevelY)))
+											if(!this->checkIfMeetDepthGradientContrastThreshold(SHAREDvars.absDouble(currentContrastLevelX)) && !this->checkIfMeetDepthGradientContrastThreshold(SHAREDvars.absDouble(currentContrastLevelY)))
 											{//depth gradients are the same for pixel and pixel2
 												depthGradientSimilarityArray[yDiff*DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_WIDTH_NUMBER_SAMPLES+xDiff] = currentDepthGradientSimilarityIndicator;
 												depthGradientSimilarityArray[yDiff2*DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_WIDTH_NUMBER_SAMPLES+xDiff2] = currentDepthGradientSimilarityIndicator;
@@ -1682,7 +1679,7 @@ double calculateDepthGradientContrastValueWithinKernelWRONG(const int pixelX, co
 
 
 
-bool checkIfMeetDepthGradientContrastThreshold(const double depthGradientContrastValue)
+bool ORpixelMapsClass::checkIfMeetDepthGradientContrastThreshold(const double depthGradientContrastValue)
 {
 	if(depthGradientContrastValue > DEPTH_GRADIENT_CONTRAST_THRESHOLD)
 	{
@@ -1697,13 +1694,13 @@ bool checkIfMeetDepthGradientContrastThreshold(const double depthGradientContras
 
 
 
-void createDepthGradientContrastBooleanMap(const int imageWidth, const int imageHeight, const double* depthGradientContrastMap, bool* depthGradientContrastBooleanMap)
+void ORpixelMapsClass::createDepthGradientContrastBooleanMap(const int imageWidth, const int imageHeight, const double* depthGradientContrastMap, bool* depthGradientContrastBooleanMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			double depthGradientContrastVal = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthGradientContrastMap);
+			double depthGradientContrastVal = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthGradientContrastMap);
 			bool depthGradientContrastValPassedThreshold = false;
 			if(depthGradientContrastVal > EDGE_DEPTH_GRADIENT_CONTRAST_THRESHOLD)
 			{
@@ -1713,19 +1710,19 @@ void createDepthGradientContrastBooleanMap(const int imageWidth, const int image
 			{
 				depthGradientContrastValPassedThreshold = false;
 			}
-			setBooleanMapValue(x, y, imageWidth, depthGradientContrastValPassedThreshold, depthGradientContrastBooleanMap);
+			RTpixelMaps.setBooleanMapValue(x, y, imageWidth, depthGradientContrastValPassedThreshold, depthGradientContrastBooleanMap);
 		}
 	}
 }
 
 
-void createDepthContrastBooleanMap(const int imageWidth, const int imageHeight, const double* depthContrastMap, bool* depthContrastBooleanMap)
+void ORpixelMapsClass::createDepthContrastBooleanMap(const int imageWidth, const int imageHeight, const double* depthContrastMap, bool* depthContrastBooleanMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			double depthContrastVal = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthContrastMap);
+			double depthContrastVal = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthContrastMap);
 			bool depthContrastValPassedThreshold = false;
 
 			if(depthContrastVal > EDGE_DEPTH_CONTRAST_THRESHOLD)
@@ -1750,20 +1747,20 @@ void createDepthContrastBooleanMap(const int imageWidth, const int imageHeight, 
 			{
 				depthContrastValPassedThreshold = false;
 			}
-			setBooleanMapValue(x, y, imageWidth, depthContrastValPassedThreshold, depthContrastBooleanMap);
+			RTpixelMaps.setBooleanMapValue(x, y, imageWidth, depthContrastValPassedThreshold, depthContrastBooleanMap);
 		}
 	}
 }
 
 
 
-void createArbitraryContrastBooleanMap(const int imageWidth, const int imageHeight, const double* contrastMap, bool* contrastBooleanMap, const double sensitivity)
+void ORpixelMapsClass::createArbitraryContrastBooleanMap(const int imageWidth, const int imageHeight, const double* contrastMap, bool* contrastBooleanMap, const double sensitivity)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			double contrastVal = getLumOrContrastOrDepthMapValue(x, y, imageWidth, contrastMap);
+			double contrastVal = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, contrastMap);
 			bool contrastValPassedThreshold = false;
 			if(contrastVal > sensitivity)
 			{
@@ -1787,7 +1784,7 @@ void createArbitraryContrastBooleanMap(const int imageWidth, const int imageHeig
 			{
 				contrastValPassedThreshold = false;
 			}
-			setBooleanMapValue(x, y, imageWidth, contrastValPassedThreshold, contrastBooleanMap);
+			RTpixelMaps.setBooleanMapValue(x, y, imageWidth, contrastValPassedThreshold, contrastBooleanMap);
 		}
 	}
 }
@@ -1797,13 +1794,13 @@ void createArbitraryContrastBooleanMap(const int imageWidth, const int imageHeig
 
 
 
-void createPointNormalContrastBooleanMap(const int imageWidth, const int imageHeight, const double* pointNormalContrastMap, bool* pointNormalContrastBooleanMap)
+void ORpixelMapsClass::createPointNormalContrastBooleanMap(const int imageWidth, const int imageHeight, const double* pointNormalContrastMap, bool* pointNormalContrastBooleanMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			double pointNormalContrastVal = getLumOrContrastOrDepthMapValue(x, y, imageWidth, pointNormalContrastMap);
+			double pointNormalContrastVal = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, pointNormalContrastMap);
 			bool pointNormalContrastValPassedThreshold = false;
 
 			#ifdef OR_DEBUG
@@ -1822,21 +1819,21 @@ void createPointNormalContrastBooleanMap(const int imageWidth, const int imageHe
 			{
 				pointNormalContrastValPassedThreshold = false;
 			}
-			setBooleanMapValue(x, y, imageWidth, pointNormalContrastValPassedThreshold, pointNormalContrastBooleanMap);
+			RTpixelMaps.setBooleanMapValue(x, y, imageWidth, pointNormalContrastValPassedThreshold, pointNormalContrastBooleanMap);
 		}
 	}
 }
 
-void generateRGBmapFromPointNormalContrastMap(const int imageWidth, const int imageHeight, const double* pointNormalContrastMap, unsigned char* rgbMap)
+void ORpixelMapsClass::generateRGBmapFromPointNormalContrastMap(const int imageWidth, const int imageHeight, const double* pointNormalContrastMap, unsigned char* rgbMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
   		for(int x = 0; x < imageWidth; x++)
 		{
 			double pointNormalContrastVal;
-			pointNormalContrastVal = getLumOrContrastOrDepthMapValue(x, y, imageWidth, pointNormalContrastMap);
+			pointNormalContrastVal = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, pointNormalContrastMap);
 
-			int pointNormalContrastValNormalised = minInt((int)(pointNormalContrastVal/MAX_NORMAL_CONTRAST*MAX_RGB_VAL), MAX_RGB_VAL);
+			int pointNormalContrastValNormalised = SHAREDvars.minInt((int)(pointNormalContrastVal/MAX_NORMAL_CONTRAST*MAX_RGB_VAL), MAX_RGB_VAL);
 			#ifdef USE_CONTRAST_PIXMAP_INVERSE
 			pointNormalContrastValNormalised = -(pointNormalContrastValNormalised-MAX_RGB_VAL);
 			#endif
@@ -1850,34 +1847,34 @@ void generateRGBmapFromPointNormalContrastMap(const int imageWidth, const int im
 			//cout << "pointNormalContrastVal col.r = " << (int)(col.r) << endl;
 			#endif
 
-			setRGBMapValues(x, y, imageWidth, &col, rgbMap);
+			RTpixelMaps.setRGBMapValues(x, y, imageWidth, &col, rgbMap);
 		}
 	}
 }
 
 
-void generatePixmapFromPointNormalContrastMap(const string imageFileName, const int imageWidth, const int imageHeight, const double* pointNormalContrastMap)
+void ORpixelMapsClass::generatePixmapFromPointNormalContrastMap(const string imageFileName, const int imageWidth, const int imageHeight, const double* pointNormalContrastMap)
 {
 	int x,y;
 	pixmap* pm;
 
-	pm = newPixmap(imageWidth, imageHeight);
+	pm = RTppm.newPixmap(imageWidth, imageHeight);
 
 	for(y = 0; y < imageHeight; y++)
 	{
   		for(x = 0; x < imageWidth; x++)
 		{
 			double contrast;
-			contrast = getLumOrContrastOrDepthMapValue(x, y, imageWidth, pointNormalContrastMap);
-			int contrastNormalised = minInt((int)(contrast/MAX_NORMAL_CONTRAST*MAX_RGB_VAL), MAX_RGB_VAL);
+			contrast = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, pointNormalContrastMap);
+			int contrastNormalised = SHAREDvars.minInt((int)(contrast/MAX_NORMAL_CONTRAST*MAX_RGB_VAL), MAX_RGB_VAL);
 		#ifdef USE_CONTRAST_PIXMAP_INVERSE
 			contrastNormalised = -(contrastNormalised-MAX_RGB_VAL);
 		#endif
-			placepointPPM(pm, x, y, contrastNormalised, contrastNormalised, contrastNormalised);
+			RTppm.placepointPPM(pm, x, y, contrastNormalised, contrastNormalised, contrastNormalised);
 		}
 	}
 
-	writeImage(imageFileName, pm);
+	RTpixelMaps.writeImage(imageFileName, pm);
 }
 
 
@@ -1890,19 +1887,19 @@ void generatePixmapFromPointNormalContrastMap(const string imageFileName, const 
 
 
 //NOT YET FINISHED
-void createNormalMap(const int imageWidth, const int imageHeight, const double* luminosityContrastMapEye1, const double* depthMap, const double* depthContrastMap, const double* depthGradientContrastMap, const double* normalMap)
+void ORpixelMapsClass::createNormalMap(const int imageWidth, const int imageHeight, const double* luminosityContrastMapEye1, const double* depthMap, const double* depthContrastMap, const double* depthGradientContrastMap, const double* normalMap)
 {
 
 }
 //NOT YET FINISHED
-double findDepthOfGivenPixel(int xEye1, int yEye1, int imageWidth, const int imageHeight, const double* luminosityContrastMapEye1, const double* luminosityContrastMapEye2, unsigned char* rgbMapEye1, const unsigned char* rgbMapEye2, const double* calculatedxEye2, const double* calculatedyEye2)
+double ORpixelMapsClass::findDepthOfGivenPixel(int xEye1, int yEye1, int imageWidth, const int imageHeight, const double* luminosityContrastMapEye1, const double* luminosityContrastMapEye2, unsigned char* rgbMapEye1, const unsigned char* rgbMapEye2, const double* calculatedxEye2, const double* calculatedyEye2)
 {
 	double calculatedDepthOfEye1Pixel;
 
 	colour col;
 	double contrastVal;
-	getRGBMapValues(xEye1, yEye1, imageWidth, rgbMapEye1, &col);
-	contrastVal = getLumOrContrastOrDepthMapValue(xEye1, yEye1, imageWidth, luminosityContrastMapEye1);
+	RTpixelMaps.getRGBMapValues(xEye1, yEye1, imageWidth, rgbMapEye1, &col);
+	contrastVal = RTpixelMaps.getLumOrContrastOrDepthMapValue(xEye1, yEye1, imageWidth, luminosityContrastMapEye1);
 
 	//now find this corresponding contrast val in map 2 [and ensure the RGB ratio is the same - NB cannot compare RGB values of same pixel from both eyes due to specular highlighting]
 	return 0.0;
@@ -1912,7 +1909,7 @@ double findDepthOfGivenPixel(int xEye1, int yEye1, int imageWidth, const int ima
 
 
 //this function should probably be moved elsewhere
-void resampleRGBmap(unsigned char* rgbMap, const int imageWidth, const int imageHeight, unsigned char* resampledRGBmapAtDesiredZoomChar, const int zoom, const int ignoreBackgroundComparisonMethod)
+void ORpixelMapsClass::resampleRGBmap(unsigned char* rgbMap, const int imageWidth, const int imageHeight, unsigned char* resampledRGBmapAtDesiredZoomChar, const int zoom, const int ignoreBackgroundComparisonMethod)
 {
 	int resampledWidth = (imageWidth/zoom);
 	int resampledHeight = (imageHeight/zoom);
@@ -2091,7 +2088,7 @@ void resampleRGBmap(unsigned char* rgbMap, const int imageWidth, const int image
 
 
 //this function should probably be moved elsewhere
-void resampleLumOrContrastOrDepthMap(double* lumOrContrastOrDepthMap, const int imageWidth, const int imageHeight, double* resampledLumOrContrastOrDepthMapAtDesiredZoomChar, const int zoom, const double offMapValue)
+void ORpixelMapsClass::resampleLumOrContrastOrDepthMap(double* lumOrContrastOrDepthMap, const int imageWidth, const int imageHeight, double* resampledLumOrContrastOrDepthMapAtDesiredZoomChar, const int zoom, const double offMapValue)
 {
 	int resampledWidth = (imageWidth/zoom);
 	int resampledHeight = (imageHeight/zoom);
@@ -2167,14 +2164,14 @@ void resampleLumOrContrastOrDepthMap(double* lumOrContrastOrDepthMap, const int 
 			{
 				if(OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON)
 				{
-					if(compareDoubles(lumOrContrastOrDepthMap[y*imageWidth + x], offMapValue))
+					if(SHAREDvars.compareDoubles(lumOrContrastOrDepthMap[y*imageWidth + x], offMapValue))
 					{
 						resampledMapAtDesiredzoomBool[(y/zoom)*resampledWidth + (x/zoom)] = false;
 					}
 				}
 
 			#ifdef OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_V2
-				if(!compareDoubles(lumOrContrastOrDepthMap[y*imageWidth + x], offMapValue))
+				if(!SHAREDvars.compareDoubles(lumOrContrastOrDepthMap[y*imageWidth + x], offMapValue))
 				{
 					resampledMapAtDesiredzoomCount[(y/zoom)*resampledWidth + (x/zoom)] = resampledMapAtDesiredzoomCount[(y/zoom)*resampledWidth + (x/zoom)] + 1;
 					resampledMapAtDesiredzoomInt[(y/zoom)*resampledWidth + (x/zoom)] = resampledMapAtDesiredzoomInt[(y/zoom)*resampledWidth + (x/zoom)] + lumOrContrastOrDepthMap[y*imageWidth + x];
@@ -2193,7 +2190,7 @@ void resampleLumOrContrastOrDepthMap(double* lumOrContrastOrDepthMap, const int 
   			for(int x = 0; x < resampledWidth; x++)
 			{
 				#ifdef OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_V2
-				if(!compareDoubles(resampledMapAtDesiredzoomCount[y*resampledWidth + x], offMapValue))
+				if(!SHAREDvars.compareDoubles(resampledMapAtDesiredzoomCount[y*resampledWidth + x], offMapValue))
 				{
 					resampledMapAtDesiredzoomInt[y*resampledWidth + x] = resampledMapAtDesiredzoomInt[y*resampledWidth + x]/(resampledMapAtDesiredzoomCount[y*resampledWidth + x]);
 				}

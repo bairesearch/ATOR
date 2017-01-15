@@ -26,17 +26,15 @@
  * File Name: ORimagecomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1a 14-January-2017
+ * Project Version: 3j1b 14-January-2017
  *
  *******************************************************************************/
 
 
 #include "ORimagecomparison.h"
 //#include "ORmethod.h"
-#include "ORpixelMaps.h"
-#include "ORoperations.h"
 
-void disablePixelsThatAreNotContainedInTheObjectTriangle2DOD(const int imageWidth, const int imageHeight, unsigned char* rgbMap)
+void ORimagecomparisonClass::disablePixelsThatAreNotContainedInTheObjectTriangle2DOD(const int imageWidth, const int imageHeight, unsigned char* rgbMap)
 {
 	colour disabledColour;
 	disabledColour.r = OR_SNAPSHOT_BACKGROUND_COLOUR_R;
@@ -65,7 +63,7 @@ void disablePixelsThatAreNotContainedInTheObjectTriangle2DOD(const int imageWidt
 
 			if(disablePixel)
 			{
-				setRGBMapValues(x, y, imageWidth, &disabledColour, rgbMap);
+				RTpixelMaps.setRGBMapValues(x, y, imageWidth, &disabledColour, rgbMap);
 			}
 		}
 	}
@@ -74,14 +72,14 @@ void disablePixelsThatAreNotContainedInTheObjectTriangle2DOD(const int imageWidt
 }
 
 
-void applyGaussianKernelToRGBmap(int imageWidth, const int imageHeight, const double sigma, const unsigned char* rgbMap, unsigned char* rgbMapWithGaussianApplied)
+void ORimagecomparisonClass::applyGaussianKernelToRGBmap(int imageWidth, const int imageHeight, const double sigma, const unsigned char* rgbMap, unsigned char* rgbMapWithGaussianApplied)
 {
-	applyGaussianKernelToLuminosityMapOrRGBmapComponent(imageWidth, imageHeight, sigma, NULL, NULL, rgbMap, rgbMapWithGaussianApplied, true, RGB_RED);
-	applyGaussianKernelToLuminosityMapOrRGBmapComponent(imageWidth, imageHeight, sigma, NULL, NULL, rgbMap, rgbMapWithGaussianApplied, true, RGB_GREEN);
-	applyGaussianKernelToLuminosityMapOrRGBmapComponent(imageWidth, imageHeight, sigma, NULL, NULL, rgbMap, rgbMapWithGaussianApplied, true, RGB_BLUE);
+	this->applyGaussianKernelToLuminosityMapOrRGBmapComponent(imageWidth, imageHeight, sigma, NULL, NULL, rgbMap, rgbMapWithGaussianApplied, true, RGB_RED);
+	this->applyGaussianKernelToLuminosityMapOrRGBmapComponent(imageWidth, imageHeight, sigma, NULL, NULL, rgbMap, rgbMapWithGaussianApplied, true, RGB_GREEN);
+	this->applyGaussianKernelToLuminosityMapOrRGBmapComponent(imageWidth, imageHeight, sigma, NULL, NULL, rgbMap, rgbMapWithGaussianApplied, true, RGB_BLUE);
 }
 
-void applyGaussianKernelToLuminosityMapOrRGBmapComponent(int imageWidth, const int imageHeight, const double sigma, const double* luminosityMap, double* luminosityMapWithGaussianApplied, const unsigned char* rgbMap, unsigned char* rgbMapWithGaussianApplied, const bool useRGBmapComponent, const int rgbMapComponentNumber)
+void ORimagecomparisonClass::applyGaussianKernelToLuminosityMapOrRGBmapComponent(int imageWidth, const int imageHeight, const double sigma, const double* luminosityMap, double* luminosityMapWithGaussianApplied, const unsigned char* rgbMap, unsigned char* rgbMapWithGaussianApplied, const bool useRGBmapComponent, const int rgbMapComponentNumber)
 {
 	double s;
 	int support,i, j, k, kk, x, y;
@@ -98,11 +96,11 @@ void applyGaussianKernelToLuminosityMapOrRGBmapComponent(int imageWidth, const i
 		{
 			if(useRGBmapComponent)
 			{
-				buf[y*imageWidth + x] = double(getRGBMapValue(x, y, imageWidth, rgbMapComponentNumber, rgbMap));
+				buf[y*imageWidth + x] = double(RTpixelMaps.getRGBMapValue(x, y, imageWidth, rgbMapComponentNumber, rgbMap));
 			}
 			else
 			{
-				buf[y*imageWidth + x] = getLumOrContrastOrDepthMapValue(x, y, imageWidth, luminosityMap);
+				buf[y*imageWidth + x] = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, luminosityMap);
 			}
 		}
 	}
@@ -162,11 +160,11 @@ void applyGaussianKernelToLuminosityMapOrRGBmapComponent(int imageWidth, const i
 		{
 			if(useRGBmapComponent)
 			{
-				setRGBMapValue(x, y, imageWidth, rgbMapComponentNumber, rgbMapWithGaussianApplied, (unsigned char)(buf[y*imageWidth + x]));
+				RTpixelMaps.setRGBMapValue(x, y, imageWidth, rgbMapComponentNumber, rgbMapWithGaussianApplied, (unsigned char)(buf[y*imageWidth + x]));
 			}
 			else
 			{
-				setLumOrContrastOrDepthMapValue(x, y, imageWidth, buf[y*imageWidth + x], luminosityMapWithGaussianApplied);
+				RTpixelMaps.setLumOrContrastOrDepthMapValue(x, y, imageWidth, buf[y*imageWidth + x], luminosityMapWithGaussianApplied);
 			}
 		}
 	}
@@ -177,7 +175,7 @@ void applyGaussianKernelToLuminosityMapOrRGBmapComponent(int imageWidth, const i
 }
 
 
-void createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(int imageWidth, int imageHeight, unsigned char* rgbMap, double* normalisedHueContrastMap, double* normalisedAverageHueContrastR, double* normalisedAverageHueContrastG, double* normalisedAverageHueContrastB, double* averageContrastWithRespectToAverageColour, double* averageStarkContrastWithRespectToAverageColour, double* averageLocalContrast, double* averageLocalStarkContrast)
+void ORimagecomparisonClass::createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(int imageWidth, int imageHeight, unsigned char* rgbMap, double* normalisedHueContrastMap, double* normalisedAverageHueContrastR, double* normalisedAverageHueContrastG, double* normalisedAverageHueContrastB, double* averageContrastWithRespectToAverageColour, double* averageStarkContrastWithRespectToAverageColour, double* averageLocalContrast, double* averageLocalStarkContrast)
 {
 	int totalR = 0;
 	int totalG = 0;
@@ -193,7 +191,7 @@ void createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(int 
 		for(int x = 0; x < imageWidth; x++)
 		{
 			colour testImagePixelColour;
-			getRGBMapValues(x, y, imageWidth, rgbMap, &testImagePixelColour);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMap, &testImagePixelColour);
 
 		#ifndef OR_DO_NOT_IGNORE_BACKGROUND_COLOUR
 			if((testImagePixelColour.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (testImagePixelColour.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (testImagePixelColour.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B))
@@ -272,7 +270,7 @@ void createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(int 
 		for(int x = 0; x < imageWidth; x++)
 		{
 			colour testImagePixelColour;
-			getRGBMapValues(x, y, imageWidth, rgbMap, &testImagePixelColour);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMap, &testImagePixelColour);
 
 		#ifndef OR_DO_NOT_IGNORE_BACKGROUND_COLOUR
 			if((testImagePixelColour.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (testImagePixelColour.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (testImagePixelColour.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B))
@@ -283,17 +281,17 @@ void createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(int 
 			{
 		#endif
 				#ifdef OR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_BINNING
-				double rContrastWithRespectToAverage = absDouble(averager - int(testImagePixelColour.r));
-				double gContrastWithRespectToAverage = absDouble(averageg - int(testImagePixelColour.g));
-				double bContrastWithRespectToAverage = absDouble(averageb - int(testImagePixelColour.b));
+				double rContrastWithRespectToAverage = SHAREDvars.absDouble(averager - int(testImagePixelColour.r));
+				double gContrastWithRespectToAverage = SHAREDvars.absDouble(averageg - int(testImagePixelColour.g));
+				double bContrastWithRespectToAverage = SHAREDvars.absDouble(averageb - int(testImagePixelColour.b));
 				#else	//use hue RGB dev binning
 				int RminusG = (int(testImagePixelColour.r) - int(testImagePixelColour.g));
 				int RminusB = (int(testImagePixelColour.r) - int(testImagePixelColour.b));
 				int GminusB = (int(testImagePixelColour.g) - int(testImagePixelColour.b));
 
-				double rContrastWithRespectToAverage = absDouble(averageRminusG - RminusG);
-				double gContrastWithRespectToAverage = absDouble(averageRminusB - RminusB);
-				double bContrastWithRespectToAverage = absDouble(averageGminusB - GminusB);
+				double rContrastWithRespectToAverage = SHAREDvars.absDouble(averageRminusG - RminusG);
+				double gContrastWithRespectToAverage = SHAREDvars.absDouble(averageRminusB - RminusB);
+				double bContrastWithRespectToAverage = SHAREDvars.absDouble(averageGminusB - GminusB);
 				#endif
 
 				totalrContrastWithRespectToAverage = totalrContrastWithRespectToAverage + rContrastWithRespectToAverage;
@@ -329,7 +327,7 @@ void createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(int 
 								if(!((kx == x) && (ky == y)))
 								{
 									colour testImagePixelColourKernel;
-									getRGBMapValues(kx, ky, imageWidth, rgbMap, &testImagePixelColourKernel);
+									RTpixelMaps.getRGBMapValues(kx, ky, imageWidth, rgbMap, &testImagePixelColourKernel);
 
 									#ifdef OR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_BINNING
 									int rContrastWRTkernel = testImagePixelColour.r - testImagePixelColourKernel.r;
@@ -400,7 +398,7 @@ void createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(int 
 				}
 				*/
 
-				setVectorMapValue(x, y, imageWidth, &normalisedAverageHueContrastAcrossKernel, normalisedHueContrastMap);
+				RTpixelMaps.setVectorMapValue(x, y, imageWidth, &normalisedAverageHueContrastAcrossKernel, normalisedHueContrastMap);
 
 				//NEW; additional; check for stark differences
 
@@ -482,7 +480,7 @@ void createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(int 
 	#endif
 }
 
-bool checkImageHasContrastValuesOnly(const double averageContrastWithRespectToAverageColour, const double averageStarkContrastWithRespectToAverageColour, const double averageLocalContrast, const double averageLocalStarkContrast)
+bool ORimagecomparisonClass::checkImageHasContrastValuesOnly(const double averageContrastWithRespectToAverageColour, const double averageStarkContrastWithRespectToAverageColour, const double averageLocalContrast, const double averageLocalStarkContrast)
 {
 	#ifdef OR_IMAGE_COMPARISON_REQUIRE_SNAPSHOT_STARK_LOCAL_CONTRAST
 	if((averageContrastWithRespectToAverageColour > OR_IMAGE_COMPARISON_HAS_CONTRAST_WRT_AVERAGE_COLOUR_MIN_AVERAGE_COL_DEVIATION) && (averageStarkContrastWithRespectToAverageColour > OR_IMAGE_COMPARISON_HAS_STARK_CONTRAST_WRT_AVERAGE_COLOUR_MIN_AVERAGE_COL_DEVIATION)
@@ -508,7 +506,7 @@ bool checkImageHasContrastValuesOnly(const double averageContrastWithRespectToAv
 
 //compareImagesRGBwithPosDevAndLocalStarkContAndHueDev or compareImagesRGBWithPosDevAndLocalStarkContAndLumDev [assumes light source is always white]
 
-void calculateAverageColour(int imageWidth, int imageHeight, unsigned char* rgbMap, colour* avgCol)
+void ORimagecomparisonClass::calculateAverageColour(int imageWidth, int imageHeight, unsigned char* rgbMap, colour* avgCol)
 {
 	double totalColr = 0.0;
 	double totalColg = 0.0;
@@ -519,7 +517,7 @@ void calculateAverageColour(int imageWidth, int imageHeight, unsigned char* rgbM
 		for(int x = 0; x < imageWidth; x++)
 		{
 			colour testImagePixelColour;
-			getRGBMapValues(x, y, imageWidth, rgbMap, &testImagePixelColour);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMap, &testImagePixelColour);
 			totalColr = totalColr + testImagePixelColour.r;
 			totalColg = totalColg + testImagePixelColour.g;
 			totalColb = totalColb + testImagePixelColour.b;
@@ -532,7 +530,7 @@ void calculateAverageColour(int imageWidth, int imageHeight, unsigned char* rgbM
 }
 
 
-double compareImagesRGBwithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly(int imageWidth, const int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain, double* averageHueDeviationR, double* averageHueDeviationG, double* averageHueDeviationB, double* averageXkernelRelativePositionForLowestErrorMatch, double* averageYkernelRelativePositionForLowestErrorMatch)
+double ORimagecomparisonClass::compareImagesRGBwithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly(int imageWidth, const int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain, double* averageHueDeviationR, double* averageHueDeviationG, double* averageHueDeviationB, double* averageXkernelRelativePositionForLowestErrorMatch, double* averageYkernelRelativePositionForLowestErrorMatch)
 {
 	double totalStarkLocalDeviation = 0.0;
 	int starkLocalDeviationIndex = 0;
@@ -553,14 +551,14 @@ double compareImagesRGBwithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly
 		for(int x = 0; x < imageWidth; x++)
 		{
 			colour testImagePixelColour;
-			getRGBMapValues(x, y, imageWidth, rgbMapTest, &testImagePixelColour);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMapTest, &testImagePixelColour);
 
 		#ifndef OR_DO_NOT_IGNORE_BACKGROUND_COLOUR
 			#ifdef OR_USE_STAR_MAPS
 			if((testImagePixelColour.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (testImagePixelColour.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (testImagePixelColour.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B))
 			#else
 			colour trainImagePixelColourCentre;
-			getRGBMapValues(x, y, imageWidth, rgbMapTrain, &trainImagePixelColourCentre);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMapTrain, &trainImagePixelColourCentre);
 			if(((testImagePixelColour.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (testImagePixelColour.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (testImagePixelColour.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B)) || ((trainImagePixelColourCentre.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (trainImagePixelColourCentre.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (trainImagePixelColourCentre.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B)))
 			#endif
 			{
@@ -586,10 +584,10 @@ double compareImagesRGBwithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly
 							if((kx >= 0) && (kx < imageWidth))
 							{
 								colour trainImagePixelColour;
-								getRGBMapValues(kx, ky, imageWidth, rgbMapTrain, &trainImagePixelColour);
+								RTpixelMaps.getRGBMapValues(kx, ky, imageWidth, rgbMapTrain, &trainImagePixelColour);
 
 							#ifdef OR_IMAGE_COMPARITOR_USE_NORMALISED_HUE_ERROR_COMPARISON
-								double pixelError = compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
+								double pixelError = this->compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
 							#else
 								//double pixelError = compareRGBpixelsForMatchHueOnly(&testImagePixelColour, &trainImagePixelColour);
 
@@ -642,11 +640,11 @@ double compareImagesRGBwithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly
 				//NEW; additional; check for stark differences
 
 				colour trainImagePixelColourOptimum;
-				getRGBMapValues(XKernelRelativePositionForLowestErrorMatch+x, YKernelRelativePositionForLowestErrorMatch+y, imageWidth, rgbMapTrain, &trainImagePixelColourOptimum);
+				RTpixelMaps.getRGBMapValues(XKernelRelativePositionForLowestErrorMatch+x, YKernelRelativePositionForLowestErrorMatch+y, imageWidth, rgbMapTrain, &trainImagePixelColourOptimum);
 
-				double rdeviationOptimum = absDouble(redErrorlowestMatchErrorAcrossKernel);
-				double gdeviationOptimum = absDouble(greenErrorlowestMatchErrorAcrossKernel);
-				double bdeviationOptimum = absDouble(blueErrorlowestMatchErrorAcrossKernel);
+				double rdeviationOptimum = SHAREDvars.absDouble(redErrorlowestMatchErrorAcrossKernel);
+				double gdeviationOptimum = SHAREDvars.absDouble(greenErrorlowestMatchErrorAcrossKernel);
+				double bdeviationOptimum = SHAREDvars.absDouble(blueErrorlowestMatchErrorAcrossKernel);
 
 				double deviationOptimum = rdeviationOptimum + gdeviationOptimum + bdeviationOptimum;
 				if(deviationOptimum > OR_IMAGE_COMPARISON_STARK_LOCAL_DEVIATION_MIN_MIN_COL_DIFF)
@@ -695,7 +693,7 @@ double compareImagesRGBwithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly
 
 
 
-double compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(int imageWidth, const int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain)
+double ORimagecomparisonClass::compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(int imageWidth, const int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain)
 {
 	double totalStarkLocalDeviation = 0.0;
 	int starkLocalDeviationIndex = 0;
@@ -724,7 +722,7 @@ double compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(int imageWidth, cons
 	int hueDeviationIndex = 0;
 
 
-	compareImagesRGBwithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly(imageWidth, imageHeight, rgbMapTest, rgbMapTrain, &averageHueDeviationR, &averageHueDeviationG, &averageHueDeviationB, &averageXkernelRelativePositionForLowestErrorMatch, &averageYkernelRelativePositionForLowestErrorMatch);
+	this->compareImagesRGBwithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly(imageWidth, imageHeight, rgbMapTest, rgbMapTrain, &averageHueDeviationR, &averageHueDeviationG, &averageHueDeviationB, &averageXkernelRelativePositionForLowestErrorMatch, &averageYkernelRelativePositionForLowestErrorMatch);
 
 	averageLumDeviation = averageHueDeviationR + averageHueDeviationG + averageHueDeviationB;
 
@@ -733,14 +731,14 @@ double compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(int imageWidth, cons
 		for(int x = 0; x < imageWidth; x++)
 		{
 			colour testImagePixelColour;
-			getRGBMapValues(x, y, imageWidth, rgbMapTest, &testImagePixelColour);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMapTest, &testImagePixelColour);
 
 		#ifndef OR_DO_NOT_IGNORE_BACKGROUND_COLOUR
 			#ifdef OR_USE_STAR_MAPS
 			if((testImagePixelColour.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (testImagePixelColour.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (testImagePixelColour.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B))
 			#else
 			colour trainImagePixelColourCentre;
-			getRGBMapValues(x, y, imageWidth, rgbMapTrain, &trainImagePixelColourCentre);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMapTrain, &trainImagePixelColourCentre);
 			if(((testImagePixelColour.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (testImagePixelColour.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (testImagePixelColour.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B)) || ((trainImagePixelColourCentre.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (trainImagePixelColourCentre.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (trainImagePixelColourCentre.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B)))
 			#endif
 			{
@@ -765,10 +763,10 @@ double compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(int imageWidth, cons
 							if((kx >= 0) && (kx < imageWidth))
 							{
 								colour trainImagePixelColour;
-								getRGBMapValues(kx, ky, imageWidth, rgbMapTrain, &trainImagePixelColour);
+								RTpixelMaps.getRGBMapValues(kx, ky, imageWidth, rgbMapTrain, &trainImagePixelColour);
 
 							#ifdef OR_IMAGE_COMPARITOR_USE_NORMALISED_HUE_ERROR_COMPARISON
-								double pixelError = compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
+								double pixelError = this->compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
 							#else
 								//double pixelError = compareRGBpixelsForMatchHueOnly(&testImagePixelColour, &trainImagePixelColour);
 
@@ -813,20 +811,20 @@ double compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(int imageWidth, cons
 
 					//NEW; additional; check for global hue dev [due to lighting conditions]
 
-				totalDifferenceFromAverageRHueDeviation = totalDifferenceFromAverageRHueDeviation + absDouble(averageHueDeviationR - redErrorlowestMatchErrorAcrossKernel);
-				totalDifferenceFromAverageGHueDeviation = totalDifferenceFromAverageGHueDeviation + absDouble(averageHueDeviationG - greenErrorlowestMatchErrorAcrossKernel);
-				totalDifferenceFromAverageBHueDeviation = totalDifferenceFromAverageBHueDeviation + absDouble(averageHueDeviationB - blueErrorlowestMatchErrorAcrossKernel);
-				totalDifferenceFromAverageLumDeviation = totalDifferenceFromAverageLumDeviation + absDouble(averageLumDeviation - (redErrorlowestMatchErrorAcrossKernel+blueErrorlowestMatchErrorAcrossKernel+greenErrorlowestMatchErrorAcrossKernel));
+				totalDifferenceFromAverageRHueDeviation = totalDifferenceFromAverageRHueDeviation + SHAREDvars.absDouble(averageHueDeviationR - redErrorlowestMatchErrorAcrossKernel);
+				totalDifferenceFromAverageGHueDeviation = totalDifferenceFromAverageGHueDeviation + SHAREDvars.absDouble(averageHueDeviationG - greenErrorlowestMatchErrorAcrossKernel);
+				totalDifferenceFromAverageBHueDeviation = totalDifferenceFromAverageBHueDeviation + SHAREDvars.absDouble(averageHueDeviationB - blueErrorlowestMatchErrorAcrossKernel);
+				totalDifferenceFromAverageLumDeviation = totalDifferenceFromAverageLumDeviation + SHAREDvars.absDouble(averageLumDeviation - (redErrorlowestMatchErrorAcrossKernel+blueErrorlowestMatchErrorAcrossKernel+greenErrorlowestMatchErrorAcrossKernel));
 				hueDeviationIndex++;
 
 					//NEW; additional; check for stark differences
 
 				colour trainImagePixelColourOptimum;
-				getRGBMapValues(XKernelRelativePositionForLowestErrorMatch+x, YKernelRelativePositionForLowestErrorMatch+y, imageWidth, rgbMapTrain, &trainImagePixelColourOptimum);
+				RTpixelMaps.getRGBMapValues(XKernelRelativePositionForLowestErrorMatch+x, YKernelRelativePositionForLowestErrorMatch+y, imageWidth, rgbMapTrain, &trainImagePixelColourOptimum);
 
-				double rdeviationOptimum = absDouble(redErrorlowestMatchErrorAcrossKernel);
-				double gdeviationOptimum = absDouble(greenErrorlowestMatchErrorAcrossKernel);
-				double bdeviationOptimum = absDouble(blueErrorlowestMatchErrorAcrossKernel);
+				double rdeviationOptimum = SHAREDvars.absDouble(redErrorlowestMatchErrorAcrossKernel);
+				double gdeviationOptimum = SHAREDvars.absDouble(greenErrorlowestMatchErrorAcrossKernel);
+				double bdeviationOptimum = SHAREDvars.absDouble(blueErrorlowestMatchErrorAcrossKernel);
 
 				double deviationOptimum = rdeviationOptimum + gdeviationOptimum + bdeviationOptimum;
 				if(deviationOptimum > OR_IMAGE_COMPARISON_STARK_LOCAL_DEVIATION_MIN_MIN_COL_DIFF)
@@ -839,20 +837,20 @@ double compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(int imageWidth, cons
 
 				if(averageXkernelRelativePositionForLowestErrorMatch-XKernelRelativePositionForLowestErrorMatch > 0)
 				{
-					totalDifferenceFromAverageXKernelRelativePositionPositiveForLowestErrorMatch = totalDifferenceFromAverageXKernelRelativePositionPositiveForLowestErrorMatch + absDouble(averageXkernelRelativePositionForLowestErrorMatch-XKernelRelativePositionForLowestErrorMatch);
+					totalDifferenceFromAverageXKernelRelativePositionPositiveForLowestErrorMatch = totalDifferenceFromAverageXKernelRelativePositionPositiveForLowestErrorMatch + SHAREDvars.absDouble(averageXkernelRelativePositionForLowestErrorMatch-XKernelRelativePositionForLowestErrorMatch);
 				}
 				else
 				{
-					totalDifferenceFromAverageXKernelRelativePositionNegativeForLowestErrorMatch = totalDifferenceFromAverageXKernelRelativePositionNegativeForLowestErrorMatch + absDouble(averageXkernelRelativePositionForLowestErrorMatch-XKernelRelativePositionForLowestErrorMatch);
+					totalDifferenceFromAverageXKernelRelativePositionNegativeForLowestErrorMatch = totalDifferenceFromAverageXKernelRelativePositionNegativeForLowestErrorMatch + SHAREDvars.absDouble(averageXkernelRelativePositionForLowestErrorMatch-XKernelRelativePositionForLowestErrorMatch);
 				}
 
 				if(averageYkernelRelativePositionForLowestErrorMatch-YKernelRelativePositionForLowestErrorMatch > 0)
 				{
-					totalDifferenceFromAverageYKernelRelativePositionPositiveForLowestErrorMatch = totalDifferenceFromAverageYKernelRelativePositionPositiveForLowestErrorMatch + absDouble(averageYkernelRelativePositionForLowestErrorMatch-YKernelRelativePositionForLowestErrorMatch);
+					totalDifferenceFromAverageYKernelRelativePositionPositiveForLowestErrorMatch = totalDifferenceFromAverageYKernelRelativePositionPositiveForLowestErrorMatch + SHAREDvars.absDouble(averageYkernelRelativePositionForLowestErrorMatch-YKernelRelativePositionForLowestErrorMatch);
 				}
 				else
 				{
-					totalDifferenceFromAverageYKernelRelativePositionNegativeForLowestErrorMatch = totalDifferenceFromAverageYKernelRelativePositionNegativeForLowestErrorMatch + absDouble(averageYkernelRelativePositionForLowestErrorMatch-YKernelRelativePositionForLowestErrorMatch);
+					totalDifferenceFromAverageYKernelRelativePositionNegativeForLowestErrorMatch = totalDifferenceFromAverageYKernelRelativePositionNegativeForLowestErrorMatch + SHAREDvars.absDouble(averageYkernelRelativePositionForLowestErrorMatch-YKernelRelativePositionForLowestErrorMatch);
 				}
 
 				totalMatchError = totalMatchError+lowestMatchErrorAcrossKernel;
@@ -920,7 +918,7 @@ double compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(int imageWidth, cons
 
 
 
-double compareImagesRGBsmallNoKernel(int imageWidth, const int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain)
+double ORimagecomparisonClass::compareImagesRGBsmallNoKernel(int imageWidth, const int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain)
 {
 	double totalMatchError = 0.0;
 	int matchErrorIndex = 0;
@@ -932,12 +930,12 @@ double compareImagesRGBsmallNoKernel(int imageWidth, const int imageHeight, unsi
 		for(int x = 0; x < imageWidth; x++)
 		{
 			colour testImagePixelColour;
-			getRGBMapValues(x, y, imageWidth, rgbMapTest, &testImagePixelColour);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMapTest, &testImagePixelColour);
 
 		#ifndef OR_DO_NOT_IGNORE_BACKGROUND_COLOUR
 
 			colour trainImagePixelColourCentre;
-			getRGBMapValues(x, y, imageWidth, rgbMapTrain, &trainImagePixelColourCentre);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMapTrain, &trainImagePixelColourCentre);
 			if(((testImagePixelColour.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (testImagePixelColour.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (testImagePixelColour.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B)) || ((trainImagePixelColourCentre.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (trainImagePixelColourCentre.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (trainImagePixelColourCentre.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B)))
 			{
 				//pitch black - assume outside of t
@@ -946,7 +944,7 @@ double compareImagesRGBsmallNoKernel(int imageWidth, const int imageHeight, unsi
 			{
 		#endif
 			#ifdef OR_IMAGE_COMPARITOR_USE_NORMALISED_HUE_ERROR_COMPARISON
-				double pixelError = compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColourCentre);
+				double pixelError = this->compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColourCentre);
 			#else
 				int redError = testImagePixelColour.r - trainImagePixelColourCentre.r;
 				int greenError = testImagePixelColour.g - trainImagePixelColourCentre.g;
@@ -978,7 +976,7 @@ double compareImagesRGBsmallNoKernel(int imageWidth, const int imageHeight, unsi
 
 
 #ifndef OR_IMAGE_COMPARISON_USE_NEW_COMPARITOR
-double compareImagesRGBwithPosDevAndLocalStarkCont(int imageWidth, const int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain)
+double ORimagecomparisonClass::compareImagesRGBwithPosDevAndLocalStarkCont(int imageWidth, const int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain)
 {
 	double totalStarkLocalDeviation = 0.0;
 	int starkLocalDeviationIndex = 0;
@@ -996,14 +994,14 @@ double compareImagesRGBwithPosDevAndLocalStarkCont(int imageWidth, const int ima
 		for(int x = 0; x < imageWidth; x++)
 		{
 			colour testImagePixelColour;
-			getRGBMapValues(x, y, imageWidth, rgbMapTest, &testImagePixelColour);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMapTest, &testImagePixelColour);
 
 		#ifndef OR_DO_NOT_IGNORE_BACKGROUND_COLOUR
 			#ifdef OR_USE_STAR_MAPS
 			if((testImagePixelColour.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (testImagePixelColour.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (testImagePixelColour.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B))
 			#else
 			colour trainImagePixelColourCentre;
-			getRGBMapValues(x, y, imageWidth, rgbMapTrain, &trainImagePixelColourCentre);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMapTrain, &trainImagePixelColourCentre);
 			if(((testImagePixelColour.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (testImagePixelColour.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (testImagePixelColour.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B)) || ((trainImagePixelColourCentre.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (trainImagePixelColourCentre.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (trainImagePixelColourCentre.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B)))
 			#endif
 			{
@@ -1025,17 +1023,17 @@ double compareImagesRGBwithPosDevAndLocalStarkCont(int imageWidth, const int ima
 							if((kx >= 0) && (kx < imageWidth))
 							{
 								colour trainImagePixelColour;
-								getRGBMapValues(kx, ky, imageWidth, rgbMapTrain, &trainImagePixelColour);
+								RTpixelMaps.getRGBMapValues(kx, ky, imageWidth, rgbMapTrain, &trainImagePixelColour);
 
 								#ifdef OR_IMAGE_COMPARITOR_USE_NORMALISED_HUE_ERROR_COMPARISON
-								double pixelError = compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
+								double pixelError = this->compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
 								#else
-								double pixelError = compareRGBpixelsForMatchHueOnly(&testImagePixelColour, &trainImagePixelColour);
+								double pixelError = this->compareRGBpixelsForMatchHueOnly(&testImagePixelColour, &trainImagePixelColour);
 								#endif
 
 								if(pixelError < lowestMatchErrorAcrossKernel)
 								{
-									if(!compareDoubles(pixelError, 0.0))
+									if(!SHAREDvars.compareDoubles(pixelError, 0.0))
 									{
 										lowestMatchErrorAcrossKernel = pixelError;
 										XKernelRelativePositionForLowestErrorMatch = kx-x;
@@ -1056,11 +1054,11 @@ double compareImagesRGBwithPosDevAndLocalStarkCont(int imageWidth, const int ima
 					//NEW; additional; check for stark differences
 
 				colour trainImagePixelColourOptimum;
-				getRGBMapValues(XKernelRelativePositionForLowestErrorMatch+x, YKernelRelativePositionForLowestErrorMatch+y, imageWidth, rgbMapTrain, &trainImagePixelColourOptimum);
+				RTpixelMaps.getRGBMapValues(XKernelRelativePositionForLowestErrorMatch+x, YKernelRelativePositionForLowestErrorMatch+y, imageWidth, rgbMapTrain, &trainImagePixelColourOptimum);
 
-				double rdeviationOptimum = absDouble(trainImagePixelColourOptimum.r - testImagePixelColour.r);
-				double gdeviationOptimum = absDouble(trainImagePixelColourOptimum.g - testImagePixelColour.g);
-				double bdeviationOptimum = absDouble(trainImagePixelColourOptimum.b - testImagePixelColour.b);
+				double rdeviationOptimum = SHAREDvars.absDouble(trainImagePixelColourOptimum.r - testImagePixelColour.r);
+				double gdeviationOptimum = SHAREDvars.absDouble(trainImagePixelColourOptimum.g - testImagePixelColour.g);
+				double bdeviationOptimum = SHAREDvars.absDouble(trainImagePixelColourOptimum.b - testImagePixelColour.b);
 
 				double deviationOptimum = rdeviationOptimum + gdeviationOptimum + bdeviationOptimum;
 				if(deviationOptimum > OR_IMAGE_COMPARISON_STARK_LOCAL_DEVIATION_MIN_MIN_COL_DIFF)
@@ -1132,7 +1130,7 @@ double compareImagesRGBwithPosDevAndLocalStarkCont(int imageWidth, const int ima
 
 
 
-double compareImagesRGBwithPosDev(int imageWidth, const int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain)
+double ORimagecomparisonClass::compareImagesRGBwithPosDev(int imageWidth, const int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain)
 {
 	double totalMatchError = 0.0;
 	int matchErrorIndex = 0;
@@ -1147,14 +1145,14 @@ double compareImagesRGBwithPosDev(int imageWidth, const int imageHeight, unsigne
 		for(int x = 0; x < imageWidth; x++)
 		{
 			colour testImagePixelColour;
-			getRGBMapValues(x, y, imageWidth, rgbMapTest, &testImagePixelColour);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMapTest, &testImagePixelColour);
 
 		#ifndef OR_DO_NOT_IGNORE_BACKGROUND_COLOUR
 			#ifdef OR_USE_STAR_MAPS
 			if((testImagePixelColour.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (testImagePixelColour.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (testImagePixelColour.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B))
 			#else
 			colour trainImagePixelColourCentre;
-			getRGBMapValues(x, y, imageWidth, rgbMapTrain, &trainImagePixelColourCentre);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMapTrain, &trainImagePixelColourCentre);
 			if(((testImagePixelColour.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (testImagePixelColour.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (testImagePixelColour.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B)) || ((trainImagePixelColourCentre.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (trainImagePixelColourCentre.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (trainImagePixelColourCentre.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B)))
 			#endif
 			{
@@ -1176,17 +1174,17 @@ double compareImagesRGBwithPosDev(int imageWidth, const int imageHeight, unsigne
 							if((kx >= 0) && (kx < imageWidth))
 							{
 								colour trainImagePixelColour;
-								getRGBMapValues(kx, ky, imageWidth, rgbMapTrain, &trainImagePixelColour);
+								RTpixelMaps.getRGBMapValues(kx, ky, imageWidth, rgbMapTrain, &trainImagePixelColour);
 
 								#ifdef OR_IMAGE_COMPARITOR_USE_NORMALISED_HUE_ERROR_COMPARISON
-								double pixelError = compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
+								double pixelError = this->compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
 								#else
-								double pixelError = compareRGBpixelsForMatchHueOnly(&testImagePixelColour, &trainImagePixelColour);
+								double pixelError = this->compareRGBpixelsForMatchHueOnly(&testImagePixelColour, &trainImagePixelColour);
 								#endif
 
 								if(pixelError < lowestMatchErrorAcrossKernel)
 								{
-									if(!compareDoubles(pixelError, 0.0))
+									if(!SHAREDvars.compareDoubles(pixelError, 0.0))
 									{
 										lowestMatchErrorAcrossKernel = pixelError;
 										XKernelRelativePositionForLowestErrorMatch = kx-x;
@@ -1274,7 +1272,7 @@ double compareImagesRGBwithPosDev(int imageWidth, const int imageHeight, unsigne
 
 #ifndef OR_METHOD_CHECK_SNAPSHOT_CONTRAST_BEFORE_SAVING_SNAPSHOT
 		//NEW; 1sXy; do not accept images with no contrast - ie all same colour
-bool checkImageHasContrast(int imageWidth, const int imageHeight, unsigned char* rgbMap)
+bool ORimagecomparisonClass::checkImageHasContrast(int imageWidth, const int imageHeight, unsigned char* rgbMap)
 {
 	bool result;
 
@@ -1288,7 +1286,7 @@ bool checkImageHasContrast(int imageWidth, const int imageHeight, unsigned char*
 		for(int x = 0; x < imageWidth; x++)
 		{
 			colour testImagePixelColour;
-			getRGBMapValues(x, y, imageWidth, rgbMap, &testImagePixelColour);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMap, &testImagePixelColour);
 		#ifndef OR_DO_NOT_IGNORE_BACKGROUND_COLOUR
 			if((testImagePixelColour.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (testImagePixelColour.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (testImagePixelColour.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B))
 			{
@@ -1330,7 +1328,7 @@ bool checkImageHasContrast(int imageWidth, const int imageHeight, unsigned char*
 			for(int x = 0; x < imageWidth; x++)
 			{
 				colour testImagePixelColour;
-				getRGBMapValues(x, y, imageWidth, rgbMap, &testImagePixelColour);
+				RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMap, &testImagePixelColour);
 
 			#ifndef OR_DO_NOT_IGNORE_BACKGROUND_COLOUR
 				if((testImagePixelColour.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (testImagePixelColour.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (testImagePixelColour.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B))
@@ -1340,9 +1338,9 @@ bool checkImageHasContrast(int imageWidth, const int imageHeight, unsigned char*
 				else
 				{
 			#endif
-					double rdeviation = absDouble(averager - testImagePixelColour.r);
-					double gdeviation = absDouble(averageg - testImagePixelColour.g);
-					double bdeviation = absDouble(averageb - testImagePixelColour.b);
+					double rdeviation = SHAREDvars.absDouble(averager - testImagePixelColour.r);
+					double gdeviation = SHAREDvars.absDouble(averageg - testImagePixelColour.g);
+					double bdeviation = SHAREDvars.absDouble(averageb - testImagePixelColour.b);
 
 					averagerdeviation = averagerdeviation + rdeviation;
 					averagegdeviation = averagegdeviation + gdeviation;
@@ -1428,7 +1426,7 @@ bool checkImageHasContrast(int imageWidth, const int imageHeight, unsigned char*
 
 #ifndef OR_USE_HEITGER_OBJECT_FEATURE_CALCULATION_CODE
 	//this function is designed to be independant of lighting conditions
-void calculateHueError(colour* testImagePixelColour, colour* trainImagePixelColour, double* hueError, double* nonHueError)
+void ORimagecomparisonClass::calculateHueError(colour* testImagePixelColour, colour* trainImagePixelColour, double* hueError, double* nonHueError)
 {
 	int redError = testImagePixelColour->r - trainImagePixelColour->r;
 	int greenError = testImagePixelColour->g - trainImagePixelColour->g;
@@ -1468,7 +1466,7 @@ void calculateHueError(colour* testImagePixelColour, colour* trainImagePixelColo
 #ifdef OR_IMAGE_COMPARISON_USE_BAD_CODE
 	//this function is designed to be independant of lighting conditions
 	//hue error is normalised based upon colour satuation, if low colour satuation then calculate error more on luminosity contrast rather than hue/colour contrast	[not yet tested]
-double calculateHueErrorNormalisedBAD(const colour* testImagePixelColour, const colour* trainImagePixelColour, double* hueError, double* nonHueErrorNormalised)
+double ORimagecomparisonClass::calculateHueErrorNormalisedBAD(const colour* testImagePixelColour, const colour* trainImagePixelColour, double* hueError, double* nonHueErrorNormalised)
 {
 	int redError = testImagePixelColour->r - trainImagePixelColour->r;
 	int greenError = testImagePixelColour->g - trainImagePixelColour->g;
@@ -1519,7 +1517,7 @@ double calculateHueErrorNormalisedBAD(const colour* testImagePixelColour, const 
 
 	//this function is designed to be independant of lighting conditions
 	//hue error is normalised based upon colour satuation, if low colour satuation then calculate error more on luminosity contrast rather than hue/colour contrast	[not yet tested]
-double compareRGBpixelsForMatchBAD(const colour* testImagePixelColour, const colour* trainImagePixelColour)
+double ORimagecomparisonClass::compareRGBpixelsForMatchBAD(const colour* testImagePixelColour, const colour* trainImagePixelColour)
 {
 	/*OLD;
 	double hueError;
@@ -1534,7 +1532,7 @@ double compareRGBpixelsForMatchBAD(const colour* testImagePixelColour, const col
 	double hueError;
 	double nonHueErrorNormalised;
 
-	calculateHueErrorNormalisedBAD(testImagePixelColour, trainImagePixelColour, &hueError, &nonHueErrorNormalised);
+	this->calculateHueErrorNormalisedBAD(testImagePixelColour, trainImagePixelColour, &hueError, &nonHueErrorNormalised);
 
 	double pixelError =  (nonHueErrorNormalised) + (hueError/IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR);
 
@@ -1544,12 +1542,12 @@ double compareRGBpixelsForMatchBAD(const colour* testImagePixelColour, const col
 
 #ifndef OR_USE_HEITGER_OBJECT_FEATURE_CALCULATION_CODE
 	//this function is designed to be independant of lighting conditions
-double compareRGBpixelsForMatchHueOnly(colour* testImagePixelColour, colour* trainImagePixelColour)
+double ORimagecomparisonClass::compareRGBpixelsForMatchHueOnly(colour* testImagePixelColour, colour* trainImagePixelColour)
 {
 	double hueError;
 	double nonHueError;
 
-	calculateHueError(testImagePixelColour, trainImagePixelColour, &hueError, &nonHueError);
+	this->calculateHueError(testImagePixelColour, trainImagePixelColour, &hueError, &nonHueError);
 
 	double pixelError =  (hueError/IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR)*IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_WEIGHTING;
 
@@ -1562,12 +1560,12 @@ double compareRGBpixelsForMatchHueOnly(colour* testImagePixelColour, colour* tra
 	return pixelError;
 }
 
-double compareRGBpixelsForMatchLumContrastOnly(colour* testImagePixelColour, colour* trainImagePixelColour)
+double ORimagecomparisonClass::compareRGBpixelsForMatchLumContrastOnly(colour* testImagePixelColour, colour* trainImagePixelColour)
 {
 	double hueError;
 	double nonHueError;
 
-	calculateHueError(testImagePixelColour, trainImagePixelColour, &hueError, &nonHueError);
+	this->calculateHueError(testImagePixelColour, trainImagePixelColour, &hueError, &nonHueError);
 
 	double pixelError =  (nonHueError/IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_NON_HUE_ERROR);
 
@@ -1605,7 +1603,7 @@ double compareRGBPixelsForMatchDirectional(colour* testImagePixelColour, colour*
 
 
 #ifdef OR_IMAGE_COMPARISON_USE_BAD_CODE
-void createColourHueContrastVecMapFromRGBMapNOTUSED(int imageWidth, const int imageHeight, unsigned char* rgbMap, double* colourHueContrastVectorMap, int* colourHueContrastCategoryIntMap)
+void ORimagecomparisonClass::createColourHueContrastVecMapFromRGBMapNOTUSED(int imageWidth, const int imageHeight, unsigned char* rgbMap, double* colourHueContrastVectorMap, int* colourHueContrastCategoryIntMap)
 {
 	//now lead a 3x3 kernel across image and calculate areas of high contrast
 	for(int y = 0; y < (imageHeight-1); y++)
@@ -1614,15 +1612,15 @@ void createColourHueContrastVecMapFromRGBMapNOTUSED(int imageWidth, const int im
 		{
 			vec colourHueContrastVecVal;
 			int colourHueContrastCategoryIntVal;
-			calculateColourHueContrastVecLevelWithinKernelNOTUSED(x, y, rgbMap, HUE_CONTRAST_VECTOR_MAP_GENERATION_KERNEL_WIDTH, HUE_CONTRAST_VECTOR_MAP_GENERATION_KERNEL_HEIGHT, imageWidth, imageHeight, &colourHueContrastVecVal, &colourHueContrastCategoryIntVal);
-			setXYvectorMapValue(x, y, (imageWidth-1), &colourHueContrastVecVal, colourHueContrastVectorMap);
-			setIntMapValue(x, y, (imageWidth-1), colourHueContrastCategoryIntVal, colourHueContrastCategoryIntMap);
+			this->calculateColourHueContrastVecLevelWithinKernelNOTUSED(x, y, rgbMap, HUE_CONTRAST_VECTOR_MAP_GENERATION_KERNEL_WIDTH, HUE_CONTRAST_VECTOR_MAP_GENERATION_KERNEL_HEIGHT, imageWidth, imageHeight, &colourHueContrastVecVal, &colourHueContrastCategoryIntVal);
+			ORpixelMaps.setXYvectorMapValue(x, y, (imageWidth-1), &colourHueContrastVecVal, colourHueContrastVectorMap);
+			RTpixelMaps.setIntMapValue(x, y, (imageWidth-1), colourHueContrastCategoryIntVal, colourHueContrastCategoryIntMap);
 		}
 	}
 }
 
 
-void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixelY, unsigned char* rgbMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight, vec* colourHueContrastVecVal, int* colourHueContrastCategoryIntVal)
+void ORimagecomparisonClass::calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixelY, unsigned char* rgbMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight, vec* colourHueContrastVecVal, int* colourHueContrastCategoryIntVal)
 {
 	colourHueContrastVecVal->x = 0.0;
 	colourHueContrastVecVal->y = 0.0;
@@ -1631,10 +1629,10 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	colour pixelRGBColour[4];
 	colour pixelRGBColourTemp[4];
 
-	getRGBMapValues(pixelX, pixelY, imageWidth, rgbMap, &(pixelRGBColour[0]));
-	getRGBMapValues(pixelX+1, pixelY, imageWidth, rgbMap, &(pixelRGBColour[1]));
-	getRGBMapValues(pixelX, pixelY+1, imageWidth, rgbMap, &(pixelRGBColour[2]));
-	getRGBMapValues(pixelX+1, pixelY+1, imageWidth, rgbMap, &(pixelRGBColour[3]));
+	RTpixelMaps.getRGBMapValues(pixelX, pixelY, imageWidth, rgbMap, &(pixelRGBColour[0]));
+	RTpixelMaps.getRGBMapValues(pixelX+1, pixelY, imageWidth, rgbMap, &(pixelRGBColour[1]));
+	RTpixelMaps.getRGBMapValues(pixelX, pixelY+1, imageWidth, rgbMap, &(pixelRGBColour[2]));
+	RTpixelMaps.getRGBMapValues(pixelX+1, pixelY+1, imageWidth, rgbMap, &(pixelRGBColour[3]));
 
 	for(int r=0; r<4; r++)
 	{
@@ -1652,16 +1650,16 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	*/
 
 	colour topLeftPixelPositionInRGBColour;		// pixelX, pixelY
-	getRGBMapValues(pixelX, pixelY, imageWidth, rgbMap, &topLeftPixelPositionInRGBColour);
+	RTpixelMaps.getRGBMapValues(pixelX, pixelY, imageWidth, rgbMap, &topLeftPixelPositionInRGBColour);
 
 	colour topRightPixelPositionInRGBColour;
-	getRGBMapValues(pixelX+1, pixelY, imageWidth, rgbMap, &topRightPixelPositionInRGBColour);
+	RTpixelMaps.getRGBMapValues(pixelX+1, pixelY, imageWidth, rgbMap, &topRightPixelPositionInRGBColour);
 
 	colour bottomLeftPixelPositionInRGBColour;
-	getRGBMapValues(pixelX, pixelY+1, imageWidth, rgbMap, &bottomLeftPixelPositionInRGBColour);
+	RTpixelMaps.getRGBMapValues(pixelX, pixelY+1, imageWidth, rgbMap, &bottomLeftPixelPositionInRGBColour);
 
 	colour bottomRightPixelPositionInRGBColour;
-	getRGBMapValues(pixelX+1, pixelY+1, imageWidth, rgbMap, &bottomRightPixelPositionInRGBColour);
+	RTpixelMaps.getRGBMapValues(pixelX+1, pixelY+1, imageWidth, rgbMap, &bottomRightPixelPositionInRGBColour);
 
 	#ifdef OR_DEBUG
 	/*
@@ -1681,13 +1679,13 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	#endif
 
 	//x
-	double xTop = compareRGBpixelsForMatchHueOnly(&topLeftPixelPositionInRGBColour, &topRightPixelPositionInRGBColour);
+	double xTop = this->compareRGBpixelsForMatchHueOnly(&topLeftPixelPositionInRGBColour, &topRightPixelPositionInRGBColour);
 	bool xTopThreshold = false;
 	if(xTop > COLOUR_HUE_CONTRAST_THRESHOLD)
 	{
 		xTopThreshold = true;
 	}
-	double xBottom = compareRGBpixelsForMatchHueOnly(&bottomLeftPixelPositionInRGBColour, &bottomRightPixelPositionInRGBColour);
+	double xBottom = this->compareRGBpixelsForMatchHueOnly(&bottomLeftPixelPositionInRGBColour, &bottomRightPixelPositionInRGBColour);
 	bool xBottomThreshold = false;
 	if(xBottom > COLOUR_HUE_CONTRAST_THRESHOLD)
 	{
@@ -1695,14 +1693,14 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	}
 
 	//y
-	double yLeft = compareRGBpixelsForMatchHueOnly(&topLeftPixelPositionInRGBColour, &bottomLeftPixelPositionInRGBColour);
+	double yLeft = this->compareRGBpixelsForMatchHueOnly(&topLeftPixelPositionInRGBColour, &bottomLeftPixelPositionInRGBColour);
 	bool yLeftThreshold = false;
 	if(yLeft > COLOUR_HUE_CONTRAST_THRESHOLD)
 	{
 		yLeftThreshold = true;
 	}
 
-	double yRight = compareRGBpixelsForMatchHueOnly(&topRightPixelPositionInRGBColour, &bottomRightPixelPositionInRGBColour);
+	double yRight = this->compareRGBpixelsForMatchHueOnly(&topRightPixelPositionInRGBColour, &bottomRightPixelPositionInRGBColour);
 	bool yRightThreshold = false;
 	if(yRight > COLOUR_HUE_CONTRAST_THRESHOLD)
 	{
@@ -1710,14 +1708,14 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	}
 
 	//diagonal
-	double diagonalTopLeftToBottomRight = compareRGBpixelsForMatchHueOnly(&topLeftPixelPositionInRGBColour, &bottomRightPixelPositionInRGBColour);
+	double diagonalTopLeftToBottomRight = this->compareRGBpixelsForMatchHueOnly(&topLeftPixelPositionInRGBColour, &bottomRightPixelPositionInRGBColour);
 	bool diagonalTopLeftToBottomRightThreshold = false;
 	if(diagonalTopLeftToBottomRight > COLOUR_HUE_CONTRAST_THRESHOLD)
 	{
 		diagonalTopLeftToBottomRightThreshold = true;
 	}
 
-	double diagonalTopRightToBottomLeft = compareRGBpixelsForMatchHueOnly(&topRightPixelPositionInRGBColour, &bottomLeftPixelPositionInRGBColour);
+	double diagonalTopRightToBottomLeft = this->compareRGBpixelsForMatchHueOnly(&topRightPixelPositionInRGBColour, &bottomLeftPixelPositionInRGBColour);
 	bool diagonalTopRightToBottomLeftThreshold = false;
 	if(diagonalTopRightToBottomLeft > COLOUR_HUE_CONTRAST_THRESHOLD)
 	{
@@ -1916,12 +1914,12 @@ double calculateColourHueContrastLevelWithinKernel(int pixelX, int pixelY, unsig
 */
 
 
-double calculateColourHueSumContrastWithinKernelNOTUSED(int pixelX, int pixelY, unsigned char* rgbMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight)
+double ORimagecomparisonClass::calculateColourHueSumContrastWithinKernelNOTUSED(int pixelX, int pixelY, unsigned char* rgbMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight)
 {
 	double sumContrast = 0.0;
 
 	colour centrePixelPositionInRGBColour;
-	getRGBMapValues(pixelX, pixelY, imageWidth, rgbMap, &centrePixelPositionInRGBColour);
+	RTpixelMaps.getRGBMapValues(pixelX, pixelY, imageWidth, rgbMap, &centrePixelPositionInRGBColour);
 
 	for(int y = pixelY-(kernelHeight/2); y<= pixelY+(kernelHeight/2); y++)
 	{
@@ -1941,9 +1939,9 @@ double calculateColourHueSumContrastWithinKernelNOTUSED(int pixelX, int pixelY, 
 					else
 					{
 						colour kernelCurrentPixelPositionInRGBColour;
-						getRGBMapValues(x, y, imageWidth, rgbMap, &kernelCurrentPixelPositionInRGBColour);
+						RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMap, &kernelCurrentPixelPositionInRGBColour);
 
-						sumContrast = sumContrast + compareRGBpixelsForMatchHueOnly(&centrePixelPositionInRGBColour, &kernelCurrentPixelPositionInRGBColour);
+						sumContrast = sumContrast + this->compareRGBpixelsForMatchHueOnly(&centrePixelPositionInRGBColour, &kernelCurrentPixelPositionInRGBColour);
 					}
 			/*
 				}
@@ -1956,12 +1954,12 @@ double calculateColourHueSumContrastWithinKernelNOTUSED(int pixelX, int pixelY, 
 }
 
 
-double calculateColourHueRadialSumContrastWithinKernelNOTUSED(const int pixelX, const int pixelY, unsigned char* rgbMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight)
+double ORimagecomparisonClass::calculateColourHueRadialSumContrastWithinKernelNOTUSED(const int pixelX, const int pixelY, unsigned char* rgbMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight)
 {
 	double sumContrast = 0.0;
 
 	//colour centrePixelPositionInRGBColour;
-	//getRGBMapValues(pixelX, pixelY, imageWidth, rgbMap, &centrePixelPositionInRGBColour);
+	//RTpixelMaps.getRGBMapValues(pixelX, pixelY, imageWidth, rgbMap, &centrePixelPositionInRGBColour);
 
 	for(int y = pixelY-(kernelHeight/2); y<= pixelY+(kernelHeight/2); y++)
 	{
@@ -1981,7 +1979,7 @@ double calculateColourHueRadialSumContrastWithinKernelNOTUSED(const int pixelX, 
 					else
 					{
 						colour kernelCurrentPixelPositionInRGBColour;
-						getRGBMapValues(x, y, imageWidth, rgbMap, &kernelCurrentPixelPositionInRGBColour);
+						RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMap, &kernelCurrentPixelPositionInRGBColour);
 
 
 						for(int sy = y-(RADIAL_CONTRAST_SUB_KERNEL_HEIGHT/2); sy<= y+(RADIAL_CONTRAST_SUB_KERNEL_HEIGHT/2); sy++)
@@ -2002,9 +2000,9 @@ double calculateColourHueRadialSumContrastWithinKernelNOTUSED(const int pixelX, 
 										else
 										{
 											colour subKernelCurrentPixelPositionInRGBColour;
-											getRGBMapValues(sx, sy, imageWidth, rgbMap, &subKernelCurrentPixelPositionInRGBColour);
+											RTpixelMaps.getRGBMapValues(sx, sy, imageWidth, rgbMap, &subKernelCurrentPixelPositionInRGBColour);
 
-											sumContrast = sumContrast + compareRGBpixelsForMatchHueOnly(&subKernelCurrentPixelPositionInRGBColour, &kernelCurrentPixelPositionInRGBColour);
+											sumContrast = sumContrast + this->compareRGBpixelsForMatchHueOnly(&subKernelCurrentPixelPositionInRGBColour, &kernelCurrentPixelPositionInRGBColour);
 										}
 
 									}

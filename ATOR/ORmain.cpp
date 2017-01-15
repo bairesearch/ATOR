@@ -26,7 +26,7 @@
  * File Name: ORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1a 14-January-2017
+ * Project Version: 3j1b 14-January-2017
  *
  *******************************************************************************/
 
@@ -34,12 +34,7 @@
 #define TM_STRUCT_YEAR_OFFSET 1900
 
 #include "ORmain.h"
-#include "ORmethod.h"
-#include "ORglobalDefs.h"
-#include "XMLrulesClass.h"
-#include "ORrules.h"
 #ifdef OR_USE_DATABASE
-#include "ORdatabaseFileIO.h"
 #endif
 
 static char errmessage[] = "Usage:  OpenOR.exe [options]\n\n\twhere options are any of the following\n"
@@ -94,50 +89,50 @@ int main(const int argc,const char* *argv)
 	sprintf(timeAndDateString, "%i:%i:%i %i/%.2i/%i", current->tm_hour, current->tm_min, current->tm_sec, current->tm_mday, (current->tm_mon+1), (current->tm_year + TM_STRUCT_YEAR_OFFSET));
 	cout << "OR execution time: " << timeAndDateString << " (start)" << endl;
 
-	string currentFolder = getCurrentDirectory();
+	string currentFolder = SHAREDvarsClass().getCurrentDirectory();
 
 	#ifdef OR_USE_DATABASE
 	string databaseFolderName =  OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME + OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME;
 	#endif
 
-	if(argumentExists(argc, argv, "-workingfolder"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-workingfolder"))
 	{
-		workingFolder = getStringArgument(argc, argv, "-workingfolder");
+		workingFolder = SHAREDvarsClass().getStringArgument(argc, argv, "-workingfolder");
 	}
 	else
 	{
 		workingFolder = currentFolder;
 	}
-	if(argumentExists(argc, argv, "-exefolder"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-exefolder"))
 	{
-		exeFolder = getStringArgument(argc, argv, "-exefolder");
+		exeFolder = SHAREDvarsClass().getStringArgument(argc, argv, "-exefolder");
 	}
 	else
 	{
 		exeFolder = currentFolder;
 	}
-	if(argumentExists(argc, argv, "-tempfolder"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-tempfolder"))
 	{
-		tempFolder = getStringArgument(argc, argv, "-tempfolder");
+		tempFolder = SHAREDvarsClass().getStringArgument(argc, argv, "-tempfolder");
 	}
 	else
 	{
 		tempFolder = currentFolder;
 	}
 
-	setCurrentDirectory(workingFolder);
+	SHAREDvarsClass().setCurrentDirectory(workingFolder);
 
-	if(!parseORrulesXMLfile())
+	if(!XMLrulesClassClass().parseORrulesXMLfile())
 	{
 		cout << "error: no rules file detected" << endl;
 		exit(0);
 	}
-	fillInORrulesExternVariables();
+	ORrulesClass().fillInORrulesExternVariables();
 
-	setCurrentDirectory(tempFolder);
+	SHAREDvarsClass().setCurrentDirectory(tempFolder);
 
 	int dimension;
-	if(argumentExists(argc, argv, "-od3"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-od3"))
 	{
 		dimension = OR_METHOD3DOD_DIMENSIONS;
 	}
@@ -147,7 +142,7 @@ int main(const int argc,const char* *argv)
 	}
 
 	bool clearTrainTable;
-	if(argumentExists(argc, argv, "-cleartrain"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-cleartrain"))
 	{
 		clearTrainTable = true;
 	}
@@ -157,21 +152,21 @@ int main(const int argc,const char* *argv)
 	}
 
 	int trainOrTest;
-	if(argumentExists(argc, argv, "-trainortest"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-trainortest"))
 	{
-		trainOrTest = int(getFloatArgument(argc, argv, "-trainortest"));
+		trainOrTest = int(SHAREDvarsClass().getFloatArgument(argc, argv, "-trainortest"));
 
 		if(!((trainOrTest == TEST) || (trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST)))
 		{
 			cout << "error: trainortest value is illegal" << endl;
-			printORcommandLineErrorMessage();
+			ORmainClass().printORcommandLineErrorMessage();
 			exit(0);
 		}
 	}
 	else
 	{
 		cout << "error: trainortest is not defined" << endl;
-		printORcommandLineErrorMessage();
+		ORmainClass().printORcommandLineErrorMessage();
 		exit(0);
 
 	}
@@ -180,35 +175,35 @@ int main(const int argc,const char* *argv)
 	string sqlIPaddress = "";
 	string sqlUsername = "";
 	string sqlPassword = "";
-	if(argumentExists(argc, argv, "-sqlipaddress"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-sqlipaddress"))
 	{
-		sqlIPaddress = getStringArgument(argc, argv, "-sqlipaddress");
+		sqlIPaddress = SHAREDvarsClass().getStringArgument(argc, argv, "-sqlipaddress");
 	}
 	else
 	{
 		cout << "error: sqlipaddress is not defined" << endl;
-		printORcommandLineErrorMessage();
+		ORmainClass().printORcommandLineErrorMessage();
 		exit(0);
 	}
-	if(argumentExists(argc, argv, "-sqlusername"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-sqlusername"))
 	{
-		sqlUsername = getStringArgument(argc, argv, "-sqlusername");
+		sqlUsername = SHAREDvarsClass().getStringArgument(argc, argv, "-sqlusername");
 	}
 	else
 	{
 		cout << "error: sqlusername is not defined" << endl;
-		printORcommandLineErrorMessage();
+		ORmainClass().printORcommandLineErrorMessage();
 		exit(0);
 	}
 
-	if(argumentExists(argc, argv, "-sqlpassword"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-sqlpassword"))
 	{
-		sqlPassword = getStringArgument(argc, argv, "-sqlpassword");
+		sqlPassword = SHAREDvarsClass().getStringArgument(argc, argv, "-sqlpassword");
 	}
 	else
 	{
 		cout << "error: sqlpassword is not defined" << endl;
-		printORcommandLineErrorMessage();
+		ORmainClass().printORcommandLineErrorMessage();
 		exit(0);
 	}
 	#endif
@@ -289,22 +284,22 @@ int main(const int argc,const char* *argv)
 	else
 	{
 		cout << "illegal number of dimension" << endl;
-		printORcommandLineErrorMessage();
+		ORmainClass().printORcommandLineErrorMessage();
 		exit(0);
 	}
 
 	string multViewList = "";
 	string multViewListFileName = "";
 	bool useMultViewList = false;
-	if(argumentExists(argc, argv, "-multview"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-multview"))
 	{
-		multViewListFileName = getStringArgument(argc, argv, "-multview");
+		multViewListFileName = SHAREDvarsClass().getStringArgument(argc, argv, "-multview");
 		useMultViewList = true;
 
 		RTviewInfo tempViewInfo;
 		string multViewListFileNameWithFullPath = "";
 		multViewListFileNameWithFullPath = multViewListFileNameWithFullPath + workingFolder + "/" + multViewListFileName;
-		numberOfViewIndiciesPerObject = createViFromMultiViewList(&tempViewInfo, multViewListFileNameWithFullPath, 0, dimension);
+		numberOfViewIndiciesPerObject = ORmethodClass().createViFromMultiViewList(&tempViewInfo, multViewListFileNameWithFullPath, 0, dimension);
 		cout << "countNumViFromMultiViewList numberOfViewIndiciesPerObject = " << numberOfViewIndiciesPerObject << endl;
 
 		objectDataSource = OR_OBJECT_DATA_SOURCE_USER_LIST;
@@ -315,29 +310,29 @@ int main(const int argc,const char* *argv)
 	}
 
 	string imageFileName = "";
-	if(argumentExists(argc, argv, "-object"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-object"))
 	{
-		imageFileName = getStringArgument(argc, argv, "-object");
+		imageFileName = SHAREDvarsClass().getStringArgument(argc, argv, "-object");
 		ObjectNameArray[0] = imageFileName;
 		vi.objectName = imageFileName;
 	}
 	else
 	{
 		cout << "error: must specify input object name" << endl;
-		printORcommandLineErrorMessage();
+		ORmainClass().printORcommandLineErrorMessage();
 		exit(0);
 	}
 
-	if(argumentExists(argc, argv, "-version"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-version"))
 	{
-		cout << "OpenOR.exe - Project Version: 3j1a 14-January-2017" << endl;
+		cout << "OpenOR.exe - Project Version: 3j1b 14-January-2017" << endl;
 		exit(1);
 	}
 
 	string imageExtensionName = "";
-	if(argumentExists(argc, argv, "-imageext"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-imageext"))
 	{
-		imageExtensionName = getStringArgument(argc, argv, "-imageext");
+		imageExtensionName = SHAREDvarsClass().getStringArgument(argc, argv, "-imageext");
 		vi.imageExtensionName = imageExtensionName;
 	}
 	else
@@ -345,35 +340,35 @@ int main(const int argc,const char* *argv)
 		if(!useMultViewList)
 		{
 			cout << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
-			printORcommandLineErrorMessage();
+			ORmainClass().printORcommandLineErrorMessage();
 			exit(0);
 		}
 	}
 
-	if(argumentExists(argc, argv, "-width"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-width"))
 	{
-		vi.imageWidth = getFloatArgument(argc, argv, "-width");
+		vi.imageWidth = SHAREDvarsClass().getFloatArgument(argc, argv, "-width");
 	}
 	else
 	{
 		if(!useMultViewList)
 		{
 			cout << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
-			printORcommandLineErrorMessage();
+			ORmainClass().printORcommandLineErrorMessage();
 			exit(0);
 		}
 	}
 
-	if(argumentExists(argc, argv, "-height"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-height"))
 	{
-		vi.imageHeight = getFloatArgument(argc, argv, "-height");
+		vi.imageHeight = SHAREDvarsClass().getFloatArgument(argc, argv, "-height");
 	}
 	else
 	{
 		if(!useMultViewList)
 		{
 			cout << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
-			printORcommandLineErrorMessage();
+			ORmainClass().printORcommandLineErrorMessage();
 			exit(0);
 		}
 	}
@@ -382,9 +377,9 @@ int main(const int argc,const char* *argv)
 	bool missingDepthMapExtensionDescriptor = false;
 
 	string depthExtensionName = "";
-	if(argumentExists(argc, argv, "-depthext"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-depthext"))
 	{
-		depthExtensionName = getStringArgument(argc, argv, "-depthext");
+		depthExtensionName = SHAREDvarsClass().getStringArgument(argc, argv, "-depthext");
 		vi.depthExtensionName = depthExtensionName;
 	}
 	else
@@ -393,117 +388,117 @@ int main(const int argc,const char* *argv)
 		missingDepthMapExtensionDescriptor = true;
 	}
 
-	if(argumentExists(argc, argv, "-vieweyex"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-vieweyex"))
 	{
-		vi.eye.x = getFloatArgument(argc, argv, "-vieweyex");
+		vi.eye.x = SHAREDvarsClass().getFloatArgument(argc, argv, "-vieweyex");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc, argv, "-vieweyey"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-vieweyey"))
 	{
-		vi.eye.y = getFloatArgument(argc, argv, "-vieweyey");
+		vi.eye.y = SHAREDvarsClass().getFloatArgument(argc, argv, "-vieweyey");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc, argv, "-vieweyez"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-vieweyez"))
 	{
-		vi.eye.z = getFloatArgument(argc, argv, "-vieweyez");
+		vi.eye.z = SHAREDvarsClass().getFloatArgument(argc, argv, "-vieweyez");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc, argv, "-viewatx"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-viewatx"))
 	{
-		vi.viewAt.x = getFloatArgument(argc, argv, "-viewatx");
+		vi.viewAt.x = SHAREDvarsClass().getFloatArgument(argc, argv, "-viewatx");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc, argv, "-viewaty"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-viewaty"))
 	{
-		vi.viewAt.y = getFloatArgument(argc, argv, "-viewaty");
+		vi.viewAt.y = SHAREDvarsClass().getFloatArgument(argc, argv, "-viewaty");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc, argv, "-viewatz"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-viewatz"))
 	{
-		vi.viewAt.z = getFloatArgument(argc, argv, "-viewatz");
+		vi.viewAt.z = SHAREDvarsClass().getFloatArgument(argc, argv, "-viewatz");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc, argv, "-viewupx"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-viewupx"))
 	{
-		vi.viewUp.x = getFloatArgument(argc, argv, "-viewupx");
+		vi.viewUp.x = SHAREDvarsClass().getFloatArgument(argc, argv, "-viewupx");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc, argv, "-viewupy"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-viewupy"))
 	{
-		vi.viewUp.y = getFloatArgument(argc, argv, "-viewupy");
+		vi.viewUp.y = SHAREDvarsClass().getFloatArgument(argc, argv, "-viewupy");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc, argv, "-viewupz"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-viewupz"))
 	{
-		vi.viewUp.z = getFloatArgument(argc, argv, "-viewupz");
+		vi.viewUp.z = SHAREDvarsClass().getFloatArgument(argc, argv, "-viewupz");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc, argv, "-viewfocal"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-viewfocal"))
 	{
-		vi.focalLength = getFloatArgument(argc, argv, "-viewfocal");
+		vi.focalLength = SHAREDvarsClass().getFloatArgument(argc, argv, "-viewfocal");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc, argv, "-viewsizew"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-viewsizew"))
 	{
-		vi.viewWidth = getFloatArgument(argc, argv, "-viewsizew");
+		vi.viewWidth = SHAREDvarsClass().getFloatArgument(argc, argv, "-viewsizew");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc, argv, "-viewsizeh"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-viewsizeh"))
 	{
-		vi.viewHeight = getFloatArgument(argc, argv, "-viewsizeh");
+		vi.viewHeight = SHAREDvarsClass().getFloatArgument(argc, argv, "-viewsizeh");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc, argv, "-scale"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-scale"))
 	{
-		vi.depthScale = getFloatArgument(argc, argv, "-scale");
+		vi.depthScale = SHAREDvarsClass().getFloatArgument(argc, argv, "-scale");
 	}
 	else
 	{
@@ -511,9 +506,9 @@ int main(const int argc,const char* *argv)
 	}
 
 	int viewNumber = 0;
-	if(argumentExists(argc, argv, "-view"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-view"))
 	{
-		viewNumber = getFloatArgument(argc, argv, "-view");
+		viewNumber = SHAREDvarsClass().getFloatArgument(argc, argv, "-view");
 
 		if(useMultViewList)
 		{
@@ -523,25 +518,25 @@ int main(const int argc,const char* *argv)
 	}
 
 	#ifdef OR_USE_DATABASE
-	if(argumentExists(argc, argv, "-dbfolder"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-dbfolder"))
 	{
-		databaseFolderName = getStringArgument(argc, argv, "-dbfolder");
+		databaseFolderName = SHAREDvarsClass().getStringArgument(argc, argv, "-dbfolder");
 		databaseFolderName = databaseFolderName + '/';
 	}
-	initialiseDatabase(databaseFolderName);
+	ORdatabaseFileIOClass().initialiseDatabase(databaseFolderName);
 	#endif
 
 	if(missingDepthMapExtensionDescriptor && !useMultViewList && (dimension == OR_METHOD3DOD_DIMENSIONS))
 	{
 		cout << "error: must either specify an input depth map extension and POV parameters (if not wanting defaults), or a mult (object/) view list for 3DOD" << endl;
-		printORcommandLineErrorMessage();
+		ORmainClass().printORcommandLineErrorMessage();
 		//exit(0);
 	}
 
 
 	if(trainOrTest == TRAIN)
 	{
-		if(!ORmethodTrain(dimension, numberOfObjects, ObjectNameArray, numberOfPolys, objectDataSource, &vi, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, numberOfViewIndiciesPerObject, numberOfViewIndiciesPerObjectWithUniquePolygons, numberOfZoomIndicies, trainOrTest, sqlIPaddress, sqlUsername, sqlPassword, clearTrainTable, viewNumber, multViewListFileName))
+		if(!ORmethodClass().ORmethodTrain(dimension, numberOfObjects, ObjectNameArray, numberOfPolys, objectDataSource, &vi, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, numberOfViewIndiciesPerObject, numberOfViewIndiciesPerObjectWithUniquePolygons, numberOfZoomIndicies, trainOrTest, sqlIPaddress, sqlUsername, sqlPassword, clearTrainTable, viewNumber, multViewListFileName))
 		{
 			result = false;
 			cout << "ORmethodTrain reports failure" << endl;
@@ -554,7 +549,7 @@ int main(const int argc,const char* *argv)
 	}
 	else if((trainOrTest == TEST) || (trainOrTest == TRAIN_AND_TEST))
 	{
-		if(!ORmethodTest(dimension, numberOfObjects, ObjectNameArray, numberOfPolys, objectDataSource, &vi, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, numberOfViewIndiciesPerObject, numberOfViewIndiciesPerObjectWithUniquePolygons, numberOfZoomIndicies, trainOrTest, sqlIPaddress, sqlUsername, sqlPassword, clearTrainTable, viewNumber, multViewListFileName))
+		if(!ORmethodClass().ORmethodTest(dimension, numberOfObjects, ObjectNameArray, numberOfPolys, objectDataSource, &vi, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, numberOfViewIndiciesPerObject, numberOfViewIndiciesPerObjectWithUniquePolygons, numberOfZoomIndicies, trainOrTest, sqlIPaddress, sqlUsername, sqlPassword, clearTrainTable, viewNumber, multViewListFileName))
 		{
 			result = false;
 			cout << "ORmethodTest reports failure" << endl;
@@ -572,7 +567,7 @@ int main(const int argc,const char* *argv)
 	cout << "OR execution time: " << timeAndDateString << " (finish)" << endl;
 }
 
-void printORcommandLineErrorMessage()
+void ORmainClass::printORcommandLineErrorMessage()
 {
 	if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL)
 	{

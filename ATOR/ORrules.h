@@ -26,7 +26,7 @@
  * File Name: ORrules.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3j1a 14-January-2017
+ * Project Version: 3j1b 14-January-2017
  *
  *******************************************************************************/
 
@@ -36,8 +36,14 @@
 
 #include "ORglobalDefs.h"
 #include "XMLrulesClass.h"
+#include "RTglobalDefs.h"
+#include "SHAREDvars.h"
 
-void fillInORrulesExternVariables();
-void printORrulesExternVariables();
+class ORrulesClass
+{
+	private: SHAREDvarsClass SHAREDvars;
+	public: void fillInORrulesExternVariables();
+	private: void printORrulesExternVariables();
+};
 
 #endif

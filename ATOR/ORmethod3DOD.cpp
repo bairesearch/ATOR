@@ -26,18 +26,14 @@
  * File Name: ORmethod3DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1a 14-January-2017
+ * Project Version: 3j1b 14-January-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
 
 #include "ORmethod3DOD.h"
-#include "SHAREDvector.h"
-#include "ORoperations.h"
-#include "LDopengl.h"
-#include "ORoperations.h"
 
-void transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, ORpolygon* currentPolygonInList, const int side, const bool first, ORfeature* firstFeatureInList)
+void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, ORpolygon* currentPolygonInList, const int side, const bool first, ORfeature* firstFeatureInList)
 {
 	long time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonStart;
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
@@ -46,7 +42,7 @@ void transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, 
 		{
 			cout << "\t\t\t\t start: 3ai. 3DOD normalised snapshot generation - transform data wrt polygon - matrix calc" << endl;
 		}
-		time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonStart = getTimeAsLong();
+		time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonStart = SHAREDvars.getTimeAsLong();
 	}
 
 	ORpolygon* transformedObjectTriangle = new ORpolygon();	//equilateral triangle
@@ -80,9 +76,9 @@ void transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, 
 	//1. Perform All Rotations (X, Y, Z, such that object triangle side is parallel with x axis, and object triangle normal is parallel with z axis)
 
 	vec normalBeforeRotation;
-	calculateNormalOfTri(&(currentPolygonInList->point1), &(currentPolygonInList->point2), &(currentPolygonInList->point3), &normalBeforeRotation);
+	SHAREDvector.calculateNormalOfTri(&(currentPolygonInList->point1), &(currentPolygonInList->point2), &(currentPolygonInList->point3), &normalBeforeRotation);
 	vec normalBeforeRotationNormalised;	//not required
-	normaliseVectorRT(&normalBeforeRotation, &normalBeforeRotationNormalised);	//not required
+	SHAREDvector.normaliseVectorRT(&normalBeforeRotation, &normalBeforeRotationNormalised);	//not required
 
 	mat xyzRotationMatrix12;
 	vec eye;
@@ -96,24 +92,24 @@ void transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, 
 	at.z = normalBeforeRotationNormalised.z;
 	if(side == 0)
 	{
-		subtractVectorsRT(&(currentPolygonInList->point1), &(currentPolygonInList->point2), &up);
+		SHAREDvector.subtractVectorsRT(&(currentPolygonInList->point1), &(currentPolygonInList->point2), &up);
 	}
 	else if(side == 1)
 	{
-		subtractVectorsRT(&(currentPolygonInList->point2), &(currentPolygonInList->point3), &up);
+		SHAREDvector.subtractVectorsRT(&(currentPolygonInList->point2), &(currentPolygonInList->point3), &up);
 	}
 	else if(side == 2)
 	{
-		subtractVectorsRT(&(currentPolygonInList->point1), &(currentPolygonInList->point3), &up);
+		SHAREDvector.subtractVectorsRT(&(currentPolygonInList->point1), &(currentPolygonInList->point3), &up);
 	}
 	else
 	{
 		cout << "error: illegal side" << endl;
 		exit(0);
 	}
-	generateLookAtRotationMatrix(&at, &eye, &up, &xyzRotationMatrix12);
+	SHAREDvector.generateLookAtRotationMatrix(&at, &eye, &up, &xyzRotationMatrix12);
 
-	transposeMatrix(&xyzRotationMatrix12);
+	SHAREDvector.transposeMatrix(&xyzRotationMatrix12);
 
 
 	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
@@ -122,13 +118,13 @@ void transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, 
 	#else
 	if(first)
 	{
-		storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap);
+		ORoperations.storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap);
 	}
 	else
 	{
-		restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap);
+		ORoperations.restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap);
 	}
-	//applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap, &scaleMatrix1a);
+	//ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap, &scaleMatrix1a);
 	#endif
 
 	#ifdef OR_DEBUG_METHOD_3DOD
@@ -155,12 +151,12 @@ void transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, 
 
 	//1b. tranform object triangle;
 	vec vecNew;
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &xyzRotationMatrix12);
-	copyVectors(&(transformedObjectTriangle->point1), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point2), &xyzRotationMatrix12);
-	copyVectors(&(transformedObjectTriangle->point2), &vecNew);
-	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &xyzRotationMatrix12);
-	copyVectors(&(transformedObjectTriangle->point3), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &xyzRotationMatrix12);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point1), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point2), &xyzRotationMatrix12);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point2), &vecNew);
+	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &xyzRotationMatrix12);
+	SHAREDvector.copyVectors(&(transformedObjectTriangle->point3), &vecNew);
 
 	#ifdef OR_DEBUG_METHOD_3DOD
 	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
@@ -185,15 +181,15 @@ void transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, 
 		while(currentFeature->next != NULL)
 		{
 			#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-			if(compareVectors(&(currentFeature->point), &(currentPolygonInList->point1)))
+			if(SHAREDvector.compareVectors(&(currentFeature->point), &(currentPolygonInList->point1)))
 			{
 				currentFeature->OTpointIndex = 1;
 			}
-			else if(compareVectors(&(currentFeature->point), &(currentPolygonInList->point2)))
+			else if(SHAREDvector.compareVectors(&(currentFeature->point), &(currentPolygonInList->point2)))
 			{
 				currentFeature->OTpointIndex = 2;
 			}
-			else if(compareVectors(&(currentFeature->point), &(currentPolygonInList->point3)))
+			else if(SHAREDvector.compareVectors(&(currentFeature->point), &(currentPolygonInList->point3)))
 			{
 				currentFeature->OTpointIndex = 3;
 			}
@@ -203,9 +199,9 @@ void transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, 
 			}
 			#endif
 
-			copyVectors(&(currentFeature->pointTransformed), &(currentFeature->point));		//startup
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &xyzRotationMatrix12);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
+			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &(currentFeature->point));		//startup
+			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &xyzRotationMatrix12);
+			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &vecNew);
 			currentFeature = currentFeature->next;
 		}
 	}
@@ -216,15 +212,15 @@ void transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, 
 		while(currentFeature->next != NULL)
 		{
 			#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-			if(compareVectors(&(currentFeature->point), &(currentPolygonInList->point1)))
+			if(SHAREDvector.compareVectors(&(currentFeature->point), &(currentPolygonInList->point1)))
 			{
 				currentFeature->OTpointIndex = 1;
 			}
-			else if(compareVectors(&(currentFeature->point), &(currentPolygonInList->point2)))
+			else if(SHAREDvector.compareVectors(&(currentFeature->point), &(currentPolygonInList->point2)))
 			{
 				currentFeature->OTpointIndex = 2;
 			}
-			else if(compareVectors(&(currentFeature->point), &(currentPolygonInList->point3)))
+			else if(SHAREDvector.compareVectors(&(currentFeature->point), &(currentPolygonInList->point3)))
 			{
 				currentFeature->OTpointIndex = 3;
 			}
@@ -234,9 +230,9 @@ void transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, 
 			}
 			#endif
 
-			copyVectors(&(currentFeature->pointTransformed), &(currentFeature->point));		//startup
-			multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &xyzRotationMatrix12);
-			copyVectors(&(currentFeature->pointTransformed), &vecNew);
+			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &(currentFeature->point));		//startup
+			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &xyzRotationMatrix12);
+			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &vecNew);
 			currentFeature = currentFeature->next;
 		}
 	}
@@ -247,15 +243,15 @@ void transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, 
 	vec translationVector; //midPointBetweenSideApexes;
 	if(side == 0)
 	{
-		calculateMidPointBetweenTwoPoints(&(transformedObjectTriangle->point1), &(transformedObjectTriangle->point2), &translationVector);
+		SHAREDvector.calculateMidPointBetweenTwoPoints(&(transformedObjectTriangle->point1), &(transformedObjectTriangle->point2), &translationVector);
 	}
 	else if(side == 1)
 	{
-		calculateMidPointBetweenTwoPoints(&(transformedObjectTriangle->point2), &(transformedObjectTriangle->point3), &translationVector);
+		SHAREDvector.calculateMidPointBetweenTwoPoints(&(transformedObjectTriangle->point2), &(transformedObjectTriangle->point3), &translationVector);
 	}
 	else if(side == 2)
 	{
-		calculateMidPointBetweenTwoPoints(&(transformedObjectTriangle->point3), &(transformedObjectTriangle->point1), &translationVector);
+		SHAREDvector.calculateMidPointBetweenTwoPoints(&(transformedObjectTriangle->point3), &(transformedObjectTriangle->point1), &translationVector);
 	}
 	else
 	{
@@ -272,24 +268,24 @@ void transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, 
 
 	mat multipliedMatrix;
 	mat matTemp;
-	createIdentityMatrixRT(&multipliedMatrix);
+	SHAREDvector.createIdentityMatrixRT(&multipliedMatrix);
 
-	multiplyMatricies(&matTemp, &multipliedMatrix, &xyzRotationMatrix12);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &xyzRotationMatrix12);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
 	/*
-	multiplyMatricies(&matTemp, &multipliedMatrix, &zRotateMatrix2ii);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
-	multiplyMatricies(&matTemp, &multipliedMatrix, &xyzRotationMatrix12);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
-	multiplyMatricies(&matTemp, &multipliedMatrix, &zRotationMatrix2a);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
-	multiplyMatricies(&matTemp, &multipliedMatrix, &yRotationMatrix1b);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
-	multiplyMatricies(&matTemp, &multipliedMatrix, &xRotationMatrix1a);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &zRotateMatrix2ii);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &xyzRotationMatrix12);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &zRotationMatrix2a);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &yRotationMatrix1b);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &xRotationMatrix1a);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
 	*/
 
-	copyMatrixTwoIntoMatrixOne(&opengl3DmultiplicationMatrix, &multipliedMatrix);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&opengl3DmultiplicationMatrix, &multipliedMatrix);
 
 	#endif
 #else
@@ -303,20 +299,20 @@ void transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, 
 
 	mat multipliedMatrix;
 	mat matTemp;
-	createIdentityMatrixRT(&multipliedMatrix);
+	SHAREDvector.createIdentityMatrixRT(&multipliedMatrix);
 
-	multiplyMatricies(&matTemp, &multipliedMatrix, &zRotateMatrix2ii);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
-	multiplyMatricies(&matTemp, &multipliedMatrix, &zRotationMatrix2a);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
-	multiplyMatricies(&matTemp, &multipliedMatrix, &yRotationMatrix1b);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
-	multiplyMatricies(&matTemp, &multipliedMatrix, &xRotationMatrix1a);
-	copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &zRotateMatrix2ii);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &zRotationMatrix2a);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &yRotationMatrix1b);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
+	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &xRotationMatrix1a);
+	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
 
-	applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap, &multipliedMatrix);
+	ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap, &multipliedMatrix);
 
-	applyTranslationToAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap, &translationVector);
+	ORoperations.applyTranslationToAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap, &translationVector);
 #endif
 
 
@@ -406,7 +402,7 @@ void transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, 
 			cout << "\t\t\t\t end: 3ai. 3DOD normalised snapshot generation - transform data wrt polygon - matrix calc" << endl;
 		}
 		long time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonEnd;
-		time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonEnd = getTimeAsLong();
+		time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonEnd = SHAREDvars.getTimeAsLong();
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
 		{
 			cout << "\t\t\t\t time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygon = " << time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonEnd-time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonStart << endl;
@@ -416,7 +412,7 @@ void transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, 
 
 
 	//not yet finished
-void calculateEyePositionAndOrientation3DOD(vec* eyeFacingPoly, vec* viewAtFacingPoly, vec* viewUpFacingPoly, vec* viewPortWidthHeightDepth, ORpolygon* pol, const int side)
+void ORmethod3DODClass::calculateEyePositionAndOrientation3DOD(vec* eyeFacingPoly, vec* viewAtFacingPoly, vec* viewUpFacingPoly, vec* viewPortWidthHeightDepth, ORpolygon* pol, const int side)
 {
 	vec pt1;
 	vec pt2;
@@ -424,21 +420,21 @@ void calculateEyePositionAndOrientation3DOD(vec* eyeFacingPoly, vec* viewAtFacin
 
 	if(side == 0)
 	{
-		copyVectors(&pt1, &(pol->point1));
-		copyVectors(&pt2, &(pol->point2));
-		copyVectors(&pt3, &(pol->point3));
+		SHAREDvector.copyVectors(&pt1, &(pol->point1));
+		SHAREDvector.copyVectors(&pt2, &(pol->point2));
+		SHAREDvector.copyVectors(&pt3, &(pol->point3));
 	}
 	else if(side == 1)
 	{
-		copyVectors(&pt1, &(pol->point2));
-		copyVectors(&pt2, &(pol->point3));
-		copyVectors(&pt3, &(pol->point1));
+		SHAREDvector.copyVectors(&pt1, &(pol->point2));
+		SHAREDvector.copyVectors(&pt2, &(pol->point3));
+		SHAREDvector.copyVectors(&pt3, &(pol->point1));
 	}
 	else if(side == 2)
 	{
-		copyVectors(&pt1, &(pol->point3));
-		copyVectors(&pt2, &(pol->point1));
-		copyVectors(&pt3, &(pol->point2));
+		SHAREDvector.copyVectors(&pt1, &(pol->point3));
+		SHAREDvector.copyVectors(&pt2, &(pol->point1));
+		SHAREDvector.copyVectors(&pt3, &(pol->point2));
 	}
 	else
 	{
@@ -447,47 +443,47 @@ void calculateEyePositionAndOrientation3DOD(vec* eyeFacingPoly, vec* viewAtFacin
 	}
 
 	vec midPointBetweenPt1AndPt2;
-	calculateMidPointBetweenTwoPoints(&pt1, &pt2, &midPointBetweenPt1AndPt2);
+	SHAREDvector.calculateMidPointBetweenTwoPoints(&pt1, &pt2, &midPointBetweenPt1AndPt2);
 
 	vec normalAtPt1;
 	vec pt2MinusPt1;
 	vec pt3MinusPt1;
-	subtractVectorsRT(&pt2, &pt1, &pt2MinusPt1);
-	subtractVectorsRT(&pt3, &pt1, &pt3MinusPt1);
-	calculateNormal(&pt2MinusPt1, &pt3MinusPt1, &normalAtPt1);
+	SHAREDvector.subtractVectorsRT(&pt2, &pt1, &pt2MinusPt1);
+	SHAREDvector.subtractVectorsRT(&pt3, &pt1, &pt3MinusPt1);
+	SHAREDvector.calculateNormal(&pt2MinusPt1, &pt3MinusPt1, &normalAtPt1);
 
 	vec normalAtPt1Normalised;
-	normaliseVectorRT(&normalAtPt1, &normalAtPt1Normalised);
+	SHAREDvector.normaliseVectorRT(&normalAtPt1, &normalAtPt1Normalised);
 
 	vec normalAtPt1WithDistanceU;
 	#ifdef USE_OPENGL
 	//normalised distance to size of side s
-	double U = findMagnitudeOfVector(&pt2MinusPt1);
+	double U = SHAREDvector.findMagnitudeOfVector(&pt2MinusPt1);
 	#else
 	double U = OR_CONSTANT_DISTANCE_EYE_TO_POLYGON_FOR_NN_SNAPSHOT_U;
 	#endif
-	multiplyVectorByScalarRT(&normalAtPt1Normalised, U, &normalAtPt1WithDistanceU);
+	SHAREDvector.multiplyVectorByScalarRT(&normalAtPt1Normalised, U, &normalAtPt1WithDistanceU);
 
 	//1. calculates eyeFacingPoly
-	addVectorsRT(&midPointBetweenPt1AndPt2, &normalAtPt1WithDistanceU, eyeFacingPoly);
+	SHAREDvector.addVectorsRT(&midPointBetweenPt1AndPt2, &normalAtPt1WithDistanceU, eyeFacingPoly);
 
 	//2. calculates viewAtFacingPoly
-	copyVectors(viewAtFacingPoly, &midPointBetweenPt1AndPt2);
+	SHAREDvector.copyVectors(viewAtFacingPoly, &midPointBetweenPt1AndPt2);
 
 	//3. calculates viewUpFacingPoly
 	vec viewupFacingPolygonUnnormalised;
 	vec pt1MinusMidpoint;	//or p2MinusMidPoint, or pt2MinusPt1; doesnt matter
 	vec eyeMinusMidpoint;	//or normalAtPt1Normalised; doesnt matter
-	subtractVectorsRT(&pt1, &midPointBetweenPt1AndPt2, &pt1MinusMidpoint);
-	subtractVectorsRT(eyeFacingPoly, &midPointBetweenPt1AndPt2, &eyeMinusMidpoint);
-	calculateNormal(&pt1MinusMidpoint, &eyeMinusMidpoint, &viewupFacingPolygonUnnormalised);
-	normaliseVectorRT(&viewupFacingPolygonUnnormalised, viewUpFacingPoly);
+	SHAREDvector.subtractVectorsRT(&pt1, &midPointBetweenPt1AndPt2, &pt1MinusMidpoint);
+	SHAREDvector.subtractVectorsRT(eyeFacingPoly, &midPointBetweenPt1AndPt2, &eyeMinusMidpoint);
+	SHAREDvector.calculateNormal(&pt1MinusMidpoint, &eyeMinusMidpoint, &viewupFacingPolygonUnnormalised);
+	SHAREDvector.normaliseVectorRT(&viewupFacingPolygonUnnormalised, viewUpFacingPoly);
 
-	viewPortWidthHeightDepth->x = findMagnitudeOfVector(&pt2MinusPt1);
-	viewPortWidthHeightDepth->z = findMagnitudeOfVector(&pt2MinusPt1);		//not used, the orthogonal viewport depth should be infinite
+	viewPortWidthHeightDepth->x = SHAREDvector.findMagnitudeOfVector(&pt2MinusPt1);
+	viewPortWidthHeightDepth->z = SHAREDvector.findMagnitudeOfVector(&pt2MinusPt1);		//not used, the orthogonal viewport depth should be infinite
 	vec pt3MinusMidpoint;
-	subtractVectorsRT(&pt3, &midPointBetweenPt1AndPt2, &pt3MinusMidpoint);
-	viewPortWidthHeightDepth->y = findMagnitudeOfVector(&pt3MinusMidpoint);
+	SHAREDvector.subtractVectorsRT(&pt3, &midPointBetweenPt1AndPt2, &pt3MinusMidpoint);
+	viewPortWidthHeightDepth->y = SHAREDvector.findMagnitudeOfVector(&pt3MinusMidpoint);
 
 	#ifdef OR_DEBUG_METHOD3DOD_POV
 	cout << "pt1.x = " << pt1.x << endl;
@@ -527,7 +523,7 @@ void calculateEyePositionAndOrientation3DOD(vec* eyeFacingPoly, vec* viewAtFacin
 }
 
 
-void createInterpolated3DmeshReferenceListUsingPointMap(int imageWidth, const int imageHeight, double* pointMap, double* pointMapInterpolated, unsigned char* rgbMap, LDreference* firstReferenceInInterpolated3Dmap)
+void ORmethod3DODClass::createInterpolated3DmeshReferenceListUsingPointMap(int imageWidth, const int imageHeight, double* pointMap, double* pointMapInterpolated, unsigned char* rgbMap, LDreference* firstReferenceInInterpolated3Dmap)
 {
 	LDreference* currentReferenceInInterpolated3DMap = firstReferenceInInterpolated3Dmap;
 
@@ -543,17 +539,17 @@ void createInterpolated3DmeshReferenceListUsingPointMap(int imageWidth, const in
 			vec v3;
 			vec v4;
 
-			getPointMapValue(x, y, (imageWidth), pointMap, &centreVec);
-			getPointMapValue(x, y, (imageWidth+1), pointMapInterpolated, &v1);
-			getPointMapValue(x+1, y, (imageWidth+1), pointMapInterpolated, &v2);
-			getPointMapValue(x, y+1, (imageWidth+1), pointMapInterpolated, &v3);
-			getPointMapValue(x+1, y+1, (imageWidth+1), pointMapInterpolated, &v4);
+			RTpixelMaps.getPointMapValue(x, y, (imageWidth), pointMap, &centreVec);
+			RTpixelMaps.getPointMapValue(x, y, (imageWidth+1), pointMapInterpolated, &v1);
+			RTpixelMaps.getPointMapValue(x+1, y, (imageWidth+1), pointMapInterpolated, &v2);
+			RTpixelMaps.getPointMapValue(x, y+1, (imageWidth+1), pointMapInterpolated, &v3);
+			RTpixelMaps.getPointMapValue(x+1, y+1, (imageWidth+1), pointMapInterpolated, &v4);
 
 			vec nullPointVector;
 			nullPointVector.x = 0.0;
 			nullPointVector.y = 0.0;
 			nullPointVector.z = 0.0;
-			if(!compareVectors(&centreVec, &nullPointVector))
+			if(!SHAREDvector.compareVectors(&centreVec, &nullPointVector))
 			{
 				#ifdef OR_DEBUG
 				/*
@@ -575,40 +571,40 @@ void createInterpolated3DmeshReferenceListUsingPointMap(int imageWidth, const in
 				*/
 				#endif
 
-				multiplyVectorByScalarRT(&centreVec, OR_SNAPSHOT_SCALE_FACTOR, &centreVec);
-				multiplyVectorByScalarRT(&v1, OR_SNAPSHOT_SCALE_FACTOR, &v1);
-				multiplyVectorByScalarRT(&v2, OR_SNAPSHOT_SCALE_FACTOR, &v2);
-				multiplyVectorByScalarRT(&v3, OR_SNAPSHOT_SCALE_FACTOR, &v3);
-				multiplyVectorByScalarRT(&v4, OR_SNAPSHOT_SCALE_FACTOR, &v4);
+				SHAREDvector.multiplyVectorByScalarRT(&centreVec, OR_SNAPSHOT_SCALE_FACTOR, &centreVec);
+				SHAREDvector.multiplyVectorByScalarRT(&v1, OR_SNAPSHOT_SCALE_FACTOR, &v1);
+				SHAREDvector.multiplyVectorByScalarRT(&v2, OR_SNAPSHOT_SCALE_FACTOR, &v2);
+				SHAREDvector.multiplyVectorByScalarRT(&v3, OR_SNAPSHOT_SCALE_FACTOR, &v3);
+				SHAREDvector.multiplyVectorByScalarRT(&v4, OR_SNAPSHOT_SCALE_FACTOR, &v4);
 
-				copyVectors(&(polyArray[0].point1), &centreVec);
-				copyVectors(&(polyArray[0].point2), &v1);
-				copyVectors(&(polyArray[0].point3), &v2);
+				SHAREDvector.copyVectors(&(polyArray[0].point1), &centreVec);
+				SHAREDvector.copyVectors(&(polyArray[0].point2), &v1);
+				SHAREDvector.copyVectors(&(polyArray[0].point3), &v2);
 
-				copyVectors(&(polyArray[1].point1), &centreVec);
-				copyVectors(&(polyArray[1].point2), &v2);
-				copyVectors(&(polyArray[1].point3), &v4);
+				SHAREDvector.copyVectors(&(polyArray[1].point1), &centreVec);
+				SHAREDvector.copyVectors(&(polyArray[1].point2), &v2);
+				SHAREDvector.copyVectors(&(polyArray[1].point3), &v4);
 
-				copyVectors(&(polyArray[2].point1), &centreVec);
-				copyVectors(&(polyArray[2].point2), &v1);
-				copyVectors(&(polyArray[2].point3), &v3);
+				SHAREDvector.copyVectors(&(polyArray[2].point1), &centreVec);
+				SHAREDvector.copyVectors(&(polyArray[2].point2), &v1);
+				SHAREDvector.copyVectors(&(polyArray[2].point3), &v3);
 
-				copyVectors(&(polyArray[3].point1), &centreVec);
-				copyVectors(&(polyArray[3].point2), &v3);
-				copyVectors(&(polyArray[3].point3), &v4);
+				SHAREDvector.copyVectors(&(polyArray[3].point1), &centreVec);
+				SHAREDvector.copyVectors(&(polyArray[3].point2), &v3);
+				SHAREDvector.copyVectors(&(polyArray[3].point3), &v4);
 
 				int numPolysPerPixel = 4;
 				for(int i = 0; i < numPolysPerPixel; i++)
 				{
 					currentReferenceInInterpolated3DMap->type = REFERENCE_TYPE_TRI;
-					copyVectors(&(currentReferenceInInterpolated3DMap->vertex1relativePosition), &(polyArray[i].point1));
-					copyVectors(&(currentReferenceInInterpolated3DMap->vertex2relativePosition), &(polyArray[i].point2));
-					copyVectors(&(currentReferenceInInterpolated3DMap->vertex3relativePosition), &(polyArray[i].point3));
-					copyVectors(&(currentReferenceInInterpolated3DMap->vertex1absolutePosition), &(polyArray[i].point1));
-					copyVectors(&(currentReferenceInInterpolated3DMap->vertex2absolutePosition), &(polyArray[i].point2));
-					copyVectors(&(currentReferenceInInterpolated3DMap->vertex3absolutePosition), &(polyArray[i].point3));
+					SHAREDvector.copyVectors(&(currentReferenceInInterpolated3DMap->vertex1relativePosition), &(polyArray[i].point1));
+					SHAREDvector.copyVectors(&(currentReferenceInInterpolated3DMap->vertex2relativePosition), &(polyArray[i].point2));
+					SHAREDvector.copyVectors(&(currentReferenceInInterpolated3DMap->vertex3relativePosition), &(polyArray[i].point3));
+					SHAREDvector.copyVectors(&(currentReferenceInInterpolated3DMap->vertex1absolutePosition), &(polyArray[i].point1));
+					SHAREDvector.copyVectors(&(currentReferenceInInterpolated3DMap->vertex2absolutePosition), &(polyArray[i].point2));
+					SHAREDvector.copyVectors(&(currentReferenceInInterpolated3DMap->vertex3absolutePosition), &(polyArray[i].point3));
 					colour col;
-					getRGBMapValues(x, y, imageWidth, rgbMap, &col);
+					RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMap, &col);
 
 					unsigned int colByte1 = (unsigned int)DAT_FILE_FIRST_RGB_COLOUR << (unsigned int)24;
 					unsigned int colByte2 = (unsigned int)col.r << (unsigned int)16;
@@ -641,7 +637,7 @@ void createInterpolated3DmeshReferenceListUsingPointMap(int imageWidth, const in
 }
 
 
-void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double* pointMap, const double* depthMap, unsigned char* rgbMap, ORmeshPoint* firstMeshPointInMeshList, ORmeshPoint* meshPointArray[], const bool useEdgeZeroCrossingMap, const int contrastValChosen, RTviewInfo* vi)
+void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double* pointMap, const double* depthMap, unsigned char* rgbMap, ORmeshPoint* firstMeshPointInMeshList, ORmeshPoint* meshPointArray[], const bool useEdgeZeroCrossingMap, const int contrastValChosen, RTviewInfo* vi)
 {
 	//#ifdef OR_USE_CONTRAST_CALC_METHOD_C
 	#ifndef LINUX
@@ -677,7 +673,7 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 			if(contrastValChosen == CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_LUMINOSITY_CONTRAST)
 			{
 				//interpixelContrastMapType = INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST;
-				generateEdgeListFromRGBmapWithQuadraticFit(rgbMap, edgeBoolMap, edgeZeroCrossingMap, imageWidth, imageHeight, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, OR_METHOD3DOD_DIMENSIONS, pointMap, depthMap, 1, vi, interpixelContrastMapType);
+				ORfeatureGeneration.generateEdgeListFromRGBmapWithQuadraticFit(rgbMap, edgeBoolMap, edgeZeroCrossingMap, imageWidth, imageHeight, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, OR_METHOD3DOD_DIMENSIONS, pointMap, depthMap, 1, vi, interpixelContrastMapType);
 
 			}
 			else if(contrastValChosen == CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_POINT_NORMAL_CONTRAST)
@@ -685,10 +681,10 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 				//interpixelContrastMapType = INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST
 				double* pointNormalMap = new double[imageWidth*imageHeight*VECTOR_NUM_VALUES];
 				double* pointNormalContrastMap = new double[imageWidth*imageHeight];
-				createPointNormalMapFromPointMap(imageWidth, imageHeight, pointMap, pointNormalMap);
-				createPointNormalContrastMapFromPointNormalMap(imageWidth, imageHeight, pointNormalMap, pointNormalContrastMap);
+				ORpixelMaps.createPointNormalMapFromPointMap(imageWidth, imageHeight, pointMap, pointNormalMap);
+				ORpixelMaps.createPointNormalContrastMapFromPointNormalMap(imageWidth, imageHeight, pointNormalMap, pointNormalContrastMap);
 				double sensitivity = 1.0;
-				generateEdgeListFromContrastMapWithQuadraticFit(pointNormalContrastMap, edgeBoolMap, edgeZeroCrossingMap, imageWidth, imageHeight, EDGE_NORMAL_CONTRAST_THRESHOLD, OR_METHOD3DOD_DIMENSIONS, pointMap, depthMap, 1, vi, interpixelContrastMapType);
+				ORfeatureGeneration.generateEdgeListFromContrastMapWithQuadraticFit(pointNormalContrastMap, edgeBoolMap, edgeZeroCrossingMap, imageWidth, imageHeight, EDGE_NORMAL_CONTRAST_THRESHOLD, OR_METHOD3DOD_DIMENSIONS, pointMap, depthMap, 1, vi, interpixelContrastMapType);
 				delete pointNormalMap;
 				delete pointNormalContrastMap;
 			}
@@ -738,17 +734,17 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 			}
 
 			colour col;
-			getRGBMapValues(x, y, imageWidth, rgbMap, &col);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMap, &col);
 
 			double depth;
-			depth = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
+			depth = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
 
 			#ifdef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
 				vec xyzWorld;
-				calculatePointMapValue(x, y, depth, &xyzWorld, vi);
+				RTscene.calculatePointMapValue(x, y, depth, &xyzWorld, vi);
 			#else
 				vec xyzWorld;
-				getPointMapValue(x, y, imageWidth, pointMap, &xyzWorld);
+				RTpixelMaps.getPointMapValue(x, y, imageWidth, pointMap, &xyzWorld);
 			#endif
 
 			currentMeshPointInMesh->col.r = col.r;
@@ -756,7 +752,7 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 			currentMeshPointInMesh->col.b = col.b;
 			currentMeshPointInMesh->xInt = x;
 			currentMeshPointInMesh->yInt = y;
-			currentMeshPointInMesh->luminosity = calculateLuminosityLevelFromRGBVal(&col);
+			currentMeshPointInMesh->luminosity = RTpixelMaps.calculateLuminosityLevelFromRGBVal(&col);
 			currentMeshPointInMesh->depth = depth;
 			currentMeshPointInMesh->point.x = xyzWorld.x;
 			currentMeshPointInMesh->point.y = xyzWorld.y;
@@ -915,7 +911,7 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 		{
 			for(int x = 0; x < (imageWidth-1); x++)
 			{
-				calculateMeshPointInterpixelLuminosityContrast(meshPointArray[y*imageWidth + x]);
+				ORpolygonList.calculateMeshPointInterpixelLuminosityContrast(meshPointArray[y*imageWidth + x]);
 
 				bool alreadyFilledPointValues = false;
 				bool passCondition = true;
@@ -933,7 +929,7 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 						}
 						else
 						{
-							calculateMeshPointInterpixelDepth(meshPointArray[y*imageWidth + x]);
+							ORpolygonList.calculateMeshPointInterpixelDepth(meshPointArray[y*imageWidth + x]);
 						}
 						passCondition = false;
 					}
@@ -941,9 +937,9 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 				if(passCondition)
 				{
 					#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS
-					calculateMeshPointInterpixelDepthWithForegroundDepthCheck(meshPointArray[y*imageWidth + x]);
+					ORpolygonList.calculateMeshPointInterpixelDepthWithForegroundDepthCheck(meshPointArray[y*imageWidth + x]);
 					#else
-					calculateMeshPointInterpixelDepth(meshPointArray[y*imageWidth + x]);
+					ORpolygonList.calculateMeshPointInterpixelDepth(meshPointArray[y*imageWidth + x]);
 					#endif
 
 				}
@@ -972,7 +968,7 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 					}
 					vec xyzWorldInterpixel;
 					double depth = meshPointInterpixelArray[y*imageWidth + x]->depth;
-					calculatePointMapValue(x+pixelXOffset, y+pixelYOffset, depth, &xyzWorldInterpixel, vi);
+					RTscene.calculatePointMapValue(x+pixelXOffset, y+pixelYOffset, depth, &xyzWorldInterpixel, vi);
 					meshPointInterpixelArray[y*imageWidth + x]->point.x = xyzWorldInterpixel.x;
 					meshPointInterpixelArray[y*imageWidth + x]->point.y = xyzWorldInterpixel.y;
 					meshPointInterpixelArray[y*imageWidth + x]->point.z = xyzWorldInterpixel.z;
@@ -981,12 +977,12 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 
 				if(OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST)
 				{
-					//emulates createPointNormalMapFromPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointNormalMap):
-					//and emulates createPointNormalContrastMapFromPointNormalMap(int imageWidth, int imageHeight, double* pointNormalMap, double* pointNormalContrastMap):
-					calculateMeshPointInterpixelNormal(meshPointArray[y*imageWidth + x]);
+					//emulates ORpixelMaps.createPointNormalMapFromPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointNormalMap):
+					//and emulates ORpixelMaps.createPointNormalContrastMapFromPointNormalMap(int imageWidth, int imageHeight, double* pointNormalMap, double* pointNormalContrastMap):
+					ORpolygonList.calculateMeshPointInterpixelNormal(meshPointArray[y*imageWidth + x]);
 					if((x >=1) && (y >=1))
 					{
-						calculateMeshPointInterpixelNormalContrast(meshPointArray[y*imageWidth + x]);
+						ORpolygonList.calculateMeshPointInterpixelNormalContrast(meshPointArray[y*imageWidth + x]);
 					}
 					(meshPointInterpixelArray[y*imageWidth + x])->meshPointNormalFilled = true;
 				}
@@ -1009,14 +1005,14 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 		{
 			for(int x = 1; x < (imageWidth-1); x++)
 			{
-				calculateMeshPointLuminosityContrast(meshPointArray[y*imageWidth + x]);
+				ORpolygonList.calculateMeshPointLuminosityContrast(meshPointArray[y*imageWidth + x]);
 
 				if(OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST)
 				{
-					//emulates createPointNormalMapFromPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointNormalMap):
-					//and emulates createPointNormalContrastMapFromPointNormalMap(int imageWidth, int imageHeight, double* pointNormalMap, double* pointNormalContrastMap):
-					calculateMeshPointNormal(meshPointArray[y*imageWidth + x]);
-					calculateMeshPointNormalContrast(meshPointArray[y*imageWidth + x]);
+					//emulates ORpixelMaps.createPointNormalMapFromPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointNormalMap):
+					//and emulates ORpixelMaps.createPointNormalContrastMapFromPointNormalMap(int imageWidth, int imageHeight, double* pointNormalMap, double* pointNormalContrastMap):
+					ORpolygonList.calculateMeshPointNormal(meshPointArray[y*imageWidth + x]);
+					ORpolygonList.calculateMeshPointNormalContrast(meshPointArray[y*imageWidth + x]);
 					(meshPointArray[y*imageWidth + x])->meshPointNormalFilled = true;
 				}
 
@@ -1076,10 +1072,10 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 						}
 
 						vec borderPoint;
-						getPointMapValue(x, y, imageWidth, pointMap, &borderPoint);
+						RTpixelMaps.getPointMapValue(x, y, imageWidth, pointMap, &borderPoint);
 						ORmeshPoint* nearestMeshpointInExistingMesh;
 						bool hasFoundMeshPoint = false;
-						nearestMeshpointInExistingMesh = findMeshPointIntInMesh(firstMeshPointInMeshList, &borderPoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
+						nearestMeshpointInExistingMesh = ORpolygonList.findMeshPointIntInMesh(firstMeshPointInMeshList, &borderPoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
 						if(hasFoundMeshPoint == false)
 						{
 							cout << "error: cannot find adjacent meshpoint" << endl;
@@ -1091,7 +1087,7 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 
 						/*old inefficient;
 						hasFoundMeshPoint = false;
-						meshpointInAdditionalMesh = findMeshPointIntInMesh(firstNewMeshPointInMesh, x, y, &hasFoundMeshPoint);
+						meshpointInAdditionalMesh = ORpolygonList.findMeshPointIntInMesh(firstNewMeshPointInMesh, x, y, &hasFoundMeshPoint);
 						if(hasFoundMeshPoint == false)
 						{
 							cout << "error: cannot find adjacent meshpoint" << endl;
@@ -1099,7 +1095,7 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 						}
 						*/
 
-						if(calculateTheDistanceBetweenTwoPoints(&(nearestMeshpointInExistingMesh->point), &(meshpointInAdditionalMesh->point)) < OR_METHOD_3DOD_USE_ADVANCED_INTERP_MESH_JOINING_MAXIMUM_RECONCILIATION_DISTANCE)
+						if(SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(nearestMeshpointInExistingMesh->point), &(meshpointInAdditionalMesh->point)) < OR_METHOD_3DOD_USE_ADVANCED_INTERP_MESH_JOINING_MAXIMUM_RECONCILIATION_DISTANCE)
 						{
 							//now redirect all mesh points surrounding the mesh point of the existing mesh to the corresponding mesh point of the additional mesh
 							for(int q = 0; q< 4; q++)
@@ -1120,8 +1116,8 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 							if(OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST)
 							{
 								//now recalculate mesh point normal and normal contrast values [should recalculate other values also]
-								calculateMeshPointNormal(nearestMeshpointInExistingMesh);	//or meshpointInAdditionalMesh
-								calculateMeshPointNormalContrast(nearestMeshpointInExistingMesh);	//or meshpointInAdditionalMesh
+								ORpolygonList.calculateMeshPointNormal(nearestMeshpointInExistingMesh);	//or meshpointInAdditionalMesh
+								ORpolygonList.calculateMeshPointNormalContrast(nearestMeshpointInExistingMesh);	//or meshpointInAdditionalMesh
 							}
 						}
 					}
@@ -1136,8 +1132,8 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 		#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS_OLD
 			createContrastMapFromMapWithForegroundDepthCheck(imageWidth, imageHeight, depthMap, depthMap, depthContrastMap, contrastBooleanMap, foregroundDepthCheckDepthContrastBooleanMap, EDGE_DEPTH_CONTRAST_THRESHOLD);
 		#else
-			createContrastMapFromMap(imageWidth, imageHeight, depthMap, depthContrastMap);
-			createDepthContrastBooleanMap(imageWidth, imageHeight, depthContrastMap, depthContrastBooleanMap);	//need to check threshold here
+			RTpixelMaps.createContrastMapFromMap(imageWidth, imageHeight, depthMap, depthContrastMap);
+			ORpixelMaps.createDepthContrastBooleanMap(imageWidth, imageHeight, depthContrastMap, depthContrastBooleanMap);	//need to check threshold here
 		#endif
 
 			currentMeshPointInMesh = firstNewMeshPointInMesh;
@@ -1145,15 +1141,15 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 			{
 				for(int x = 0; x < (imageWidth); x++)
 				{
-					if(getBooleanMapValue(x, y, imageWidth, depthContrastBooleanMap))
+					if(RTpixelMaps.getBooleanMapValue(x, y, imageWidth, depthContrastBooleanMap))
 					{
 						//depth contrast edge found, so join
 
 						vec depthContrastEdgePoint;
-						getPointMapValue(x, y, imageWidth, pointMap, &depthContrastEdgePoint);
+						RTpixelMaps.getPointMapValue(x, y, imageWidth, pointMap, &depthContrastEdgePoint);
 						ORmeshPoint* nearestMeshpointInExistingMesh;
 						bool hasFoundMeshPoint = false;
-						nearestMeshpointInExistingMesh = findMeshPointIntInMesh(firstMeshPointInMeshList, &depthContrastEdgePoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
+						nearestMeshpointInExistingMesh = ORpolygonList.findMeshPointIntInMesh(firstMeshPointInMeshList, &depthContrastEdgePoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
 						if(hasFoundMeshPoint == false)
 						{
 							cout << "error: cannot find adjacent meshpoint" << endl;
@@ -1163,7 +1159,7 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 						ORmeshPoint* meshpointInAdditionalMesh;
 						meshpointInAdditionalMesh = meshPointArray[y*imageWidth + x];
 
-						if(calculateTheDistanceBetweenTwoPoints(&(nearestMeshpointInExistingMesh->point), &(meshpointInAdditionalMesh->point)) < OR_METHOD_3DOD_USE_ADVANCED_INTERP_MESH_JOINING_MAXIMUM_RECONCILIATION_DISTANCE)
+						if(SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(nearestMeshpointInExistingMesh->point), &(meshpointInAdditionalMesh->point)) < OR_METHOD_3DOD_USE_ADVANCED_INTERP_MESH_JOINING_MAXIMUM_RECONCILIATION_DISTANCE)
 						{
 							//now redirect all mesh points surrounding the mesh point of the existing mesh to the corresponding mesh point of the additional mesh
 							for(int q = 0; q< 4; q++)
@@ -1183,8 +1179,8 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 							if(OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST)
 							{
 								//now recalculate mesh point normal and normal contrast values [should recalculate other values also]
-								calculateMeshPointNormal(nearestMeshpointInExistingMesh);	//or meshpointInAdditionalMesh
-								calculateMeshPointNormalContrast(nearestMeshpointInExistingMesh);	//or meshpointInAdditionalMesh
+								ORpolygonList.calculateMeshPointNormal(nearestMeshpointInExistingMesh);	//or meshpointInAdditionalMesh
+								ORpolygonList.calculateMeshPointNormalContrast(nearestMeshpointInExistingMesh);	//or meshpointInAdditionalMesh
 							}
 						}
 					}
@@ -1209,7 +1205,7 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double
 
 
 
-void create3DMeshReferenceListUsingPointMap(int imageWidth, int imageHeight, double* pointMap, unsigned char* rgbMap, ORmeshPoint* firstMeshPointInMeshList)
+void ORmethod3DODClass::create3DMeshReferenceListUsingPointMap(int imageWidth, int imageHeight, double* pointMap, unsigned char* rgbMap, ORmeshPoint* firstMeshPointInMeshList)
 {
 
 	ORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
@@ -1218,10 +1214,10 @@ void create3DMeshReferenceListUsingPointMap(int imageWidth, int imageHeight, dou
 		for(int x = 0; x < (imageWidth); x++)
 		{
 			vec centreVec;
-			getPointMapValue(x, y, imageWidth, pointMap, &centreVec);
+			RTpixelMaps.getPointMapValue(x, y, imageWidth, pointMap, &centreVec);
 
 			colour col;
-			getRGBMapValues(x, y, imageWidth, rgbMap, &col);
+			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMap, &col);
 			currentMeshPointInMesh->col.r = col.r;
 			currentMeshPointInMesh->col.g = col.g;
 			currentMeshPointInMesh->col.b = col.b;
@@ -1254,7 +1250,7 @@ void create3DMeshReferenceListUsingPointMap(int imageWidth, int imageHeight, dou
 				if((kx >= 0) && (kx <= imageWidth-1) && (ky >= 0) && (ky <= imageHeight-1))
 				{
 					bool hasFoundMeshPoint = false;
-					currentMeshPointInMesh->adjacentMeshPoint[q] = findMeshPointIntInMesh(firstMeshPointInMeshList, kx, ky, &hasFoundMeshPoint);
+					currentMeshPointInMesh->adjacentMeshPoint[q] = ORpolygonList.findMeshPointIntInMesh(firstMeshPointInMeshList, kx, ky, &hasFoundMeshPoint);
 					if(hasFoundMeshPoint == false)
 					{
 						cout << "error: cannot find adjacent meshpoint" << endl;
@@ -1280,7 +1276,7 @@ void create3DMeshReferenceListUsingPointMap(int imageWidth, int imageHeight, dou
 
 
 #ifdef OR_METHOD_3DOD_USE_OLD_TESTED_BUT_BASIC_FEATURE_DETECTION
-bool generateFeatureList3DOD(RTviewInfo* vi, const double* depthMap, double* pointMap, const bool* depthContrastBooleanMap, const bool* luminosityContrastBooleanMap, const bool* luminosityContrastMapMinusDepthContrastMap, ORfeature* firstFeatureInList, const int trainOrTest)
+bool ORmethod3DODClass::generateFeatureList3DOD(RTviewInfo* vi, const double* depthMap, double* pointMap, const bool* depthContrastBooleanMap, const bool* luminosityContrastBooleanMap, const bool* luminosityContrastMapMinusDepthContrastMap, ORfeature* firstFeatureInList, const int trainOrTest)
 {
 	bool result = true;
 
@@ -1311,29 +1307,29 @@ bool generateFeatureList3DOD(RTviewInfo* vi, const double* depthMap, double* poi
 	int maxDotProductResultXposArrayCompleteMap1[3][3][3];
 	int maxDotProductResultYposArrayCompleteMap1[3][3][3];
 
-	createFeaturesUsingBooleanMapUsingDepthMap(imageWidth, imageHeight, depthContrastBooleanMap, depthMap, featuresUsingDepthContrastMap, featuresUsingDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, vi, pointMap);
+	this->createFeaturesUsingBooleanMapUsingDepthMap(imageWidth, imageHeight, depthContrastBooleanMap, depthMap, featuresUsingDepthContrastMap, featuresUsingDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, vi, pointMap);
 	//THIS ALTERNATE METHOD DOESNT WORK WHY NOT?; createFeaturesUsingBooleanMapUsingPointMap(imageWidth, imageHeight, depthContrastBooleanMap, pointMap, featuresUsingDepthContrastMap, featuresUsingDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1);
 
 	int maxDotProductResultXposArrayCompleteMap2[3][3][3];
 	int maxDotProductResultYposArrayCompleteMap2[3][3][3];
 
-	createFeaturesUsingBooleanMapUsingDepthMap(imageWidth, imageHeight, luminosityContrastMapMinusDepthContrastMap, depthMap, featuresUsingLuminosityContrastMapMinusDepthContrastMap, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, vi, pointMap);
+	this->createFeaturesUsingBooleanMapUsingDepthMap(imageWidth, imageHeight, luminosityContrastMapMinusDepthContrastMap, depthMap, featuresUsingLuminosityContrastMapMinusDepthContrastMap, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, vi, pointMap);
 	//THIS ALTERNATE METHOD DOESNT WORK WHY NOT?; createFeaturesUsingBooleanMapUsingPointMap(imageWidth, imageHeight, luminosityContrastMapMinusDepthContrastMap, pointMap, featuresUsingLuminosityContrastMapMinusDepthContrastMap, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2);
 
-	addBooleanMaps(imageWidth, imageHeight, featuresUsingDepthContrastMapComplete, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete, featuresMapComplete);
-	reconcileFeaturesMap(imageWidth, imageHeight, featuresMapComplete);	//may no longer be required
+	ORpixelMaps.addBooleanMaps(imageWidth, imageHeight, featuresUsingDepthContrastMapComplete, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete, featuresMapComplete);
+	this->reconcileFeaturesMap(imageWidth, imageHeight, featuresMapComplete);	//may no longer be required
 		//required after joining boolean corner maps
 
 	//now define polygons for which transformations will occur for nn experience feeding features
 
 	#ifndef OR_DEBUG_OLD_FEATURE_GENERATION_METHOD
 	//NEW METHOD;
-	generateFeatureListUsingFeatureArraysUsingPointMap(imageWidth, imageHeight, pointMap, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, firstFeatureInList);
-	generateFeatureListUsingFeatureArraysUsingPointMap(imageWidth, imageHeight, pointMap, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, firstFeatureInList);
+	this->generateFeatureListUsingFeatureArraysUsingPointMap(imageWidth, imageHeight, pointMap, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, firstFeatureInList);
+	this->generateFeatureListUsingFeatureArraysUsingPointMap(imageWidth, imageHeight, pointMap, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, firstFeatureInList);
 	#else
 	//OLD METHOD;
-	generateFeatureListUsingFeatureArraysUsingDepthMap(imageWidth, imageHeight, depthMap, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, firstFeatureInList, vi);
-	generateFeatureListUsingFeatureArraysUsingDepthMap(imageWidth, imageHeight, depthMap, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, firstFeatureInList, vi);
+	this->generateFeatureListUsingFeatureArraysUsingDepthMap(imageWidth, imageHeight, depthMap, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, firstFeatureInList, vi);
+	this->generateFeatureListUsingFeatureArraysUsingDepthMap(imageWidth, imageHeight, depthMap, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, firstFeatureInList, vi);
 	#endif
 
 	//#ifdef OR_DEBUG
@@ -1345,8 +1341,8 @@ bool generateFeatureList3DOD(RTviewInfo* vi, const double* depthMap, double* poi
 	}
 	//#endif
 
-	generateBooleanMapFromFeatureList(imageWidth, imageHeight, firstFeatureInList, featuresMapCompleteOfficial, vi, 1);
-	//reconcileFeaturesMap(imageWidth, imageHeight, featuresMapCompleteOfficial);	//featuresMapCompleteOfficial shouldnt need reconciliation as features have already been checked to not reside close to each other! - fix this!
+	ORoperations.generateBooleanMapFromFeatureList(imageWidth, imageHeight, firstFeatureInList, featuresMapCompleteOfficial, vi, 1);
+	//this->reconcileFeaturesMap(imageWidth, imageHeight, featuresMapCompleteOfficial);	//featuresMapCompleteOfficial shouldnt need reconciliation as features have already been checked to not reside close to each other! - fix this!
 
 	string featuresMapCompleteFileNameCPlus =  "featuresMapComplete" + trainOrTestString + PPM_EXTENSION;
 	string featuresMapCompleteOfficialFileNameCPlus = "featuresMapCompleteOfficial" + trainOrTestString + PPM_EXTENSION;
@@ -1362,12 +1358,12 @@ bool generateFeatureList3DOD(RTviewInfo* vi, const double* depthMap, double* poi
 	char* featuresUsingLuminosityContrastMapMinusDepthContrastMapCompleteFileName = const_cast<char*>(featuresUsingLuminosityContrastMapMinusDepthContrastMapCompleteFileNameCPlus.c_str());
 	char* featuresUsingLuminosityContrastMapMinusDepthContrastMapFileName = const_cast<char*>(featuresUsingLuminosityContrastMapMinusDepthContrastMapFileNameCPlus.c_str());
 
-	generatePixmapFromBooleanMap(featuresMapCompleteFileName, imageWidth, imageHeight, featuresMapComplete);
-	generatePixmapFromBooleanMap(featuresMapCompleteOfficialFileName, imageWidth, imageHeight, featuresMapCompleteOfficial);
-	//generatePixmapFromBooleanMap(featuresUsingDepthContrastMapFileName, imageWidth, imageHeight, featuresUsingDepthContrastMap);
-	generatePixmapFromBooleanMap(featuresUsingDepthContrastMapCompleteFileName, imageWidth, imageHeight, featuresUsingDepthContrastMapComplete);
-	//generatePixmapFromBooleanMap(featuresUsingLuminosityContrastMapMinusDepthContrastMapFileName, imageWidth, imageHeight, featuresUsingLuminosityContrastMapMinusDepthContrastMap);
-	generatePixmapFromBooleanMap(featuresUsingLuminosityContrastMapMinusDepthContrastMapCompleteFileName, imageWidth, imageHeight, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete);
+	RTpixelMaps.generatePixmapFromBooleanMap(featuresMapCompleteFileName, imageWidth, imageHeight, featuresMapComplete);
+	RTpixelMaps.generatePixmapFromBooleanMap(featuresMapCompleteOfficialFileName, imageWidth, imageHeight, featuresMapCompleteOfficial);
+	//RTpixelMaps.generatePixmapFromBooleanMap(featuresUsingDepthContrastMapFileName, imageWidth, imageHeight, featuresUsingDepthContrastMap);
+	RTpixelMaps.generatePixmapFromBooleanMap(featuresUsingDepthContrastMapCompleteFileName, imageWidth, imageHeight, featuresUsingDepthContrastMapComplete);
+	//RTpixelMaps.generatePixmapFromBooleanMap(featuresUsingLuminosityContrastMapMinusDepthContrastMapFileName, imageWidth, imageHeight, featuresUsingLuminosityContrastMapMinusDepthContrastMap);
+	RTpixelMaps.generatePixmapFromBooleanMap(featuresUsingLuminosityContrastMapMinusDepthContrastMapCompleteFileName, imageWidth, imageHeight, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete);
 
 	delete featuresUsingDepthContrastMap;
 	delete featuresUsingDepthContrastMapComplete;
@@ -1383,13 +1379,13 @@ bool generateFeatureList3DOD(RTviewInfo* vi, const double* depthMap, double* poi
 
 
 	//may no longer be required?
-void reconcileFeaturesMap(const int imageWidth, const int imageHeight, bool* featuresBooleanMap)
+void ORmethod3DODClass::reconcileFeaturesMap(const int imageWidth, const int imageHeight, bool* featuresBooleanMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			bool booleanVal = getBooleanMapValue(x, y, imageWidth, featuresBooleanMap);
+			bool booleanVal = RTpixelMaps.getBooleanMapValue(x, y, imageWidth, featuresBooleanMap);
 			if(booleanVal)
 			{
 				int numberOfHitsFound = 0;
@@ -1401,7 +1397,7 @@ void reconcileFeaturesMap(const int imageWidth, const int imageHeight, bool* fea
 						{
 							if((kx >= 0) && (kx < imageWidth))
 							{
-								bool booleanValInKernel = getBooleanMapValue(kx, ky, imageWidth, featuresBooleanMap);
+								bool booleanValInKernel = RTpixelMaps.getBooleanMapValue(kx, ky, imageWidth, featuresBooleanMap);
 								if(booleanValInKernel)
 								{
 									#ifdef OR_DEBUG
@@ -1446,7 +1442,7 @@ void reconcileFeaturesMap(const int imageWidth, const int imageHeight, bool* fea
 										#ifdef OR_DEBUG
 										//cout << "\treconciling" << endl;
 										#endif
-										setBooleanMapValue(kx, ky, imageWidth, false, featuresBooleanMap);
+										RTpixelMaps.setBooleanMapValue(kx, ky, imageWidth, false, featuresBooleanMap);
 									}
 								}
 							}
@@ -1462,7 +1458,7 @@ void reconcileFeaturesMap(const int imageWidth, const int imageHeight, bool* fea
 
 
 
-void createFeaturesUsingBooleanMap(const int imageWidth, const int imageHeight, const bool* booleanMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], const RTviewInfo* vi)
+void ORmethod3DODClass::createFeaturesUsingBooleanMap(const int imageWidth, const int imageHeight, const bool* booleanMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], const RTviewInfo* vi)
 {
 	double imageSizeWidth = vi->imageWidth;
 	double imageSizeHeight = vi->imageHeight;
@@ -1535,7 +1531,7 @@ void createFeaturesUsingBooleanMap(const int imageWidth, const int imageHeight, 
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			bool boolVal = getBooleanMapValue(x, y, imageWidth, booleanMap);
+			bool boolVal = RTpixelMaps.getBooleanMapValue(x, y, imageWidth, booleanMap);
 
 			if(boolVal)
 			{
@@ -1565,7 +1561,7 @@ void createFeaturesUsingBooleanMap(const int imageWidth, const int imageHeight, 
 							unitVector.y = (double)uvy;
 							unitVector.z = (double)uvz;
 
-							double bias = dotProduct(&pixelVector, &unitVector);
+							double bias = SHAREDvector.dotProduct(&pixelVector, &unitVector);
 							if(bias > maxDotProductResultArray[uvxIndex][uvyIndex][uvzIndex])
 							{
 								maxDotProductResultArray[uvxIndex][uvyIndex][uvzIndex] = bias;
@@ -1607,7 +1603,7 @@ void createFeaturesUsingBooleanMap(const int imageWidth, const int imageHeight, 
 								unitVector.y = (double)uvy;
 								unitVector.z = (double)uvz;
 
-								double bias = dotProduct(&pixelVector, &unitVector);
+								double bias = SHAREDvector.dotProduct(&pixelVector, &unitVector);
 								if(bias > maxDotProductResultArrayComplete[uvxIndex+1][uvyIndex+1][uvzIndex+1])
 								{
 									maxDotProductResultArrayComplete[uvxIndex+1][uvyIndex+1][uvzIndex+1] = bias;
@@ -1627,8 +1623,8 @@ void createFeaturesUsingBooleanMap(const int imageWidth, const int imageHeight, 
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			setBooleanMapValue(x, y, imageWidth, false, featuresUsingContrastMap);
-			setBooleanMapValue(x, y, imageWidth, false, featuresUsingContrastMapComplete);
+			RTpixelMaps.setBooleanMapValue(x, y, imageWidth, false, featuresUsingContrastMap);
+			RTpixelMaps.setBooleanMapValue(x, y, imageWidth, false, featuresUsingContrastMapComplete);
 		}
 	}
 
@@ -1644,7 +1640,7 @@ void createFeaturesUsingBooleanMap(const int imageWidth, const int imageHeight, 
 					{
 						if((maxDotProductResultXPosArray[uvxIndex][uvyIndex][uvzIndex] == x) && (maxDotProductResultYPosArray[uvxIndex][uvyIndex][uvzIndex] == y))
 						{
-							setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMap);
+							RTpixelMaps.setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMap);
 						}
 					}
 				}
@@ -1673,7 +1669,7 @@ void createFeaturesUsingBooleanMap(const int imageWidth, const int imageHeight, 
 							*/
 							#endif
 
-							setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMapComplete);
+							RTpixelMaps.setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMapComplete);
 						}
 					}
 				}
@@ -1685,7 +1681,7 @@ void createFeaturesUsingBooleanMap(const int imageWidth, const int imageHeight, 
 }
 
 
-void createFeaturesUsingBooleanMapUsingDepthMap(const int imageWidth, const int imageHeight, const bool* booleanMap, const double* depthMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], RTviewInfo* vi, const double* pointMap)
+void ORmethod3DODClass::createFeaturesUsingBooleanMapUsingDepthMap(const int imageWidth, const int imageHeight, const bool* booleanMap, const double* depthMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], RTviewInfo* vi, const double* pointMap)
 {
 	double imageSizeWidth = vi->imageWidth;
 	double imageSizeHeight = vi->imageHeight;
@@ -1758,8 +1754,8 @@ void createFeaturesUsingBooleanMapUsingDepthMap(const int imageWidth, const int 
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			bool depthContrastBoolVal = getBooleanMapValue(x, y, imageWidth, booleanMap);
-			double z = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
+			bool depthContrastBoolVal = RTpixelMaps.getBooleanMapValue(x, y, imageWidth, booleanMap);
+			double z = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
 
 			if(depthContrastBoolVal)
 			{
@@ -1783,7 +1779,7 @@ void createFeaturesUsingBooleanMapUsingDepthMap(const int imageWidth, const int 
 
 
 							vec xyzWorld;
-							calculatePointMapValue(x, y, z, &xyzWorld, vi);
+							RTscene.calculatePointMapValue(x, y, z, &xyzWorld, vi);
 
 
 							pixelVector.x = xyzWorld.x;
@@ -1794,7 +1790,7 @@ void createFeaturesUsingBooleanMapUsingDepthMap(const int imageWidth, const int 
 							unitVector.y = (double)uvy;
 							unitVector.z = (double)uvz;
 
-							double bias = dotProduct(&pixelVector, &unitVector);
+							double bias = SHAREDvector.dotProduct(&pixelVector, &unitVector);
 							if(bias > maxDotProductResultArray[uvxIndex][uvyIndex][uvzIndex])
 							{
 								maxDotProductResultArray[uvxIndex][uvyIndex][uvzIndex] = bias;
@@ -1829,7 +1825,7 @@ void createFeaturesUsingBooleanMapUsingDepthMap(const int imageWidth, const int 
 								vec unitVector;
 
 								vec xyzWorld;
-								calculatePointMapValue(x, y, z, &xyzWorld, vi);
+								RTscene.calculatePointMapValue(x, y, z, &xyzWorld, vi);
 								pixelVector.x = xyzWorld.x;
 								pixelVector.y = xyzWorld.y;
 								pixelVector.z = xyzWorld.z;
@@ -1838,7 +1834,7 @@ void createFeaturesUsingBooleanMapUsingDepthMap(const int imageWidth, const int 
 								unitVector.y = (double)uvy;
 								unitVector.z = (double)uvz;
 
-								double bias = dotProduct(&pixelVector, &unitVector);
+								double bias = SHAREDvector.dotProduct(&pixelVector, &unitVector);
 								if(bias > maxDotProductResultArrayComplete[uvxIndex+1][uvyIndex+1][uvzIndex+1])
 								{
 									maxDotProductResultArrayComplete[uvxIndex+1][uvyIndex+1][uvzIndex+1] = bias;
@@ -1858,8 +1854,8 @@ void createFeaturesUsingBooleanMapUsingDepthMap(const int imageWidth, const int 
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			setBooleanMapValue(x, y, imageWidth, false, featuresUsingContrastMap);
-			setBooleanMapValue(x, y, imageWidth, false, featuresUsingContrastMapComplete);
+			RTpixelMaps.setBooleanMapValue(x, y, imageWidth, false, featuresUsingContrastMap);
+			RTpixelMaps.setBooleanMapValue(x, y, imageWidth, false, featuresUsingContrastMapComplete);
 		}
 	}
 
@@ -1875,7 +1871,7 @@ void createFeaturesUsingBooleanMapUsingDepthMap(const int imageWidth, const int 
 					{
 						if((maxDotProductResultXPosArray[uvxIndex][uvyIndex][uvzIndex] == x) && (maxDotProductResultYPosArray[uvxIndex][uvyIndex][uvzIndex] == y))
 						{
-							setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMap);
+							RTpixelMaps.setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMap);
 						}
 					}
 				}
@@ -1891,7 +1887,7 @@ void createFeaturesUsingBooleanMapUsingDepthMap(const int imageWidth, const int 
 						{
 							#ifdef OR_DEBUG
 							/*
-							double depth = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
+							double depth = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
 							vec xyzWorld;
 							getPointMapValue(x, y, imageWidth, pointMap, &xyzWorld);
 							cout << "\n createFeaturesUsingBooleanMapUsingDepthMap() FOUND FEATURE;" << endl;
@@ -1904,7 +1900,7 @@ void createFeaturesUsingBooleanMapUsingDepthMap(const int imageWidth, const int 
 							*/
 							#endif
 
-							setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMapComplete);
+							RTpixelMaps.setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMapComplete);
 						}
 					}
 				}
@@ -1915,7 +1911,7 @@ void createFeaturesUsingBooleanMapUsingDepthMap(const int imageWidth, const int 
 	//now we have the nearest 3 features to each corner using the outlined (common unit vector) scenarios
 }
 
-void createFeaturesUsingBooleanMapUsingPointMap(int imageWidth, const int imageHeight, const bool* booleanMap, double* pointMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3])
+void ORmethod3DODClass::createFeaturesUsingBooleanMapUsingPointMap(int imageWidth, const int imageHeight, const bool* booleanMap, double* pointMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3])
 {
 
 	//for general features;
@@ -1986,13 +1982,13 @@ void createFeaturesUsingBooleanMapUsingPointMap(int imageWidth, const int imageH
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			bool depthContrastBoolVal = getBooleanMapValue(x, y, imageWidth, booleanMap);
+			bool depthContrastBoolVal = RTpixelMaps.getBooleanMapValue(x, y, imageWidth, booleanMap);
 
 			double xWorld;
 			double yWorld;
 			double zWorld;
 			vec xyzWorld;
-			getPointMapValue(x, y, imageWidth, pointMap, &xyzWorld);
+			RTpixelMaps.getPointMapValue(x, y, imageWidth, pointMap, &xyzWorld);
 			xWorld = xyzWorld.x;
 			yWorld = xyzWorld.y;
 			zWorld = xyzWorld.z;
@@ -2026,7 +2022,7 @@ void createFeaturesUsingBooleanMapUsingPointMap(int imageWidth, const int imageH
 							unitVector.y = (double)uvy;
 							unitVector.z = (double)uvz;
 
-							double bias = dotProduct(&pixelVector, &unitVector);
+							double bias = SHAREDvector.dotProduct(&pixelVector, &unitVector);
 							if(bias > maxDotProductResultArray[uvxIndex][uvyIndex][uvzIndex])
 							{
 								maxDotProductResultArray[uvxIndex][uvyIndex][uvzIndex] = bias;
@@ -2069,7 +2065,7 @@ void createFeaturesUsingBooleanMapUsingPointMap(int imageWidth, const int imageH
 								unitVector.y = (double)uvy;
 								unitVector.z = (double)uvz;
 
-								double bias = dotProduct(&pixelVector, &unitVector);
+								double bias = SHAREDvector.dotProduct(&pixelVector, &unitVector);
 								if(bias > maxDotProductResultArrayComplete[uvxIndex+1][uvyIndex+1][uvzIndex+1])
 								{
 									#ifdef OR_DEBUG
@@ -2097,8 +2093,8 @@ void createFeaturesUsingBooleanMapUsingPointMap(int imageWidth, const int imageH
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			setBooleanMapValue(x, y, imageWidth, false, featuresUsingContrastMap);
-			setBooleanMapValue(x, y, imageWidth, false, featuresUsingContrastMapComplete);
+			RTpixelMaps.setBooleanMapValue(x, y, imageWidth, false, featuresUsingContrastMap);
+			RTpixelMaps.setBooleanMapValue(x, y, imageWidth, false, featuresUsingContrastMapComplete);
 		}
 	}
 
@@ -2114,7 +2110,7 @@ void createFeaturesUsingBooleanMapUsingPointMap(int imageWidth, const int imageH
 					{
 						if((maxDotProductResultXPosArray[uvxIndex][uvyIndex][uvzIndex] == x) && (maxDotProductResultYPosArray[uvxIndex][uvyIndex][uvzIndex] == y))
 						{
-							setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMap);
+							RTpixelMaps.setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMap);
 						}
 
 					}
@@ -2136,7 +2132,7 @@ void createFeaturesUsingBooleanMapUsingPointMap(int imageWidth, const int imageH
 							cout << "y = " << y << endl;
 							*/
 							#endif
-							setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMapComplete);
+							RTpixelMaps.setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMapComplete);
 						}
 					}
 				}
@@ -2148,7 +2144,7 @@ void createFeaturesUsingBooleanMapUsingPointMap(int imageWidth, const int imageH
 }
 
 
-void generateFeatureListUsingFeatureArrays(const int imageWidth, const int imageHeight, const int maxDotProductResultXposArrayComplete[3][3][3], const int maxDotProductResultYposArrayComplete[3][3][3], ORfeature* firstFeatureInList, const RTviewInfo* vi)
+void ORmethod3DODClass::generateFeatureListUsingFeatureArrays(const int imageWidth, const int imageHeight, const int maxDotProductResultXposArrayComplete[3][3][3], const int maxDotProductResultYposArrayComplete[3][3][3], ORfeature* firstFeatureInList, const RTviewInfo* vi)
 {
 	//First create a list of unique features
 
@@ -2173,7 +2169,7 @@ void generateFeatureListUsingFeatureArrays(const int imageWidth, const int image
 				corner.y = y;
 				corner.z = 0.0;
 
-				if(!checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD, false))
+				if(!ORoperations.checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD, false))
 				{//add corner to list
 
 					#ifdef OR_DEBUG
@@ -2214,7 +2210,7 @@ void generateFeatureListUsingFeatureArrays(const int imageWidth, const int image
 						currentFeatureInList->xViewport = x;
 						currentFeatureInList->yViewport = y;
 
-						copyVectorRT(&(currentFeatureInList->point), &corner);
+						SHAREDvector.copyVectorRT(&(currentFeatureInList->point), &corner);
 						ORfeature* newFeature = new ORfeature();
 						currentFeatureInList->next = newFeature;
 						currentFeatureInList = currentFeatureInList->next;
@@ -2228,7 +2224,7 @@ void generateFeatureListUsingFeatureArrays(const int imageWidth, const int image
 }
 
 
-void generateFeatureListUsingFeatureArraysUsingDepthMap(const int imageWidth, const int imageHeight, const double* depthMap, const int maxDotProductResultXposArrayComplete[3][3][3], const int maxDotProductResultYposArrayComplete[3][3][3], ORfeature* firstFeatureInList, RTviewInfo* vi)
+void ORmethod3DODClass::generateFeatureListUsingFeatureArraysUsingDepthMap(const int imageWidth, const int imageHeight, const double* depthMap, const int maxDotProductResultXposArrayComplete[3][3][3], const int maxDotProductResultYposArrayComplete[3][3][3], ORfeature* firstFeatureInList, RTviewInfo* vi)
 {
 	//First create a list of unique features
 
@@ -2248,14 +2244,14 @@ void generateFeatureListUsingFeatureArraysUsingDepthMap(const int imageWidth, co
 				#ifndef USE_ORIGINAL_WRONG_FEATURE_GEN
 				int x = maxDotProductResultXposArrayComplete[uvxIndex][uvyIndex][uvzIndex];
 				int y = maxDotProductResultYposArrayComplete[uvxIndex][uvyIndex][uvzIndex];
-				double z = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
+				double z = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
 
 				double xWorld;
 				double yWorld;
 				double zWorld;
 
 				vec xyzWorld;
-				calculatePointMapValue(x, y, z, &xyzWorld, vi);
+				RTscene.calculatePointMapValue(x, y, z, &xyzWorld, vi);
 
 				vec corner;
 				corner.x = xyzWorld.x;
@@ -2268,7 +2264,7 @@ void generateFeatureListUsingFeatureArraysUsingDepthMap(const int imageWidth, co
 				corner.z = z;
 				#endif
 
-				if(!checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD, false))
+				if(!ORoperations.checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD, false))
 				{//add corner to list
 
 					#ifdef OR_DEBUG
@@ -2309,7 +2305,7 @@ void generateFeatureListUsingFeatureArraysUsingDepthMap(const int imageWidth, co
 						currentFeatureInList->xViewport = x;
 						currentFeatureInList->yViewport = y;
 
-						copyVectorRT(&(currentFeatureInList->point), &corner);
+						SHAREDvector.copyVectorRT(&(currentFeatureInList->point), &corner);
 						ORfeature* newFeature = new ORfeature();
 						currentFeatureInList->next = newFeature;
 						currentFeatureInList = currentFeatureInList->next;
@@ -2322,7 +2318,7 @@ void generateFeatureListUsingFeatureArraysUsingDepthMap(const int imageWidth, co
 
 }
 
-void generateFeatureListUsingFeatureArraysUsingPointMap(int imageWidth, const int imageHeight, double* pointMap, const int maxDotProductResultXposArrayComplete[3][3][3], const int maxDotProductResultYposArrayComplete[3][3][3], ORfeature* firstFeatureInList)
+void ORmethod3DODClass::generateFeatureListUsingFeatureArraysUsingPointMap(int imageWidth, const int imageHeight, double* pointMap, const int maxDotProductResultXposArrayComplete[3][3][3], const int maxDotProductResultYposArrayComplete[3][3][3], ORfeature* firstFeatureInList)
 {
 	//First create a list of unique features
 
@@ -2346,7 +2342,7 @@ void generateFeatureListUsingFeatureArraysUsingPointMap(int imageWidth, const in
 				double yWorld;
 				double zWorld;
 				vec xyzWorld;
-				getPointMapValue(x, y, imageWidth, pointMap, &xyzWorld);
+				RTpixelMaps.getPointMapValue(x, y, imageWidth, pointMap, &xyzWorld);
 				xWorld = xyzWorld.x;
 				yWorld = xyzWorld.y;
 				zWorld = xyzWorld.z;
@@ -2356,7 +2352,7 @@ void generateFeatureListUsingFeatureArraysUsingPointMap(int imageWidth, const in
 				corner.y = yWorld;
 				corner.z = zWorld;
 
-				if(!checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_POINT_MAP_METHOD, true))
+				if(!ORoperations.checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_POINT_MAP_METHOD, true))
 				{//add corner to list
 
 					#ifdef OR_DEBUG
@@ -2397,7 +2393,7 @@ void generateFeatureListUsingFeatureArraysUsingPointMap(int imageWidth, const in
 						currentFeatureInList->xViewport = x;
 						currentFeatureInList->yViewport = y;
 
-						copyVectorRT(&(currentFeatureInList->point), &corner);
+						SHAREDvector.copyVectorRT(&(currentFeatureInList->point), &corner);
 						ORfeature* newFeature = new ORfeature();
 						currentFeatureInList->next = newFeature;
 						currentFeatureInList = currentFeatureInList->next;

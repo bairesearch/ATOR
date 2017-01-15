@@ -26,7 +26,7 @@
  * File Name: ORcomparison.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1a 14-January-2017
+ * Project Version: 3j1b 14-January-2017
  *
  *******************************************************************************/
 
@@ -37,6 +37,14 @@
 #include "ORglobalDefs.h"
 #include "SHAREDvars.h"
 #include "ORpolygonList.h"
+#include "ORimagecomparison.h"
+#include "ORdatabaseSQL.h"
+#include "ORdatabaseDecisionTree.h"
+#include "ORdatabaseFileIO.h"
+#include "ORpixelMaps.h"
+#include "ORoperations.h"
+#include "LDreferenceManipulation.h"
+#include "LDjpeg.h"
 
 //#ifdef OR_PRINT_ALGORITHM_AND_TIME_DETAILS
 extern long time5aNormalisedSnapshotComparisonLoadComparisonDataTotal;
@@ -47,33 +55,45 @@ extern long time5bNormalisedSnapshotComparisonCompareSnapshotDataIndex;
 //#endif
 
 //#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
-void fillDCTcoeffSelectionArrays();
+class ORcomparisonClass
+{
+	private: SHAREDvarsClass SHAREDvars;
+	private: SHAREDvectorClass SHAREDvector;
+	private: ORimagecomparisonClass ORimagecomparison;
+	private: RTpixelMapsClass RTpixelMaps;
+	private: ORoperationsClass ORoperations;
+	private: ORdatabaseSQLClass ORdatabaseSQL;
+	private: ORdatabaseDecisionTreeClass ORdatabaseDecisionTree;
+	private: ORdatabaseFileIOClass ORdatabaseFileIO;
+	private: LDjpegClass LDjpeg;
+	public: void fillDCTcoeffSelectionArrays();
 //#endif
 
 #ifdef OR_IMAGE_COMPARISON_SQL
-double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numberOfTestViewIndicies, int imageWidthFacingPoly, int imageHeightFacingPoly, const string testObjectNameArray[], const int numberOfTestObjects, const int dimension, const int numberOfTestZoomIndicies, const int trainOrTest, const int testViewNumber);
+	public: double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numberOfTestViewIndicies, int imageWidthFacingPoly, int imageHeightFacingPoly, const string testObjectNameArray[], const int numberOfTestObjects, const int dimension, const int numberOfTestZoomIndicies, const int trainOrTest, const int testViewNumber);
 #else
 //double compareNormalisedSnapshots(const int numberOfTrainPolys[], const int numberOfTestPolys[], const int numberOfTrainViewIndicies, const int numberOfTestViewIndicies, int imageWidthFacingPoly, int imageHeightFacingPoly, const string trainObjectNameArray[], const int numberOfTrainObjects, const string testObjectNameArray[], const int numberOfTestObjects, const int dimension, const int numberOfTrainZoomIndicies, const int numberOfTestZoomIndicies, const int testViewNumber);
 #endif
 
 //#ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING
-void convertNormalisedHueDeviationMapTo3x8bitMap(int imageWidth, const int imageHeight, double* rgbDevIEnormalisedHueContrastMapSmallFacingPoly, unsigned char* rgbDev8BitSmallMapFacingPoly);
-	void cullAndBinNormalisedHueContrast(vec* normalisedHueContrast, colour* culledNormalisedHueContrast);
+	public: void convertNormalisedHueDeviationMapTo3x8bitMap(int imageWidth, const int imageHeight, double* rgbDevIEnormalisedHueContrastMapSmallFacingPoly, unsigned char* rgbDev8BitSmallMapFacingPoly);
+		public: void cullAndBinNormalisedHueContrast(vec* normalisedHueContrast, colour* culledNormalisedHueContrast);
 //#endif
 //#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
-void convertDCTcoeffIndividualArraysToConcatonatedSignedDCTcoeffArray(signed char dctCoeffArrayY[], signed char dctCoeffArrayYcr[], signed char dctCoeffArrayYcb[], signed char concatonatedSignedDctCoeffArray[]);
+	private: void convertDCTcoeffIndividualArraysToConcatonatedSignedDCTcoeffArray(signed char dctCoeffArrayY[], signed char dctCoeffArrayYcr[], signed char dctCoeffArrayYcb[], signed char concatonatedSignedDctCoeffArray[]);
 //#endif
 
-void convertImageFileType(const string* imageBaseFileName, const string* imageBaseFileNameConverted, const string imageExtension, const string imageExtensionConverted);
+	private: void convertImageFileType(const string* imageBaseFileName, const string* imageBaseFileNameConverted, const string imageExtension, const string imageExtensionConverted);
 #ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
-void createGeoTableHTMLfromFeatureList(const ORfeature* firstFeatureInNearestFeatureList, const bool applyBinning, string* geoTableHTMLoutputString);
+	private: void createGeoTableHTMLfromFeatureList(const ORfeature* firstFeatureInNearestFeatureList, const bool applyBinning, string* geoTableHTMLoutputString);
 #endif
 /*
 #ifdef DEBUG_OR_OUTPUT_DT_BIN
 bool determineIfGeoBinningIdenticalMatchFound(ORfeature* firstFeatureInNearestFeatureList, int pBinxRequirement[], int pBinyRequirement[]);
 #endif
 */
-void readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(const string* rgbMapSmallFacingPolyFileNamePPM, const string* rgbMapSmallFacingPolyFileNameJPEG, signed char* concatonatedSignedDctCoeffArrayRequirement, const bool printOutput);
+	public: void readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(const string* rgbMapSmallFacingPolyFileNamePPM, const string* rgbMapSmallFacingPolyFileNameJPEG, signed char* concatonatedSignedDctCoeffArrayRequirement, const bool printOutput);
+};
 
 
 #endif

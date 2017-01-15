@@ -26,7 +26,7 @@
  * File Name: ORpolygonList.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1a 14-January-2017
+ * Project Version: 3j1b 14-January-2017
  *
  *******************************************************************************/
 
@@ -37,6 +37,7 @@
 
 #include "SHAREDvars.h"
 #include "ORglobalDefs.h"
+#include "SHAREDvector.h"
 
 class ORobjectReferenceList{
 private:
@@ -230,22 +231,27 @@ public:
 	ORmeshPoint* next;
 };
 
-ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const int x, const int y, bool* hasFoundMeshPoint);
-ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const vec* point, bool* hasFoundMeshPoint, const int meshZoneLimit);
-ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const int position);
+class ORpolygonListClass
+{
+	private: SHAREDvectorClass SHAREDvector;
+	private: SHAREDvarsClass SHAREDvars;
+	public: ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const int x, const int y, bool* hasFoundMeshPoint);
+	public: ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const vec* point, bool* hasFoundMeshPoint, const int meshZoneLimit);
+	public: ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const int position);
 
 //#ifdef OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST
-void calculateMeshPointNormal(ORmeshPoint* meshPoint);
-void calculateMeshPointNormalContrast(ORmeshPoint* meshPoint);
+	public: void calculateMeshPointNormal(ORmeshPoint* meshPoint);
+	public: void calculateMeshPointNormalContrast(ORmeshPoint* meshPoint);
 //#ifdef OR_USE_CONTRAST_CALC_METHOD_C
-void calculateMeshPointInterpixelNormal(ORmeshPoint* meshPoint);
-void calculateMeshPointInterpixelNormalContrast(ORmeshPoint* meshPoint);
-void calculateMeshPointInterpixelLuminosityContrast(ORmeshPoint* meshPoint);
-void calculateMeshPointInterpixelDepth(ORmeshPoint* meshPoint);
-void calculateMeshPointInterpixelDepthWithForegroundDepthCheck(ORmeshPoint* meshPoint);
+	public: void calculateMeshPointInterpixelNormal(ORmeshPoint* meshPoint);
+	public: void calculateMeshPointInterpixelNormalContrast(ORmeshPoint* meshPoint);
+	public: void calculateMeshPointInterpixelLuminosityContrast(ORmeshPoint* meshPoint);
+	public: void calculateMeshPointInterpixelDepth(ORmeshPoint* meshPoint);
+	public: void calculateMeshPointInterpixelDepthWithForegroundDepthCheck(ORmeshPoint* meshPoint);
 //#endif
 //#endif
-void calculateMeshPointLuminosityContrast(ORmeshPoint* meshPoint);
+	public: void calculateMeshPointLuminosityContrast(ORmeshPoint* meshPoint);
+};
 
 
 

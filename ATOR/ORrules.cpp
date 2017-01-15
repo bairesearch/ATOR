@@ -26,21 +26,17 @@
  * File Name: ORrules.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3j1a 14-January-2017
+ * Project Version: 3j1b 14-January-2017
  *
  *******************************************************************************/
 
 
 #include "ORrules.h"
-#include "ORglobalDefs.h"
-#include "XMLrulesClass.h"
-#include "RTglobalDefs.h"
-#include "SHAREDvars.h"
 
 
 
 
-void fillInORrulesExternVariables()
+void ORrulesClass::fillInORrulesExternVariables()
 {
 
 
@@ -250,48 +246,48 @@ void fillInORrulesExternVariables()
 
 		if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_DECISION_TREE_NAME)
 		{
-			OR_IMAGE_COMPARISON_DECISION_TREE = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_IMAGE_COMPARISON_DECISION_TREE = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_NAME)
 		{
-			OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING =  convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING =  SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING_NAME)
 		{
-			OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING =  convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING =  SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NAME)
 		{
-			OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING =  convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING =  SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON_NAME)
 		{
-			OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON =  convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON =  SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NAME)
 		{
-			OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING =  convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING =  SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_DEV_BINNING_NAME)
 		{
-			OR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_DEV_BINNING =  convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_DEV_BINNING =  SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NAME)
 		{
-			OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING =  convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING =  SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_SQL_SMALL_HUE_DEV_MAP_COMPARISON_NAME)
 		{
-			OR_IMAGE_COMPARISON_SQL_SMALL_HUE_DEV_MAP_COMPARISON =  convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_IMAGE_COMPARISON_SQL_SMALL_HUE_DEV_MAP_COMPARISON =  SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_SQL_GET_TEST_DATA_FROM_SQL_NAME)
 		{
-			OR_IMAGE_COMPARISON_SQL_GET_TEST_DATA_FROM_SQL =  convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_IMAGE_COMPARISON_SQL_GET_TEST_DATA_FROM_SQL =  SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_NAME)
 		{
-			OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE =  convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE =  SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 
 
@@ -299,28 +295,28 @@ void fillInORrulesExternVariables()
 
 		else if(currentReferenceRulesClass->name == OR_USE_FIND_CORNER_FEATURES_NAME)
 		{
-			OR_USE_FIND_CORNER_FEATURES = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_USE_FIND_CORNER_FEATURES = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_NAME)
 		{
-			OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES_NAME)
 		{
-			OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES =  convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES =  SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY_NAME)
 		{
-			OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY =  convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY =  SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 
 		else if(currentReferenceRulesClass->name == OR_METHOD_USE_MESH_LISTS_NAME)
 		{
-			OR_METHOD_USE_MESH_LISTS = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD_USE_MESH_LISTS = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD_3DOD_USE_MESH_LISTS_COMBINED_NAME)
 		{
-			OR_METHOD_3DOD_USE_MESH_LISTS_COMBINED =  convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD_3DOD_USE_MESH_LISTS_COMBINED =  SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD_3DOD_USE_ADVANCED_INTERP_MESH_JOINING_MAXIMUM_RECONCILIATION_DISTANCE_NAME)
 		{
@@ -328,7 +324,7 @@ void fillInORrulesExternVariables()
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD_2DOD_USE_MESH_LISTS_COMBINED_NAME)
 		{
-			OR_METHOD_2DOD_USE_MESH_LISTS_COMBINED =  convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD_2DOD_USE_MESH_LISTS_COMBINED =  SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 
 		else if(currentReferenceRulesClass->name == MIN_REGION_SIZE_TO_CALCULATE_CENTRED_FEATURE_NAME)
@@ -341,7 +337,7 @@ void fillInORrulesExternVariables()
 		}
 		else if(currentReferenceRulesClass->name == OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES_DO_NOT_USE_UNCHANGING_CASE_NAME)
 		{
-			OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES_DO_NOT_USE_UNCHANGING_CASE = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES_DO_NOT_USE_UNCHANGING_CASE = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD_3DOD_CONTINUOUS_EDGE_MAX_NOISE_NAME)
 		{
@@ -370,11 +366,11 @@ void fillInORrulesExternVariables()
 
 		else if(currentReferenceRulesClass->name == OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST_NAME)
 		{
-			OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION_NAME)
 		{
-			OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 
 		else if(currentReferenceRulesClass->name == OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE_NAME)
@@ -387,7 +383,7 @@ void fillInORrulesExternVariables()
 
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_COLOUR_INFORMATION_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_COLOUR_INFORMATION = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_COLOUR_INFORMATION = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 
 
@@ -397,11 +393,11 @@ void fillInORrulesExternVariables()
 
 		else if(currentReferenceRulesClass->name == OR_USE_CONTRAST_CALC_METHOD_C_NAME)
 		{
-			OR_USE_CONTRAST_CALC_METHOD_C =  convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_USE_CONTRAST_CALC_METHOD_C =  SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_USE_CONTRAST_CALC_METHOD_B_NAME)
 		{
-			OR_USE_CONTRAST_CALC_METHOD_B =  convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_USE_CONTRAST_CALC_METHOD_B =  SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == LUMINOSITY_CONTRAST_FRACTION_THRESHOLD_NAME)
 		{
@@ -436,14 +432,14 @@ void fillInORrulesExternVariables()
 
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_NEVER_CULL_SNAPSHOTS_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_NEVER_CULL_SNAPSHOTS = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_IMAGE_COMPARISON_PATTERN_NEVER_CULL_SNAPSHOTS = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 
 		//OR_METHOD...
 
 		else if(currentReferenceRulesClass->name == OR_METHOD_SUPPORT_HIGH_LEVEL_SCALING_NAME)
 		{
-			OR_METHOD_SUPPORT_HIGH_LEVEL_SCALING = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD_SUPPORT_HIGH_LEVEL_SCALING = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TRAIN_NAME)
 		{
@@ -545,11 +541,11 @@ void fillInORrulesExternVariables()
 		}
 		else if(currentReferenceRulesClass->name == USE_EDGISE_3X3_KERNEL_NAME)
 		{
-			USE_EDGISE_3X3_KERNEL = convertStringToBool(currentReferenceRulesClass->stringValue);
+			USE_EDGISE_3X3_KERNEL = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == USE_EDGISE_5X5_KERNEL_NAME)
 		{
-			USE_EDGISE_5X5_KERNEL = convertStringToBool(currentReferenceRulesClass->stringValue);
+			USE_EDGISE_5X5_KERNEL = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == A3A4_COEFFICIENT_NEGATIVE_CURVATURE_POINT_THRESHOLD_5X5_KERNEL_NAME)
 		{
@@ -586,31 +582,31 @@ void fillInORrulesExternVariables()
 
 		else if(currentReferenceRulesClass->name == OR_PRINT_ALGORITHM_PROGRESS_NAME)
 		{
-			OR_PRINT_ALGORITHM_PROGRESS = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_PRINT_ALGORITHM_PROGRESS = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_PRINT_ALGORITHM_AND_TIME_DETAILS_NAME)
 		{
-			OR_PRINT_ALGORITHM_AND_TIME_DETAILS = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_PRINT_ALGORITHM_AND_TIME_DETAILS = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL_NAME)
 		{
-			OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML_NAME)
 		{
-			OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL_NAME)
 		{
-			OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS_NAME)
 		{
-			OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == DEMO_TO_CUSTOMER_HIDE_T_FROM_VIEW_NAME)
 		{
-			DEMO_TO_CUSTOMER_HIDE_T_FROM_VIEW = convertStringToBool(currentReferenceRulesClass->stringValue);
+			DEMO_TO_CUSTOMER_HIDE_T_FROM_VIEW = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_GENERATE_IMAGE_COMPARITOR_RESULTS_FNAME_NAME)
 		{
@@ -628,11 +624,11 @@ void fillInORrulesExternVariables()
 
 		else if(currentReferenceRulesClass->name == OR_METHOD_3DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST_NAME)
 		{
-			OR_METHOD_3DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD_3DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD_2DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST_NAME)
 		{
-			OR_METHOD_2DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD_2DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == POLYGON_MIN_ANGLE_DEGREES_NAME)
 		{
@@ -664,11 +660,11 @@ void fillInORrulesExternVariables()
 
 		else if(currentReferenceRulesClass->name == OR_METHOD_ONLY_USE_ONE_POLY_PER_FEATURE_FAST_BUT_LOW_REDUNDANCY_NAME)
 		{
-			OR_METHOD_ONLY_USE_ONE_POLY_PER_FEATURE_FAST_BUT_LOW_REDUNDANCY = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD_ONLY_USE_ONE_POLY_PER_FEATURE_FAST_BUT_LOW_REDUNDANCY = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD_ONLY_USE_TWO_NEAREST_FEATURES_TO_COMPARE_FAST_BUT_LOW_REDUNDANCY_NAME)
 		{
-			OR_METHOD_ONLY_USE_TWO_NEAREST_FEATURES_TO_COMPARE_FAST_BUT_LOW_REDUNDANCY = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD_ONLY_USE_TWO_NEAREST_FEATURES_TO_COMPARE_FAST_BUT_LOW_REDUNDANCY = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR_NAME)
 		{
@@ -692,7 +688,7 @@ void fillInORrulesExternVariables()
 
 		else if(currentReferenceRulesClass->name == OR_RULES_XML_SPARE_PARAMETER_1_NAME)
 		{
-			OR_RULES_XML_SPARE_PARAMETER_1 = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_RULES_XML_SPARE_PARAMETER_1 = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_RULES_XML_SPARE_PARAMETER_2_NAME)
 		{
@@ -1381,43 +1377,43 @@ void fillInORrulesExternVariables()
 		//OR_FEATURES...
 		if(currentReferenceRulesClass->name == OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_NAME)
 		{
-			OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD2DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_NAME)
 		{
-			OR_METHOD2DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD2DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED_NAME)
 		{
-			OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL_NAME)
 		{
-			OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD2DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL_NAME)
 		{
-			OR_METHOD2DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD2DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_TRACE_CONTIGUOUS_REGION_BOUNDARY_DIAGONALS_NAME)
 		{
-			OR_TRACE_CONTIGUOUS_REGION_BOUNDARY_DIAGONALS = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_TRACE_CONTIGUOUS_REGION_BOUNDARY_DIAGONALS = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_TRACE_CONTIGUOUS_REGION_BOUNDARY_RESET_EDGES_DYNAMICALLY_OPT_NAME)
 		{
-			OR_TRACE_CONTIGUOUS_REGION_BOUNDARY_RESET_EDGES_DYNAMICALLY_OPT = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_TRACE_CONTIGUOUS_REGION_BOUNDARY_RESET_EDGES_DYNAMICALLY_OPT = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD3DOD_USE_3D_EDGE_POINTS_CALCULATED_DURING_QUADRATIC_FIT_INSTEAD_OF_DURING_EDGE_TRACE_NAME)
 		{
-			OR_METHOD3DOD_USE_3D_EDGE_POINTS_CALCULATED_DURING_QUADRATIC_FIT_INSTEAD_OF_DURING_EDGE_TRACE = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD3DOD_USE_3D_EDGE_POINTS_CALCULATED_DURING_QUADRATIC_FIT_INSTEAD_OF_DURING_EDGE_TRACE = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES_TRACE_MIN_MAX_NOT_TESTED_YET_NAME)
 		{
-			OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES_TRACE_MIN_MAX_NOT_TESTED_YET = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES_TRACE_MIN_MAX_NOT_TESTED_YET = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_CREATE_INTERPOLATED_MESH_REFERENCE_LIST_USING_MESH_LIST_NAME)
 		{
-			OR_CREATE_INTERPOLATED_MESH_REFERENCE_LIST_USING_MESH_LIST = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_CREATE_INTERPOLATED_MESH_REFERENCE_LIST_USING_MESH_LIST = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 
 
@@ -1425,7 +1421,7 @@ void fillInORrulesExternVariables()
 		//OR_METHOD3DOD FEATURE...
 		else if(currentReferenceRulesClass->name == OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST_NAME)
 		{
-			OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 
 
@@ -1454,11 +1450,11 @@ void fillInORrulesExternVariables()
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_MATCHED_LUM_CHROMA_SUBSAMPLING_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_MATCHED_LUM_CHROMA_SUBSAMPLING = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_MATCHED_LUM_CHROMA_SUBSAMPLING = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ENHANCED_CHROMA_SUBSAMPLING_NAME)
 		{
-			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ENHANCED_CHROMA_SUBSAMPLING = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ENHANCED_CHROMA_SUBSAMPLING = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y_NAME)
 		{
@@ -1693,18 +1689,18 @@ void fillInORrulesExternVariables()
 
 		else if(currentReferenceRulesClass->name == OR_METHOD_DO_NOT_CULL_SNAPSHOT_NAME)
 		{
-			OR_METHOD_DO_NOT_CULL_SNAPSHOT = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD_DO_NOT_CULL_SNAPSHOT = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD_DO_NOT_CULL_SNAPSHOT_EXTREME_NAME)
 		{
-			OR_METHOD_DO_NOT_CULL_SNAPSHOT_EXTREME = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD_DO_NOT_CULL_SNAPSHOT_EXTREME = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 
 		//OR_METHOD...
 
 		else if(currentReferenceRulesClass->name == OR_METHOD2DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS_NAME)
 		{
-			OR_METHOD2DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD2DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD2DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS_NAME)
 		{
@@ -1712,7 +1708,7 @@ void fillInORrulesExternVariables()
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD3DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS_NAME)
 		{
-			OR_METHOD3DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS = convertStringToBool(currentReferenceRulesClass->stringValue);
+			OR_METHOD3DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS = SHAREDvars.convertStringToBool(currentReferenceRulesClass->stringValue);
 		}
 		else if(currentReferenceRulesClass->name == OR_METHOD3DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS_NAME)
 		{
@@ -1770,8 +1766,8 @@ void fillInORrulesExternVariables()
 	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET = (OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS/2);	//value to add to signed value before binning
 	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS = (OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCr + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCb);	 	//only compare a selection of 15 of the 64x3 DCT coefficients (of the Y, Cr and Cb blocks) {64 bit - Y DCT; 5bit[signed]*3 + YCr DCT; 5bit[signed]*3 + YCb DCT; 5bit[signed]*7}   - OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT0 d0, OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT1 d1, OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT2 d2, OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT3 d3 ... OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT15 d15
 
-	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING = string("-quality ") + convertIntToString(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY) + "%";
-	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED_STRING = string("-quality ") + convertIntToString(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED) + "%";
+	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING = string("-quality ") + SHAREDvars.convertIntToString(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY) + "%";
+	OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED_STRING = string("-quality ") + SHAREDvars.convertIntToString(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED) + "%";
 
 	if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_MATCHED_LUM_CHROMA_SUBSAMPLING)
 	{
@@ -1913,13 +1909,13 @@ void fillInORrulesExternVariables()
 	OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM = (OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE);
 
 	#ifdef DEBUG_OR_PRINT_OR_RULES_EXTERN_VARS
-	printORrulesExternVariables();
+	this->printORrulesExternVariables();
 	#endif
 
 }
 
 
-void printORrulesExternVariables()
+void ORrulesClass::printORrulesExternVariables()
 {
 
 	//OR_IMAGE_COMPARISON_DECISION_TREE...

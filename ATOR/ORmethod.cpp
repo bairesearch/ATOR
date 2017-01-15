@@ -26,33 +26,14 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1a 14-January-2017
+ * Project Version: 3j1b 14-January-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
 
 #include "ORmethod.h"
-#include "ORglobalDefs.h"
-#include "ORmethod3DOD.h"
-#include "ORmethod2DOD.h"
-#include "ORpixelMaps.h"
-#include "ORoperations.h"
-#include "ORfeatureGeneration.h"
-#include "ORquadraticFit.h"
-#include "RTscene.h"
-#include "LDparser.h"
-#include "LDreferenceManipulation.h"
-#include "RTreferenceManipulation.h"
-#include "SHAREDvector.h"
-#include "ORcomparison.h"
-#include "ORimagecomparison.h"
-#include "ORdatabaseFileIO.h"
 
 #ifdef OR_IMAGE_COMPARISON_SQL
-#include "LDmysql.h";
-#include "LDjpeg.h";
-#include "ORdatabaseSQL.h"
-#include "ORdatabaseDecisionTree.h"
 #endif
 
 /*
@@ -65,7 +46,6 @@
 #endif
 */
 #ifdef USE_OPENGL
-	#include "LDopengl.h"
 #endif
 
 #ifdef OR_TEST_ORI_AND_POS_NOISE_DURING_TRANING_AND_TESTING
@@ -146,7 +126,7 @@ long time5NormalisedSnapshotComparisonIndex = 0.0;
 
 
 
-bool ORTHmethod(int dimension, const int numberOfTrainObjects, string trainObjectNameArray[], const int numberOfTestObjects, string testObjectNameArray[], int* numberOfTrainPolys, int* numberOfTestPolys, const int objectDataSource, RTviewInfo* viTrain, RTviewInfo* viTest, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrain, const int maxNumberOfPolygonsTest, const int numberOfTrainViewIndiciesPerObject, const int numberOfTestViewIndiciesPerObject, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, int numberOfTestZoomIndicies)
+bool ORmethodClass::ORTHmethod(int dimension, const int numberOfTrainObjects, string trainObjectNameArray[], const int numberOfTestObjects, string testObjectNameArray[], int* numberOfTrainPolys, int* numberOfTestPolys, const int objectDataSource, RTviewInfo* viTrain, RTviewInfo* viTest, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrain, const int maxNumberOfPolygonsTest, const int numberOfTrainViewIndiciesPerObject, const int numberOfTestViewIndiciesPerObject, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, int numberOfTestZoomIndicies)
 {
 	bool result = true;
 
@@ -157,7 +137,7 @@ bool ORTHmethod(int dimension, const int numberOfTrainObjects, string trainObjec
 	#define OR_MYSQL_USER_NAME_DEFAULT_NULL "null"
 	#define OR_MYSQL_USER_PASSWORD_DEFAULT_NULL "null"
 
-	if(!ORmethodInitialise(imageWidthFacingPoly, imageHeightFacingPoly, true, true, true, dimension, OR_MYSQL_IP_ADDRESS_DEFAULT_NULL, OR_MYSQL_USER_NAME_DEFAULT_NULL, OR_MYSQL_USER_PASSWORD_DEFAULT_NULL))
+	if(!this->ORmethodInitialise(imageWidthFacingPoly, imageHeightFacingPoly, true, true, true, dimension, OR_MYSQL_IP_ADDRESS_DEFAULT_NULL, OR_MYSQL_USER_NAME_DEFAULT_NULL, OR_MYSQL_USER_PASSWORD_DEFAULT_NULL))
 	{
 		result = false;
 	}
@@ -166,7 +146,7 @@ bool ORTHmethod(int dimension, const int numberOfTrainObjects, string trainObjec
 			#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 			if(dimension == OR_METHOD2DOD_DIMENSIONS)
 			{
-				setNoiseArraysMethod2DOD();		//Advded 5 Nov 08
+				this->setNoiseArraysMethod2DOD();		//Advded 5 Nov 08
 			}
 			else if(dimension == OR_METHOD3DOD_DIMENSIONS)
 			{
@@ -182,7 +162,7 @@ bool ORTHmethod(int dimension, const int numberOfTrainObjects, string trainObjec
 #endif
 
 	//train
-	if(!ORmethodTrainOrTest(dimension, numberOfTrainObjects, trainObjectNameArray, objectDataSource, viTrain, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTrain, numberOfTrainViewIndiciesPerObject, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTrainPolys, true, numberOfTrainZoomIndicies, firstViewNumberNotUsed, multiViewListStringNotUsed))
+	if(!this->ORmethodTrainOrTest(dimension, numberOfTrainObjects, trainObjectNameArray, objectDataSource, viTrain, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTrain, numberOfTrainViewIndiciesPerObject, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTrainPolys, true, numberOfTrainZoomIndicies, firstViewNumberNotUsed, multiViewListStringNotUsed))
 	{
 		result = false;
 	}
@@ -197,7 +177,7 @@ bool ORTHmethod(int dimension, const int numberOfTrainObjects, string trainObjec
 				#ifdef OR_DEBUG_WORRY_ABOUT_DISPLAYING_2D_NET_PROPERLY
 					numberOfOutputNeurons =	(int)pow(((int)sqrt(numberOfOutputNeurons)+1), 2.0);	//this is used for 2D visualisation purposes only									//required for 2D visualisation
 				#endif
-					firstOutputNeuronInNetwork = initialiseNormalisedSnapshotNeuralNetwork(firstInputNeuronInNetwork, &numberOfInputNeurons, numberOfOutputNeurons, imageWidthFacingPoly, imageHeightFacingPoly);
+					firstOutputNeuronInNetwork = this->initialiseNormalisedSnapshotNeuralNetwork(firstInputNeuronInNetwork, &numberOfInputNeurons, numberOfOutputNeurons, imageWidthFacingPoly, imageHeightFacingPoly);
 
 					cout << "numberOfInputNeurons = " << numberOfInputNeurons << endl;
 					cout << "numberOfOutputNeurons = " << numberOfOutputNeurons << endl;
@@ -221,21 +201,21 @@ bool ORTHmethod(int dimension, const int numberOfTrainObjects, string trainObjec
 				#endif
 
 	//test
-	if(!ORmethodTrainOrTest(dimension, numberOfTestObjects, testObjectNameArray, objectDataSource, viTest, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTest, numberOfTestViewIndiciesPerObject, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestPolys, false, numberOfTestZoomIndicies, firstViewNumberNotUsed, multiViewListStringNotUsed))
+	if(!this->ORmethodTrainOrTest(dimension, numberOfTestObjects, testObjectNameArray, objectDataSource, viTest, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTest, numberOfTestViewIndiciesPerObject, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestPolys, false, numberOfTestZoomIndicies, firstViewNumberNotUsed, multiViewListStringNotUsed))
 	{
 		result = false;
 	}
 
 	#ifdef OR_IMAGE_COMPARISON_SQL
-	if(!ORmethodCompareTestWithTrain(dimension, numberOfTestObjects, testObjectNameArray, imageWidthFacingPoly, imageHeightFacingPoly, numberOfTestPolys, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestZoomIndicies, TEST, 0))
+	if(!this->ORmethodCompareTestWithTrain(dimension, numberOfTestObjects, testObjectNameArray, imageWidthFacingPoly, imageHeightFacingPoly, numberOfTestPolys, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestZoomIndicies, TEST, 0))
 	#else
-	if(!ORmethodCompareTestWithTrain(dimension, numberOfTrainObjects, trainObjectNameArray, numberOfTestObjects, testObjectNameArray, imageWidthFacingPoly, imageHeightFacingPoly, numberOfTrainPolys, numberOfTestPolys, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTrainZoomIndicies, numberOfTestZoomIndicies, 0))
+	if(!this->ORmethodCompareTestWithTrain(dimension, numberOfTrainObjects, trainObjectNameArray, numberOfTestObjects, testObjectNameArray, imageWidthFacingPoly, imageHeightFacingPoly, numberOfTrainPolys, numberOfTestPolys, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTrainZoomIndicies, numberOfTestZoomIndicies, 0))
 	#endif
 	{
 		result = false;
 	}
 
-	if(!ORmethodExit())
+	if(!this->ORmethodExit())
 	{
 		result = false;
 	}
@@ -246,23 +226,23 @@ bool ORTHmethod(int dimension, const int numberOfTrainObjects, string trainObjec
 #ifdef OR_IMAGE_COMPARISON_SQL
 
 
-bool ORmethodTrain(int dimension, const int numberOfTrainObjects, string trainObjectNameArray[], int* numberOfTrainPolys, const int objectDataSource, RTviewInfo* viTrain, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrain, const int numberOfTrainViewIndiciesPerObject, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, const int trainOrTest, const string sqlIPaddress, const string sqlUsername, const string sqlPassword, const bool clearTrainTable, const int viewNumber, const string multViewListFileName)
+bool ORmethodClass::ORmethodTrain(int dimension, const int numberOfTrainObjects, string trainObjectNameArray[], int* numberOfTrainPolys, const int objectDataSource, RTviewInfo* viTrain, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrain, const int numberOfTrainViewIndiciesPerObject, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, const int trainOrTest, const string sqlIPaddress, const string sqlUsername, const string sqlPassword, const bool clearTrainTable, const int viewNumber, const string multViewListFileName)
 {
 	bool result = true;
 
-	if(!ORmethodInitialise(imageWidthFacingPoly, imageHeightFacingPoly, true, true, clearTrainTable, dimension, sqlIPaddress, sqlUsername, sqlPassword))
+	if(!this->ORmethodInitialise(imageWidthFacingPoly, imageHeightFacingPoly, true, true, clearTrainTable, dimension, sqlIPaddress, sqlUsername, sqlPassword))
 	{
 		result = false;
 	}
 
 	//train
-	if(!ORmethodTrainOrTest(dimension, numberOfTrainObjects, trainObjectNameArray, objectDataSource, viTrain, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTrain, numberOfTrainViewIndiciesPerObject, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTrainPolys, trainOrTest, numberOfTrainZoomIndicies, viewNumber, multViewListFileName))
+	if(!this->ORmethodTrainOrTest(dimension, numberOfTrainObjects, trainObjectNameArray, objectDataSource, viTrain, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTrain, numberOfTrainViewIndiciesPerObject, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTrainPolys, trainOrTest, numberOfTrainZoomIndicies, viewNumber, multViewListFileName))
 	{
 		result = false;
 	}
 
 
-	if(!ORmethodExit())
+	if(!this->ORmethodExit())
 	{
 		result = false;
 	}
@@ -270,28 +250,28 @@ bool ORmethodTrain(int dimension, const int numberOfTrainObjects, string trainOb
 	return result;
 }
 
-bool ORmethodTest(int dimension, const int numberOfTestObjects, string testObjectNameArray[], int* numberOfTestPolys, const int objectDataSource, RTviewInfo* viTest, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTest, const int numberOfTestViewIndiciesPerObject, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTestZoomIndicies, const int trainOrTest, const string sqlIPaddress, const string sqlUsername, const string sqlPassword, const bool clearTrainTable, const int viewNumber, const string multViewListFileName)
+bool ORmethodClass::ORmethodTest(int dimension, const int numberOfTestObjects, string testObjectNameArray[], int* numberOfTestPolys, const int objectDataSource, RTviewInfo* viTest, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTest, const int numberOfTestViewIndiciesPerObject, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTestZoomIndicies, const int trainOrTest, const string sqlIPaddress, const string sqlUsername, const string sqlPassword, const bool clearTrainTable, const int viewNumber, const string multViewListFileName)
 {
 	bool result = true;
 
-	if(!ORmethodInitialise(imageWidthFacingPoly, imageHeightFacingPoly, true, true, false, dimension, sqlIPaddress, sqlUsername, sqlPassword))
+	if(!this->ORmethodInitialise(imageWidthFacingPoly, imageHeightFacingPoly, true, true, false, dimension, sqlIPaddress, sqlUsername, sqlPassword))
 	{
 		result = false;
 	}
 
 	//test
-	if(!ORmethodTrainOrTest(dimension, numberOfTestObjects, testObjectNameArray, objectDataSource, viTest, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTest, numberOfTestViewIndiciesPerObject, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestPolys, trainOrTest, numberOfTestZoomIndicies, viewNumber, multViewListFileName))
+	if(!this->ORmethodTrainOrTest(dimension, numberOfTestObjects, testObjectNameArray, objectDataSource, viTest, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTest, numberOfTestViewIndiciesPerObject, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestPolys, trainOrTest, numberOfTestZoomIndicies, viewNumber, multViewListFileName))
 	{
 		result = false;
 	}
 	cout << "ORmethodTrainOrTest complete" << endl;
 
-	if(!ORmethodCompareTestWithTrain(dimension, numberOfTestObjects, testObjectNameArray, imageWidthFacingPoly, imageHeightFacingPoly, numberOfTestPolys, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestZoomIndicies, trainOrTest, viewNumber))
+	if(!this->ORmethodCompareTestWithTrain(dimension, numberOfTestObjects, testObjectNameArray, imageWidthFacingPoly, imageHeightFacingPoly, numberOfTestPolys, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestZoomIndicies, trainOrTest, viewNumber))
 	{
 		result = false;
 	}
 
-	if(!ORmethodExit())
+	if(!this->ORmethodExit())
 	{
 		result = false;
 	}
@@ -305,7 +285,7 @@ bool ORmethodTest(int dimension, const int numberOfTestObjects, string testObjec
 
 
 
-bool ORmethodInitialise(const int imageWidthFacingPoly, const int imageHeightFacingPoly, const bool initialiseTrain, const bool initialiseTest, const bool clearTrainTable, const int dimension, const string sqlIPaddress, const string sqlUsername, const string sqlPassword)
+bool ORmethodClass::ORmethodInitialise(const int imageWidthFacingPoly, const int imageHeightFacingPoly, const bool initialiseTrain, const bool initialiseTest, const bool clearTrainTable, const int dimension, const string sqlIPaddress, const string sqlUsername, const string sqlPassword)
 {
 	int cropWidth;
 	int cropHeight;
@@ -326,7 +306,7 @@ bool ORmethodInitialise(const int imageWidthFacingPoly, const int imageHeightFac
 		cout << "OpenGL Hardware Acceleration: preconditions" << endl;
 		cout << "\t 1. freeglut is installed" << endl;
 	}
-	initiateOpenGL(imageWidthFacingPoly+(cropWidth*2), imageHeightFacingPoly+(cropHeight*2), OR_SNAPSHOT_WINDOW_POSITION_X, OR_SNAPSHOT_WINDOW_POSITION_Y, OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS);
+	LDopengl.initiateOpenGL(imageWidthFacingPoly+(cropWidth*2), imageHeightFacingPoly+(cropHeight*2), OR_SNAPSHOT_WINDOW_POSITION_X, OR_SNAPSHOT_WINDOW_POSITION_Y, OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS);
 	#endif
 
 	if(OR_IMAGE_COMPARISON_DECISION_TREE)
@@ -348,13 +328,13 @@ bool ORmethodInitialise(const int imageWidthFacingPoly, const int imageHeightFac
 	char* sqlipaddressCharStar = const_cast<char*>(sqlIPaddress.c_str());
 	char* sqlusernameCharStar = const_cast<char*>(sqlUsername.c_str());
 	char* sqlpasswordCharStar = const_cast<char*>(sqlPassword.c_str());
-	initiateMySQLserverConnection(sqlipaddressCharStar, sqlusernameCharStar, sqlpasswordCharStar, OR_MYSQL_DATABASE_NAME);
-	performSQLdeleteAllRowsQuery(OR_MYSQL_TABLE_NAME_TEST);
+	LDmysql.initiateMySQLserverConnection(sqlipaddressCharStar, sqlusernameCharStar, sqlpasswordCharStar, OR_MYSQL_DATABASE_NAME);
+	LDmysql.performSQLdeleteAllRowsQuery(OR_MYSQL_TABLE_NAME_TEST);
 	databaseTableSizeTest = 0;
 	if(clearTrainTable)
 	{
-		performSQLdeleteAllRowsQuery(OR_MYSQL_TABLE_NAME_TRAIN);
-		performSQLdeleteAllRowsQuery(OR_MYSQL_TABLE_NAME_DECISIONTREE);
+		LDmysql.performSQLdeleteAllRowsQuery(OR_MYSQL_TABLE_NAME_TRAIN);
+		LDmysql.performSQLdeleteAllRowsQuery(OR_MYSQL_TABLE_NAME_DECISIONTREE);
 		databaseTableSizeTrain = 0;
 		databaseTableSizeTrainInitial = 0;
 		databaseTableSizeDecisionTree = 0;
@@ -362,8 +342,8 @@ bool ORmethodInitialise(const int imageWidthFacingPoly, const int imageHeightFac
 	}
 	else
 	{
-		databaseTableSizeTrain = performSQLgetNumRowsQuery(OR_MYSQL_TABLE_NAME_TRAIN);
-		databaseTableSizeDecisionTree = performSQLgetNumRowsQuery(OR_MYSQL_TABLE_NAME_DECISIONTREE);
+		databaseTableSizeTrain = LDmysql.performSQLgetNumRowsQuery(OR_MYSQL_TABLE_NAME_TRAIN);
+		databaseTableSizeDecisionTree = LDmysql.performSQLgetNumRowsQuery(OR_MYSQL_TABLE_NAME_DECISIONTREE);
 		#ifdef OR_DEBUG
 		cout << "databaseTableSizeTrain = " << databaseTableSizeTrain << endl;
 		cout << "databaseTableSizeDecisionTree = " << databaseTableSizeDecisionTree << endl;
@@ -382,20 +362,20 @@ bool ORmethodInitialise(const int imageWidthFacingPoly, const int imageHeightFac
 
 	if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
 	{
-		fillDCTcoeffSelectionArrays();
+		ORcomparison.fillDCTcoeffSelectionArrays();
 	}
 
 	return true;
 }
 
-bool ORmethodExit()
+bool ORmethodClass::ORmethodExit()
 {
 	#ifdef OR_IMAGE_COMPARISON_SQL
-	endMySQLserverConnection();
+	LDmysql.endMySQLserverConnection();
 	#endif
 
 	#ifdef USE_OPENGL
-	exitOpenGL();
+	LDopengl.exitOpenGL();
 	#endif
 
 	return true;
@@ -404,7 +384,7 @@ bool ORmethodExit()
 
 
 #ifdef OR_IMAGE_COMPARISON_SQL
-bool ORmethodCompareTestWithTrain(const int dimension, const int numberOfTestObjects, const string testObjectNameArray[], int imageWidthFacingPoly, int imageHeightFacingPoly, const int* numberOfTestPolys, const int numberOfTestViewIndiciesPerObjectWithUniquePolygons, const int numberOfTestZoomIndicies, const int trainOrTest, const int testViewNumber)
+bool ORmethodClass::ORmethodCompareTestWithTrain(const int dimension, const int numberOfTestObjects, const string testObjectNameArray[], int imageWidthFacingPoly, int imageHeightFacingPoly, const int* numberOfTestPolys, const int numberOfTestViewIndiciesPerObjectWithUniquePolygons, const int numberOfTestZoomIndicies, const int trainOrTest, const int testViewNumber)
 #else
 //bool ORmethodCompareTestWithTrain(const int dimension, const int numberOfTrainObjects, const string trainObjectNameArray[], const int numberOfTestObjects, const string testObjectNameArray[], int imageWidthFacingPoly, int imageHeightFacingPoly, const int* numberOfTrainPolys, const int* numberOfTestPolys, const int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, const int numberOfTestViewIndiciesPerObjectWithUniquePolygons, const int numberOfTrainZoomIndicies, const int numberOfTestZoomIndicies, const int testViewNumber)
 #endif
@@ -415,17 +395,17 @@ bool ORmethodCompareTestWithTrain(const int dimension, const int numberOfTestObj
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
 		cout << "\t start: 5. normalised snapshot comparison" << endl;
-		time5NormalisedSnapshotComparisonStart = getTimeAsLong();
+		time5NormalisedSnapshotComparisonStart = SHAREDvars.getTimeAsLong();
 	}
 
 	double averageMatchErrorAcrossAllObjects;
 #ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
-	averageMatchErrorAcrossAllObjects = compareNormalisedSnapshotExperienceListWithNeuralNetwork(firstExperienceInTestList, firstInputNeuronInNetwork, firstOutputNeuronInNetwork, numberOfInputNeurons, numberOfOutputNeurons, numberOfTrainPolys);
+	averageMatchErrorAcrossAllObjects = this->compareNormalisedSnapshotExperienceListWithNeuralNetwork(firstExperienceInTestList, firstInputNeuronInNetwork, firstOutputNeuronInNetwork, numberOfInputNeurons, numberOfOutputNeurons, numberOfTrainPolys);
 #else
 	#ifdef OR_IMAGE_COMPARISON_SQL
-	averageMatchErrorAcrossAllObjects = compareNormalisedSnapshots(numberOfTestPolys, numberOfTestViewIndiciesPerObjectWithUniquePolygons, imageWidthFacingPoly, imageHeightFacingPoly, testObjectNameArray, numberOfTestObjects, dimension, numberOfTestZoomIndicies, trainOrTest, testViewNumber);
+	averageMatchErrorAcrossAllObjects = ORcomparison.compareNormalisedSnapshots(numberOfTestPolys, numberOfTestViewIndiciesPerObjectWithUniquePolygons, imageWidthFacingPoly, imageHeightFacingPoly, testObjectNameArray, numberOfTestObjects, dimension, numberOfTestZoomIndicies, trainOrTest, testViewNumber);
 	#else
-	averageMatchErrorAcrossAllObjects = compareNormalisedSnapshots(numberOfTrainPolys, numberOfTestPolys, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTestViewIndiciesPerObjectWithUniquePolygons, imageWidthFacingPoly, imageHeightFacingPoly, trainObjectNameArray, numberOfTrainObjects, testObjectNameArray, numberOfTestObjects, dimension, numberOfTrainZoomIndicies, numberOfTestZoomIndicies, testViewNumber);
+	averageMatchErrorAcrossAllObjects = ORcomparison.compareNormalisedSnapshots(numberOfTrainPolys, numberOfTestPolys, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTestViewIndiciesPerObjectWithUniquePolygons, imageWidthFacingPoly, imageHeightFacingPoly, trainObjectNameArray, numberOfTrainObjects, testObjectNameArray, numberOfTestObjects, dimension, numberOfTrainZoomIndicies, numberOfTestZoomIndicies, testViewNumber);
 	#endif
 #endif
 
@@ -439,7 +419,7 @@ bool ORmethodCompareTestWithTrain(const int dimension, const int numberOfTestObj
 	{
 		cout << "\t end: 5. normalised snapshot comparison" << endl;
 		long time5NormalisedSnapshotComparisonEnd;
-		time5NormalisedSnapshotComparisonEnd = getTimeAsLong();
+		time5NormalisedSnapshotComparisonEnd = SHAREDvars.getTimeAsLong();
 		time5NormalisedSnapshotComparisonTotal = time5NormalisedSnapshotComparisonTotal + time5NormalisedSnapshotComparisonEnd-time5NormalisedSnapshotComparisonStart;
 		time5NormalisedSnapshotComparisonIndex++;
 		cout << "\t time5NormalisedSnapshotComparison = " << time5NormalisedSnapshotComparisonEnd-time5NormalisedSnapshotComparisonStart << endl;
@@ -710,7 +690,7 @@ bool ORmethodCompareTestWithTrain(const int dimension, const int numberOfTestObj
 
 
 
-bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string objectNameArray[], const int objectDataSource, RTviewInfo* vi, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygons, const int numberOfViewIndiciesPerObject, int numberOfViewIndiciesPerObjectWithUniquePolygons, int* numberOfPolys, const int trainOrTest, int numberOfZoomIndicies, const int viewNumber, const string multViewListFileName)
+bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects, string objectNameArray[], const int objectDataSource, RTviewInfo* vi, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygons, const int numberOfViewIndiciesPerObject, int numberOfViewIndiciesPerObjectWithUniquePolygons, int* numberOfPolys, const int trainOrTest, int numberOfZoomIndicies, const int viewNumber, const string multViewListFileName)
 {
 	bool result = true;
 
@@ -725,7 +705,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 		#ifdef OR_DATABASE_DEBUG
 		cout << "DBgenerateFolderName: objectNameArray[o] = " << objectNameArray[o] << endl;
 		#endif
-		DBgenerateFolderName(&(objectNameArray[o]), trainOrTest);
+		ORdatabaseFileIO.DBgenerateFolderName(&(objectNameArray[o]), trainOrTest);
 		#endif
 		string objectSceneFileName = objectNameArray[o] + SCENE_FILE_NAME_EXTENSION;
 		string objectSceneFileNameCollapsed = objectNameArray[o] + "CollapsedForRaytracing" + SCENE_FILE_NAME_EXTENSION;
@@ -739,20 +719,20 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "start: 1a. object data generation (ALTERNATE METHOD - part i) - parse vector graphics file" << endl;
-				time1aALTERNATEODgenerationParseVectorGraphicsFileStart = getTimeAsLong();
+				time1aALTERNATEODgenerationParseVectorGraphicsFileStart = SHAREDvars.getTimeAsLong();
 			}
 
-			if(!parseFile(topLevelSceneFileName, initialReferenceInSceneFile, topLevelReferenceInSceneFile, true))
+			if(!LDparser.parseFile(topLevelSceneFileName, initialReferenceInSceneFile, topLevelReferenceInSceneFile, true))
 			{//file does not exist
 				cout << "The file: " << topLevelSceneFileName << " does not exist in the directory" << endl;
 				result = false;
 			}
-			write2DreferenceListCollapsedTo1DtoFile(topLevelSceneFileNameCollapsed, initialReferenceInSceneFile);
+			LDreferenceManipulation.write2DreferenceListCollapsedTo1DtoFile(topLevelSceneFileNameCollapsed, initialReferenceInSceneFile);
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "end: 1a. object data generation (ALTERNATE METHOD - part i) - parse vector graphics file" << endl;
 				long time1aALTERNATEODgenerationParseVectorGraphicsFileEnd;
-				time1aALTERNATEODgenerationParseVectorGraphicsFileEnd = getTimeAsLong();
+				time1aALTERNATEODgenerationParseVectorGraphicsFileEnd = SHAREDvars.getTimeAsLong();
 				time1aALTERNATEODgenerationParseVectorGraphicsFileTotal = time1aALTERNATEODgenerationParseVectorGraphicsFileTotal + time1aALTERNATEODgenerationParseVectorGraphicsFileEnd-time1aALTERNATEODgenerationParseVectorGraphicsFileStart;
 				time1aALTERNATEODgenerationParseVectorGraphicsFileIndex++;
 				cout << "timeODgeneration1aALTERNATEParseVectorGraphicsFile = " << time1aALTERNATEODgenerationParseVectorGraphicsFileEnd-time1aALTERNATEODgenerationParseVectorGraphicsFileStart << endl;
@@ -773,7 +753,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "\t start: 1. object data generation" << endl;
-				time1ODgenerationStart = getTimeAsLong();
+				time1ODgenerationStart = SHAREDvars.getTimeAsLong();
 			}
 
 			if(OR_PRINT_ALGORITHM_PROGRESS)
@@ -812,7 +792,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 					viMultiView = new RTviewInfo();
 					string multViewListFileNameWithFullPath = "";
 					multViewListFileNameWithFullPath = multViewListFileNameWithFullPath + workingFolder + "/" + multViewListFileName;
-					createViFromMultiViewList(viMultiView, multViewListFileNameWithFullPath, multiViewViewIndex, dimension);
+					this->createViFromMultiViewList(viMultiView, multViewListFileNameWithFullPath, multiViewViewIndex, dimension);
 					objectDataSourceForThisView = OR_OBJECT_DATA_SOURCE_USER_FILE;
 				}
 				else if(objectDataSource == OR_OBJECT_DATA_SOURCE_USER_FILE)
@@ -839,7 +819,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 					cout << "Error: illegal number of dimensions" << endl;
 					exit(0);
 				}
-				if(!createOrAddToInterpolatedMeshAndFeaturesList(initialReferenceInSceneFile, viMultiView, firstReferenceInInterpolatedMesh, firstMeshPointInMeshList, firstFeatureInList, trainOrTest, viewIndex, objectNameArray[o], dimension, objectDataSourceForThisView, numberOfZoomIndicies, useQuadraticFitEdgeZeroCrossingMap))
+				if(!this->createOrAddToInterpolatedMeshAndFeaturesList(initialReferenceInSceneFile, viMultiView, firstReferenceInInterpolatedMesh, firstMeshPointInMeshList, firstFeatureInList, trainOrTest, viewIndex, objectNameArray[o], dimension, objectDataSourceForThisView, numberOfZoomIndicies, useQuadraticFitEdgeZeroCrossingMap))
 				{
 					result = false;
 				}
@@ -848,7 +828,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 
 			if(OR_CREATE_INTERPOLATED_MESH_REFERENCE_LIST_USING_MESH_LIST)
 			{
-				if(!createInterpolatedMeshReferenceListUsingMeshList(firstMeshPointInMeshList, firstReferenceInInterpolatedMesh, vi, objectNameArray[o], trainOrTest, dimension))
+				if(!this->createInterpolatedMeshReferenceListUsingMeshList(firstMeshPointInMeshList, firstReferenceInInterpolatedMesh, vi, objectNameArray[o], trainOrTest, dimension))
 				{
 					result = false;
 				}
@@ -889,7 +869,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 										firstMeshPointUsedToCalculateCentredFeatures = firstMeshPointInMeshList;
 									}
 								}
-								if(!addCentredFeaturesToFeatureListUsingMeshList(firstFeatureInList, IRRELEVANT, dimension, firstMeshPointUsedToCalculateCentredFeatures, IRRELEVANT, OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL))
+								if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingMeshList(firstFeatureInList, IRRELEVANT, dimension, firstMeshPointUsedToCalculateCentredFeatures, IRRELEVANT, OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL))
 								{
 									result = false;
 								}
@@ -906,7 +886,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 									{
 										firstMeshPointUsedToCalculateCentredFeatures = firstMeshPointInMeshList;
 									}
-									if(!addCentredFeaturesToFeatureListUsingMeshList(firstFeatureInList, EDGE_NORMAL_CONTRAST_THRESHOLD, dimension, firstMeshPointUsedToCalculateCentredFeatures, CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_POINT_NORMAL_CONTRAST, OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL))
+									if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingMeshList(firstFeatureInList, EDGE_NORMAL_CONTRAST_THRESHOLD, dimension, firstMeshPointUsedToCalculateCentredFeatures, CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_POINT_NORMAL_CONTRAST, OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL))
 									{
 										result = false;
 									}
@@ -921,7 +901,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 									{
 										firstMeshPointUsedToCalculateCentredFeatures = firstMeshPointInMeshList;
 									}
-									if(!addCentredFeaturesToFeatureListUsingMeshList(firstFeatureInList, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, firstMeshPointUsedToCalculateCentredFeatures, CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_LUMINOSITY_CONTRAST, OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL))
+									if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingMeshList(firstFeatureInList, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, firstMeshPointUsedToCalculateCentredFeatures, CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_LUMINOSITY_CONTRAST, OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL))
 									{
 										result = false;
 									}
@@ -947,7 +927,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 							{
 								firstMeshPointUsedToCalculateCentredFeatures = firstMeshPointInMeshList;
 							}
-							if(!addCentredFeaturesToFeatureListUsingMeshList(firstFeatureInList, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, firstMeshPointInMeshList, CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_LUMINOSITY_CONTRAST, OR_METHOD2DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL))
+							if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingMeshList(firstFeatureInList, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, firstMeshPointInMeshList, CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_LUMINOSITY_CONTRAST, OR_METHOD2DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL))
 							{
 								result = false;
 							}
@@ -967,7 +947,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 			{
 				cout << "\t\t end: 1. object data generation" << endl;
 				long time1ODgenerationEnd;
-				time1ODgenerationEnd = getTimeAsLong();
+				time1ODgenerationEnd = SHAREDvars.getTimeAsLong();
 
 				if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 				{
@@ -991,10 +971,10 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "\t start: 2. object triangle generation - polygon list creation" << endl;
-				time2ObjectTriangleGenerationPolygonListStart = getTimeAsLong();
+				time2ObjectTriangleGenerationPolygonListStart = SHAREDvars.getTimeAsLong();
 			}
 
-			if(!generatePolygonListUsingFeatureListLocalised(vi->imageWidth, vi->imageHeight, firstFeatureInList, firstPolygonInList, numberOfZoomIndicies, dimension))
+			if(!ORoperations.generatePolygonListUsingFeatureListLocalised(vi->imageWidth, vi->imageHeight, firstFeatureInList, firstPolygonInList, numberOfZoomIndicies, dimension))
 			//if(!generatePolygonListUsingFeatureList(vi->imageWidth, vi->imageHeight, firstFeatureInList, firstPolygonInList))
 			{
 				result = false;
@@ -1005,7 +985,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 			{
 				cout << "\t end: 2. object triangle generation - polygon list creation" << endl;
 				long time2ObjectTriangleGenerationPolygonListEnd;
-				time2ObjectTriangleGenerationPolygonListEnd = getTimeAsLong();
+				time2ObjectTriangleGenerationPolygonListEnd = SHAREDvars.getTimeAsLong();
 
 				if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 				{
@@ -1020,14 +1000,14 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 
 				cout << "\t time2ObjectTriangleGenerationPolygonList = " << time2ObjectTriangleGenerationPolygonListEnd-time2ObjectTriangleGenerationPolygonListStart << endl;
 				cout << "\t start: 3. normalised snapshot generation" << endl;
-				time3NormalisedSnapshotGenerationStart = getTimeAsLong();
+				time3NormalisedSnapshotGenerationStart = SHAREDvars.getTimeAsLong();
 			}
 				//the following is required to be used instead for shapes with rounded edges [eg cylinders] - ie shapes with large numbers of polygons;
 				//void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int imageHeight, double* depthMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3])
 			#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 			if(!generateNormalisedSnapshotsExperienceListUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, firstExperienceInList, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+0*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList))
 			#else
-			if(!generateNormalisedSnapshotsUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+0*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList, numberOfZoomIndicies))
+			if(!this->generateNormalisedSnapshotsUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+0*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList, numberOfZoomIndicies))
 			#endif
 			{
 				result = false;
@@ -1038,7 +1018,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 			{
 				cout << "\t end: 3. normalised snapshot generation" << endl;
 				long time3NormalisedSnapshotGenerationEnd;
-				time3NormalisedSnapshotGenerationEnd = getTimeAsLong();
+				time3NormalisedSnapshotGenerationEnd = SHAREDvars.getTimeAsLong();
 
 				if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 				{
@@ -1089,7 +1069,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "\t\t start: 1. object data generation" << endl;
-				time1ODgenerationStart = getTimeAsLong();
+				time1ODgenerationStart = SHAREDvars.getTimeAsLong();
 			}
 
 			LDreference* firstReferenceInInterpolatedMesh = new LDreference();
@@ -1114,14 +1094,14 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 				cout << "Error: illegal number of dimensions" << endl;
 				exit(0);
 			}
-			if(!createOrAddToInterpolatedMeshAndFeaturesList(initialReferenceInSceneFile, vi, firstReferenceInInterpolatedMesh, firstMeshPointInMeshList, firstFeatureInList, trainOrTest, viewIndex, objectNameArray[o], dimension, objectDataSource, numberOfZoomIndicies, useQuadraticFitEdgeZeroCrossingMap))
+			if(!this->createOrAddToInterpolatedMeshAndFeaturesList(initialReferenceInSceneFile, vi, firstReferenceInInterpolatedMesh, firstMeshPointInMeshList, firstFeatureInList, trainOrTest, viewIndex, objectNameArray[o], dimension, objectDataSource, numberOfZoomIndicies, useQuadraticFitEdgeZeroCrossingMap))
 			{
 				result = false;
 			}
 
 			if(OR_CREATE_INTERPOLATED_MESH_REFERENCE_LIST_USING_MESH_LIST)
 			{
-				if(!createInterpolatedMeshReferenceListUsingMeshList(firstMeshPointInMeshList, firstReferenceInInterpolatedMesh, vi, objectNameArray[o], trainOrTest, dimension))
+				if(!this->createInterpolatedMeshReferenceListUsingMeshList(firstMeshPointInMeshList, firstReferenceInInterpolatedMesh, vi, objectNameArray[o], trainOrTest, dimension))
 				{
 					result = false;
 				}
@@ -1138,7 +1118,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 			{
 				cout << "\t\t end: 1. object data generation" << endl;
 				long time1ODgenerationEnd;
-				time1ODgenerationEnd = getTimeAsLong();
+				time1ODgenerationEnd = SHAREDvars.getTimeAsLong();
 
 				if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 				{
@@ -1160,10 +1140,10 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "\t\t start: 2. object triangle generation - polygon list creation" << endl;
-				time2ObjectTriangleGenerationPolygonListStart = getTimeAsLong();
+				time2ObjectTriangleGenerationPolygonListStart = SHAREDvars.getTimeAsLong();
 			}
 
-			if(!generatePolygonListUsingFeatureListLocalised(vi->imageWidth, vi->imageHeight, firstFeatureInList, firstPolygonInList, numberOfZoomIndicies, dimension))
+			if(!ORoperations.generatePolygonListUsingFeatureListLocalised(vi->imageWidth, vi->imageHeight, firstFeatureInList, firstPolygonInList, numberOfZoomIndicies, dimension))
 			{
 				result = false;
 			}
@@ -1173,7 +1153,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 			{
 				cout << "\t\t end: 2. object triangle generation - polygon list creation" << endl;
 				long time2ObjectTriangleGenerationPolygonListEnd;
-				time2ObjectTriangleGenerationPolygonListEnd = getTimeAsLong();
+				time2ObjectTriangleGenerationPolygonListEnd = SHAREDvars.getTimeAsLong();
 
 				if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 				{
@@ -1189,7 +1169,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 				cout << "\t\t time2ObjectTriangleGenerationPolygonList = " << time2ObjectTriangleGenerationPolygonListEnd-time2ObjectTriangleGenerationPolygonListStart << endl;
 				cout << "\t\t start: 3. normalised snapshot generation" << endl;
 
-				time3NormalisedSnapshotGenerationStart = getTimeAsLong();
+				time3NormalisedSnapshotGenerationStart = SHAREDvars.getTimeAsLong();
 			}
 
 				//the following is required to be used instead for shapes with rounded edges [eg cylinders] - ie shapes with large numbers of polygons;
@@ -1197,7 +1177,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 			#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 			if(!generateNormalisedSnapshotsExperienceListUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, firstExperienceInList, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+viewIndex*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList))
 			#else
-			if(!generateNormalisedSnapshotsUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+viewIndex*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList, numberOfZoomIndicies))
+			if(!this->generateNormalisedSnapshotsUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+viewIndex*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList, numberOfZoomIndicies))
 			#endif
 			{
 				result = false;
@@ -1207,7 +1187,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 			{
 				cout << "\t\t end: 3. normalised snapshot generation" << endl;
 				long time3NormalisedSnapshotGenerationEnd;
-				time3NormalisedSnapshotGenerationEnd = getTimeAsLong();
+				time3NormalisedSnapshotGenerationEnd = SHAREDvars.getTimeAsLong();
 
 				if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 				{
@@ -1254,7 +1234,7 @@ bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string object
 
 
 
-bool createOrAddToInterpolatedMeshAndFeaturesList(LDreference* initialReferenceInSceneFile, RTviewInfo* vi, LDreference* firstReferenceInInterpolatedMesh, ORmeshPoint* firstMeshPointInMeshList, ORfeature firstFeatureInList[], const int trainOrTest, const int viewIndex, const string objectName, int dimension, const int objectDataSource, const int numberOfZoomIndicies, const bool useEdgeZeroCrossingMap)
+bool ORmethodClass::createOrAddToInterpolatedMeshAndFeaturesList(LDreference* initialReferenceInSceneFile, RTviewInfo* vi, LDreference* firstReferenceInInterpolatedMesh, ORmeshPoint* firstMeshPointInMeshList, ORfeature firstFeatureInList[], const int trainOrTest, const int viewIndex, const string objectName, int dimension, const int objectDataSource, const int numberOfZoomIndicies, const bool useEdgeZeroCrossingMap)
 {
 	bool result = true;
 
@@ -1267,14 +1247,14 @@ bool createOrAddToInterpolatedMeshAndFeaturesList(LDreference* initialReferenceI
 
 	ORmeshPoint* firstMeshPointUsedToCalculateCentredFeatures = NULL;
 
-	if(!createRGBandPointMap(initialReferenceInSceneFile, pointMap, rgbMap, depthMap, vi, trainOrTest, viewIndex, objectName, dimension, objectDataSource))
+	if(!this->createRGBandPointMap(initialReferenceInSceneFile, pointMap, rgbMap, depthMap, vi, trainOrTest, viewIndex, objectName, dimension, objectDataSource))
 	{
 		result = false;
 	}
 
 	if(!OR_CREATE_INTERPOLATED_MESH_REFERENCE_LIST_USING_MESH_LIST)
 	{
-		if(!createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMap(pointMap, rgbMap, firstReferenceInInterpolatedMesh, vi, objectName, trainOrTest, dimension, viewIndex))
+		if(!this->createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMap(pointMap, rgbMap, firstReferenceInInterpolatedMesh, vi, objectName, trainOrTest, dimension, viewIndex))
 		{
 			result = false;
 		}
@@ -1292,12 +1272,12 @@ bool createOrAddToInterpolatedMeshAndFeaturesList(LDreference* initialReferenceI
 		{
 			if(OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION)
 			{
-				create3DmeshUsingPointMap3DOD(imageWidth, imageHeight, pointMap, depthMap, rgbMap, firstMeshPointInMeshList, meshPointArray, useEdgeZeroCrossingMap, CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_POINT_NORMAL_CONTRAST, vi);
+				ORmethod3DOD.create3DmeshUsingPointMap3DOD(imageWidth, imageHeight, pointMap, depthMap, rgbMap, firstMeshPointInMeshList, meshPointArray, useEdgeZeroCrossingMap, CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_POINT_NORMAL_CONTRAST, vi);
 				firstMeshPointUsedToCalculateCentredFeatures = firstMeshPointInMeshList;
 			}
 			else
 			{
-				create3DmeshUsingPointMap3DOD(imageWidth, imageHeight, pointMap, depthMap, rgbMap, firstMeshPointInMeshList, meshPointArray, useEdgeZeroCrossingMap, CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_LUMINOSITY_CONTRAST, vi);
+				ORmethod3DOD.create3DmeshUsingPointMap3DOD(imageWidth, imageHeight, pointMap, depthMap, rgbMap, firstMeshPointInMeshList, meshPointArray, useEdgeZeroCrossingMap, CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_LUMINOSITY_CONTRAST, vi);
 				if(OR_USE_CONTRAST_CALC_METHOD_C)
 				{
 					firstMeshPointUsedToCalculateCentredFeatures = firstMeshPointInMeshList->interpixelMeshPoint;
@@ -1310,7 +1290,7 @@ bool createOrAddToInterpolatedMeshAndFeaturesList(LDreference* initialReferenceI
 		}
 		else if(dimension == OR_METHOD2DOD_DIMENSIONS)
 		{
-			create2DmeshUsingRGBmap2DOD(imageWidth, imageHeight, vi->xOffset, vi->yOffset, rgbMap, firstMeshPointInMeshList, meshPointArray, useEdgeZeroCrossingMap);
+			ORmethod2DOD.create2DmeshUsingRGBmap2DOD(imageWidth, imageHeight, vi->xOffset, vi->yOffset, rgbMap, firstMeshPointInMeshList, meshPointArray, useEdgeZeroCrossingMap);
 			if(OR_USE_CONTRAST_CALC_METHOD_C)
 			{
 				firstMeshPointUsedToCalculateCentredFeatures = firstMeshPointInMeshList->interpixelMeshPoint;
@@ -1339,7 +1319,7 @@ bool createOrAddToInterpolatedMeshAndFeaturesList(LDreference* initialReferenceI
 	*/
 	#endif
 
-	if(!createOrAddPointsToFeaturesList(pointMap, rgbMap, depthMap, firstFeatureInList, vi, trainOrTest, viewIndex, objectName, dimension, numberOfZoomIndicies, firstMeshPointUsedToCalculateCentredFeatures, meshPointArray, useEdgeZeroCrossingMap))
+	if(!this->createOrAddPointsToFeaturesList(pointMap, rgbMap, depthMap, firstFeatureInList, vi, trainOrTest, viewIndex, objectName, dimension, numberOfZoomIndicies, firstMeshPointUsedToCalculateCentredFeatures, meshPointArray, useEdgeZeroCrossingMap))
 	{
 		result = false;
 	}
@@ -1357,7 +1337,7 @@ bool createOrAddToInterpolatedMeshAndFeaturesList(LDreference* initialReferenceI
 
 
 
-bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* pointMap, unsigned char* rgbMap, double* depthMap, RTviewInfo* vi, const int trainOrTest, const int viewIndex, const string objectName, const int dimension, const int objectDataSource)
+bool ORmethodClass::createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* pointMap, unsigned char* rgbMap, double* depthMap, RTviewInfo* vi, const int trainOrTest, const int viewIndex, const string objectName, const int dimension, const int objectDataSource)
 {
 	bool result = true;
 
@@ -1371,7 +1351,7 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 		trainOrTestString = TEST_STRING;
 	}
 
-	string viewIndexString = convertIntToString(viewIndex);
+	string viewIndexString = SHAREDvars.convertIntToString(viewIndex);
 
 	string mapFileName = objectName + "initialViewMap" + "ViewIndex" + viewIndexString + "ZoomIndex" + "0";
 
@@ -1403,7 +1383,7 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 		{
 			cout << "\t\t\t start: 1a. object data generation - load image file" << endl;
-			time1aODgenerationLoadImageFileStart = getTimeAsLong();
+			time1aODgenerationLoadImageFileStart = SHAREDvars.getTimeAsLong();
 		}
 
 		if(OR_PRINT_ALGORITHM_PROGRESS)
@@ -1413,7 +1393,7 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 			cout << "\t 2. preexisting images are placed in current directory; eg 868_r0.png, 868_r5.png, 868_r10.png, ... etc" << endl;
 		}
 
-		string rotationviewIndexString = convertIntToString((viewIndex*PREEXISTING_IMAGE_DATA_VIEW_INDEX_DEGREES));
+		string rotationviewIndexString = SHAREDvars.convertIntToString((viewIndex*PREEXISTING_IMAGE_DATA_VIEW_INDEX_DEGREES));
 
 	#ifdef OR_USE_SINGLE_TRAIN_STAR_MAP
 		string preexistingImageFileName;
@@ -1446,15 +1426,15 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 		{
 			cout << "rgbPixMap = loadPPM{" << rgbMapFileName << "};" << endl;
 		}
-		rgbPixMap = loadPPM(rgbMapFileName);
+		rgbPixMap = RTppm.loadPPM(rgbMapFileName);
 		if(OR_PRINT_ALGORITHM_PROGRESS)
 		{
 			cout << "imageWidth = " << imageWidth << endl;
 			cout << "imageHeight = " << imageHeight << endl;
 			cout << "createRGBMapFromPixmapImage{rgbPixMap, rgbMap};" << endl;
 		}
-		createRGBMapFromPixmapImage(rgbPixMap, rgbMap);
-		freePixmap(rgbPixMap);
+		RTpixelMaps.createRGBMapFromPixmapImage(rgbPixMap, rgbMap);
+		RTppm.freePixmap(rgbPixMap);
 
 		if(dimension != OR_METHOD2DOD_DIMENSIONS)
 		{
@@ -1465,7 +1445,7 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 		{
 			cout << "\t\t\t end: 1a. object data generation - load image file" << endl;
 			long time1aODgenerationLoadImageFileEnd;
-			time1aODgenerationLoadImageFileEnd = getTimeAsLong();
+			time1aODgenerationLoadImageFileEnd = SHAREDvars.getTimeAsLong();
 			if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 			{
 				time1aODgenerationLoadImageFileTotalTrain = time1aODgenerationLoadImageFileTotalTrain+ time1aODgenerationLoadImageFileEnd-time1aODgenerationLoadImageFileStart;
@@ -1486,7 +1466,7 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 		{
 			cout << "\t\t\t start: 1a. object data generation - load image file" << endl;
-			time1aODgenerationLoadImageFileStart = getTimeAsLong();
+			time1aODgenerationLoadImageFileStart = SHAREDvars.getTimeAsLong();
 		}
 
 		if(OR_PRINT_ALGORITHM_PROGRESS)
@@ -1524,15 +1504,15 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 		{
 			cout << "rgbPixMap = loadPPM{" << rgbMapFileName << "};" << endl;
 		}
-		rgbPixMap = loadPPM(rgbMapFileName);
+		rgbPixMap = RTppm.loadPPM(rgbMapFileName);
 		if(OR_PRINT_ALGORITHM_PROGRESS)
 		{
 			cout << "imageWidth = " << imageWidth << endl;
 			cout << "imageHeight = " << imageHeight << endl;
 			cout << "createRGBMapFromPixmapImage{rgbPixMap, rgbMap};" << endl;
 		}
-		createRGBMapFromPixmapImage(rgbPixMap, rgbMap);
-		freePixmap(rgbPixMap);
+		RTpixelMaps.createRGBMapFromPixmapImage(rgbPixMap, rgbMap);
+		RTppm.freePixmap(rgbPixMap);
 
 
 		if(dimension == OR_METHOD3DOD_DIMENSIONS)
@@ -1565,29 +1545,29 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 			{
 				cout << "depth24BitPixMap = loadPPM{" << depthMap24BitFileName << "};" << endl;
 			}
-			depth24BitPixMap = loadPPM(depthMap24BitFileName);
+			depth24BitPixMap = RTppm.loadPPM(depthMap24BitFileName);
 			if(OR_PRINT_ALGORITHM_PROGRESS)
 			{
 				cout << "imageWidth = " << imageWidth << endl;
 				cout << "imageHeight = " << imageHeight << endl;
 				cout << "createDepthMapFromDepth24BitPixmapImage{depth24BitPixMap, depthMap};" << endl;
 			}
-			createDepthMapFromDepth24BitPixmapImage(depth24BitPixMap, depthMap, vi->depthScale, 0.0);
-			freePixmap(depth24BitPixMap);
+			RTpixelMaps.createDepthMapFromDepth24BitPixmapImage(depth24BitPixMap, depthMap, vi->depthScale, 0.0);
+			RTppm.freePixmap(depth24BitPixMap);
 
 				//debug;
 			string depthMapTempTestName = mapFileName + "temptest" + DEPTHMAP24BIT_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 			string depthMap24BitTempTestFileName = mapFileName + "temptest" + DEPTHMAP24BIT_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-			generatePixmapFromDepthMapOrDepthContrastMap(depthMapTempTestName, imageWidth, imageHeight, depthMap);
-			generatePixmapFromDepthMap24Bit(depthMap24BitTempTestFileName, imageWidth, imageHeight, depthMap, vi->depthScale, 0.0);
+			RTpixelMaps.generatePixmapFromDepthMapOrDepthContrastMap(depthMapTempTestName, imageWidth, imageHeight, depthMap);
+			RTpixelMaps.generatePixmapFromDepthMap24Bit(depthMap24BitTempTestFileName, imageWidth, imageHeight, depthMap, vi->depthScale, 0.0);
 
 
-			createPointMapFromDepthMap(imageWidth, imageHeight, depthMap, pointMap, vi);
+			ORoperations.createPointMapFromDepthMap(imageWidth, imageHeight, depthMap, pointMap, vi);
 
 			#ifdef OR_DEBUG_3DOD_POV
-			printPointMap(imageWidth, imageHeight, pointMap);
-			printDepthMap(imageWidth, imageHeight, depthMap);
-			printvi(vi);
+			ORoperations.printPointMap(imageWidth, imageHeight, pointMap);
+			ORoperations.printDepthMap(imageWidth, imageHeight, depthMap);
+			ORoperations.printvi(vi);
 			#endif
 
 
@@ -1599,7 +1579,7 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 		{
 			cout << "\t\t\t end: 1a. object data generation - load image file" << endl;
 			long time1aODgenerationLoadImageFileEnd;
-			time1aODgenerationLoadImageFileEnd = getTimeAsLong();
+			time1aODgenerationLoadImageFileEnd = SHAREDvars.getTimeAsLong();
 			if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 			{
 				time1aODgenerationLoadImageFileTotalTrain = time1aODgenerationLoadImageFileTotalTrain+ time1aODgenerationLoadImageFileEnd-time1aODgenerationLoadImageFileStart;
@@ -1619,7 +1599,7 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 		{
 			cout << "\t\t\t start: 1a. object data generation (ALTERNATE METHOD - part ii) - raytrace vector graphics file" << endl;
-			time1aALTERNATEODgenerationRaytraceVectorGraphicsFileStart = getTimeAsLong();
+			time1aALTERNATEODgenerationRaytraceVectorGraphicsFileStart = SHAREDvars.getTimeAsLong();
 		}
 
 		string interpolatedMapFileNameForRayTracingTAL = mapFileName + trainOrTestString + TAL_EXTENSION;
@@ -1630,39 +1610,39 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 
 
 
-		write2DReferenceListCollapsedTo1DToFileRayTraceFormat(charstarinterpolatedMapFileNameForRayTracingTAL, initialReferenceInSceneFile, true, vi, false, NULL, NULL);
+		RTreferenceManipulation.write2DReferenceListCollapsedTo1DToFileRayTraceFormat(charstarinterpolatedMapFileNameForRayTracingTAL, initialReferenceInSceneFile, true, vi, false, NULL, NULL);
 
 
 
-		setLightingMode(LIGHTING_MODE_AMBIENT_DIFFUSE_SPECULAR);	//TEMP: LIGHTING_MODE_BASIC	//DEFAULT: LIGHTING_MODE_AMBIENT_DIFFUSE_SPECULAR
+		RTscene.setLightingMode(LIGHTING_MODE_AMBIENT_DIFFUSE_SPECULAR);	//TEMP: LIGHTING_MODE_BASIC	//DEFAULT: LIGHTING_MODE_AMBIENT_DIFFUSE_SPECULAR
 	#ifdef TH_OR_USE_SHIELD_LDR_FILE
-		setSceneLightingConditions(AMBIENT_RED, AMBIENT_GREEN, AMBIENT_BLUE, 0.0, DIFFUSE);	//SPECULAR //DIFFUSE
+		RTscene.setSceneLightingConditions(AMBIENT_RED, AMBIENT_GREEN, AMBIENT_BLUE, 0.0, DIFFUSE);	//SPECULAR //DIFFUSE
 	#endif
 
 
-		rayTraceScene(charstarinterpolatedMapFileNameForRayTracingTAL, NULL, false, true, rgbMap, depthMap, normalMap, pointMap);
+		RTscene.rayTraceScene(charstarinterpolatedMapFileNameForRayTracingTAL, NULL, false, true, rgbMap, depthMap, normalMap, pointMap);
 		#ifdef OR_OVERWRITE_POINT_MAP_USING_CONSISTENT_POINT_MAP_CREATION
-		createPointMapFromDepthMap(imageWidth, imageHeight, depthMap, pointMap, vi);		//this is to overwrite the default point map using a consistent point map generation
+		ORoperations.createPointMapFromDepthMap(imageWidth, imageHeight, depthMap, pointMap, vi);		//this is to overwrite the default point map using a consistent point map generation
 		#endif
 
 		string rgbMapFileName = mapFileName + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 
-		createLuminosityMapFromRGBMap(imageWidth, imageHeight, rgbMap, luminosityMap);
-		createLuminosityBooleanMap(imageWidth, imageHeight, luminosityMap, luminosityBooleanMap);
+		RTpixelMaps.createLuminosityMapFromRGBMap(imageWidth, imageHeight, rgbMap, luminosityMap);
+		RTpixelMaps.createLuminosityBooleanMap(imageWidth, imageHeight, luminosityMap, luminosityBooleanMap);
 
 
 		if(dimension == OR_METHOD2DOD_DIMENSIONS)
 		{
-			createContrastMapFromMap(imageWidth, imageHeight, luminosityMap, luminosityContrastMap);
-			createLuminosityContrastBooleanMap(imageWidth, imageHeight, luminosityContrastMap, luminosityContrastBooleanMap);
+			RTpixelMaps.createContrastMapFromMap(imageWidth, imageHeight, luminosityMap, luminosityContrastMap);
+			RTpixelMaps.createLuminosityContrastBooleanMap(imageWidth, imageHeight, luminosityContrastMap, luminosityContrastBooleanMap);
 		}
 		else if(dimension == OR_METHOD3DOD_DIMENSIONS)
 		{
 			#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS_OLD
 			createContrastMapFromMapWithForegroundDepthCheck(imageWidth, imageHeight, luminosityMap, depthMap, luminosityContrastMap, luminosityContrastBooleanMap, foregroundDepthCheckLuminosityContrastBooleanMap, EDGE_LUMINOSITY_CONTRAST_THRESHOLD);
 			#else
-			createContrastMapFromMap(imageWidth, imageHeight, luminosityMap, luminosityContrastMap);
-			createLuminosityContrastBooleanMap(imageWidth, imageHeight, luminosityContrastMap, luminosityContrastBooleanMap);
+			RTpixelMaps.createContrastMapFromMap(imageWidth, imageHeight, luminosityMap, luminosityContrastMap);
+			RTpixelMaps.createLuminosityContrastBooleanMap(imageWidth, imageHeight, luminosityContrastMap, luminosityContrastBooleanMap);
 			#endif
 		}
 		else
@@ -1676,19 +1656,19 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 			#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS_OLD
 				createContrastMapFromMapWithForegroundDepthCheck(imageWidth, imageHeight, depthMap, depthMap, depthContrastMap, depthContrastBooleanMap, foregroundDepthCheckDepthContrastBooleanMap, EDGE_DEPTH_CONTRAST_THRESHOLD);
 			#else
-				createContrastMapFromMap(imageWidth, imageHeight, depthMap, depthContrastMap);
-				createDepthContrastBooleanMap(imageWidth, imageHeight, depthContrastMap, depthContrastBooleanMap);
+				RTpixelMaps.createContrastMapFromMap(imageWidth, imageHeight, depthMap, depthContrastMap);
+				ORpixelMaps.createDepthContrastBooleanMap(imageWidth, imageHeight, depthContrastMap, depthContrastBooleanMap);
 			#endif
-			createDepthGradientMapFromDepthMap(imageWidth, imageHeight, depthMap, depthGradientMap);
-			createDepthGradientContrastMapFromDepthGradientMap(imageWidth, imageHeight, depthGradientMap, depthGradientContrastMap);
-			subtractBooleanMaps(imageWidth, imageHeight, luminosityContrastBooleanMap, depthContrastBooleanMap, luminosityContrastMapMinusDepthContrastMap);
-			createDepthGradientContrastBooleanMap(imageWidth, imageHeight, depthGradientContrastMap, depthGradientContrastBooleanMap);
-			//subtractBooleanMaps(imageWidth, imageHeight, depthGradientContrastBooleanMap, depthContrastBooleanMap, depthGradientContrastMapMinusDepthContrastMap);
+			ORpixelMaps.createDepthGradientMapFromDepthMap(imageWidth, imageHeight, depthMap, depthGradientMap);
+			ORpixelMaps.createDepthGradientContrastMapFromDepthGradientMap(imageWidth, imageHeight, depthGradientMap, depthGradientContrastMap);
+			ORpixelMaps.subtractBooleanMaps(imageWidth, imageHeight, luminosityContrastBooleanMap, depthContrastBooleanMap, luminosityContrastMapMinusDepthContrastMap);
+			ORpixelMaps.createDepthGradientContrastBooleanMap(imageWidth, imageHeight, depthGradientContrastMap, depthGradientContrastBooleanMap);
+			//ORpixelMaps.subtractBooleanMaps(imageWidth, imageHeight, depthGradientContrastBooleanMap, depthContrastBooleanMap, depthGradientContrastMapMinusDepthContrastMap);
 			//addBooleanMaps(imageWidth, imageHeight, depthGradientContrastBooleanMap, depthContrastBooleanMap, depthGradientContrastMapPlusDepthContrastMap);
 
-			createPointNormalMapFromPointMap(imageWidth, imageHeight, pointMap, pointNormalMap);
-			createPointNormalContrastMapFromPointNormalMap(imageWidth, imageHeight, pointNormalMap, pointNormalContrastMap);
-			createPointNormalContrastBooleanMap(imageWidth, imageHeight, pointNormalContrastMap, pointNormalContrastBooleanMap);
+			ORpixelMaps.createPointNormalMapFromPointMap(imageWidth, imageHeight, pointMap, pointNormalMap);
+			ORpixelMaps.createPointNormalContrastMapFromPointNormalMap(imageWidth, imageHeight, pointNormalMap, pointNormalContrastMap);
+			ORpixelMaps.createPointNormalContrastBooleanMap(imageWidth, imageHeight, pointNormalContrastMap, pointNormalContrastBooleanMap);
 
 		}
 
@@ -1712,36 +1692,36 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 		string pointNormalContrastMapFileName = mapFileName + POINT_NORMAL_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
 		string pointNormalContrastBooleanMapFileName = mapFileName + POINT_NORMAL_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
 
-		generatePixmapFromRGBmap(rgbMapFileName, imageWidth, imageHeight, rgbMap);
-		generatePixmapFromBooleanMap(luminosityBooleanMapFileName, imageWidth, imageHeight, luminosityBooleanMap);
-		generatePixmapFromLuminosityContrastMap(luminosityContrastMapFileName, imageWidth, imageHeight, luminosityContrastMap);
-		generatePixmapFromBooleanMap(luminosityContrastBooleanMapFileName, imageWidth, imageHeight, luminosityContrastBooleanMap);
+		RTpixelMaps.generatePixmapFromRGBmap(rgbMapFileName, imageWidth, imageHeight, rgbMap);
+		RTpixelMaps.generatePixmapFromBooleanMap(luminosityBooleanMapFileName, imageWidth, imageHeight, luminosityBooleanMap);
+		RTpixelMaps.generatePixmapFromLuminosityContrastMap(luminosityContrastMapFileName, imageWidth, imageHeight, luminosityContrastMap);
+		RTpixelMaps.generatePixmapFromBooleanMap(luminosityContrastBooleanMapFileName, imageWidth, imageHeight, luminosityContrastBooleanMap);
 
 		if(dimension == OR_METHOD3DOD_DIMENSIONS)
 		{
-			generatePixmapFromNormalMap(normalMapFileName, imageWidth, imageHeight, normalMap);
-			generatePixmapFromDepthMapOrDepthContrastMap(depthMapFileName, imageWidth, imageHeight, depthMap);
+			RTpixelMaps.generatePixmapFromNormalMap(normalMapFileName, imageWidth, imageHeight, normalMap);
+			RTpixelMaps.generatePixmapFromDepthMapOrDepthContrastMap(depthMapFileName, imageWidth, imageHeight, depthMap);
 			if(objectDataSource == OR_OBJECT_DATA_SOURCE_GENERATE_DATA)
 			{
 				vi->depthScale = OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE;
-				generatePixmapFromDepthMap24Bit(depthMap24BitFileName, imageWidth, imageHeight, depthMap, vi->depthScale, 0.0);
+				RTpixelMaps.generatePixmapFromDepthMap24Bit(depthMap24BitFileName, imageWidth, imageHeight, depthMap, vi->depthScale, 0.0);
 				#ifdef OR_DEBUG_3DOD_POV
-				printPointMap(imageWidth, imageHeight, pointMap);
-				printDepthMap(imageWidth, imageHeight, depthMap);
-				printvi(vi);
+				ORoperations.printPointMap(imageWidth, imageHeight, pointMap);
+				ORoperations.printDepthMap(imageWidth, imageHeight, depthMap);
+				ORoperations.printvi(vi);
 				#endif
 
 			}
-			generatePixmapFromDepthMapOrDepthContrastMap(depthContrastMapFileName, imageWidth, imageHeight, depthContrastMap);
-			generatePixmapFromBooleanMap(depthContrastBooleanMapFileName, imageWidth, imageHeight, depthContrastBooleanMap);
-			generatePixmapFromDepthGradientMap(depthGradientMapFileName, imageWidth, imageHeight, depthGradientMap);
-			generatePixmapFromDepthGradientContrastMap(depthGradientContrastMapFileName, imageWidth, imageHeight, depthGradientContrastMap);
-			generatePixmapFromBooleanMap(depthGradientContrastBooleanMapFileName, imageWidth, imageHeight, depthGradientContrastBooleanMap);
-			generatePixmapFromBooleanMap(luminosityContrastMapMinusDepthContrastMapFileName, imageWidth, imageHeight, luminosityContrastMapMinusDepthContrastMap);
-			//generatePixmapFromBooleanMap(depthGradientContrastMapMinusDepthContrastMapFileName, imageWidth, imageHeight, depthGradientContrastMapMinusDepthContrastMap);
+			RTpixelMaps.generatePixmapFromDepthMapOrDepthContrastMap(depthContrastMapFileName, imageWidth, imageHeight, depthContrastMap);
+			RTpixelMaps.generatePixmapFromBooleanMap(depthContrastBooleanMapFileName, imageWidth, imageHeight, depthContrastBooleanMap);
+			ORpixelMaps.generatePixmapFromDepthGradientMap(depthGradientMapFileName, imageWidth, imageHeight, depthGradientMap);
+			ORpixelMaps.generatePixmapFromDepthGradientContrastMap(depthGradientContrastMapFileName, imageWidth, imageHeight, depthGradientContrastMap);
+			RTpixelMaps.generatePixmapFromBooleanMap(depthGradientContrastBooleanMapFileName, imageWidth, imageHeight, depthGradientContrastBooleanMap);
+			RTpixelMaps.generatePixmapFromBooleanMap(luminosityContrastMapMinusDepthContrastMapFileName, imageWidth, imageHeight, luminosityContrastMapMinusDepthContrastMap);
+			//RTpixelMaps.generatePixmapFromBooleanMap(depthGradientContrastMapMinusDepthContrastMapFileName, imageWidth, imageHeight, depthGradientContrastMapMinusDepthContrastMap);
 
-			generatePixmapFromPointNormalContrastMap(pointNormalContrastMapFileName, imageWidth, imageHeight, pointNormalContrastMap);
-			generatePixmapFromBooleanMap(pointNormalContrastBooleanMapFileName, imageWidth, imageHeight, pointNormalContrastBooleanMap);
+			ORpixelMaps.generatePixmapFromPointNormalContrastMap(pointNormalContrastMapFileName, imageWidth, imageHeight, pointNormalContrastMap);
+			RTpixelMaps.generatePixmapFromBooleanMap(pointNormalContrastBooleanMapFileName, imageWidth, imageHeight, pointNormalContrastBooleanMap);
 
 
 		}
@@ -1750,7 +1730,7 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 		{
 			cout << "\t\t\t end: 1a. object data generation (ALTERNATE METHOD - part ii) - raytrace vector graphics file" << endl;
 			long time1aALTERNATEODgenerationRaytraceVectorGraphicsFileEnd;
-			time1aALTERNATEODgenerationRaytraceVectorGraphicsFileEnd = getTimeAsLong();
+			time1aALTERNATEODgenerationRaytraceVectorGraphicsFileEnd = SHAREDvars.getTimeAsLong();
 			if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 			{
 				time1aALTERNATEODgenerationRaytraceVectorGraphicsFileTotalTrain = time1aALTERNATEODgenerationRaytraceVectorGraphicsFileTotalTrain+ time1aALTERNATEODgenerationRaytraceVectorGraphicsFileEnd-time1aALTERNATEODgenerationRaytraceVectorGraphicsFileStart;
@@ -1788,7 +1768,7 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 
 
 
-bool createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMap(double* pointMap, unsigned char* rgbMap, LDreference* firstReferenceInInterpolatedMesh, RTviewInfo* vi, const string objectName, const int trainOrTest, const int dimension, const int viewIndex)
+bool ORmethodClass::createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMap(double* pointMap, unsigned char* rgbMap, LDreference* firstReferenceInInterpolatedMesh, RTviewInfo* vi, const string objectName, const int trainOrTest, const int dimension, const int viewIndex)
 {
 	bool result = true;
 
@@ -1796,7 +1776,7 @@ bool createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMap(double* point
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
 		cout << "\t\t\t start: 1b. object data generation - create interpolated mesh" << endl;
-		time1bODgenerationCreateInterpolatedMeshStart = getTimeAsLong();
+		time1bODgenerationCreateInterpolatedMeshStart = SHAREDvars.getTimeAsLong();
 	}
 
 	string trainOrTestString;
@@ -1829,13 +1809,13 @@ bool createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMap(double* point
 
 	if(dimension == OR_METHOD3DOD_DIMENSIONS)
 	{
-		createInterpolatedPointMap(imageWidth, imageHeight, pointMap, pointMapInterpolated);
-		createInterpolated3DmeshReferenceListUsingPointMap(imageWidth, imageHeight, pointMap, pointMapInterpolated, rgbMap, firstNewReferenceInList);
+		ORoperations.createInterpolatedPointMap(imageWidth, imageHeight, pointMap, pointMapInterpolated);
+		ORmethod3DOD.createInterpolated3DmeshReferenceListUsingPointMap(imageWidth, imageHeight, pointMap, pointMapInterpolated, rgbMap, firstNewReferenceInList);
 
 	}
 	else if(dimension == OR_METHOD2DOD_DIMENSIONS)
 	{
-		createInterpolated2DmeshReferenceListUsingRGBmap2DOD(imageWidth, imageHeight, rgbMap, firstNewReferenceInList);
+		ORmethod2DOD.createInterpolated2DmeshReferenceListUsingRGBmap2DOD(imageWidth, imageHeight, rgbMap, firstNewReferenceInList);
 	}
 	else
 	{
@@ -1847,7 +1827,7 @@ bool createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMap(double* point
 	{
 		cout << "\t\t\t end: 1b. object data generation - create interpolated mesh" << endl;
 		long time1bODgenerationCreateInterpolatedMeshEnd;
-		time1bODgenerationCreateInterpolatedMeshEnd = getTimeAsLong();
+		time1bODgenerationCreateInterpolatedMeshEnd = SHAREDvars.getTimeAsLong();
 		if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 		{
 			time1bODgenerationCreateInterpolatedMeshTotalTrain = time1bODgenerationCreateInterpolatedMeshTotalTrain+ time1bODgenerationCreateInterpolatedMeshEnd-time1bODgenerationCreateInterpolatedMeshStart;
@@ -1873,12 +1853,12 @@ bool createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMap(double* point
 
 
 	//add map to reference list
-	write2DreferenceListCollapsedTo1DtoFile(charstarinterpolatedMeshFileNameLDR, firstReferenceInInterpolatedMesh);
+	LDreferenceManipulation.write2DreferenceListCollapsedTo1DtoFile(charstarinterpolatedMeshFileNameLDR, firstReferenceInInterpolatedMesh);
 	#endif
 
 
 #ifdef OR_DEBUG_RAYTRACE_INTERPOLATED_3D_MAP_WITH_ORIGINAL_VIEW
-	printInterpolatedMeshReferenceList(firstReferenceInInterpolatedMesh, vi, objectName, trainOrTest, dimension, viewIndex);
+	this->printInterpolatedMeshReferenceList(firstReferenceInInterpolatedMesh, vi, objectName, trainOrTest, dimension, viewIndex);
 #endif
 
 	delete pointMapInterpolated;
@@ -1892,7 +1872,7 @@ static int interpolatedMeshPointUsageSelection[4][2];
 
 
 #define MIN_NUMBER_OF_POINTS_TO_CREATE_INTERPOLATED_POINT (2)
-LDreference* convertMeshPointToReferences3DOD(ORmeshPoint* currentMeshPointInMeshList, LDreference* firstNewReferenceInInterpolatedMesh)
+LDreference* ORmethodClass::convertMeshPointToReferences3DOD(ORmeshPoint* currentMeshPointInMeshList, LDreference* firstNewReferenceInInterpolatedMesh)
 {
 	LDreference* currentReferenceInInterpolatedMesh = firstNewReferenceInInterpolatedMesh;
 
@@ -1901,7 +1881,7 @@ LDreference* convertMeshPointToReferences3DOD(ORmeshPoint* currentMeshPointInMes
 	nullPointVector.y = 0.0;
 	nullPointVector.z = 0.0;
 
-	if(!compareVectors(&(currentMeshPointInMeshList->point), &nullPointVector))
+	if(!SHAREDvector.compareVectors(&(currentMeshPointInMeshList->point), &nullPointVector))
 	{
 		vec interpolatedMeshPointArray[4];
 		bool interpolatedMeshPointArrayFilled[4];
@@ -1923,7 +1903,7 @@ LDreference* convertMeshPointToReferences3DOD(ORmeshPoint* currentMeshPointInMes
 				int q = interpolatedMeshPointSelection[i][j];
 				if(currentMeshPointInMeshList->adjacentMeshPointFilled[q])
 				{
-					if(!compareVectors(&(currentMeshPointInMeshList->adjacentMeshPoint[q]->point), &nullPointVector))
+					if(!SHAREDvector.compareVectors(&(currentMeshPointInMeshList->adjacentMeshPoint[q]->point), &nullPointVector))
 					{//do not interpolate over null point vectors
 						interpolatedMeshPointArray[i].x = interpolatedMeshPointArray[i].x + currentMeshPointInMeshList->adjacentMeshPoint[q]->point.x;
 						interpolatedMeshPointArray[i].y = interpolatedMeshPointArray[i].y + currentMeshPointInMeshList->adjacentMeshPoint[q]->point.y;
@@ -1946,17 +1926,17 @@ LDreference* convertMeshPointToReferences3DOD(ORmeshPoint* currentMeshPointInMes
 			if(interpolatedMeshPointArrayFilled[interpolatedMeshPointUsageSelection[i][0]] && interpolatedMeshPointArrayFilled[interpolatedMeshPointUsageSelection[i][1]])
 			{
 				ORpolygon poly;
-				multiplyVectorByScalarRT(&(currentMeshPointInMeshList->point), OR_SNAPSHOT_SCALE_FACTOR, &(poly.point1));
-				multiplyVectorByScalarRT(&(interpolatedMeshPointArray[interpolatedMeshPointUsageSelection[i][0]]), OR_SNAPSHOT_SCALE_FACTOR, &(poly.point2));
-				multiplyVectorByScalarRT(&(interpolatedMeshPointArray[interpolatedMeshPointUsageSelection[i][1]]), OR_SNAPSHOT_SCALE_FACTOR, &(poly.point3));
+				SHAREDvector.multiplyVectorByScalarRT(&(currentMeshPointInMeshList->point), OR_SNAPSHOT_SCALE_FACTOR, &(poly.point1));
+				SHAREDvector.multiplyVectorByScalarRT(&(interpolatedMeshPointArray[interpolatedMeshPointUsageSelection[i][0]]), OR_SNAPSHOT_SCALE_FACTOR, &(poly.point2));
+				SHAREDvector.multiplyVectorByScalarRT(&(interpolatedMeshPointArray[interpolatedMeshPointUsageSelection[i][1]]), OR_SNAPSHOT_SCALE_FACTOR, &(poly.point3));
 
 				currentReferenceInInterpolatedMesh->type = REFERENCE_TYPE_TRI;
-				copyVectors(&(currentReferenceInInterpolatedMesh->vertex1relativePosition), &(poly.point1));
-				copyVectors(&(currentReferenceInInterpolatedMesh->vertex2relativePosition), &(poly.point2));
-				copyVectors(&(currentReferenceInInterpolatedMesh->vertex3relativePosition), &(poly.point3));
-				copyVectors(&(currentReferenceInInterpolatedMesh->vertex1absolutePosition), &(poly.point1));
-				copyVectors(&(currentReferenceInInterpolatedMesh->vertex2absolutePosition), &(poly.point2));
-				copyVectors(&(currentReferenceInInterpolatedMesh->vertex3absolutePosition), &(poly.point3));
+				SHAREDvector.copyVectors(&(currentReferenceInInterpolatedMesh->vertex1relativePosition), &(poly.point1));
+				SHAREDvector.copyVectors(&(currentReferenceInInterpolatedMesh->vertex2relativePosition), &(poly.point2));
+				SHAREDvector.copyVectors(&(currentReferenceInInterpolatedMesh->vertex3relativePosition), &(poly.point3));
+				SHAREDvector.copyVectors(&(currentReferenceInInterpolatedMesh->vertex1absolutePosition), &(poly.point1));
+				SHAREDvector.copyVectors(&(currentReferenceInInterpolatedMesh->vertex2absolutePosition), &(poly.point2));
+				SHAREDvector.copyVectors(&(currentReferenceInInterpolatedMesh->vertex3absolutePosition), &(poly.point3));
 				colour col;
 				col.r = (currentMeshPointInMeshList->col.r);
 				col.g = (currentMeshPointInMeshList->col.g);
@@ -2003,7 +1983,7 @@ LDreference* convertMeshPointToReferences3DOD(ORmeshPoint* currentMeshPointInMes
 }
 
 
-LDreference* convertMeshPointToReferences2DOD(const ORmeshPoint* currentMeshPointInMeshList, LDreference* firstNewReferenceInInterpolatedMesh)
+LDreference* ORmethodClass::convertMeshPointToReferences2DOD(const ORmeshPoint* currentMeshPointInMeshList, LDreference* firstNewReferenceInInterpolatedMesh)
 {
 	LDreference* currentReferenceInInterpolatedMesh = firstNewReferenceInInterpolatedMesh;
 
@@ -2034,14 +2014,14 @@ LDreference* convertMeshPointToReferences2DOD(const ORmeshPoint* currentMeshPoin
 	v4.z = 0.0;
 
 	currentReferenceInInterpolatedMesh->type = REFERENCE_TYPE_QUAD;
-	copyVectors(&(currentReferenceInInterpolatedMesh->vertex1relativePosition), &v1);
-	copyVectors(&(currentReferenceInInterpolatedMesh->vertex2relativePosition), &v2);
-	copyVectors(&(currentReferenceInInterpolatedMesh->vertex3relativePosition), &v3);
-	copyVectors(&(currentReferenceInInterpolatedMesh->vertex4relativePosition), &v4);
-	copyVectors(&(currentReferenceInInterpolatedMesh->vertex1absolutePosition), &v1);
-	copyVectors(&(currentReferenceInInterpolatedMesh->vertex2absolutePosition), &v2);
-	copyVectors(&(currentReferenceInInterpolatedMesh->vertex3absolutePosition), &v3);
-	copyVectors(&(currentReferenceInInterpolatedMesh->vertex4absolutePosition), &v4);
+	SHAREDvector.copyVectors(&(currentReferenceInInterpolatedMesh->vertex1relativePosition), &v1);
+	SHAREDvector.copyVectors(&(currentReferenceInInterpolatedMesh->vertex2relativePosition), &v2);
+	SHAREDvector.copyVectors(&(currentReferenceInInterpolatedMesh->vertex3relativePosition), &v3);
+	SHAREDvector.copyVectors(&(currentReferenceInInterpolatedMesh->vertex4relativePosition), &v4);
+	SHAREDvector.copyVectors(&(currentReferenceInInterpolatedMesh->vertex1absolutePosition), &v1);
+	SHAREDvector.copyVectors(&(currentReferenceInInterpolatedMesh->vertex2absolutePosition), &v2);
+	SHAREDvector.copyVectors(&(currentReferenceInInterpolatedMesh->vertex3absolutePosition), &v3);
+	SHAREDvector.copyVectors(&(currentReferenceInInterpolatedMesh->vertex4absolutePosition), &v4);
 	colour col;
 	col.r = (currentMeshPointInMeshList->col.r);
 	col.g = (currentMeshPointInMeshList->col.g);
@@ -2088,7 +2068,7 @@ LDreference* convertMeshPointToReferences2DOD(const ORmeshPoint* currentMeshPoin
 
 
 
-bool createInterpolatedMeshReferenceListUsingMeshList(ORmeshPoint* firstMeshPointInMeshList, LDreference* firstReferenceInInterpolatedMesh, RTviewInfo* vi, const string objectName, const int trainOrTest, const int dimension)
+bool ORmethodClass::createInterpolatedMeshReferenceListUsingMeshList(ORmeshPoint* firstMeshPointInMeshList, LDreference* firstReferenceInInterpolatedMesh, RTviewInfo* vi, const string objectName, const int trainOrTest, const int dimension)
 {
 	bool result = true;
 
@@ -2122,7 +2102,7 @@ bool createInterpolatedMeshReferenceListUsingMeshList(ORmeshPoint* firstMeshPoin
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
 		cout << "\t\t\t start: 1b. object data generation - create interpolated mesh" << endl;
-		time1bODgenerationCreateInterpolatedMeshStart = getTimeAsLong();
+		time1bODgenerationCreateInterpolatedMeshStart = SHAREDvars.getTimeAsLong();
 	}
 
 	string trainOrTestString;
@@ -2145,11 +2125,11 @@ bool createInterpolatedMeshReferenceListUsingMeshList(ORmeshPoint* firstMeshPoin
 	{
 		if(dimension == OR_METHOD3DOD_DIMENSIONS)
 		{
-			currentReferenceInInterpolatedMesh = convertMeshPointToReferences3DOD(currentMeshPointInMeshList, currentReferenceInInterpolatedMesh);
+			currentReferenceInInterpolatedMesh = this->convertMeshPointToReferences3DOD(currentMeshPointInMeshList, currentReferenceInInterpolatedMesh);
 		}
 		else
 		{
-			currentReferenceInInterpolatedMesh = convertMeshPointToReferences2DOD(currentMeshPointInMeshList, currentReferenceInInterpolatedMesh);
+			currentReferenceInInterpolatedMesh = this->convertMeshPointToReferences2DOD(currentMeshPointInMeshList, currentReferenceInInterpolatedMesh);
 		}
 		currentMeshPointInMeshList = currentMeshPointInMeshList->next;
 	}
@@ -2158,7 +2138,7 @@ bool createInterpolatedMeshReferenceListUsingMeshList(ORmeshPoint* firstMeshPoin
 	{
 		cout << "\t\t\t end: 1b. object data generation - create interpolated mesh" << endl;
 		long time1bODgenerationCreateInterpolatedMeshEnd;
-		time1bODgenerationCreateInterpolatedMeshEnd = getTimeAsLong();
+		time1bODgenerationCreateInterpolatedMeshEnd = SHAREDvars.getTimeAsLong();
 		if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 		{
 			time1bODgenerationCreateInterpolatedMeshTotalTrain = time1bODgenerationCreateInterpolatedMeshTotalTrain+ time1bODgenerationCreateInterpolatedMeshEnd-time1bODgenerationCreateInterpolatedMeshStart;
@@ -2183,12 +2163,12 @@ bool createInterpolatedMeshReferenceListUsingMeshList(ORmeshPoint* firstMeshPoin
 
 
 	//add map to reference list
-	write2DreferenceListCollapsedTo1DtoFile(charstarinterpolatedMeshFileNameLDR, firstReferenceInInterpolatedMesh);
+	LDreferenceManipulation.write2DreferenceListCollapsedTo1DtoFile(charstarinterpolatedMeshFileNameLDR, firstReferenceInInterpolatedMesh);
 	#endif
 
 
 #ifdef OR_DEBUG_RAYTRACE_INTERPOLATED_3D_MAP_WITH_ORIGINAL_VIEW
-	printInterpolatedMeshReferenceList(firstReferenceInInterpolatedMesh, vi, objectName, trainOrTest, dimension, 0);
+	this->printInterpolatedMeshReferenceList(firstReferenceInInterpolatedMesh, vi, objectName, trainOrTest, dimension, 0);
 #endif
 
 	return result;
@@ -2196,7 +2176,7 @@ bool createInterpolatedMeshReferenceListUsingMeshList(ORmeshPoint* firstMeshPoin
 
 
 
-void printInterpolatedMeshReferenceList(LDreference* firstReferenceInInterpolatedMesh, RTviewInfo* vi, const string objectName, const int trainOrTest, const int dimension, const int viewIndex)
+void ORmethodClass::printInterpolatedMeshReferenceList(LDreference* firstReferenceInInterpolatedMesh, RTviewInfo* vi, const string objectName, const int trainOrTest, const int dimension, const int viewIndex)
 {
 	//ray trace interpolated map at new eye position;
 
@@ -2210,7 +2190,7 @@ void printInterpolatedMeshReferenceList(LDreference* firstReferenceInInterpolate
 		trainOrTestString = TEST_STRING;
 	}
 
-	string viewIndexString = convertIntToString(viewIndex);
+	string viewIndexString = SHAREDvars.convertIntToString(viewIndex);
 
 	string mapFileName = objectName + "initialViewMap" + "ViewIndex" + viewIndexString + "ZoomIndex" + "0";
 
@@ -2239,7 +2219,7 @@ void printInterpolatedMeshReferenceList(LDreference* firstReferenceInInterpolate
 		vi->imageHeight = OR_DEBUG_RAYTRACE_INTERPOLATED_3D_MAP_WITH_ORIGINAL_VIEW_HEIGHT;
 		vi->focalLength = vi->focalLength/OR_DEBUG_RAYTRACE_INTERPOLATED_3D_MAP_WITH_ORIGINAL_VIEW_SCALE_FACTOR;
 
-		write2DReferenceListCollapsedTo1DToFileRayTraceFormat(TEMPcharstarinterpolatedMapFileNameForRayTracingTAL, firstReferenceInInterpolatedMesh, true, vi, false, NULL, NULL);
+		RTreferenceManipulation.write2DReferenceListCollapsedTo1DToFileRayTraceFormat(TEMPcharstarinterpolatedMapFileNameForRayTracingTAL, firstReferenceInInterpolatedMesh, true, vi, false, NULL, NULL);
 
 		vi->focalLength = vi->focalLength*OR_DEBUG_RAYTRACE_INTERPOLATED_3D_MAP_WITH_ORIGINAL_VIEW_SCALE_FACTOR;
 		vi->imageWidth = widthRecord;
@@ -2264,7 +2244,7 @@ void printInterpolatedMeshReferenceList(LDreference* firstReferenceInInterpolate
 		viFacingImage.viewUp.y = TH_OR_FACING_2D_MAP_DEFAULT_VIEWUP_Y;
 		viFacingImage.viewUp.z = TH_OR_FACING_2D_MAP_DEFAULT_VIEWUP_Z;
 
-		write2DReferenceListCollapsedTo1DToFileRayTraceFormat(TEMPcharstarinterpolatedMapFileNameForRayTracingTAL, firstReferenceInInterpolatedMesh, true, &viFacingImage, false, NULL, NULL);
+		RTreferenceManipulation.write2DReferenceListCollapsedTo1DToFileRayTraceFormat(TEMPcharstarinterpolatedMapFileNameForRayTracingTAL, firstReferenceInInterpolatedMesh, true, &viFacingImage, false, NULL, NULL);
 	}
 	else
 	{
@@ -2273,18 +2253,18 @@ void printInterpolatedMeshReferenceList(LDreference* firstReferenceInInterpolate
 	}
 
 	//raytrace Tal file;
-	setLightingMode(LIGHTING_MODE_BASIC);
+	RTscene.setLightingMode(LIGHTING_MODE_BASIC);
 	#ifdef OR_DEBUG
 	//cout << "TEMPinterpolatedRGBMapFileNameForRayTracingPPMRGB = " << TEMPinterpolatedRGBMapFileNameForRayTracingPPMRGB << endl;
 	//cout << "TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMRGB = " << TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMRGB << endl;
 	#endif
 
 #ifndef DO_NOT_DEMONSTRATE_CPP_STRING_TO_CSTRING_CAST_CORRUPTION
-	rayTraceScene(TEMPcharstarinterpolatedMapFileNameForRayTracingTAL, TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMRGB, true, false, NULL, NULL, NULL, NULL);
+	RTscene.rayTraceScene(TEMPcharstarinterpolatedMapFileNameForRayTracingTAL, TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMRGB, true, false, NULL, NULL, NULL, NULL);
 	cout << "TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMRGB = " << TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMRGB << endl;
 
 #else
-	rayTraceScene(TEMPcharstarinterpolatedMapFileNameForRayTracingTAL, "TEMPinterpolatedRGBMap.rgb.ppm", true, false, NULL, NULL, NULL, NULL);
+	RTscene.rayTraceScene(TEMPcharstarinterpolatedMapFileNameForRayTracingTAL, "TEMPinterpolatedRGBMap.rgb.ppm", true, false, NULL, NULL, NULL, NULL);
 	cout << "TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMRGB = " << "TEMPinterpolatedRGBMap.rgb.ppm" << endl;
 
 #endif
@@ -2306,7 +2286,7 @@ void printInterpolatedMeshReferenceList(LDreference* firstReferenceInInterpolate
 }
 
 
-bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, double* depthMap, ORfeature firstFeatureInList[], RTviewInfo* vi, const int trainOrTest, const int viewIndex, const string objectName, int dimension, const int numberOfZoomIndicies, ORmeshPoint* firstMeshPointInMeshList, constEffective ORmeshPoint* meshPointArray[], const bool useEdgeZeroCrossingMap)
+bool ORmethodClass::createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, double* depthMap, ORfeature firstFeatureInList[], RTviewInfo* vi, const int trainOrTest, const int viewIndex, const string objectName, int dimension, const int numberOfZoomIndicies, ORmeshPoint* firstMeshPointInMeshList, constEffective ORmeshPoint* meshPointArray[], const bool useEdgeZeroCrossingMap)
 {
 	bool result = true;
 
@@ -2314,7 +2294,7 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
 		cout << "\t\t\t start: 1c. object data generation - feature list creation" << endl;
-		time1cODgenerationFeatureListCreationStart = getTimeAsLong();
+		time1cODgenerationFeatureListCreationStart = SHAREDvars.getTimeAsLong();
 	}
 
 	string trainOrTestString;
@@ -2330,11 +2310,11 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 	int imageWidth = vi->imageWidth;
 	int imageHeight = vi->imageHeight;
 
-	string viewIndexString = convertIntToString(viewIndex);
+	string viewIndexString = SHAREDvars.convertIntToString(viewIndex);
 
 	for(int zoomIndex=0; zoomIndex < numberOfZoomIndicies; zoomIndex++)
 	{
-		string zoomIndexString = convertIntToString(zoomIndex);
+		string zoomIndexString = SHAREDvars.convertIntToString(zoomIndex);
 
 		#ifdef OR_DEBUG
 		/*
@@ -2372,7 +2352,7 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 
 		//add to cornerlist
 		#ifdef OR_METHOD_3DOD_USE_OLD_TESTED_BUT_BASIC_FEATURE_DETECTION	//not used anymore
-			if(!generateFeatureList3DOD(vi, depthMap, pointMap, depthContrastBooleanMap, luminosityContrastBooleanMap, luminosityContrastMapMinusDepthContrastMap, firstFeatureInList[zoomIndex], trainOrTest))
+			if(!ORmethod3DOD.generateFeatureList3DOD(vi, depthMap, pointMap, depthContrastBooleanMap, luminosityContrastBooleanMap, luminosityContrastMapMinusDepthContrastMap, firstFeatureInList[zoomIndex], trainOrTest))
 			{
 				result = false;
 			}
@@ -2383,17 +2363,17 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 			double* pointNormalMap = new double[imageWidth*imageHeight*VECTOR_NUM_VALUES];
 			double* pointNormalContrastMap = new double[imageWidth*imageHeight];
 			//must use contrast maps with heitger here - check these work - ie points are detected by heitger on lines of contrast
-			createPointNormalMapFromPointMap(imageWidth, imageHeight, pointMap, pointNormalMap);
-			createPointNormalContrastMapFromPointNormalMap(imageWidth, imageHeight, pointNormalMap, pointNormalContrastMap);
+			ORpixelMaps.createPointNormalMapFromPointMap(imageWidth, imageHeight, pointMap, pointNormalMap);
+			ORpixelMaps.createPointNormalContrastMapFromPointNormalMap(imageWidth, imageHeight, pointNormalMap, pointNormalContrastMap);
 			unsigned char* pointNormalContrastMapConvertedToRgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
-			generateRGBmapFromPointNormalContrastMap(imageWidth, imageHeight, pointNormalContrastMap, pointNormalContrastMapConvertedToRgbMap);
+			ORpixelMaps.generateRGBmapFromPointNormalContrastMap(imageWidth, imageHeight, pointNormalContrastMap, pointNormalContrastMapConvertedToRgbMap);
 			//#else
 			double* depthGradientMap = new double[imageWidth*imageHeight*DEPTH_GRADIENT_MAP_VEC_NUM_DIMENSIONS];	//NOT USED FOR 2D!
-			createDepthGradientMapFromDepthMap(imageWidth, imageHeight, depthMap, depthGradientMap);
+			ORpixelMaps.createDepthGradientMapFromDepthMap(imageWidth, imageHeight, depthMap, depthGradientMap);
 			unsigned char* depthMapConvertedToRgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
 			unsigned char* depthGradientMapConvertedToRgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
-			generateRGBMapFromDepthMapOrDepthContrastMap(imageWidth, imageHeight, depthMap, depthMapConvertedToRgbMap);
-			generateRGBmapFromDepthGradientMap(imageWidth, imageHeight, depthGradientMap, depthGradientMapConvertedToRgbMap);		//will not work properly in a single special case; ie where there is an equal and opposite depth change in both x and y [because this will result in an equal and opposite r and b change, and the heitger feature detection only works with luminosity, r + g]
+			RTpixelMaps.generateRGBMapFromDepthMapOrDepthContrastMap(imageWidth, imageHeight, depthMap, depthMapConvertedToRgbMap);
+			ORpixelMaps.generateRGBmapFromDepthGradientMap(imageWidth, imageHeight, depthGradientMap, depthGradientMapConvertedToRgbMap);		//will not work properly in a single special case; ie where there is an equal and opposite depth change in both x and y [because this will result in an equal and opposite r and b change, and the heitger feature detection only works with luminosity, r + g]
 			//#endif
 		//#endif
 
@@ -2429,18 +2409,18 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 							#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS_OLD
 								createContrastMapFromMapWithForegroundDepthCheck(imageWidth, imageHeight, depthMap, depthMap, depthContrastMap, depthContrastBooleanMap, foregroundDepthCheckDepthContrastBooleanMap, EDGE_DEPTH_CONTRAST_THRESHOLD);
 							#else
-								createContrastMapFromMap(imageWidth, imageHeight, depthMap, depthContrastMap);
+								RTpixelMaps.createContrastMapFromMap(imageWidth, imageHeight, depthMap, depthContrastMap);
 							#endif
-							createDepthGradientContrastMapFromDepthGradientMap(imageWidth, imageHeight, depthGradientMap, depthGradientContrastMap);
+							ORpixelMaps.createDepthGradientContrastMapFromDepthGradientMap(imageWidth, imageHeight, depthGradientMap, depthGradientContrastMap);
 						}
 					}
 					else
 					{
-						createLuminosityMapFromRGBMap(imageWidth, imageHeight, rgbMap, luminosityMap);
+						RTpixelMaps.createLuminosityMapFromRGBMap(imageWidth, imageHeight, rgbMap, luminosityMap);
 						#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS_OLD
 							createContrastMapFromMapWithForegroundDepthCheck(imageWidth, imageHeight, luminosityMap, depthMap, luminosityContrastMap, luminosityContrastBooleanMap, foregroundDepthCheckLuminosityhContrastBooleanMap, EDGE_LUMINOSITY_CONTRAST_THRESHOLD);
 						#else
-							createContrastMapFromMap(imageWidth, imageHeight, luminosityMap, luminosityContrastMap);
+							RTpixelMaps.createContrastMapFromMap(imageWidth, imageHeight, luminosityMap, luminosityContrastMap);
 							#ifdef OR_DEBUG
 							/*
 							for(int y = 0; y < imageHeight; y++)
@@ -2468,18 +2448,18 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 					{
 						if(OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST)
 						{
-							if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, pointNormalContrastMapConvertedToRgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST))
+							if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, pointNormalContrastMapConvertedToRgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST))
 							{
 								result = false;
 							}
 						}
 						else
 						{
-							if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, depthMapConvertedToRgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
+							if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, depthMapConvertedToRgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
 							{
 								result = false;
 							}
-							if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, depthGradientMapConvertedToRgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
+							if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, depthGradientMapConvertedToRgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
 							{
 								result = false;
 							}
@@ -2488,7 +2468,7 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 					else
 					{
 						sensitivity = 1.0;
-						if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, rgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
+						if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, rgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
 						{
 							result = false;
 						}
@@ -2503,7 +2483,7 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 						{
 							if(OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
 							{
-								if(!addCentredFeaturesToFeatureListUsingMeshList(firstFeatureInList, IRRELEVANT, dimension, firstMeshPointInMeshList, IRRELEVANT, useEdgeZeroCrossingMap))
+								if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingMeshList(firstFeatureInList, IRRELEVANT, dimension, firstMeshPointInMeshList, IRRELEVANT, useEdgeZeroCrossingMap))
 								{
 									result = false;
 								}
@@ -2512,14 +2492,14 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 							{
 								if(OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION)
 								{
-									if(!addCentredFeaturesToFeatureListUsingMeshList(&(firstFeatureInList[zoomIndex]), EDGE_NORMAL_CONTRAST_THRESHOLD, dimension, firstMeshPointInMeshList, CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_POINT_NORMAL_CONTRAST, useEdgeZeroCrossingMap))
+									if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingMeshList(&(firstFeatureInList[zoomIndex]), EDGE_NORMAL_CONTRAST_THRESHOLD, dimension, firstMeshPointInMeshList, CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_POINT_NORMAL_CONTRAST, useEdgeZeroCrossingMap))
 									{
 										result = false;
 									}
 								}
 								else
 								{
-									if(!addCentredFeaturesToFeatureListUsingMeshList(&(firstFeatureInList[zoomIndex]), EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, firstMeshPointInMeshList, CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_LUMINOSITY_CONTRAST, useEdgeZeroCrossingMap))
+									if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingMeshList(&(firstFeatureInList[zoomIndex]), EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, firstMeshPointInMeshList, CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_LUMINOSITY_CONTRAST, useEdgeZeroCrossingMap))
 									{
 										result = false;
 									}
@@ -2534,7 +2514,7 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 						{
 							if(OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST)
 							{
-								if(!addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, pointNormalContrastMap, EDGE_NORMAL_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST))
+								if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, pointNormalContrastMap, EDGE_NORMAL_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST))
 								{
 									result = false;
 								}
@@ -2542,12 +2522,12 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 							else
 							{
 								/*
-								if(!addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, depthContrastMap, EDGE_DEPTH_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
+								if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, depthContrastMap, EDGE_DEPTH_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
 								{
 									result = false;
 								}
 								*/
-								if(!addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, depthGradientContrastMap, EDGE_DEPTH_GRADIENT_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST))
+								if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, depthGradientContrastMap, EDGE_DEPTH_GRADIENT_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST))
 								{
 									result = false;
 								}
@@ -2555,7 +2535,7 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 						}
 						else
 						{
-							if(!addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, luminosityContrastMap, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
+							if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, luminosityContrastMap, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
 							{
 								result = false;
 							}
@@ -2568,17 +2548,17 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 			{//now scale the maps before performing feature detection
 
 				unsigned char* rgbMapResampled = new unsigned char[resampledWidth*resampledHeight*RGB_NUM];
-				resampleRGBmap(rgbMap, imageWidth, imageHeight, rgbMapResampled, zoom, OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_OFF);
+				ORpixelMaps.resampleRGBmap(rgbMap, imageWidth, imageHeight, rgbMapResampled, zoom, OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_OFF);
 
 			//#ifdef OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION
 				//#ifdef OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST
 				unsigned char* pointNormalContrastMapConvertedToRgbMapResampled = new unsigned char[resampledWidth*resampledHeight*RGB_NUM];
-				resampleRGBmap(pointNormalContrastMapConvertedToRgbMap, imageWidth, imageHeight, pointNormalContrastMapConvertedToRgbMapResampled, zoom, OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_OFF);
+				ORpixelMaps.resampleRGBmap(pointNormalContrastMapConvertedToRgbMap, imageWidth, imageHeight, pointNormalContrastMapConvertedToRgbMapResampled, zoom, OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_OFF);
 				//#else
 				unsigned char* depthMapConvertedToRgbMapResampled = new unsigned char[resampledWidth*resampledHeight*RGB_NUM];
 				unsigned char* depthGradientMapConvertedToRgbMapResampled = new unsigned char[resampledWidth*resampledHeight*RGB_NUM];
-				resampleRGBmap(depthMapConvertedToRgbMap, imageWidth, imageHeight, depthMapConvertedToRgbMapResampled, zoom, OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_OFF);
-				resampleRGBmap(depthGradientMapConvertedToRgbMap, imageWidth, imageHeight, depthGradientMapConvertedToRgbMapResampled, zoom, OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_OFF);
+				ORpixelMaps.resampleRGBmap(depthMapConvertedToRgbMap, imageWidth, imageHeight, depthMapConvertedToRgbMapResampled, zoom, OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_OFF);
+				ORpixelMaps.resampleRGBmap(depthGradientMapConvertedToRgbMap, imageWidth, imageHeight, depthGradientMapConvertedToRgbMapResampled, zoom, OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_OFF);
 				//#endif
 			//#endif
 
@@ -2615,28 +2595,28 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 							if(OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST)
 							{
 
-								createPointNormalMapFromPointMap(resampledWidth, resampledHeight, pointMapResampled, pointNormalMapResampled);
-								createPointNormalContrastMapFromPointNormalMap(resampledWidth, resampledHeight, pointNormalMap, pointNormalContrastMapResampled);
+								ORpixelMaps.createPointNormalMapFromPointMap(resampledWidth, resampledHeight, pointMapResampled, pointNormalMapResampled);
+								ORpixelMaps.createPointNormalContrastMapFromPointNormalMap(resampledWidth, resampledHeight, pointNormalMap, pointNormalContrastMapResampled);
 							}
 							else
 							{
 								#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS_OLD
 									createContrastMapFromMapWithForegroundDepthCheck(resampledWidth, resampledHeight, depthMapResampled, depthMapResampled, depthContrastMapResampled);
 								#else
-									createContrastMapFromMap(imageWidth, imageHeight, depthMapResampled, depthContrastMapResampled);
+									RTpixelMaps.createContrastMapFromMap(imageWidth, imageHeight, depthMapResampled, depthContrastMapResampled);
 								#endif
-								createDepthGradientContrastMapFromDepthGradientMap(resampledWidth, resampledHeight, depthGradientMapResampled, depthGradientContrastMapResampled);
+								ORpixelMaps.createDepthGradientContrastMapFromDepthGradientMap(resampledWidth, resampledHeight, depthGradientMapResampled, depthGradientContrastMapResampled);
 							}
 
 						}
 						else
 						{
-							createLuminosityMapFromRGBMap(resampledWidth, resampledHeight, rgbMapResampled, luminosityMapResampled);
+							RTpixelMaps.createLuminosityMapFromRGBMap(resampledWidth, resampledHeight, rgbMapResampled, luminosityMapResampled);
 
 							#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS_OLD
 								createContrastMapFromMapWithForegroundDepthCheck(resampledWidth, resampledHeight, luminosityMapResampled, depthMapResampled, luminosityContrastMapResampled);
 							#else
-								createContrastMapFromMap(imageWidth, imageHeight, luminosityMapResampled, luminosityContrastMapResampled);
+								RTpixelMaps.createContrastMapFromMap(imageWidth, imageHeight, luminosityMapResampled, luminosityContrastMapResampled);
 							#endif
 						}
 					}
@@ -2646,7 +2626,7 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 
 				string resampledRGBMapFileName = mapFileNameWithZoom + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//FEATUREMAP_PPM_EXTENSION_PART
 				char* resampledRGBAtDesiredzoomCharFileName = const_cast<char*>(resampledRGBMapFileName.c_str());
-				generatePixmapFromRGBmap(resampledRGBAtDesiredzoomCharFileName, resampledWidth, resampledHeight, rgbMapResampled);
+				RTpixelMaps.generatePixmapFromRGBmap(resampledRGBAtDesiredzoomCharFileName, resampledWidth, resampledHeight, rgbMapResampled);
 				if(OR_PRINT_ALGORITHM_PROGRESS)
 				{
 					cout << "generating " << resampledRGBAtDesiredzoomCharFileName << endl;
@@ -2659,7 +2639,7 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 					{
 						if(OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST)
 						{
-							if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, pointNormalContrastMapConvertedToRgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST))
+							if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, pointNormalContrastMapConvertedToRgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST))
 							{
 								result = false;
 							}
@@ -2667,12 +2647,12 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 						else
 						{
 							/*
-							if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, depthMapConvertedToRgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
+							if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, depthMapConvertedToRgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
 							{
 								result = false;
 							}
 							*/
-							if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, depthGradientMapConvertedToRgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
+							if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, depthGradientMapConvertedToRgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
 							{
 								result = false;
 							}
@@ -2681,7 +2661,7 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 					else
 					{
 						sensitivity = 1.0;
-						if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, rgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
+						if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, rgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
 						{
 							result = false;
 						}
@@ -2704,7 +2684,7 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 
 							if(OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST)
 							{
-								if(!addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, pointNormalContrastMapResampled, EDGE_NORMAL_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST)
+								if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, pointNormalContrastMapResampled, EDGE_NORMAL_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST)
 								{
 									result = false;
 								}
@@ -2712,12 +2692,12 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 							else
 							{
 								/*
-								if(!addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, depthContrastMapResampled, EDGE_DEPTH_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST)
+								if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, depthContrastMapResampled, EDGE_DEPTH_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST)
 								{
 								      result = false;
 								}
 								*/
-								if(!addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, depthGradientContrastMapResampled, EDGE_DEPTH_GRADIENT_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST)
+								if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, depthGradientContrastMapResampled, EDGE_DEPTH_GRADIENT_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST)
 								{
 									result = false;
 								}
@@ -2725,7 +2705,7 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 						}
 						else
 						{
-							if(!addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, luminosityContrastMapResampled, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST)
+							if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, luminosityContrastMapResampled, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST)
 							{
 								result = false;
 							}
@@ -2814,7 +2794,7 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 
 				if(OR_USE_FIND_CORNER_FEATURES)
 				{
-					if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, rgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
+					if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, rgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
 					{
 						result = false;
 					}
@@ -2826,7 +2806,7 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 					{
 						if(!OR_METHOD_2DOD_USE_MESH_LISTS_COMBINED)
 						{
-							if(!addCentredFeaturesToFeatureListUsingMeshList(&(firstFeatureInList[zoomIndex]), EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, firstMeshPointInMeshList, CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_LUMINOSITY_CONTRAST, useEdgeZeroCrossingMap))
+							if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingMeshList(&(firstFeatureInList[zoomIndex]), EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, firstMeshPointInMeshList, CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_LUMINOSITY_CONTRAST, useEdgeZeroCrossingMap))
 							{
 								result = false;
 							}
@@ -2836,9 +2816,9 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 					{
 						double* luminosityMap = new double[imageWidth* imageHeight];
 						double* luminosityContrastMap = new double[imageWidth* imageHeight];
-						createLuminosityMapFromRGBMap(imageWidth, imageHeight, rgbMap, luminosityMap);
-						createContrastMapFromMap(imageWidth, imageHeight, luminosityMap, luminosityContrastMap);
-						if(!addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, luminosityContrastMap, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
+						RTpixelMaps.createLuminosityMapFromRGBMap(imageWidth, imageHeight, rgbMap, luminosityMap);
+						RTpixelMaps.createContrastMapFromMap(imageWidth, imageHeight, luminosityMap, luminosityContrastMap);
+						if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), imageWidth, imageHeight, luminosityContrastMap, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
 						{
 							result = false;
 						}
@@ -2852,11 +2832,11 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 			{
 
 				unsigned char* rgbMapResampled = new unsigned char[resampledWidth*resampledHeight*RGB_NUM];
-				resampleRGBmap(rgbMap, imageWidth, imageHeight, rgbMapResampled, zoom, OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_OFF);
+				ORpixelMaps.resampleRGBmap(rgbMap, imageWidth, imageHeight, rgbMapResampled, zoom, OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_OFF);
 
 				string resampledRGBMapFileName = mapFileNameWithZoom + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 				char* resampledRGBAtDesiredzoomCharFileName = const_cast<char*>(resampledRGBMapFileName.c_str());
-				generatePixmapFromRGBmap(resampledRGBAtDesiredzoomCharFileName, resampledWidth, resampledHeight, rgbMapResampled);
+				RTpixelMaps.generatePixmapFromRGBmap(resampledRGBAtDesiredzoomCharFileName, resampledWidth, resampledHeight, rgbMapResampled);
 				if(OR_PRINT_ALGORITHM_PROGRESS)
 				{
 					cout << "generating " << resampledRGBAtDesiredzoomCharFileName << endl;
@@ -2866,7 +2846,7 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 				double sensitivity = 1.0;
 				if(OR_USE_FIND_CORNER_FEATURES)
 				{
-					if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, rgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
+					if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, rgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
 					{
 						result = false;
 					}
@@ -2879,9 +2859,9 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 					{
 						double* luminosityMapResampled = new double[resampledWidth* resampledHeight];
 						double* luminosityContrastMapResampled = new double[resampledWidth* resampledHeight];
-						createLuminosityMapFromRGBMap(resampledWidth, resampledHeight, rgbMapResampled, luminosityMapResampled);
-						createContrastMapFromMap(resampledWidth, resampledHeight, luminosityMapResampled, luminosityContrastMapResampled);
-						if(!addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), resampledWidth, resampledHeight, luminosityContrastMapResampled, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
+						RTpixelMaps.createLuminosityMapFromRGBMap(resampledWidth, resampledHeight, rgbMapResampled, luminosityMapResampled);
+						RTpixelMaps.createContrastMapFromMap(resampledWidth, resampledHeight, luminosityMapResampled, luminosityContrastMapResampled);
+						if(!ORfeatureGeneration.addCentredFeaturesToFeatureListUsingContrastMap(&(firstFeatureInList[zoomIndex]), resampledWidth, resampledHeight, luminosityContrastMapResampled, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, dimension, pointMap, depthMap, zoom, vi, useEdgeZeroCrossingMap, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
 						{
 							result = false;
 						}
@@ -2919,9 +2899,9 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 		}
 
 		bool* featuresMapCompleteOfficial = new bool[resampledWidth*resampledHeight];
-		generateBooleanMapFromFeatureList(resampledWidth, resampledHeight, &(firstFeatureInList[zoomIndex]), featuresMapCompleteOfficial, vi, zoom);
+		ORoperations.generateBooleanMapFromFeatureList(resampledWidth, resampledHeight, &(firstFeatureInList[zoomIndex]), featuresMapCompleteOfficial, vi, zoom);
 		string featuresMapCompleteOfficialFileName = mapFileNameWithZoom + FEATURESMAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-		generatePixmapFromBooleanMap(featuresMapCompleteOfficialFileName, resampledWidth, resampledHeight, featuresMapCompleteOfficial);
+		RTpixelMaps.generatePixmapFromBooleanMap(featuresMapCompleteOfficialFileName, resampledWidth, resampledHeight, featuresMapCompleteOfficial);
 		delete featuresMapCompleteOfficial;
 	}
 
@@ -2929,7 +2909,7 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 	{
 		cout << "\t\t\t end: 1c. object data generation - feature list creation" << endl;
 		long time1cODgenerationFeatureListCreationEnd;
-		time1cODgenerationFeatureListCreationEnd = getTimeAsLong();
+		time1cODgenerationFeatureListCreationEnd = SHAREDvars.getTimeAsLong();
 		if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 		{
 			time1cODgenerationFeatureListCreationTotalTrain = time1cODgenerationFeatureListCreationTotalTrain+ time1cODgenerationFeatureListCreationEnd-time1cODgenerationFeatureListCreationStart;
@@ -2950,7 +2930,7 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
 
-bool checkIfFeatureContainerWithSameFeatureIndiciesExists(const ORfeatureContainer* firstFeatureContainerInBestMatchList, const ORfeatureContainer* currentFeatureContainerInMatchListcurrentFeatureContainerInMatchList)
+bool ORmethodClass::checkIfFeatureContainerWithSameFeatureIndiciesExists(const ORfeatureContainer* firstFeatureContainerInBestMatchList, const ORfeatureContainer* currentFeatureContainerInMatchListcurrentFeatureContainerInMatchList)
 {
 	bool exists = false;
 
@@ -2976,9 +2956,9 @@ bool checkIfFeatureContainerWithSameFeatureIndiciesExists(const ORfeatureContain
 #endif
 
 
-bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rgbMap, ORfeature* firstFeatureInList, const int trainOrTest, const string mapFileName, const double sensitivity, const int dimension, double* pointMap, const double* depthMap, int zoom, const bool interpixelRGBmapType)
+bool ORmethodClass::addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rgbMap, ORfeature* firstFeatureInList, const int trainOrTest, const string mapFileName, const double sensitivity, const int dimension, double* pointMap, const double* depthMap, int zoom, const bool interpixelRGBmapType)
 {
-	string currentTempFolder = getCurrentDirectory();
+	string currentTempFolder = SHAREDvars.getCurrentDirectory();
 
 	bool result = true;
 
@@ -3042,7 +3022,7 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 		{
 			for(int y=0;y<800;y++)
 			{
-				setRGBMapValues(x, y, 1600, &black, rgbMapTEMP);
+				RTpixelMaps.setRGBMapValues(x, y, 1600, &black, rgbMapTEMP);
 			}
 		}
 
@@ -3051,8 +3031,8 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 			for(int y=0;y<imageHeight;y++)
 			{
 				colour temp;
-				getRGBMapValues(x, y, imageWidth, rgbMap, &temp);
-				setRGBMapValues(x, y, 1600, &temp, rgbMapTEMP);
+				RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMap, &temp);
+				RTpixelMaps.setRGBMapValues(x, y, 1600, &temp, rgbMapTEMP);
 			}
 		}
 
@@ -3060,7 +3040,7 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 		{
 			cout << "generatePixmapFromRGBmap{" << rgbMapFileNameTEMP << ", imageWidth, imageHeight, rgbMapTEMP};" << endl;
 		}
-		generatePixmapFromRGBmap(charstarRgbMapTEMPFileName, 1600, 800, rgbMapTEMP);
+		RTpixelMaps.generatePixmapFromRGBmap(charstarRgbMapTEMPFileName, 1600, 800, rgbMapTEMP);
 		string convertRGBPPMtoRGBRASCommand = "convert " + rgbMapFileNameTEMP + " " + rgbMapFileNameRas;
 	#else
 	string convertRGBPPMtoRGBRASCommand = "convert " + rgbMapFileName + " " + rgbMapFileNameRas;
@@ -3080,13 +3060,13 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 	}
 	system(convertRGBPPMtoRGBRASCommand.c_str());
 
-	setCurrentDirectory(exeFolder);
+	SHAREDvars.setCurrentDirectory(exeFolder);
 	if(OR_PRINT_ALGORITHM_PROGRESS)
 	{
 		cout << "system{" << convertRGBRAStoFeatureRASCommand << "};" << endl;
 	}
 	system(convertRGBRAStoFeatureRASCommand.c_str());
-	setCurrentDirectory(currentTempFolder);
+	SHAREDvars.setCurrentDirectory(currentTempFolder);
 
 	if(OR_PRINT_ALGORITHM_PROGRESS)
 	{
@@ -3098,23 +3078,23 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 	{
 		cout << "featurePixMapTrain = loadPPM{" << featureMapFileName << "};" << endl;
 	}
-	featurePixMap = loadPPM(featureMapFileName);
+	featurePixMap = RTppm.loadPPM(featureMapFileName);
 
 	#ifdef TEMP_TEST_HEITGER_FEATURE_THRESHOLD_IMAGE_SIZE_DEPENDENCE
 		if(OR_PRINT_ALGORITHM_PROGRESS)
 		{
 			cout << "createRGBMapFromPixmapImage{featurePixMap, featureRgbMapTEMP};" << endl;
 		}
-		createRGBMapFromPixmapImage(featurePixMap, featureRgbMapTEMP);
-		freePixmap(featurePixMap);
+		RTpixelMaps.createRGBMapFromPixmapImage(featurePixMap, featureRgbMapTEMP);
+		RTppm.freePixmap(featurePixMap);
 
 		for(int x=0;x<imageWidth;x++)
 		{
 			for(int y=0;y<imageHeight;y++)
 			{
 				colour temp;
-				getRGBMapValues(x, y, 1600, featureRgbMapTEMP, &temp);
-				setRGBMapValues(x, y, imageWidth, &temp, featureRgbMap);
+				RTpixelMaps.getRGBMapValues(x, y, 1600, featureRgbMapTEMP, &temp);
+				RTpixelMaps.setRGBMapValues(x, y, imageWidth, &temp, featureRgbMap);
 			}
 		}
 
@@ -3125,8 +3105,8 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 		cout << "imageWidth = " << imageWidth << endl;
 		cout << "imageHeight = " << imageHeight << endl;
 	}
-	createRGBMapFromPixmapImage(featurePixMap, featureRgbMap);
-	freePixmap(featurePixMap);
+	RTpixelMaps.createRGBMapFromPixmapImage(featurePixMap, featureRgbMap);
+	RTppm.freePixmap(featurePixMap);
 	#endif
 
 
@@ -3138,7 +3118,7 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 			cout << "system{" << convertFeatureRAStoFeatureAsciiCommand << "};" << endl;
 		}
 		system(convertFeatureRAStoFeatureAsciiCommand.c_str());
-		generateFeatureListFromHeitgerFeatureAsciiMap(firstNewFeatureInList, featureMapFileNameAscii, zoom, RTviewInfo* vi);
+		ORfeatureGeneration.generateFeatureListFromHeitgerFeatureAsciiMap(firstNewFeatureInList, featureMapFileNameAscii, zoom, RTviewInfo* vi);
 
 	#else
 		#ifdef USE_RBB_QUADRATIC_FIT_KEYPOINT_GENERATION
@@ -3146,13 +3126,13 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 			{
 				cout << "generateFeatureListFromHeitgerFeatureRGBmapWithQuadraticFit{firstFeatureInList, featureRgbMap, imageWidth, imageHeight, sensitivity, dimension, pointMap, depthMap};" << endl;
 			}
-			generateFeatureListFromHeitgerFeatureRGBmapWithQuadraticFit(firstNewFeatureInList, featureRgbMap, imageWidth, imageHeight, sensitivity, dimension, pointMap, depthMap, zoom, vi, interpixelRGBmapType);
+			ORfeatureGeneration.generateFeatureListFromHeitgerFeatureRGBmapWithQuadraticFit(firstNewFeatureInList, featureRgbMap, imageWidth, imageHeight, sensitivity, dimension, pointMap, depthMap, zoom, vi, interpixelRGBmapType);
 		#elif defined USE_RBB_BASIC_KEYPOINT_GENERATION
 			if(OR_PRINT_ALGORITHM_PROGRESS)
 			{
 				cout << "generateFeatureListFromHeitgerFeatureRGBMap{firstFeatureInList, featureRgbMap, imageWidth, imageHeight, rgbMap,  sensitivity, dimension, pointMap, depthMap};" << endl;
 			}
-			generateFeatureListFromHeitgerFeatureRGBMap(firstNewFeatureInList, featureRgbMap, imageWidth, imageHeight, rgbMap, sensitivity, dimension, pointMap, depthMap, zoom, vi);
+			ORfeatureGeneration.generateFeatureListFromHeitgerFeatureRGBMap(firstNewFeatureInList, featureRgbMap, imageWidth, imageHeight, rgbMap, sensitivity, dimension, pointMap, depthMap, zoom, vi);
 		#else
 			cout << "error: some form of keypoint generation must be defined" << end;
 			exit(0);
@@ -3160,7 +3140,7 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 	#endif
 #else
 	//unsigned char* featureRgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
-	generateFeatureListFromRGBMap(firstFeatureInList, rgbMap, imageWidth, imageHeight, zoom, trainOrTestString, mapFileName, vi);
+	ORfeatureGeneration.generateFeatureListFromRGBMap(firstFeatureInList, rgbMap, imageWidth, imageHeight, zoom, trainOrTestString, mapFileName, vi);
 
 #endif
 
@@ -3177,7 +3157,7 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rg
 #ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 //bool generateNormalisedSnapshotsExperienceListUsingPolyList(LDreference* firstReferenceInInterpolatedMesh, ORpolygon* firstPolygonInList, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrainOrTest, ANNexperience* firstExperienceInList, int* numberOfTrainOrTestPolys, const int trainOrTest, const int viewIndex, const string objectName, const int dimension, ORfeature* firstFeatureInList)
 #else
-bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInterpolatedMesh, ORpolygon firstPolygonInList[], int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrainOrTest, int numberOfTrainOrTestPolys[], const int trainOrTest, const int viewIndex, const string objectName, const int dimension, ORfeature* firstFeatureInList, const int numberOfZoomIndicies)
+bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInterpolatedMesh, ORpolygon firstPolygonInList[], int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrainOrTest, int numberOfTrainOrTestPolys[], const int trainOrTest, const int viewIndex, const string objectName, const int dimension, ORfeature* firstFeatureInList, const int numberOfZoomIndicies)
 #endif
 {
 	bool generatePixmapFiles = false;
@@ -3317,7 +3297,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 		normSnapshotZoom = OR_METHOD_2DOD_NORM_SNAPSHOT_UNCROPPED_WIDTH_TO_CROPPED_WIDTH;
 		#endif
 
-		setViewPort2Dortho(0.0-(OR_METHOD_2DOD_PREDEFINED_T_WIDTH*normSnapshotZoom/2.0), 0.0+(OR_METHOD_2DOD_PREDEFINED_T_WIDTH*normSnapshotZoom/2.0), 0.0-(OR_METHOD_2DOD_PREDEFINED_T_WIDTH*normSnapshotZoom/2.0), 0.0+(OR_METHOD_2DOD_PREDEFINED_T_WIDTH*normSnapshotZoom/2.0));
+		LDopengl.setViewPort2Dortho(0.0-(OR_METHOD_2DOD_PREDEFINED_T_WIDTH*normSnapshotZoom/2.0), 0.0+(OR_METHOD_2DOD_PREDEFINED_T_WIDTH*normSnapshotZoom/2.0), 0.0-(OR_METHOD_2DOD_PREDEFINED_T_WIDTH*normSnapshotZoom/2.0), 0.0+(OR_METHOD_2DOD_PREDEFINED_T_WIDTH*normSnapshotZoom/2.0));
 	}
 	else if(dimension == OR_METHOD3DOD_DIMENSIONS)
 	{
@@ -3329,7 +3309,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 		//Note windows enforces a minimum horizontal windows size of 104 pixels
 		normSnapshotZoom = OR_METHOD_3DOD_NORM_SNAPSHOT_UNCROPPED_WIDTH_TO_CROPPED_WIDTH;
 		#endif
-		setViewPort3Dortho(-(OR_METHOD3DOD_SNAPSHOT_DISTANCE)*normSnapshotZoom, (OR_METHOD3DOD_SNAPSHOT_DISTANCE)*normSnapshotZoom, -(OR_METHOD3DOD_SNAPSHOT_DISTANCE)*normSnapshotZoom, (OR_METHOD3DOD_SNAPSHOT_DISTANCE)*normSnapshotZoom, -(OR_METHOD3DOD_SNAPSHOT_DISTANCE*2.0), (OR_METHOD3DOD_SNAPSHOT_DISTANCE*2.0));
+		LDopengl.setViewPort3Dortho(-(OR_METHOD3DOD_SNAPSHOT_DISTANCE)*normSnapshotZoom, (OR_METHOD3DOD_SNAPSHOT_DISTANCE)*normSnapshotZoom, -(OR_METHOD3DOD_SNAPSHOT_DISTANCE)*normSnapshotZoom, (OR_METHOD3DOD_SNAPSHOT_DISTANCE)*normSnapshotZoom, -(OR_METHOD3DOD_SNAPSHOT_DISTANCE*2.0), (OR_METHOD3DOD_SNAPSHOT_DISTANCE*2.0));
 	}
 	#endif
 
@@ -3405,14 +3385,14 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 	int numFeaturePos3Values;
 	if(dimension == OR_METHOD2DOD_DIMENSIONS)
 	{
-		setNoiseArraysMethod2DOD();
+		this->setNoiseArraysMethod2DOD();
 		numFeaturePos1Values = OR_METHOD3DOD_NUM_ORI_NOISE_VALUES;
 		numFeaturePos2Values = OR_METHOD3DOD_NUM_POS_NOISE_VALUES;
 		numFeaturePos3Values = 0;
 	}
 	else if(dimension == OR_METHOD3DOD_DIMENSIONS)
 	{
-		setNoiseArraysMethod3DOD();
+		this->setNoiseArraysMethod3DOD();
 		numFeaturePos1Values = OR_METHOD2DOD_NUM_FEAT_POS_NOISE_VALUES;
 		numFeaturePos2Values = OR_METHOD2DOD_NUM_FEAT_POS_NOISE_VALUES;
 		numFeaturePos3Values = OR_METHOD2DOD_NUM_FEAT_POS_NOISE_VALUES;
@@ -3467,10 +3447,10 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 								string interpolatedMeshFileName = objectName + "interpolatedMesh";
 								string interpolatedMapFileNameForRayTracing;
 
-								polygonIndexString = convertIntToString(numberOfTrainOrTestPolys[zoomIndex]);
-								sideIndexString = convertIntToString(side);
-								viewIndexString = convertIntToString(viewIndex);
-								zoomIndexString = convertIntToString(zoomIndex);
+								polygonIndexString = SHAREDvars.convertIntToString(numberOfTrainOrTestPolys[zoomIndex]);
+								sideIndexString = SHAREDvars.convertIntToString(side);
+								viewIndexString = SHAREDvars.convertIntToString(viewIndex);
+								zoomIndexString = SHAREDvars.convertIntToString(zoomIndex);
 
 								#ifdef OR_DEBUG
 								//cout << "zoomIndex = " << zoomIndex << ", numberOfTrainOrTestPolys[zoomIndex] = " << numberOfTrainOrTestPolys[zoomIndex] << ", side = " << side << endl;
@@ -3479,9 +3459,9 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 								#ifdef OR_TEST_ORI_AND_POS_NOISE_DURING_TRANING_AND_TESTING
 								//cout << "\t featurePosNoise1 = " << featurePosNoise1 << ", featurePosNoise2 = " << featurePosNoise2 << ", featurePosNoise3 = " << featurePosNoise3 << endl;
 
-								featurePosNoise1CountString = convertIntToString(featurePosNoise1);
-								featurePosNoise2CountString = convertIntToString(featurePosNoise2);
-								featurePosNoise3CountString = convertIntToString(featurePosNoise3);
+								featurePosNoise1CountString = SHAREDvars.convertIntToString(featurePosNoise1);
+								featurePosNoise2CountString = SHAREDvars.convertIntToString(featurePosNoise2);
+								featurePosNoise3CountString = SHAREDvars.convertIntToString(featurePosNoise3);
 
 								if((numFeaturePos1Values > 1) || (numFeaturePos2Values > 1) || (numFeaturePos3Values > 1))
 								{
@@ -3554,7 +3534,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 																	cout << "\t\t\t start: 3a. 3DOD normalised snapshot generation - calculate snapshot view wrt polygon" << endl;
 																}
 
-																normalisedSnapshotGeneration3DOD3aCalculateSnapshotViewWRTPolygonTimeStart = getTimeAsLong();
+																normalisedSnapshotGeneration3DOD3aCalculateSnapshotViewWRTPolygonTimeStart = SHAREDvars.getTimeAsLong();
 															}
 
 
@@ -3562,7 +3542,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 															vec viewAtFacingPoly;
 															vec viewUpFacingPoly;
 
-															calculateEyePositionAndOrientation3DOD(&eyeFacingPoly, &viewAtFacingPoly, &viewUpFacingPoly, &viewPortWidthHeightDepth, currentPolygonInList, side);
+															ORmethod3DOD.calculateEyePositionAndOrientation3DOD(&eyeFacingPoly, &viewAtFacingPoly, &viewUpFacingPoly, &viewPortWidthHeightDepth, currentPolygonInList, side);
 
 
 															#ifdef OR_TEST_ORI_AND_POS_NOISE_DURING_TRANING_AND_TESTING
@@ -3600,10 +3580,10 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 															viewPortWidthHeightDepth.x = OR_METHOD3DOD_SNAPSHOT_DISTANCE;
 															viewPortWidthHeightDepth.y = OR_METHOD3DOD_SNAPSHOT_DISTANCE;
 															viewPortWidthHeightDepth.z = OR_METHOD3DOD_SNAPSHOT_DISTANCE*2.0;
-															setViewPort3D(&(viFacingPoly.eye), &(viFacingPoly.viewAt), &(viFacingPoly.viewUp), &viewPortWidthHeightDepth);
+															LDopengl.setViewPort3D(&(viFacingPoly.eye), &(viFacingPoly.viewAt), &(viFacingPoly.viewUp), &viewPortWidthHeightDepth);
 															//setViewPort3Dbasic();
 															/*if scale object data instead of normalising distance viewport is away from t;
-															transformObjectData3DOD(firstReferenceInInterpolatedMesh, currentPolygonInList, side, first);
+															ORmethod3DOD.transformObjectData3DOD(firstReferenceInInterpolatedMesh, currentPolygonInList, side, first);
 															*/
 															#else
 															//use raytracer;
@@ -3627,7 +3607,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 																	cout << "\t\t\t end: 3a. 3DOD normalised snapshot generation - calculate snapshot view wrt polygon" << endl;
 																}
 																double normalisedSnapshotGeneration3DOD3aCalculateSnapshotViewWRTPolygonTimeEnd;
-																normalisedSnapshotGeneration3DOD3aCalculateSnapshotViewWRTPolygonTimeEnd = getTimeAsLong();
+																normalisedSnapshotGeneration3DOD3aCalculateSnapshotViewWRTPolygonTimeEnd = SHAREDvars.getTimeAsLong();
 																if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 																{
 																	time3aNormalisedSnapshotGeneration3DODCalculateSnapshotViewWRTPolygonTotalTrain = time3aNormalisedSnapshotGeneration3DODCalculateSnapshotViewWRTPolygonTotalTrain+ normalisedSnapshotGeneration3DOD3aCalculateSnapshotViewWRTPolygonTimeEnd-normalisedSnapshotGeneration3DOD3aCalculateSnapshotViewWRTPolygonTimeStart;
@@ -3656,7 +3636,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 										cout << "\t\t\t start: 3a. normalised snapshot generation - transform data wrt polygon" << endl;
 									}
 
-									time3aNormalisedSnapshotGenerationTransformDataWRTPolygonStart = getTimeAsLong();
+									time3aNormalisedSnapshotGenerationTransformDataWRTPolygonStart = SHAREDvars.getTimeAsLong();
 								}
 								bool first = false;
 
@@ -3674,7 +3654,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 
 								if(dimension == OR_METHOD3DOD_DIMENSIONS)
 								{
-									transformObjectData3DOD(firstReferenceInInterpolatedMesh, currentPolygonInList, side, first, &(firstFeatureInList[zoomIndex]));
+									ORmethod3DOD.transformObjectData3DOD(firstReferenceInInterpolatedMesh, currentPolygonInList, side, first, &(firstFeatureInList[zoomIndex]));
 
 									//use raytracer;
 
@@ -3705,7 +3685,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 									viewPortWidthHeightDepth.x = OR_METHOD3DOD_SNAPSHOT_DISTANCE;
 									viewPortWidthHeightDepth.y = OR_METHOD3DOD_SNAPSHOT_DISTANCE;
 									viewPortWidthHeightDepth.z = OR_METHOD3DOD_SNAPSHOT_DISTANCE*2.0;
-									setViewPort3D(&(viFacingPoly.eye), &(viFacingPoly.viewAt), &(viFacingPoly.viewUp), &viewPortWidthHeightDepth);
+									LDopengl.setViewPort3D(&(viFacingPoly.eye), &(viFacingPoly.viewAt), &(viFacingPoly.viewUp), &viewPortWidthHeightDepth);
 									#endif
 									#else
 									viFacingPoly.focalLength = TH_OR_METHOD3DOD_FACING_POLY_DEFAULT_FOCAL;
@@ -3730,7 +3710,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 									currentPolygonInList->point3.y = currentPolygonInList->point3.y + featurePosNoise3Y;
 									#endif
 
-									transformObjectData2DOD(firstReferenceInInterpolatedMesh, currentPolygonInList, side, first, &(firstFeatureInList[zoomIndex]));
+									ORmethod2DOD.transformObjectData2DOD(firstReferenceInInterpolatedMesh, currentPolygonInList, side, first, &(firstFeatureInList[zoomIndex]));
 
 									#ifdef OR_TEST_ORI_AND_POS_NOISE_DURING_TRANING_AND_TESTING
 									currentPolygonInList->point1.x = currentPolygonInList->point1.x - featurePosNoise1X;	//restore orig feat pos
@@ -3771,7 +3751,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 										cout << "\t\t\t end: 3a. normalised snapshot generation - transform data wrt polygon" << endl;
 									}
 									long time3aNormalisedSnapshotGenerationTransformDataWRTPolygonEnd;
-									time3aNormalisedSnapshotGenerationTransformDataWRTPolygonEnd = getTimeAsLong();
+									time3aNormalisedSnapshotGenerationTransformDataWRTPolygonEnd = SHAREDvars.getTimeAsLong();
 									if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 									{
 										time3aNormalisedSnapshotGenerationTransformDataWRTPolygonTotalTrain = time3aNormalisedSnapshotGenerationTransformDataWRTPolygonTotalTrain+ time3aNormalisedSnapshotGenerationTransformDataWRTPolygonEnd-time3aNormalisedSnapshotGenerationTransformDataWRTPolygonStart;
@@ -3807,7 +3787,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 										cout << "\t\t\t start: 3b. normalised snapshot generation - raytrace or opengl snapshot" << endl;
 									}
 
-									time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotStart = getTimeAsLong();
+									time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotStart = SHAREDvars.getTimeAsLong();
 								}
 
 								#ifdef USE_OPENGL
@@ -3835,19 +3815,19 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 								if(dimension == OR_METHOD3DOD_DIMENSIONS)
 								{
 									#ifdef OR_METHOD_3DOD_USE_SNAPSHOT_DEPTH_MAPS
-									drawPrimitivesReferenceListToOpenGL(firstReferenceInInterpolatedMesh, dimension, usePredefinedODmatrixOperations);
-									updateScreen();
-									writeScreenToRGBMap(uncroppedWidth, uncroppedHeight, rgbMapUncroppedFacingPoly);
-									updateScreen();
-									writeScreenToDepthMap(uncroppedWidth, uncroppedHeight, depthMapUncroppedFacingPoly);
-									updateScreen();
+									LDopengl.drawPrimitivesReferenceListToOpenGL(firstReferenceInInterpolatedMesh, dimension, usePredefinedODmatrixOperations);
+									LDopengl.updateScreen();
+									LDopengl.writeScreenToRGBMap(uncroppedWidth, uncroppedHeight, rgbMapUncroppedFacingPoly);
+									LDopengl.updateScreen();
+									LDopengl.writeScreenToDepthMap(uncroppedWidth, uncroppedHeight, depthMapUncroppedFacingPoly);
+									LDopengl.updateScreen();
 									#else
-									drawPrimitivesReferenceListToOpenGLandCreateRGBmap(firstReferenceInInterpolatedMesh, uncroppedWidth, uncroppedHeight, rgbMapUncroppedFacingPoly, dimension, usePredefinedODmatrixOperations);
+									LDopengl.drawPrimitivesReferenceListToOpenGLandCreateRGBmap(firstReferenceInInterpolatedMesh, uncroppedWidth, uncroppedHeight, rgbMapUncroppedFacingPoly, dimension, usePredefinedODmatrixOperations);
 								#endif
 									}
 								else if(dimension == OR_METHOD2DOD_DIMENSIONS)
 								{
-									drawPrimitivesReferenceListToOpenGLandCreateRGBmap(firstReferenceInInterpolatedMesh, uncroppedWidth, uncroppedHeight, rgbMapUncroppedFacingPoly, dimension, usePredefinedODmatrixOperations);
+									LDopengl.drawPrimitivesReferenceListToOpenGLandCreateRGBmap(firstReferenceInInterpolatedMesh, uncroppedWidth, uncroppedHeight, rgbMapUncroppedFacingPoly, dimension, usePredefinedODmatrixOperations);
 								}
 								else
 								{
@@ -3858,16 +3838,16 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 								#else
 
 									//create Tal file;
-								write2DReferenceListCollapsedTo1DToFileRayTraceFormat(charstarinterpolatedMapFileNameForRayTracingTAL, firstReferenceInInterpolatedMesh, true, &viFacingPoly, false, NULL, NULL);		//original
+								RTreferenceManipulation.write2DReferenceListCollapsedTo1DToFileRayTraceFormat(charstarinterpolatedMapFileNameForRayTracingTAL, firstReferenceInInterpolatedMesh, true, &viFacingPoly, false, NULL, NULL);		//original
 
 								//add map to reference list - TEMP
-								write2DreferenceListCollapsedTo1DtoFile(charstarinterpolatedMapFileNameForRayTracingLDR, firstReferenceInInterpolatedMesh);
+								LDreferenceManipulation.write2DreferenceListCollapsedTo1DtoFile(charstarinterpolatedMapFileNameForRayTracingLDR, firstReferenceInInterpolatedMesh);
 
 									//raytrace Tal file;
 								//setSceneLightingConditions(1.0, 1.0, 1.0, 0.0, 0.0);	//turn off diffuse and specular highlighting; only use ambient highlighting
-								setLightingMode(LIGHTING_MODE_BASIC);
+								RTscene.setLightingMode(LIGHTING_MODE_BASIC);
 								cout << "charstarinterpolatedMapFileNameForRayTracingTAL = " << charstarinterpolatedMapFileNameForRayTracingTAL << endl;
-								rayTraceScene(charstarinterpolatedMapFileNameForRayTracingTAL, NULL, false, true, rgbMapUncroppedFacingPoly, depthMapFacingPoly, normalMapFacingPoly, pointMapFacingPoly);
+								RTscene.rayTraceScene(charstarinterpolatedMapFileNameForRayTracingTAL, NULL, false, true, rgbMapUncroppedFacingPoly, depthMapFacingPoly, normalMapFacingPoly, pointMapFacingPoly);
 
 								#endif
 
@@ -3878,7 +3858,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 										cout << "\t\t\t end: 3b. normalised snapshot generation - raytrace or opengl snapshot" << endl;
 									}
 									long time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotEnd;
-									time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotEnd = getTimeAsLong();
+									time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotEnd = SHAREDvars.getTimeAsLong();
 									if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 									{
 										time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotTotalTrain = time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotTotalTrain+ time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotEnd-time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotStart;
@@ -3900,7 +3880,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 
 								if(performCrop)
 								{
-									cropRGBmap(uncroppedWidth, uncroppedHeight, cropWidth, cropHeight, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapUncroppedFacingPoly, rgbMapFacingPoly);
+									ORpixelMaps.cropRGBmap(uncroppedWidth, uncroppedHeight, cropWidth, cropHeight, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapUncroppedFacingPoly, rgbMapFacingPoly);
 								}
 								else
 								{
@@ -3916,7 +3896,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 								double averageLocalContrast;
 								double averageLocalStarkContrast;
 
-								createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly, rgbDevIEnormalisedHueContrastMapFacingPoly, &normalisedAverageHueContrastR, &normalisedAverageHueContrastG, &normalisedAverageHueContrastB, &averageContrastWithRespectToAverageColour, &averageStarkContrastWithRespectToAverageColour, &averageLocalContrast, &averageLocalStarkContrast);
+								ORimagecomparison.createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly, rgbDevIEnormalisedHueContrastMapFacingPoly, &normalisedAverageHueContrastR, &normalisedAverageHueContrastG, &normalisedAverageHueContrastB, &averageContrastWithRespectToAverageColour, &averageStarkContrastWithRespectToAverageColour, &averageLocalContrast, &averageLocalStarkContrast);
 
 								bool passedContrastCheck = false;
 								#ifdef OR_METHOD_CHECK_SNAPSHOT_CONTRAST_BEFORE_SAVING_SNAPSHOT
@@ -3940,7 +3920,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 									else
 									{//side == 0
 										bool currentImagePassedContrastCheck = false;
-										if(checkImageHasContrastValuesOnly(averageContrastWithRespectToAverageColour, averageStarkContrastWithRespectToAverageColour, averageLocalContrast, averageLocalStarkContrast))
+										if(ORimagecomparison.checkImageHasContrastValuesOnly(averageContrastWithRespectToAverageColour, averageStarkContrastWithRespectToAverageColour, averageLocalContrast, averageLocalStarkContrast))
 										{
 											currentImagePassedContrastCheck = true;
 										}
@@ -3967,7 +3947,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 									//a. generate snapshot maps (eg 28x28 pixels);
 									if(generatePixmapFiles)
 									{
-										generatePixmapFromRGBmap(rgbMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly);
+										RTpixelMaps.generatePixmapFromRGBmap(rgbMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly);
 									}
 
 									if(OR_IMAGE_COMPARISON_SMALL_HUE_DEV_MAP_COMPARISON)
@@ -3975,16 +3955,16 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 										//this is only used for test, as cannot properly draw a vector map info in a 2D pixmap
 										if(generatePixmapFiles)
 										{
-											generatePixmapFromNormalMap(rgbMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, rgbDevIEnormalisedHueContrastMapFacingPoly);
+											RTpixelMaps.generatePixmapFromNormalMap(rgbMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, rgbDevIEnormalisedHueContrastMapFacingPoly);
 										}
 									}
 									#ifdef OR_METHOD_3DOD_USE_SNAPSHOT_DEPTH_MAPS
 									if(dimension == OR_METHOD3DOD_DIMENSIONS)
 									{
-										//temp;	//generatePixmapFromDepthMapOrDepthContrastMapAdvanced(depthMapFacingPolyFileName, uncroppedWidth, uncroppedHeight, depthMapUncroppedFacingPoly, UNKNOWN_OPENGL_NOHIT_DEPTH, UNKNOWN_OPENGL_ESTIMATE_MAX_DEPTH);
+										//temp;	//RTpixelMaps.generatePixmapFromDepthMapOrDepthContrastMapAdvanced(depthMapFacingPolyFileName, uncroppedWidth, uncroppedHeight, depthMapUncroppedFacingPoly, UNKNOWN_OPENGL_NOHIT_DEPTH, UNKNOWN_OPENGL_ESTIMATE_MAX_DEPTH);
 										if(OR_METHOD_3DOD_USE_NORM_SNAPSHOT_CROP)
 										{
-											cropDepthMap(uncroppedWidth, uncroppedHeight, OR_METHOD_3DOD_NORM_SNAPSHOT_CROP_X, OR_METHOD_3DOD_NORM_SNAPSHOT_CROP_Y, imageWidthFacingPoly, imageHeightFacingPoly, depthMapUncroppedFacingPoly, depthMapFacingPoly);
+											ORpixelMaps.cropDepthMap(uncroppedWidth, uncroppedHeight, OR_METHOD_3DOD_NORM_SNAPSHOT_CROP_X, OR_METHOD_3DOD_NORM_SNAPSHOT_CROP_Y, imageWidthFacingPoly, imageHeightFacingPoly, depthMapUncroppedFacingPoly, depthMapFacingPoly);
 										}
 										else
 										{
@@ -3992,7 +3972,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 										}
 										if(generatePixmapFiles)
 										{
-											generatePixmapFromDepthMapOrDepthContrastMapAdvanced(depthMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, depthMapFacingPoly, UNKNOWN_OPENGL_NOHIT_DEPTH, UNKNOWN_OPENGL_ESTIMATE_MAX_DEPTH);
+											RTpixelMaps.generatePixmapFromDepthMapOrDepthContrastMapAdvanced(depthMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, depthMapFacingPoly, UNKNOWN_OPENGL_NOHIT_DEPTH, UNKNOWN_OPENGL_ESTIMATE_MAX_DEPTH);
 										}
 									}
 									#endif
@@ -4005,15 +3985,15 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 										string convertImageToSmallImageCommand = "";
 										int resizePercentage = 100/smallImageRatio;
 										unsigned char resizePercentageString[10];
-										resizePercentageString = convertIntToString(resizePercentage);
+										resizePercentageString = SHAREDvars.convertIntToString(resizePercentage);
 										cout << "resizePercentageString = " << resizePercentageString << endl;
 
 										convertImageToSmallImageCommand = convertImageToSmallImageCommand + "convert " + "-depth 8 -resize '" + resizePercentageString + "%' " + rgbMapFacingPolyFileName + " " + rgbMapFacingPolySmallFileName;
 										system(convertImageToSmallImageCommand.c_str());
 										pixmap* rgbPixMapSmall;
-										rgbPixMapSmall = loadPPM(rgbMapFacingPolySmallFileName);
-										createRGBMapFromPixmapImage(rgbPixMapSmall, rgbMapSmallFacingPoly);
-										freePixmap(rgbPixMapSmall);
+										rgbPixMapSmall = RTppm.loadPPM(rgbMapFacingPolySmallFileName);
+										RTpixelMaps.createRGBMapFromPixmapImage(rgbPixMapSmall, rgbMapSmallFacingPoly);
+										RTppm.freePixmap(rgbPixMapSmall);
 										remove(rgbMapFacingPolySmallFileName.c_str());
 
 									#else
@@ -4028,24 +4008,24 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 											ignoreBackgroundComparisonMethod = OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE_COMPLETELY;
 										}
 										#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_GAUSSIAN_PREPROCESSOR_METHOD1
-										cropRGBmap(uncroppedWidth, uncroppedHeight, cropWidthWithGaussianApplied, cropHeightWithGaussianApplied, imageWidthFacingPolyWithGaussianApplied, imageHeightFacingPolyWithGaussianApplied, rgbMapUncroppedFacingPoly, rgbMapFacingPolyWithGaussianApplied);
-										applyGaussianKernelToRGBmap(imageWidthFacingPolyWithGaussianApplied, imageHeightFacingPolyWithGaussianApplied, OR_IMAGE_COMPARISON_DECISION_TREE_GAUSSIAN_KERNEL_SIGMA, rgbMapFacingPolyWithGaussianApplied, rgbMapFacingPolyWithGaussianApplied);
-										cropRGBmap(imageWidthFacingPolyWithGaussianApplied, imageHeightFacingPolyWithGaussianApplied, OR_IMAGE_COMPARISON_DECISION_TREE_GAUSSIAN_KERNEL_SIZE/2, OR_IMAGE_COMPARISON_DECISION_TREE_GAUSSIAN_KERNEL_SIZE/2, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPolyWithGaussianApplied, rgbMapFacingPolyWithGaussianAppliedCropped);
+										ORpixelMaps.cropRGBmap(uncroppedWidth, uncroppedHeight, cropWidthWithGaussianApplied, cropHeightWithGaussianApplied, imageWidthFacingPolyWithGaussianApplied, imageHeightFacingPolyWithGaussianApplied, rgbMapUncroppedFacingPoly, rgbMapFacingPolyWithGaussianApplied);
+										ORimagecomparison.applyGaussianKernelToRGBmap(imageWidthFacingPolyWithGaussianApplied, imageHeightFacingPolyWithGaussianApplied, OR_IMAGE_COMPARISON_DECISION_TREE_GAUSSIAN_KERNEL_SIGMA, rgbMapFacingPolyWithGaussianApplied, rgbMapFacingPolyWithGaussianApplied);
+										ORpixelMaps.cropRGBmap(imageWidthFacingPolyWithGaussianApplied, imageHeightFacingPolyWithGaussianApplied, OR_IMAGE_COMPARISON_DECISION_TREE_GAUSSIAN_KERNEL_SIZE/2, OR_IMAGE_COMPARISON_DECISION_TREE_GAUSSIAN_KERNEL_SIZE/2, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPolyWithGaussianApplied, rgbMapFacingPolyWithGaussianAppliedCropped);
 										if(dimension == OR_METHOD2DOD_DIMENSIONS)
 										{
-											disablePixelsThatAreNotContainedInTheObjectTriangle2DOD(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPolyWithGaussianAppliedCropped);
+											ORimagecomparison.disablePixelsThatAreNotContainedInTheObjectTriangle2DOD(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPolyWithGaussianAppliedCropped);
 										}
-										resampleRGBmap(rgbMapFacingPolyWithGaussianAppliedCropped, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapSmallFacingPoly, smallImageRatio, ignoreBackgroundComparisonMethod);
+										ORpixelMaps.resampleRGBmap(rgbMapFacingPolyWithGaussianAppliedCropped, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapSmallFacingPoly, smallImageRatio, ignoreBackgroundComparisonMethod);
 										#else
-										resampleRGBmap(rgbMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapSmallFacingPoly, smallImageRatio, ignoreBackgroundComparisonMethod);
+										ORpixelMaps.resampleRGBmap(rgbMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapSmallFacingPoly, smallImageRatio, ignoreBackgroundComparisonMethod);
 										#endif
 									#endif
 
 										if(generatePixmapFiles)
 										{
-											generatePixmapFromRGBmap(rgbMapFacingPolySmallFileName, smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly);
+											RTpixelMaps.generatePixmapFromRGBmap(rgbMapFacingPolySmallFileName, smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly);
 											#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
-											generateBooleanContrastPixmapFromRGBMap(booleanContrastRgbMapFacingPolySmallFileName, smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly);
+											RTpixelMaps.generateBooleanContrastPixmapFromRGBMap(booleanContrastRgbMapFacingPolySmallFileName, smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly);
 											#endif
 										}
 
@@ -4058,22 +4038,22 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 										double smallTempaverageLocalStarkContrast;
 										if(OR_IMAGE_COMPARISON_SMALL_HUE_DEV_MAP_COMPARISON)
 										{
-											createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly, rgbDevIEnormalisedHueContrastMapSmallFacingPoly, &smallTempnormalisedAverageRHueContrast, &smallTempnormalisedAverageGHueContrast, &smallTempnormalisedAverageBHueContrast, &smallTempaverageContrastWithRespectToAverageColour, &smallTempaverageStarkContrastWithRespectToAverageColour, &smallTempaverageLocalContrast, &smallTempaverageLocalStarkContrast);
+											ORimagecomparison.createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly, rgbDevIEnormalisedHueContrastMapSmallFacingPoly, &smallTempnormalisedAverageRHueContrast, &smallTempnormalisedAverageGHueContrast, &smallTempnormalisedAverageBHueContrast, &smallTempaverageContrastWithRespectToAverageColour, &smallTempaverageStarkContrastWithRespectToAverageColour, &smallTempaverageLocalContrast, &smallTempaverageLocalStarkContrast);
 										}
 
 										#ifdef OR_METHOD_3DOD_USE_SNAPSHOT_DEPTH_MAPS
 										#ifdef OR_METHOD_3DOD_USE_SNAPSHOT_DEPTH_MAPS_ADVANCED_RESAMPLING
-										resampleLumOrContrastOrDepthMap(depthMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, depthMapSmallFacingPoly, smallImageRatio, UNKNOWN_OPENGL_NOHIT_DEPTH);
+										ORpixelMaps.resampleLumOrContrastOrDepthMap(depthMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, depthMapSmallFacingPoly, smallImageRatio, UNKNOWN_OPENGL_NOHIT_DEPTH);
 										if(generatePixmapFiles)
 										{
-											generatePixmapFromDepthMapOrDepthContrastMapAdvanced(depthMapFacingPolySmallFileName, smallImageWidth, smallImageHeight, depthMapSmallFacingPoly, UNKNOWN_OPENGL_NOHIT_DEPTH, UNKNOWN_OPENGL_ESTIMATE_MAX_DEPTH);
+											RTpixelMaps.generatePixmapFromDepthMapOrDepthContrastMapAdvanced(depthMapFacingPolySmallFileName, smallImageWidth, smallImageHeight, depthMapSmallFacingPoly, UNKNOWN_OPENGL_NOHIT_DEPTH, UNKNOWN_OPENGL_ESTIMATE_MAX_DEPTH);
 										}
 										#else
-										generateRGBMapFromDepthMapOrDepthContrastMapAdvanced(imageWidthFacingPoly, imageHeightFacingPoly, depthMapFacingPoly, tempDepthRGBMapFacingPoly, UNKNOWN_OPENGL_NOHIT_DEPTH, UNKNOWN_OPENGL_ESTIMATE_MAX_DEPTH);
-										resampleRGBmap(tempDepthRGBMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, depthRGBMapSmallFacingPoly, smallImageRatio);
+										RTpixelMaps.generateRGBMapFromDepthMapOrDepthContrastMapAdvanced(imageWidthFacingPoly, imageHeightFacingPoly, depthMapFacingPoly, tempDepthRGBMapFacingPoly, UNKNOWN_OPENGL_NOHIT_DEPTH, UNKNOWN_OPENGL_ESTIMATE_MAX_DEPTH);
+										ORpixelMaps.resampleRGBmap(tempDepthRGBMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, depthRGBMapSmallFacingPoly, smallImageRatio);
 										if(generatePixmapFiles)
 										{
-											generatePixmapFromRGBmap(depthMapFacingPolySmallFileName, smallImageWidth, smallImageHeight, depthRGBMapSmallFacingPoly);
+											RTpixelMaps.generatePixmapFromRGBmap(depthMapFacingPolySmallFileName, smallImageWidth, smallImageHeight, depthRGBMapSmallFacingPoly);
 										}
 										#endif
 										#endif
@@ -4087,7 +4067,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 										normalisedAverageHueContrast.y = normalisedAverageHueContrastG;
 										normalisedAverageHueContrast.z = normalisedAverageHueContrastB;
 										colour cullednormalisedAverageHueContrast;
-										cullAndBinNormalisedHueContrast(&normalisedAverageHueContrast, &cullednormalisedAverageHueContrast);
+										ORcomparison.cullAndBinNormalisedHueContrast(&normalisedAverageHueContrast, &cullednormalisedAverageHueContrast);
 
 										currentPolygonInList->firstFeatureInNearestFeatureList->avgCol.r = cullednormalisedAverageHueContrast.r;
 										currentPolygonInList->firstFeatureInNearestFeatureList->avgCol.g = cullednormalisedAverageHueContrast.g;
@@ -4121,17 +4101,17 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 									{
 										if(!generatePixmapFiles)
 										{
-											generatePixmapFromRGBmap(rgbMapFacingPolySmallFileName, smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly);
+											RTpixelMaps.generatePixmapFromRGBmap(rgbMapFacingPolySmallFileName, smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly);
 										}
 
-										readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(&rgbMapFacingPolySmallFileName, &rgbMapFacingPolySmallFileNameJPEG, currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff, false);
+										ORcomparison.readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(&rgbMapFacingPolySmallFileName, &rgbMapFacingPolySmallFileNameJPEG, currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff, false);
 
 									#ifndef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
 										#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 										int concatonatedDctCoeffArrayBiasIntNOTUSED[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
-										//currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned = convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff, concatonatedDctCoeffArrayBiasIntNOTUSED);
+										//currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned = ORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff, concatonatedDctCoeffArrayBiasIntNOTUSED);
 										#else
-										currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned = convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff);
+										currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned = ORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff);
 										#endif
 									#endif
 										#ifdef OR_DEBUG
@@ -4167,12 +4147,12 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 									{
 										if(createNearbyFeaturesFile)
 										{
-											createTransformedFeaturesFile(currentPolygonInList->firstFeatureInNearestFeatureList, transformedFeaturesNearestFileName, objectName, viewIndex, zoomIndex, numberOfTrainOrTestPolys[zoomIndex], side, trainOrTest);		//create ascii file containing nearby transformed features
+											ORdatabaseFileIO.createTransformedFeaturesFile(currentPolygonInList->firstFeatureInNearestFeatureList, transformedFeaturesNearestFileName, objectName, viewIndex, zoomIndex, numberOfTrainOrTestPolys[zoomIndex], side, trainOrTest);		//create ascii file containing nearby transformed features
 										}
 									}
 									if(OR_METHOD_CREATE_ALL_FEATURES_FILE)
 									{
-										createTransformedFeaturesFile(&(firstFeatureInList[zoomIndex]), transformedFeaturesAllFileName, objectName, viewIndex, zoomIndex, numberOfTrainOrTestPolys[zoomIndex], side, trainOrTest);							//create ascii file containing all transformed features
+										ORdatabaseFileIO.createTransformedFeaturesFile(&(firstFeatureInList[zoomIndex]), transformedFeaturesAllFileName, objectName, viewIndex, zoomIndex, numberOfTrainOrTestPolys[zoomIndex], side, trainOrTest);							//create ascii file containing all transformed features
 									}
 									if(OR_METHOD_CREATE_OT_FEATURES_FILE)
 									{
@@ -4192,7 +4172,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 										firstFeatureInTransformedObjectTriangleList->next = secondFeatureInTransformedObjectTriangleList;
 										secondFeatureInTransformedObjectTriangleList->next = thirdFeatureInTransformedObjectTriangleList;
 										thirdFeatureInTransformedObjectTriangleList->next = lastFeatureInTransformedObjectTriangleList;
-										createTransformedFeaturesFile(firstFeatureInTransformedObjectTriangleList, transformedFeaturesOTFileName, objectName, viewIndex, zoomIndex, numberOfTrainOrTestPolys[zoomIndex], side, trainOrTest);							//create ascii file containing all transformed features
+										ORdatabaseFileIO.createTransformedFeaturesFile(firstFeatureInTransformedObjectTriangleList, transformedFeaturesOTFileName, objectName, viewIndex, zoomIndex, numberOfTrainOrTestPolys[zoomIndex], side, trainOrTest);							//create ascii file containing all transformed features
 										delete firstFeatureInTransformedObjectTriangleList;
 									}
 
@@ -4204,7 +4184,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 									if(OR_IMAGE_COMPARISON_SMALL_HUE_DEV_MAP_COMPARISON)
 									{
 										#ifdef OR_IMAGE_COMPARISON_SQL_DB_USE_RGB_8BIT_SMALL_MAP_QUERY_REQUIREMENT_V2_OR_V3
-										convertNormalisedHueDeviationMapTo3x8bitMap(smallImageWidth, smallImageHeight, rgbDevIEnormalisedHueContrastMapSmallFacingPoly, rgbDev8BitSmallMapFacingPoly);
+										ORcomparison.convertNormalisedHueDeviationMapTo3x8bitMap(smallImageWidth, smallImageHeight, rgbDevIEnormalisedHueContrastMapSmallFacingPoly, rgbDev8BitSmallMapFacingPoly);
 										rgb8bitSmallMapForInstantDBqueryAccess = rgbDev8BitSmallMapFacingPoly;
 										#else
 										rgb8bitSmallMapForInstantDBqueryAccess = rgbMapSmallFacingPoly;
@@ -4219,7 +4199,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 									{
 										if(OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE)
 										{
-											convertSnapshotMapsToStringForSQLdatabaseEntry(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly, rgbDevIEnormalisedHueContrastMapFacingPoly, depthMapFacingPoly, smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly, depthMapSmallFacingPoly, rgbDevIEnormalisedHueContrastMapSmallFacingPoly, dimension, currentPolygonInList->firstFeatureInNearestFeatureList->snapshotMapsText, OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE, OR_IMAGE_COMPARISON_COMPARE_RGB_DEV_MAPS_NOT_RGB_MAPS, &(currentPolygonInList->firstFeatureInNearestFeatureList->snapshotMapsTextLength));
+											ORdatabaseSQL.convertSnapshotMapsToStringForSQLdatabaseEntry(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly, rgbDevIEnormalisedHueContrastMapFacingPoly, depthMapFacingPoly, smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly, depthMapSmallFacingPoly, rgbDevIEnormalisedHueContrastMapSmallFacingPoly, dimension, currentPolygonInList->firstFeatureInNearestFeatureList->snapshotMapsText, OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE, OR_IMAGE_COMPARISON_COMPARE_RGB_DEV_MAPS_NOT_RGB_MAPS, &(currentPolygonInList->firstFeatureInNearestFeatureList->snapshotMapsTextLength));
 											#ifdef OR_DEBUG
 											//cout << "(currentPolygonInList->firstFeatureInNearestFeatureList->snapshotMapsTextLength) = " << (currentPolygonInList->firstFeatureInNearestFeatureList->snapshotMapsTextLength) << endl;
 											#endif
@@ -4260,7 +4240,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 										databaseTableSize = databaseTableSizeTrain;
 										tableName = OR_MYSQL_TABLE_NAME_TRAIN;
 
-										insertTransformedFeatureListIntoDatabase(currentPolygonInList->firstFeatureInNearestFeatureList, objectName, viewIndex, zoomIndex, numberOfTrainOrTestPolys[zoomIndex], side, TRAIN, ignoreOTfeatures, rgb8bitSmallMapForInstantDBqueryAccess, smallImageWidth, smallImageHeight,  addPermutationsOfTrainFeaturesForGeoBinning, maxNumFeaturePermutations, tableName, &databaseTableSize);
+										ORdatabaseSQL.insertTransformedFeatureListIntoDatabase(currentPolygonInList->firstFeatureInNearestFeatureList, objectName, viewIndex, zoomIndex, numberOfTrainOrTestPolys[zoomIndex], side, TRAIN, ignoreOTfeatures, rgb8bitSmallMapForInstantDBqueryAccess, smallImageWidth, smallImageHeight,  addPermutationsOfTrainFeaturesForGeoBinning, maxNumFeaturePermutations, tableName, &databaseTableSize);
 
 										databaseTableSizeTrain = databaseTableSize;
 									}
@@ -4293,7 +4273,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 											databaseTableSize = databaseTableSizeTest;
 											tableName = OR_MYSQL_TABLE_NAME_TEST;
 
-											insertTransformedFeatureListIntoDatabase(currentPolygonInList->firstFeatureInNearestFeatureList, objectName, viewIndex, zoomIndex, numberOfTrainOrTestPolys[zoomIndex], side, TEST, ignoreOTfeatures, rgb8bitSmallMapForInstantDBqueryAccess, smallImageWidth, smallImageHeight,  addPermutationsOfTrainFeaturesForGeoBinning, maxNumFeaturePermutations, tableName, &databaseTableSize);
+											ORdatabaseSQL.insertTransformedFeatureListIntoDatabase(currentPolygonInList->firstFeatureInNearestFeatureList, objectName, viewIndex, zoomIndex, numberOfTrainOrTestPolys[zoomIndex], side, TEST, ignoreOTfeatures, rgb8bitSmallMapForInstantDBqueryAccess, smallImageWidth, smallImageHeight,  addPermutationsOfTrainFeaturesForGeoBinning, maxNumFeaturePermutations, tableName, &databaseTableSize);
 
 											databaseTableSizeTest = databaseTableSize;
 										}
@@ -4332,9 +4312,9 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 											//f. input snapshot data into image comparison decision tree
 											//addSnapshotIDReferenceToImageComparisonDecisionTree(smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly);
 											long snapshotReferenceID = (databaseTableSizeTrain-1);
-											addSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcombinations(smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly, currentPolygonInList->firstFeatureInNearestFeatureList, snapshotReferenceID, ignoreOTfeatures);		//-1 is required because databaseTableSizeTrain has already been incremented
+											ORdatabaseDecisionTree.addSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcombinations(smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly, currentPolygonInList->firstFeatureInNearestFeatureList, snapshotReferenceID, ignoreOTfeatures);		//-1 is required because databaseTableSizeTrain has already been incremented
 											#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
-											createAndOrParseIntoDirectory(&imageComparisonTreeBaseDirectory, NULL, false, false);	//reset current directory
+											ORdatabaseDecisionTree.createAndOrParseIntoDirectory(&imageComparisonTreeBaseDirectory, NULL, false, false);	//reset current directory
 											#endif
 										}
 									}
@@ -4343,19 +4323,19 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 								#endif
 							#else
 								#ifndef OR_MANY_NUMBER_OF_OUTPUT_FILES
-								generatePixmapFromRGBmap(rgbMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly);
+								RTpixelMaps.generatePixmapFromRGBmap(rgbMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly);
 								remove(charstarinterpolatedMapFileNameForRayTracingTAL.c_str());
 								#else
 								if((featurePosNoise1 ==0) && (featurePosNoise2 == 0))
 								{
 									//generate pixmaps for snapshot
-									createLuminosityMapFromRGBMap(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly, luminosityMapFacingPoly);
-									createLuminosityBooleanMap(imageWidthFacingPoly, imageHeightFacingPoly, luminosityMapFacingPoly, luminosityBooleanMapFacingPoly);
+									RTpixelMaps.createLuminosityMapFromRGBMap(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly, luminosityMapFacingPoly);
+									RTpixelMaps.createLuminosityBooleanMap(imageWidthFacingPoly, imageHeightFacingPoly, luminosityMapFacingPoly, luminosityBooleanMapFacingPoly);
 								#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS_OLD
 									createContrastMapFromMapWithForegroundDepthCheck(imageWidthFacingPoly, imageHeightFacingPoly, luminosityMapFacingPoly, depthMapFacingPoly, luminosityContrastMapFacingPoly, luminosityContrastBooleanMapFacingPoly, foregroundDepthCheckLuminosityContrastBooleanMap, EDGE_LUMINOSITY_CONTRAST_THRESHOLD);
 								#else
-									createContrastMapFromMap(imageWidthFacingPoly, imageHeightFacingPoly, luminosityMapFacingPoly, luminosityContrastMapFacingPoly);
-									createLuminosityContrastBooleanMap(imageWidthFacingPoly, imageHeightFacingPoly, luminosityContrastMapFacingPoly, luminosityContrastBooleanMapFacingPoly);
+									RTpixelMaps.createContrastMapFromMap(imageWidthFacingPoly, imageHeightFacingPoly, luminosityMapFacingPoly, luminosityContrastMapFacingPoly);
+									RTpixelMaps.createLuminosityContrastBooleanMap(imageWidthFacingPoly, imageHeightFacingPoly, luminosityContrastMapFacingPoly, luminosityContrastBooleanMapFacingPoly);
 								#endif
 
 									if(dimension == OR_METHOD3DOD_DIMENSIONS)
@@ -4363,37 +4343,37 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 									#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS_OLD
 										createContrastMapFromMapWithForegroundDepthCheck(imageWidthFacingPoly, imageHeightFacingPoly, depthMapFacingPoly, depthMapFacingPoly, depthContrastMapFacingPoly, depthContrastBooleanMapFacingPoly, foregroundDepthCheckDepthContrastBooleanMap, EDGE_LUMINOSITY_CONTRAST_THRESHOLD);
 									#else
-										createContrastMapFromMap(imageWidthFacingPoly, imageHeightFacingPoly, depthMapFacingPoly, depthContrastMapFacingPoly);
-										createDepthContrastBooleanMap(imageWidthFacingPoly, imageHeightFacingPoly, depthContrastMapFacingPoly, depthContrastBooleanMapFacingPoly);
+										RTpixelMaps.createContrastMapFromMap(imageWidthFacingPoly, imageHeightFacingPoly, depthMapFacingPoly, depthContrastMapFacingPoly);
+										ORpixelMaps.createDepthContrastBooleanMap(imageWidthFacingPoly, imageHeightFacingPoly, depthContrastMapFacingPoly, depthContrastBooleanMapFacingPoly);
 									#endif
-										createDepthGradientMapFromDepthMap(imageWidthFacingPoly, imageHeightFacingPoly, depthMapFacingPoly, depthGradientMapFacingPoly);
-										createDepthGradientContrastMapFromDepthGradientMap(imageWidthFacingPoly, imageHeightFacingPoly, depthGradientMapFacingPoly, depthGradientContrastMapFacingPoly);
-										createDepthGradientContrastBooleanMap(imageWidthFacingPoly, imageHeightFacingPoly, depthGradientContrastMapFacingPoly, depthGradientContrastBooleanMapFacingPoly);
+										ORpixelMaps.createDepthGradientMapFromDepthMap(imageWidthFacingPoly, imageHeightFacingPoly, depthMapFacingPoly, depthGradientMapFacingPoly);
+										ORpixelMaps.createDepthGradientContrastMapFromDepthGradientMap(imageWidthFacingPoly, imageHeightFacingPoly, depthGradientMapFacingPoly, depthGradientContrastMapFacingPoly);
+										ORpixelMaps.createDepthGradientContrastBooleanMap(imageWidthFacingPoly, imageHeightFacingPoly, depthGradientContrastMapFacingPoly, depthGradientContrastBooleanMapFacingPoly);
 										//subtractBooleanMaps(imageWidthFacingPoly, imageHeightFacingPoly, depthGradientContrastBooleanMapFacingPoly, depthContrastBooleanMapFacingPoly, depthGradientContrastMapMinusDepthContrastMapFacingPoly);
 										//addBooleanMaps(imageWidthFacingPoly, imageHeightFacingPoly, depthGradientContrastBooleanMapFacingPoly, depthContrastBooleanMapFacingPoly, depthGradientContrastMapPlusDepthContrastMapFacingPoly);
 									}
 
-									generatePixmapFromRGBmap(rgbMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly);
-									generatePixmapFromNormalMap(normalMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, normalMapFacingPoly);
-									generatePixmapFromLuminosityMap(luminosityMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, luminosityMapFacingPoly);
-									generatePixmapFromBooleanMap(luminosityBooleanMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, luminosityBooleanMapFacingPoly);
-									generatePixmapFromLuminosityContrastMap(luminosityContrastMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, luminosityContrastMapFacingPoly);
-									generatePixmapFromBooleanMap(luminosityContrastBooleanMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, luminosityContrastBooleanMapFacingPoly);
+									RTpixelMaps.generatePixmapFromRGBmap(rgbMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly);
+									RTpixelMaps.generatePixmapFromNormalMap(normalMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, normalMapFacingPoly);
+									RTpixelMaps.generatePixmapFromLuminosityMap(luminosityMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, luminosityMapFacingPoly);
+									RTpixelMaps.generatePixmapFromBooleanMap(luminosityBooleanMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, luminosityBooleanMapFacingPoly);
+									RTpixelMaps.generatePixmapFromLuminosityContrastMap(luminosityContrastMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, luminosityContrastMapFacingPoly);
+									RTpixelMaps.generatePixmapFromBooleanMap(luminosityContrastBooleanMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, luminosityContrastBooleanMapFacingPoly);
 
 									if(dimension == OR_METHOD3DOD_DIMENSIONS)
 									{
-										generatePixmapFromNormalMap(normalMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, normalMapFacingPoly);
-										generatePixmapFromDepthMapOrDepthContrastMap(depthMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, depthMapFacingPoly);
-										generatePixmapFromDepthMapOrDepthContrastMap(depthContrastMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, depthContrastMapFacingPoly);
-										generatePixmapFromBooleanMap(depthContrastBooleanMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, depthContrastBooleanMapFacingPoly);
-										generatePixmapFromDepthGradientMap(depthGradientMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, depthGradientMapFacingPoly);
-										generatePixmapFromDepthGradientContrastMap(depthGradientContrastMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, depthGradientContrastMapFacingPoly);
-										generatePixmapFromBooleanMap(depthGradientContrastBooleanMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, depthGradientContrastBooleanMapFacingPoly);
+										RTpixelMaps.generatePixmapFromNormalMap(normalMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, normalMapFacingPoly);
+										RTpixelMaps.generatePixmapFromDepthMapOrDepthContrastMap(depthMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, depthMapFacingPoly);
+										RTpixelMaps.generatePixmapFromDepthMapOrDepthContrastMap(depthContrastMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, depthContrastMapFacingPoly);
+										RTpixelMaps.generatePixmapFromBooleanMap(depthContrastBooleanMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, depthContrastBooleanMapFacingPoly);
+										ORpixelMaps.generatePixmapFromDepthGradientMap(depthGradientMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, depthGradientMapFacingPoly);
+										ORpixelMaps.generatePixmapFromDepthGradientContrastMap(depthGradientContrastMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, depthGradientContrastMapFacingPoly);
+										RTpixelMaps.generatePixmapFromBooleanMap(depthGradientContrastBooleanMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, depthGradientContrastBooleanMapFacingPoly);
 									}
 								}
 								else
 								{
-									generatePixmapFromRGBmap(rgbMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly);
+									RTpixelMaps.generatePixmapFromRGBmap(rgbMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly);
 									remove(charstarinterpolatedMapFileNameForRayTracingTAL.c_str());
 								}
 								#endif
@@ -4521,7 +4501,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 
 #ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 
-ANNneuronContainer* initialiseNormalisedSnapshotNeuralNetwork(const ANNneuronContainer* firstInputNeuronInNetwork, int* numberOfInputNeurons, const int numberOfOutputNeurons, int imageWidth, int imageHeight)
+ANNneuronContainer* ORmethodClass::initialiseNormalisedSnapshotNeuralNetwork(const ANNneuronContainer* firstInputNeuronInNetwork, int* numberOfInputNeurons, const int numberOfOutputNeurons, int imageWidth, int imageHeight)
 {
 	ANNneuronContainer* firstOutputNeuronInNetwork;
 
@@ -4564,7 +4544,7 @@ ANNneuronContainer* initialiseNormalisedSnapshotNeuralNetwork(const ANNneuronCon
 
 
 	//NB this function only works properly if the the neural network was trained on the object at all angles.
-double compareNormalisedSnapshotExperienceListWithNeuralNetwork(ANNexperience* firstExperienceInTestList, const ANNneuronContainer* firstInputNeuronInNetwork, const ANNneuronContainer* firstOutputNeuronInNetwork, const int numberOfInputNeurons, const int numberOfOutputNeurons, const int numberOfTrainPolySides)
+double ORmethodClass::compareNormalisedSnapshotExperienceListWithNeuralNetwork(ANNexperience* firstExperienceInTestList, const ANNneuronContainer* firstInputNeuronInNetwork, const ANNneuronContainer* firstOutputNeuronInNetwork, const int numberOfInputNeurons, const int numberOfOutputNeurons, const int numberOfTrainPolySides)
 {
 	double averageMinNNErrorFound = 0.0;
 	double minMinNNErrorFound = MAX_ANN_BACK_PROPAGATION_ERROR;
@@ -4644,7 +4624,7 @@ double compareNormalisedSnapshotExperienceListWithNeuralNetwork(ANNexperience* f
 
 
 #ifdef OR_TEST_ORI_AND_POS_NOISE_DURING_TRANING_AND_TESTING
-void setNoiseArraysMethod3DOD()
+void ORmethodClass::setNoiseArraysMethod3DOD()
 {
 	int arrayLoc = 0;
 	for(int uvxIndex = -OR_METHOD3DOD_NUM_ORI_NOISE_VALUES_PER_AXIS/2; uvxIndex <= OR_METHOD3DOD_NUM_ORI_NOISE_VALUES_PER_AXIS/2; uvxIndex++)
@@ -4678,7 +4658,7 @@ void setNoiseArraysMethod3DOD()
 }
 
 
-void setNoiseArraysMethod2DOD()
+void ORmethodClass::setNoiseArraysMethod2DOD()
 {
 	int arrayLoc = 0;
 	for(int uvxIndex = -OR_METHOD2DOD_NUM_FEAT_POS_NOISE_VALUES_PER_AXIS/2; uvxIndex <= OR_METHOD2DOD_NUM_FEAT_POS_NOISE_VALUES_PER_AXIS/2; uvxIndex++)
@@ -4700,7 +4680,7 @@ void setNoiseArraysMethod2DOD()
 
 
 
-int createViFromMultiViewList(RTviewInfo* vi, const string fileName, const int multiViewViewIndex, const int dimension)
+int ORmethodClass::createViFromMultiViewList(RTviewInfo* vi, const string fileName, const int multiViewViewIndex, const int dimension)
 {
 	cout << "createViFromMultiViewList{}: multiViewViewIndex = " << multiViewViewIndex << endl;
 
@@ -4993,31 +4973,31 @@ int createViFromMultiViewList(RTviewInfo* vi, const string fileName, const int m
 				{
 					vi->objectName = objectNameString;
 					vi->imageExtensionName = imageextString;
-					vi->imageWidth = convertStringToDouble(imageWidthString);
-					vi->imageHeight = convertStringToDouble(imageHeightString);
+					vi->imageWidth = SHAREDvars.convertStringToDouble(imageWidthString);
+					vi->imageHeight = SHAREDvars.convertStringToDouble(imageHeightString);
 
 					if(dimension == OR_METHOD2DOD_DIMENSIONS)
 					{
-						vi->xOffset = convertStringToDouble(xoffsetString);
-						vi->yOffset = convertStringToDouble(yoffsetString);
+						vi->xOffset = SHAREDvars.convertStringToDouble(xoffsetString);
+						vi->yOffset = SHAREDvars.convertStringToDouble(yoffsetString);
 
 					}
 					else if(dimension == OR_METHOD3DOD_DIMENSIONS)
 					{
 						vi->depthExtensionName = depthextString;
-						vi->eye.x = convertStringToDouble(vieweyexString);
-						vi->eye.y = convertStringToDouble(vieweyeyString);
-						vi->eye.z = convertStringToDouble(vieweyezString);
-						vi->viewAt.x = convertStringToDouble(viewatxString);
-						vi->viewAt.y = convertStringToDouble(viewatyString);
-						vi->viewAt.z = convertStringToDouble(viewatzString);
-						vi->viewUp.x = convertStringToDouble(viewupxString);
-						vi->viewUp.y = convertStringToDouble(viewupyString);
-						vi->viewUp.z = convertStringToDouble(viewupzString);
-						vi->focalLength = convertStringToDouble(viewfocalString);
-						vi->viewWidth = convertStringToDouble(viewsizewString);
-						vi->viewHeight = convertStringToDouble(viewsizehString);
-						vi->depthScale = convertStringToDouble(scaleString);
+						vi->eye.x = SHAREDvars.convertStringToDouble(vieweyexString);
+						vi->eye.y = SHAREDvars.convertStringToDouble(vieweyeyString);
+						vi->eye.z = SHAREDvars.convertStringToDouble(vieweyezString);
+						vi->viewAt.x = SHAREDvars.convertStringToDouble(viewatxString);
+						vi->viewAt.y = SHAREDvars.convertStringToDouble(viewatyString);
+						vi->viewAt.z = SHAREDvars.convertStringToDouble(viewatzString);
+						vi->viewUp.x = SHAREDvars.convertStringToDouble(viewupxString);
+						vi->viewUp.y = SHAREDvars.convertStringToDouble(viewupyString);
+						vi->viewUp.z = SHAREDvars.convertStringToDouble(viewupzString);
+						vi->focalLength = SHAREDvars.convertStringToDouble(viewfocalString);
+						vi->viewWidth = SHAREDvars.convertStringToDouble(viewsizewString);
+						vi->viewHeight = SHAREDvars.convertStringToDouble(viewsizehString);
+						vi->depthScale = SHAREDvars.convertStringToDouble(scaleString);
 					}
 					else
 					{

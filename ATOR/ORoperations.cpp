@@ -26,14 +26,11 @@
  * File Name: ORoperations.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1a 14-January-2017
+ * Project Version: 3j1b 14-January-2017
  *
  *******************************************************************************/
 
-#include "ORglobalDefs.h"
 #include "ORoperations.h"
-#include "RToperations.h"
-#include "SHAREDvector.h"
 
 /*
 #define MIN_OBJECT_DEPTH_AS_DETERMINED_BY_CURRENT_FOCUS (5)
@@ -43,20 +40,20 @@ double minObjectDepthAsDeterminedByCurrentFocus = MIN_OBJECT_DEPTH_AS_DETERMINED
 
 
 
-void createPointMapFromDepthMap(const int imageWidth, const int imageHeight, const double* depthMap, double* pointMap, RTviewInfo* vi)
+void ORoperationsClass::createPointMapFromDepthMap(const int imageWidth, const int imageHeight, const double* depthMap, double* pointMap, RTviewInfo* vi)
 {
 	//fill luminosityMap
 	for(int y = 0; y < imageHeight; y++)
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			double depth = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
+			double depth = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
 
 			vec xyzWorld;
 
 			if(depth != RT_RAYTRACE_NO_HIT_DEPTH_T)
 			{
-				calculatePointMapValue(x, y, depth, &xyzWorld, vi);
+				RTscene.calculatePointMapValue(x, y, depth, &xyzWorld, vi);
 			}
 			else
 			{
@@ -66,12 +63,12 @@ void createPointMapFromDepthMap(const int imageWidth, const int imageHeight, con
 
 			}
 
-			setPointMapValue(x, y, imageWidth, &xyzWorld, pointMap);
+			RTpixelMaps.setPointMapValue(x, y, imageWidth, &xyzWorld, pointMap);
 		}
 	}
 }
 
-void printvi(const RTviewInfo* vi)
+void ORoperationsClass::printvi(const RTviewInfo* vi)
 {
 	cout << "printvi{}" << endl;
 
@@ -92,7 +89,7 @@ void printvi(const RTviewInfo* vi)
 }
 
 
-void printPointMap(int imageWidth, const int imageHeight, double* pointMap)
+void ORoperationsClass::printPointMap(int imageWidth, const int imageHeight, double* pointMap)
 {
 	cout << "printPointMap{}" << endl;
 
@@ -102,7 +99,7 @@ void printPointMap(int imageWidth, const int imageHeight, double* pointMap)
 		for(int x = 0; x < imageWidth; x++)
 		{
 			vec xyzWorld;
-			getPointMapValue(x, y, imageWidth, pointMap, &xyzWorld);
+			RTpixelMaps.getPointMapValue(x, y, imageWidth, pointMap, &xyzWorld);
 
 			if(!((xyzWorld.x == RT_RAYTRACE_NO_HIT_POINT_X) && (xyzWorld.x == RT_RAYTRACE_NO_HIT_POINT_Y) && (xyzWorld.x == RT_RAYTRACE_NO_HIT_POINT_Z)))
 			{
@@ -112,7 +109,7 @@ void printPointMap(int imageWidth, const int imageHeight, double* pointMap)
 	}
 }
 
-void printDepthMap(const int imageWidth, const int imageHeight, const double* depthMap)
+void ORoperationsClass::printDepthMap(const int imageWidth, const int imageHeight, const double* depthMap)
 {
 	cout << "printDepthMap{}" << endl;
 
@@ -122,7 +119,7 @@ void printDepthMap(const int imageWidth, const int imageHeight, const double* de
 		for(int x = 0; x < imageWidth; x++)
 		{
 			vec xyzWorld;
-			double depth = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
+			double depth = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
 
 			if(depth != RT_RAYTRACE_NO_HIT_DEPTH_T)
 			{
@@ -136,7 +133,7 @@ void printDepthMap(const int imageWidth, const int imageHeight, const double* de
 
 
 
-bool addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec* proposedFeature, ORfeature* firstFeatureInList, const double maxFeatureDistanceError, const bool checkAlsoZ)
+bool ORoperationsClass::addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec* proposedFeature, ORfeature* firstFeatureInList, const double maxFeatureDistanceError, const bool checkAlsoZ)
 {
 	bool foundCommonFeature = false;
 
@@ -150,11 +147,11 @@ bool addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec* proposedFeature, O
 			double distanceBetweenTwoPoints;
 			if(checkAlsoZ)
 			{
-				distanceBetweenTwoPoints = calculateTheDistanceBetweenTwoPoints(&(currentFeatureInList->point), proposedFeature);
+				distanceBetweenTwoPoints = SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(currentFeatureInList->point), proposedFeature);
 			}
 			else
 			{
-				distanceBetweenTwoPoints = calculateTheDistanceBetweenTwoPointsXYOnly(&(currentFeatureInList->point), proposedFeature);
+				distanceBetweenTwoPoints = SHAREDvector.calculateTheDistanceBetweenTwoPointsXYOnly(&(currentFeatureInList->point), proposedFeature);
 			}
 
 			if(distanceBetweenTwoPoints < maxFeatureDistanceError)
@@ -213,7 +210,7 @@ bool addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec* proposedFeature, O
 
 
 
-bool checkFeatureListForCommonFeature(const vec* corner, const ORfeature* firstFeatureInList, const double maxFeatureDistanceError, const bool checkAlsoZ)
+bool ORoperationsClass::checkFeatureListForCommonFeature(const vec* corner, const ORfeature* firstFeatureInList, const double maxFeatureDistanceError, const bool checkAlsoZ)
 {
 	bool foundCommonFeature = false;
 
@@ -235,11 +232,11 @@ bool checkFeatureListForCommonFeature(const vec* corner, const ORfeature* firstF
 			double distanceBetweenTwoPoints;
 			if(checkAlsoZ)
 			{
-				distanceBetweenTwoPoints = calculateTheDistanceBetweenTwoPoints(&(currentFeatureInList->point), corner);
+				distanceBetweenTwoPoints = SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(currentFeatureInList->point), corner);
 			}
 			else
 			{
-				distanceBetweenTwoPoints = calculateTheDistanceBetweenTwoPointsXYOnly(&(currentFeatureInList->point), corner);
+				distanceBetweenTwoPoints = SHAREDvector.calculateTheDistanceBetweenTwoPointsXYOnly(&(currentFeatureInList->point), corner);
 			}
 
 			if(distanceBetweenTwoPoints < maxFeatureDistanceError)
@@ -263,14 +260,14 @@ bool checkFeatureListForCommonFeature(const vec* corner, const ORfeature* firstF
 }
 
 
-void generateBooleanMapFromFeatureList(const int imageWidth, const int imageHeight, const ORfeature* firstFeatureInList,  bool* featuresMap, const RTviewInfo* vi, const int zoom)
+void ORoperationsClass::generateBooleanMapFromFeatureList(const int imageWidth, const int imageHeight, const ORfeature* firstFeatureInList,  bool* featuresMap, const RTviewInfo* vi, const int zoom)
 {
 	//initialise featuresMap
 	for(int y = 0; y < imageHeight; y++)
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			setBooleanMapValue(x, y, imageWidth, false, featuresMap);
+			RTpixelMaps.setBooleanMapValue(x, y, imageWidth, false, featuresMap);
 		}
 	}
 
@@ -296,20 +293,20 @@ void generateBooleanMapFromFeatureList(const int imageWidth, const int imageHeig
 		int x = currentFeatureInList->xViewport / zoom;
 		int y = currentFeatureInList->yViewport / zoom;
 
-		setBooleanMapValue(x, y, imageWidth, true, featuresMap);
+		RTpixelMaps.setBooleanMapValue(x, y, imageWidth, true, featuresMap);
 		currentFeatureInList=currentFeatureInList->next;
 	}
 }
 
 
-void generateBooleanMapFromFeatureListOLD(const int imageWidth, const int imageHeight, const ORfeature* firstFeatureInList,  bool* featuresMap)
+void ORoperationsClass::generateBooleanMapFromFeatureListOLD(const int imageWidth, const int imageHeight, const ORfeature* firstFeatureInList,  bool* featuresMap)
 {
 	//initialise featuresMap
 	for(int y = 0; y < imageHeight; y++)
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			setBooleanMapValue(x, y, imageWidth, false, featuresMap);
+			RTpixelMaps.setBooleanMapValue(x, y, imageWidth, false, featuresMap);
 		}
 	}
 
@@ -318,13 +315,13 @@ void generateBooleanMapFromFeatureListOLD(const int imageWidth, const int imageH
 	{
 		int x = currentFeatureInList->point.x;
 		int y = currentFeatureInList->point.y;
-		setBooleanMapValue(x, y, imageWidth, true, featuresMap);
+		RTpixelMaps.setBooleanMapValue(x, y, imageWidth, true, featuresMap);
 		currentFeatureInList=currentFeatureInList->next;
 	}
 }
 
 
-bool checkPolygonListForCommonPolygon(const ORpolygon* polygon, const ORpolygon* firstPolygonInList)
+bool ORoperationsClass::checkPolygonListForCommonPolygon(const ORpolygon* polygon, const ORpolygon* firstPolygonInList)
 {
 	bool foundCommonPolygon = false;
 
@@ -338,62 +335,62 @@ bool checkPolygonListForCommonPolygon(const ORpolygon* polygon, const ORpolygon*
 			bool point2Common = false;
 			bool point3Common = false;
 
-			if(compareVectors(&(currentPolygonInList->point1), &(polygon->point1)))
+			if(SHAREDvector.compareVectors(&(currentPolygonInList->point1), &(polygon->point1)))
 			{
 				point1Common = true;
-				if(compareVectors(&(currentPolygonInList->point2), &(polygon->point2)))
+				if(SHAREDvector.compareVectors(&(currentPolygonInList->point2), &(polygon->point2)))
 				{
 					point2Common = true;
-					if(compareVectors(&(currentPolygonInList->point3), &(polygon->point3)))
+					if(SHAREDvector.compareVectors(&(currentPolygonInList->point3), &(polygon->point3)))
 					{
 						point3Common = true;
 					}
 				}
-				else if(compareVectors(&(currentPolygonInList->point2), &(polygon->point3)))
+				else if(SHAREDvector.compareVectors(&(currentPolygonInList->point2), &(polygon->point3)))
 				{
 					point2Common = true;
-					if(compareVectors(&(currentPolygonInList->point3), &(polygon->point2)))
+					if(SHAREDvector.compareVectors(&(currentPolygonInList->point3), &(polygon->point2)))
 					{
 						point3Common = true;
 					}
 				}
 
 			}
-			else if(compareVectors(&(currentPolygonInList->point1), &(polygon->point2)))
+			else if(SHAREDvector.compareVectors(&(currentPolygonInList->point1), &(polygon->point2)))
 			{
 				point1Common = true;
-				if(compareVectors(&(currentPolygonInList->point2), &(polygon->point1)))
+				if(SHAREDvector.compareVectors(&(currentPolygonInList->point2), &(polygon->point1)))
 				{
 					point2Common = true;
-					if(compareVectors(&(currentPolygonInList->point3), &(polygon->point3)))
+					if(SHAREDvector.compareVectors(&(currentPolygonInList->point3), &(polygon->point3)))
 					{
 						point3Common = true;
 					}
 				}
-				else if(compareVectors(&(currentPolygonInList->point2), &(polygon->point3)))
+				else if(SHAREDvector.compareVectors(&(currentPolygonInList->point2), &(polygon->point3)))
 				{
 					point2Common = true;
-					if(compareVectors(&(currentPolygonInList->point3), &(polygon->point1)))
+					if(SHAREDvector.compareVectors(&(currentPolygonInList->point3), &(polygon->point1)))
 					{
 						point3Common = true;
 					}
 				}
 			}
-			else if(compareVectors(&(currentPolygonInList->point1), &(polygon->point3)))
+			else if(SHAREDvector.compareVectors(&(currentPolygonInList->point1), &(polygon->point3)))
 			{
 				point1Common = true;
-				if(compareVectors(&(currentPolygonInList->point2), &(polygon->point1)))
+				if(SHAREDvector.compareVectors(&(currentPolygonInList->point2), &(polygon->point1)))
 				{
 					point2Common = true;
-					if(compareVectors(&(currentPolygonInList->point3), &(polygon->point2)))
+					if(SHAREDvector.compareVectors(&(currentPolygonInList->point3), &(polygon->point2)))
 					{
 						point3Common = true;
 					}
 				}
-				else if(compareVectors(&(currentPolygonInList->point2), &(polygon->point2)))
+				else if(SHAREDvector.compareVectors(&(currentPolygonInList->point2), &(polygon->point2)))
 				{
 					point2Common = true;
-					if(compareVectors(&(currentPolygonInList->point3), &(polygon->point1)))
+					if(SHAREDvector.compareVectors(&(currentPolygonInList->point3), &(polygon->point1)))
 					{
 						point3Common = true;
 					}
@@ -421,7 +418,7 @@ bool checkPolygonListForCommonPolygon(const ORpolygon* polygon, const ORpolygon*
 
 }
 
-bool checkFeatureListForCommonFeatureBasic(const ORfeature* corner, const ORfeature* firstFeatureInList)
+bool ORoperationsClass::checkFeatureListForCommonFeatureBasic(const ORfeature* corner, const ORfeature* firstFeatureInList)
 {
 	bool foundCommonFeature = false;
 
@@ -429,7 +426,7 @@ bool checkFeatureListForCommonFeatureBasic(const ORfeature* corner, const ORfeat
 
 	while(currentFeatureInList->next != NULL)
 	{
-		if(compareVectors(&(currentFeatureInList->point), &(corner->point)))
+		if(SHAREDvector.compareVectors(&(currentFeatureInList->point), &(corner->point)))
 		{
 			foundCommonFeature = true;
 		}
@@ -442,7 +439,7 @@ bool checkFeatureListForCommonFeatureBasic(const ORfeature* corner, const ORfeat
 
 
 
-ORpolygon* addPolysToListForGivenFeatureAndNearestFeatureList(ORpolygon* firstCurrentPolygonInList, const ORpolygon* firstPolygonInList, ORfeature* firstFeatureInNearestFeatureList, const int numberOfPolygonsPerFeature, const int dimension)
+ORpolygon* ORoperationsClass::addPolysToListForGivenFeatureAndNearestFeatureList(ORpolygon* firstCurrentPolygonInList, const ORpolygon* firstPolygonInList, ORfeature* firstFeatureInNearestFeatureList, const int numberOfPolygonsPerFeature, const int dimension)
 {
 	ORpolygon* currentPolygonInList = firstCurrentPolygonInList;
 	int count = 0;
@@ -455,9 +452,9 @@ ORpolygon* addPolysToListForGivenFeatureAndNearestFeatureList(ORpolygon* firstCu
 		while(currentFeatureInNearestFeatureList2->next != NULL)
 		{
 			//make sure poly uses different points;
-			if(compareDoubles(calculateTheDistanceBetweenTwoPoints(&(currentFeature->point), &(currentFeatureInNearestFeatureList->point)),0.0)
-			|| compareDoubles(calculateTheDistanceBetweenTwoPoints(&(currentFeature->point), &(currentFeatureInNearestFeatureList2->point)),0.0)
-			|| compareDoubles(calculateTheDistanceBetweenTwoPoints(&(currentFeatureInNearestFeatureList->point), &(currentFeatureInNearestFeatureList2->point)),0.0))
+			if(SHAREDvars.compareDoubles(SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(currentFeature->point), &(currentFeatureInNearestFeatureList->point)),0.0)
+			|| SHAREDvars.compareDoubles(SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(currentFeature->point), &(currentFeatureInNearestFeatureList2->point)),0.0)
+			|| SHAREDvars.compareDoubles(SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(currentFeatureInNearestFeatureList->point), &(currentFeatureInNearestFeatureList2->point)),0.0))
 			{
 				//polys must use unique features
 			}
@@ -472,11 +469,11 @@ ORpolygon* addPolysToListForGivenFeatureAndNearestFeatureList(ORpolygon* firstCu
 
 					if(OR_METHOD_3DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST)
 					{
-						double areaOfT = calculateAreaOfTriangle(&(currentFeature->pointNonWorldCoord), &(currentFeatureInNearestFeatureList->pointNonWorldCoord), &(currentFeatureInNearestFeatureList2->pointNonWorldCoord));
+						double areaOfT = SHAREDvector.calculateAreaOfTriangle(&(currentFeature->pointNonWorldCoord), &(currentFeatureInNearestFeatureList->pointNonWorldCoord), &(currentFeatureInNearestFeatureList2->pointNonWorldCoord));
 
-						double internalAngle1 = calculateInteriorAngleOfAPolygonVertex(&(currentFeature->pointNonWorldCoord), &(currentFeatureInNearestFeatureList2->pointNonWorldCoord), &(currentFeatureInNearestFeatureList->pointNonWorldCoord));
-						double internalAngle2 = calculateInteriorAngleOfAPolygonVertex(&(currentFeatureInNearestFeatureList->pointNonWorldCoord), &(currentFeature->pointNonWorldCoord), &(currentFeatureInNearestFeatureList2->pointNonWorldCoord));
-						double internalAngle3 = calculateInteriorAngleOfAPolygonVertex(&(currentFeatureInNearestFeatureList2->pointNonWorldCoord), &(currentFeatureInNearestFeatureList->pointNonWorldCoord), &(currentFeature->pointNonWorldCoord));
+						double internalAngle1 = SHAREDvector.calculateInteriorAngleOfAPolygonVertex(&(currentFeature->pointNonWorldCoord), &(currentFeatureInNearestFeatureList2->pointNonWorldCoord), &(currentFeatureInNearestFeatureList->pointNonWorldCoord));
+						double internalAngle2 = SHAREDvector.calculateInteriorAngleOfAPolygonVertex(&(currentFeatureInNearestFeatureList->pointNonWorldCoord), &(currentFeature->pointNonWorldCoord), &(currentFeatureInNearestFeatureList2->pointNonWorldCoord));
+						double internalAngle3 = SHAREDvector.calculateInteriorAngleOfAPolygonVertex(&(currentFeatureInNearestFeatureList2->pointNonWorldCoord), &(currentFeatureInNearestFeatureList->pointNonWorldCoord), &(currentFeature->pointNonWorldCoord));
 
 						bool minAngleTest = true;
 
@@ -490,7 +487,7 @@ ORpolygon* addPolysToListForGivenFeatureAndNearestFeatureList(ORpolygon* firstCu
 						#endif
 
 						double minAngleAllowedRadians = (POLYGON_MIN_ANGLE_DEGREES / 180.0)* PI;
-						if((absDouble(internalAngle1) < minAngleAllowedRadians) || (absDouble(internalAngle2) < minAngleAllowedRadians) || (absDouble(internalAngle3) < minAngleAllowedRadians))
+						if((SHAREDvars.absDouble(internalAngle1) < minAngleAllowedRadians) || (SHAREDvars.absDouble(internalAngle2) < minAngleAllowedRadians) || (SHAREDvars.absDouble(internalAngle3) < minAngleAllowedRadians))
 						{
 							minAngleTest = false;
 						}
@@ -512,8 +509,8 @@ ORpolygon* addPolysToListForGivenFeatureAndNearestFeatureList(ORpolygon* firstCu
 					double minYOfT = minDouble(minDouble(currentFeature->point.y, currentFeatureInNearestFeatureList->point.y), currentFeatureInNearestFeatureList2->point.y);
 					double maxXOfT = maxDouble(maxDouble(currentFeature->point.x, currentFeatureInNearestFeatureList->point.x), currentFeatureInNearestFeatureList2->point.x);
 					double maxYOfT =  maxDouble(maxDouble(currentFeature->point.y, currentFeatureInNearestFeatureList->point.y), currentFeatureInNearestFeatureList2->point.y);
-					double widthOfOriginalT = absDouble(minXOfT - maxXOfT);
-					double heightOfOriginalT = absDouble(minYOfT - maxYOfT);
+					double widthOfOriginalT = SHAREDvars.absDouble(minXOfT - maxXOfT);
+					double heightOfOriginalT = SHAREDvars.absDouble(minYOfT - maxYOfT);
 					double maxLengthOfT = maxDouble(widthOfOriginalT, heightOfOriginalT);
 					double minAcceptableAreaOfT = maxLengthOfT*(maxLengthOfT/OR_METHOD_MINIMUM_SIDE_LENGTH_RATIO_OF_EQUILATERAL_T) / 2.0; //area of t = w*h/2
 					double minAcceptableAreaOfTNormalised = minAcceptableAreaOfT*(maxLengthOfT/OR_METHOD_SIDE_LENGTH_FOR_MINIMUM_SIDE_LENGTH_RATIO_OF_EQUILATERAL_T);	//large t's have wider spread features,
@@ -528,21 +525,21 @@ ORpolygon* addPolysToListForGivenFeatureAndNearestFeatureList(ORpolygon* firstCu
 					//double areaRequirementNormalisationFactor = maxLengthOfT/averageSideLengthOfMinimumSizedTThin;
 					//f(areaOfT/areaRequirementNormalisationFactor > OR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON)
 
-					double areaOfT = calculateAreaOfTriangle(&(currentFeature->point), &(currentFeatureInNearestFeatureList->point), &(currentFeatureInNearestFeatureList2->point));
+					double areaOfT = SHAREDvector.calculateAreaOfTriangle(&(currentFeature->point), &(currentFeatureInNearestFeatureList->point), &(currentFeatureInNearestFeatureList2->point));
 					if(areaOfT > minAcceptableAreaOfTNormalised)
 					*/
 
 					if(OR_METHOD_2DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST)
 					{
-						double areaOfT = calculateAreaOfTriangle(&(currentFeature->point), &(currentFeatureInNearestFeatureList->point), &(currentFeatureInNearestFeatureList2->point));
+						double areaOfT = SHAREDvector.calculateAreaOfTriangle(&(currentFeature->point), &(currentFeatureInNearestFeatureList->point), &(currentFeatureInNearestFeatureList2->point));
 
-						double internalAngle1 = calculateInteriorAngleOfAPolygonVertex(&(currentFeature->point), &(currentFeatureInNearestFeatureList2->point), &(currentFeatureInNearestFeatureList->point));
-						double internalAngle2 = calculateInteriorAngleOfAPolygonVertex(&(currentFeatureInNearestFeatureList->point), &(currentFeature->point), &(currentFeatureInNearestFeatureList2->point));
-						double internalAngle3 = calculateInteriorAngleOfAPolygonVertex(&(currentFeatureInNearestFeatureList2->point), &(currentFeatureInNearestFeatureList->point), &(currentFeature->point));
+						double internalAngle1 = SHAREDvector.calculateInteriorAngleOfAPolygonVertex(&(currentFeature->point), &(currentFeatureInNearestFeatureList2->point), &(currentFeatureInNearestFeatureList->point));
+						double internalAngle2 = SHAREDvector.calculateInteriorAngleOfAPolygonVertex(&(currentFeatureInNearestFeatureList->point), &(currentFeature->point), &(currentFeatureInNearestFeatureList2->point));
+						double internalAngle3 = SHAREDvector.calculateInteriorAngleOfAPolygonVertex(&(currentFeatureInNearestFeatureList2->point), &(currentFeatureInNearestFeatureList->point), &(currentFeature->point));
 
 						bool minAngleTest = true;
 						double minAngleAllowedRadians = (POLYGON_MIN_ANGLE_DEGREES / 180.0)* PI;
-						if((absDouble(internalAngle1) < minAngleAllowedRadians) || (absDouble(internalAngle2) < minAngleAllowedRadians) || (absDouble(internalAngle3) < minAngleAllowedRadians))
+						if((SHAREDvars.absDouble(internalAngle1) < minAngleAllowedRadians) || (SHAREDvars.absDouble(internalAngle2) < minAngleAllowedRadians) || (SHAREDvars.absDouble(internalAngle3) < minAngleAllowedRadians))
 						{
 							minAngleTest = false;
 						}
@@ -555,7 +552,7 @@ ORpolygon* addPolysToListForGivenFeatureAndNearestFeatureList(ORpolygon* firstCu
 					{
 
 						//basic:
-						double areaOfT = calculateAreaOfTriangle(&(currentFeature->point), &(currentFeatureInNearestFeatureList->point), &(currentFeatureInNearestFeatureList2->point));
+						double areaOfT = SHAREDvector.calculateAreaOfTriangle(&(currentFeature->point), &(currentFeatureInNearestFeatureList->point), &(currentFeatureInNearestFeatureList2->point));
 						if(areaOfT > OR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON)
 						{
 							passedAreaTest = true;
@@ -567,10 +564,10 @@ ORpolygon* addPolysToListForGivenFeatureAndNearestFeatureList(ORpolygon* firstCu
 				{//minimum area of triangle enforcement - eliminates small polys subject to noise, and also eliminates colinear polys
 
 					ORpolygon tempPolygon;
-					copyVectorRT(&(tempPolygon.point1), &(currentFeature->point));
-					copyVectorRT(&(tempPolygon.point2), &(currentFeatureInNearestFeatureList->point));
-					copyVectorRT(&(tempPolygon.point3), &(currentFeatureInNearestFeatureList2->point));
-					if(!checkPolygonListForCommonPolygon(&tempPolygon, firstPolygonInList))
+					SHAREDvector.copyVectorRT(&(tempPolygon.point1), &(currentFeature->point));
+					SHAREDvector.copyVectorRT(&(tempPolygon.point2), &(currentFeatureInNearestFeatureList->point));
+					SHAREDvector.copyVectorRT(&(tempPolygon.point3), &(currentFeatureInNearestFeatureList2->point));
+					if(!this->checkPolygonListForCommonPolygon(&tempPolygon, firstPolygonInList))
 					{
 						if(count < numberOfPolygonsPerFeature)
 						{
@@ -589,9 +586,9 @@ ORpolygon* addPolysToListForGivenFeatureAndNearestFeatureList(ORpolygon* firstCu
 							*/
 							#endif
 
-							copyVectorRT(&(currentPolygonInList->point1), &(currentFeature->point));
-							copyVectorRT(&(currentPolygonInList->point2), &(currentFeatureInNearestFeatureList->point));
-							copyVectorRT(&(currentPolygonInList->point3), &(currentFeatureInNearestFeatureList2->point));
+							SHAREDvector.copyVectorRT(&(currentPolygonInList->point1), &(currentFeature->point));
+							SHAREDvector.copyVectorRT(&(currentPolygonInList->point2), &(currentFeatureInNearestFeatureList->point));
+							SHAREDvector.copyVectorRT(&(currentPolygonInList->point3), &(currentFeatureInNearestFeatureList2->point));
 
 							ORpolygon* newPolygon = new ORpolygon();
 							currentPolygonInList->next = newPolygon;
@@ -612,7 +609,7 @@ ORpolygon* addPolysToListForGivenFeatureAndNearestFeatureList(ORpolygon* firstCu
 	return currentPolygonInList;
 }
 
-int calculateNumberOfNearestFeatures(const int numberOfPolygonsPerFeature, const int numberOfNearbyFeaturesToTransform)
+int ORoperationsClass::calculateNumberOfNearestFeatures(const int numberOfPolygonsPerFeature, const int numberOfNearbyFeaturesToTransform)
 {
 	int numberOfNearestFeatures;
 	if(numberOfPolygonsPerFeature == 1)
@@ -621,11 +618,11 @@ int calculateNumberOfNearestFeatures(const int numberOfPolygonsPerFeature, const
 	}
 	else if(numberOfPolygonsPerFeature == 3)
 	{
-		numberOfNearestFeatures = 3 + maxInt(1, numberOfNearbyFeaturesToTransform);
+		numberOfNearestFeatures = 3 + SHAREDvars.maxInt(1, numberOfNearbyFeaturesToTransform);
 	}
 	else if(numberOfPolygonsPerFeature == 4)
 	{
-		numberOfNearestFeatures = 3 + maxInt(3, numberOfNearbyFeaturesToTransform);
+		numberOfNearestFeatures = 3 + SHAREDvars.maxInt(3, numberOfNearbyFeaturesToTransform);
 	}
 	else
 	{
@@ -639,7 +636,7 @@ int calculateNumberOfNearestFeatures(const int numberOfPolygonsPerFeature, const
 
 
 
-void generateNearestFeaturesList(ORfeature* firstFeatureInNearestFeatureList, const int numberOfNearestFeatures)
+void ORoperationsClass::generateNearestFeaturesList(ORfeature* firstFeatureInNearestFeatureList, const int numberOfNearestFeatures)
 {
 	ORfeature* currentFeatureInNearestFeatureList = firstFeatureInNearestFeatureList;
 	for(int i=0; i<numberOfNearestFeatures; i++)
@@ -654,7 +651,7 @@ void generateNearestFeaturesList(ORfeature* firstFeatureInNearestFeatureList, co
 }
 
 
-bool generatePolygonListUsingFeatureListLocalised(const int imageWidth, const int imageHeight, const ORfeature firstFeatureInList[], ORpolygon firstPolygonInList[], const int numberOfZoomIndicies, const int dimension)
+bool ORoperationsClass::generatePolygonListUsingFeatureListLocalised(const int imageWidth, const int imageHeight, const ORfeature firstFeatureInList[], ORpolygon firstPolygonInList[], const int numberOfZoomIndicies, const int dimension)
 {
 	bool result = true;
 
@@ -666,7 +663,7 @@ bool generatePolygonListUsingFeatureListLocalised(const int imageWidth, const in
 		int cornerIndexList1 = 0;
 		while(currentFeatureInList1->next != NULL)
 		{
-			int numberOfNearestFeatures = calculateNumberOfNearestFeatures(NUMBER_OF_POLYGONS_PER_FEATURE, OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM);
+			int numberOfNearestFeatures = this->calculateNumberOfNearestFeatures(NUMBER_OF_POLYGONS_PER_FEATURE, OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM);
 
 			#ifdef OR_DEBUG
 			/*
@@ -703,16 +700,16 @@ bool generatePolygonListUsingFeatureListLocalised(const int imageWidth, const in
 
 				while(currentFeatureInList2->next != NULL)
 				{
-					if((calculateTheDistanceBetweenTwoPoints(&(currentFeatureInList2->point), &(currentFeatureInList1->point)) < distanceToNearestFeatureFromFeatureList2)
-					&& (calculateTheDistanceBetweenTwoPoints(&(currentFeatureInList2->point), &(currentFeatureInList1->point)) > previousDistanceToNearestFeatureFromFeatureList2))
+					if((SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(currentFeatureInList2->point), &(currentFeatureInList1->point)) < distanceToNearestFeatureFromFeatureList2)
+					&& (SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(currentFeatureInList2->point), &(currentFeatureInList1->point)) > previousDistanceToNearestFeatureFromFeatureList2))
 					{
-						if(!checkFeatureListForCommonFeatureBasic(currentFeatureInList2, firstFeatureInNearestFeatureList))
+						if(!this->checkFeatureListForCommonFeatureBasic(currentFeatureInList2, firstFeatureInNearestFeatureList))
 						{//should not be necessary
-							if(!compareVectors(&(currentFeatureInList2->point), &(currentFeatureInList1->point)))
+							if(!SHAREDvector.compareVectors(&(currentFeatureInList2->point), &(currentFeatureInList1->point)))
 							{
-								distanceToNearestFeatureFromFeatureList2 = calculateTheDistanceBetweenTwoPoints(&(currentFeatureInList2->point), &(currentFeatureInList1->point));
-								copyVectors(&(currentFeatureInNearestFeatureList->point), &(currentFeatureInList2->point));
-								copyVectors(&(currentFeatureInNearestFeatureList->pointNonWorldCoord), &(currentFeatureInList2->pointNonWorldCoord));
+								distanceToNearestFeatureFromFeatureList2 = SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(currentFeatureInList2->point), &(currentFeatureInList1->point));
+								SHAREDvector.copyVectors(&(currentFeatureInNearestFeatureList->point), &(currentFeatureInList2->point));
+								SHAREDvector.copyVectors(&(currentFeatureInNearestFeatureList->pointNonWorldCoord), &(currentFeatureInList2->pointNonWorldCoord));
 								foundASpot = true;
 
 								#ifdef OR_DEBUG
@@ -781,7 +778,7 @@ bool generatePolygonListUsingFeatureListLocalised(const int imageWidth, const in
 			ORpolygon* backupOfOldCurrentPolygon = currentPolygonInList;
 			//#endif
 
-			currentPolygonInList = addPolysToListForGivenFeatureAndNearestFeatureList(currentPolygonInList, firstPolygonInList, firstFeatureInNearestFeatureList, NUMBER_OF_POLYGONS_PER_FEATURE, dimension);
+			currentPolygonInList = this->addPolysToListForGivenFeatureAndNearestFeatureList(currentPolygonInList, firstPolygonInList, firstFeatureInNearestFeatureList, NUMBER_OF_POLYGONS_PER_FEATURE, dimension);
 
 			if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
 			{
@@ -832,7 +829,7 @@ bool generatePolygonListUsingFeatureListLocalised(const int imageWidth, const in
 	return result;
 
 }
-bool generatePolygonListUsingFeatureList(const int imageWidth, const int imageHeight, const ORfeature firstFeatureInList[], ORpolygon firstPolygonInList[], const int numberOfZoomIndicies)
+bool ORoperationsClass::generatePolygonListUsingFeatureList(const int imageWidth, const int imageHeight, const ORfeature firstFeatureInList[], ORpolygon firstPolygonInList[], const int numberOfZoomIndicies)
 {
 	bool result = true;
 
@@ -862,10 +859,10 @@ bool generatePolygonListUsingFeatureList(const int imageWidth, const int imageHe
 					else
 					{
 						ORpolygon tempPolygon;
-						copyVectorRT(&(tempPolygon.point1), &(currentFeatureInList1->point));
-						copyVectorRT(&(tempPolygon.point2), &(currentFeatureInList2->point));
-						copyVectorRT(&(tempPolygon.point3), &(currentFeatureInList3->point));
-						if(!checkPolygonListForCommonPolygon(&tempPolygon, firstPolygonInList))
+						SHAREDvector.copyVectorRT(&(tempPolygon.point1), &(currentFeatureInList1->point));
+						SHAREDvector.copyVectorRT(&(tempPolygon.point2), &(currentFeatureInList2->point));
+						SHAREDvector.copyVectorRT(&(tempPolygon.point3), &(currentFeatureInList3->point));
+						if(!this->checkPolygonListForCommonPolygon(&tempPolygon, firstPolygonInList))
 						{
 							#ifdef OR_DEBUG
 							/*
@@ -882,9 +879,9 @@ bool generatePolygonListUsingFeatureList(const int imageWidth, const int imageHe
 							*/
 							#endif
 
-							copyVectorRT(&(currentPolygonInList->point1), &(currentFeatureInList1->point));
-							copyVectorRT(&(currentPolygonInList->point2), &(currentFeatureInList2->point));
-							copyVectorRT(&(currentPolygonInList->point3), &(currentFeatureInList3->point));
+							SHAREDvector.copyVectorRT(&(currentPolygonInList->point1), &(currentFeatureInList1->point));
+							SHAREDvector.copyVectorRT(&(currentPolygonInList->point2), &(currentFeatureInList2->point));
+							SHAREDvector.copyVectorRT(&(currentPolygonInList->point3), &(currentFeatureInList3->point));
 							ORpolygon* newPolygon = new ORpolygon();
 							currentPolygonInList->next = newPolygon;
 							currentPolygonInList = currentPolygonInList->next;
@@ -1088,6 +1085,7 @@ void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int 
 
 
 
+
 //	for(int uvxIndex = 0; uvxIndex < 3; uvxIndex++)
 //	{
 //		for(int uvyIndex = 0; uvyIndex < 3; uvyIndex++)
@@ -1133,14 +1131,12 @@ void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int 
 //			}
 //		}
 //	}
-
+	
 }
 */
 
 
-
-
-void createInterpolatedPointMap(int imageWidth, const int imageHeight, double* pointMap, double* pointMapInterpolated)
+void ORoperationsClass::createInterpolatedPointMap(int imageWidth, const int imageHeight, double* pointMap, double* pointMapInterpolated)
 {
 	//initialise featuresMap
 	for(int y = -1; y < imageHeight; y++)
@@ -1168,16 +1164,16 @@ void createInterpolatedPointMap(int imageWidth, const int imageHeight, double* p
 					else
 					{
 						vec pointMapValue;
-						getPointMapValue(kx, ky, imageWidth, pointMap, &pointMapValue);
+						RTpixelMaps.getPointMapValue(kx, ky, imageWidth, pointMap, &pointMapValue);
 
 						vec nullPointVector;
 						nullPointVector.x = 0.0;
 						nullPointVector.y = 0.0;
 						nullPointVector.z = 0.0;
 
-						if(!compareVectors(&pointMapValue, &nullPointVector))
+						if(!SHAREDvector.compareVectors(&pointMapValue, &nullPointVector))
 						{
-							addVectorsRT(&totalPosition, &pointMapValue, &totalPosition);
+							SHAREDvector.addVectorsRT(&totalPosition, &pointMapValue, &totalPosition);
 							numberOfPoints++;
 						}
 					}
@@ -1187,8 +1183,8 @@ void createInterpolatedPointMap(int imageWidth, const int imageHeight, double* p
 			}
 
 			vec interpolatedPosition;
-			divideVectorByScalarRT(&totalPosition, numberOfPoints, &interpolatedPosition);
-			setPointMapValue((x+1), (y+1), (imageWidth+1), &interpolatedPosition, pointMapInterpolated);
+			SHAREDvector.divideVectorByScalarRT(&totalPosition, numberOfPoints, &interpolatedPosition);
+			RTpixelMaps.setPointMapValue((x+1), (y+1), (imageWidth+1), &interpolatedPosition, pointMapInterpolated);
 		}
 	}
 }
@@ -1236,26 +1232,26 @@ void createInterpolatedDepthMap(int imageWidth, int imageHeight, double* depthMa
 
 
 
-void applyTransformationMatrixToAllReferencesIn2Dlist(LDreference* firstReferenceInInterpolated2DrgbMap, mat* transformationMatrix)
+void ORoperationsClass::applyTransformationMatrixToAllReferencesIn2Dlist(LDreference* firstReferenceInInterpolated2DrgbMap, mat* transformationMatrix)
 {
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 		vec vecNew;
-		multiplyVectorByMatrix(&vecNew, &(currentReference->vertex1absolutePosition), transformationMatrix);
-		copyVectors(&(currentReference->vertex1absolutePosition), &vecNew);
-		multiplyVectorByMatrix(&vecNew, &(currentReference->vertex2absolutePosition), transformationMatrix);
-		copyVectors(&(currentReference->vertex2absolutePosition), &vecNew);
-		multiplyVectorByMatrix(&vecNew, &(currentReference->vertex3absolutePosition), transformationMatrix);
-		copyVectors(&(currentReference->vertex3absolutePosition), &vecNew);
-		multiplyVectorByMatrix(&vecNew, &(currentReference->vertex4absolutePosition), transformationMatrix);
-		copyVectors(&(currentReference->vertex4absolutePosition), &vecNew);
+		SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentReference->vertex1absolutePosition), transformationMatrix);
+		SHAREDvector.copyVectors(&(currentReference->vertex1absolutePosition), &vecNew);
+		SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentReference->vertex2absolutePosition), transformationMatrix);
+		SHAREDvector.copyVectors(&(currentReference->vertex2absolutePosition), &vecNew);
+		SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentReference->vertex3absolutePosition), transformationMatrix);
+		SHAREDvector.copyVectors(&(currentReference->vertex3absolutePosition), &vecNew);
+		SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentReference->vertex4absolutePosition), transformationMatrix);
+		SHAREDvector.copyVectors(&(currentReference->vertex4absolutePosition), &vecNew);
 
 		currentReference = currentReference->next;
 	}
 }
 
-void applyTranslationToAllReferencesIn2Dlist(LDreference* firstReferenceInInterpolated2DrgbMap, vec* translationVector)
+void ORoperationsClass::applyTranslationToAllReferencesIn2Dlist(LDreference* firstReferenceInInterpolated2DrgbMap, vec* translationVector)
 {
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
@@ -1278,7 +1274,7 @@ void applyTranslationToAllReferencesIn2Dlist(LDreference* firstReferenceInInterp
 }
 
 
-void restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(LDreference* firstReferenceInInterpolated2DrgbMap)
+void ORoperationsClass::restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(LDreference* firstReferenceInInterpolated2DrgbMap)
 {
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
@@ -1300,7 +1296,7 @@ void restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(LDreference* firstR
 	}
 }
 
-void storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(LDreference* firstReferenceInInterpolated2DrgbMap)
+void ORoperationsClass::storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(LDreference* firstReferenceInInterpolated2DrgbMap)
 {
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)

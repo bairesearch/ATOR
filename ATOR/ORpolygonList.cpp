@@ -26,13 +26,12 @@
  * File Name: ORpolygonList.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1a 14-January-2017
+ * Project Version: 3j1b 14-January-2017
  *
  *******************************************************************************/
 
 
 #include "ORpolygonList.h"
-#include "SHAREDvector.h"
 
 ORobjectReferenceList::ORobjectReferenceList(void)
 {
@@ -266,10 +265,10 @@ ORmeshPoint::ORmeshPoint(void)
 		temp.x = 0.0;
 		temp.y = 0.0;
 		temp.z = 0.0;
-	copyVectors(&(meshPointNormals[0]), &temp);
-	copyVectors(&(meshPointNormals[1]), &temp);
-	copyVectors(&(meshPointNormals[2]), &temp);
-	copyVectors(&(meshPointNormals[3]), &temp);
+	SHAREDvectorClass().copyVectors(&(meshPointNormals[0]), &temp);
+	SHAREDvectorClass().copyVectors(&(meshPointNormals[1]), &temp);
+	SHAREDvectorClass().copyVectors(&(meshPointNormals[2]), &temp);
+	SHAREDvectorClass().copyVectors(&(meshPointNormals[3]), &temp);
 	meshPointNormal.x = 0;
 	meshPointNormal.y = 0;
 	meshPointNormal.z = 0;
@@ -477,7 +476,7 @@ ORpixelContiguous::~ORpixelContiguous()
 }
 
 
-ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const int x, const int y, bool* hasFoundMeshPoint)
+ORmeshPoint* ORpolygonListClass::findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const int x, const int y, bool* hasFoundMeshPoint)
 {
 	ORmeshPoint* foundMeshPoint = NULL;
 	*hasFoundMeshPoint = false;
@@ -496,7 +495,7 @@ ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const
 	return foundMeshPoint;
 }
 
-ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const vec* point, bool* hasFoundMeshPoint, const int meshZoneLimit)
+ORmeshPoint* ORpolygonListClass::findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const vec* point, bool* hasFoundMeshPoint, const int meshZoneLimit)
 {
 	ORmeshPoint* foundMeshPoint = NULL;
 	*hasFoundMeshPoint = false;
@@ -505,7 +504,7 @@ ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const
 	ORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	while((currentMeshPointInMesh->next != NULL) && (numMeshPointsCounted < meshZoneLimit))
 	{
-		if(compareVectors(&(currentMeshPointInMesh->point), point))
+		if(SHAREDvector.compareVectors(&(currentMeshPointInMesh->point), point))
 		{
 			foundMeshPoint = currentMeshPointInMesh;
 			*hasFoundMeshPoint = true;
@@ -517,7 +516,7 @@ ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const
 	return foundMeshPoint;
 }
 
-ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const int position)
+ORmeshPoint* ORpolygonListClass::findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const int position)
 {
 	ORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	for(int i=0; i < position; i++)
@@ -536,7 +535,7 @@ ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const
 //vec meshPointNormals[4];	//from 4 tris creating using mesh point and two out of four surrounding meshpoints, x-, x+, y-, y+
 //vec meshPointNormal; 		//average of four calculated meshpoint normals
 //no boundary checks - these can easily be implemented using adjacentMeshPointFilled
-void calculateMeshPointInterpixelNormal(ORmeshPoint* meshPoint)
+void ORpolygonListClass::calculateMeshPointInterpixelNormal(ORmeshPoint* meshPoint)
 {
 	/*
 	2 4
@@ -566,17 +565,17 @@ void calculateMeshPointInterpixelNormal(ORmeshPoint* meshPoint)
 	point4 = &(meshPoint->adjacentMeshPoint[1]->point);
 
 	vec currentNormalVec;
-	calculateNormalOfTri(point1, point2, point3, &currentNormalVec);
+	SHAREDvector.calculateNormalOfTri(point1, point2, point3, &currentNormalVec);
 
 	averageNormalVector.x = averageNormalVector.x + currentNormalVec.x;
 	averageNormalVector.y = averageNormalVector.y + currentNormalVec.y;
 	averageNormalVector.z = averageNormalVector.z + currentNormalVec.z;
 
 	#ifndef DO_NOT_NORMALISE_POINT_NORMAL_MAP
-	normaliseVector(&averageNormalVector);
+	SHAREDvector.normaliseVector(&averageNormalVector);
 	#endif
 
-	calculateNormalOfTri(point3, point2, point4, &currentNormalVec);
+	SHAREDvector.calculateNormalOfTri(point3, point2, point4, &currentNormalVec);
 
 	averageNormalVector.x = averageNormalVector.x + currentNormalVec.x;
 	averageNormalVector.y = averageNormalVector.y + currentNormalVec.y;
@@ -584,15 +583,15 @@ void calculateMeshPointInterpixelNormal(ORmeshPoint* meshPoint)
 
 
 	#ifndef DO_NOT_NORMALISE_POINT_NORMAL_MAP
-	normaliseVector(&averageNormalVector);
+	SHAREDvector.normaliseVector(&averageNormalVector);
 	#endif
 
-	copyVectors(&(meshPoint->interpixelMeshPoint->meshPointNormal),  &averageNormalVector);
+	SHAREDvector.copyVectors(&(meshPoint->interpixelMeshPoint->meshPointNormal),  &averageNormalVector);
 }
 
 //see calculateMeshPointNormalsUsingPointMap
 //no boundary checks - these can easily be implemented using adjacentMeshPointFilled
-void calculateMeshPointInterpixelNormalContrast(ORmeshPoint* meshPoint)
+void ORpolygonListClass::calculateMeshPointInterpixelNormalContrast(ORmeshPoint* meshPoint)
 {
 	/*
 	q;
@@ -621,9 +620,9 @@ void calculateMeshPointInterpixelNormalContrast(ORmeshPoint* meshPoint)
 		q = qMapping[1][y];
 		vec* adjacentInterpixelNormalValue = &(meshPoint->adjacentMeshPoint[q]->interpixelMeshPoint->point);
 
-		double currentContrastLevelX = absDouble(interpixelNormalValue->x - adjacentInterpixelNormalValue->x);
-		double currentContrastLevelY = absDouble(interpixelNormalValue->y - adjacentInterpixelNormalValue->y);
-		double currentContrastLevelZ = absDouble(interpixelNormalValue->z - adjacentInterpixelNormalValue->z);
+		double currentContrastLevelX = SHAREDvars.absDouble(interpixelNormalValue->x - adjacentInterpixelNormalValue->x);
+		double currentContrastLevelY = SHAREDvars.absDouble(interpixelNormalValue->y - adjacentInterpixelNormalValue->y);
+		double currentContrastLevelZ = SHAREDvars.absDouble(interpixelNormalValue->z - adjacentInterpixelNormalValue->z);
 
 		contrastLevel = contrastLevel + currentContrastLevelX+currentContrastLevelY+currentContrastLevelZ;
 	}
@@ -639,9 +638,9 @@ void calculateMeshPointInterpixelNormalContrast(ORmeshPoint* meshPoint)
 		q = qMapping[x][1];
 		vec* adjacentInterpixelNormalValue = &(meshPoint->adjacentMeshPoint[q]->interpixelMeshPoint->point);
 
-		double currentContrastLevelX = absDouble(interpixelNormalValue->x - adjacentInterpixelNormalValue->x);
-		double currentContrastLevelY = absDouble(interpixelNormalValue->y - adjacentInterpixelNormalValue->y);
-		double currentContrastLevelZ = absDouble(interpixelNormalValue->z - adjacentInterpixelNormalValue->z);
+		double currentContrastLevelX = SHAREDvars.absDouble(interpixelNormalValue->x - adjacentInterpixelNormalValue->x);
+		double currentContrastLevelY = SHAREDvars.absDouble(interpixelNormalValue->y - adjacentInterpixelNormalValue->y);
+		double currentContrastLevelZ = SHAREDvars.absDouble(interpixelNormalValue->z - adjacentInterpixelNormalValue->z);
 
 		contrastLevel = contrastLevel + currentContrastLevelX+currentContrastLevelY+currentContrastLevelZ;
 	}
@@ -649,7 +648,7 @@ void calculateMeshPointInterpixelNormalContrast(ORmeshPoint* meshPoint)
 	meshPoint->meshPointNormalContrast = contrastLevel;
 }
 
-void calculateMeshPointInterpixelLuminosityContrast(ORmeshPoint* meshPoint)
+void ORpolygonListClass::calculateMeshPointInterpixelLuminosityContrast(ORmeshPoint* meshPoint)
 {
 	/*
 	q;
@@ -685,7 +684,7 @@ void calculateMeshPointInterpixelLuminosityContrast(ORmeshPoint* meshPoint)
 		q = qMapping[1][y];
 		double adjacentPixelLuminosityMeasurement = meshPoint->adjacentMeshPoint[q]->luminosity;
 
-		double currentContrastLevel = absDouble(pixelLuminosityMeasurement - adjacentPixelLuminosityMeasurement);
+		double currentContrastLevel = SHAREDvars.absDouble(pixelLuminosityMeasurement - adjacentPixelLuminosityMeasurement);
 
 		contrastLevel = contrastLevel + currentContrastLevel;
 	}
@@ -701,7 +700,7 @@ void calculateMeshPointInterpixelLuminosityContrast(ORmeshPoint* meshPoint)
 		q = qMapping[x][1];
 		double adjacentPixelLuminosityMeasurement = meshPoint->adjacentMeshPoint[q]->luminosity;
 
-		double currentContrastLevel = absDouble(pixelLuminosityMeasurement - adjacentPixelLuminosityMeasurement);
+		double currentContrastLevel = SHAREDvars.absDouble(pixelLuminosityMeasurement - adjacentPixelLuminosityMeasurement);
 
 		contrastLevel = contrastLevel + currentContrastLevel;
 	}
@@ -709,7 +708,7 @@ void calculateMeshPointInterpixelLuminosityContrast(ORmeshPoint* meshPoint)
 	meshPoint->interpixelMeshPoint->luminosityContrast = contrastLevel;
 }
 
-void calculateMeshPointInterpixelDepth(ORmeshPoint* meshPoint)
+void ORpolygonListClass::calculateMeshPointInterpixelDepth(ORmeshPoint* meshPoint)
 {
 	/*
 	q;
@@ -737,7 +736,7 @@ void calculateMeshPointInterpixelDepth(ORmeshPoint* meshPoint)
 
 }
 
-void calculateMeshPointInterpixelDepthWithForegroundDepthCheck(ORmeshPoint* meshPoint)
+void ORpolygonListClass::calculateMeshPointInterpixelDepthWithForegroundDepthCheck(ORmeshPoint* meshPoint)
 {
 	/*
 	q;
@@ -767,7 +766,6 @@ void calculateMeshPointInterpixelDepthWithForegroundDepthCheck(ORmeshPoint* mesh
 	meshPoint->interpixelMeshPoint->depth = minDepthForNearbyPoints;
 
 }
-
 
 /*
 void calculateMeshPointInterpixelDepthWithForegroundDepthCheckOLD(ORmeshPoint* meshPoint)
@@ -876,7 +874,7 @@ void calculateMeshPointInterpixelDepthWithForegroundDepthCheckOLD(ORmeshPoint* m
 //vec meshPointNormals[4];	//from 4 tris creating using mesh point and two out of four surrounding meshpoints, x-, x+, y-, y+
 //vec meshPointNormal; 		//average of four calculated meshpoint normals
 //no boundary checks - these can easily be implemented using adjacentMeshPointFilled
-void calculateMeshPointNormal(ORmeshPoint* meshPoint)
+void ORpolygonListClass::calculateMeshPointNormal(ORmeshPoint* meshPoint)
 {
 	vec averageNormalVector;
 	averageNormalVector.x = 0.0;
@@ -892,9 +890,9 @@ void calculateMeshPointNormal(ORmeshPoint* meshPoint)
 
 		//calculate normal of vector using 3 points
 		vec currentNormalVec;
-		calculateNormalOfTri(&(meshPoint->point), &(meshPoint->adjacentMeshPoint[q]->point), &(meshPoint->adjacentMeshPoint[r]->point), &currentNormalVec);
+		SHAREDvector.calculateNormalOfTri(&(meshPoint->point), &(meshPoint->adjacentMeshPoint[q]->point), &(meshPoint->adjacentMeshPoint[r]->point), &currentNormalVec);
 
-		copyVectors(&(meshPoint->meshPointNormals[(q-1)/2]),  &currentNormalVec);
+		SHAREDvector.copyVectors(&(meshPoint->meshPointNormals[(q-1)/2]),  &currentNormalVec);
 
 		averageNormalVector.x = averageNormalVector.x + currentNormalVec.x;
 		averageNormalVector.y = averageNormalVector.y + currentNormalVec.y;
@@ -906,15 +904,15 @@ void calculateMeshPointNormal(ORmeshPoint* meshPoint)
 	averageNormalVector.z = averageNormalVector.z/4;
 
 	#ifndef DO_NOT_NORMALISE_POINT_NORMAL_MAP
-	normaliseVector(&averageNormalVector);
+	SHAREDvector.normaliseVector(&averageNormalVector);
 	#endif
 
-	copyVectors(&(meshPoint->meshPointNormal),  &averageNormalVector);
+	SHAREDvector.copyVectors(&(meshPoint->meshPointNormal),  &averageNormalVector);
 }
 
 //see calculateMeshPointNormalsUsingPointMap
 //no boundary checks - these can easily be implemented using adjacentMeshPointFilled
-void calculateMeshPointNormalContrast(ORmeshPoint* meshPoint)
+void ORpolygonListClass::calculateMeshPointNormalContrast(ORmeshPoint* meshPoint)
 {
 	double contrastLevel = 0.0;
 
@@ -925,14 +923,14 @@ void calculateMeshPointNormalContrast(ORmeshPoint* meshPoint)
 
 		//calc point normal vector diff between centre pixel and current surrounding kernel pixel
 		vec diff;
-		subtractVectors(&diff, centrePixelNormal, currentPixelNormal);
-		contrastLevel = maxDouble(contrastLevel, findMagnitudeOfVector(&diff));
+		SHAREDvector.subtractVectors(&diff, centrePixelNormal, currentPixelNormal);
+		contrastLevel = SHAREDvars.maxDouble(contrastLevel, SHAREDvector.findMagnitudeOfVector(&diff));
 	}
 	meshPoint->meshPointNormalContrast = contrastLevel;
 }
 //#endif
 
-void calculateMeshPointLuminosityContrast(ORmeshPoint* meshPoint)
+void ORpolygonListClass::calculateMeshPointLuminosityContrast(ORmeshPoint* meshPoint)
 {
 	double contrastLevel = 0.0;
 
@@ -941,8 +939,8 @@ void calculateMeshPointLuminosityContrast(ORmeshPoint* meshPoint)
 	for(int q = 0; q < 9; q++)
 	{
 		double kernelCurrentPixelPositionInLummapLuminosity = meshPoint->adjacentMeshPoint[q]->luminosity;
-		double currentContrastLevel = absDouble(centrePixelPositionInLummapLuminosity - kernelCurrentPixelPositionInLummapLuminosity);
-		contrastLevel = maxDouble(contrastLevel, currentContrastLevel);
+		double currentContrastLevel = SHAREDvars.absDouble(centrePixelPositionInLummapLuminosity - kernelCurrentPixelPositionInLummapLuminosity);
+		contrastLevel = SHAREDvars.maxDouble(contrastLevel, currentContrastLevel);
 
 		#ifdef OR_DEBUG
 		//cout << "contrastLevel = " << contrastLevel << endl;

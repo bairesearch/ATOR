@@ -26,7 +26,7 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1a 14-January-2017
+ * Project Version: 3j1b 14-January-2017
  *
  *******************************************************************************/
 
@@ -38,6 +38,25 @@
 #include "ORpolygonList.h"
 #include "RTviewinfo.h"
 #include "ORglobalDefs.h"
+#include "ORmethod3DOD.h"
+#include "ORmethod2DOD.h"
+#include "ORpixelMaps.h"
+#include "ORoperations.h"
+#include "ORfeatureGeneration.h"
+#include "ORquadraticFit.h"
+#include "RTscene.h"
+#include "LDparser.h"
+#include "LDreferenceManipulation.h"
+#include "RTreferenceManipulation.h"
+#include "SHAREDvector.h"
+#include "ORcomparison.h"
+#include "ORimagecomparison.h"
+#include "ORdatabaseFileIO.h"
+#include "LDmysql.h";
+#include "LDjpeg.h";
+#include "ORdatabaseSQL.h"
+#include "ORdatabaseDecisionTree.h"
+	#include "LDopengl.h"
 
 
 /*
@@ -531,46 +550,69 @@
 #define MAX_DOUBLE (99999999.9)
 #define IRRELEVANT (1)
 
-bool ORTHmethod(int dimension, const int numberOfTrainObjects, string trainObjectNameArray[], const int numberOfTestObjects, string testObjectNameArray[], int* numberOfTrainPolys, int* numberOfTestPolys, const int objectDataSource, RTviewInfo* viTrain, RTviewInfo* viTest, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrain, const int maxNumberOfPolygonsTest, const int numberOfTrainViewIndiciesPerObject, const int numberOfTestViewIndiciesPerObject, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, int numberOfTestZoomIndicies);
-	bool ORmethodInitialise(const int imageWidthFacingPoly, const int imageHeightFacingPoly, const bool initialiseTrain, const bool initialiseTest, const bool clearTrainTable, const int dimension, const string sqlIPaddress, const string sqlUsername, const string sqlPassword);
-	bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string objectNameArray[], const int objectDataSource, RTviewInfo* vi, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygons, const int numberOfViewIndiciesPerObject, int numberOfViewIndiciesPerObjectWithUniquePolygons, int* numberOfPolys, const int trainOrTest, int numberOfZoomIndicies, const int viewNumber, const string multViewListFileName);
-		bool createOrAddToInterpolatedMeshAndFeaturesList(LDreference* initialReferenceInSceneFile, RTviewInfo* vi, LDreference* firstReferenceInInterpolatedMesh, ORmeshPoint* firstMeshPointInMeshList, ORfeature firstFeatureInList[], const int trainOrTest, const int viewIndex, const string objectName, int dimension, const int objectDataSource, const int numberOfZoomIndicies, const bool useEdgeZeroCrossingMap);
-			bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* pointMap, unsigned char* rgbMap, double* depthMap, RTviewInfo* vi, const int trainOrTest, const int viewIndex, const string objectName, const int dimension, const int objectDataSource);
-			bool createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMap(double* pointMap, unsigned char* rgbMap, LDreference* firstReferenceInInterpolatedMesh, RTviewInfo* vi, const string objectName, const int trainOrTest, const int dimension, const int viewIndex);
-				void printInterpolatedMeshReferenceList(LDreference* firstReferenceInInterpolatedMesh, RTviewInfo* vi, const string objectName, const int trainOrTest, const int dimension, const int viewIndex);
-			bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, double* depthMap, ORfeature firstFeatureInList[], RTviewInfo* vi, const int trainOrTest, const int viewIndex, const string objectName, int dimension, const int numberOfZoomIndicies, ORmeshPoint* firstMeshPointInMeshList, constEffective ORmeshPoint* meshPointArray[], const bool useEdgeZeroCrossingMap);
-		bool createInterpolatedMeshReferenceListUsingMeshList(ORmeshPoint* firstMeshPointInMeshList, LDreference* firstReferenceInInterpolatedMesh, RTviewInfo* vi, const string objectName, const int trainOrTest, const int dimension);
-			LDreference* convertMeshPointToReferences3DOD(ORmeshPoint* currentMeshPointInMeshList, LDreference* firstNewReferenceInInterpolatedMesh);
-			LDreference* convertMeshPointToReferences2DOD(const ORmeshPoint* currentMeshPointInMeshList, LDreference* firstNewReferenceInInterpolatedMesh);
+class ORmethodClass
+{
+	private: LDopenglClass LDopengl;
+	private: ORcomparisonClass ORcomparison;
+	private: LDmysqlClass LDmysql;
+	private: SHAREDvarsClass SHAREDvars;
+	private: ORfeatureGenerationClass ORfeatureGeneration;
+	private: ORoperationsClass ORoperations;
+	private: LDparserClass LDparser;
+	private: LDreferenceManipulationClass LDreferenceManipulation;
+	private: ORdatabaseFileIOClass ORdatabaseFileIO;
+	private: ORmethod3DODClass ORmethod3DOD;
+	private: ORmethod2DODClass ORmethod2DOD;
+	private: RTppmClass RTppm;
+	private: RTsceneClass RTscene;
+	private: RTpixelMapsClass RTpixelMaps;
+	private: ORpixelMapsClass ORpixelMaps;
+	private: RTreferenceManipulationClass RTreferenceManipulation;
+	private: SHAREDvectorClass SHAREDvector;
+	private: ORimagecomparisonClass ORimagecomparison;
+	private: ORdatabaseSQLClass ORdatabaseSQL;
+	private: ORdatabaseDecisionTreeClass ORdatabaseDecisionTree;
+	private: bool ORTHmethod(int dimension, const int numberOfTrainObjects, string trainObjectNameArray[], const int numberOfTestObjects, string testObjectNameArray[], int* numberOfTrainPolys, int* numberOfTestPolys, const int objectDataSource, RTviewInfo* viTrain, RTviewInfo* viTest, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrain, const int maxNumberOfPolygonsTest, const int numberOfTrainViewIndiciesPerObject, const int numberOfTestViewIndiciesPerObject, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, int numberOfTestZoomIndicies);
+		private: bool ORmethodInitialise(const int imageWidthFacingPoly, const int imageHeightFacingPoly, const bool initialiseTrain, const bool initialiseTest, const bool clearTrainTable, const int dimension, const string sqlIPaddress, const string sqlUsername, const string sqlPassword);
+		private: bool ORmethodTrainOrTest(int dimension, const int numberOfObjects, string objectNameArray[], const int objectDataSource, RTviewInfo* vi, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygons, const int numberOfViewIndiciesPerObject, int numberOfViewIndiciesPerObjectWithUniquePolygons, int* numberOfPolys, const int trainOrTest, int numberOfZoomIndicies, const int viewNumber, const string multViewListFileName);
+			private: bool createOrAddToInterpolatedMeshAndFeaturesList(LDreference* initialReferenceInSceneFile, RTviewInfo* vi, LDreference* firstReferenceInInterpolatedMesh, ORmeshPoint* firstMeshPointInMeshList, ORfeature firstFeatureInList[], const int trainOrTest, const int viewIndex, const string objectName, int dimension, const int objectDataSource, const int numberOfZoomIndicies, const bool useEdgeZeroCrossingMap);
+				private: bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* pointMap, unsigned char* rgbMap, double* depthMap, RTviewInfo* vi, const int trainOrTest, const int viewIndex, const string objectName, const int dimension, const int objectDataSource);
+				private: bool createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMap(double* pointMap, unsigned char* rgbMap, LDreference* firstReferenceInInterpolatedMesh, RTviewInfo* vi, const string objectName, const int trainOrTest, const int dimension, const int viewIndex);
+					private: void printInterpolatedMeshReferenceList(LDreference* firstReferenceInInterpolatedMesh, RTviewInfo* vi, const string objectName, const int trainOrTest, const int dimension, const int viewIndex);
+				private: bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, double* depthMap, ORfeature firstFeatureInList[], RTviewInfo* vi, const int trainOrTest, const int viewIndex, const string objectName, int dimension, const int numberOfZoomIndicies, ORmeshPoint* firstMeshPointInMeshList, constEffective ORmeshPoint* meshPointArray[], const bool useEdgeZeroCrossingMap);
+			private: bool createInterpolatedMeshReferenceListUsingMeshList(ORmeshPoint* firstMeshPointInMeshList, LDreference* firstReferenceInInterpolatedMesh, RTviewInfo* vi, const string objectName, const int trainOrTest, const int dimension);
+				private: LDreference* convertMeshPointToReferences3DOD(ORmeshPoint* currentMeshPointInMeshList, LDreference* firstNewReferenceInInterpolatedMesh);
+				private: LDreference* convertMeshPointToReferences2DOD(const ORmeshPoint* currentMeshPointInMeshList, LDreference* firstNewReferenceInInterpolatedMesh);
 
-		bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rgbMap, ORfeature* firstFeatureInList, const int trainOrTest, const string mapFileName, const double sensitivity, const int dimension, double* pointMap, const double* depthMap, int zoom, const bool interpixelRGBmapType);
+			private: bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, unsigned char* rgbMap, ORfeature* firstFeatureInList, const int trainOrTest, const string mapFileName, const double sensitivity, const int dimension, double* pointMap, const double* depthMap, int zoom, const bool interpixelRGBmapType);
 	#ifdef OR_IMAGE_COMPARISON_SQL
-	bool ORmethodCompareTestWithTrain(const int dimension, const int numberOfTestObjects, const string testObjectNameArray[], int imageWidthFacingPoly, int imageHeightFacingPoly, const int* numberOfTestPolys, const int numberOfTestViewIndiciesPerObjectWithUniquePolygons, const int numberOfTestZoomIndicies, const int trainOrTest, const int testViewNumber);
-	bool ORmethodTrain(int dimension, const int numberOfTrainObjects, string trainObjectNameArray[], int* numberOfTrainPolys, const int objectDataSource, RTviewInfo* viTrain, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrain, const int numberOfTrainViewIndiciesPerObject, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, const int trainOrTest, const string sqlIPaddress, const string sqlUsername, const string sqlPassword, const bool clearTrainTable, const int viewNumber, const string multViewListFileName);
-	bool ORmethodTest(int dimension, const int numberOfTestObjects, string testObjectNameArray[], int* numberOfTestPolys, const int objectDataSource, RTviewInfo* viTest, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTest, const int numberOfTestViewIndiciesPerObject, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTestZoomIndicies, const int trainOrTest, const string sqlIPaddress, const string sqlUsername, const string sqlPassword, const bool clearTrainTable, const int viewNumber, const string multViewListFileName);
+		private: bool ORmethodCompareTestWithTrain(const int dimension, const int numberOfTestObjects, const string testObjectNameArray[], int imageWidthFacingPoly, int imageHeightFacingPoly, const int* numberOfTestPolys, const int numberOfTestViewIndiciesPerObjectWithUniquePolygons, const int numberOfTestZoomIndicies, const int trainOrTest, const int testViewNumber);
+		public: bool ORmethodTrain(int dimension, const int numberOfTrainObjects, string trainObjectNameArray[], int* numberOfTrainPolys, const int objectDataSource, RTviewInfo* viTrain, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrain, const int numberOfTrainViewIndiciesPerObject, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, const int trainOrTest, const string sqlIPaddress, const string sqlUsername, const string sqlPassword, const bool clearTrainTable, const int viewNumber, const string multViewListFileName);
+		public: bool ORmethodTest(int dimension, const int numberOfTestObjects, string testObjectNameArray[], int* numberOfTestPolys, const int objectDataSource, RTviewInfo* viTest, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTest, const int numberOfTestViewIndiciesPerObject, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTestZoomIndicies, const int trainOrTest, const string sqlIPaddress, const string sqlUsername, const string sqlPassword, const bool clearTrainTable, const int viewNumber, const string multViewListFileName);
 	#else
 	//bool ORmethodCompareTestWithTrain(const int dimension, const int numberOfTrainObjects, const string trainObjectNameArray[], const int numberOfTestObjects, const string testObjectNameArray[], int imageWidthFacingPoly, int imageHeightFacingPoly, const int* numberOfTrainPolys, const int* numberOfTestPolys, const int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, const int numberOfTestViewIndiciesPerObjectWithUniquePolygons, const int numberOfTrainZoomIndicies, const int numberOfTestZoomIndicies, const int testViewNumber);
 	#endif
-	bool ORmethodExit();
+		private: bool ORmethodExit();
 
 
 #ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 	//bool generateNormalisedSnapshotsExperienceListUsingPolyList(LDreference* firstReferenceInInterpolatedMesh, ORpolygon* firstPolygonInList, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrainOrTest, ANNexperience* firstExperienceInList, int* numberOfTrainOrTestPolys, const int trainOrTest, const int viewIndex, const string objectName, const int dimension, ORfeature* firstFeatureInList);
-	ANNneuronContainer* initialiseNormalisedSnapshotNeuralNetwork(const ANNneuronContainer* firstInputNeuronInNetwork, int* numberOfInputNeurons, const int numberOfOutputNeurons, int imageWidth, int imageHeight);
-	double compareNormalisedSnapshotExperienceListWithNeuralNetwork(ANNexperience* firstExperienceInTestList, const ANNneuronContainer* firstInputNeuronInNetwork, const ANNneuronContainer* firstOutputNeuronInNetwork, const int numberOfInputNeurons, const int numberOfOutputNeurons, const int numberOfTrainPolySides);
+		private: ANNneuronContainer* initialiseNormalisedSnapshotNeuralNetwork(const ANNneuronContainer* firstInputNeuronInNetwork, int* numberOfInputNeurons, const int numberOfOutputNeurons, int imageWidth, int imageHeight);
+		private: double compareNormalisedSnapshotExperienceListWithNeuralNetwork(ANNexperience* firstExperienceInTestList, const ANNneuronContainer* firstInputNeuronInNetwork, const ANNneuronContainer* firstOutputNeuronInNetwork, const int numberOfInputNeurons, const int numberOfOutputNeurons, const int numberOfTrainPolySides);
 #else
-	bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInterpolatedMesh, ORpolygon firstPolygonInList[], int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrainOrTest, int numberOfTrainOrTestPolys[], const int trainOrTest, const int viewIndex, const string objectName, const int dimension, ORfeature* firstFeatureInList, const int numberOfZoomIndicies);
+		private: bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInterpolatedMesh, ORpolygon firstPolygonInList[], int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrainOrTest, int numberOfTrainOrTestPolys[], const int trainOrTest, const int viewIndex, const string objectName, const int dimension, ORfeature* firstFeatureInList, const int numberOfZoomIndicies);
 #endif
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
-bool checkIfFeatureContainerWithSameFeatureIndiciesExists(const ORfeatureContainer* firstFeatureContainerInBestMatchList, const ORfeatureContainer* currentFeatureContainerInMatchListcurrentFeatureContainerInMatchList);
+	private: bool checkIfFeatureContainerWithSameFeatureIndiciesExists(const ORfeatureContainer* firstFeatureContainerInBestMatchList, const ORfeatureContainer* currentFeatureContainerInMatchListcurrentFeatureContainerInMatchList);
 #endif
 
 
-void setNoiseArraysMethod2DOD();
-void setNoiseArraysMethod3DOD();
+	private: void setNoiseArraysMethod2DOD();
+	private: void setNoiseArraysMethod3DOD();
 
-int createViFromMultiViewList(RTviewInfo* vi, const string fileName, const int multiViewViewIndex, const int dimension);
+	public: int createViFromMultiViewList(RTviewInfo* vi, const string fileName, const int multiViewViewIndex, const int dimension);
+};
 
 
 #endif

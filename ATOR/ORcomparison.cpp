@@ -26,24 +26,15 @@
  * File Name: ORcomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1a 14-January-2017
+ * Project Version: 3j1b 14-January-2017
  *
  *******************************************************************************/
 
 
 #include "ORcomparison.h"
-#include "ORimagecomparison.h"
 #ifdef OR_IMAGE_COMPARISON_SQL
-#include "ORdatabaseSQL.h"
-#include "ORdatabaseDecisionTree.h"
 #endif
-#include "ORdatabaseFileIO.h"
-#include "ORpixelMaps.h"
-#include "ORoperations.h"
-#include "LDreferenceManipulation.h"
-#include "SHAREDvars.h"	//required for writeStringToFileObject
 
-#include "LDjpeg.h"
 
 #ifndef LINUX
 	#define OR_WINDOWS_COMPILER_LIMITATION_MUST_GET_TEST_DATA_FROM_SQL
@@ -75,7 +66,7 @@ long time5bNormalisedSnapshotComparisonCompareSnapshotDataIndex = 0.0;
 static int dctCoeffSelectionArrayY[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y_MAX][2];	//2 is for x and y
 static int dctCoeffSelectionArrayYCr[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCr_MAX][2];	//2 is for x and y
 static int dctCoeffSelectionArrayYCb[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCb_MAX][2];	//2 is for x and y
-void fillDCTcoeffSelectionArrays()
+void ORcomparisonClass::fillDCTcoeffSelectionArrays()
 {
 	#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ABS_LUM_INFORMATION
 	cout << "error: OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ABS_LUM_INFORMATION has not been programmed" << endl;
@@ -223,12 +214,12 @@ void fillDCTcoeffSelectionArrays()
 */
 
 #ifdef OR_IMAGE_COMPARISON_SQL
-double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numberOfTestViewIndicies, int imageWidthFacingPoly, int imageHeightFacingPoly, const string testObjectNameArray[], const int numberOfTestObjects, const int dimension, const int numberOfTestZoomIndicies, const int trainOrTest, const int testViewNumber)
+double ORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPolys[], const int numberOfTestViewIndicies, int imageWidthFacingPoly, int imageHeightFacingPoly, const string testObjectNameArray[], const int numberOfTestObjects, const int dimension, const int numberOfTestZoomIndicies, const int trainOrTest, const int testViewNumber)
 #else
 //double compareNormalisedSnapshots(const int numberOfTrainPolys[], const int numberOfTestPolys[], const int numberOfTrainViewIndicies, const int numberOfTestViewIndicies, int imageWidthFacingPoly, int imageHeightFacingPoly, const string trainObjectNameArray[], const int numberOfTrainObjects, const string testObjectNameArray[], const int numberOfTestObjects, const int dimension, const int numberOfTrainZoomIndicies, const int numberOfTestZoomIndicies, const int testViewNumber)
 #endif
 {
-	string currentTempFolder = getCurrentDirectory();
+	string currentTempFolder = SHAREDvars.getCurrentDirectory();
 
 	ORobjectReferenceList* firstReferenceInSnapshotMatchObjectReferenceList = new ORobjectReferenceList();
 
@@ -333,7 +324,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3j1a 14-January-2017<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3j1b 14-January-2017<p>";
 		}
 		else
 		{
@@ -341,7 +332,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 		}
 
 
-		writeStringToFileObject(ICRheader, &writeFileObject);
+		SHAREDvars.writeStringToFileObject(ICRheader, &writeFileObject);
 
 		string ICRtableStart = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL)
@@ -352,7 +343,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 		{
 			ICRtableStart = ICRtableStart + "<TABLE width=\"100%\" cellpadding=\"3\" cellspacing=\"0\" border=\"1\"><TR><TD colspan=\"6\">Test</TD><TD colspan=\"6\">Train</TD><TD></TD></TR><TR><TD>Object</TD><TD>View</TD><TD>Zoom</TD><TD>X</TD><TD>Y</TD><TD>Image</TD><TD>Object</TD><TD>View</TD><TD>Zoom</TD><TD>X</TD><TD>Y</TD><TD>Image</TD><TD></TD></TR>";
 		}
-		writeStringToFileObject(ICRtableStart, &writeFileObject);
+		SHAREDvars.writeStringToFileObject(ICRtableStart, &writeFileObject);
 
 	}
 
@@ -403,7 +394,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 
 
 #ifdef TEMPTEST3GEOACCURACY
-	int numberOfNearestFeatures = calculateNumberOfNearestFeatures(NUMBER_OF_POLYGONS_PER_FEATURE, OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM);
+	int numberOfNearestFeatures = ORoperations.calculateNumberOfNearestFeatures(NUMBER_OF_POLYGONS_PER_FEATURE, OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM);
 	if(OR_PRINT_ALGORITHM_PROGRESS)
 	{
 		cout << "numberOfPolygonsPerFeature = " << NUMBER_OF_POLYGONS_PER_FEATURE << endl;
@@ -414,8 +405,8 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 	ORfeature* testFirstFeatureInNearestFeatureList = new ORfeature();
 	ORfeature* trainFirstFeatureInNearestFeatureList = new ORfeature();
 
-	generateNearestFeaturesList(testFirstFeatureInNearestFeatureList, numberOfNearestFeatures);
-	generateNearestFeaturesList(trainFirstFeatureInNearestFeatureList, numberOfNearestFeatures);
+	ORoperations.generateNearestFeaturesList(testFirstFeatureInNearestFeatureList, numberOfNearestFeatures);
+	ORoperations.generateNearestFeaturesList(trainFirstFeatureInNearestFeatureList, numberOfNearestFeatures);
 
 	int maxNumberOfTrainPolysAcrossAllObjects = 0;
 	int maxNumberOfTestPolysAcrossAllObjects = 0;
@@ -455,13 +446,13 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
 
-	int numberOfNearestFeatures = calculateNumberOfNearestFeatures(NUMBER_OF_POLYGONS_PER_FEATURE, OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM);
+	int numberOfNearestFeatures = ORoperations.calculateNumberOfNearestFeatures(NUMBER_OF_POLYGONS_PER_FEATURE, OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM);
 
 	ORfeature* testFirstFeatureInNearestFeatureList = new ORfeature();
 	ORfeature* trainFirstFeatureInNearestFeatureList = new ORfeature();
 
-	generateNearestFeaturesList(testFirstFeatureInNearestFeatureList, numberOfNearestFeatures);
-	generateNearestFeaturesList(trainFirstFeatureInNearestFeatureList, numberOfNearestFeatures);
+	ORoperations.generateNearestFeaturesList(testFirstFeatureInNearestFeatureList, numberOfNearestFeatures);
+	ORoperations.generateNearestFeaturesList(trainFirstFeatureInNearestFeatureList, numberOfNearestFeatures);
 
 	int maxNumberOfTestPolysAcrossAllObjects = 0;
 	for(int o=0; o<numberOfTestObjects; o++)
@@ -504,10 +495,10 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 					{
 						for(int testSideIndex=0; testSideIndex < OR_METHOD_POLYGON_NUMBER_OF_SIDES; testSideIndex++)
 						{
-							string testpolygonIndexString = convertIntToString(testPolyIndex);
-							string testsideIndexString = convertIntToString(testSideIndex);
-							string testviewIndexString = convertIntToString(testViewIndex+testViewNumber);
-							string testzoomIndexString = convertIntToString(testZoomIndex);
+							string testpolygonIndexString = SHAREDvars.convertIntToString(testPolyIndex);
+							string testsideIndexString = SHAREDvars.convertIntToString(testSideIndex);
+							string testviewIndexString = SHAREDvars.convertIntToString(testViewIndex+testViewNumber);
+							string testzoomIndexString = SHAREDvars.convertIntToString(testZoomIndex);
 
 							string testinterpolatedRGBMapFileNameForRayTracing;
 							testinterpolatedRGBMapFileNameForRayTracing = testObjectNameArray[testObjectIndex] + "interpolatedMesh" + "ViewIndex" + testviewIndexString + "ZoomIndex" + testzoomIndexString + "FacingPoly" + testpolygonIndexString + "side" + testsideIndexString;
@@ -531,7 +522,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 								#endif
 							}
 
-							createFeaturesListUsingFeaturesFile(testinterpolatedNearestFeaturesMapFileName, firstFeatureInList, true, false, ignoreOTfeatures);
+							ORdatabaseFileIO.createFeaturesListUsingFeaturesFile(testinterpolatedNearestFeaturesMapFileName, firstFeatureInList, true, false, ignoreOTfeatures);
 							#ifndef OR_WINDOWS_COMPILER_LIMITATION_MUST_GET_TEST_DATA_FROM_SQL
 							(testfeatureGeoCompArray[testObjectIndex][testViewIndex][testZoomIndex][testPolyIndex][testSideIndex]).firstFeatureInFeatureList = firstFeatureInList;
 							#endif
@@ -575,17 +566,17 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 				{
 					for(int trainSideIndex=0; trainSideIndex < OR_METHOD_POLYGON_NUMBER_OF_SIDES; trainSideIndex++)
 					{
-						string trainpolygonIndexString = convertIntToString(trainPolyIndex);
-						string trainsideIndexString = convertIntToString(trainSideIndex);
-						string trainviewIndexString = convertIntToString(trainViewIndex);
-						string trainzoomIndexString = convertIntToString(trainZoomIndex);
+						string trainpolygonIndexString = SHAREDvars.convertIntToString(trainPolyIndex);
+						string trainsideIndexString = SHAREDvars.convertIntToString(trainSideIndex);
+						string trainviewIndexString = SHAREDvars.convertIntToString(trainViewIndex);
+						string trainzoomIndexString = SHAREDvars.convertIntToString(trainZoomIndex);
 
 						string traininterpolatedRGBMapFileNameForRayTracing;
 						traininterpolatedRGBMapFileNameForRayTracing = objectNameArray[trainObjectIndex] + "interpolatedMesh" + "ViewIndex" + trainviewIndexString + "ZoomIndex" + trainzoomIndexString + "FacingPoly" + trainpolygonIndexString + "side" + trainsideIndexString;
 
 						string traininterpolatedNearestFeaturesMapFileName;
 						traininterpolatedNearestFeaturesMapFileName = traininterpolatedRGBMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + TRAIN_STRING + TFD_EXTENSION;
-						//generateNearestFeaturesList(&(trainfeatureGeoCompArray[trainObjectIndex][trainViewIndex][trainPolyIndex][trainSideIndex]), numberOfNearestFeatures);
+						//ORoperations.generateNearestFeaturesList(&(trainfeatureGeoCompArray[trainObjectIndex][trainViewIndex][trainPolyIndex][trainSideIndex]), numberOfNearestFeatures);
 
 						ORfeature* firstFeatureInList = new ORfeature();
 
@@ -604,15 +595,15 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 							#endif
 
 						}
-						createFeaturesListUsingFeaturesFile(traininterpolatedNearestFeaturesMapFileName, firstFeatureInList, true, false, ignoreOTfeatures);
+						ORdatabaseFileIO.createFeaturesListUsingFeaturesFile(traininterpolatedNearestFeaturesMapFileName, firstFeatureInList, true, false, ignoreOTfeatures);
 
 						#ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_BASIC_NO_SQL
 						string trainrgbMapFacingPolyFileName = traininterpolatedRGBMapFileNameForRayTracing + RGB_MAP_PPM_EXTENSION_PART + TRAIN_STRING + PPM_EXTENSION;
 
-						readImage(trainrgbMapFacingPolyFileName, rgbMapTrain);
+						RTpixelMaps.readImage(trainrgbMapFacingPolyFileName, rgbMapTrain);
 
 						colour avgCol;
-						calculateAverageColour(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTrain, &avgCol);
+						ORimagecomparison.calculateAverageColour(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTrain, &avgCol);
 
 						int rBin = (int)(((double)(avgCol.r)/(MAX_RGB_VAL))*OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL);
 						int gBin = (int)(((double)(avgCol.g)/(MAX_RGB_VAL))*OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL);
@@ -665,10 +656,10 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 				{
 					for(int trainSideIndex=0; trainSideIndex < OR_METHOD_POLYGON_NUMBER_OF_SIDES; trainSideIndex++)
 					{
-						string trainpolygonIndexString = convertIntToString(trainPolyIndex);
-						string trainsideIndexString = convertIntToString(trainSideIndex);
-						string trainviewIndexString = convertIntToString(trainViewIndex);
-						string trainzoomIndexString = convertIntToString(trainZoomIndex);
+						string trainpolygonIndexString = SHAREDvars.convertIntToString(trainPolyIndex);
+						string trainsideIndexString = SHAREDvars.convertIntToString(trainSideIndex);
+						string trainviewIndexString = SHAREDvars.convertIntToString(trainViewIndex);
+						string trainzoomIndexString = SHAREDvars.convertIntToString(trainZoomIndex);
 
 						string traininterpolatedRGBMapFileNameForRayTracing;
 						traininterpolatedRGBMapFileNameForRayTracing = trainObjectNameArray[trainObjectIndex] + "interpolatedMesh" + "ViewIndex" + trainviewIndexString + "ZoomIndex" + trainzoomIndexString + "FacingPoly" + trainpolygonIndexString + "side" + trainsideIndexString;
@@ -690,7 +681,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 							ignoreOTfeatures = false;
 							#endif
 						}
-						createFeaturesListUsingFeaturesFile(traininterpolatedNearestFeaturesMapFileName, firstFeatureInTempList, true, false, ignoreOTfeatures);
+						ORdatabaseFileIO.createFeaturesListUsingFeaturesFile(traininterpolatedNearestFeaturesMapFileName, firstFeatureInTempList, true, false, ignoreOTfeatures);
 
 						ORfeature* currentFeatureInTempList = firstFeatureInTempList;
 
@@ -706,10 +697,10 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 							{
 								if(findex1 != findex2)
 								{
-									int x1Bin = determineGeoBinX(currentFeatureInTempList->pointTransformed.x);
-									int y1Bin = determineGeoBinY(currentFeatureInTempList->pointTransformed.y);
-									int x2Bin = determineGeoBinX(currentFeatureInTempList2->pointTransformed.x);
-									int y2Bin = determineGeoBinY(currentFeatureInTempList2->pointTransformed.y);
+									int x1Bin = ORdatabaseSQL.determineGeoBinX(currentFeatureInTempList->pointTransformed.x);
+									int y1Bin = ORdatabaseSQL.determineGeoBinY(currentFeatureInTempList->pointTransformed.y);
+									int x2Bin = ORdatabaseSQL.determineGeoBinX(currentFeatureInTempList2->pointTransformed.x);
+									int y2Bin = ORdatabaseSQL.determineGeoBinY(currentFeatureInTempList2->pointTransformed.y);
 
 									bool insideBin = false;
 
@@ -818,7 +809,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 			#ifndef TEMP_REMOVE_FLASH
 			if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML)
 			{
-				string trainviewIndexStringTemp = convertIntToString(0);
+				string trainviewIndexStringTemp = SHAREDvars.convertIntToString(0);
 
 				string mapFileName = trainObjectNameArray[testObjectIndex] + "initialViewMap" + "ViewIndex" + trainviewIndexStringTemp + "ZoomIndex" + "0";
 				string blank = "";
@@ -866,15 +857,15 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 					#ifdef TEST_VIEWTIME_SPEED_Z_FOR_WEBSITE
 					cout << "\t\t\t start: 5z. normalised snapshot comparison - single view speed test (for website)" << endl;
 					#endif
-					time5zNormalisedSnapshotComparisonSingleViewTestStart = getTimeAsLong();
+					time5zNormalisedSnapshotComparisonSingleViewTestStart = SHAREDvars.getTimeAsLong();
 				}
 				int numPassesForTestViewIndex = 0;
 
 				#ifndef TEMP_REMOVE_FLASH
 				if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML)
 				{
-					string testviewIndexStringTemp = convertIntToString(testViewIndex+testViewNumber);
-					string testzoomIndexStringTemp = convertIntToString(testZoomIndex);
+					string testviewIndexStringTemp = SHAREDvars.convertIntToString(testViewIndex+testViewNumber);
+					string testzoomIndexStringTemp = SHAREDvars.convertIntToString(testZoomIndex);
 
 					string mapFileName = testObjectNameArray[testObjectIndex] + "initialViewMap" + "ViewIndex" + testviewIndexStringTemp + "ZoomIndex" + testzoomIndexStringTemp;
 					string blank = "";
@@ -897,11 +888,11 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 					}
 
 					string ICRNewTestViewIndexRow3 = "<TR><TD colspan=\"6\"><img src=\"" + mapFileName + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING + PNG_EXTENSION + "\" border=0> </TD><TD colspan=\"6\"><img src=\"" + mapFileName + RGB_MAP_PPM_EXTENSION_PART + TRAIN_STRING + PNG_EXTENSION + "\" border=0> </TD><TD></TD></TR>";
-					writeStringToFileObject(ICRNewTestViewIndexRow3, &writeFileObject);
+					SHAREDvars.writeStringToFileObject(ICRNewTestViewIndexRow3, &writeFileObject);
 					if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL)
 					{
 						string ICRNewTestViewIndexRow4 = "<TR><TD colspan=\"6\"><img src=\"" + mapFileName + FEATURESMAP_PPM_EXTENSION_PART + TEST_STRING + PNG_EXTENSION + "\" border=0> </TD><TD colspan=\"6\"><img src=\"" + mapFileName + FEATURESMAP_PPM_EXTENSION_PART + TRAIN_STRING + PNG_EXTENSION + "\" border=0> </TD><TD></TD></TR>";
-						writeStringToFileObject(ICRNewTestViewIndexRow4, &writeFileObject);
+						SHAREDvars.writeStringToFileObject(ICRNewTestViewIndexRow4, &writeFileObject);
 					}
 				}
 				#endif
@@ -954,10 +945,10 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 							testMapLoaded = false;
 						}
 
-						string testviewIndexString = convertIntToString(testViewIndex+testViewNumber);
-						string testzoomIndexString = convertIntToString(testZoomIndex);
-						string testpolygonIndexString = convertIntToString(testPolyIndex);
-						string testsideIndexString = convertIntToString(testSideIndex);
+						string testviewIndexString = SHAREDvars.convertIntToString(testViewIndex+testViewNumber);
+						string testzoomIndexString = SHAREDvars.convertIntToString(testZoomIndex);
+						string testpolygonIndexString = SHAREDvars.convertIntToString(testPolyIndex);
+						string testsideIndexString = SHAREDvars.convertIntToString(testSideIndex);
 
 						string testinterpolatedRGBMapFileNameForRayTracing;
 						testinterpolatedRGBMapFileNameForRayTracing = testObjectNameArray[testObjectIndex] + "interpolatedMesh" + "ViewIndex" + testviewIndexString + "ZoomIndex" + testzoomIndexString + "FacingPoly" + testpolygonIndexString + "side" + testsideIndexString;
@@ -973,10 +964,10 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 
 								string testrgbMapFacingPolyFileName = testinterpolatedRGBMapFileNameForRayTracing + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING + PPM_EXTENSION;
 
-								readImage(testrgbMapFacingPolyFileName, rgbMapTest);
+								RTpixelMaps.readImage(testrgbMapFacingPolyFileName, rgbMapTest);
 
 								#ifdef OR_METHOD_USE_SMALL_IMAGE_FIRST_COMPARISON
-								readImage(testrgbMapSmallFacingPolyFileName, testrgbMapSmall);
+								RTpixelMaps.readImage(testrgbMapSmallFacingPolyFileName, testrgbMapSmall);
 								#endif
 
 							}
@@ -989,24 +980,24 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 									/*
 									if(OR_METHOD_GEOMETRIC_COMPARISON_USE_TEST_RGB_MAP_OPTIMISATION)
 									{
-										string testviewIndexString = convertIntToString(testViewIndex+testViewNumber);
-										string testzoomIndexString = convertIntToString(testZoomIndex);
-										string testpolygonIndexString = convertIntToString(testPolyIndex);
-										string testsideIndexString = convertIntToString(testSideIndex);
+										string testviewIndexString = SHAREDvars.convertIntToString(testViewIndex+testViewNumber);
+										string testzoomIndexString = SHAREDvars.convertIntToString(testZoomIndex);
+										string testpolygonIndexString = SHAREDvars.convertIntToString(testPolyIndex);
+										string testsideIndexString = SHAREDvars.convertIntToString(testSideIndex);
 										string testinterpolatedRGBMapFileNameForRayTracing;
 										testinterpolatedRGBMapFileNameForRayTracing = testObjectNameArray[testObjectIndex] + "interpolatedMesh" + "ViewIndex" + testviewIndexString + "ZoomIndex" + testzoomIndexString + "FacingPoly" + testpolygonIndexString + "side" + testsideIndexString;
 									}
 									*/
 									string testinterpolatedNearestFeaturesMapFileName;
 									testinterpolatedNearestFeaturesMapFileName = testinterpolatedRGBMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + TEST_STRING + TFD_EXTENSION;
-									createFeaturesListUsingFeaturesFile(testinterpolatedNearestFeaturesMapFileName, testFirstFeatureInNearestFeatureList, false, false, false);
+									ORdatabaseFileIO.createFeaturesListUsingFeaturesFile(testinterpolatedNearestFeaturesMapFileName, testFirstFeatureInNearestFeatureList, false, false, false);
 								}
 							}
 
 							#ifdef TEMPTEST3GEOACCURACY
 							string testinterpolatedNearestFeaturesMapFileName;
 							testinterpolatedNearestFeaturesMapFileName = testinterpolatedRGBMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + TEST_STRING + TFD_EXTENSION;
-							createFeaturesListUsingFeaturesFile(testinterpolatedNearestFeaturesMapFileName, testFirstFeatureInNearestFeatureList, false, false, false);
+							ORdatabaseFileIO.createFeaturesListUsingFeaturesFile(testinterpolatedNearestFeaturesMapFileName, testFirstFeatureInNearestFeatureList, false, false, false);
 							//cout << "TEMPTEST3GEOACCURACY Part 2" << endl;
 							//cout << "testinterpolatedNearestFeaturesMapFileName = " << testinterpolatedNearestFeaturesMapFileName << endl;
 							//cout << "end" << endl;
@@ -1039,11 +1030,11 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 								#endif
 
 							}
-							createFeatureListUsingDatabaseQuery(currentTestFeature, true, false, ignoreOTfeaturestest, sqlDatabaseTestTableName, testID, testObjectNameArray[testObjectIndex], testViewIndex+testViewNumber, testZoomIndex, testPolyIndex, testSideIndex, false);
+							ORdatabaseSQL.createFeatureListUsingDatabaseQuery(currentTestFeature, true, false, ignoreOTfeaturestest, sqlDatabaseTestTableName, testID, testObjectNameArray[testObjectIndex], testViewIndex+testViewNumber, testZoomIndex, testPolyIndex, testSideIndex, false);
 
 							if(OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE)
 							{
-								convertSQLdatabaseStringToSnapshotMaps(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTest, testrgbDevMap, testdepthMap, smallImageWidth, smallImageHeight, testrgbMapSmall, testdepthMapSmall, testrgbDevMapSmall, dimension, currentTestFeature->snapshotMapsText, OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE, OR_IMAGE_COMPARISON_COMPARE_RGB_DEV_MAPS_NOT_RGB_MAPS);
+								ORdatabaseSQL.convertSQLdatabaseStringToSnapshotMaps(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTest, testrgbDevMap, testdepthMap, smallImageWidth, smallImageHeight, testrgbMapSmall, testdepthMapSmall, testrgbDevMapSmall, dimension, currentTestFeature->snapshotMapsText, OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE, OR_IMAGE_COMPARISON_COMPARE_RGB_DEV_MAPS_NOT_RGB_MAPS);
 							}
 						}
 						else
@@ -1083,14 +1074,14 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 								double averageStarkContrastWithRespectToAverageColour;
 								double averageLocalContrast;
 								double averageLocalStarkContrast;
-								createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(imageWidthFacingPoly, imageWidthFacingPoly, rgbMapTest, testrgbDevMap, &normalisedAverageHueContrastR, &normalisedAverageHueContrastG, &normalisedAverageHueContrastB, &averageContrastWithRespectToAverageColour, &averageStarkContrastWithRespectToAverageColour, &averageLocalContrast, &averageLocalStarkContrast);
+								ORimagecomparison.createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(imageWidthFacingPoly, imageWidthFacingPoly, rgbMapTest, testrgbDevMap, &normalisedAverageHueContrastR, &normalisedAverageHueContrastG, &normalisedAverageHueContrastB, &averageContrastWithRespectToAverageColour, &averageStarkContrastWithRespectToAverageColour, &averageLocalContrast, &averageLocalStarkContrast);
 								vec normalisedAverageHueContrast;
 								normalisedAverageHueContrast.x = normalisedAverageHueContrastR;
 								normalisedAverageHueContrast.y = normalisedAverageHueContrastG;
 								normalisedAverageHueContrast.z = normalisedAverageHueContrastB;
 								colour cullednormalisedAverageHueContrast;
 
-								cullAndBinNormalisedHueContrast(&normalisedAverageHueContrast, &cullednormalisedAverageHueContrast);
+								this->cullAndBinNormalisedHueContrast(&normalisedAverageHueContrast, &cullednormalisedAverageHueContrast);
 								#ifdef OR_DEBUG_COMPARISON
 								cout << "normalisedAverageHueContrast.x = " << normalisedAverageHueContrast.x << endl;
 								cout << "normalisedAverageHueContrast.y = " << normalisedAverageHueContrast.y << endl;
@@ -1125,8 +1116,8 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 							double smallTempaverageStarkContrastWithRespectToAverageColour;
 							double smallTempaverageLocalContrast;
 							double smallTempaverageLocalStarkContrast;
-							createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(smallImageWidth, smallImageHeight, testrgbMapSmall, testrgbDevMapSmall, &smallTempnormalisedAverageRHueContrast, &smallTempnormalisedAverageGHueContrast, &smallTempnormalisedAverageBHueContrast, &smallTempaverageContrastWithRespectToAverageColour, &smallTempaverageStarkContrastWithRespectToAverageColour, &smallTempaverageLocalContrast, &smallTempaverageLocalStarkContrast);
-							convertNormalisedHueDeviationMapTo3x8bitMap(smallImageWidth, smallImageHeight, testrgbDevMapSmall, testrgbDev8BitSmallMap);
+							ORimagecomparison.createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(smallImageWidth, smallImageHeight, testrgbMapSmall, testrgbDevMapSmall, &smallTempnormalisedAverageRHueContrast, &smallTempnormalisedAverageGHueContrast, &smallTempnormalisedAverageBHueContrast, &smallTempaverageContrastWithRespectToAverageColour, &smallTempaverageStarkContrastWithRespectToAverageColour, &smallTempaverageLocalContrast, &smallTempaverageLocalStarkContrast);
+							this->convertNormalisedHueDeviationMapTo3x8bitMap(smallImageWidth, smallImageHeight, testrgbDevMapSmall, testrgbDev8BitSmallMap);
 							rgb8bitSmallMapForInstantDBqueryAccessRequirement = testrgbDev8BitSmallMap;
 						}
 						else
@@ -1153,7 +1144,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 							{
 								string testrgbMapSmallFacingPolyFileNameJPEG = testinterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING + JPG_EXTENSION;
 
-								readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(&testrgbMapSmallFacingPolyFileName, &testrgbMapSmallFacingPolyFileNameJPEG, testconcatonatedSignedDctCoeffArrayRequirement, false);
+								this->readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(&testrgbMapSmallFacingPolyFileName, &testrgbMapSmallFacingPolyFileNameJPEG, testconcatonatedSignedDctCoeffArrayRequirement, false);
 							}
 						}
 						else
@@ -1192,10 +1183,10 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 									bool geoBinWithinRange = false;
 									if(OR_IMAGE_COMPARISON_GEOMETRIC_COMPARISON_BINNING)
 									{
-										xBin = determineGeoBinX(testcurrentFeatureInNearestFeatureList->pointTransformed.x);
-										yBin = determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);
-										x2Bin = determineGeoBinX(testcurrentFeatureInNearestFeatureList2->pointTransformed.x);
-										y2Bin = determineGeoBinY(testcurrentFeatureInNearestFeatureList2->pointTransformed.y);
+										xBin = ORdatabaseSQL.determineGeoBinX(testcurrentFeatureInNearestFeatureList->pointTransformed.x);
+										yBin = ORdatabaseSQL.determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);
+										x2Bin = ORdatabaseSQL.determineGeoBinX(testcurrentFeatureInNearestFeatureList2->pointTransformed.x);
+										y2Bin = ORdatabaseSQL.determineGeoBinY(testcurrentFeatureInNearestFeatureList2->pointTransformed.y);
 
 
 										#ifndef OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NO_EXPLICIT_FOR_LOOPS
@@ -1284,7 +1275,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 										if(!OR_IMAGE_COMPARISON_DECISION_TREE)
 										{
 											#ifdef OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_REQUIREMENT_V1
-											geoxybin = calculateGeoxyBinMultiDimensional(geoxBin, geoyBin);
+											geoxybin = ORdatabaseSQL.calculateGeoxyBinMultiDimensional(geoxBin, geoyBin);
 											#ifdef OR_DEBUG_COMPARISON
 											cout << "geoxybin = " << geoxybin << endl;
 											#endif
@@ -1330,7 +1321,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 										{
 										#endif
 											#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL_DIRECT_ACCESS
-											createFeatureContainerListUsingUsingGetSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcheck(firstFeatureContainerInTestFeatureMatchingTrainBin, ignoreOTfeaturestrain, smallImageWidth, smallImageHeight, testrgbMapSmall, geoxybin, geoxBin, geoyBin, &normalisedAverageHueDeviationRequirement, testconcatonatedSignedDctCoeffArrayRequirement, trainOrTest);
+											ORdatabaseDecisionTree.createFeatureContainerListUsingUsingGetSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcheck(firstFeatureContainerInTestFeatureMatchingTrainBin, ignoreOTfeaturestrain, smallImageWidth, smallImageHeight, testrgbMapSmall, geoxybin, geoxBin, geoyBin, &normalisedAverageHueDeviationRequirement, testconcatonatedSignedDctCoeffArrayRequirement, trainOrTest);
 											#else
 
 											#ifdef OR_DEBUG_COMPARISON
@@ -1345,7 +1336,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 											ORsnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList = new ORsnapshotIDreferenceList();
 											ORsnapshotIDreferenceList* currentReferenceInSnapshotIDReferenceList = firstReferenceInSnapshotIDreferenceList;
 
-											getSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcheck(smallImageWidth, smallImageHeight, testrgbMapSmall, geoxybin, geoxBin, geoyBin, &normalisedAverageHueDeviationRequirement, testconcatonatedSignedDctCoeffArrayRequirement, firstReferenceInSnapshotIDreferenceList, trainOrTest, &DTbin);
+											ORdatabaseDecisionTree.getSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcheck(smallImageWidth, smallImageHeight, testrgbMapSmall, geoxybin, geoxBin, geoyBin, &normalisedAverageHueDeviationRequirement, testconcatonatedSignedDctCoeffArrayRequirement, firstReferenceInSnapshotIDreferenceList, trainOrTest, &DTbin);
 											#ifdef OR_DEBUG_COMPARISON
 											cout << "DTbin = " << DTbin << endl;
 											#endif
@@ -1362,7 +1353,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 											#endif
 
 											#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
-											createAndOrParseIntoDirectory(&imageComparisonTreeBaseDirectory, NULL, false, false);	//reset current directory
+											ORdatabaseDecisionTree.createAndOrParseIntoDirectory(&imageComparisonTreeBaseDirectory, NULL, false, false);	//reset current directory
 											#endif
 
 											currentFeatureContainerInTestFeatureMatchingTrainBin = firstFeatureContainerInTestFeatureMatchingTrainBin;
@@ -1378,7 +1369,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 												int irrelevant = 0;
 												ORfeature* firstNewFeature = new ORfeature();
 												currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList = firstNewFeature;
-												createFeatureListUsingDatabaseQuery(currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList, true, false, ignoreOTfeaturestrain, OR_MYSQL_TABLE_NAME_TRAIN, currentReferenceInSnapshotIDReferenceList->referenceID, "", irrelevant, irrelevant, irrelevant, irrelevant, true);
+												ORdatabaseSQL.createFeatureListUsingDatabaseQuery(currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList, true, false, ignoreOTfeaturestrain, OR_MYSQL_TABLE_NAME_TRAIN, currentReferenceInSnapshotIDReferenceList->referenceID, "", irrelevant, irrelevant, irrelevant, irrelevant, true);
 												ORfeatureContainer* newFeatureContainer = new ORfeatureContainer();
 												currentFeatureContainerInTestFeatureMatchingTrainBin->next = newFeatureContainer;
 												currentFeatureContainerInTestFeatureMatchingTrainBin = currentFeatureContainerInTestFeatureMatchingTrainBin->next;
@@ -1394,7 +1385,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 										}
 										else
 										{
-											createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(firstFeatureContainerInTestFeatureMatchingTrainBin, true, false, ignoreOTfeaturestrain, geoxybin, geoxBin, geoyBin, &normalisedAverageHueDeviationRequirement, testconcatonatedSignedDctCoeffArrayRequirement, rgb8bitSmallMapForInstantDBqueryAccessRequirement, smallImageWidth, smallImageHeight, OR_MYSQL_TABLE_NAME_TRAIN, trainOrTest);
+											ORdatabaseSQL.createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(firstFeatureContainerInTestFeatureMatchingTrainBin, true, false, ignoreOTfeaturestrain, geoxybin, geoxBin, geoyBin, &normalisedAverageHueDeviationRequirement, testconcatonatedSignedDctCoeffArrayRequirement, rgb8bitSmallMapForInstantDBqueryAccessRequirement, smallImageWidth, smallImageHeight, OR_MYSQL_TABLE_NAME_TRAIN, trainOrTest);
 											currentFeatureContainerInTestFeatureMatchingTrainBin = firstFeatureContainerInTestFeatureMatchingTrainBin;
 											#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_SLOW_BUT_USE_LESS_HD
 											if(exceptionIndex != 0)
@@ -1449,17 +1440,17 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 													#ifdef USE_GEO_TEST_GRID_SIZE_LARGE
 													passedGeometricCheck = true;
 													#else
-													double currentDistanceBetweenTwoPoints = calculateTheDistanceBetweenTwoPoints(&(testcurrentFeatureInNearestFeatureList->pointTransformed), &(currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList->pointTransformed));
+													double currentDistanceBetweenTwoPoints = SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(testcurrentFeatureInNearestFeatureList->pointTransformed), &(currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList->pointTransformed));
 													double xDev1 = testcurrentFeatureInNearestFeatureList->pointTransformed.x - currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList->pointTransformed.x;
 													double yDev1 = testcurrentFeatureInNearestFeatureList->pointTransformed.y - currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList->pointTransformed.y;
 													if(currentDistanceBetweenTwoPoints < OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR)
 													{
 														#ifdef OR_IMAGE_COMPARISON_NONSQL_GEOMETRIC_COMPARISON_OPTIMISED_TRAIN_FILE_IO_V2
-														double currentDistanceBetweenTwoPoints2 = calculateTheDistanceBetweenTwoPoints(&(testcurrentFeatureInNearestFeatureList2->pointTransformed), &(currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->pointTransformed));
+														double currentDistanceBetweenTwoPoints2 = SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(testcurrentFeatureInNearestFeatureList2->pointTransformed), &(currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->pointTransformed));
 														double xDev2 = testcurrentFeatureInNearestFeatureList2->pointTransformed.x - currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->pointTransformed.x;
 														double yDev2 = testcurrentFeatureInNearestFeatureList2->pointTransformed.y - currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->pointTransformed.y;
 														#else
-														double currentDistanceBetweenTwoPoints2 = calculateTheDistanceBetweenTwoPoints(&(testcurrentFeatureInNearestFeatureList2->pointTransformed), &(currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList->next->pointTransformed));
+														double currentDistanceBetweenTwoPoints2 = SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(testcurrentFeatureInNearestFeatureList2->pointTransformed), &(currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList->next->pointTransformed));
 														double xDev2 = testcurrentFeatureInNearestFeatureList2->pointTransformed.x - currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList->next->pointTransformed.x;
 														double yDev2 = testcurrentFeatureInNearestFeatureList2->pointTransformed.y - currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList->next->pointTransformed.y;
 														#endif
@@ -1467,7 +1458,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 														if(currentDistanceBetweenTwoPoints2 < OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR)
 														{
 															#ifdef OR_GEOMETRIC_CHECK_COMPARISON_ERROR_DEV_CHECK
-															if(sqrt(pow(absDouble(xDev1 - xDev2),2.0), pow(absDouble(yDev1 - yDev2), 2.0)) < OR_GEOMETRIC_CHECK_COMPARISON_ERROR_DEV)
+															if(sqrt(pow(SHAREDvars.absDouble(xDev1 - xDev2),2.0), pow(SHAREDvars.absDouble(yDev1 - yDev2), 2.0)) < OR_GEOMETRIC_CHECK_COMPARISON_ERROR_DEV)
 															{
 															#endif
 																passedGeometricCheck = true;
@@ -1518,10 +1509,10 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 												//cout << currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->OTpointIndex << "\t" << currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->pointTransformed.x <<  "\t" << currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->pointTransformed.y <<  "\t" << currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->pointTransformed.z << "\t" << currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->point.x <<  "\t" << currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->point.y <<  "\t" << currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->point.z <<endl;
 												#endif
 
-												string trainpolygonIndexString = convertIntToString(trainPolyIndex);
-												string trainsideIndexString = convertIntToString(trainSideIndex);
-												string trainviewIndexString = convertIntToString(trainViewIndex);
-												string trainzoomIndexString = convertIntToString(trainZoomIndex);
+												string trainpolygonIndexString = SHAREDvars.convertIntToString(trainPolyIndex);
+												string trainsideIndexString = SHAREDvars.convertIntToString(trainSideIndex);
+												string trainviewIndexString = SHAREDvars.convertIntToString(trainViewIndex);
+												string trainzoomIndexString = SHAREDvars.convertIntToString(trainZoomIndex);
 
 												string traininterpolatedRGBMapFileNameForRayTracing;
 												traininterpolatedRGBMapFileNameForRayTracing = trainObjectString + "interpolatedMesh" + "ViewIndex" + trainviewIndexString + "ZoomIndex" + trainzoomIndexString + "FacingPoly" + trainpolygonIndexString + "side" + trainsideIndexString;
@@ -1533,7 +1524,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 						#ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_BASIC_NO_SQL
 
 						colour avgColTestMap;
-						calculateAverageColour(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTest, &avgColTestMap);
+						ORimagecomparison.calculateAverageColour(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTest, &avgColTestMap);
 
 						int rBinMid = (int)(((double)avgColTestMap.r/MAX_RGB_VAL)*OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL);
 						int gBinMid = (int)(((double)avgColTestMap.g/MAX_RGB_VAL)*OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL);
@@ -1654,10 +1645,10 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 
 						#endif
 
-										string trainpolygonIndexString = convertIntToString(trainPolyIndex);
-										string trainsideIndexString = convertIntToString(trainSideIndex);
-										string trainviewIndexString = convertIntToString(trainViewIndex);
-										string trainzoomIndexString = convertIntToString(trainZoomIndex);
+										string trainpolygonIndexString = SHAREDvars.convertIntToString(trainPolyIndex);
+										string trainsideIndexString = SHAREDvars.convertIntToString(trainSideIndex);
+										string trainviewIndexString = SHAREDvars.convertIntToString(trainViewIndex);
+										string trainzoomIndexString = SHAREDvars.convertIntToString(trainZoomIndex);
 
 										string traininterpolatedRGBMapFileNameForRayTracing = trainObjectString + "interpolatedMesh" + "ViewIndex" + trainviewIndexString + "ZoomIndex" + trainzoomIndexString + "FacingPoly" + trainpolygonIndexString + "side" + trainsideIndexString;
 
@@ -1666,16 +1657,16 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 										#ifdef OR_IMAGE_COMPARISON_NONSQL_GEOMETRIC_COMPARISON_OPTIMISED_TRAIN_FILE_IO
 											#ifndef OR_WINDOWS_COMPILER_LIMITATION_MUST_GET_TEST_DATA_FROM_SQL
 											#ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_BASIC_NO_SQL
-											bool passedGeometricCheck = compareFeaturesListForMatch((testfeatureGeoCompArray[testObjectIndex][testViewIndex][testZoomIndex][testPolyIndex][testSideIndex]).firstFeatureInFeatureList, currentFeatureContainerInList->firstFeatureInFeatureList, dimension, &exactMatchFoundIrrelevant);
+											bool passedGeometricCheck = ORdatabaseFileIO.compareFeaturesListForMatch((testfeatureGeoCompArray[testObjectIndex][testViewIndex][testZoomIndex][testPolyIndex][testSideIndex]).firstFeatureInFeatureList, currentFeatureContainerInList->firstFeatureInFeatureList, dimension, &exactMatchFoundIrrelevant);
 											#else
-											bool passedGeometricCheck = compareFeaturesListForMatch((testfeatureGeoCompArray[testObjectIndex][testViewIndex][testZoomIndex][testPolyIndex][testSideIndex]).firstFeatureInFeatureList, (trainfeatureGeoCompArray[trainObjectIndex][trainViewIndex][trainZoomIndex][trainPolyIndex][trainSideIndex]).firstFeatureInFeatureList, dimension, &exactMatchFoundIrrelevant);
+											bool passedGeometricCheck = ORdatabaseFileIO.compareFeaturesListForMatch((testfeatureGeoCompArray[testObjectIndex][testViewIndex][testZoomIndex][testPolyIndex][testSideIndex]).firstFeatureInFeatureList, (trainfeatureGeoCompArray[trainObjectIndex][trainViewIndex][trainZoomIndex][trainPolyIndex][trainSideIndex]).firstFeatureInFeatureList, dimension, &exactMatchFoundIrrelevant);
 											#endif
 											#endif
 										#else
 											string traininterpolatedNearestFeaturesMapFileName;
 											traininterpolatedNearestFeaturesMapFileName = traininterpolatedRGBMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + TRAIN_STRING + TFD_EXTENSION;
-											createFeaturesListUsingFeaturesFile(traininterpolatedNearestFeaturesMapFileName, trainFirstFeatureInNearestFeatureList, false, false, false);
-											bool passedGeometricCheck = compareFeaturesListForMatch(testFirstFeatureInNearestFeatureList, trainFirstFeatureInNearestFeatureList, dimension, &exactMatchFoundIrrelevant);
+											ORdatabaseFileIO.createFeaturesListUsingFeaturesFile(traininterpolatedNearestFeaturesMapFileName, trainFirstFeatureInNearestFeatureList, false, false, false);
+											bool passedGeometricCheck = ORdatabaseFileIO.compareFeaturesListForMatch(testFirstFeatureInNearestFeatureList, trainFirstFeatureInNearestFeatureList, dimension, &exactMatchFoundIrrelevant);
 										#endif
 										#else
 										bool passedGeometricCheck = true;
@@ -1698,7 +1689,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 													cout << "passedGeometricCheck" << endl;
 													cout << "\t\t\t start: 5a. normalised snapshot comparison - load snapshot data for comparison" << endl;
 												}
-												time5aNormalisedSnapshotComparisonLoadComparisonDataStart = getTimeAsLong();
+												time5aNormalisedSnapshotComparisonLoadComparisonDataStart = SHAREDvars.getTimeAsLong();
 											}
 
 											if(useGeneratedTestPixmapFiles)
@@ -1710,10 +1701,10 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 
 														testMapLoaded = true;
 
-														string testviewIndexString = convertIntToString(testViewIndex+testViewNumber);
-														string testzoomIndexString = convertIntToString(testZoomIndex);
-														string testpolygonIndexString = convertIntToString(testPolyIndex);
-														string testsideIndexString = convertIntToString(testSideIndex);
+														string testviewIndexString = SHAREDvars.convertIntToString(testViewIndex+testViewNumber);
+														string testzoomIndexString = SHAREDvars.convertIntToString(testZoomIndex);
+														string testpolygonIndexString = SHAREDvars.convertIntToString(testPolyIndex);
+														string testsideIndexString = SHAREDvars.convertIntToString(testSideIndex);
 
 														string testinterpolatedRGBMapFileNameForRayTracing;
 														testinterpolatedRGBMapFileNameForRayTracing = testObjectNameArray[testObjectIndex] + "interpolatedMesh" + "ViewIndex" + testviewIndexString + "ZoomIndex" + testzoomIndexString + "FacingPoly" + testpolygonIndexString + "side" + testsideIndexString;
@@ -1722,12 +1713,12 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 
 														string testrgbMapFacingPolyFileName = testinterpolatedRGBMapFileNameForRayTracing + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING + PPM_EXTENSION;
 
-														readImage(testrgbMapFacingPolyFileName, rgbMapTest);
+														RTpixelMaps.readImage(testrgbMapFacingPolyFileName, rgbMapTest);
 
 														#ifdef OR_METHOD_USE_SMALL_IMAGE_FIRST_COMPARISON
 														string testrgbMapSmallFacingPolyFileName = testinterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING + PPM_EXTENSION;
 
-														readImage(testrgbMapSmallFacingPolyFileName, testrgbMapSmall);
+														RTpixelMaps.readImage(testrgbMapSmallFacingPolyFileName, testrgbMapSmall);
 														#endif
 													}
 												}
@@ -1739,7 +1730,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 												#ifdef OR_DATABASE_DEBUG
 												cout << "DBgenerateFolderName: trainObjectString = " << trainObjectString << endl;
 												#endif
-												DBgenerateFolderName(&trainObjectString, true);
+												ORdatabaseFileIO.DBgenerateFolderName(&trainObjectString, true);
 												#endif
 
 												string trainrgbMapFacingPolyFileNameWithoutExt = traininterpolatedRGBMapFileNameForRayTracing + RGB_MAP_PPM_EXTENSION_PART + TRAIN_STRING;
@@ -1749,19 +1740,19 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 												string trainrgbMapSmallFacingPolyFileName= traininterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + TRAIN_STRING + PPM_EXTENSION;
 												#endif
 
-												readImage(trainrgbMapFacingPolyFileName, rgbMapTrain);
+												RTpixelMaps.readImage(trainrgbMapFacingPolyFileName, rgbMapTrain);
 
 												#ifdef OR_METHOD_USE_SMALL_IMAGE_FIRST_COMPARISON
-												readImage(trainrgbMapSmallFacingPolyFileName, trainrgbMapSmall);
+												RTpixelMaps.readImage(trainrgbMapSmallFacingPolyFileName, trainrgbMapSmall);
 												#endif
 
 												#ifdef OR_USE_DATABASE
-												setCurrentDirectory(currentTempFolder);
+												SHAREDvars.setCurrentDirectory(currentTempFolder);
 												#endif
 											}
 											else
 											{
-												convertSQLdatabaseStringToSnapshotMaps(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTrain, trainrgbDevMap, traindepthMap, smallImageWidth, smallImageHeight, trainrgbMapSmall, traindepthMapSmall, trainrgbDevMapSmall, dimension, currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList->snapshotMapsText, OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE, OR_IMAGE_COMPARISON_COMPARE_RGB_DEV_MAPS_NOT_RGB_MAPS);
+												ORdatabaseSQL.convertSQLdatabaseStringToSnapshotMaps(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTrain, trainrgbDevMap, traindepthMap, smallImageWidth, smallImageHeight, trainrgbMapSmall, traindepthMapSmall, trainrgbDevMapSmall, dimension, currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList->snapshotMapsText, OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE, OR_IMAGE_COMPARISON_COMPARE_RGB_DEV_MAPS_NOT_RGB_MAPS);
 											}
 
 											if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
@@ -1771,7 +1762,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 													cout << "\t\t\t end: 5a. normalised snapshot comparison - load snapshot data for comparison" << endl;
 												}
 												long time5aNormalisedSnapshotComparisonLoadComparisonDataEnd;
-												time5aNormalisedSnapshotComparisonLoadComparisonDataEnd = getTimeAsLong();
+												time5aNormalisedSnapshotComparisonLoadComparisonDataEnd = SHAREDvars.getTimeAsLong();
 												time5aNormalisedSnapshotComparisonLoadComparisonDataTotal = time5aNormalisedSnapshotComparisonLoadComparisonDataTotal + time5aNormalisedSnapshotComparisonLoadComparisonDataEnd-time5aNormalisedSnapshotComparisonLoadComparisonDataStart;
 												time5aNormalisedSnapshotComparisonLoadComparisonDataIndex ++;
 												if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
@@ -1787,7 +1778,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 												{
 													cout << "\t\t\t start: 5b. normalised snapshot comparison - compare snapshot data" << endl;
 												}
-												time5bNormalisedSnapshotComparisonCompareSnapshotDataStart = getTimeAsLong();
+												time5bNormalisedSnapshotComparisonCompareSnapshotDataStart = SHAREDvars.getTimeAsLong();
 											}
 
 
@@ -1812,18 +1803,18 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 
 											#ifdef OR_DEBUG_COMPARISON
 											cout << "testrgbMapSmall = " << endl;
-											printRGBMap(resampledWidth, resampledHeight, testrgbMapSmall);
+											RTpixelMaps.printRGBMap(resampledWidth, resampledHeight, testrgbMapSmall);
 											cout << "trainrgbMapSmall = " << endl;
-											printRGBMap(resampledWidth, resampledHeight, trainrgbMapSmall);
+											RTpixelMaps.printRGBMap(resampledWidth, resampledHeight, trainrgbMapSmall);
 											#endif
 
 											#ifdef OR_METHOD_SMALL_IMAGE_FIRST_COMPARISON_NO_KERNEL
-												double errorSmall = compareImagesRGBsmallNoKernel(resampledWidth, resampledHeight, testrgbMapSmall, trainrgbMapSmall);			//cannot use this function until it has been tested
+												double errorSmall = ORimagecomparison.compareImagesRGBsmallNoKernel(resampledWidth, resampledHeight, testrgbMapSmall, trainrgbMapSmall);			//cannot use this function until it has been tested
 											#else
 												#ifndef OR_IMAGE_COMPARISON_USE_NEW_COMPARITOR
-													double errorSmall = compareImagesRGBwithPosDev(resampledWidth, resampledHeight, testrgbMapSmall, trainrgbMapSmall);
+													double errorSmall = ORimagecomparison.compareImagesRGBwithPosDev(resampledWidth, resampledHeight, testrgbMapSmall, trainrgbMapSmall);
 												#else
-													double errorSmall = compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(resampledWidth, resampledHeight, testrgbMapSmall, trainrgbMapSmall);			//cannot use this function until it has been tested
+													double errorSmall = ORimagecomparison.compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(resampledWidth, resampledHeight, testrgbMapSmall, trainrgbMapSmall);			//cannot use this function until it has been tested
 												#endif
 											#endif
 
@@ -1840,10 +1831,10 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 												#endif
 
 												#ifndef OR_IMAGE_COMPARISON_USE_NEW_COMPARITOR
-													double error = compareImagesRGBwithPosDev(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTest, rgbMapTrain);
+													double error = ORimagecomparison.compareImagesRGBwithPosDev(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTest, rgbMapTrain);
 												#else
-													double error = compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTest, rgbMapTrain);			//cannot use this function until it has been tested
-													//double error = compareImagesRGBwithPosDev(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTest, rgbMapTrain);
+													double error = ORimagecomparison.compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTest, rgbMapTrain);			//cannot use this function until it has been tested
+													//double error = ORimagecomparison.compareImagesRGBwithPosDev(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTest, rgbMapTrain);
 												#endif
 
 												#ifdef OR_DEBUG_COMPARISON
@@ -1870,7 +1861,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 													{
 														passedContrastCheck = true;
 													}
-													else if(checkImageHasContrast(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTrain))
+													else if(ORimagecomparison.checkImageHasContrast(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTrain))
 													{
 														passedContrastCheck = true;
 													}
@@ -1960,7 +1951,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 													cout << "\t\t\t end: 5b. normalised snapshot comparison - compare snapshot data" << endl;
 												}
 												long time5bNormalisedSnapshotComparisonCompareSnapshotDataEnd;
-												time5bNormalisedSnapshotComparisonCompareSnapshotDataEnd = getTimeAsLong();
+												time5bNormalisedSnapshotComparisonCompareSnapshotDataEnd = SHAREDvars.getTimeAsLong();
 												time5bNormalisedSnapshotComparisonCompareSnapshotDataTotal = time5bNormalisedSnapshotComparisonCompareSnapshotDataTotal + time5bNormalisedSnapshotComparisonCompareSnapshotDataEnd-time5bNormalisedSnapshotComparisonCompareSnapshotDataStart;
 												time5bNormalisedSnapshotComparisonCompareSnapshotDataIndex++;
 												if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
@@ -2046,7 +2037,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 						#ifndef OR_METHOD_CHECK_SNAPSHOT_CONTRAST_BEFORE_SAVING_SNAPSHOT
 						if(!doNotCheckContrast)
 						{
-							if(!checkImageHasContrast(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTest))
+							if(!ORimagecomparison.checkImageHasContrast(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTest))
 							{
 								currentLowestError = OR_IMAGE_COMPARISON_NO_CONTRAST_ERROR_KEY;
 							}
@@ -2093,7 +2084,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 					#ifdef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 					if(averageMatchErrorAcrossSides < OR_IMAGE_COMPARITOR_MATCH_ERROR_THRESHOLD)
 					{
-						string averageMatchErrorAcrossSidesString = convertDoubleToString(averageMatchErrorAcrossSides, "%0.3f");
+						string averageMatchErrorAcrossSidesString = SHAREDvars.convertDoubleToString(averageMatchErrorAcrossSides, "%0.3f");
 
 						#ifdef OR_DEBUG_COMPARISON
 						cout << "transformed RGB check passed 2: (averageMatchErrorAcrossSides < OR_IMAGE_COMPARITOR_MATCH_ERROR_THRESHOLD)" << endl;
@@ -2206,18 +2197,18 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 										#ifdef OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML_PRINT_OBJECT_NAMES
 											string trainobjectIndexString = trainObjectNameWithLowestErrorRecordAcrossAllSides;
 										#else
-											string trainobjectIndexString = convertIntToString(trainPolyIndexWithLowestErrorRecord[s][0]);
+											string trainobjectIndexString = SHAREDvars.convertIntToString(trainPolyIndexWithLowestErrorRecord[s][0]);
 										#endif
 
-										string trainviewIndexString = convertIntToString(trainPolyIndexWithLowestErrorRecord[s][1]);
-										string trainzoomIndexString = convertIntToString(trainPolyIndexWithLowestErrorRecord[s][2]);
-										string trainpolygonIndexString = convertIntToString(trainPolyIndexWithLowestErrorRecord[s][3]);
-										string trainsideIndexString = convertIntToString(trainPolyIndexWithLowestErrorRecord[s][4]);
+										string trainviewIndexString = SHAREDvars.convertIntToString(trainPolyIndexWithLowestErrorRecord[s][1]);
+										string trainzoomIndexString = SHAREDvars.convertIntToString(trainPolyIndexWithLowestErrorRecord[s][2]);
+										string trainpolygonIndexString = SHAREDvars.convertIntToString(trainPolyIndexWithLowestErrorRecord[s][3]);
+										string trainsideIndexString = SHAREDvars.convertIntToString(trainPolyIndexWithLowestErrorRecord[s][4]);
 
-										string testviewIndexString = convertIntToString(testViewIndex+testViewNumber);
-										string testzoomIndexString = convertIntToString(testZoomIndex);
-										string testpolygonIndexString = convertIntToString(testPolyIndex);
-										string testsideIndexString = convertIntToString(s);
+										string testviewIndexString = SHAREDvars.convertIntToString(testViewIndex+testViewNumber);
+										string testzoomIndexString = SHAREDvars.convertIntToString(testZoomIndex);
+										string testpolygonIndexString = SHAREDvars.convertIntToString(testPolyIndex);
+										string testsideIndexString = SHAREDvars.convertIntToString(s);
 
 										string blank = "";
 
@@ -2235,11 +2226,11 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 											traininterpolatedRGBMapFileNameForRayTracing = objectNameArray[trainPolyIndexWithLowestErrorRecord[0][0]] + "interpolatedMesh" + "ViewIndex" + trainviewIndexString + "ZoomIndex" + trainzoomIndexString + "FacingPoly" + trainpolygonIndexString + "side" + trainsideIndexString;
 										#endif
 										string traininterpolatedNearestFeaturesMapFileName = traininterpolatedRGBMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + TRAIN_STRING + TFD_EXTENSION;
-										createFeaturesListUsingFeaturesFile(traininterpolatedNearestFeaturesMapFileName, trainFirstFeatureInNearestFeatureList, false, false, false);
+										ORdatabaseFileIO.createFeaturesListUsingFeaturesFile(traininterpolatedNearestFeaturesMapFileName, trainFirstFeatureInNearestFeatureList, false, false, false);
 
 										testinterpolatedRGBMapFileNameForRayTracing = objectNameArray[testObjectIndex] + "interpolatedMesh" + "ViewIndex" + testviewIndexString + "ZoomIndex" + testzoomIndexString + "FacingPoly" + testpolygonIndexString + "side" + testsideIndexString;
 										string testinterpolatedNearestFeaturesMapFileName = testinterpolatedRGBMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + TEST_STRING + TFD_EXTENSION;
-										createFeaturesListUsingFeaturesFile(testinterpolatedNearestFeaturesMapFileName, testFirstFeatureInNearestFeatureList, false, false, false);
+										ORdatabaseFileIO.createFeaturesListUsingFeaturesFile(testinterpolatedNearestFeaturesMapFileName, testFirstFeatureInNearestFeatureList, false, false, false);
 
 										cout << "\n new match found;" << endl;
 										cout << "traininterpolatedNearestFeaturesMapFileName = " << traininterpolatedNearestFeaturesMapFileName << endl;
@@ -2257,7 +2248,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 											currentFeatureInList = currentFeatureInList->next;
 										}
 										bool exactMatchFoundIrrelevant;
-										bool passedGeometricCheck = compareFeaturesListForMatch(testFirstFeatureInNearestFeatureList, trainFirstFeatureInNearestFeatureList, dimension, &exactMatchFoundIrrelevant);
+										bool passedGeometricCheck = ORdatabaseFileIO.compareFeaturesListForMatch(testFirstFeatureInNearestFeatureList, trainFirstFeatureInNearestFeatureList, dimension, &exactMatchFoundIrrelevant);
 										cout << "passedGeometricCheck = " << passedGeometricCheck << endl;
 									#endif
 
@@ -2320,20 +2311,20 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 
 										string trainImgSrcHtmlTags = "";
 										string testImgSrcHtmlTags = "";
-										string imageWidthFacingPolyString = convertIntToString(imageWidthFacingPoly);	//increase image size for small images - for better visualisation [rather than zoom in browser]
-										string imageHeightFacingPolyString = convertIntToString(imageHeightFacingPoly);	//increase image size for small images - for better visualisation [rather than zoom in browser]
+										string imageWidthFacingPolyString = SHAREDvars.convertIntToString(imageWidthFacingPoly);	//increase image size for small images - for better visualisation [rather than zoom in browser]
+										string imageHeightFacingPolyString = SHAREDvars.convertIntToString(imageHeightFacingPoly);	//increase image size for small images - for better visualisation [rather than zoom in browser]
 										if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL)
 										{
-											convertImageFileType(&trainrgbMapFacingPolyFileNameWithoutExt, &trainrgbMapFacingPolyFileNameWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
-											convertImageFileType(&testrgbMapFacingPolyFileNameWithoutExt, &testrgbMapFacingPolyFileNameWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
+											this->convertImageFileType(&trainrgbMapFacingPolyFileNameWithoutExt, &trainrgbMapFacingPolyFileNameWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
+											this->convertImageFileType(&testrgbMapFacingPolyFileNameWithoutExt, &testrgbMapFacingPolyFileNameWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
 											trainImgSrcHtmlTags = trainImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + trainrgbMapFacingPolyFileNameWithoutExt + PNG_EXTENSION + "\" border=0>";
 											testImgSrcHtmlTags = testImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + testrgbMapFacingPolyFileNameWithoutExt + PNG_EXTENSION + "\" border=0>";
 
 											#ifdef DEBUG_OR_OUTPUT_SMALL_IMAGES
 											string trainrgbMapSmallFacingPolyFileNameWithoutExt = traininterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + TRAIN_STRING;
 											string testrgbMapSmallFacingPolyFileNameWithoutExt = testinterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING;
-											convertImageFileType(&trainrgbMapSmallFacingPolyFileNameWithoutExt, &trainrgbMapSmallFacingPolyFileNameWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
-											convertImageFileType(&testrgbMapSmallFacingPolyFileNameWithoutExt, &testrgbMapSmallFacingPolyFileNameWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
+											this->convertImageFileType(&trainrgbMapSmallFacingPolyFileNameWithoutExt, &trainrgbMapSmallFacingPolyFileNameWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
+											this->convertImageFileType(&testrgbMapSmallFacingPolyFileNameWithoutExt, &testrgbMapSmallFacingPolyFileNameWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
 											trainImgSrcHtmlTags = trainImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + trainrgbMapSmallFacingPolyFileNameWithoutExt + PNG_EXTENSION + "\" border=0>";
 											testImgSrcHtmlTags = testImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + testrgbMapSmallFacingPolyFileNameWithoutExt + PNG_EXTENSION + "\" border=0>";
 											#endif
@@ -2341,8 +2332,8 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 											#ifdef DEBUG_OR_OUTPUT_DECISION_TREE_IMAGES
 											string trainbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt = traininterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_BOOLEAN_CONTRAST_MAP_PPM_EXTENSION_PART + TRAIN_STRING;
 											string testbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt = testinterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_BOOLEAN_CONTRAST_MAP_PPM_EXTENSION_PART + TEST_STRING;
-											convertImageFileType(&trainbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt, &trainbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
-											convertImageFileType(&testbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt, &testbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
+											this->convertImageFileType(&trainbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt, &trainbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
+											this->convertImageFileType(&testbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt, &testbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
 											trainImgSrcHtmlTags = trainImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + trainbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt + PNG_EXTENSION + "\" border=0>";
 											testImgSrcHtmlTags = testImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + testbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt + PNG_EXTENSION + "\" border=0>";
 											#ifdef DEBUG_OR_OUTPUT_DECISION_TREE_IMAGES_DIFF
@@ -2359,15 +2350,15 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 											#endif
 											unsigned char* trainbooleanContrastrgbMapSmall = new unsigned char[booleanContrastrgbMapSmallWidth*booleanContrastrgbMapSmallHeight*RGB_NUM];
 											unsigned char* testbooleanContrastrgbMapSmall = new unsigned char[booleanContrastrgbMapSmallWidth*booleanContrastrgbMapSmallHeight*RGB_NUM];
-											readImage(&trainbooleanContrastRgbMapFacingPolySmallFileName, trainbooleanContrastrgbMapSmall);
-											readImage(&testbooleanContrastRgbMapFacingPolySmallFileName, testbooleanContrastrgbMapSmall);
-											generateBooleanDiffMapFromRGBMaps(diffbooleanContrastRgbMapFacingPolySmallFileName, booleanContrastrgbMapSmallWidth, booleanContrastrgbMapSmallHeight, trainbooleanContrastrgbMapSmall, testbooleanContrastrgbMapSmall);
+											RTpixelMaps.readImage(&trainbooleanContrastRgbMapFacingPolySmallFileName, trainbooleanContrastrgbMapSmall);
+											RTpixelMaps.readImage(&testbooleanContrastRgbMapFacingPolySmallFileName, testbooleanContrastrgbMapSmall);
+											RTpixelMaps.generateBooleanDiffMapFromRGBMaps(diffbooleanContrastRgbMapFacingPolySmallFileName, booleanContrastrgbMapSmallWidth, booleanContrastrgbMapSmallHeight, trainbooleanContrastrgbMapSmall, testbooleanContrastrgbMapSmall);
 											/*
 											bool* diffbooleanContrastrgbMapSmall = new bool[booleanContrastrgbMapSmallWidth*booleanContrastrgbMapSmallHeight];
 											createBooleanDiffMapFromRGBMaps(diffbooleanContrastrgbMapSmall, booleanContrastrgbMapSmallWidth, booleanContrastrgbMapSmallHeight, trainbooleanContrastrgbMapSmall, testbooleanContrastrgbMapSmall);
 											generatePixmapFromBooleanMap(diffbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt, booleanContrastrgbMapSmallWidth, booleanContrastrgbMapSmallHeight, bool* booleanMap);
 											*/
-											convertImageFileType(&diffbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt, &diffbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
+											this->convertImageFileType(&diffbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt, &diffbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
 											trainImgSrcHtmlTags = trainImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + diffbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt + PNG_EXTENSION + "\" border=0>";
 											testImgSrcHtmlTags = testImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + diffbooleanContrastRgbMapFacingPolySmallFileNameWithoutExt + PNG_EXTENSION + "\" border=0>";
 											#endif
@@ -2387,28 +2378,28 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 											string trainDCTBinnedTableHTMLOutputString = "<TABLE><TR>";
 											signed char testconcatonatedSignedDctCoeffArrayRequirementTemp[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
 											signed char trainconcatonatedSignedDctCoeffArrayRequirementTemp[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
-											setPointerToDCTtableHTMLoutputString(&testDCTTableHTMLOutputString);
-											readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(&testrgbMapSmallFacingPolyFileNamePPMTemp, &testrgbMapSmallFacingPolyFileNameJPEGTemp, testconcatonatedSignedDctCoeffArrayRequirementTemp, true);
-											setPointerToDCTtableHTMLoutputString(&trainDCTTableHTMLOutputString);
-											readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(&trainrgbMapSmallFacingPolyFileNamePPMTemp, &trainrgbMapSmallFacingPolyFileNameJPEGTemp, trainconcatonatedSignedDctCoeffArrayRequirementTemp, true);
+											LDjpeg.setPointerToDCTtableHTMLoutputString(&testDCTTableHTMLOutputString);
+											this->readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(&testrgbMapSmallFacingPolyFileNamePPMTemp, &testrgbMapSmallFacingPolyFileNameJPEGTemp, testconcatonatedSignedDctCoeffArrayRequirementTemp, true);
+											LDjpeg.setPointerToDCTtableHTMLoutputString(&trainDCTTableHTMLOutputString);
+											this->readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(&trainrgbMapSmallFacingPolyFileNamePPMTemp, &trainrgbMapSmallFacingPolyFileNameJPEGTemp, trainconcatonatedSignedDctCoeffArrayRequirementTemp, true);
 											//next code extracted from convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue (determinations of arrayValueUnsigned)
 											for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; i++)
 											{
 												int arrayValueSigned = testconcatonatedSignedDctCoeffArrayRequirementTemp[i];
-												testDCTBinnedPrelimTableHTMLOutputString = testDCTBinnedPrelimTableHTMLOutputString + "<TD>" + convertIntToString(arrayValueSigned) + "</TD>";
+												testDCTBinnedPrelimTableHTMLOutputString = testDCTBinnedPrelimTableHTMLOutputString + "<TD>" + SHAREDvars.convertIntToString(arrayValueSigned) + "</TD>";
 
 												double arrayValueUnsignedDouble;
-												int arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);
-												testDCTBinnedTableHTMLOutputString = testDCTBinnedTableHTMLOutputString + "<TD>" + convertUnsignedIntToString(arrayValueUnsigned) + "</TD>";
+												int arrayValueUnsigned = ORdatabaseSQL.determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);
+												testDCTBinnedTableHTMLOutputString = testDCTBinnedTableHTMLOutputString + "<TD>" + SHAREDvars.convertUnsignedIntToString(arrayValueUnsigned) + "</TD>";
 											}
 											for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; i++)
 											{
 												int arrayValueSigned = trainconcatonatedSignedDctCoeffArrayRequirementTemp[i];
-												trainDCTBinnedPrelimTableHTMLOutputString = trainDCTBinnedPrelimTableHTMLOutputString + "<TD>" + convertIntToString(arrayValueSigned) + "</TD>";
+												trainDCTBinnedPrelimTableHTMLOutputString = trainDCTBinnedPrelimTableHTMLOutputString + "<TD>" + SHAREDvars.convertIntToString(arrayValueSigned) + "</TD>";
 
 												double arrayValueUnsignedDouble;
-												int arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);
-												trainDCTBinnedTableHTMLOutputString = trainDCTBinnedTableHTMLOutputString + "<TD>" + convertUnsignedIntToString(arrayValueUnsigned) + "</TD>";
+												int arrayValueUnsigned = ORdatabaseSQL.determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);
+												trainDCTBinnedTableHTMLOutputString = trainDCTBinnedTableHTMLOutputString + "<TD>" + SHAREDvars.convertUnsignedIntToString(arrayValueUnsigned) + "</TD>";
 											}
 											testDCTBinnedPrelimTableHTMLOutputString = testDCTBinnedPrelimTableHTMLOutputString + "</TR></TABLE>";
 											trainDCTBinnedPrelimTableHTMLOutputString = trainDCTBinnedPrelimTableHTMLOutputString + "</TR></TABLE>";
@@ -2425,19 +2416,19 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 
 											#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
 											string traininterpolatedNearestFeaturesMapFileName = traininterpolatedRGBMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + TRAIN_STRING + TFD_EXTENSION;
-											createFeaturesListUsingFeaturesFile(traininterpolatedNearestFeaturesMapFileName, trainFirstFeatureInNearestFeatureList, false, false, false);
+											ORdatabaseFileIO.createFeaturesListUsingFeaturesFile(traininterpolatedNearestFeaturesMapFileName, trainFirstFeatureInNearestFeatureList, false, false, false);
 											string testinterpolatedNearestFeaturesMapFileName = testinterpolatedRGBMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + TEST_STRING + TFD_EXTENSION;
-											createFeaturesListUsingFeaturesFile(testinterpolatedNearestFeaturesMapFileName, testFirstFeatureInNearestFeatureList, false, false, false);
+											ORdatabaseFileIO.createFeaturesListUsingFeaturesFile(testinterpolatedNearestFeaturesMapFileName, testFirstFeatureInNearestFeatureList, false, false, false);
 											bool exactMatchFound;
-											bool passedGeometricCheck = compareFeaturesListForMatch(testFirstFeatureInNearestFeatureList, trainFirstFeatureInNearestFeatureList, dimension, &exactMatchFound);	//required to set matchFound
+											bool passedGeometricCheck = ORdatabaseFileIO.compareFeaturesListForMatch(testFirstFeatureInNearestFeatureList, trainFirstFeatureInNearestFeatureList, dimension, &exactMatchFound);	//required to set matchFound
 											string trainGeoTableHTMLOutputString = "";
 											string testGeoTableHTMLOutputString = "";
 											string trainGeoBinnedTableHTMLOutputString = "";
 											string testGeoBinnedTableHTMLOutputString = "";
-											createGeoTableHTMLfromFeatureList(trainFirstFeatureInNearestFeatureList, false, &trainGeoTableHTMLOutputString);
-											createGeoTableHTMLfromFeatureList(testFirstFeatureInNearestFeatureList, false, &testGeoTableHTMLOutputString);
-											createGeoTableHTMLfromFeatureList(trainFirstFeatureInNearestFeatureList, true, &trainGeoBinnedTableHTMLOutputString);
-											createGeoTableHTMLfromFeatureList(testFirstFeatureInNearestFeatureList, true, &testGeoBinnedTableHTMLOutputString);
+											this->createGeoTableHTMLfromFeatureList(trainFirstFeatureInNearestFeatureList, false, &trainGeoTableHTMLOutputString);
+											this->createGeoTableHTMLfromFeatureList(testFirstFeatureInNearestFeatureList, false, &testGeoTableHTMLOutputString);
+											this->createGeoTableHTMLfromFeatureList(trainFirstFeatureInNearestFeatureList, true, &trainGeoBinnedTableHTMLOutputString);
+											this->createGeoTableHTMLfromFeatureList(testFirstFeatureInNearestFeatureList, true, &testGeoBinnedTableHTMLOutputString);
 											trainImgSrcHtmlTags = trainImgSrcHtmlTags + "<P>Nearest Features (transformed):<BR />" + trainGeoTableHTMLOutputString;
 											testImgSrcHtmlTags = testImgSrcHtmlTags + "<P>Nearest Features (transformed):<BR />" + testGeoTableHTMLOutputString;
 											trainImgSrcHtmlTags = trainImgSrcHtmlTags + trainGeoBinnedTableHTMLOutputString + "</P>";
@@ -2472,7 +2463,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 												string currentDirectory = "";
 												char currentDirectory = "";
 												int currentDirectoryLength;
-												createSnapshotIDreferenceImageComparisonDecisionTreeString(smallImageWidth, smallImageHeight, trainrgbMapSmall, testgeoxybinTemp, testgeoxBinTemp, testgeoyBinTemp, &trainnormalisedAverageHueDeviationRequirementTemp, trainconcatonatedSignedDctCoeffArrayRequirementTemp, currentDirectoryCharStar, &currentDirectoryLength, &currentDirectory);
+												ORdatabaseDecisionTree.createSnapshotIDreferenceImageComparisonDecisionTreeString(smallImageWidth, smallImageHeight, trainrgbMapSmall, testgeoxybinTemp, testgeoxBinTemp, testgeoyBinTemp, &trainnormalisedAverageHueDeviationRequirementTemp, trainconcatonatedSignedDctCoeffArrayRequirementTemp, currentDirectoryCharStar, &currentDirectoryLength, &currentDirectory);
 												currentDirectoryCharStar[currentDirectoryLength] = '\0';
 												origTrainDTBin = currentDirectoryCharStar;
 											}
@@ -2507,7 +2498,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 											if(DTbinEqualsOrigTrainDTbin)
 											{
 											#endif
-												writeStringToFileObject(DTbin + "\n", &writeFileObjectDTbinDebug);
+												SHAREDvars.writeStringToFileObject(DTbin + "\n", &writeFileObjectDTbinDebug);
 											#ifdef DEBUG_OR_OUTPUT_DT_BIN_WRITE_TO_FILE_ONLY_WRITE_MATCHES_NOT_REQUIRING_INTELLIGENT_BINNING
 											}
 											#endif
@@ -2516,8 +2507,8 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 										}
 										else
 										{
-											convertImageFileType(&trainrgbMapFacingPolyFileNameWithoutExt, &trainrgbMapFacingPolyFileNameWithoutExtSanitised, PPM_EXTENSION, PNG_EXTENSION);
-											convertImageFileType(&testrgbMapFacingPolyFileNameWithoutExt, &testrgbMapFacingPolyFileNameWithoutExtSanitised, PPM_EXTENSION, PNG_EXTENSION);
+											this->convertImageFileType(&trainrgbMapFacingPolyFileNameWithoutExt, &trainrgbMapFacingPolyFileNameWithoutExtSanitised, PPM_EXTENSION, PNG_EXTENSION);
+											this->convertImageFileType(&testrgbMapFacingPolyFileNameWithoutExt, &testrgbMapFacingPolyFileNameWithoutExtSanitised, PPM_EXTENSION, PNG_EXTENSION);
 											trainImgSrcHtmlTags = trainImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + trainrgbMapFacingPolyFileNameWithoutExtSanitised + PNG_EXTENSION + "\" border=0>";
 											testImgSrcHtmlTags = testImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + testrgbMapFacingPolyFileNameWithoutExtSanitised + PNG_EXTENSION + "\" border=0>";
 										}
@@ -2532,11 +2523,11 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 										#ifdef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 										ICRmatchRow = ICRmatchRow + "<TD>" + averageMatchErrorAcrossSidesString + "</TD></TR>";
 										#else
-										string currentLowestErrorString = convertDoubleToString(currentLowestErrorRecord[s], "%0.3f");
+										string currentLowestErrorString = SHAREDvars.convertDoubleToString(currentLowestErrorRecord[s], "%0.3f");
 										ICRmatchRow = ICRmatchRow + "<TD>" + currentLowestErrorString + "</TD></TR>";
 										#endif
 
-										writeStringToFileObject(ICRmatchRow, &writeFileObject);
+										SHAREDvars.writeStringToFileObject(ICRmatchRow, &writeFileObject);
 									}
 									#ifndef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 									}
@@ -2566,7 +2557,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 					cout << "\t\t\t end: 5z. normalised snapshot comparison - single view speed test (for website)" << endl;
 					#endif
 					long time5zNormalisedSnapshotComparisonSingleViewTestEnd;
-					time5zNormalisedSnapshotComparisonSingleViewTestEnd = getTimeAsLong();
+					time5zNormalisedSnapshotComparisonSingleViewTestEnd = SHAREDvars.getTimeAsLong();
 					long time5zNormalisedSnapshotComparisonSingleViewTestTotal = time5zNormalisedSnapshotComparisonSingleViewTestEnd-time5zNormalisedSnapshotComparisonSingleViewTestStart;
 					//time5bNormalisedSnapshotComparisonCompareSnapshotDataIndex++;
 					#ifdef TEST_VIEWTIME_SPEED_Z_FOR_WEBSITE
@@ -2596,7 +2587,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 	if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML)
 	{
 		string ICRtableEnd = "</TABLE>";
-		writeStringToFileObject(ICRtableEnd, &writeFileObject);
+		SHAREDvars.writeStringToFileObject(ICRtableEnd, &writeFileObject);
 
 		string ICRfooter  = "</BODY></HTML>";
 	}
@@ -2676,7 +2667,7 @@ double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numbe
 
 
 
-void convertImageFileType(const string* imageBaseFileName, const string* imageBaseFileNameConverted, const string imageExtension, const string imageExtensionConverted)
+void ORcomparisonClass::convertImageFileType(const string* imageBaseFileName, const string* imageBaseFileNameConverted, const string imageExtension, const string imageExtensionConverted)
 {
 	string convertPPMtoPNGCommand = "convert " +* imageBaseFileName + imageExtension + " " +* imageBaseFileNameConverted + imageExtensionConverted;
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
@@ -2701,26 +2692,26 @@ void convertImageFileType(const string* imageBaseFileName, const string* imageBa
 
 
 //#ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING
-void convertNormalisedHueDeviationMapTo3x8bitMap(int imageWidth, const int imageHeight, double* rgbDevIEnormalisedHueContrastMapSmallFacingPoly, unsigned char* rgbDev8BitSmallMapFacingPoly)
+void ORcomparisonClass::convertNormalisedHueDeviationMapTo3x8bitMap(int imageWidth, const int imageHeight, double* rgbDevIEnormalisedHueContrastMapSmallFacingPoly, unsigned char* rgbDev8BitSmallMapFacingPoly)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
   		for(int x = 0; x < imageWidth; x++)
 		{
 			vec normalisedHueContrast;
-			getVectorMapValue(x, y, imageWidth, rgbDevIEnormalisedHueContrastMapSmallFacingPoly, &normalisedHueContrast);
+			RTpixelMaps.getVectorMapValue(x, y, imageWidth, rgbDevIEnormalisedHueContrastMapSmallFacingPoly, &normalisedHueContrast);
 
 			colour culledNormalisedHueContrast;
-			cullAndBinNormalisedHueContrast(&normalisedHueContrast, &culledNormalisedHueContrast);
+			this->cullAndBinNormalisedHueContrast(&normalisedHueContrast, &culledNormalisedHueContrast);
 
-			setRGBMapValues(x, y, imageWidth, &culledNormalisedHueContrast, rgbDev8BitSmallMapFacingPoly);
+			RTpixelMaps.setRGBMapValues(x, y, imageWidth, &culledNormalisedHueContrast, rgbDev8BitSmallMapFacingPoly);
 		}
 	}
 }
 
 
 
-void cullAndBinNormalisedHueContrast(vec* normalisedHueContrast, colour* culledNormalisedHueContrast)
+void ORcomparisonClass::cullAndBinNormalisedHueContrast(vec* normalisedHueContrast, colour* culledNormalisedHueContrast)
 {
 	if(normalisedHueContrast->x*OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING_MULTIPLIER > OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL)
 	{
@@ -2757,7 +2748,7 @@ void cullAndBinNormalisedHueContrast(vec* normalisedHueContrast, colour* culledN
 
 //#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
 
-void convertDCTcoeffIndividualArraysToConcatonatedSignedDCTcoeffArray(signed char dctCoeffArrayY[], signed char dctCoeffArrayYcr[], signed char dctCoeffArrayYcb[], signed char concatonatedSignedDctCoeffArray[])
+void ORcomparisonClass::convertDCTcoeffIndividualArraysToConcatonatedSignedDCTcoeffArray(signed char dctCoeffArrayY[], signed char dctCoeffArrayYcr[], signed char dctCoeffArrayYcb[], signed char concatonatedSignedDctCoeffArray[])
 {
 	for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y; i++)
 	{
@@ -2801,7 +2792,7 @@ void convertDCTcoeffIndividualArraysToConcatonatedSignedDCTcoeffArray(signed cha
 static char* stringFormatDouble = "%0.6f";
 static char* stringFormatDec = "%d";
 
-void createGeoTableHTMLfromFeatureList(const ORfeature* firstFeatureInNearestFeatureList, const bool applyBinning, string* geoTableHTMLoutputString)
+void ORcomparisonClass::createGeoTableHTMLfromFeatureList(const ORfeature* firstFeatureInNearestFeatureList, const bool applyBinning, string* geoTableHTMLoutputString)
 {
 	*geoTableHTMLoutputString = *geoTableHTMLoutputString + "<TABLE>";
 
@@ -2818,18 +2809,18 @@ void createGeoTableHTMLfromFeatureList(const ORfeature* firstFeatureInNearestFea
 			string coordinateZString = "";
 			if(applyBinning)
 			{
-				int xBin = determineGeoBinX(currentFeatureInList->pointTransformed.x);
-				int yBin = determineGeoBinY(currentFeatureInList->pointTransformed.y);
+				int xBin = ORdatabaseSQL.determineGeoBinX(currentFeatureInList->pointTransformed.x);
+				int yBin = ORdatabaseSQL.determineGeoBinY(currentFeatureInList->pointTransformed.y);
 				int zBin = 0;
-				coordinateXString = convertIntToString(xBin);
-				coordinateYString = convertIntToString(yBin);
-				coordinateZString = convertIntToString(zBin);
+				coordinateXString = SHAREDvars.convertIntToString(xBin);
+				coordinateYString = SHAREDvars.convertIntToString(yBin);
+				coordinateZString = SHAREDvars.convertIntToString(zBin);
 			}
 			else
 			{
-				coordinateXString = convertDoubleToString(currentFeatureInList->pointTransformed.x, "%0.6f");
-				coordinateYString = convertDoubleToString(currentFeatureInList->pointTransformed.y, "%0.6f");
-				coordinateZString = convertDoubleToString(currentFeatureInList->pointTransformed.z, "%0.6f");
+				coordinateXString = SHAREDvars.convertDoubleToString(currentFeatureInList->pointTransformed.x, "%0.6f");
+				coordinateYString = SHAREDvars.convertDoubleToString(currentFeatureInList->pointTransformed.y, "%0.6f");
+				coordinateZString = SHAREDvars.convertDoubleToString(currentFeatureInList->pointTransformed.z, "%0.6f");
 			}
 
 			*geoTableHTMLoutputString = *geoTableHTMLoutputString + "<TR><TD>" + coordinateXString + "</TD><TD>" + coordinateYString + "</TD><TD>" + coordinateZString + "</TD></TR>";
@@ -2893,7 +2884,7 @@ bool determineIfGeoBinningIdenticalMatchFound(ORfeature* firstFeatureInNearestFe
 #endif
 */
 
-void readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(const string* rgbMapSmallFacingPolyFileNamePPM, const string* rgbMapSmallFacingPolyFileNameJPEG, signed char* concatonatedSignedDctCoeffArrayRequirement, const bool printOutput)
+void ORcomparisonClass::readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(const string* rgbMapSmallFacingPolyFileNamePPM, const string* rgbMapSmallFacingPolyFileNameJPEG, signed char* concatonatedSignedDctCoeffArrayRequirement, const bool printOutput)
 {
 	#ifdef OR_DEBUG_COMPARISON
 	cout << "*rgbMapSmallFacingPolyFileNamePPM = " <<* rgbMapSmallFacingPolyFileNamePPM << endl;
@@ -2916,21 +2907,21 @@ void readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(con
 	{
 		convertSmallImageRGBtoJPEGCommand = convertSmallImageRGBtoJPEGCommand + "convert " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING + " " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING + " " +* rgbMapSmallFacingPolyFileNamePPM + " " +* rgbMapSmallFacingPolyFileNameJPEG;
 		system(convertSmallImageRGBtoJPEGCommand.c_str());
-		readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(*rgbMapSmallFacingPolyFileNameJPEG, dctCoeffArrayY, dctCoeffArrayYCrDummy, dctCoeffArrayYCbDummy, dctCoeffArrayHeight, dctCoeffArrayWidth, printOutput);
+		LDjpeg.readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(*rgbMapSmallFacingPolyFileNameJPEG, dctCoeffArrayY, dctCoeffArrayYCrDummy, dctCoeffArrayYCbDummy, dctCoeffArrayHeight, dctCoeffArrayWidth, printOutput);
 		convertSmallImageRGBtoJPEGCommand = "";
 		convertSmallImageRGBtoJPEGCommand = convertSmallImageRGBtoJPEGCommand + "convert " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED_STRING + " " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING + " " +* rgbMapSmallFacingPolyFileNamePPM + " " +* rgbMapSmallFacingPolyFileNameJPEG;
 		system(convertSmallImageRGBtoJPEGCommand.c_str());
-		readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(*rgbMapSmallFacingPolyFileNameJPEG, dctCoeffArrayYDummy, dctCoeffArrayYcr, dctCoeffArrayYcb, dctCoeffArrayHeight, dctCoeffArrayWidth, printOutput);
+		LDjpeg.readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(*rgbMapSmallFacingPolyFileNameJPEG, dctCoeffArrayYDummy, dctCoeffArrayYcr, dctCoeffArrayYcb, dctCoeffArrayHeight, dctCoeffArrayWidth, printOutput);
 	}
 	else
 	{
 		convertSmallImageRGBtoJPEGCommand = convertSmallImageRGBtoJPEGCommand + "convert " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING + " " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING + " " +* rgbMapSmallFacingPolyFileNamePPM + " " +* rgbMapSmallFacingPolyFileNameJPEG;
 		system(convertSmallImageRGBtoJPEGCommand.c_str());
-		readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(*rgbMapSmallFacingPolyFileNameJPEG, dctCoeffArrayY, dctCoeffArrayYcr, dctCoeffArrayYcb, dctCoeffArrayHeight, dctCoeffArrayWidth, printOutput);
+		LDjpeg.readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(*rgbMapSmallFacingPolyFileNameJPEG, dctCoeffArrayY, dctCoeffArrayYcr, dctCoeffArrayYcb, dctCoeffArrayHeight, dctCoeffArrayWidth, printOutput);
 	}
 
 	//long binnedAllDCTCoeff64BitValue = convertDCTCoeffIndividualArraysToBinnedAllDCTCoeff64BitValue(dctCoeffArrayY, dctCoeffArrayYcr, dctCoeffArrayYcb, concatonatedSignedDctCoeffArrayRequirement);	//may not be used here
-	convertDCTcoeffIndividualArraysToConcatonatedSignedDCTcoeffArray(dctCoeffArrayY, dctCoeffArrayYcr, dctCoeffArrayYcb, concatonatedSignedDctCoeffArrayRequirement);
+	this->convertDCTcoeffIndividualArraysToConcatonatedSignedDCTcoeffArray(dctCoeffArrayY, dctCoeffArrayYcr, dctCoeffArrayYcb, concatonatedSignedDctCoeffArrayRequirement);
 
 	#ifdef OR_DEBUG_COMPARISON
 	for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX; i++)
