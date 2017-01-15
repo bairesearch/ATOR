@@ -26,7 +26,7 @@
  * File Name: ORquadraticFit.cpp (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3h15b 29-February-2016
+ * Project Version: 3i15a 11-August-2016
  *
  * Assumes that depth information is less accurate than image information
  *******************************************************************************/
@@ -742,9 +742,10 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 								{
 									double edgeValueX = (double(e)/double(enhancementFactor)) - HALF_PIXEL_WIDTH;
 									double edgeValueY = edgeValueX*tan(currentZeroCrossingInList->alpha) + currentZeroCrossingInList->zeroCrossingValueY;
-
+									#ifdef OR_DEBUG
 									//cout << "edgeValueX = " << edgeValueX << endl;
 									//cout << "edgeValueY = " << edgeValueY << endl;
+									#endif
 
 									if((edgeValueY >= -HALF_PIXEL_WIDTH) && (edgeValueY <= HALF_PIXEL_WIDTH))
 									{
@@ -760,9 +761,10 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 									if(tan(currentZeroCrossingInList->alpha) != 0)
 									{
 										double edgeValueX = (edgeValueY - currentZeroCrossingInList->zeroCrossingValueY) / tan(currentZeroCrossingInList->alpha);
-
+										#ifdef OR_DEBUG
 										//cout << "edgeValueX = " << edgeValueX << endl;
 										//cout << "edgeValueY = " << edgeValueY << endl;
+										#endif
 
 										if((edgeValueX >= -HALF_PIXEL_WIDTH) && (edgeValueX <= HALF_PIXEL_WIDTH))
 										{

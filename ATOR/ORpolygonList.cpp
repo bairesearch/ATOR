@@ -26,7 +26,7 @@
  * File Name: ORpolygonList.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3h15b 29-February-2016
+ * Project Version: 3i15a 11-August-2016
  *
  *******************************************************************************/
 
@@ -612,7 +612,9 @@ void calculateMeshPointInterpixelNormalContrast(ORmeshPoint* meshPoint)
 
 	for(int y=0; y<=1; y++)
 	{
+		#ifdef OR_DEBUG
 		//cout << "y = " << y << endl;
+		#endif
 		int q;
 		q = qMapping[0][y];
 		vec* interpixelNormalValue = &(meshPoint->adjacentMeshPoint[q]->interpixelMeshPoint->point);
@@ -628,7 +630,9 @@ void calculateMeshPointInterpixelNormalContrast(ORmeshPoint* meshPoint)
 
 	for(int x=0; x<=1; x++)
 	{
+		#ifdef OR_DEBUG
 		//cout << "x = " << x << endl;
+		#endif
 		int q;
 		q = qMapping[x][0];
 		vec* interpixelNormalValue = &(meshPoint->adjacentMeshPoint[q]->interpixelMeshPoint->point);
@@ -672,7 +676,9 @@ void calculateMeshPointInterpixelLuminosityContrast(ORmeshPoint* meshPoint)
 
 	for(int y=0; y<=1; y++)
 	{
+		#ifdef OR_DEBUG
 		//cout << "y = " << y << endl;
+		#endif
 		int q;
 		q = qMapping[0][y];
 		double pixelLuminosityMeasurement = meshPoint->adjacentMeshPoint[q]->luminosity;
@@ -686,8 +692,9 @@ void calculateMeshPointInterpixelLuminosityContrast(ORmeshPoint* meshPoint)
 
 	for(int x=0; x<=1; x++)
 	{
+		#ifdef OR_DEBUG
 		//cout << "x = " << x << endl;
-
+		#endif
 		int q;
 		q = qMapping[x][0];
 		double pixelLuminosityMeasurement = meshPoint->adjacentMeshPoint[q]->luminosity;
@@ -782,7 +789,9 @@ void calculateMeshPointInterpixelDepthWithForegroundDepthCheckOLD(ORmeshPoint* m
 
 	for(int y=0; y<=1; y++)
 	{
+		#ifdef OR_DEBUG
 		//cout << "y = " << y << endl;
+		#endif
 		int q;
 		q = qMapping[0][y];
 		double interpixelDepthValue = meshPoint->adjacentMeshPoint[q]->depth;
@@ -815,9 +824,10 @@ void calculateMeshPointInterpixelDepthWithForegroundDepthCheckOLD(ORmeshPoint* m
 	}
 
 	for(int x=0; x<=1; x++)
-	{
+	{	
+		#ifdef OR_DEBUG
 		//cout << "x = " << x << endl;
-
+		#endif
 		int q;
 		q = qMapping[x][0];
 		double interpixelDepthValue = meshPoint->adjacentMeshPoint[q]->depth;
@@ -933,12 +943,15 @@ void calculateMeshPointLuminosityContrast(ORmeshPoint* meshPoint)
 		double currentContrastLevel = absDouble(centrePixelPositionInLummapLuminosity - kernelCurrentPixelPositionInLummapLuminosity);
 		contrastLevel = maxDouble(contrastLevel, currentContrastLevel);
 
+		#ifdef OR_DEBUG
 		//cout << "contrastLevel = " << contrastLevel << endl;
 		//cout << "currentContrastLevel = " << currentContrastLevel << endl;
+		#endif
 	}
 	meshPoint->luminosityContrast = contrastLevel;
-
+	#ifdef OR_DEBUG
 	//cout << "meshPoint->luminosityContrast = " << meshPoint->luminosityContrast << endl;
+	#endif
 }
 
 

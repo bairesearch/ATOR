@@ -26,7 +26,7 @@
  * File Name: ORimagecomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3h15b 29-February-2016
+ * Project Version: 3i15a 11-August-2016
  *
  *******************************************************************************/
 
@@ -766,7 +766,6 @@ double compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(int imageWidth, int 
 							{
 								colour trainImagePixelColour;
 								getRGBMapValues(kx, ky, imageWidth, rgbMapTrain, &trainImagePixelColour);
-								//cout << "\t(inttrainImagePixelColour.r = " << (inttrainImagePixelColour.r << endl;
 
 							#ifdef OR_IMAGE_COMPARITOR_USE_NORMALISED_HUE_ERROR_COMPARISON
 								double pixelError = compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
@@ -1178,7 +1177,6 @@ double compareImagesRGBwithPosDev(int imageWidth, int imageHeight, unsigned char
 							{
 								colour trainImagePixelColour;
 								getRGBMapValues(kx, ky, imageWidth, rgbMapTrain, &trainImagePixelColour);
-								//cout << "\t(inttrainImagePixelColour.r = " << (inttrainImagePixelColour.r << endl;
 
 								#ifdef OR_IMAGE_COMPARITOR_USE_NORMALISED_HUE_ERROR_COMPARISON
 								double pixelError = compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);

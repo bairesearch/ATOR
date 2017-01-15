@@ -26,7 +26,7 @@
  * File Name: ORTHimageCategorisationNN.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3h15b 29-February-2016
+ * Project Version: 3i15a 11-August-2016
  * Test Harness for OR Image Categorisation NN method (not yet implemented)
  *******************************************************************************/
 
@@ -230,7 +230,9 @@ int ORTHimageCategorisationNN()
 			int resizePercentage = 100/smallImageRatio;
 			char resizePercentageString[10];
 			resizePercentageString = convertIntToString(resizePercentage);
+			#ifdef OR_DEBUG
 			//cout << "resizePercentageString = " << resizePercentageString << endl;
+			#endif
 
 			convertImageToSmallImageCommand = convertImageToSmallImageCommand + "convert " + "-depth 8 -resize '" + resizePercentageString + "%' " + imageFileName + " " + imageFileNameSmall;
 			system(convertImageToSmallImageCommand.c_str());
@@ -350,7 +352,9 @@ int ORTHimageCategorisationNN()
 					bool bitValue = bitArray[i];
 					if(indexChar == 8)
 					{
+						#ifdef OR_DEBUG
 						//cout << "binaryConvertedToChar = " << binaryConvertedToChar << endl;
+						#endif
 						indexChar = 0;
 						categorisationValueAsString[categorisationValueAsStringIndex] = binaryConvertedToChar;
 						categorisationValueAsStringIndex++;
@@ -406,18 +410,24 @@ int ORTHimageCategorisationNN()
 							bool bitValue;
 							if(experienceBackPropagationPassError < experienceBackPropagationPassErrorAlternateDecision)
 							{
+								#ifdef OR_DEBUG
 								//cout << "bit = 1, nn = " << nn << endl;
+								#endif
 								bitValue = 1;
 							}
 							else
 							{
+								#ifdef OR_DEBUG
 								//cout << "bit = 0, nn = " << nn << endl;
+								#endif
 								bitValue = 0;
 							}
 
 							if(indexChar == 8)
 							{
+								#ifdef OR_DEBUG
 								//cout << "binaryConvertedToChar = " << binaryConvertedToChar << endl;
+								#endif
 								indexChar = 0;
 								categorisationValueAsString[categorisationValueAsStringIndex] = binaryConvertedToChar;
 								categorisationValueAsStringIndex++;

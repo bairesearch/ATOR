@@ -26,7 +26,7 @@
  * File Name: ORdatabaseSQL.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3h15b 29-February-2016
+ * Project Version: 3i15a 11-August-2016
  *
  *******************************************************************************/
 
@@ -433,7 +433,9 @@ void createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(ORfeatureC
 	#endif
 
 	query_state = mysql_real_query(connection, sqlSelectCommandCharStar, sqlSelectCommandCharStarIndex);
+	#ifdef OR_DEBUG
 	//cout << "select qeuery performed" << endl;
+	#endif
 	if (query_state !=0)
 	{
 		cout << mysql_error(connection) << endl;

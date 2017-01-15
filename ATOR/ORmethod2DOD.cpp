@@ -26,7 +26,7 @@
  * File Name: ORmethod2DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3h15b 29-February-2016
+ * Project Version: 3i15a 11-August-2016
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -1331,7 +1331,9 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced2(LDrefere
 		if(currentReferenceLiesInsideObjectSquare)
 		{
 			currentReference->referenceEnabledMethod2DOD = true;
+			#ifdef OR_DEBUG
 			//cout << "currentReference->referenceEnabledMethod2DOD = true" << endl;
+			#endif
 		}
 		else
 		{
@@ -1422,7 +1424,9 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(LDreference* firs
 		if(currentReferenceLiesInsideObjectSquare)
 		{
 			currentReference->referenceEnabledMethod2DOD = true;
+			#ifdef OR_DEBUG
 			//cout << "currentReference->referenceEnabledMethod2DOD = true" << endl;
+			#endif
 		}
 		else
 		{
@@ -1526,7 +1530,9 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* fi
 		if(currentReferenceLiesInsideObjectTriangle)
 		{
 			currentReference->referenceEnabledMethod2DOD = true;
+			#ifdef OR_DEBUG
 			//cout << "currentReference->referenceEnabledMethod2DOD = true" << endl;
+			#endif
 		}
 		else
 		{
@@ -1614,7 +1620,9 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* fi
 		if(currentReferenceLiesInsideObjectTriangle)
 		{
 			currentReference->referenceEnabledMethod2DOD = true;
+			#ifdef OR_DEBUG
 			//cout << "currentReference->referenceEnabledMethod2DOD = true" << endl;
+			#endif
 		}
 		else
 		{
@@ -1685,6 +1693,7 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* fi
 		P.y = testPointy;
 		P.z = 0.0;
 
+		#ifdef OR_DEBUG
 		//cout << "currentPolygonInList->point1.x = " << currentPolygonInList->point1.x << endl;
 		//cout << "currentPolygonInList->point1.y = " << currentPolygonInList->point1.y << endl;
 		//cout << "currentPolygonInList->point2.x = " << currentPolygonInList->point2.x << endl;
@@ -1693,6 +1702,7 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* fi
 		//cout << "currentPolygonInList->point3.y = " << currentPolygonInList->point3.y << endl;
 		//cout << "testPointx = " << testPointx << endl;
 		//cout << "testPointy = " << testPointy << endl;
+		#endif
 
 		double AreaPP1P2 = calculateAreaOfTriangle(&P, &A, &B);
 		double AreaPP2P3 = calculateAreaOfTriangle(&P, &B, &C);
@@ -1703,18 +1713,24 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* fi
 		if(compareDoubles((AreaPP1P2 + AreaPP2P3 + AreaPP3P1),  AreaP1P2P3))
 		{
 			currentReferenceLiesInsideObjectTriangle = true;
+			#ifdef OR_DEBUG
 			//cout << "numberOfApexesOfReferenceQuadThatLieInsideTriangle++" << endl;
+			#endif
 		}
 		else
 		{
 			currentReferenceLiesInsideObjectTriangle = false;
+			#ifdef OR_DEBUG
 			//cout << "fails++" << endl;
+			#endif
 		}
 
 		if(currentReferenceLiesInsideObjectTriangle)
 		{
 			currentReference->referenceEnabledMethod2DOD = true;
+			#ifdef OR_DEBUG
 			//cout << "currentReference->referenceEnabledMethod2DOD = true" << endl;
+			#endif
 		}
 		else
 		{
@@ -1804,7 +1820,7 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* fi
 			P.y = testPointy;
 			P.z = 0.0;
 
-
+			#ifdef OR_DEBUG
 			//cout << "currentPolygonInList->point1.x = " << currentPolygonInList->point1.x << endl;
 			//cout << "currentPolygonInList->point1.y = " << currentPolygonInList->point1.y << endl;
 			//cout << "currentPolygonInList->point2.x = " << currentPolygonInList->point2.x << endl;
@@ -1813,7 +1829,7 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* fi
 			//cout << "currentPolygonInList->point3.y = " << currentPolygonInList->point3.y << endl;
 			//cout << "testPointx = " << testPointx << endl;
 			//cout << "testPointy = " << testPointy << endl;
-
+			#endif
 
 
 			double AreaPP1P2 = calculateAreaOfTriangle(&P, &A, &B);
@@ -1825,11 +1841,15 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* fi
 			if(compareDoubles((AreaPP1P2 + AreaPP2P3 + AreaPP3P1),  AreaP1P2P3))
 			{
 				numberOfApexesOfReferenceQuadThatLieInsideTriangle++;
+				#ifdef OR_DEBUG
 				//cout << "numberOfApexesOfReferenceQuadThatLieInsideTriangle++" << endl;
+				#endif
 			}
 			else
-			{
+			{	
+				#ifdef OR_DEBUG
 				//cout << "fails++" << endl;
+				#endif
 			}
 
 
@@ -1856,7 +1876,9 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* fi
 		if(currentReferenceLiesInsideObjectTriangle)
 		{
 			currentReference->referenceEnabledMethod2DOD = true;
+			#ifdef OR_DEBUG
 			//cout << "currentReference->referenceEnabledMethod2DOD = true" << endl;
+			#endif
 		}
 		else
 		{

@@ -26,7 +26,7 @@
  * File Name: ORdatabaseDecisionTree.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3h15b 29-February-2016
+ * Project Version: 3i15a 11-August-2016
  *
  *******************************************************************************/
 
@@ -394,7 +394,9 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 											{
 												ORsnapshotIDreferenceList* newReferenceInDTBinListGeo = new ORsnapshotIDreferenceList();
 												newReferenceInDTBinListGeo->referenceID = dtBinTemp;
+												#ifdef OR_DEBUG
 												//cout << "add bin to list; newReferenceInDTBinListGeo->referenceID = " << newReferenceInDTBinListGeo->referenceID << endl;
+												#endif
 												if(DTBinListGeoIndex > 0)
 												{
 													ORsnapshotIDreferenceList* tempRef = previousReferenceInDTBinListGeo->next;

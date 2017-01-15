@@ -26,7 +26,7 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3h15b 29-February-2016
+ * Project Version: 3i15a 11-August-2016
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -363,8 +363,12 @@ bool ORmethodInitialise(int imageWidthFacingPoly, int imageHeightFacingPoly, boo
 	else
 	{
 		databaseTableSizeTrain = performSQLgetNumRowsQuery(OR_MYSQL_TABLE_NAME_TRAIN);
-		databaseTableSizeTrainInitial = databaseTableSizeTrain;
 		databaseTableSizeDecisionTree = performSQLgetNumRowsQuery(OR_MYSQL_TABLE_NAME_DECISIONTREE);
+		#ifdef OR_DEBUG
+		cout << "databaseTableSizeTrain = " << databaseTableSizeTrain << endl;
+		cout << "databaseTableSizeDecisionTree = " << databaseTableSizeDecisionTree << endl;
+		#endif
+		databaseTableSizeTrainInitial = databaseTableSizeTrain;
 		databaseTableSizeDecisionTreeInitial = databaseTableSizeDecisionTree;
 	}
 	if(OR_PRINT_ALGORITHM_PROGRESS)
@@ -1053,7 +1057,9 @@ bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 			#endif
 
 			//delete firstReferenceInInterpolatedMesh;	//this cannot be deleted because it is still used by glutDisplayFunc
+			#ifdef OR_DEBUG
 			//cout << "deleted firstReferenceInInterpolatedMesh" << endl;
+			#endif
 
 			/*
 			//NEED TO FIX THIS - MEM ISSUE
@@ -1813,7 +1819,9 @@ bool createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMap(double* point
 	LDreference* currentReferenceInList = firstReferenceInInterpolatedMesh;
 	while(currentReferenceInList->next != NULL)
 	{
+		#ifdef OR_DEBUG
 		//cout << "currentReferenceInList->name = " << currentReferenceInList->name << endl;
+		#endif
 		currentReferenceInList = currentReferenceInList->next;
 	}
 	LDreference* firstNewReferenceInList = currentReferenceInList;
@@ -2902,7 +2910,9 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 			while(currentFeatureInList->next != NULL)
 			{
 				numberOfFeatures++;
+				#ifdef OR_DEBUG
 				//cout << "currentFeatureInList++" << endl;
+				#endif
 				currentFeatureInList=currentFeatureInList->next;
 			}
 			cout << "numberOfFeatures at zoom " << zoom << " = " << numberOfFeatures << endl;
@@ -4570,8 +4580,10 @@ double compareNormalisedSnapshotExperienceListWithNeuralNetwork(ANNexperience* f
 		{
 			currentExperience->classTargetValue = trainedSnapshotIndex;		//replace test experience class target with a given training outcome - test experience classtargets are not used.
 			double experienceBackPropagationPassError = calculateExperienceErrorForHypotheticalDecision(firstInputNeuronInNetwork, firstOutputNeuronInNetwork, numberOfInputNeurons, numberOfOutputNeurons, currentExperience);
+			#ifdef OR_DEBUG
 			//cout << "\t\t experienceBackPropagationPassError = " << experienceBackPropagationPassError << endl;
-
+			#endif
+			
 			if(experienceBackPropagationPassError < minExperienceBackPropagationPassErrorForAllTrainedOutcomes)
 			{
 				minExperienceBackPropagationPassErrorForAllTrainedOutcomesIndex = trainedSnapshotIndex;

@@ -26,7 +26,7 @@
  * File Name: ORpixelMaps.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3h15b 29-February-2016
+ * Project Version: 3i15a 11-August-2016
  *
  *******************************************************************************/
 
@@ -1024,7 +1024,9 @@ double getContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixe
 
 				for(int y = pixelY; y<= pixelY+1; y++)
 				{
+					#ifdef OR_DEBUG
 					//cout << "y = " << y << endl;
+					#endif
 
 					double pixelDepthMeasurement = getLumOrContrastOrDepthMapValue(pixelX, y, imageWidth, depthMap);
 
@@ -1067,7 +1069,9 @@ double getContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixe
 
 				for(int x = pixelX; x<= pixelX+1; x++)
 				{
+					#ifdef OR_DEBUG
 					//cout << "x = " << x << endl;
+					#endif
 
 					double pixelDepthMeasurement = getLumOrContrastOrDepthMapValue(x, pixelY, imageWidth, depthMap);
 
