@@ -23,7 +23,7 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3b1a 05-August-2012
+ * Project Version: 3a12a 31-July-2012
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -723,15 +723,8 @@ bool ORMethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 			cout << " objectIndex = " << o << endl;
 		}
 		//cout << "h1" << endl;
-		
-		#ifdef OR_USE_DATABASE
-		#ifdef OR_DATABASE_DEBUG
-		cout << "DBgenerateFolderName: objectNameArray[o] = " << objectNameArray[o] << endl;
-		#endif
-		DBgenerateFolderName(&(objectNameArray[o]), trainOrTest);
-		#endif		
+
 		string objectSceneFileName = objectNameArray[o] + SCENE_FILE_NAME_EXTENSION;
-	
 		string objectSceneFileNameCollapsed = objectNameArray[o] + "CollapsedForRaytracing" + SCENE_FILE_NAME_EXTENSION;
 		char * topLevelSceneFileName =   const_cast<char*>(objectSceneFileName.c_str());
 		char * topLevelSceneFileNameCollapsed = const_cast<char*>(objectSceneFileNameCollapsed.c_str());
@@ -3095,14 +3088,6 @@ bool checkIfFeatureContainerWithSameFeatureIndiciesExists(FeatureContainer * fir
 
 bool addCornerFeaturesToFeatureListUsingRGBMap(view_info * vi, unsigned char * rgbMap, Feature * firstFeatureInList, int trainOrTest, string mapFileName, double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, bool interpixelRGBMapType)
 {
-
-		char currentTempFolder[EXE_FOLDER_PATH_MAX_LENGTH];
-		#ifdef LINUX
-		getcwd(currentTempFolder, EXE_FOLDER_PATH_MAX_LENGTH);
-		#else
-		::GetCurrentDirectory(EXE_FOLDER_PATH_MAX_LENGTH, currentTempFolder);
-		#endif
-		
 	bool result = true;
 
 	//added by RBB 3 Oct 09
@@ -3197,9 +3182,9 @@ bool addCornerFeaturesToFeatureListUsingRGBMap(view_info * vi, unsigned char * r
 
 	string convertRGBRAStoFeatureRASCommand = "";
 #ifdef LINUX
-	convertRGBRAStoFeatureRASCommand = convertRGBRAStoFeatureRASCommand + exeFolderCharStar + "/FD.exe" + " -workingfolder " + currentTempFolder + " -i " + rgbMapFileNameRas + " -o " + baseName + " -keypoints -quality -sigma 2.25 -raster";
+	convertRGBRAStoFeatureRASCommand = convertRGBRAStoFeatureRASCommand + exeFolderCharStar + "/FD.exe" + " -workingfolder " + tempFolderCharStar + " -i " + rgbMapFileNameRas + " -o " + baseName + " -keypoints -quality -sigma 2.25 -raster";
 #else
-	convertRGBRAStoFeatureRASCommand = convertRGBRAStoFeatureRASCommand + exeFolderCharStar + "/FD.exe" + " -workingfolder " + currentTempFolder + " -i " + rgbMapFileNameRas + " -o " + baseName + " -keypoints -quality -sigma 2.25 -raster";
+	convertRGBRAStoFeatureRASCommand = convertRGBRAStoFeatureRASCommand + exeFolderCharStar + "/FD.exe" + " -workingfolder " + tempFolderCharStar + " -i " + rgbMapFileNameRas + " -o " + baseName + " -keypoints -quality -sigma 2.25 -raster";
 #endif
 	string convertFeatureRAStoFeaturePPMCommand = "convert -depth 8 " + featureMapFileNameRas + " " + featureMapFileName;
 
@@ -3220,9 +3205,9 @@ bool addCornerFeaturesToFeatureListUsingRGBMap(view_info * vi, unsigned char * r
 	}
 	system(convertRGBRAStoFeatureRASCommand.c_str());
 		#ifdef LINUX
-		chdir(currentTempFolder);
+		chdir(tempFolderCharStar);
 		#else
-		::SetCurrentDirectory(currentTempFolder);
+		::SetCurrentDirectory(tempFolderCharStar);
 		#endif
 
 	if(OR_PRINT_ALGORITHM_PROGRESS)

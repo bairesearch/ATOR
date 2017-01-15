@@ -23,7 +23,7 @@
  * File Name: ORdatabaseFileIO.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3b1a 05-August-2012
+ * Project Version: 3a12a 31-July-2012
  *
  *******************************************************************************/
 
@@ -31,13 +31,6 @@
 #include "ORdatabaseSQL.h"	//required for determineGeoBinX()/determineGeoBinY() only ... - these functions and/or compareFeaturesListForMatch() should probably be moved elsewhere instead, say to "ORdatabaseOperations.cpp"
 #include "SHAREDvector.h"
 #include "LDreferenceManipulation.h"
-
-#ifdef LINUX
-#include <sys/stat.h>
-#else
-//#include <dirent.h>
-#include <windows.h>
-#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -50,186 +43,9 @@
 
 using namespace std;
 
-#ifdef OR_USE_DATABASE
 
 
-bool directoryExists(string * folderName)
-{
-	bool folderExists = false;
 
-	#ifdef LINUX
-	struct stat st;
-	if(stat(folderName->c_str(), &st) == 0)
-	{
-		#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
-		cout << "\tdirectoryExists: folderName = " << *folderName << endl;
-		#endif
-		folderExists = true;
-	}
-	#else
-	/*
-	if((GetFileAttributes(folderName->c_str())) != INVALID_FILE_ATTRIBUTES)
-	{
-		folderExists = true;
-	}
-	*/
-	DIR * pDir = opendir(folderName->c_str());
-	if(pDir != NULL)
-	{
-		folderExists = true;
-		closedir(pDir);
-	}
-	#endif
-
-	return folderExists;
-
-
-}
-
-bool makeDirectory(string * folderName)
-{
-	#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
-	cout << "\tmakeDirectory: folderName = " << *folderName << endl;
-	#endif
-	bool result = true;
-
-	#ifdef LINUX
-	mkdir(folderName->c_str(), 0755);
-	#else
-	if( _mkdir(folderName->c_str()) != 0)	//CreateDirectory(folderName->c_str(), 0);
-	{
-		result = false;
-	}
-	#endif
-
-	return result;
-}
-
-bool setCurrentDirectory(string * folderName)
-{
-	#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
-	cout << "\tsetCurrentDirectory: folderName = " << *folderName << endl;
-	#endif
-	#ifdef LINUX
-	chdir(folderName->c_str());
-	#else
-	::SetCurrentDirectory(folderName->c_str());
-	#endif
-}
-
-bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string * folderName)
-{
-	#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
-	cout << "checkIfFolderExistsAndIfNotMakeAndSetAsCurrent: folderName = " << *folderName << endl;
-	#endif
-	if(!directoryExists(folderName))
-	{
-		makeDirectory(folderName);
-	}
-	setCurrentDirectory(folderName);
-}
-
-string DBgenerateServerName(string * objectName, bool trainOrTest)
-{
-	string serverName;
-	if(!trainOrTest)
-	{
-		serverName = OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME_BASE;
-	}
-	else
-	{
-		//cout << "db11" << endl;
-		//cout << "entityName = " << *entityName << endl;
-
-		#ifdef GIA_DATABASE_FILESYSTEM_USE_MULTIPLE_SERVERS
-		char entityFirstCharacter = entityName->at(0);
-		if((entityFirstCharacter < ASCII_TABLE_INDEX_OF_a) || (entityFirstCharacter > ASCII_TABLE_INDEX_OF_z))
-		{
-			cout << "determineServerName error: (entityFirstCharacter < ASCII_TABLE_INDEX_OF_a) || (entityFirstCharacter > ASCII_TABLE_INDEX_OF_z)" << endl;
-			cout << "entityName = " << *entityName << endl;
-			exit(0);
-		}
-
-		int entityFirstCharacterIndex = entityFirstCharacter - ASCII_TABLE_INDEX_OF_a;
-		//cout << "entityFirstCharacterIndex = " << entityFirstCharacterIndex << endl;
-		string serverName = serverNameArray[entityFirstCharacterIndex]; 	//this could be a more complex algorithm; eg serverName = (string)"/mnt/" + serverNameArray[entityFirstCharacterIndex]
-		#else
-		serverName = OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME_BASE;
-		#endif
-	}
-	#ifdef OR_DATABASE_DEBUG
-	cout << "serverName = " << serverName << endl;
-	#endif
-
-	return serverName;
-}
-
-
-string DBgenerateFolderName(string * objectName, bool trainOrTest)
-{
-	string tempFolder = tempFolderCharStar;
-	
-	//eg network/server/ORdatabase/e/x/a/example/...
-	
-	string serverName = DBgenerateServerName(objectName, trainOrTest);
-	string databaseName = OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME;
-	string fileName = serverName + databaseName;
-
-	#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
-	cout << "1fileName = " << fileName << endl;
-	#endif
-	setCurrentDirectory(&fileName);
-
-	if(!trainOrTest)
-	{
-		fileName = fileName + OR_DATABASE_TEST_FOLDER_NAME + "/";
-		string testFolderName = OR_DATABASE_TEST_FOLDER_NAME;
-		checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&testFolderName);	
-	}
-	else
-	{
-		#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
-		cout << "*objectName = " << *objectName << endl;
-		#endif
-		
-		fileName = fileName + OR_DATABASE_TRAIN_FOLDER_NAME + "/";
-		string trainFolderName = OR_DATABASE_TRAIN_FOLDER_NAME;
-		checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&trainFolderName);		
-
-		int numberOfEntityNameLevels;
-		if(objectName->length() < OR_DATABASE_CONCEPT_NAME_SUBDIRECTORY_INDEX_NUMBER_OF_LEVELS)
-		{
-			//cout << "DBgenerateFileName error: (objectName.length() < OR_DATABASE_CONCEPT_NAME_SUBDIRECTORY_INDEX_NUMBER_OF_LEVELS)" << endl;
-			//cout << "objectName = " << *objectName << endl;
-			numberOfEntityNameLevels = objectName->length();
-		}
-		else
-		{
-			numberOfEntityNameLevels = OR_DATABASE_CONCEPT_NAME_SUBDIRECTORY_INDEX_NUMBER_OF_LEVELS;
-		}
-		for(int level=0; level<numberOfEntityNameLevels; level++)
-		{
-			string folderName = "";
-			folderName = folderName + objectName->at(level);
-			fileName = fileName + folderName + "/";
-			checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&folderName);
-		}
-		fileName = fileName + *objectName + "/";
-		checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(objectName);
-
-		#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
-		cout << "2fileName = " << fileName << endl;
-		#endif
-	}
-
-	#ifdef OR_DATABASE_DEBUG
-	cout << "fileName = " << fileName << endl;
-	#endif
-
-	return fileName;
-}
-
-#endif
 
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
