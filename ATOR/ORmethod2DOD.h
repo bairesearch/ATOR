@@ -25,7 +25,7 @@
  * File Name: ORmethod2DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3d3a 24-May-2014
+ * Project Version: 3d3b 24-May-2014
  *
  *******************************************************************************/
 #ifndef HEADER_OR_METHOD_2DOD
