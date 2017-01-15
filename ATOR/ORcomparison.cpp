@@ -26,7 +26,7 @@
  * File Name: ORcomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3f3a 10-July-2015
+ * Project Version: 3f4a 11-July-2015
  *
  *******************************************************************************/
 
@@ -333,7 +333,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3f3a 10-July-2015<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3f4a 11-July-2015<p>";
 		}
 		else
 		{
@@ -504,16 +504,10 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 					{
 						for(int testSideIndex=0; testSideIndex < OR_METHOD_POLYGON_NUMBER_OF_SIDES; testSideIndex++)
 						{
-
-							char testpolygonIndexString[10];
-							char testsideIndexString[10];
-							char testviewIndexString[10];
-							char testzoomIndexString[10];
-
-							sprintf(testpolygonIndexString, "%d", testPolyIndex);
-							sprintf(testsideIndexString, "%d", testSideIndex);
-							sprintf(testviewIndexString, "%d", testViewIndex+testViewNumber);
-							sprintf(testzoomIndexString, "%d", testZoomIndex);
+							string testpolygonIndexString = convertIntToString(testPolyIndex);
+							string testsideIndexString = convertIntToString(testSideIndex);
+							string testviewIndexString = convertIntToString(testViewIndex+testViewNumber);
+							string testzoomIndexString = convertIntToString(testZoomIndex);
 
 							string testinterpolatedRGBMapFileNameForRayTracing;
 							testinterpolatedRGBMapFileNameForRayTracing = testObjectNameArray[testObjectIndex] + "interpolatedMesh" + "ViewIndex" + testviewIndexString + "ZoomIndex" + testzoomIndexString + "FacingPoly" + testpolygonIndexString + "side" + testsideIndexString;
@@ -581,15 +575,10 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 				{
 					for(int trainSideIndex=0; trainSideIndex < OR_METHOD_POLYGON_NUMBER_OF_SIDES; trainSideIndex++)
 					{
-						char trainzoomIndexString[10];
-						char trainviewIndexString[10];
-						char trainpolygonIndexString[10];
-						char trainsideIndexString[10];
-
-						sprintf(trainpolygonIndexString, "%d", trainPolyIndex);
-						sprintf(trainsideIndexString, "%d", trainSideIndex);
-						sprintf(trainviewIndexString, "%d", trainViewIndex);
-						sprintf(trainzoomIndexString, "%d", trainZoomIndex);
+						string trainpolygonIndexString = convertIntToString(trainPolyIndex);
+						string trainsideIndexString = convertIntToString(trainSideIndex);
+						string trainviewIndexString = convertIntToString(trainViewIndex);
+						string trainzoomIndexString = convertIntToString(trainZoomIndex);
 
 						string traininterpolatedRGBMapFileNameForRayTracing;
 						traininterpolatedRGBMapFileNameForRayTracing = objectNameArray[trainObjectIndex] + "interpolatedMesh" + "ViewIndex" + trainviewIndexString + "ZoomIndex" + trainzoomIndexString + "FacingPoly" + trainpolygonIndexString + "side" + trainsideIndexString;
@@ -676,15 +665,10 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 				{
 					for(int trainSideIndex=0; trainSideIndex < OR_METHOD_POLYGON_NUMBER_OF_SIDES; trainSideIndex++)
 					{
-						char trainpolygonIndexString[10];
-						char trainsideIndexString[10];
-						char trainviewIndexString[10];
-						char trainzoomIndexString[10];
-
-						sprintf(trainpolygonIndexString, "%d", trainPolyIndex);
-						sprintf(trainsideIndexString, "%d", trainSideIndex);
-						sprintf(trainviewIndexString, "%d", trainViewIndex);
-						sprintf(trainzoomIndexString, "%d", trainZoomIndex);
+						string trainpolygonIndexString = convertIntToString(trainPolyIndex);
+						string trainsideIndexString = convertIntToString(trainSideIndex);
+						string trainviewIndexString = convertIntToString(trainViewIndex);
+						string trainzoomIndexString = convertIntToString(trainZoomIndex);
 
 						string traininterpolatedRGBMapFileNameForRayTracing;
 						traininterpolatedRGBMapFileNameForRayTracing = trainObjectNameArray[trainObjectIndex] + "interpolatedMesh" + "ViewIndex" + trainviewIndexString + "ZoomIndex" + trainzoomIndexString + "FacingPoly" + trainpolygonIndexString + "side" + trainsideIndexString;
@@ -834,8 +818,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 			#ifndef TEMP_REMOVE_FLASH
 			if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML)
 			{
-				char trainviewIndexStringTemp[10];
-				sprintf(trainviewIndexStringTemp, "%d", 0);
+				string trainviewIndexStringTemp = convertIntToString(0);
 
 				string mapFileName = trainObjectNameArray[testObjectIndex] + "initialViewMap" + "ViewIndex" + trainviewIndexStringTemp + "ZoomIndex" + "0";
 				string blank = "";
@@ -890,10 +873,8 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 				#ifndef TEMP_REMOVE_FLASH
 				if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML)
 				{
-					char testviewIndexStringTemp[10];
-					sprintf(testviewIndexStringTemp, "%d", testViewIndex+testViewNumber);
-					char testzoomIndexStringTemp[10];
-					sprintf(testzoomIndexStringTemp, "%d", testZoomIndex);
+					string testviewIndexStringTemp = convertIntToString(testViewIndex+testViewNumber);
+					string testzoomIndexStringTemp = convertIntToString(testZoomIndex);
 
 					string mapFileName = testObjectNameArray[testObjectIndex] + "initialViewMap" + "ViewIndex" + testviewIndexStringTemp + "ZoomIndex" + testzoomIndexStringTemp;
 					string blank = "";
@@ -973,15 +954,10 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 							testMapLoaded = false;
 						}
 
-						char testviewIndexString[10];
-						char testzoomIndexString[10];
-						char testpolygonIndexString[10];
-						char testsideIndexString[10];
-
-						sprintf(testviewIndexString, "%d", testViewIndex+testViewNumber);
-						sprintf(testzoomIndexString, "%d", testZoomIndex);
-						sprintf(testpolygonIndexString, "%d", testPolyIndex);
-						sprintf(testsideIndexString, "%d", testSideIndex);
+						string testviewIndexString = convertIntToString(testViewIndex+testViewNumber);
+						string testzoomIndexString = convertIntToString(testZoomIndex);
+						string testpolygonIndexString = convertIntToString(testPolyIndex);
+						string testsideIndexString = convertIntToString(testSideIndex);
 
 						string testinterpolatedRGBMapFileNameForRayTracing;
 						testinterpolatedRGBMapFileNameForRayTracing = testObjectNameArray[testObjectIndex] + "interpolatedMesh" + "ViewIndex" + testviewIndexString + "ZoomIndex" + testzoomIndexString + "FacingPoly" + testpolygonIndexString + "side" + testsideIndexString;
@@ -1013,14 +989,10 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 									/*
 									if(OR_METHOD_GEOMETRIC_COMPARISON_USE_TEST_RGB_MAP_OPTIMISATION)
 									{
-										char testviewIndexString[10];
-										char testzoomIndexString[10];
-										char testpolygonIndexString[10];
-										char testsideIndexString[10];
-										sprintf(testviewIndexString, "%d", testViewIndex+testViewNumber);
-										sprintf(testzoomIndexString, "%d", testZoomIndex);
-										sprintf(testpolygonIndexString, "%d", testPolyIndex);
-										sprintf(testsideIndexString, "%d", testSideIndex);
+										string testviewIndexString = convertIntToString(testViewIndex+testViewNumber);
+										string testzoomIndexString = convertIntToString(testZoomIndex);
+										string testpolygonIndexString = convertIntToString(testPolyIndex);
+										string testsideIndexString = convertIntToString(testSideIndex);
 										string testinterpolatedRGBMapFileNameForRayTracing;
 										testinterpolatedRGBMapFileNameForRayTracing = testObjectNameArray[testObjectIndex] + "interpolatedMesh" + "ViewIndex" + testviewIndexString + "ZoomIndex" + testzoomIndexString + "FacingPoly" + testpolygonIndexString + "side" + testsideIndexString;
 									}
@@ -1546,15 +1518,10 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 												//cout << currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->OTpointIndex << "\t" << currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->pointTransformed.x <<  "\t" << currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->pointTransformed.y <<  "\t" << currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->pointTransformed.z << "\t" << currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->point.x <<  "\t" << currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->point.y <<  "\t" << currentFeatureContainerInTestFeatureMatchingTrainBin2->firstFeatureInFeatureList->point.z <<endl;
 												#endif
 
-												char trainpolygonIndexString[10];
-												char trainsideIndexString[10];
-												char trainviewIndexString[10];
-												char trainzoomIndexString[10];
-
-												sprintf(trainpolygonIndexString, "%d", trainPolyIndex);
-												sprintf(trainsideIndexString, "%d", trainSideIndex);
-												sprintf(trainviewIndexString, "%d", trainViewIndex);
-												sprintf(trainzoomIndexString, "%d", trainZoomIndex);
+												string trainpolygonIndexString = convertIntToString(trainPolyIndex);
+												string trainsideIndexString = convertIntToString(trainSideIndex);
+												string trainviewIndexString = convertIntToString(trainViewIndex);
+												string trainzoomIndexString = convertIntToString(trainZoomIndex);
 
 												string traininterpolatedRGBMapFileNameForRayTracing;
 												traininterpolatedRGBMapFileNameForRayTracing = trainObjectString + "interpolatedMesh" + "ViewIndex" + trainviewIndexString + "ZoomIndex" + trainzoomIndexString + "FacingPoly" + trainpolygonIndexString + "side" + trainsideIndexString;
@@ -1686,15 +1653,11 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 											string trainObjectString = objectNameArray[trainObjectIndex];
 
 						#endif
-										char trainpolygonIndexString[10];
-										char trainsideIndexString[10];
-										char trainviewIndexString[10];
-										char trainzoomIndexString[10];
 
-										sprintf(trainpolygonIndexString, "%d", trainPolyIndex);
-										sprintf(trainsideIndexString, "%d", trainSideIndex);
-										sprintf(trainviewIndexString, "%d", trainViewIndex);
-										sprintf(trainzoomIndexString, "%d", trainZoomIndex);
+										string trainpolygonIndexString = convertIntToString(trainPolyIndex);
+										string trainsideIndexString = convertIntToString(trainSideIndex);
+										string trainviewIndexString = convertIntToString(trainViewIndex);
+										string trainzoomIndexString = convertIntToString(trainZoomIndex);
 
 										string traininterpolatedRGBMapFileNameForRayTracing = trainObjectString + "interpolatedMesh" + "ViewIndex" + trainviewIndexString + "ZoomIndex" + trainzoomIndexString + "FacingPoly" + trainpolygonIndexString + "side" + trainsideIndexString;
 
@@ -1747,15 +1710,10 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 
 														testMapLoaded = true;
 
-														char testviewIndexString[10];
-														char testzoomIndexString[10];
-														char testpolygonIndexString[10];
-														char testsideIndexString[10];
-
-														sprintf(testviewIndexString, "%d", testViewIndex+testViewNumber);
-														sprintf(testzoomIndexString, "%d", testZoomIndex);
-														sprintf(testpolygonIndexString, "%d", testPolyIndex);
-														sprintf(testsideIndexString, "%d", testSideIndex);
+														string testviewIndexString = convertIntToString(testViewIndex+testViewNumber);
+														string testzoomIndexString = convertIntToString(testZoomIndex);
+														string testpolygonIndexString = convertIntToString(testPolyIndex);
+														string testsideIndexString = convertIntToString(testSideIndex);
 
 														string testinterpolatedRGBMapFileNameForRayTracing;
 														testinterpolatedRGBMapFileNameForRayTracing = testObjectNameArray[testObjectIndex] + "interpolatedMesh" + "ViewIndex" + testviewIndexString + "ZoomIndex" + testzoomIndexString + "FacingPoly" + testpolygonIndexString + "side" + testsideIndexString;
@@ -2133,8 +2091,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 					#ifdef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 					if(averageMatchErrorAcrossSides < OR_IMAGE_COMPARITOR_MATCH_ERROR_THRESHOLD)
 					{
-						char averageMatchErrorAcrossSidesString[10];
-						sprintf(averageMatchErrorAcrossSidesString, "%0.3f", averageMatchErrorAcrossSides);
+						string averageMatchErrorAcrossSidesString = convertDoubleToString(averageMatchErrorAcrossSides, "%0.3f");
 
 						#ifdef OR_DEBUG_COMPARISON
 						cout << "transformed RGB check passed 2: (averageMatchErrorAcrossSides < OR_IMAGE_COMPARITOR_MATCH_ERROR_THRESHOLD)" << endl;
@@ -2244,31 +2201,21 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 
 									if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML)
 									{
-										char trainviewIndexString[10];
-										char trainzoomIndexString[10];
-										char trainpolygonIndexString[10];
-										char trainsideIndexString[10];
-
 										#ifdef OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML_PRINT_OBJECT_NAMES
 											string trainobjectIndexString = trainObjectNameWithLowestErrorRecordAcrossAllSides;
 										#else
-											char trainobjectIndexString[10];
-											sprintf(trainobjectIndexString, "%d", trainPolyIndexWithLowestErrorRecord[s][0]);
+											string trainobjectIndexString = convertIntToString(trainPolyIndexWithLowestErrorRecord[s][0]);
 										#endif
 
-										sprintf(trainviewIndexString, "%d", trainPolyIndexWithLowestErrorRecord[s][1]);
-										sprintf(trainzoomIndexString, "%d", trainPolyIndexWithLowestErrorRecord[s][2]);
-										sprintf(trainpolygonIndexString, "%d", trainPolyIndexWithLowestErrorRecord[s][3]);
-										sprintf(trainsideIndexString, "%d", trainPolyIndexWithLowestErrorRecord[s][4]);
+										string trainviewIndexString = convertIntToString(trainPolyIndexWithLowestErrorRecord[s][1]);
+										string trainzoomIndexString = convertIntToString(trainPolyIndexWithLowestErrorRecord[s][2]);
+										string trainpolygonIndexString = convertIntToString(trainPolyIndexWithLowestErrorRecord[s][3]);
+										string trainsideIndexString = convertIntToString(trainPolyIndexWithLowestErrorRecord[s][4]);
 
-										char testviewIndexString[10];
-										char testzoomIndexString[10];
-										char testpolygonIndexString[10];
-										char testsideIndexString[10];
-										sprintf(testviewIndexString, "%d", testViewIndex+testViewNumber);
-										sprintf(testzoomIndexString, "%d", testZoomIndex);
-										sprintf(testpolygonIndexString, "%d", testPolyIndex);
-										sprintf(testsideIndexString, "%d", s);
+										string testviewIndexString = convertIntToString(testViewIndex+testViewNumber);
+										string testzoomIndexString = convertIntToString(testZoomIndex);
+										string testpolygonIndexString = convertIntToString(testPolyIndex);
+										string testsideIndexString = convertIntToString(s);
 
 										string blank = "";
 
@@ -2371,10 +2318,8 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 
 										string trainImgSrcHtmlTags = "";
 										string testImgSrcHtmlTags = "";
-										char imageWidthFacingPolyString[10];
-										char imageHeightFacingPolyString[10];
-										sprintf(imageWidthFacingPolyString, "%d", imageWidthFacingPoly);	//increase image size for small images - for better visualisation [rather than zoom in browser]
-										sprintf(imageHeightFacingPolyString, "%d", imageHeightFacingPoly);	//increase image size for small images - for better visualisation [rather than zoom in browser]
+										string imageWidthFacingPolyString = convertIntToString(imageWidthFacingPoly);	//increase image size for small images - for better visualisation [rather than zoom in browser]
+										string imageHeightFacingPolyString = convertIntToString(imageHeightFacingPoly);	//increase image size for small images - for better visualisation [rather than zoom in browser]
 										if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL)
 										{
 											convertImageFileType(&trainrgbMapFacingPolyFileNameWithoutExt, &trainrgbMapFacingPolyFileNameWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
@@ -2448,28 +2393,20 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 											for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; i++)
 											{
 												int arrayValueSigned = testconcatonatedSignedDctCoeffArrayRequirementTemp[i];
-
-												char tempDataValueString[10];
-												sprintf(tempDataValueString, "%d", arrayValueSigned);
-												testDCTBinnedPrelimTableHTMLOutputString = testDCTBinnedPrelimTableHTMLOutputString + "<TD>" + tempDataValueString + "</TD>";
+												testDCTBinnedPrelimTableHTMLOutputString = testDCTBinnedPrelimTableHTMLOutputString + "<TD>" + convertIntToString(arrayValueSigned) + "</TD>";
 
 												double arrayValueUnsignedDouble;
 												int arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);
-												sprintf(tempDataValueString, "%u", arrayValueUnsigned);
-												testDCTBinnedTableHTMLOutputString = testDCTBinnedTableHTMLOutputString + "<TD>" + tempDataValueString + "</TD>";
+												testDCTBinnedTableHTMLOutputString = testDCTBinnedTableHTMLOutputString + "<TD>" + convertUnsignedIntToString(arrayValueUnsigned) + "</TD>";
 											}
 											for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; i++)
 											{
 												int arrayValueSigned = trainconcatonatedSignedDctCoeffArrayRequirementTemp[i];
-
-												char tempDataValueString[10];
-												sprintf(tempDataValueString, "%d", arrayValueSigned);
-												trainDCTBinnedPrelimTableHTMLOutputString = trainDCTBinnedPrelimTableHTMLOutputString + "<TD>" + tempDataValueString + "</TD>";
+												trainDCTBinnedPrelimTableHTMLOutputString = trainDCTBinnedPrelimTableHTMLOutputString + "<TD>" + convertIntToString(arrayValueSigned) + "</TD>";
 
 												double arrayValueUnsignedDouble;
 												int arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);
-												sprintf(tempDataValueString, "%u", arrayValueUnsigned);
-												trainDCTBinnedTableHTMLOutputString = trainDCTBinnedTableHTMLOutputString + "<TD>" + tempDataValueString + "</TD>";
+												trainDCTBinnedTableHTMLOutputString = trainDCTBinnedTableHTMLOutputString + "<TD>" + convertUnsignedIntToString(arrayValueUnsigned) + "</TD>";
 											}
 											testDCTBinnedPrelimTableHTMLOutputString = testDCTBinnedPrelimTableHTMLOutputString + "</TR></TABLE>";
 											trainDCTBinnedPrelimTableHTMLOutputString = trainDCTBinnedPrelimTableHTMLOutputString + "</TR></TABLE>";
@@ -2594,8 +2531,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 										#ifdef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 										ICRmatchRow = ICRmatchRow + "<TD>" + averageMatchErrorAcrossSidesString + "</TD></TR>";
 										#else
-										char currentLowestErrorString[10];
-										sprintf(currentLowestErrorString, "%0.3f", currentLowestErrorRecord[s]);
+										string currentLowestErrorString = convertDoubleToString(currentLowestErrorRecord[s], "%0.3f");
 										ICRmatchRow = ICRmatchRow + "<TD>" + currentLowestErrorString + "</TD></TR>";
 										#endif
 
@@ -2876,23 +2812,23 @@ void createGeoTableHTMLfromFeatureList(ORfeature* firstFeatureInNearestFeatureLi
 		#endif
 		if(currentFeatureInList->matchFound)
 		{
-			char coordinateXString[10];
-			char coordinateYString[10];
-			char coordinateZString[10];
+			string coordinateXString = "";
+			string coordinateYString = "";
+			string coordinateZString = "";
 			if(applyBinning)
 			{
 				int xBin = determineGeoBinX(currentFeatureInList->pointTransformed.x);
 				int yBin = determineGeoBinY(currentFeatureInList->pointTransformed.y);
 				int zBin = 0;
-				sprintf(coordinateXString, "%d", xBin);
-				sprintf(coordinateYString, "%d", yBin);
-				sprintf(coordinateZString, "%d", zBin);
+				coordinateXString = convertIntToString(xBin);
+				coordinateYString = convertIntToString(yBin);
+				coordinateZString = convertIntToString(zBin);
 			}
 			else
 			{
-				sprintf(coordinateXString, "%0.6f", currentFeatureInList->pointTransformed.x);
-				sprintf(coordinateYString, "%0.6f", currentFeatureInList->pointTransformed.y);
-				sprintf(coordinateZString, "%0.6f", currentFeatureInList->pointTransformed.z);
+				coordinateXString = convertDoubleToString(currentFeatureInList->pointTransformed.x, "%0.6f");
+				coordinateYString = convertDoubleToString(currentFeatureInList->pointTransformed.y, "%0.6f");
+				coordinateZString = convertDoubleToString(currentFeatureInList->pointTransformed.z, "%0.6f");
 			}
 
 			*geoTableHTMLoutputString = *geoTableHTMLoutputString + "<TR><TD>" + coordinateXString + "</TD><TD>" + coordinateYString + "</TD><TD>" + coordinateZString + "</TD></TR>";

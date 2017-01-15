@@ -26,7 +26,7 @@
  * File Name: ORTHimageCategorisationNN.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3f3a 10-July-2015
+ * Project Version: 3f4a 11-July-2015
  * Test Harness for OR Image Categorisation NN method (not yet implemented)
  *******************************************************************************/
 
@@ -165,7 +165,7 @@ int ORTHimageCategorisationNN()
 	string convertImageToSmallImageCommand = "";
 	int resizePercentage = 100/smallImageRatio;
 	char resizePercentageString[10];
-	sprintf(resizePercentageString, "%d", resizePercentage);
+	resizePercentageString = convertIntToString(resizePercentage);
 
 	convertImageToSmallImageCommand = convertImageToSmallImageCommand + "convert " + "-depth 8 -resize '" + resizePercentageString + "%' " + exampleImageFileName + " " + exampleImageFileNameSmall;
 	system(convertImageToSmallImageCommand.c_str());
@@ -229,7 +229,7 @@ int ORTHimageCategorisationNN()
 			string convertImageToSmallImageCommand = "";
 			int resizePercentage = 100/smallImageRatio;
 			char resizePercentageString[10];
-			sprintf(resizePercentageString, "%d", resizePercentage);
+			resizePercentageString = convertIntToString(resizePercentage);
 			//cout << "resizePercentageString = " << resizePercentageString << endl;
 
 			convertImageToSmallImageCommand = convertImageToSmallImageCommand + "convert " + "-depth 8 -resize '" + resizePercentageString + "%' " + imageFileName + " " + imageFileNameSmall;

@@ -26,7 +26,7 @@
  * File Name: ORfeature.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3f3a 10-July-2015
+ * Project Version: 3f4a 11-July-2015
  *
  * Assumes that depth information is less accurate than image information
  *
@@ -3699,10 +3699,10 @@ void generateFeatureListFromHeitgerFeatureAsciiMap(ORfeature* firstFeatureInFeat
 			}
 			else if((readingMagnitude) && (c == '\n'))
 			{
-				currentFeatureInList->point.x = (atof(XString.c_str()))* zoom;
-				currentFeatureInList->point.y = (atof(YString.c_str()))* zoom;
+				currentFeatureInList->point.x = (convertStringToDouble(XString))* zoom;
+				currentFeatureInList->point.y = (convertStringToDouble(YString))* zoom;
 				currentFeatureInList->point.z = 0.0;
-				currentFeatureInList->magnitude = (atof(magnitudeString.c_str()));
+				currentFeatureInList->magnitude = (convertStringToDouble(magnitudeString));
 				currentFeatureInList->xViewport = currentFeatureInList->point.x;
 				currentFeatureInList->yViewport = currentFeatureInList->point.y;
 

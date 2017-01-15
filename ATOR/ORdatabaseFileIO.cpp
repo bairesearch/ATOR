@@ -26,7 +26,7 @@
  * File Name: ORdatabaseFileIO.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3f3a 10-July-2015
+ * Project Version: 3f4a 11-July-2015
  *
  *******************************************************************************/
 
@@ -530,27 +530,27 @@ void createFeaturesListUsingFeaturesFile(string fileName, ORfeature* firstFeatur
 		#endif
 			{
 
-				if(!ignoreOTfeatures || ((int)(atof(OTpointIndexString.c_str())) == 0))
+				if(!ignoreOTfeatures || ((int)(convertStringToDouble(OTpointIndexString)) == 0))
 				{
 					currentFeatureInList->objectName = objectNameString;
-					currentFeatureInList->trainOrTest = (bool)(atof(trainOrTestString.c_str()));
-					currentFeatureInList->viewIndex = (int)(atof(viewIndexString.c_str()));
-					currentFeatureInList->zoomIndex = (int)(atof(zoomIndexString.c_str()));
-					currentFeatureInList->polyIndex = (int)(atof(polyIndexString.c_str()));
-					currentFeatureInList->sideIndex = (int)(atof(sideIndexString.c_str()));
+					currentFeatureInList->trainOrTest = (bool)(convertStringToDouble(trainOrTestString));
+					currentFeatureInList->viewIndex = (int)(convertStringToDouble(viewIndexString));
+					currentFeatureInList->zoomIndex = (int)(convertStringToDouble(zoomIndexString));
+					currentFeatureInList->polyIndex = (int)(convertStringToDouble(polyIndexString));
+					currentFeatureInList->sideIndex = (int)(convertStringToDouble(sideIndexString));
 					#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-					currentFeatureInList->OTpointIndex = (int)(atof(OTpointIndexString.c_str()));
+					currentFeatureInList->OTpointIndex = (int)(convertStringToDouble(OTpointIndexString));
 					#endif
 					#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
-					currentFeatureInList->minWidthAndHeightOfOrigOT = (int)(atof(minWidthAndHeightOfOrigOTString.c_str()));
+					currentFeatureInList->minWidthAndHeightOfOrigOT = (int)(convertStringToDouble(minWidthAndHeightOfOrigOTString));
 					#endif
-					currentFeatureInList->pointTransformed.x = (atof(transformedPointXString.c_str()));
-					currentFeatureInList->pointTransformed.y = (atof(transformedPointYString.c_str()));
-					currentFeatureInList->pointTransformed.z = (atof(transformedPointZString.c_str()));
+					currentFeatureInList->pointTransformed.x = (convertStringToDouble(transformedPointXString));
+					currentFeatureInList->pointTransformed.y = (convertStringToDouble(transformedPointYString));
+					currentFeatureInList->pointTransformed.z = (convertStringToDouble(transformedPointZString));
 					#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
-					currentFeatureInList->point.x = (atof(PointXString.c_str()));
-					currentFeatureInList->point.y = (atof(PointYString.c_str()));
-					currentFeatureInList->point.z = (atof(PointZString.c_str()));
+					currentFeatureInList->point.x = (convertStringToDouble(PointXString));
+					currentFeatureInList->point.y = (convertStringToDouble(PointYString));
+					currentFeatureInList->point.z = (convertStringToDouble(PointZString));
 					#endif
 
 
@@ -677,29 +677,17 @@ void createTransformedFeaturesFile(ORfeature* firstFeatureInList, string fileNam
 	ORfeature* currentFeature = firstFeatureInList;
 	while(currentFeature->next != NULL)
 	{
-		char polygonIndexString[10];
-		char sideIndexString[10];
-		char viewIndexString[10];
-		char zoomIndexString[10];
-		char trainOrTestString[10];
+		string polygonIndexString = convertIntToString(polyIndex);
+		string sideIndexString = convertIntToString(sideIndex);
+		string viewIndexString = convertIntToString(viewIndex);
+		string zoomIndexString = convertIntToString(zoomIndex);
 		#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-		char OTpointIndexString[10];
+		string OTpointIndexString = convertIntToString(currentFeature->OTpointIndex);
 		#endif
 		#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
-		char minWidthAndHeightOfOrigOTString[10];
+		string minWidthAndHeightOfOrigOTString = convertIntToString(currentFeature->minWidthAndHeightOfOrigOT);
 		#endif
-		
-		sprintf(polygonIndexString, "%d", polyIndex);
-		sprintf(sideIndexString, "%d", sideIndex);
-		sprintf(viewIndexString, "%d", viewIndex);
-		sprintf(zoomIndexString, "%d", zoomIndex);
-		#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-		sprintf(OTpointIndexString, "%d", currentFeature->OTpointIndex);
-		#endif
-		#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
-		sprintf(minWidthAndHeightOfOrigOTString, "%d", currentFeature->minWidthAndHeightOfOrigOT);
-		#endif
-		sprintf(trainOrTestString, "%d", ((int)trainOrTest));
+		string trainOrTestString = convertIntToString(((int)trainOrTest));
 		string transformedpositionCoordinatesString = convertPositionCoordinatesToString(&(currentFeature->pointTransformed));
 		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
 		string positionCoordinatesString = convertPositionCoordinatesToString(&(currentFeature->point));

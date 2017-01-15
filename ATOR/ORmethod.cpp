@@ -26,7 +26,7 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3f3a 10-July-2015
+ * Project Version: 3f4a 11-July-2015
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -1365,8 +1365,7 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 		trainOrTestString = TEST_STRING;
 	}
 
-	char viewIndexString[10];
-	sprintf(viewIndexString, "%d",  viewIndex);
+	string viewIndexString = convertIntToString(viewIndex);
 
 	string mapFileName = objectName + "initialViewMap" + "ViewIndex" + viewIndexString + "ZoomIndex" + "0";
 
@@ -1408,9 +1407,7 @@ bool createRGBandPointMap(LDreference* initialReferenceInSceneFile, double* poin
 			cout << "\t 2. preexisting images are placed in current directory; eg 868_r0.png, 868_r5.png, 868_r10.png, ... etc" << endl;
 		}
 
-		char rotationviewIndexString[10];
-		sprintf(rotationviewIndexString, "%d",  (viewIndex*PREEXISTING_IMAGE_DATA_VIEW_INDEX_DEGREES));
-
+		string rotationviewIndexString = convertIntToString((viewIndex*PREEXISTING_IMAGE_DATA_VIEW_INDEX_DEGREES));
 
 	#ifdef OR_USE_SINGLE_TRAIN_STAR_MAP
 		string preexistingImageFileName;
@@ -2205,8 +2202,7 @@ void printInterpolatedMeshReferenceList(LDreference* firstReferenceInInterpolate
 		trainOrTestString = TEST_STRING;
 	}
 
-	char viewIndexString[10];
-	sprintf(viewIndexString, "%d",  viewIndex);
+	string viewIndexString = convertIntToString(viewIndex);
 
 	string mapFileName = objectName + "initialViewMap" + "ViewIndex" + viewIndexString + "ZoomIndex" + "0";
 
@@ -2326,13 +2322,11 @@ bool createOrAddPointsToFeaturesList(double* pointMap, unsigned char* rgbMap, do
 	int imageWidth = vi->imageWidth;
 	int imageHeight = vi->imageHeight;
 
-	char viewIndexString[10];
-	sprintf(viewIndexString, "%d",  viewIndex);
+	string viewIndexString = convertIntToString(viewIndex);
 
 	for(int zoomIndex=0; zoomIndex < numberOfZoomIndicies; zoomIndex++)
 	{
-		char zoomIndexString[10];
-		sprintf(zoomIndexString, "%d", zoomIndex);
+		string zoomIndexString = convertIntToString(zoomIndex);
 
 		#ifdef OR_DEBUG
 		/*
@@ -3231,14 +3225,14 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 
 	int numSidesPerPolygon = OR_METHOD_POLYGON_NUMBER_OF_SIDES;
 
-	char viewIndexString[10];
-	char zoomIndexString[10];
-	char polygonIndexString[10];
-	char sideIndexString[10];
+	string viewIndexString = "";
+	string zoomIndexString = "";
+	string polygonIndexString = "";
+	string sideIndexString = "";
 	#ifdef OR_TEST_ORI_AND_POS_NOISE_DURING_TRANING_AND_TESTING
-	char featurePosNoise1CountString[10];
-	char featurePosNoise2CountString[10];
-	char featurePosNoise3CountString[10];
+	string featurePosNoise1CountString = "";
+	string featurePosNoise2CountString = "";
+	string featurePosNoise3CountString = "";
 	#endif
 
 	int cropWidth;
@@ -3463,10 +3457,10 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 								string interpolatedMeshFileName = objectName + "interpolatedMesh";
 								string interpolatedMapFileNameForRayTracing;
 
-								sprintf(polygonIndexString, "%d", numberOfTrainOrTestPolys[zoomIndex]);
-								sprintf(sideIndexString, "%d", side);
-								sprintf(viewIndexString, "%d", viewIndex);
-								sprintf(zoomIndexString, "%d", zoomIndex);
+								polygonIndexString = convertIntToString(numberOfTrainOrTestPolys[zoomIndex]);
+								sideIndexString = convertIntToString(side);
+								viewIndexString = convertIntToString(viewIndex);
+								zoomIndexString = convertIntToString(zoomIndex);
 
 								#ifdef OR_DEBUG
 								//cout << "zoomIndex = " << zoomIndex << ", numberOfTrainOrTestPolys[zoomIndex] = " << numberOfTrainOrTestPolys[zoomIndex] << ", side = " << side << endl;
@@ -3475,9 +3469,9 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 								#ifdef OR_TEST_ORI_AND_POS_NOISE_DURING_TRANING_AND_TESTING
 								//cout << "\t featurePosNoise1 = " << featurePosNoise1 << ", featurePosNoise2 = " << featurePosNoise2 << ", featurePosNoise3 = " << featurePosNoise3 << endl;
 
-								sprintf(featurePosNoise1CountString, "%d", featurePosNoise1);
-								sprintf(featurePosNoise2CountString, "%d", featurePosNoise2);
-								sprintf(featurePosNoise3CountString, "%d", featurePosNoise3);
+								featurePosNoise1CountString = convertIntToString(featurePosNoise1);
+								featurePosNoise2CountString = convertIntToString(featurePosNoise2);
+								featurePosNoise3CountString = convertIntToString(featurePosNoise3);
 
 								if((numFeaturePos1Values > 1) || (numFeaturePos2Values > 1) || (numFeaturePos3Values > 1))
 								{
@@ -4001,7 +3995,7 @@ bool generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInter
 										string convertImageToSmallImageCommand = "";
 										int resizePercentage = 100/smallImageRatio;
 										unsigned char resizePercentageString[10];
-										sprintf(resizePercentageString, "%d", resizePercentage);
+										resizePercentageString = convertIntToString(resizePercentage);
 										cout << "resizePercentageString = " << resizePercentageString << endl;
 
 										convertImageToSmallImageCommand = convertImageToSmallImageCommand + "convert " + "-depth 8 -resize '" + resizePercentageString + "%' " + rgbMapFacingPolyFileName + " " + rgbMapFacingPolySmallFileName;
@@ -4987,31 +4981,31 @@ int createViFromMultiViewList(RTviewInfo* vi, string fileName, int multiViewView
 				{
 					vi->objectName = objectNameString;
 					vi->imageExtensionName = imageextString;
-					vi->imageWidth = atof(imageWidthString.c_str());
-					vi->imageHeight = atof(imageHeightString.c_str());
+					vi->imageWidth = convertStringToDouble(imageWidthString);
+					vi->imageHeight = convertStringToDouble(imageHeightString);
 
 					if(dimension == OR_METHOD2DOD_DIMENSIONS)
 					{
-						vi->xOffset = atof(xoffsetString.c_str());
-						vi->yOffset = atof(yoffsetString.c_str());
+						vi->xOffset = convertStringToDouble(xoffsetString);
+						vi->yOffset = convertStringToDouble(yoffsetString);
 
 					}
 					else if(dimension == OR_METHOD3DOD_DIMENSIONS)
 					{
 						vi->depthExtensionName = depthextString;
-						vi->eye.x = atof(vieweyexString.c_str());
-						vi->eye.y = atof(vieweyeyString.c_str());
-						vi->eye.z = atof(vieweyezString.c_str());
-						vi->viewAt.x = atof(viewatxString.c_str());
-						vi->viewAt.y = atof(viewatyString.c_str());
-						vi->viewAt.z = atof(viewatzString.c_str());
-						vi->viewUp.x = atof(viewupxString.c_str());
-						vi->viewUp.y = atof(viewupyString.c_str());
-						vi->viewUp.z = atof(viewupzString.c_str());
-						vi->focalLength = atof(viewfocalString.c_str());
-						vi->viewWidth = atof(viewsizewString.c_str());
-						vi->viewHeight = atof(viewsizehString.c_str());
-						vi->depthScale = atof(scaleString.c_str());
+						vi->eye.x = convertStringToDouble(vieweyexString);
+						vi->eye.y = convertStringToDouble(vieweyeyString);
+						vi->eye.z = convertStringToDouble(vieweyezString);
+						vi->viewAt.x = convertStringToDouble(viewatxString);
+						vi->viewAt.y = convertStringToDouble(viewatyString);
+						vi->viewAt.z = convertStringToDouble(viewatzString);
+						vi->viewUp.x = convertStringToDouble(viewupxString);
+						vi->viewUp.y = convertStringToDouble(viewupyString);
+						vi->viewUp.z = convertStringToDouble(viewupzString);
+						vi->focalLength = convertStringToDouble(viewfocalString);
+						vi->viewWidth = convertStringToDouble(viewsizewString);
+						vi->viewHeight = convertStringToDouble(viewsizehString);
+						vi->depthScale = convertStringToDouble(scaleString);
 					}
 					else
 					{

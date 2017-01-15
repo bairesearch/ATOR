@@ -26,7 +26,7 @@
  * File Name: ORdatabaseSQL.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3f3a 10-July-2015
+ * Project Version: 3f4a 11-July-2015
  *
  *******************************************************************************/
 
@@ -268,16 +268,11 @@ void createFeatureListUsingDatabaseQuery(ORfeature* firstFeatureInList, bool cre
 	string sqlSelectCommandP11 = "";
 	string sqlSelectCommandP12 = "";
 
-	char testIDString[25];
-	char testviewIndexString[10];
-	char testzoomIndexString[10];
-	char testpolygonIndexString[10];
-	char testsideIndexString[10];
-	sprintf(testIDString, "%ld", testID);
-	sprintf(testviewIndexString, "%d", testViewIndex);
-	sprintf(testzoomIndexString, "%d", testZoomIndex);
-	sprintf(testpolygonIndexString, "%d", testPolyIndex);
-	sprintf(testsideIndexString, "%d", testSideIndex);
+	string testIDString = convertLongToString(testID);
+	string testviewIndexString = convertIntToString(testViewIndex);
+	string testzoomIndexString = convertIntToString(testZoomIndex);
+	string testpolygonIndexString = convertIntToString(testPolyIndex);
+	string testsideIndexString = convertIntToString(testSideIndex);
 
 	if(useTestID)
 	{
@@ -386,8 +381,7 @@ void createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(ORfeatureC
 	}
 	else if(trainOrTest == TRAIN_AND_TEST)
 	{
-		char maxDecisionTreeTableRowString[25];
-		sprintf(maxDecisionTreeTableRowString, "%ld", databaseTableSizeDecisionTreeInitial);
+		string maxDecisionTreeTableRowString = convertLongToString(databaseTableSizeDecisionTreeInitial);
 		sqlSelectCommandWhereContentsWhereOpen = sqlSelectCommandWhereContentsWhereOpen + " WHERE (" + OR_MYSQL_FIELD_NAME_ID + " <= " + maxDecisionTreeTableRowString + " AND " + OR_MYSQL_FIELD_NAME_DECISIONTREE_BIN + " = ";
 	}
 
@@ -482,12 +476,8 @@ void insertSnapshotIDreferenceIntoSQLdatabaseDecisionTree(string sqlDatabaseDeci
 	string sqlInsertCommandP6 = "";
 	string sqlInsertCommandP7 = ");";
 
-	char tableIDString[25];
-	char snapshotReferenceIDString[25];
-
-	sprintf(tableIDString, "%ld",* databaseTableSize);
-	sprintf(snapshotReferenceIDString, "%ld", snapshotReferenceID);
-
+	string tableIDString = convertLongToString(*databaseTableSize);
+	string snapshotReferenceIDString = convertLongToString(snapshotReferenceID);
 
 	sqlInsertCommandP4 = sqlInsertCommandP4 + OR_MYSQL_FIELD_NAME_ID + ", " + OR_MYSQL_FIELD_NAME_DECISIONTREE_SNAPSHOT_REF_ID + ", " + OR_MYSQL_FIELD_NAME_DECISIONTREE_BIN;
 	sqlInsertCommandP6 = sqlInsertCommandP6 + tableIDString + ", " + snapshotReferenceIDString + ", ";
@@ -578,11 +568,8 @@ void insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration(char* decisio
 	string sqlInsertCommand = "";	//eg INSERT INTO snapshot (pBinxy) VALUES (430);
 	string sqlInsertCommandP6 = "";
 
-	char tableIDString[25];
-	char snapshotReferenceIDString[25];
-
-	sprintf(tableIDString, "%ld",* databaseTableSize);
-	sprintf(snapshotReferenceIDString, "%ld", snapshotReferenceID);
+	string tableIDString = convertLongToString(*databaseTableSize);
+	string snapshotReferenceIDString = convertLongToString(snapshotReferenceID);
 
 	sqlInsertCommandP6 = sqlInsertCommandP6 + "(" + tableIDString + ", " + snapshotReferenceIDString + ", ";
 	sqlInsertCommand = sqlInsertCommandP6;
@@ -679,12 +666,8 @@ void insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration(string sqlDat
 	string sqlInsertCommandP5 = ") VALUES (";
 	string sqlInsertCommandP6 = "";
 
-	char tableIDString[25];
-	char snapshotReferenceIDString[25];
-
-	sprintf(tableIDString, "%ld",* databaseTableSize);
-	sprintf(snapshotReferenceIDString, "%ld", snapshotReferenceID);
-
+	string tableIDString = convertLongToString(*databaseTableSize);
+	string snapshotReferenceIDString = convertLongToString(snapshotReferenceID);
 
 	sqlInsertCommandP4 = sqlInsertCommandP4 + OR_MYSQL_FIELD_NAME_ID + ", " + OR_MYSQL_FIELD_NAME_DECISIONTREE_SNAPSHOT_REF_ID + ", " + OR_MYSQL_FIELD_NAME_DECISIONTREE_BIN;
 	sqlInsertCommandP6 = sqlInsertCommandP6 + tableIDString + ", " + snapshotReferenceIDString + ", ";
@@ -760,8 +743,7 @@ void createSnapshotIDreferenceListUsingSQLdatabaseDecisionTreeTableQuery(ORsnaps
 	}
 	else if(trainOrTest == TRAIN_AND_TEST)
 	{
-		char maxDecisionTreeTableRowString[25];
-		sprintf(maxDecisionTreeTableRowString, "%ld", databaseTableSizeDecisionTreeInitial);
+		string maxDecisionTreeTableRowString = convertLongToString(databaseTableSizeDecisionTreeInitial);
 		sqlSelectCommandP7 = sqlSelectCommandP7 + " WHERE (" + OR_MYSQL_FIELD_NAME_ID + " <= " + maxDecisionTreeTableRowString + " AND " + OR_MYSQL_FIELD_NAME_DECISIONTREE_BIN + " = ";
 	}
 
@@ -919,8 +901,7 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(ORfeatureContainer*
 	}
 	else if(trainOrTest == TRAIN_AND_TEST)
 	{
-		char maxTrainTableRowString[25];
-		sprintf(maxTrainTableRowString, "%ld", databaseTableSizeTrainInitial);
+		string maxTrainTableRowString = convertLongToString(databaseTableSizeTrainInitial);
 		sqlSelectCommandP7 = sqlSelectCommandP7 + " WHERE (" + OR_MYSQL_FIELD_NAME_ID + " <= " + maxTrainTableRowString + " AND " + OR_MYSQL_FIELD_NAME_TRAINORTESTNUM + " = " + OR_MYSQL_FIELD_NAME_TRAINORTESTNUM_TRAIN;	//only query train objects
 	}
 	else
@@ -933,8 +914,7 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(ORfeatureContainer*
 #ifdef OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK
 	unsigned long linearCombination = 0;
 	convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(concatonatedSignedDctCoeffArrayRequirement, pBinxRequirement, pBinyRequirement, &linearCombination);
-	char linearCombinationString[100];
-	sprintf(linearCombinationString, "%ld", linearCombination);
+	string linearCombinationString = convertLongToString(linearCombination);
 	#ifdef OR_DEBUG
 	//cout << "linearCombination = " << linearCombination << endl;
 	//cout << "linearCombinationString = " << linearCombinationString << endl;
@@ -946,27 +926,20 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(ORfeatureContainer*
 	if(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING)
 	{
 	#ifdef OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_REQUIREMENT_V1
-		char pBinxyValueRequirementString[25];
-		sprintf(pBinxyValueRequirementString, "%d", pBinxyValueRequirement);
+		string pBinxyValueRequirementString = convertIntToString(pBinxyValueRequirement);
 		sqlSelectCommandP8 = sqlSelectCommandP8 + " AND " + OR_MYSQL_FIELD_NAME_GEO_BINS_XY + " = " + pBinxyValueRequirementString;
 	#elif defined OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_REQUIREMENT_V2
 		//V2 MIGHT BE BAD DEPENDING UPON HOW GOOD MYSQL IS; if this is used px1->px2 and py1 -> py2 need to be indexed. note there are ~100^4 combinations of binned variables.
 		for(int i=0; i<OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS; i++)
 		{
-			char pBinxValueRequirementMinString[10];
-			sprintf(pBinxValueRequirementMinString, "%d", pBinxRequirement[i]-1);
-			char pBinyValueRequirementMinString[10];
-			sprintf(pBinyValueRequirementMinString, "%d", pBinyRequirement[i]-1);
+			string pBinxValueRequirementMinString = convertIntToString(pBinxRequirement[i]-1);
+			string pBinyValueRequirementMinString = convertIntToString(pBinyRequirement[i]-1);
 
-			char pBinxNameRequirementString[10];
-			sprintf(pBinxNameRequirementString, "%d", i+1);
-			char pBinyNameRequirementString[10];
-			sprintf(pBinyNameRequirementString, "%d", i+1);
+			string pBinxNameRequirementString = convertIntToString(i+1);
+			string pBinyNameRequirementString = convertIntToString(i+1);
 
-			char pBinxValueRequirementMaxString[10];
-			sprintf(pBinxValueRequirementMaxString, "%d", pBinxRequirement[i]+1);
-			char pBinyValueRequirementMaxString[10];
-			sprintf(pBinyValueRequirementMaxString, "%d", pBinyRequirement[i]+1);
+			string pBinxValueRequirementMaxString = convertIntToString(pBinxRequirement[i]+1);
+			string pBinyValueRequirementMaxString = convertIntToString(pBinyRequirement[i]+1);
 
 			sqlSelectCommandP8 = sqlSelectCommandP8 + " AND " +
 			OR_MYSQL_FIELD_NAME_GEO_BINS_X + pBinxNameRequirementString + " >= " + pBinxValueRequirementMinString + " AND " +
@@ -1012,7 +985,7 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(ORfeatureContainer*
 						geoxybin = calculateGeoxyBinMultiDimensional(geoxBin, geoyBin);
 
 						char pBinxyValueRequirementString[25];
-						sprintf(pBinxyValueRequirementString, "%d", geoxybin);
+						pBinxyValueRequirementString = convertIntToString(geoxybin);
 						sqlSelectCommandP8 = sqlSelectCommandP8 + OR_MYSQL_FIELD_NAME_GEO_BINS_XY + " = " + pBinxyValueRequirementString;
 
 						count++;
@@ -1036,14 +1009,14 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(ORfeatureContainer*
 			for(int y=0; y<OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS; y++)
 			{
 				char pBinxValueRequirementString[10];
-				sprintf(pBinxValueRequirementString, "%d", pBinxRequirement[x]);
+				pBinxValueRequirementString = convertIntToString(pBinxRequirement[x]);
 				char pBinyValueRequirementString[10];
-				sprintf(pBinyValueRequirementString, "%d", pBinyRequirement[y]);
+				pBinyValueRequirementString = convertIntToString(pBinyRequirement[y]);
 
 				char pBinxNameRequirementString[10];
-				sprintf(pBinxNameRequirementString, "%d", x+1);
+				pBinxNameRequirementString = convertIntToString(x+1);
 				char pBinyNameRequirementString[10];
-				sprintf(pBinyNameRequirementString, "%d", y+1);
+				pBinyNameRequirementString = convertIntToString(y+1);
 
 
 				sqlSelectCommandP8 = sqlSelectCommandP8 + "(" +
@@ -1097,8 +1070,8 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(ORfeatureContainer*
 			maxVal = minInt(int(avgVal) + 1, RGB_NUM);
 			minVal = maxInt(int(avgVal) - 1, 0);
 
-			sprintf(normalisedAverageHueDevValueMaxString, "%d", maxVal);
-			sprintf(normalisedAverageHueDevValueMinString, "%d", minVal);
+			normalisedAverageHueDevValueMaxString = convertIntToString(maxVal);
+			normalisedAverageHueDevValueMinString = convertIntToString(minVal);
 
 			sqlSelectCommandP9 = sqlSelectCommandP9 + " AND " + normalisedAverageHueDevName + " >= " + normalisedAverageHueDevValueMinString + " AND " + normalisedAverageHueDevName + " <= " + normalisedAverageHueDevValueMaxString;
 				//requires optimisation
@@ -1162,8 +1135,7 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(ORfeatureContainer*
 				{
 					string normalisedAverageHueDevName = OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_RGB_BINS;
 					int currentCombinergbBin = r*OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL*OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL + g*OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL + b;
-					char currentCombinergbBinString[25];
-					sprintf(currentCombinergbBinString, "%d", currentCombinergbBin);
+					string currentCombinergbBinString = convertIntToString(currentCombinergbBin);
 
 					sqlSelectCommandP9 = sqlSelectCommandP9 + normalisedAverageHueDevName + " = " + currentCombinergbBinString;
 
@@ -1189,19 +1161,15 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(ORfeatureContainer*
 		//V2 MIGHT BE BAD DEPENDING UPON HOW GOOD MYSQL IS; if this is used d0->dx need to be indexed. note there are 16^16 combinations of dct variables.
 		for(int dctCoeffNum = 0; dctCoeffNum <OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; dctCoeffNum++)
 		{
-			char dctCoeffNumNameString[10];
-			sprintf(dctCoeffNumNameString, "%d", dctCoeffNum);
+			string dctCoeffNumNameString = convertIntToString(dctCoeffNum);
 
 			//int maxVal = minInt(int(concatonatedSignedDctCoeffArrayRequirement[dctCoeffNum]) + 1, OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET-1);	//nb allowed bin values are between -8 and +7
 			//int minVal = maxInt(int(concatonatedSignedDctCoeffArrayRequirement[dctCoeffNum]) - 1, -OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET);
 			int maxVal = int(concatonatedSignedDctCoeffArrayRequirement[dctCoeffNum]) + 1;	//nb allowed bin values are between -8 and +7
 			int minVal = int(concatonatedSignedDctCoeffArrayRequirement[dctCoeffNum]) - 1;
 
-			char dctCoeffNumValMaxString[10];
-			char dctCoeffNumValMinString[10];
-
-			sprintf(dctCoeffNumValMaxString, "%d", maxVal);
-			sprintf(dctCoeffNumValMinString, "%d", minVal);
+			string dctCoeffNumValMaxString = convertIntToString(maxVal);
+			string dctCoeffNumValMinString = convertIntToString(minVal);
 
 			sqlSelectCommandP10 = sqlSelectCommandP10 + " AND " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BINS + dctCoeffNumNameString + " >= " + dctCoeffNumValMinString + " AND " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BINS + dctCoeffNumNameString + " <= " + dctCoeffNumValMaxString;		//only query train objects
 		}
@@ -1211,14 +1179,14 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(ORfeatureContainer*
 		{
 
 			char dctCoeffNumNameString[10];
-			sprintf(dctCoeffNumNameString, "%d", dctCoeffNum);
+			dctCoeffNumNameString = convertIntToString(dctCoeffNum);
 
 			int dctCoeffNumVal = int(concatonatedSignedDctCoeffArrayRequirement[dctCoeffNum]);
 			#ifdef OR_DEBUG
 			//cout << "dctCoeffNumVal = " << dctCoeffNumVal << endl;
 			#endif
 			char dctCoeffNumValString[10];
-			sprintf(dctCoeffNumValString, "%d", dctCoeffNumVal);
+			dctCoeffNumValString = convertIntToString(dctCoeffNumVal);
 
 				//Seg SELECT columnname, COUNT(*) FROM tablename
 			//eg COUNT `pBinxy` FROM `objectRecog`.`snapshot` WHERE ( ( `pBinxy` = 823 ) );
@@ -1326,15 +1294,15 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(ORfeatureContainer*
 					}
 
 					char rgbValueRequirementMinString[10];
-					sprintf(rgbValueRequirementMinString, "%d", avgVal-1);
+					rgbValueRequirementMinString = convertIntToString(avgVal-1);
 
 					char rgbxNameRequirementString[10];
-					sprintf(rgbxNameRequirementString, "%d", x+1);
+					rgbxNameRequirementString = convertIntToString(x+1);
 					char rgbyNameRequirementString[10];
-					sprintf(rgbyNameRequirementString, "%d", y+1);
+					rgbyNameRequirementString = convertIntToString(y+1);
 
 					char rgbValueRequirementMaxString[10];
-					sprintf(rgbValueRequirementMaxString, "%d", avgVal+1);
+					rgbValueRequirementMaxString = convertIntToString(avgVal+1);
 
 					sqlSelectCommandP11 = sqlSelectCommandP11 + " AND "
 					normalisedHueDevName + "y" + rgbyNameRequirementString + "x" + rgbxNameRequirementString " >= " + rgbValueRequirementMinString +
@@ -1377,12 +1345,12 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(ORfeatureContainer*
 					}
 
 					char rgbValueRequirementString[10];
-					sprintf(rgbValueRequirementString, "%d", avgVal);
+					rgbValueRequirementString = convertIntToString(avgVal);
 
 					char rgbxNameRequirementString[10];
-					sprintf(rgbxNameRequirementString, "%d", x+1);
+					rgbxNameRequirementString = convertIntToString(x+1);
 					char rgbyNameRequirementString[10];
-					sprintf(rgbyNameRequirementString, "%d", y+1);
+					rgbyNameRequirementString = convertIntToString(y+1);
 
 
 					//eg SELECT columnname, COUNT(*) FROM tablename
@@ -1795,8 +1763,7 @@ string createSQLSelectRowCommand(int numFeatures)
 
 	for(int featureNum=0; featureNum<numFeatures; featureNum++)
 	{
-		char featureNumString[10];
-		sprintf(featureNumString, "%d", featureNum+1);
+		string featureNumString = convertIntToString(featureNum+1);
 
 		#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 		sqlSelectCommand = sqlSelectCommand + ", " + OR_MYSQL_FIELD_NAME_OTNUM + featureNumString;
@@ -1812,8 +1779,7 @@ string createSQLSelectRowCommand(int numFeatures)
 		//this information is only used to bin the feature list data, and is not transfered to the feature list
 		for(int geobinDimension = 0; geobinDimension < OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS; geobinDimension++)
 		{
-			char geobinDimensionString[10];
-			sprintf(geobinDimensionString, "%d", geobinDimension+1);
+			string geobinDimensionString = convertIntToString(geobinDimension+1);
 			sqlSelectCommand = sqlSelectCommand + ", " + OR_MYSQL_FIELD_NAME_GEO_BINS_X + geobinDimensionString + ", " + OR_MYSQL_FIELD_NAME_GEO_BINS_Y + geobinDimensionString;
 		}
 		sqlSelectCommand = sqlSelectCommand + ", " + OR_MYSQL_FIELD_NAME_GEO_BINS_XY;
@@ -1823,8 +1789,7 @@ string createSQLSelectRowCommand(int numFeatures)
 	{
 		for(int dctCoeffNum = 0; dctCoeffNum <OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; dctCoeffNum++)
 		{
-			char dctCoeffNumString[10];
-			sprintf(dctCoeffNumString, "%d", dctCoeffNum);
+			string dctCoeffNumString = convertIntToString(dctCoeffNum);
 
 			sqlSelectCommand = sqlSelectCommand + ", " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BINS + dctCoeffNumString;
 		}
@@ -1881,19 +1846,12 @@ void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, str
 						string sqlInsertCommandP6 = "";
 						string sqlInsertCommandP7 = ");";
 
-						char tableIDString[25];
-						char trainOrTestString[10];
-						char viewIndexString[10];
-						char zoomIndexString[10];
-						char polygonIndexString[10];
-						char sideIndexString[10];
-
-						sprintf(tableIDString, "%ld",* databaseTableSize);
-						sprintf(trainOrTestString, "%d", ((int)trainOrTest));
-						sprintf(viewIndexString, "%d", viewIndex);
-						sprintf(zoomIndexString, "%d", zoomIndex);
-						sprintf(polygonIndexString, "%d", polyIndex);
-						sprintf(sideIndexString, "%d", sideIndex);
+						string tableIDString = convertLongToString(*databaseTableSize);
+						string trainOrTestString = convertIntToString(((int)trainOrTest));
+						string viewIndexString = convertIntToString(viewIndex);
+						string zoomIndexString = convertIntToString(zoomIndex);
+						string polygonIndexString = convertIntToString(polyIndex);
+						string sideIndexString = convertIntToString(sideIndex);
 
 						sqlInsertCommandP4 = sqlInsertCommandP4 + OR_MYSQL_FIELD_NAME_ID + ", " + OR_MYSQL_FIELD_NAME_OBJECTNAME + ", " + OR_MYSQL_FIELD_NAME_TRAINORTESTNUM + ", " + OR_MYSQL_FIELD_NAME_VIEWNUM + ", " + OR_MYSQL_FIELD_NAME_ZOOMNUM + ", " + OR_MYSQL_FIELD_NAME_POLYNUM + ", " + OR_MYSQL_FIELD_NAME_SIDENUM;
 						sqlInsertCommandP6 = sqlInsertCommandP6 + tableIDString + ", " + "'" + objectName + "'" + ", " + trainOrTestString + ", " + viewIndexString + ", " + zoomIndexString + ", " + polygonIndexString + ", " + sideIndexString;
@@ -1937,12 +1895,10 @@ void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, str
 										currentFeature = currentFeatureInTempList2;
 									}
 
-									char featureNumString[10];
-									sprintf(featureNumString, "%d", featureNum+1);
+									string featureNumString = convertIntToString(featureNum+1);
 
 									#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-									char OTpointIndexString[10];
-									sprintf(OTpointIndexString, "%d", currentFeature->OTpointIndex);
+									string OTpointIndexString = convertIntToString(currentFeature->OTpointIndex);
 									#endif
 									
 									string transformedpositionCoordinatesString = convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->pointTransformed));
@@ -1968,18 +1924,15 @@ void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, str
 								{
 									for(int geobinDimension=0; geobinDimension<OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS; geobinDimension++)
 									{
-										char geobinDimensionString[10];
-										sprintf(geobinDimensionString, "%d", geobinDimension+1);
+										string geobinDimensionString = convertIntToString(geobinDimension+1);
 
 										#ifdef OR_DEBUG
 										//cout << "geoxBin[" << geobinDimension << "] = " << geoxBin[geobinDimension] << endl;
 										//cout << "geoyBin[" << geobinDimension << "] = " << geoyBin[geobinDimension] << endl;
 										#endif
 
-										char geobinxString[10];
-										char geobinyString[10];
-										sprintf(geobinxString, "%d", geoxBin[geobinDimension]);
-										sprintf(geobinyString, "%d", geoyBin[geobinDimension]);
+										string geobinxString = convertIntToString(geoxBin[geobinDimension]);
+										string geobinyString = convertIntToString(geoyBin[geobinDimension]);
 
 										sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + OR_MYSQL_FIELD_NAME_GEO_BINS_X + geobinDimensionString + ", " + OR_MYSQL_FIELD_NAME_GEO_BINS_Y + geobinDimensionString;
 										sqlInsertCommandP6 = sqlInsertCommandP6 + ", " + geobinxString + ", " + geobinyString;
@@ -2021,12 +1974,10 @@ void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, str
 								if(addPermutationsOfTrainFeaturesForGeoBinning || ((!ignoreOTfeatures) || (currentFeature->OTpointIndex == 0)))
 								{//perform binning of nearby features only (not OT features)
 
-									char featureNumString[10];
-									sprintf(featureNumString, "%d", featureNum+1+featurePositionModifier);		//if OR_METHOD_GEOMETRIC_COMPARISON_BINNING, add all OT and nearby feature points After the binned nearby feature points
+									string featureNumString = convertIntToString(featureNum+1+featurePositionModifier);		//if OR_METHOD_GEOMETRIC_COMPARISON_BINNING, add all OT and nearby feature points After the binned nearby feature points
 
 									#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-									char OTpointIndexString[10];
-									sprintf(OTpointIndexString, "%d", currentFeature->OTpointIndex);
+									string OTpointIndexString = convertIntToString(currentFeature->OTpointIndex);
 									#endif
 									
 									string transformedpositionCoordinatesString = convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->pointTransformed));
@@ -2068,8 +2019,7 @@ void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, str
 									if((!ignoreOTfeatures) || (currentFeature->OTpointIndex == 0))
 									{//perform binning of nearby features only (not OT features)
 
-										char geobinDimensionString[10];
-										sprintf(geobinDimensionString, "%d", geobinDimension+1);
+										string geobinDimensionString = convertIntToString(geobinDimension+1);
 
 										geoxBin[geobinDimension] = determineGeoBinX(currentFeature->pointTransformed.x);
 										geoyBin[geobinDimension] = determineGeoBinY(currentFeature->pointTransformed.y);
@@ -2079,10 +2029,8 @@ void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, str
 										//cout << "geoyBin[" << geobinDimension << "] = " << geoyBin[geobinDimension] << endl;
 										#endif
 
-										char geobinxString[10];
-										char geobinyString[10];
-										sprintf(geobinxString, "%d", geoxBin[geobinDimension]);
-										sprintf(geobinyString, "%d", geoyBin[geobinDimension]);
+										string geobinxString = convertIntToString(geoxBin[geobinDimension]);
+										string geobinyString = convertIntToString(geoyBin[geobinDimension]);
 
 										sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + OR_MYSQL_FIELD_NAME_GEO_BINS_X + geobinDimensionString + ", " + OR_MYSQL_FIELD_NAME_GEO_BINS_Y + geobinDimensionString;
 										sqlInsertCommandP6 = sqlInsertCommandP6 + ", " + geobinxString + ", " + geobinyString;
@@ -2103,8 +2051,7 @@ void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, str
 							{
 								long geoxyBin = calculateGeoxyBinMultiDimensional(geoxBin, geoyBin);
 
-								char geobinxyString[25];
-								sprintf(geobinxyString, "%d", geoxyBin);
+								string geobinxyString = convertIntToString(geoxyBin);
 
 								sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + OR_MYSQL_FIELD_NAME_GEO_BINS_XY;
 								sqlInsertCommandP6 = sqlInsertCommandP6 + ", " + geobinxyString;
@@ -2119,11 +2066,9 @@ void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, str
 								currentFeature = firstFeatureInList;
 								for(int dctCoeffNum = 0; dctCoeffNum <OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; dctCoeffNum++)
 								{
-									char dctCoeffNumString[10];
-									sprintf(dctCoeffNumString, "%d", dctCoeffNum);
+									string dctCoeffNumString = convertIntToString(dctCoeffNum);
 
-									char dctCoeffValString[10];
-									sprintf(dctCoeffValString, "%d", currentFeature->dctCoeff[dctCoeffNum]);
+									string dctCoeffValString = convertIntToString(currentFeature->dctCoeff[dctCoeffNum]);
 
 									sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BINS + dctCoeffNumString;
 									sqlInsertCommandP6 = sqlInsertCommandP6 + ", " + dctCoeffValString;
@@ -2132,8 +2077,7 @@ void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, str
 								#ifdef OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK
 								unsigned long linearCombination = 0;
 								convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(currentFeature->dctCoeff, geoxBin, geoyBin, &linearCombination);
-								char dctCoeffArrayBinnedString[100];
-								sprintf(dctCoeffArrayBinnedString, "%ld", linearCombination);
+								string dctCoeffArrayBinnedString = convertLongToString(linearCombination);
 								#ifdef OR_DEBUG
 								//cout << "linearCombination = " << linearCombination << endl;
 								#endif
@@ -2143,8 +2087,7 @@ void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, str
 								#ifdef OR_DEBUG
 								//cout << "currentFeature->dctCoeffArrayBinned = " << currentFeature->dctCoeffArrayBinned << endl;
 								#endif
-								char dctCoeffArrayBinnedString[25];
-								sprintf(dctCoeffArrayBinnedString, "%ld", currentFeature->dctCoeffArrayBinned);
+								string dctCoeffArrayBinnedString = convertLongToString(currentFeature->dctCoeffArrayBinned);
 								sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL;
 								sqlInsertCommandP6 = sqlInsertCommandP6 + ", " + dctCoeffArrayBinnedString;
 								#endif
@@ -2153,15 +2096,11 @@ void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, str
 							if(OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING)
 							{
 								currentFeature = firstFeatureInList;
-								char colAvgRBinString[10];
-								char colAvgGBinString[10];
-								char colAvgBBinString[10];
-								char colAvgBinString[25];
-								sprintf(colAvgRBinString, "%d", currentFeature->avgCol.r);
-								sprintf(colAvgGBinString, "%d", currentFeature->avgCol.g);
-								sprintf(colAvgBBinString, "%d", currentFeature->avgCol.b);
+								string colAvgRBinString = convertIntToString(currentFeature->avgCol.r);
+								string colAvgGBinString = convertIntToString(currentFeature->avgCol.g);
+								string colAvgBBinString = convertIntToString(currentFeature->avgCol.b);
 								int currentCombinergbBin = int(currentFeature->avgCol.r)*OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL*OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL + int(currentFeature->avgCol.g*OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL) + int(currentFeature->avgCol.b);
-								sprintf(colAvgBinString, "%d", currentCombinergbBin);
+								string colAvgBinString = convertIntToString(currentCombinergbBin);
 
 								sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_R_BINS + ", " + OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_G_BINS + ", " + OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_B_BINS + ", " + OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_RGB_BINS;
 								sqlInsertCommandP6 = sqlInsertCommandP6 + ", " + colAvgRBinString + ", " + colAvgGBinString + ", " + colAvgBBinString + ", " + colAvgBinString;
@@ -2172,13 +2111,11 @@ void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, str
 								#ifdef OR_IMAGE_COMPARISON_SQL_DB_USE_RGB_8BIT_SMALL_MAP_QUERY_REQUIREMENT_V2_OR_V3
 								for(int y=0; y<smallImageHeight;y++)
 								{
-									char simystring[10];
-									sprintf(simystring, "%d", y);
+									string simystring = convertIntToString(y);
 
 									for(int x=0; x<smallImageWidth;x++)
 									{
-										char simxstring[10];
-										sprintf(simxstring, "%d", x);
+										string simxstring = convertIntToString(x);
 
 										colour tempCol;
 										getRGBMapValues(x, y, smallImageWidth, rgb8bitSmallMapForInstantDBqueryAccess, &tempCol);
@@ -2202,8 +2139,7 @@ void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, str
 												colourVal = tempCol.b;
 											}
 
-											char colourValString[10];
-											sprintf(colourValString, "%d", colourVal);
+											string colourValString = convertIntToString(colourVal);
 
 											sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + colourName + "y" + simystring + "x" + simxstring;
 											sqlInsertCommandP6 = sqlInsertCommandP6 + ", " + colourValString;

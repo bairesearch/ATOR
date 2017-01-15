@@ -26,7 +26,7 @@
  * File Name: ORdatabaseDecisionTree.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3f3a 10-July-2015
+ * Project Version: 3f4a 11-July-2015
  *
  *******************************************************************************/
 
@@ -639,18 +639,13 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(int imageW
 				/*
 				string normalisedAverageHueDevName = OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_RGB_BINS;
 				int currentCombinergbBin = r*OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL*OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL + g*OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL + b;
-				char currentCombinergbBinString[25];
-				sprintf(currentCombinergbBinString, "%d", currentCombinergbBin);
+				string currentCombinergbBinString = convertIntToString(currentCombinergbBin);
 				*/
 				#endif
 
-				char currentrBinString[25];
-				sprintf(currentrBinString, "%d", r);
-				char currentgBinString[25];
-				sprintf(currentgBinString, "%d", g);
-				char currentbBinString[25];
-				sprintf(currentbBinString, "%d", b);
-
+				string currentrBinString = convertIntToString(r);
+				string currentgBinString = convertIntToString(g);
+				string currentbBinString = convertIntToString(b);
 
 				#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 				currentDirectory = initialDirectory;
@@ -1364,12 +1359,9 @@ void createSnapshotIDreferenceImageComparisonDecisionTreeString(int imageWidth, 
 		int rBinMid = (int)normalisedAverageHueDeviationRequirement->r;
 		int gBinMid = (int)normalisedAverageHueDeviationRequirement->g;
 		int bBinMid = (int)normalisedAverageHueDeviationRequirement->b;
-		char currentrBinString[25];
-		sprintf(currentrBinString, "%d", rBinMid);
-		char currentgBinString[25];
-		sprintf(currentgBinString, "%d", gBinMid);
-		char currentbBinString[25];
-		sprintf(currentbBinString, "%d", bBinMid);
+		string currentrBinString = convertIntToString(rBinMid);
+		string currentgBinString = convertIntToString(gBinMid);
+		string currentbBinString = convertIntToString(bBinMid);
 		#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 		*currentDirectory = *currentDirectory + "/" + currentrBinString;
 		createAndOrParseIntoDirectory(currentDirectory, &string(currentrBinString), false, true);
@@ -1863,12 +1855,10 @@ void addSnapshotIDReferenceToList(string* parseFileName, long snapshotID)
 {
 	ofstream parseFileObject(parseFileName->c_str(), ios::app);		//append to snapshot id reference list
 
-	char snapshotIDString[25];
-	sprintf(snapshotIDString, "%ld", snapshotID);
-	int length = strlen(snapshotIDString);
+	string snapshotIDString = convertLongToString(snapshotID);
 
-	parseFileObject.write(snapshotIDString, (sizeof(char)*length));
-	parseFileObject.write("\n", (sizeof(char)));	//write new line
+	parseFileObject.write(snapshotIDString);
+	parseFileObject.write(STRING_NEWLINE);
 }
 
 
@@ -1878,11 +1868,10 @@ void parseSnapshotIDreferenceList(string* parseFileName, ORsnapshotIDreferenceLi
 
 	ifstream parseFileObject(parseFileName->c_str());		//append to snapshot id reference list
 
-	if(parseFileObject.rdbuf( )->is_open( ))
+	if(parseFileObject.rdbuf()->is_open())
 	{
 		bool readingSnapshotID = true;
-		char snapshotIDString[25];
-		snapshotIDString[0] = '\0';
+		string snapshotIDString = "";
 		char c;
 		int charCount = 0;
 		while (parseFileObject.get(c))
@@ -1890,7 +1879,7 @@ void parseSnapshotIDreferenceList(string* parseFileName, ORsnapshotIDreferenceLi
 			charCount++;
 			if((readingSnapshotID) && (c == '\n'))
 			{
-				currentReferenceInSnapshotIDReferenceList->referenceID = (long)(atol(snapshotIDString));
+				currentReferenceInSnapshotIDReferenceList->referenceID = convertStringToLong(snapshotIDString);
 				#ifdef OR_DEBUG
 				//cout << "currentReferenceInSnapshotIDReferenceList->referenceID = " << currentReferenceInSnapshotIDReferenceList->referenceID << endl;
 				#endif
@@ -1899,14 +1888,11 @@ void parseSnapshotIDreferenceList(string* parseFileName, ORsnapshotIDreferenceLi
 				currentReferenceInSnapshotIDReferenceList->next = newReferenceInSnapshotIDReferenceList;
 				currentReferenceInSnapshotIDReferenceList = currentReferenceInSnapshotIDReferenceList->next;
 
-				snapshotIDString[0] = '\0';
+				snapshotIDString = "";
 			}
 			else if(readingSnapshotID)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(snapshotIDString, typeString);
+				snapshotIDString = snapshotIDString + c;
 			}
 		}
 	}
