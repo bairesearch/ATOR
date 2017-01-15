@@ -23,7 +23,7 @@
  * File Name: ORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3c8a 13-October-2013
+ * Project Version: 3c9a 06-February-2014
  *
  *******************************************************************************/
 
@@ -37,14 +37,6 @@
 #include "ORrules.h"
 #ifdef OR_USE_DATABASE
 #include "ORdatabaseFileIO.h"
-#endif
-
-	//for mkdir, chdir, etc	[CreateDirectory, SetCurrentDirectory]
-#ifdef LINUX
-	#include <sys/stat.h>
-	#include <sys/types.h>
-#else
-	#include <windows.h>
 #endif
 
 
@@ -112,12 +104,7 @@ int main(int argc,char **argv)
 	cout << "OR execution time: " << timeAndDateString << " (start)" << endl;
 
 	char currentFolder[EXE_FOLDER_PATH_MAX_LENGTH];
-
-	#ifdef LINUX
-	getcwd(currentFolder, EXE_FOLDER_PATH_MAX_LENGTH);
-	#else
-	::GetCurrentDirectory(EXE_FOLDER_PATH_MAX_LENGTH, currentFolder);
-	#endif
+	getCurrentDirectory(currentFolder);
 
 	#ifdef OR_USE_DATABASE
 	string databaseFolderName =  OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME + OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME;
@@ -148,11 +135,7 @@ int main(int argc,char **argv)
 		tempFolderCharStar = currentFolder;
 	}
 
-	#ifdef LINUX
-	chdir(workingFolderCharStar);
-	#else
-	::SetCurrentDirectory(workingFolderCharStar);
-	#endif
+	setCurrentDirectory(workingFolderCharStar);
 
 	if(!parseORrulesXMLfile())
 	{
@@ -161,11 +144,7 @@ int main(int argc,char **argv)
 	}
 	fillInORrulesExternVariables();
 
-	#ifdef LINUX
-	chdir(tempFolderCharStar);
-	#else
-	::SetCurrentDirectory(tempFolderCharStar);
-	#endif
+	setCurrentDirectory(tempFolderCharStar);
 
 	int dimension;
 	if (argumentExists(argc,argv,"-od3"))
@@ -371,7 +350,7 @@ int main(int argc,char **argv)
 
 	if (argumentExists(argc,argv,"-version"))
 	{
-		cout << "OpenOR.exe - Project Version: 3c8a 13-October-2013" << endl;
+		cout << "OpenOR.exe - Project Version: 3c9a 06-February-2014" << endl;
 		exit(1);
 	}
 

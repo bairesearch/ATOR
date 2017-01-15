@@ -23,7 +23,7 @@
  * File Name: ORoperations.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3c8a 13-October-2013
+ * Project Version: 3c9a 06-February-2014
  *
  *******************************************************************************/
 

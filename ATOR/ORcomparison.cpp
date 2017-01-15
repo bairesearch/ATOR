@@ -23,7 +23,7 @@
  * File Name: ORcomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3c8a 13-October-2013
+ * Project Version: 3c9a 06-February-2014
  *
  *******************************************************************************/
 
@@ -237,13 +237,8 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 #endif
 {
 	char currentTempFolder[EXE_FOLDER_PATH_MAX_LENGTH];
-	#ifdef LINUX
-	getcwd(currentTempFolder, EXE_FOLDER_PATH_MAX_LENGTH);
-	#else
-	::GetCurrentDirectory(EXE_FOLDER_PATH_MAX_LENGTH, currentTempFolder);
-	#endif
+	getCurrentDirectory(currentTempFolder);
 		
-
 	ObjectReferenceList * firstReferenceInSnapshotMatchObjectReferenceList = new ObjectReferenceList();
 
 	bool useGeneratedTestPixmapFiles = false;
@@ -347,7 +342,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3c8a 13-October-2013<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3c9a 06-February-2014<p>";
 		}
 		else
 		{
@@ -1834,11 +1829,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 												#endif
 											
 												#ifdef OR_USE_DATABASE
-												#ifdef LINUX
-												chdir(currentTempFolder);
-												#else
-												::SetCurrentDirectory(currentTempFolder);
-												#endif
+												setCurrentDirectory(currentTempFolder);
 												#endif											
 											}
 											else

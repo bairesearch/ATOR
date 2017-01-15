@@ -23,7 +23,7 @@
  * File Name: ORdatabaseFileIO.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3c8a 13-October-2013
+ * Project Version: 3c9a 06-February-2014
  *
  *******************************************************************************/
 
@@ -44,7 +44,9 @@
 	#include <math.h>
 	using namespace std;
 
-#define GIA_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME ((string)"GIAcorpusdatabase/")
+#define OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME ((string)"ORdatabase/")
+#define OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME "/home/systemusername/source/"
+#define OR_DATABASE_CONCEPT_NAME_SUBDIRECTORY_INDEX_NUMBER_OF_LEVELS (3) 	//eg e/x/a/example
 
 #define ASCII_TABLE_INDEX_OF_a (97)
 #define ASCII_TABLE_NUMBER_OF_LETTERS_IN_ALPHABET (26)
@@ -59,9 +61,9 @@
 
 #ifdef OR_USE_DATABASE
 void initialiseDatabase(string newDatabaseFolderName);
-bool directoryExists(string * folderName);
-bool makeDirectory(string * folderName);
-bool setCurrentDirectory(string * folderName);
+bool DBdirectoryExists(string * folderName);
+bool DBcreateDirectory(string * folderName);
+bool DBsetCurrentDirectory(string * folderName);
 bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string * folderName);
 string DBgenerateServerDatabaseName(string * objectName, bool trainOrTest);
 string DBgenerateFolderName(string * objectName, bool trainOrTest);

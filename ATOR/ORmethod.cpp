@@ -23,7 +23,7 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3c8a 13-October-2013
+ * Project Version: 3c9a 06-February-2014
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -3011,11 +3011,7 @@ bool checkIfFeatureContainerWithSameFeatureIndiciesExists(FeatureContainer * fir
 bool addCornerFeaturesToFeatureListUsingRGBmap(ViewInfo * vi, unsigned char * rgbMap, Feature * firstFeatureInList, int trainOrTest, string mapFileName, double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, bool interpixelRGBmapType)
 {
 	char currentTempFolder[EXE_FOLDER_PATH_MAX_LENGTH];
-	#ifdef LINUX
-	getcwd(currentTempFolder, EXE_FOLDER_PATH_MAX_LENGTH);
-	#else
-	::GetCurrentDirectory(EXE_FOLDER_PATH_MAX_LENGTH, currentTempFolder);
-	#endif
+	getCurrentDirectory(currentTempFolder);
 		
 	bool result = true;
 
@@ -3119,21 +3115,13 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(ViewInfo * vi, unsigned char * rg
 	}
 	system(convertRGBPPMtoRGBRASCommand.c_str());
 
-		#ifdef LINUX
-		chdir(exeFolderCharStar);
-		#else
-		::SetCurrentDirectory(exeFolderCharStar);
-		#endif
+	setCurrentDirectory(exeFolderCharStar);
 	if(OR_PRINT_ALGORITHM_PROGRESS)
 	{
 		cout << "system(" << convertRGBRAStoFeatureRASCommand << ");" << endl;
 	}
 	system(convertRGBRAStoFeatureRASCommand.c_str());
-		#ifdef LINUX
-		chdir(currentTempFolder);
-		#else
-		::SetCurrentDirectory(currentTempFolder);
-		#endif
+	setCurrentDirectory(currentTempFolder);
 
 	if(OR_PRINT_ALGORITHM_PROGRESS)
 	{

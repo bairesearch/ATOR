@@ -23,7 +23,7 @@
  * File Name: ORdatabaseDecisionTree.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3c8a 13-October-2013
+ * Project Version: 3c9a 06-February-2014
  *
  *******************************************************************************/
 
@@ -48,17 +48,6 @@ using namespace std;
 #ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 string imageComparisonTreeBaseDirectory;
 string imageComparisonTreeName;
-
-//for mkdir, chdir, etc	[CreateDirectory, SetCurrentDirectory]
-#ifdef LINUX
-//#include <direct.h>
-//#include <unistd.h>
-//#include <stdio.h>
-//#include <dir.h>
-#include <sys/stat.h> 	//is this needed?
-#include <sys/types.h>	//is this needed?
-#endif
-
 #endif
 
 /*
@@ -79,43 +68,25 @@ void createAndOrParseIntoDirectory(string * folderNameFullPath, string * folderN
 	{
 		if(relativeOrAbsolute)
 		{
-			#ifdef LINUX
-			mkdir(folderName->c_str(), 0770);
-			chdir(folderName->c_str());
-			#else
-			::CreateDirectory(folderName->c_str(), NULL);
-			::SetCurrentDirectory(folderName->c_str());
-			#endif
+			createDirectory(folderName->c_str());
+			setCurrentDirectory(folderName->c_str());
 		}
 		else
 		{
 			//create;
-			#ifdef LINUX
-			mkdir(folderNameFullPath->c_str(), 0770);
-			chdir(folderNameFullPath->c_str());
-			#else
-			::CreateDirectory(folderNameFullPath->c_str(), NULL);
-			::SetCurrentDirectory(folderNameFullPath->c_str());
-			#endif
+			createDirectory(folderNameFullPath->c_str());
+			setCurrentDirectory(folderNameFullPath->c_str());
 		}
 	}
 	else
 	{
 		if(relativeOrAbsolute)
 		{
-			#ifdef LINUX
-			chdir(folderName->c_str());
-			#else
-			::SetCurrentDirectory(folderName->c_str());
-			#endif
+			setCurrentDirectory(folderName->c_str());
 		}
 		else
 		{
-			#ifdef LINUX
-			chdir(folderNameFullPath->c_str());
-			#else
-			::SetCurrentDirectory(folderNameFullPath->c_str());
-			#endif
+			setCurrentDirectory(folderNameFullPath->c_str());
 		}
 	}
 }
