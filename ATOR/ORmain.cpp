@@ -26,11 +26,11 @@
  * File Name: ORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7b 27-January-2015
+ * Project Version: 3e7c 27-January-2015
  *
  *******************************************************************************/
 
-#include <ctime>
+
 #define TM_STRUCT_YEAR_OFFSET 1900
 
 #include "ORmain.h"
@@ -41,18 +41,6 @@
 #ifdef OR_USE_DATABASE
 #include "ORdatabaseFileIO.h"
 #endif
-
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string>
-#include <string.h>
-#include <iostream>
-#include <fstream>
-#include <time.h>
-#include <math.h>
-using namespace std;
-
 
 static char errmessage[] = "Usage:  OpenOR.exe [options]\n\n\twhere options are any of the following\n"
 "\n\t-trainortest [int]     : 0; input data is compared with current trained database, 1; data is added to database, 2; data is both added and compared"
@@ -353,7 +341,7 @@ int main(int argc,char* *argv)
 
 	if(argumentExists(argc,argv,"-version"))
 	{
-		cout << "OpenOR.exe - Project Version: 3e7b 27-January-2015" << endl;
+		cout << "OpenOR.exe - Project Version: 3e7c 27-January-2015" << endl;
 		exit(1);
 	}
 

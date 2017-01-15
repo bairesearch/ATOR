@@ -26,14 +26,13 @@
  * File Name: ORquadraticFit.h (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3e7b 27-January-2015
+ * Project Version: 3e7c 27-January-2015
  *
  *******************************************************************************/
 
 
 #ifndef HEADER_OR_QUADRATIC_FIT
 #define HEADER_OR_QUADRATIC_FIT
-
 
 #include "ORglobalDefs.h"
 #include "SHAREDvars.h"

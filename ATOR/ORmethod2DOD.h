@@ -26,9 +26,11 @@
  * File Name: ORmethod2DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7b 27-January-2015
+ * Project Version: 3e7c 27-January-2015
  *
  *******************************************************************************/
+
+
 #ifndef HEADER_OR_METHOD_2DOD
 #define HEADER_OR_METHOD_2DOD
 
@@ -43,11 +45,6 @@
 
 void createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, int imageHeight, unsigned char* rgbMap, LDreference* firstReferenceInInterpolatedMap);
 void create2DmeshUsingRGBmap2DOD(int imageWidth, int imageHeight, double imageXOffset, double imageYOffset, unsigned char* rgbMap, ORmeshPoint* firstMeshPointInMeshList, ORmeshPoint* meshPointArray[], bool useEdgeZeroCrossingMap);
-
-
-
-
-
 
 void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ORpolygon* currentPolygonInList, int side, bool first, ORfeature* firstFeatureInList);
 	double calculateXYorientationOfSide(ORpolygon* currentPolygonInList, int side);

@@ -26,28 +26,17 @@
  * File Name: ORdatabaseDecisionTree.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7b 27-January-2015
+ * Project Version: 3e7c 27-January-2015
  *
  *******************************************************************************/
-
 
 
 #ifndef HEADER_OR_DATABASE_DECISIONTREE
 #define HEADER_OR_DATABASE_DECISIONTREE
 
-
-
 #include "ORglobalDefs.h"
 #include "SHAREDvars.h"
 #include "ORpolygonList.h"
-	#include <stdio.h>
-	#include <stdlib.h>
-	#include <string>
-	#include <iostream>
-	#include <fstream>
-	#include <time.h>
-	#include <math.h>
-	using namespace std;
 
 //#ifdef OR_IMAGE_COMPARISON_DECISION_TREE
 
@@ -55,9 +44,6 @@
 extern string imageComparisonTreeBaseDirectory;
 extern string imageComparisonTreeName;
 #endif
-
-
-
 
 void addSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcombinations(int imageWidth, int imageHeight, unsigned char* rgbMapSmall, ORfeature* firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures);
 	#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL

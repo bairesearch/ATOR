@@ -26,23 +26,13 @@
  * File Name: ORpolygonList.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7b 27-January-2015
+ * Project Version: 3e7c 27-January-2015
  *
  *******************************************************************************/
 
+
 #include "ORpolygonList.h"
 #include "SHAREDvector.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string>
-#include <string.h>
-#include <iostream>
-#include <fstream>
-#include <time.h>
-#include <math.h>
-using namespace std;
-
 
 ORobjectReferenceList::ORobjectReferenceList(void)
 {

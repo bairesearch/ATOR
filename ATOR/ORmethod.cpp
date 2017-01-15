@@ -26,9 +26,10 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7b 27-January-2015
+ * Project Version: 3e7c 27-January-2015
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
+
 
 #include "ORmethod.h"
 #include "ORglobalDefs.h"
@@ -54,7 +55,6 @@
 #include "ORdatabaseDecisionTree.h"
 #endif
 
-
 /*
 #ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 		//for neural network;
@@ -67,18 +67,6 @@
 #ifdef USE_OPENGL
 	#include "LDopengl.h"
 #endif
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string>
-#include <string.h>
-#include <iostream>
-#include <fstream>
-#include <time.h>
-#include <math.h>
-using namespace std;
-
-
 
 #ifdef OR_TEST_ORI_AND_POS_NOISE_DURING_TRANING_AND_TESTING
 static double oriNoiseArray[OR_METHOD3DOD_NUM_ORI_NOISE_VALUES][3];

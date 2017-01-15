@@ -26,11 +26,12 @@
  * File Name: ORpixelMaps.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7b 27-January-2015
+ * Project Version: 3e7c 27-January-2015
  *
  *******************************************************************************/
 
- #ifndef HEADER_OR_PIXELMAPS
+
+#ifndef HEADER_OR_PIXELMAPS
 #define HEADER_OR_PIXELMAPS
 
 #include "SHAREDvars.h"

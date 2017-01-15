@@ -26,7 +26,7 @@
  * File Name: ORglobalDefs.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3e7b 27-January-2015
+ * Project Version: 3e7c 27-January-2015
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
@@ -753,6 +753,7 @@
  *	- 3DOD test and debug combined mesh feature detection
  *
  *******************************************************************************/
+
 
 #ifndef HEADER_OR_GLOBAL_DEFS
 #define HEADER_OR_GLOBAL_DEFS

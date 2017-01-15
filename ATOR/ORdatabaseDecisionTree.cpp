@@ -26,25 +26,15 @@
  * File Name: ORdatabaseDecisionTree.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7b 27-January-2015
+ * Project Version: 3e7c 27-January-2015
  *
  *******************************************************************************/
+
 
 #include "ORdatabaseDecisionTree.h"
 #include "ORdatabaseSQL.h"
 #include "LDreferenceManipulation.h"
 #include "RTpixelMaps.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string>
-#include <string.h>
-#include <iostream>
-#include <fstream>
-#include <time.h>
-#include <math.h>
-
-using namespace std;
 
 //#ifdef OR_IMAGE_COMPARISON_DECISION_TREE
 

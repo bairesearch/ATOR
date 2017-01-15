@@ -26,7 +26,7 @@
  * File Name: ORfeature.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7b 27-January-2015
+ * Project Version: 3e7c 27-January-2015
  *
  * Assumes that depth information is less accurate than image information
  *
@@ -38,16 +38,6 @@
 #include "ORpixelMaps.h"
 #include "ORimagecomparison.h"
 #include "SHAREDvector.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string>
-#include <string.h>
-#include <iostream>
-#include <fstream>
-#include <time.h>
-#include <math.h>
-using namespace std;
 
 #define MASK_3X3_PIXEL_1 (1)	//row 1, col 1
 #define MASK_3X3_PIXEL_1_X_REL (-1)

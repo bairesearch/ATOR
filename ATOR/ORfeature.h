@@ -26,10 +26,9 @@
  * File Name: ORfeature.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7b 27-January-2015
+ * Project Version: 3e7c 27-January-2015
  *
  *******************************************************************************/
-
 
 
 #ifndef HEADER_OR_FEATURE
@@ -40,19 +39,8 @@
 #include "ORoperations.h"
 #include "ORquadraticFit.h"
 
-	#include <string>
-	#include <iostream>
-	#include <fstream>
-	#include <time.h>
-	#include <math.h>
-	using namespace std;
-
-
-
-
 #define CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_LUMINOSITY_CONTRAST (1)
 #define CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_POINT_NORMAL_CONTRAST (2)
-
 
 #define OR_FEATURE_DETECTION_ZOOM (1)
 
@@ -68,8 +56,6 @@
 
 #define HEITGER_FEATURE_INTERPRETATION_KERNEL_HEIGHT (3)
 #define HEITGER_FEATURE_INTERPRETATION_KERNEL_WIDTH (3)
-
-
 
 
 /*high level methods*/
