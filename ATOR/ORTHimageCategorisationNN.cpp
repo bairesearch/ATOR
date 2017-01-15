@@ -23,17 +23,17 @@
  * File Name: ORTHimageCategorisationNN.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3b1a 05-August-2012
+ * Project Version: 3b2a 28-September-2012
  * Test Harness for OR Image Categorisation NN method (not yet implemented)
  *******************************************************************************/
 
 /*Description;
 
-I have finally come up with a solution to the information theory problem (image /snapshot categorisation) which looks like it could possibly work (and if not, seems like it is on the right track).
+This was considered a possible solution to the information theory problem (image /snapshot categorisation) which looked like it could possibly work (seemed like it was on the right track).
 
-All algorithms I come up with to categorise snapshot data resemble neural networks, and a subset of the latest one pretty much resembled a NN exactly, which is convenient because my existing NN software can be used to test it rather than having to write something else. It will probably take ~24 hours total finishing sometime Sunday, meaning I won't file the provisional for another few days.
+All algorithms I had come up with to categorise snapshot data resemble neural networks, and a subset of the latest one pretty much resembled a NN exactly, which is convenient because my existing NN software can be used to test it rather than having to write something else.
 
-This algorithm is a hybrid binary string / network categorisation method, and have outlined it in case it needs to be written up any time soon (for example over the weekend).
+This algorithm is a hybrid binary string / network categorisation method, and have outlined it in case it needs to be written up.
 
 This algorithm utilises an array/series of single (/dual) output neural networks. This would therefore also make sense of the low axon (output) to dendrite (input/connection) ratio observed in brain networks - a phenomenon which I could never make sense of - at least not in the context of how artificial nets are usually used (for selecting between a reasonably large number of self-learned categories [output neurons]).
 
@@ -175,7 +175,6 @@ int ORTHimageCategorisationNN()
 	int resizePercentage = 100/smallImageRatio;
 	char resizePercentageString[10];
 	sprintf(resizePercentageString, "%d", resizePercentage);
-	//cout << "resizePercentageString = " << resizePercentageString << endl;
 
 	convertImageToSmallImageCommand = convertImageToSmallImageCommand + "convert " + "-depth 8 -resize '" + resizePercentageString + "%' " + exampleImageFileName + " " + exampleImageFileNameSmall;
 	system(convertImageToSmallImageCommand.c_str());
@@ -191,27 +190,14 @@ int ORTHimageCategorisationNN()
 	{
 		firstInputNeuronInNetwork[nn] = new NeuronContainer();
 
-		/*
-		cout << "firstOutputNeuronInNetwork[nn]->neuron = " << firstOutputNeuronInNetwork[nn]->neuron << endl;
-		cout << "firstOutputNeuronInNetwork[nn]->nextNeuronContainer = " << firstOutputNeuronInNetwork[nn]->nextNeuronContainer << endl;
-		*/
-
 		firstOutputNeuronInNetwork[nn] = initialiseImageNeuralNetwork(NNTypeBeingTested, firstInputNeuronInNetwork[nn], &numberOfInputNeurons, numberOfOutputNeurons, exampleImageFileName);
-
-		/*
-		cout << "firstOutputNeuronInNetwork[nn]->neuron = " << firstOutputNeuronInNetwork[nn]->neuron << endl;
-		cout << "firstOutputNeuronInNetwork[nn]->nextNeuronContainer = " << firstOutputNeuronInNetwork[nn]->nextNeuronContainer << endl;
-		exit(0);
-		*/
 
 		//method A: dumb NN use random weights/biases
 		resetNeuralNetworkWithRandomBiasAndWeights(firstInputNeuronInNetwork[nn]);
 			//resetInputsAndClassTargets(firstInputNeuronInNetwork[nn], firstOutputNeuronInNetwork[nn], numberOfInputNeurons, numberOfOutputNeurons, newExperience);
 
 		//method B: dumb NN optimised to be sensitive to unique regions of image area / variations in image [NOT YET CODED]
-		//cout << "\t\t sdf" << endl;
 	}
-	//exit(0);		//TEMP
 
 	string imageCategorisationNNMethodCheckImageMatchList = "imageCategorisationNNMethodCheckImageMatchList-868.txt";
 
@@ -223,10 +209,7 @@ int ORTHimageCategorisationNN()
 	int l = 0;
 	while(currentMatchInList->next != NULL)
 	{
-		//cout << "match pair = " << l << endl;
-
 		//for every image match, calculate the categorisationDatasetBinaryString value for each component, and verify that they are equal (exactly)
-
 
 		long objectDecision = OR_IMAGE_CATEGORISTION_NN_OBJECT_DECISION;
 
@@ -234,8 +217,6 @@ int ORTHimageCategorisationNN()
 
 		for(int m=0; m<2; m++)
 		{
-			cout << "\tm = " << m << endl;
-
 			string imageFileName = "";
 			if(m == 0)
 			{
@@ -246,8 +227,10 @@ int ORTHimageCategorisationNN()
 				imageFileName = currentMatchInList->fileName2;
 			}
 
+			#ifdef OR_DEBUG
 			//cout << "\timageFileName = " << imageFileName << endl;
-
+			#endif
+			
 			#ifdef OR_IMAGE_CATEGORISTION_NN_USE_SMALL_IMAGES
 			string imageFileNameSmall = imageFileName + ".small.ppm";
 
@@ -273,7 +256,6 @@ int ORTHimageCategorisationNN()
 			int categorisationValueAsStringIndex = 0;
 			int indexChar = 0;		//used to convert binary to char
 			char binaryConvertedToChar = 0x00;
-
 
 			Experience * currentExperience = new Experience;
 
@@ -301,9 +283,7 @@ int ORTHimageCategorisationNN()
 
 			for(int nn=0; nn<OR_IMAGE_CATEGORISTION_NN_NUMBER_NEURAL_NETWORKS; nn++)
 			{
-				//cout << "\t\tnn = " << nn << endl;
-
-				//temp debug;
+				#ifdef OR_DEBUG
 				/*
 				if(nn == 0)
 				{
@@ -316,6 +296,7 @@ int ORTHimageCategorisationNN()
 					}
 				}
 				*/
+				#endif
 
 				#ifdef DEBUG_TH_OR_IMAGE_CATEGORISTION_NN_4
 				if(nn == 0)
@@ -351,8 +332,6 @@ int ORTHimageCategorisationNN()
 
 				restoreNeuralNetworkWithStoredBiasAndWeights(firstInputNeuronInNetwork[nn]);
 
-
-
 				bool bitArray[COMPILE_TH_OR_IMAGE_CATEGORISTION_NN_USE_MULTI_BIT_OUTPUT_PER_NET_NUM_BITS];
 				int bitArrayIndex = 0;
 				for(int q=0; q<COMPILE_TH_OR_IMAGE_CATEGORISTION_NN_USE_MULTI_BIT_OUTPUT_PER_NET_OUTPUTS-1; q++)
@@ -371,8 +350,10 @@ int ORTHimageCategorisationNN()
 						bitArrayIndex++;
 					}
 				}
+				#ifdef OR_DEBUG
 				//cout << "bitArrayIndex = " << bitArrayIndex << endl;
-
+				#endif
+				
 				for(int i=0; i<COMPILE_TH_OR_IMAGE_CATEGORISTION_NN_USE_MULTI_BIT_OUTPUT_PER_NET_NUM_BITS; i++)
 				{
 					bool bitValue = bitArray[i];
@@ -402,7 +383,6 @@ int ORTHimageCategorisationNN()
 			#else
 
 							// orig version;
-							//cout << "as1" << endl;
 							double experienceBackPropagationPassError = calculateExperienceErrorForHypotheticalDecision(firstInputNeuronInNetwork[nn], firstOutputNeuronInNetwork[nn], numberOfInputNeurons, numberOfOutputNeurons, currentExperience);
 
 							#ifdef DEBUG_TH_OR_IMAGE_CATEGORISTION_NN_4
@@ -411,14 +391,16 @@ int ORTHimageCategorisationNN()
 								debugPrintNNOutputs = false;
 							}
 							#endif
+							#ifdef OR_DEBUG
 							//cout << "experienceBackPropagationPassError = " << experienceBackPropagationPassError << endl;
-							//cout << "as2" << endl;
+							#endif
 							currentExperience->classTargetValue = OR_IMAGE_CATEGORISTION_NN_OBJECT_DECISION_ALTERNATE;
 
 
 							double experienceBackPropagationPassErrorAlternateDecision = calculateExperienceErrorForHypotheticalDecision(firstInputNeuronInNetwork[nn], firstOutputNeuronInNetwork[nn], numberOfInputNeurons, numberOfOutputNeurons, currentExperience);
-							//cout << "experienceBackPropagationPassErrorAlternateDecision = " << experienceBackPropagationPassErrorAlternateDecision << endl;
 
+							#ifdef OR_DEBUG
+							//cout << "experienceBackPropagationPassErrorAlternateDecision = " << experienceBackPropagationPassErrorAlternateDecision << endl;							
 							/*
 							if(nn == 0)
 							{
@@ -428,6 +410,7 @@ int ORTHimageCategorisationNN()
 								cout << "experienceBackPropagationPassError2 = " << experienceBackPropagationPassErrorAlternateDecision << endl;
 							}
 							*/
+							#endif
 
 							bool bitValue;
 							if(experienceBackPropagationPassError < experienceBackPropagationPassErrorAlternateDecision)
@@ -468,8 +451,10 @@ int ORTHimageCategorisationNN()
 
 			}
 
+			#ifdef OR_DEBUG
 			//cout << "categorisationValue = " << categorisationValue << endl;
-
+			#endif
+			
 			if(m == 0)
 			{
 				previousCategorisationValue = categorisationValue;
@@ -494,14 +479,9 @@ int ORTHimageCategorisationNN()
 
 		}
 
-		//exit(0);		//TEMP
-
 		currentMatchInList = currentMatchInList->next;
 		l++;
-
 	}
-
-
 
 	return result;
 }
@@ -584,7 +564,6 @@ NeuronContainer * initialiseImageNeuralNetwork(int NNTypeBeingTested, NeuronCont
 		double probabilityNeuronConnectionWithPreviousLayerNeuron = OR_IMAGE_COMPARISON_NN_PROBABILITY_CONNECTION_WITH_PREVIOUS_LAYER_PIXMAP_EXPERIENCE;
 		double probabilityNeuronConnectionWithAllPreviousLayersNeurons = OR_IMAGE_COMPARISON_NN_PROBABILITY_CONNECTION_WITH_ALL_PREVIOUS_LAYERS_PIXMAP_EXPERIENCE;		//default 0.0
 		firstOutputNeuronInNetwork = formNeuralNet(firstInputNeuronInNetwork, *numberOfInputNeurons, numberOfOutputNeurons, numberOfLayers, layerDivergenceType, meanLayerDivergenceFactor, probabilityNeuronConnectionWithPreviousLayerNeuron, probabilityNeuronConnectionWithAllPreviousLayersNeurons);
-
 	}
 	else
 	{
@@ -615,7 +594,6 @@ void generateExperienceFrom1Array(double * array, int arrayLength, double maxInp
 
 		currentExperienceInput = currentExperienceInput->next;
 	}
-
 }
 
 
@@ -646,14 +624,11 @@ bool generatePixelMapExperienceFromImage(string imageFileName, Experience * curr
 {
 	bool result = true;
 
-
 	//1. generate random camera + lighting position conditions;
 		//CHECK THIS - need to randomly vary lighting conditions
 
-
 	char * charstarrayImageFileName = const_cast<char*>(imageFileName.c_str()); //NOT USED for 2D!
 
-	//cout << "3" << endl;
 	//3. load pixmap into RAM objectImage from generated pixmap
 	pixmap * objectImage;
 	#ifdef DEBUG_TH_OR_IMAGE_CATEGORISTION_NN_3
@@ -661,7 +636,6 @@ bool generatePixelMapExperienceFromImage(string imageFileName, Experience * curr
 	#endif
 	objectImage = load_ppm(charstarrayImageFileName);
 
-	//cout << "4" << endl;
 	//4. produce contrast map from pixmap image
 	unsigned char * rgbMap = new unsigned char [objectImage->wide * objectImage->high * RGB_NUM];
 	double * luminosityMap = new double[objectImage->wide * objectImage->high];
@@ -671,14 +645,12 @@ bool generatePixelMapExperienceFromImage(string imageFileName, Experience * curr
 
 	createRGBMapFromPixmapImage(objectImage, rgbMap);
 
-
 	createLuminosityMapFromRGBMap(objectImage->wide, objectImage->high, rgbMap, luminosityMap);
 		//createLuminosityMapFromPixmapImage(objectImage, luminosityMap);
 	createLuminosityBooleanMap(objectImage->wide, objectImage->high, luminosityMap, luminosityBooleanMap);
 	createContrastMapFromMap(objectImage->wide, objectImage->high, luminosityMap, luminosityContrastMap);
 	createLuminosityContrastBooleanMap(objectImage->wide, objectImage->high, luminosityContrastMap, luminosityContrastBooleanMap);
 
-	//cout << "5" << endl;
 	//5. apply quadratic fit to image [from Java code];
 		//CHECK THIS - accuracy of quadratic fit is not currently required
 
@@ -698,10 +670,6 @@ bool generatePixelMapExperienceFromImage(string imageFileName, Experience * curr
 	cout << "Error: no feed defined" << endl;
 	exit(0);
 	#endif
-
-
-
-	//cout << "4g" << endl;
 
 	//#define DEBUG_ANN_OBJECT_RECOGNITION_EXPERIENCES_OUTPUT_ALL_MAPS
 	#ifdef DEBUG_ANN_OBJECT_RECOGNITION_EXPERIENCES_OUTPUT_ALL_MAPS
@@ -728,9 +696,7 @@ bool generatePixelMapExperienceFromImage(string imageFileName, Experience * curr
 	generatePixmapFromBooleanMap(PPMFileNameContrastBooleanCharArray, objectImage->wide, objectImage->high, luminosityContrastBooleanMap);
 	#endif
 
-	//cout << "6" << endl;
-
-		//memory clean up
+	//memory clean up
 
 	delete luminosityContrastMap;
 	delete luminosityMap;
@@ -745,11 +711,7 @@ bool generatePixelMapExperienceFromImage(string imageFileName, Experience * curr
 	*/
 	free_pixmap(objectImage);
 
-	//cout << "3d6" << endl;
-
 	return result;
-
-
 }
 
 
@@ -778,7 +740,6 @@ void createImageFileNameMatchListFromMatchFile(string fileName, FileNameMatch * 
 
 		while (parseFileObject->get(c))
 		{
-			//cout << c;
 			charCount++;
 
 			if((waitingForNewLine) && (c == CHAR_NEWLINE))
@@ -812,9 +773,11 @@ void createImageFileNameMatchListFromMatchFile(string fileName, FileNameMatch * 
 				currentMatchInList->fileName1 = objectName1String;
 				currentMatchInList->fileName2 = objectName2String;
 
+				#ifdef OR_DEBUG
 				//cout << "objectName1String = " << objectName1String << endl;
 				//cout << "objectName2String = " << objectName2String << endl;
-
+				#endif
+				
 				FileNameMatch * newMatch = new FileNameMatch();
 				currentMatchInList->next = newMatch;
 

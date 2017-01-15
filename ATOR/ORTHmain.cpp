@@ -23,7 +23,7 @@
  * File Name: ORTHmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3b1a 05-August-2012
+ * Project Version: 3b2a 28-September-2012
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -44,7 +44,6 @@
 using namespace std;
 
 //#define TEMPTESTEDGEFIT
-
 /*
 #ifdef TEMPTESTEDGEFIT
 #include "ORfeature.h"
@@ -53,8 +52,6 @@ using namespace std;
 #include "RTpixelMaps.h"
 int main
 {
-
-
 	int imageWidth = 768;
 	int imageHeight = 576;
 	unsigned char * rgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
@@ -72,9 +69,7 @@ int main
 	view_info * vi = NULL;
 
 	generateEdgeListFromRGBMapWithQuadraticFit(rgbMap, edgeBoolMap, imageWidth, imageHeight, 1.0, false, nullpointer, nullpointer, 1, vi);
-
 }
-
 int mainTemp
 #else
 */
@@ -178,7 +173,6 @@ int main()
 		int * numberOfTrainPolys = new int[numberOfTrainObjects*numberOfTrainViewIndiciesPerObjectWithUniquePolygons*numberOfTrainZoomIndicies];
 		int * numberOfTestPolys = new int[numberOfTestObjects*numberOfTestViewIndiciesPerObjectWithUniquePolygons*numberOfTestZoomIndicies];
 
-		//cout << "OR_METHOD2DOD_DIMENSIONS = " << OR_METHOD2DOD_DIMENSIONS << endl;
 		ORTHMethod(dimension, numberOfTrainObjects, trainObjectNameArray, numberOfTestObjects, testObjectNameArray, numberOfTrainPolys, numberOfTestPolys, objectDataSource, &viTrain, &viTest, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTrain, maxNumberOfPolygonsTest, numberOfTrainViewIndiciesPerObject, numberOfTestViewIndiciesPerObject, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTrainZoomIndicies, numberOfTestZoomIndicies);
 
 	#elif defined COMPILE_TH_OR_METHOD_3DOD
@@ -279,7 +273,6 @@ int main()
 	#endif
 
 }
-
 
 
 

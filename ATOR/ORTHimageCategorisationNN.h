@@ -23,17 +23,17 @@
  * File Name: ORTHimageCategorisationNN.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3b1a 05-August-2012
+ * Project Version: 3b2a 28-September-2012
  * Test Harness for OR Image Categorisation NN method (not yet implemented)
  *******************************************************************************/
 
 /*Description;
 
-I have finally come up with a solution to the information theory problem (image /snapshot categorisation) which looks like it could possibly work (and if not, seems like it is on the right track).
+This was considered a possible solution to the information theory problem (image /snapshot categorisation) which looked like it could possibly work (seemed like it was on the right track).
 
-All algorithms I come up with to categorise snapshot data resemble neural networks, and a subset of the latest one pretty much resembled a NN exactly, which is convenient because my existing NN software can be used to test it rather than having to write something else. It will probably take ~24 hours total finishing sometime Sunday, meaning I won't file the provisional for another few days.
+All algorithms I had come up with to categorise snapshot data resemble neural networks, and a subset of the latest one pretty much resembled a NN exactly, which is convenient because my existing NN software can be used to test it rather than having to write something else.
 
-This algorithm is a hybrid binary string / network categorisation method, and have outlined it in case it needs to be written up any time soon (for example over the weekend).
+This algorithm is a hybrid binary string / network categorisation method, and have outlined it in case it needs to be written up.
 
 This algorithm utilises an array/series of single (/dual) output neural networks. This would therefore also make sense of the low axon (output) to dendrite (input/connection) ratio observed in brain networks - a phenomenon which I could never make sense of - at least not in the context of how artificial nets are usually used (for selecting between a reasonably large number of self-learned categories [output neurons]).
 

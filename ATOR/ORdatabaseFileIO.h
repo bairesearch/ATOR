@@ -23,7 +23,7 @@
  * File Name: ORdatabaseFileIO.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3b1a 05-August-2012
+ * Project Version: 3b2a 28-September-2012
  *
  *******************************************************************************/
 
@@ -44,7 +44,7 @@
 	#include <math.h>
 	using namespace std;
 
-#define OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME "/home/rich/source/"	//systemusername
+#define OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME "/home/systemusername/source/"
 #define OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME ((string)"ORfsdatabase/")
 #define OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME_BASE (OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME)
 #define OR_DATABASE_CONCEPT_NAME_SUBDIRECTORY_INDEX_NUMBER_OF_LEVELS (3) 	//eg e/x/a/example
@@ -58,6 +58,18 @@
 
 #define OR_DATABASE_TEST_FOLDER_NAME "test"
 #define OR_DATABASE_TRAIN_FOLDER_NAME "train"
+
+
+#ifdef OR_USE_DATABASE
+void initialiseDatabase(string newDatabaseFolderName);
+bool directoryExists(string * folderName);
+bool makeDirectory(string * folderName);
+bool setCurrentDirectory(string * folderName);
+bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string * folderName);
+string DBgenerateServerDatabaseName(string * objectName, bool trainOrTest);
+string DBgenerateFolderName(string * objectName, bool trainOrTest);
+#endif
+
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
 	bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList, Feature * trainfirstFeatureInNearestFeatureList, int dimension, bool * exactMatchFound);

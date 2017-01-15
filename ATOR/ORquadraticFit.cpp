@@ -23,7 +23,7 @@
  * File Name: ORquadraticFit.cpp (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3b1a 05-August-2012
+ * Project Version: 3b2a 28-September-2012
  *
  * Assumes that depth information is less accurate than image information
  *******************************************************************************/
@@ -453,7 +453,6 @@ double calculateAreaOfOneSideOfEdgeInAPixel(int xDevPointOnSide, int yDevPointOn
 		}
 
 
-
 		int sidey1;
 		int sidey2;
 		if(absDouble(edgeIntersectBoundary[0].y ) != HALF_PIXEL_WIDTH)
@@ -545,7 +544,6 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 	}
 
 
-
 	#ifdef OR_QUADRATIC_FIT_DEBUG
 
 	#define ENHANCEMENT_FACTOR (5)	//must be odd number
@@ -576,7 +574,6 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 	#endif
 
 
-
 	int robotTerritoryHeight = imageHeight - (QUADRATIC_FIT_KERNEL_SIZE-1);
 	int robotTerritoryWidth = imageWidth - (QUADRATIC_FIT_KERNEL_SIZE-1);
 
@@ -594,7 +591,6 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 	{
 		for(x=0; x < robotTerritoryWidth; x++)	//Eg x:0->126
 		{
-
 			float featureProbabilityLevelCentrePixel = getPixelFloat(x+(QUADRATIC_FIT_KERNEL_SIZE/2), y+(QUADRATIC_FIT_KERNEL_SIZE/2), luminosityContrastMap);
 
 			bool centreContrastThreshold;
@@ -622,7 +618,6 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 					centreContrastThreshold = false;
 				}
 			}
-
 
 			bool centreFeatureFound = true;
 			double featureProbabilityLevelKernelPixels = 0.0;
@@ -663,7 +658,6 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 			}
 		#endif
 
-
 			bool centreContrastThresholdAdvanced = false;
 			if(edgeDetect == POINT_DETECT)
 			{
@@ -683,7 +677,6 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 					centreContrastThresholdAdvanced = true;
 				}
 			}
-
 
 			if(centreContrastThresholdAdvanced == true)
 			{//pixel is above ZC contrast threshold
@@ -830,6 +823,7 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 
 								if(onObject)
 								{
+									#ifdef OR_DEBUG
 									/*
 									cout << "feature on object" << endl;
 									cout << "xyzWorld.x = " << xyzWorld.x << endl;
@@ -837,6 +831,8 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 									cout << "xyzWorld.z = " << xyzWorld.z << endl;
 									cout << "depthVal = " << depthVal << endl;
 									*/
+									#endif
+									
 									currentZeroCrossingInList->depth = depthVal;
 									#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
 									currentZeroCrossingInList->nearbyHitXValue = x;
@@ -862,13 +858,9 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 							}
 							#endif
 
-
 							QFZeroCrossing * zc = new QFZeroCrossing();
 							currentZeroCrossingInList->next = zc;
 							currentZeroCrossingInList = currentZeroCrossingInList->next;
-
-
-
 						}
 
 					#ifndef OR_QUADRATIC_FIT_EDGE_RELAXED_REQ
@@ -878,7 +870,6 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 				else
 				{//feature detect
 
-
 					/*
 					if(checkForTotalNegativeCurvature(coefficient[3], coefficient[4]))
 					{
@@ -886,8 +877,7 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 					//optimisation;
 					if(checkTotalNegativeCurvatureAbovePointThreshold(coefficient[3], coefficient[4]))
 					{
-
-
+						#ifdef OR_DEBUG
 						/*
 						//cout << "coefficient[0] = " << coefficient[0] << endl;
 						//cout << "coefficient[1] = " << coefficient[1] << endl;
@@ -896,10 +886,10 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 						cout << "coefficient[4] = " << coefficient[4] << endl;
 						//cout << "coefficient[5] = " << coefficient[5] << endl;
 						*/
+						#endif
 
 						if(calculateZeroCrossingAndOrientation((x+(QUADRATIC_FIT_KERNEL_SIZE/2)), (y+(QUADRATIC_FIT_KERNEL_SIZE/2)), coefficient, edgeDetect, createEnhancedImageDisplayingQuadraticFitInfo, currentZeroCrossingInList))
 						{
-
 							#ifdef OR_QUADRATIC_FIT_DEBUG
 							if(createEnhancedImageDisplayingQuadraticFitInfo)
 							{
@@ -940,6 +930,7 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 
 								if(onObject)
 								{
+									#ifdef OR_DEBUG
 									/*
 									cout << "feature on object" << endl;
 									cout << "xyzWorld.x = " << xyzWorld.x << endl;
@@ -947,6 +938,8 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 									cout << "xyzWorld.z = " << xyzWorld.z << endl;
 									cout << "depthVal = " << depthVal << endl;
 									*/
+									#endif
+									
 									currentZeroCrossingInList->depth = depthVal;
 									#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
 									currentZeroCrossingInList->nearbyHitXValue = x;
@@ -955,6 +948,7 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 								}
 								else
 								{
+									#ifdef OR_DEBUG
 									/*
 									cout << "feature off object" << endl;
 									cout << "xyzNearbyPointOnObject.x = " << xyzNearbyPointOnObject.x << endl;
@@ -963,6 +957,8 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 									cout << "depthVal = " << depthVal << endl;
 									cout << "minDepthForNearbyPoints = " << minDepthForNearbyPoints << endl;
 									*/
+									#endif
+									
 									currentZeroCrossingInList->depth = minDepthForNearbyPoints;
 									#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
 									currentZeroCrossingInList->nearbyHitXValue = xyzNearbyPointOnObject.x;
@@ -976,14 +972,10 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 							currentZeroCrossingInList->next = zc;
 							currentZeroCrossingInList = currentZeroCrossingInList->next;
 						}
-
-
 					}
 
 				}
 				//checks for individual bumps of high contrast (considered noise)
-
-
 			}
 		}
 	}
@@ -1002,8 +994,6 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 		//exit(0);
 	}
 	#endif
-
-
 }
 
 
@@ -1015,7 +1005,6 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 	//x, y are redundant
 bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, QFZeroCrossing * currentZeroCrossingInList)
 {
-
 	//Summary:
 	// calculates eigen values of the C coefficient in coefficients[], an eigen vector, alpha, beta,
 	// zeroCrossings, and checks whether the zeroCrossing is valid.
@@ -1128,7 +1117,6 @@ void calculateQuadraticFitCoefficients(int x, int y, float coefficient[], double
 		cout << "invalid quadratic fit kernel size, QUADRATIC_FIT_KERNEL_SIZE = " << QUADRATIC_FIT_KERNEL_SIZE << endl;
 		exit(0);
 	}
-
 }
 
 
@@ -1445,7 +1433,6 @@ bool checkEdgeZeroCrossingObjectPassesThreshold(QFZeroCrossing * zc)
 	{
 		passedThreshold = false;
 	}
-
 
 	return passedThreshold;
 }

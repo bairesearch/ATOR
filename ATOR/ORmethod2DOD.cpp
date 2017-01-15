@@ -23,7 +23,7 @@
  * File Name: ORmethod2DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3b1a 05-August-2012
+ * Project Version: 3b2a 28-September-2012
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -249,7 +249,7 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DRGBMap, P
 	ptp5.y = sqrt(pow(1.0,2) - pow(0.5, 2));
 	*/
 
-#ifdef OR_DEBUG_METHOD_2DOD
+	#ifdef OR_DEBUG_METHOD_2DOD
 	cout << "\n \t starting to tranform object triangle, predefinedTriangle->point3.y = " << predefinedTriangle->point3.y << endl;
 	cout << "0. currentPolygonInList without transformation " << endl;
 	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
@@ -258,7 +258,7 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DRGBMap, P
 	cout << "transformedObjectTriangle->point2.y = " << transformedObjectTriangle->point2.y << endl;
 	cout << "transformedObjectTriangle->point3.x = " << transformedObjectTriangle->point3.x << endl;
 	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
-#endif
+	#endif
 
 	double orientationOfObjectTriangleSide = calculateXYOrientationOfSide(currentPolygonInList, side);
 	double lengthOfObjectTriangleSide = calculateXYLengthOfSide(currentPolygonInList, side);
@@ -272,11 +272,11 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DRGBMap, P
 	mat scaleMatrix1a;
 	createScaleMatrix2D(&scaleMatrix1a, scaleFactor1a);
 
-#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
+	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 	//openglUseMatrix = true;
 	opengl2DMatrixTransformation1ScaleFactor = scaleFactor1a;
 
-#else
+	#else
 	if(first)
 	{
 		storeBackupVertexAbsPositionsForAllReferencesIn2DList(firstReferenceInInterpolated2DRGBMap);
@@ -286,8 +286,8 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DRGBMap, P
 		restoreBackupVertexAbsPositionsForAllReferencesIn2DList(firstReferenceInInterpolated2DRGBMap);
 	}
 	//applyTransformationMatrixToAllReferencesIn2DList(firstReferenceInInterpolated2DRGBMap, &scaleMatrix1a);
-#endif
-
+	#endif
+	
 	#ifdef OR_DEBUG_METHOD_2DOD
 	cout << "1. Scale object data such that the object triangle side is of same length as a predefined side of a predefined triangle" << endl;
 	cout << "scaleMatrix1a.a.x = " << scaleMatrix1a.a.x << endl;
@@ -329,7 +329,6 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DRGBMap, P
 	//1c. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		//cout << "h1" << endl;
 		Feature * currentFeature;	//startup
 		currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
@@ -361,7 +360,6 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DRGBMap, P
 			#endif
 			currentFeature = currentFeature->next;
 		}
-		//cout << "h2" << endl;
 	}
 
 	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
@@ -402,11 +400,11 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DRGBMap, P
 
 	mat rotateMatrix2i;
 	createRotationMatrix2D(&rotateMatrix2i, rotationFactor2i);
-#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
+	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 	opengl2DMatrixTransformation2iRotationFactor = rotationFactor2i;
-#else
+	#else
 	//applyTransformationMatrixToAllReferencesIn2DList(firstReferenceInInterpolated2DRGBMap, &rotateMatrix2i);
-#endif
+	#endif
 	#ifdef OR_DEBUG_METHOD_2DOD
 	cout << "2. rotate object data such that the object triangle side is parallel with X axis" << endl;
 	cout << "rotateMatrix2i.a.x = " << rotateMatrix2i.a.x << endl;
@@ -508,11 +506,11 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DRGBMap, P
 	mat rotateMatrix2ii;
 	createRotationMatrix2D(&rotateMatrix2ii, rotationFactor2ii);
 
-#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
+	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 	opengl2DMatrixTransformation2iiRotationFactor = rotationFactor2ii;
-#else
+	#else
 	//applyTransformationMatrixToAllReferencesIn2DList(firstReferenceInInterpolated2DRGBMap, &rotateMatrix2ii);
-#endif
+	#endif
 
 	//2iib. tranform object triangle; rotate object triangle by 180 degrees if necessary
 	multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &rotateMatrix2ii);
@@ -579,11 +577,11 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DRGBMap, P
 	//OLD: createYAxisScaleMatrix2D(&scaleMatrix3a, lengthOfPredefinedTriangleSide/perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide);
 	createYAxisScaleMatrix2D(&scaleMatrix3a, scaleFactor3a);
 
-#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
+	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 	opengl2DMatrixTransformation3aScaleFactor = scaleFactor3a;
-#else
+	#else
 	//applyTransformationMatrixToAllReferencesIn2DList(firstReferenceInInterpolated2DRGBMap, &scaleMatrix3a);
-#endif
+	#endif
 
 	#ifdef OR_DEBUG_METHOD_2DOD
 	cout << "3. Scale object data on Y axis such that the third apex is the same perpendicular distance away from the side as is the case for the predefined triangle." << endl;
@@ -657,11 +655,11 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DRGBMap, P
 	mat shearMatrix4a;
 	createXAxisShearMatrix2D(&shearMatrix4a, shearRequired4a);
 
-#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
+	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 	opengl2DMatrixTransformation4aShearFactor = shearRequired4a;
-#else
+	#else
 	//applyTransformationMatrixToAllReferencesIn2DList(firstReferenceInInterpolated2DRGBMap, &shearMatrix4a);
-#endif
+	#endif
 
 	#ifdef OR_DEBUG_METHOD_2DOD
 	cout << "4. shear object data along X axis such that object triangle apexes are coincident with predefined triangle apexes." << endl;
@@ -784,58 +782,54 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DRGBMap, P
 
 	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS_ADV
 
-		//cout << "h1" << endl;
+	mat multipliedMatrix;
+	mat matTemp;
+	createIdentityMatrixRT(&multipliedMatrix);
 
-		mat multipliedMatrix;
-		mat matTemp;
-		createIdentityMatrixRT(&multipliedMatrix);
+	#ifndef OR_METHOD_2DOD_ASSUME_NO_3D_ROTATION
+	multiplyMatricies(&matTemp, &multipliedMatrix, &shearMatrix4a);
+	copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
+	multiplyMatricies(&matTemp, &multipliedMatrix, &scaleMatrix3a);
+	copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
+	#endif
+	multiplyMatricies(&matTemp, &multipliedMatrix, &rotateMatrix2ii);
+	copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
+	multiplyMatricies(&matTemp, &multipliedMatrix, &rotateMatrix2i);
+	copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
+	multiplyMatricies(&matTemp, &multipliedMatrix, &scaleMatrix1a);
+	copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
 
-		#ifndef OR_METHOD_2DOD_ASSUME_NO_3D_ROTATION
-		multiplyMatricies(&matTemp, &multipliedMatrix, &shearMatrix4a);
-		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
-		multiplyMatricies(&matTemp, &multipliedMatrix, &scaleMatrix3a);
-		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
-		#endif
-		multiplyMatricies(&matTemp, &multipliedMatrix, &rotateMatrix2ii);
-		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
-		multiplyMatricies(&matTemp, &multipliedMatrix, &rotateMatrix2i);
-		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
-		multiplyMatricies(&matTemp, &multipliedMatrix, &scaleMatrix1a);
-		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
+	copyMatrix2IntoMatrix1(&opengl2DMultiplicationMatrix, &multipliedMatrix);
 
-		copyMatrix2IntoMatrix1(&opengl2DMultiplicationMatrix, &multipliedMatrix);
+	/*
+	//now create inverted matrix;
+	mat multipliedMatrixInverted;
+	createIdentityMatrixRT(&multipliedMatrixInverted);
 
+	multiplyMatricies(&matTemp, &multipliedMatrixInverted, &scaleMatrix1a);
+	copyMatrix2IntoMatrix1(&multipliedMatrixInverted, &matTemp);
+	multiplyMatricies(&matTemp, &multipliedMatrixInverted, &rotateMatrix2i);
+	copyMatrix2IntoMatrix1(&multipliedMatrixInverted, &matTemp);
+	multiplyMatricies(&matTemp, &multipliedMatrixInverted, &rotateMatrix2ii);
+	copyMatrix2IntoMatrix1(&multipliedMatrixInverted, &matTemp);
+	multiplyMatricies(&matTemp, &multipliedMatrixInverted, &scaleMatrix3a);
+	copyMatrix2IntoMatrix1(&multipliedMatrixInverted, &matTemp);
+	multiplyMatricies(&matTemp, &multipliedMatrixInverted, &shearMatrix4a);
+	copyMatrix2IntoMatrix1(&multipliedMatrixInverted, &matTemp);
 
+	ptp4.x = ptp4.x + translationVector.x;
+	ptp4.y = ptp4.y + translationVector.y;
+	ptp5.x = ptp5.x + translationVector.x;
+	ptp5.y = ptp5.y + translationVector.y;
 
-		/*
-		//now create inverted matrix;
-		mat multipliedMatrixInverted;
-		createIdentityMatrixRT(&multipliedMatrixInverted);
-
-		multiplyMatricies(&matTemp, &multipliedMatrixInverted, &scaleMatrix1a);
-		copyMatrix2IntoMatrix1(&multipliedMatrixInverted, &matTemp);
-		multiplyMatricies(&matTemp, &multipliedMatrixInverted, &rotateMatrix2i);
-		copyMatrix2IntoMatrix1(&multipliedMatrixInverted, &matTemp);
-		multiplyMatricies(&matTemp, &multipliedMatrixInverted, &rotateMatrix2ii);
-		copyMatrix2IntoMatrix1(&multipliedMatrixInverted, &matTemp);
-		multiplyMatricies(&matTemp, &multipliedMatrixInverted, &scaleMatrix3a);
-		copyMatrix2IntoMatrix1(&multipliedMatrixInverted, &matTemp);
-		multiplyMatricies(&matTemp, &multipliedMatrixInverted, &shearMatrix4a);
-		copyMatrix2IntoMatrix1(&multipliedMatrixInverted, &matTemp);
-
-		ptp4.x = ptp4.x + translationVector.x;
-		ptp4.y = ptp4.y + translationVector.y;
-		ptp5.x = ptp5.x + translationVector.x;
-		ptp5.y = ptp5.y + translationVector.y;
-
-		multMatrixByVector(&multipliedMatrixInverted, &ptp4, &point4);
-		multMatrixByVector(&multipliedMatrixInverted, &ptp5, &point5);
-		*/
-		/*
-		point4.x = point4.x + translationVector.x;
-		point4.y = point4.y + translationVector.y;
-		point5.x = point5.x + translationVector.x;
-		point5.y = point5.y + translationVector.y;
+	multMatrixByVector(&multipliedMatrixInverted, &ptp4, &point4);
+	multMatrixByVector(&multipliedMatrixInverted, &ptp5, &point5);
+	*/
+	/*
+	point4.x = point4.x + translationVector.x;
+	point4.y = point4.y + translationVector.y;
+	point5.x = point5.x + translationVector.x;
+	point5.y = point5.y + translationVector.y;
 		*/
 	#endif
 #else
@@ -870,14 +864,13 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DRGBMap, P
 	applyTranslationToAllReferencesIn2DList(firstReferenceInInterpolated2DRGBMap, &translationVector);
 #endif
 
-
-	//cout << "perpendicularDistanceBetweenThirdApexOfPredefinedTriangleAndSide = " << perpendicularDistanceBetweenThirdApexOfPredefinedTriangleAndSide << endl;
-#ifdef OR_DEBUG_METHOD_2DOD
+	#ifdef OR_DEBUG_METHOD_2DOD
+	//cout << "perpendicularDistanceBetweenThirdApexOfPredefinedTriangleAndSide = " << perpendicularDistanceBetweenThirdApexOfPredefinedTriangleAndSide << endl;	
 	cout << "5. translate object data on X and Y axis such that the object triangle is centred at 0,0" << endl;
 	cout << "translationVector.x = " << translationVector.x << endl;
 	cout << "translationVector.y = " << translationVector.y << endl;
 	cout << "translationVector.z = " << translationVector.z << endl;
-#endif
+	#endif
 
 	//5b. tranform object triangle; translate the object triangle on X and Y axis such that the object triangle is centred at 0,0
 	transformedObjectTriangle->point1.x = transformedObjectTriangle->point1.x + translationVector.x;
@@ -888,17 +881,14 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DRGBMap, P
 	transformedObjectTriangle->point3.y = transformedObjectTriangle->point3.y + translationVector.y;
 
 
-
-#ifdef OR_DEBUG_METHOD_2DOD
+	#ifdef OR_DEBUG_METHOD_2DOD
 	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
 	cout << "transformedObjectTriangle->point1.y = " << transformedObjectTriangle->point1.y << endl;
 	cout << "transformedObjectTriangle->point2.x = " << transformedObjectTriangle->point2.x << endl;
 	cout << "transformedObjectTriangle->point2.y = " << transformedObjectTriangle->point2.y << endl;
 	cout << "transformedObjectTriangle->point3.x = " << transformedObjectTriangle->point3.x << endl;
 	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
-	//TEMPprintReferenceListVertexPositions2DOD(firstReferenceInInterpolated2DRGBMap);
-	//exit(0);
-#endif
+	#endif
 
 	//5c. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
@@ -924,8 +914,6 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DRGBMap, P
 			currentFeature = currentFeature->next;
 		}
 	}
-
-
 
 
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
@@ -1038,12 +1026,6 @@ void transformObjectData2DOD(Reference * firstReferenceInInterpolated2DRGBMap, P
 			cout << "\t\t\t\t time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygon = " << time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd-time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart << endl;
 		}
 	}
-
-
-
-
-	//exit(0);
-
 }
 
 
@@ -1137,8 +1119,6 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODAdvanced(Reference
 	initialiseVector(&parallelVectorToTriangleBase);
 	subtractVectorsRT(&(B), &(A), &parallelVectorToTriangleBase);		//vect = vect1 - vect2
 
-	//cout << "shearFactor = " << shearFactor << endl;
-
 	multiplyVectorByScalar(&parallelVectorToTriangleBase, (1.0/shearFactor));		//NB 1.2 is to compensate for aliasing errors
 
 	vec p3plusparallelVectorToTriangleBase;
@@ -1157,9 +1137,8 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODAdvanced(Reference
 	D.y = p3minusparallelVectorToTriangleBase.y;
 	D.z = 0.0;
 
-
-	//removed here
-
+	#ifdef OR_DEBUG
+	//cout << "shearFactor = " << shearFactor << endl;	
 	/*
 	cout << "currentPolygonInList->point1.x = " << currentPolygonInList->point1.x << endl;
 	cout << "currentPolygonInList->point1.y = " << currentPolygonInList->point1.y << endl;
@@ -1198,6 +1177,7 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODAdvanced(Reference
 	cout << " " << endl;
 	cout << " " << endl;
 	*/
+	#endif
 
 		//calculate size of bounding box (for triangle cull optimisation)
 	double maxxOrig = maxDoubles(maxDoubles(maxDoubles(A.x, B.x), C.x), D.x);
@@ -1227,12 +1207,9 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODAdvanced(Reference
 		miny = minyOrig - (ydiff * OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
 	}
 
-
 	Reference * currentReference = firstReferenceInInterpolated2DRGBMap;
 	while(currentReference->next != NULL)
 	{
-
-
 		bool currentReferenceLiesInsideObjectSquare;
 
 		double testPointx;
@@ -1240,15 +1217,13 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODAdvanced(Reference
 
 		vec P;
 
-	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
+		#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 		testPointx = (currentReference->vertex1absolutePosition.x + (OD2D_INTERPOLATED_MESH_PIXEL_SIZE/2.0));
 		testPointy = (currentReference->vertex1absolutePosition.y + (OD2D_INTERPOLATED_MESH_PIXEL_SIZE/2.0));
-
-	#else
-
+		#else
 		testPointx = currentReference->vertex1absolutePositionBackup.x + (OD2D_INTERPOLATED_MESH_PIXEL_SIZE/2.0);
 		testPointy = currentReference->vertex1absolutePositionBackup.y + (OD2D_INTERPOLATED_MESH_PIXEL_SIZE/2.0);
-	#endif
+		#endif
 
 			//bounding box optimisation;
 		if((testPointx < maxx) && (testPointx > minx) && (testPointy < maxy) && (testPointy > miny))
@@ -1264,7 +1239,9 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODAdvanced(Reference
 		if(currentReferenceLiesInsideObjectSquare)
 		{
 			currentReference->referenceEnabledMethod2DOD = true;
+			#ifdef OR_DEBUG
 			//cout << "currentReference->referenceEnabledMethod2DOD = true" << endl;
+			#endif
 		}
 		else
 		{
@@ -1273,15 +1250,12 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODAdvanced(Reference
 
 		currentReference = currentReference->next;
 	}
-
-
 }
 
 
 /*
 void disableReferencesThatAreNotContainedInTheObjectSquare2DODAdvanced2(Reference * firstReferenceInInterpolated2DRGBMap, PolygonBAI * currentPolygonInList, vec * point4, vec * point5, bool padBoundary)
 {
-
 	vec A;
 	vec B;
 	vec C;
@@ -1300,8 +1274,6 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODAdvanced2(Referenc
 	D.y = point5->y;
 	D.z = 0.0;
 
-
-
 	cout << "currentPolygonInList->point1.x = " << currentPolygonInList->point1.x << endl;
 	cout << "currentPolygonInList->point1.y = " << currentPolygonInList->point1.y << endl;
 	cout << "currentPolygonInList->point2.x = " << currentPolygonInList->point2.x << endl;
@@ -1310,7 +1282,6 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODAdvanced2(Referenc
 	cout << "point4->y = " << point4->y << endl;
 	cout << "point5->x = " << point5->x << endl;
 	cout << "point5->y = " << point5->y << endl;
-
 
 		//calculate size of bounding box (for triangle cull optimisation)
 	double maxxOrig = maxDoubles(maxDoubles(maxDoubles(A.x, B.x), C.x), D.x);
@@ -1338,12 +1309,9 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODAdvanced2(Referenc
 		miny = minyOrig;
 	}
 
-
 	Reference * currentReference = firstReferenceInInterpolated2DRGBMap;
 	while(currentReference->next != NULL)
 	{
-
-
 		bool currentReferenceLiesInsideObjectSquare;
 
 		double testPointx;
@@ -1351,15 +1319,13 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODAdvanced2(Referenc
 
 		vec P;
 
-	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
+		#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 		testPointx = (currentReference->vertex1absolutePosition.x + (OD2D_INTERPOLATED_MESH_PIXEL_SIZE/2.0));
 		testPointy = (currentReference->vertex1absolutePosition.y + (OD2D_INTERPOLATED_MESH_PIXEL_SIZE/2.0));
-
-	#else
-
+		#else
 		testPointx = currentReference->vertex1absolutePositionBackup.x + (OD2D_INTERPOLATED_MESH_PIXEL_SIZE/2.0);
 		testPointy = currentReference->vertex1absolutePositionBackup.y + (OD2D_INTERPOLATED_MESH_PIXEL_SIZE/2.0);
-	#endif
+		#endif
 
 			//bounding box optimisation;
 		if((testPointx < maxx) && (testPointx > minx) && (testPointy < maxy) && (testPointy > miny))
@@ -1384,15 +1350,12 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODAdvanced2(Referenc
 
 		currentReference = currentReference->next;
 	}
-
-
 }
 
 
 
 void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(Reference * firstReferenceInInterpolated2DRGBMap, PolygonBAI * currentPolygonInList, bool padBoundary)
 {
-
 	vec A;
 	vec B;
 	vec C;
@@ -1433,7 +1396,6 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(Reference * first
 		miny = minyOrig;
 	}
 
-
 	Reference * currentReference = firstReferenceInInterpolated2DRGBMap;
 	while(currentReference->next != NULL)
 	{
@@ -1479,15 +1441,12 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(Reference * first
 
 		currentReference = currentReference->next;
 	}
-
-
 }
 */
 
 
 void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * firstReferenceInInterpolated2DRGBMap, PolygonBAI * currentPolygonInList)
 {
-
 	vec A;
 	vec B;
 	vec C;
@@ -1512,8 +1471,6 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 	Reference * currentReference = firstReferenceInInterpolated2DRGBMap;
 	while(currentReference->next != NULL)
 	{
-
-
 		bool currentReferenceLiesInsideObjectTriangle;
 
 		double testPointx;
@@ -1521,15 +1478,13 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 
 		vec P;
 
-	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
+		#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 		testPointx = (currentReference->vertex1absolutePosition.x + (OD2D_INTERPOLATED_MESH_PIXEL_SIZE/2.0));
 		testPointy = (currentReference->vertex1absolutePosition.y + (OD2D_INTERPOLATED_MESH_PIXEL_SIZE/2.0));
-
-	#else
-
+		#else
 		testPointx = currentReference->vertex1absolutePositionBackup.x + (OD2D_INTERPOLATED_MESH_PIXEL_SIZE/2.0);
 		testPointy = currentReference->vertex1absolutePositionBackup.y + (OD2D_INTERPOLATED_MESH_PIXEL_SIZE/2.0);
-	#endif
+		#endif
 
 			//bounding box optimisation;
 		if((testPointx < maxx) && (testPointx > minx) && (testPointy < maxy) && (testPointy > miny))
@@ -1590,8 +1545,6 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 
 		currentReference = currentReference->next;
 	}
-
-
 }
 
 
@@ -1603,8 +1556,6 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 	Reference * currentReference = firstReferenceInInterpolated2DRGBMap;
 	while(currentReference->next != NULL)
 	{
-
-
 		bool currentReferenceLiesInsideObjectTriangle;
 
 		double testPointx;
@@ -1614,13 +1565,10 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 		vec C;
 		vec P;
 
-
 	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 		testPointx = (currentReference->vertex1absolutePosition.x + (OD2D_INTERPOLATED_MESH_PIXEL_SIZE/2.0));
 		testPointy = (currentReference->vertex1absolutePosition.y + (OD2D_INTERPOLATED_MESH_PIXEL_SIZE/2.0));
-
 	#else
-
 		testPointx = currentReference->vertex1absolutePositionBackup.x + (OD2D_INTERPOLATED_MESH_PIXEL_SIZE/2.0);
 		testPointy = currentReference->vertex1absolutePositionBackup.y + (OD2D_INTERPOLATED_MESH_PIXEL_SIZE/2.0);
 	#endif
@@ -1637,8 +1585,6 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 		P.x = testPointx;
 		P.y = testPointy;
 		P.z = 0.0;
-
-
 
 		// Compute vectors
 
@@ -1717,8 +1663,6 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 	Reference * currentReference = firstReferenceInInterpolated2DRGBMap;
 	while(currentReference->next != NULL)
 	{
-
-
 		bool currentReferenceLiesInsideObjectTriangle;
 
 		double testPointx;
@@ -1751,7 +1695,6 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 		P.y = testPointy;
 		P.z = 0.0;
 
-
 		//cout << "currentPolygonInList->point1.x = " << currentPolygonInList->point1.x << endl;
 		//cout << "currentPolygonInList->point1.y = " << currentPolygonInList->point1.y << endl;
 		//cout << "currentPolygonInList->point2.x = " << currentPolygonInList->point2.x << endl;
@@ -1760,8 +1703,6 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 		//cout << "currentPolygonInList->point3.y = " << currentPolygonInList->point3.y << endl;
 		//cout << "testPointx = " << testPointx << endl;
 		//cout << "testPointy = " << testPointy << endl;
-
-
 
 		double AreaPP1P2 = calculateAreaOfTriangle(&P, &A, &B);
 		double AreaPP2P3 = calculateAreaOfTriangle(&P, &B, &C);
@@ -1780,8 +1721,6 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 			//cout << "fails++" << endl;
 		}
 
-
-
 		if(currentReferenceLiesInsideObjectTriangle)
 		{
 			currentReference->referenceEnabledMethod2DOD = true;
@@ -1794,11 +1733,8 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 
 		currentReference = currentReference->next;
 	}
-
-
 }
 */
-
 
 
 
@@ -1927,11 +1863,6 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(Reference * fir
 			currentReferenceLiesInsideObjectTriangle = true;
 		}
 
-
-
-
-
-
 		if(currentReferenceLiesInsideObjectTriangle)
 		{
 			currentReference->referenceEnabledMethod2DOD = true;
@@ -1965,7 +1896,6 @@ void createInterpolated2DMeshReferenceListUsingRGBMap2DOD(int imageWidth, int im
 			vec v3;
 			vec v4;
 
-
 			v1.x = x+0.0;
 			v1.y = y+0.0;
 			v1.z = 0.0;
@@ -1978,20 +1908,6 @@ void createInterpolated2DMeshReferenceListUsingRGBMap2DOD(int imageWidth, int im
 			v4.x = x+0.0;
 			v4.y = y+1.0;
 			v4.z = 0.0;
-			/*OLD
-			v1.x = x+0.0;
-			v1.y = y+0.0;
-			v1.z = 0.0;
-			v2.x = x+1.0;
-			v2.y = y+0.0;
-			v2.z = 0.0;
-			v3.x = x+0.0;
-			v3.y = y+1.0;
-			v3.z = 0.0;
-			v4.x = x+1.0;
-			v4.y = y+1.0;
-			v4.z = 0.0;
-			*/
 
 			currentReferenceInInterpolated2DMap->type = REFERENCE_TYPE_QUAD;
 			copyVectors(&(currentReferenceInInterpolated2DMap->vertex1relativePosition), &v1);
@@ -2015,17 +1931,18 @@ void createInterpolated2DMeshReferenceListUsingRGBMap2DOD(int imageWidth, int im
 			currentReferenceInInterpolated2DMap->colour = colByte1 | colByte2 | colByte3 | colByte4;
 			currentReferenceInInterpolated2DMap->absoluteColour = colByte1 | colByte2 | colByte3 | colByte4;
 
+			#ifdef OR_DEBUG
 			/*
 			cout << "colByte1 = " << colByte1 << endl;
 			cout << "colByte2 = " << colByte2 << endl;
 			cout << "colByte3 = " << colByte3 << endl;
 			cout << "colByte4 = " << colByte4 << endl;
 			cout << "colByte1 | colByte2 | colByte3 | colByte4 = " << (colByte1 | colByte2 | colByte3 | colByte4) << endl;
-
 			cout << "currentReferenceInInterpolated2DMap->vertex1relativePosition.x = " << currentReferenceInInterpolated2DMap->vertex1relativePosition.x << endl;
 			cout << "currentReferenceInInterpolated2DMap->vertex1relativePosition.y = " << currentReferenceInInterpolated2DMap->vertex1relativePosition.y << endl;
 			cout << "currentReferenceInInterpolated2DMap->vertex1relativePosition.z = " << currentReferenceInInterpolated2DMap->vertex1relativePosition.z << endl;
 			*/
+			#endif
 
 			Reference * newReference = new Reference();
 			currentReferenceInInterpolated2DMap->next = newReference;
@@ -2108,7 +2025,6 @@ void create2DMeshUsingRGBMap2DOD(int imageWidth, int imageHeight, double imageXO
 			currentMeshPointInMesh->xInt = x;
 			currentMeshPointInMesh->yInt = y;
 			currentMeshPointInMesh->luminosity = calculateLuminosityLevelFromRGBVal(&col);
-			//cout << "currentMeshPointInMesh->luminosity = " << currentMeshPointInMesh->luminosity << endl;
 
 			if(OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
 			{
@@ -2156,9 +2072,6 @@ void create2DMeshUsingRGBMap2DOD(int imageWidth, int imageHeight, double imageXO
 		{
 			//currentMeshPointInMesh = meshPointArray[y*imageWidth + x];
 
-			//cout << "x = " << x << endl;
-			//cout << "y = " << y << endl;
-
 			for(int q = 0; q < 9; q++)
 			{
 				int kx;
@@ -2167,7 +2080,6 @@ void create2DMeshUsingRGBMap2DOD(int imageWidth, int imageHeight, double imageXO
 				kx = x + q%3 - 1;
 				ky = y + q/3 - 1;
 
-				//cout << "c" << endl;
 				if((kx >= 0) && (kx <= imageWidth-1) && (ky >= 0) && (ky <= imageHeight-1))
 				{
 
@@ -2178,8 +2090,6 @@ void create2DMeshUsingRGBMap2DOD(int imageWidth, int imageHeight, double imageXO
 						currentMeshPointInInterpixelMesh->adjacentMeshPoint[q] = meshPointInterpixelArray[ky*imageWidth + kx];
 						currentMeshPointInInterpixelMesh->adjacentMeshPointFilled[q] = true;
 					}
-					//cout << "a" << endl;
-
 				}
 				else
 				{
@@ -2193,7 +2103,6 @@ void create2DMeshUsingRGBMap2DOD(int imageWidth, int imageHeight, double imageXO
 				}
 			}
 
-
 			currentMeshPointInMesh = currentMeshPointInMesh->next;
 			if(OR_USE_CONTRAST_CALC_METHOD_C)
 			{
@@ -2201,7 +2110,6 @@ void create2DMeshUsingRGBMap2DOD(int imageWidth, int imageHeight, double imageXO
 			}
 		}
 	}
-
 
 	//calculate mesh point properties
 	if(OR_USE_CONTRAST_CALC_METHOD_C)
@@ -2224,7 +2132,6 @@ void create2DMeshUsingRGBMap2DOD(int imageWidth, int imageHeight, double imageXO
 			}
 		}
 	}
-
 
 	//UNTESTED (copied from OR_METHOD_3DOD_USE_MESH_LISTS_COMBINED)
 	if(OR_METHOD_2DOD_USE_MESH_LISTS_COMBINED)
@@ -2323,127 +2230,7 @@ void create2DMeshUsingRGBMap2DOD(int imageWidth, int imageHeight, double imageXO
 	delete meshPointInterpixelArray;
 	delete edgeZeroCrossingMap;
 	#endif
-
 }
-
-
-
-//OLD removed here;
-
-	/*
-
-	vec parallelVectorToTriangleBase;
-	vec perpendicularVectorToTriangleBase;
-	initialiseVector(&parallelVectorToTriangleBase);
-	subtractVectorsRT(&(currentPolygonInList->point2), &(currentPolygonInList->point1), &parallelVectorToTriangleBase);		//vect = vect1 - vect2
-	perpendicularVectorToTriangleBase.x = parallelVectorToTriangleBase.y;
-	perpendicularVectorToTriangleBase.y = parallelVectorToTriangleBase.x;
-	perpendicularVectorToTriangleBase.z = 0.0;
-
-	vec p1plusperpendicularVectorToTriangleBase;
-	vec p2plusperpendicularVectorToTriangleBase;
-	vec p3plusparallelVectorToTriangleBase;
-	initialiseVector(&p1plusperpendicularVectorToTriangleBase);
-	initialiseVector(&p2plusperpendicularVectorToTriangleBase);
-	initialiseVector(&p3plusparallelVectorToTriangleBase);
-	addVectorsRT(&(currentPolygonInList->point1), &perpendicularVectorToTriangleBase, &p1plusperpendicularVectorToTriangleBase);
-	addVectorsRT(&(currentPolygonInList->point2), &perpendicularVectorToTriangleBase, &p2plusperpendicularVectorToTriangleBase);
-	addVectorsRT(&(currentPolygonInList->point3), &parallelVectorToTriangleBase, &p3plusparallelVectorToTriangleBase);
-
-	bool xyinterceptionFound;
-	bool xyinterceptionPointFound;
-	double x1;
-	double x2;
-	double x3;
-	double x4;
-	double y1;
-	double y2;
-	double y3;
-	double y4;
-
-	xyinterceptionFound = false;
-	xyinterceptionPointFound = false;
-	x1 = currentPolygonInList->point1.x;
-	y1 = currentPolygonInList->point1.y;
-	x2 = p1plusperpendicularVectorToTriangleBase.x;
-	y2 = p1plusperpendicularVectorToTriangleBase.y;
-	x3 = currentPolygonInList->point3.x;
-	y3 = currentPolygonInList->point3.y;
-	x4 = p3plusparallelVectorToTriangleBase.x;
-	y4 = p3plusparallelVectorToTriangleBase.y;
-	find2DIntersectionPoint(x1, y1, x2, y2, x3, y3, x4, y4, &(C.x), &(C.y), &xyinterceptionFound, &xyinterceptionPointFound);
-	if(!xyinterceptionPointFound)
-	{
-		cout << "error: !find2DIntersectionPoint" << endl;
-	}
-
-	xyinterceptionFound = false;
-	xyinterceptionPointFound = false;
-	x1 = currentPolygonInList->point2.x;
-	y1 = currentPolygonInList->point2.y;
-	x2 = p2plusperpendicularVectorToTriangleBase.x;
-	y2 = p2plusperpendicularVectorToTriangleBase.y;
-	x3 = currentPolygonInList->point3.x;
-	y3 = currentPolygonInList->point3.y;
-	x4 = p3plusparallelVectorToTriangleBase.x;
-	y4 = p3plusparallelVectorToTriangleBase.y;
-	find2DIntersectionPoint(x1, y1, x2, y2, x3, y3, x4, y4, &(D.x), &(D.y), &xyinterceptionFound, &xyinterceptionPointFound);
-	if(!xyinterceptionPointFound)
-	{
-		cout << "error: !find2DIntersectionPoint" << endl;
-	}
-
-	cout << "currentPolygonInList->point1.x = " << currentPolygonInList->point1.x << endl;
-	cout << "currentPolygonInList->point1.y = " << currentPolygonInList->point1.y << endl;
-	cout << "currentPolygonInList->point2.x = " << currentPolygonInList->point2.x << endl;
-	cout << "currentPolygonInList->point2.y = " << currentPolygonInList->point2.y << endl;
-	cout << "currentPolygonInList->point3.x = " << currentPolygonInList->point3.x << endl;
-	cout << "currentPolygonInList->point3.y = " << currentPolygonInList->point3.y << endl;
-
-
-	cout << "p1plusperpendicularVectorToTriangleBase.x = " << p1plusperpendicularVectorToTriangleBase.x << endl;
-	cout << "p1plusperpendicularVectorToTriangleBase.y = " << p1plusperpendicularVectorToTriangleBase.y << endl;
-	cout << "p2plusperpendicularVectorToTriangleBase.x = " << p2plusperpendicularVectorToTriangleBase.x << endl;
-	cout << "p2plusperpendicularVectorToTriangleBase.y = " << p2plusperpendicularVectorToTriangleBase.y << endl;
-	cout << "p3plusparallelVectorToTriangleBase.x = " << p3plusparallelVectorToTriangleBase.x << endl;
-	cout << "p3plusparallelVectorToTriangleBase.y = " << p3plusparallelVectorToTriangleBase.y << endl;
-
-	cout << "A.x = " << A.x << endl;
-	cout << "A.y = " << A.y << endl;
-	cout << "B.x = " << B.x << endl;
-	cout << "B.y = " << B.y << endl;
-	cout << "C.x = " << C.x << endl;
-	cout << "C.y = " << C.y << endl;
-	cout << "D.x = " << D.x << endl;
-	cout << "D.y = " << D.y << endl;
-	cout << " " << endl;
-	cout << currentPolygonInList->point1.x << "\t" << currentPolygonInList->point1.y << endl;
-	cout << currentPolygonInList->point2.x << "\t" << currentPolygonInList->point2.y << endl;
-	cout << currentPolygonInList->point3.x << "\t" << currentPolygonInList->point3.y << endl;
-	cout << " " << endl;
-	cout << p1plusperpendicularVectorToTriangleBase.x << "\t" << p1plusperpendicularVectorToTriangleBase.y << endl;
-	cout << p2plusperpendicularVectorToTriangleBase.x << "\t" << p2plusperpendicularVectorToTriangleBase.y << endl;
-	cout << p3plusparallelVectorToTriangleBase.x << "\t" << p3plusparallelVectorToTriangleBase.y << endl;
-	cout << " " << endl;
-	cout << A.x << "\t" << A.y << endl;
-	cout << B.x << "\t" << B.y << endl;
-	cout << C.x << "\t" << C.y << endl;
-	cout << D.x << "\t" << D.y << endl;
-	cout << " " << endl;
-	cout << " " << endl;
-	cout << " " << endl;
-	*/
-
-	/*
-	if(!findIntersectLineWithLine2D(&(currentPolygonInList->point1), &p1plusperpendicularVectorToTriangleBase, &(currentPolygonInList->point3), &p3plusparallelVectorToTriangleBase, &C))
-	{
-		cout << "error: !findIntersectLineWithLine2D" << endl;
-	}
-	if(!findIntersectLineWithLine2D(&(currentPolygonInList->point2), &p2plusperpendicularVectorToTriangleBase, &(currentPolygonInList->point3), &p3plusparallelVectorToTriangleBase, &D))
-	{
-		cout << "error: !findIntersectLineWithLine2D" << endl;
-	}
-	*/
 
 
 

@@ -23,7 +23,7 @@
  * File Name: ORmethod3DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3b1a 05-August-2012
+ * Project Version: 3b2a 28-September-2012
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -57,7 +57,6 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 		time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonStart = getTimeAsLong();
 	}
 
-
 	PolygonBAI * transformedObjectTriangle = new PolygonBAI();	//equilateral triangle
 	transformedObjectTriangle->point1.x = currentPolygonInList->point1.x;
 	transformedObjectTriangle->point1.y = currentPolygonInList->point1.y;
@@ -69,25 +68,7 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	transformedObjectTriangle->point3.y = currentPolygonInList->point3.y;
 	transformedObjectTriangle->point3.z = currentPolygonInList->point3.z;
 
-	/*
-	cout << "polygon = " << endl;
-	cout << "currentPolygonInList->point1.x = " << currentPolygonInList->point1.x << endl;
-	cout << "currentPolygonInList->point1.y = " << currentPolygonInList->point1.y << endl;
-	cout << "currentPolygonInList->point1.z = " << currentPolygonInList->point1.z << endl;
-	cout << "currentPolygonInList->point2.x = " << currentPolygonInList->point2.x << endl;
-	cout << "currentPolygonInList->point2.y = " << currentPolygonInList->point2.y << endl;
-	cout << "currentPolygonInList->point2.z = " << currentPolygonInList->point2.z << endl;
-	cout << "currentPolygonInList->point3.x = " << currentPolygonInList->point3.x << endl;
-	cout << "currentPolygonInList->point3.y = " << currentPolygonInList->point3.y << endl;
-	cout << "currentPolygonInList->point3.z = " << currentPolygonInList->point3.z << endl;
-	*/
-
-
-
-
-#ifdef OR_DEBUG_METHOD_3DOD
-
-
+	#ifdef OR_DEBUG_METHOD_3DOD
 	cout << "\n \t starting to tranform object triangle " << endl;
 	cout << "0. currentPolygonInList without transformation " << endl;
 	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
@@ -102,8 +83,7 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	cout << transformedObjectTriangle->point1.x << " " << transformedObjectTriangle->point1.y << " " << transformedObjectTriangle->point1.z << endl;
 	cout << transformedObjectTriangle->point2.x << " " << transformedObjectTriangle->point2.y << " " << transformedObjectTriangle->point2.z << endl;
 	cout << transformedObjectTriangle->point3.x << " " << transformedObjectTriangle->point3.y << " " << transformedObjectTriangle->point3.z << endl;
-#endif
-
+	#endif
 
 	//1. Perform All Rotations (X, Y, Z, such that object triangle side is parallel with x axis, and object triangle normal is parallel with z axis)
 
@@ -143,54 +123,11 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 
 	transposeMatrix(&xyzRotationMatrix12);
 
-	/*
-	vec normalBeforeRotation;
-	calculateNormalOfTri(&(transformedObjectTriangle->point1), &(transformedObjectTriangle->point2), &(transformedObjectTriangle->point3), &normalBeforeRotation);
-	//normalBeforeRotation.x = -normalBeforeRotation.x;
-	//normalBeforeRotation.y = -normalBeforeRotation.y;
-	//normalBeforeRotation.z = -normalBeforeRotation.z;
-	vec normalBeforeRotationNormalised;	//not required
-	normaliseVectorRT(&normalBeforeRotation, &normalBeforeRotationNormalised);	//not required
-	//mat xyzRotationMatrix12;
-	//generateXYZRotationMatrix(&normalBeforeRotationNormalised, &xyzRotationMatrix12);
 
-	vec rotationVector;
-	calculateRotationVectorFromVector(&normalBeforeRotationNormalised, &rotationVector);	//added 14 June 2012
-	//double xRotationFactor1a = calculateAngleOfVector3D(&normalBeforeRotationNormalised, AXIS_X);	//should be negative (- ....)?		//euler angle x
-	//double yRotationFactor1b = calculateAngleOfVector3D(&normalBeforeRotationNormalised, AXIS_Y);	//should be negative (- ....)?		//euler angle y
-	//double zRotationFactor2a = calculateAngleOfVector3D(&normalBeforeRotationNormalised, AXIS_Z);	//should be negative (- ....)?		//euler angle y
-	double xRotationFactor1a = rotationVector.x;
-	double yRotationFactor1b = rotationVector.y;
-	double zRotationFactor2a = rotationVector.z;
-
-	mat xRotationMatrix1a;
-	createIdentityMatrix(&xRotationMatrix1a);
-	createRotatationMatrix(&xRotationMatrix1a, AXIS_X, xRotationFactor1a);
-	mat yRotationMatrix1b;
-	createIdentityMatrix(&yRotationMatrix1b);
-	createRotatationMatrix(&yRotationMatrix1b, AXIS_Y, yRotationFactor1b);
-	mat zRotationMatrix2a;
-	createIdentityMatrix(&zRotationMatrix2a);
-	createRotatationMatrix(&zRotationMatrix2a, AXIS_Z, zRotationFactor2a);
-
-	//M = Rz(B1)Ry(B2)Rx(B3)
-	//so M = Ry(B2)Rx(B3)
-	mat xyRotationMatrix1;
-	mat xyzRotationMatrix12;
-	createIdentityMatrix(&xyRotationMatrix1);
-	createIdentityMatrix(&xyzRotationMatrix12);
-	multiplyMatricies(&xyRotationMatrix1, &yRotationMatrix1b, &xRotationMatrix1a);
-	multiplyMatricies(&xyzRotationMatrix12, &zRotationMatrix2a, &xyRotationMatrix1);
-
-	*/
-
-
-
-
-#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
+	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 	//openglUseMatrix = true;
 	//opengl3DMatrixTransformation1aXRotationFactor = xRotationFactor1a;
-#else
+	#else
 	if(first)
 	{
 		storeBackupVertexAbsPositionsForAllReferencesIn2DList(firstReferenceInInterpolated3DRGBMap);
@@ -200,7 +137,7 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 		restoreBackupVertexAbsPositionsForAllReferencesIn2DList(firstReferenceInInterpolated3DRGBMap);
 	}
 	//applyTransformationMatrixToAllReferencesIn2DList(firstReferenceInInterpolated3DRGBMap, &scaleMatrix1a);
-#endif
+	#endif
 
 	#ifdef OR_DEBUG_METHOD_3DOD
 	cout << "1.+2. Rotate object data on XYZ axis such that the object triangle side face normal is parallel with Z axis" << endl;
@@ -251,7 +188,6 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	//1c. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		//cout << "h1" << endl;
 		Feature * currentFeature;	//startup
 		currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
@@ -280,7 +216,6 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 			copyVectors(&(currentFeature->pointTransformed), &vecNew);
 			currentFeature = currentFeature->next;
 		}
-		//cout << "h2" << endl;
 	}
 	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
@@ -313,14 +248,6 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 			currentFeature = currentFeature->next;
 		}
 	}
-	/*
-	#ifdef OR_DEBUG_METHOD_3DOD
-	exit(0);
-	#endif
-	*/
-
-
-
 
 
 
@@ -351,28 +278,26 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 
 	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS_ADV
 
-		//cout << "h1" << endl;
+	mat multipliedMatrix;
+	mat matTemp;
+	createIdentityMatrixRT(&multipliedMatrix);
 
-		mat multipliedMatrix;
-		mat matTemp;
-		createIdentityMatrixRT(&multipliedMatrix);
+	multiplyMatricies(&matTemp, &multipliedMatrix, &xyzRotationMatrix12);
+	copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
+	/*
+	multiplyMatricies(&matTemp, &multipliedMatrix, &zRotateMatrix2ii);
+	copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
+	multiplyMatricies(&matTemp, &multipliedMatrix, &xyzRotationMatrix12);
+	copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
+	multiplyMatricies(&matTemp, &multipliedMatrix, &zRotationMatrix2a);
+	copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
+	multiplyMatricies(&matTemp, &multipliedMatrix, &yRotationMatrix1b);
+	copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
+	multiplyMatricies(&matTemp, &multipliedMatrix, &xRotationMatrix1a);
+	copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
+	*/
 
-		multiplyMatricies(&matTemp, &multipliedMatrix, &xyzRotationMatrix12);
-		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
-		/*
-		multiplyMatricies(&matTemp, &multipliedMatrix, &zRotateMatrix2ii);
-		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
-		multiplyMatricies(&matTemp, &multipliedMatrix, &xyzRotationMatrix12);
-		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
-		multiplyMatricies(&matTemp, &multipliedMatrix, &zRotationMatrix2a);
-		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
-		multiplyMatricies(&matTemp, &multipliedMatrix, &yRotationMatrix1b);
-		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
-		multiplyMatricies(&matTemp, &multipliedMatrix, &xRotationMatrix1a);
-		copyMatrix2IntoMatrix1(&multipliedMatrix, &matTemp);
-		*/
-
-		copyMatrix2IntoMatrix1(&opengl3DMultiplicationMatrix, &multipliedMatrix);
+	copyMatrix2IntoMatrix1(&opengl3DMultiplicationMatrix, &multipliedMatrix);
 
 	#endif
 #else
@@ -403,12 +328,12 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 #endif
 
 
-#ifdef OR_DEBUG_METHOD_3DOD
+	#ifdef OR_DEBUG_METHOD_3DOD
 	cout << "3a. Translate the object data on all axes such that the mid point of the object triangle side passes through the Z axis coordinate 0." << endl;
 	cout << "translationVector.x = " << translationVector.x << endl;
 	cout << "translationVector.y = " << translationVector.y << endl;
 	cout << "translationVector.z = " << translationVector.z << endl;
-#endif
+	#endif
 
 	//3a. transform object triangle
 	transformedObjectTriangle->point1.x = transformedObjectTriangle->point1.x - translationVector.x;
@@ -422,7 +347,7 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	transformedObjectTriangle->point3.z = transformedObjectTriangle->point3.z - translationVector.z;
 
 
-#ifdef OR_DEBUG_METHOD_3DOD
+	#ifdef OR_DEBUG_METHOD_3DOD
 	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
 	cout << "transformedObjectTriangle->point1.y = " << transformedObjectTriangle->point1.y << endl;
 	cout << "transformedObjectTriangle->point1.z = " << transformedObjectTriangle->point1.z << endl;
@@ -435,9 +360,7 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 	cout << transformedObjectTriangle->point1.x << " " << transformedObjectTriangle->point1.y << " " << transformedObjectTriangle->point1.z << endl;
 	cout << transformedObjectTriangle->point2.x << " " << transformedObjectTriangle->point2.y << " " << transformedObjectTriangle->point2.z << endl;
 	cout << transformedObjectTriangle->point3.x << " " << transformedObjectTriangle->point3.y << " " << transformedObjectTriangle->point3.z << endl;
-	//TEMPprintReferenceListVertexPositions3DOD(firstReferenceInInterpolated2DRGBMap);
-	//exit(0);
-#endif
+	#endif
 
 	//5c. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
@@ -448,11 +371,13 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 			currentFeature->pointTransformed.x = currentFeature->pointTransformed.x + translationVector.x;
 			currentFeature->pointTransformed.y = currentFeature->pointTransformed.y + translationVector.y;
 			currentFeature->pointTransformed.z = currentFeature->pointTransformed.z + translationVector.z;
+			#ifdef OR_DEBUG
 			/*
 			cout << "currentFeature->pointTransformed.x = " << currentFeature->pointTransformed.x << endl;
 			cout << "currentFeature->pointTransformed.y = " << currentFeature->pointTransformed.y << endl;
 			cout << "currentFeature->pointTransformed.z = " << currentFeature->pointTransformed.z << endl;
 			*/
+			#endif
 			currentFeature = currentFeature->next;
 		}
 	}
@@ -461,7 +386,6 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 		Feature * currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
-
 			currentFeature->pointTransformed.x = currentFeature->pointTransformed.x + translationVector.x;
 			currentFeature->pointTransformed.y = currentFeature->pointTransformed.y + translationVector.y;
 			currentFeature->pointTransformed.z = currentFeature->pointTransformed.z + translationVector.z;
@@ -496,8 +420,6 @@ void transformObjectData3DOD(Reference * firstReferenceInInterpolated3DRGBMap, P
 			cout << "\t\t\t\t time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygon = " << time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonEnd-time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonStart << endl;
 		}
 	}
-
-
 }
 
 
@@ -532,8 +454,6 @@ void calculateEyePositionAndOrientation3DOD(vec * eyeFacingPoly, vec * viewatFac
 		exit(0);
 	}
 
-
-
 	vec midPointBetweenPt1AndPt2;
 	calculateMidPointBetweenTwoPoints(&pt1, &pt2, &midPointBetweenPt1AndPt2);
 
@@ -548,12 +468,12 @@ void calculateEyePositionAndOrientation3DOD(vec * eyeFacingPoly, vec * viewatFac
 	normaliseVectorRT(&normalAtPt1, &normalAtPt1Normalised);
 
 	vec normalAtPt1WithDistanceU;
-#ifdef USE_OPENGL
+	#ifdef USE_OPENGL
 	//normalised distance to size of side s
 	double U = findMagnitudeOfVector(&pt2MinusPt1);
-#else
+	#else
 	double U = OR_CONSTANT_DISTANCE_EYE_TO_POLYGON_FOR_NN_SNAPSHOT_U;
-#endif
+	#endif
 	multiplyVectorByScalarRT(&normalAtPt1Normalised, U, &normalAtPt1WithDistanceU);
 
 	//1. calculates eyeFacingPoly
@@ -571,15 +491,13 @@ void calculateEyePositionAndOrientation3DOD(vec * eyeFacingPoly, vec * viewatFac
 	calculateNormal(&pt1MinusMidpoint, &eyeMinusMidpoint, &viewupFacingPolygonUnnormalised);
 	normaliseVectorRT(&viewupFacingPolygonUnnormalised, viewupFacingPoly);
 
-
 	viewportWidthHeightDepth->x = findMagnitudeOfVector(&pt2MinusPt1);
 	viewportWidthHeightDepth->z = findMagnitudeOfVector(&pt2MinusPt1);		//not used, the orthogonal viewport depth should be infinite
 	vec pt3MinusMidpoint;
 	subtractVectorsRT(&pt3, &midPointBetweenPt1AndPt2, &pt3MinusMidpoint);
 	viewportWidthHeightDepth->y = findMagnitudeOfVector(&pt3MinusMidpoint);
 
-
-#ifdef OR_DEBUG_METHOD3DOD_POV
+	#ifdef OR_DEBUG_METHOD3DOD_POV
 	cout << "pt1.x = " << pt1.x << endl;
 	cout << "pt1.y = " << pt1.y << endl;
 	cout << "pt1.z = " << pt1.z << endl;
@@ -613,9 +531,8 @@ void calculateEyePositionAndOrientation3DOD(vec * eyeFacingPoly, vec * viewatFac
 	cout << "viewupFacingPoly->x = " << viewupFacingPoly->x << endl;
 	cout << "viewupFacingPoly->y = " << viewupFacingPoly->y << endl;
 	cout << "viewupFacingPoly->z = " << viewupFacingPoly->z << endl;
-#endif
+	#endif
 }
-
 
 
 void createInterpolated3DMeshReferenceListUsingPointMap(int imageWidth, int imageHeight, double * pointMap, double * pointMapInterpolated, unsigned char * rgbMap, Reference * firstReferenceInInterpolated3DMap)
@@ -646,6 +563,7 @@ void createInterpolated3DMeshReferenceListUsingPointMap(int imageWidth, int imag
 			nullPointVector.z = 0.0;
 			if(!compareVectors(&centreVec, &nullPointVector))
 			{
+				#ifdef OR_DEBUG
 				/*
 				cout << "centreVec.x = " << centreVec.x << endl;
 				cout << "centreVec.y = " << centreVec.y << endl;
@@ -663,8 +581,8 @@ void createInterpolated3DMeshReferenceListUsingPointMap(int imageWidth, int imag
 				cout << "v4.y = " << v4.y << endl;
 				cout << "v4.z = " << v4.z << endl;
 				*/
+				#endif
 
-				//TEMP;
 				multiplyVectorByScalarRT(&centreVec, OR_SNAPSHOT_SCALE_FACTOR, &centreVec);
 				multiplyVectorByScalarRT(&v1, OR_SNAPSHOT_SCALE_FACTOR, &v1);
 				multiplyVectorByScalarRT(&v2, OR_SNAPSHOT_SCALE_FACTOR, &v2);
@@ -700,38 +618,26 @@ void createInterpolated3DMeshReferenceListUsingPointMap(int imageWidth, int imag
 					colour col;
 					getRGBMapValues(x, y, imageWidth, rgbMap, &col);
 
-					/*
-					int colByte1 = DAT_FILE_FIRST_RGB_COLOUR;
-					int colByte2 = col.r >> 8;
-					int colByte3 = col.g >> 16;
-					int colByte4 = col.b >> 24;
-					*/
 					unsigned int colByte1 = (unsigned int)DAT_FILE_FIRST_RGB_COLOUR << (unsigned int)24;
-					//real;
 					unsigned int colByte2 = (unsigned int)col.r << (unsigned int)16;
 					unsigned int colByte3 = (unsigned int)col.g << (unsigned int)8;
 					unsigned int colByte4 = (unsigned int)col.b;
-					/*
-					//temp wrong;
-					unsigned int colByte2 = (unsigned int)col.b << (unsigned int)16;
-					unsigned int colByte3 = (unsigned int)col.g << (unsigned int)8;
-					unsigned int colByte4 = (unsigned int)col.r;
-					*/
 
 					currentReferenceInInterpolated3DMap->colour = colByte1 | colByte2 | colByte3 | colByte4;
 					currentReferenceInInterpolated3DMap->absoluteColour = colByte1 | colByte2 | colByte3 | colByte4;
 
+					#ifdef OR_DEBUG
 					/*
 					cout << "colByte1 = " << colByte1 << endl;
 					cout << "colByte2 = " << colByte2 << endl;
 					cout << "colByte3 = " << colByte3 << endl;
 					cout << "colByte4 = " << colByte4 << endl;
 					cout << "colByte1 | colByte2 | colByte3 | colByte4 = " << (colByte1 | colByte2 | colByte3 | colByte4) << endl;
-
 					cout << "currentReferenceInInterpolated3DMap->vertex1relativePosition.x = " << currentReferenceInInterpolated3DMap->vertex1relativePosition.x << endl;
 					cout << "currentReferenceInInterpolated3DMap->vertex1relativePosition.y = " << currentReferenceInInterpolated3DMap->vertex1relativePosition.y << endl;
 					cout << "currentReferenceInInterpolated3DMap->vertex1relativePosition.z = " << currentReferenceInInterpolated3DMap->vertex1relativePosition.z << endl;
 					*/
+					#endif
 
 					Reference * newReference = new Reference();
 					currentReferenceInInterpolated3DMap->next = newReference;
@@ -746,13 +652,13 @@ void createInterpolated3DMeshReferenceListUsingPointMap(int imageWidth, int imag
 void create3DMeshUsingPointMap3DOD(int imageWidth, int imageHeight, double * pointMap, double * depthMap, unsigned char * rgbMap, MeshPoint * firstMeshPointInMeshList, MeshPoint * meshPointArray[], bool useEdgeZeroCrossingMap, int contrastValChosen, view_info * vi)
 {
 	//#ifdef OR_USE_CONTRAST_CALC_METHOD_C
-#ifndef LINUX
+	#ifndef LINUX
 	MeshPoint ** meshPointInterpixelArray = new MeshPoint *[imageWidth*imageHeight];
 	QFZeroCrossing ** edgeZeroCrossingMap = new QFZeroCrossing *[imageWidth*imageHeight];
-#else
+	#else
 	MeshPoint * meshPointInterpixelArray[imageWidth*imageHeight];
 	QFZeroCrossing * edgeZeroCrossingMap[imageWidth*imageHeight];
-#endif
+	#endif
 	//#endif
 
 	int interpixelContrastMapType;
@@ -784,7 +690,6 @@ void create3DMeshUsingPointMap3DOD(int imageWidth, int imageHeight, double * poi
 			}
 			else if(contrastValChosen == CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_POINT_NORMAL_CONTRAST)
 			{
-				//cout << "z1" << endl;
 				//interpixelContrastMapType = INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST
 				double * pointNormalMap = new double[imageWidth*imageHeight*VECTOR_NUM_VALUES];
 				double * pointNormalContrastMap = new double[imageWidth*imageHeight];
@@ -873,7 +778,6 @@ void create3DMeshUsingPointMap3DOD(int imageWidth, int imageHeight, double * poi
 					{
 						if(edgeBoolMap[y*imageWidth + x] ==  true)
 						{
-
 							currentMeshPointInInterpixelMesh->edge = true;
 							currentMeshPointInInterpixelMesh->zeroCrossingValueX = edgeZeroCrossingMap[y*imageWidth + x]->zeroCrossingValueX;
 							currentMeshPointInInterpixelMesh->zeroCrossingValueY = edgeZeroCrossingMap[y*imageWidth + x]->zeroCrossingValueY;
@@ -894,6 +798,7 @@ void create3DMeshUsingPointMap3DOD(int imageWidth, int imageHeight, double * poi
 				}
 			}
 
+			#ifdef OR_DEBUG
 			/*
 			cout << "currentMeshPointInMesh->col.r = " << currentMeshPointInMesh->col.r << endl;
 			cout << "currentMeshPointInMesh->col.g = " << currentMeshPointInMesh->col.g << endl;
@@ -906,6 +811,7 @@ void create3DMeshUsingPointMap3DOD(int imageWidth, int imageHeight, double * poi
 			cout << "currentMeshPointInMesh->point.y = " << currentMeshPointInMesh->point.y << endl;
 			cout << "currentMeshPointInMesh->point.z = " << currentMeshPointInMesh->point.z << endl;
 			*/
+			#endif
 
 			meshPointArray[y*imageWidth + x] = currentMeshPointInMesh;	//required for speed
 
@@ -1002,7 +908,6 @@ void create3DMeshUsingPointMap3DOD(int imageWidth, int imageHeight, double * poi
 
 			}
 
-
 			currentMeshPointInMesh = currentMeshPointInMesh->next;
 			if(OR_USE_CONTRAST_CALC_METHOD_C)
 			{
@@ -1095,13 +1000,14 @@ void create3DMeshUsingPointMap3DOD(int imageWidth, int imageHeight, double * poi
 					(meshPointInterpixelArray[y*imageWidth + x])->meshPointNormalFilled = true;
 				}
 
+				#ifdef OR_DEBUG
 				/*
 				cout << "meshPointInterpixelArray[y*imageWidth + x]->luminosityContrast = " << meshPointInterpixelArray[y*imageWidth + x]->luminosityContrast << endl;
 				cout << "meshPointInterpixelArray[y*imageWidth + x]->meshPointNormal.x = " << meshPointInterpixelArray[y*imageWidth + x]->meshPointNormal.x << endl;
 				cout << "meshPointInterpixelArray[y*imageWidth + x]->meshPointNormal.y = " << meshPointInterpixelArray[y*imageWidth + x]->meshPointNormal.y << endl;
 				cout << "meshPointInterpixelArray[y*imageWidth + x]->meshPointNormal.z = " << meshPointInterpixelArray[y*imageWidth + x]->meshPointNormal.z << endl;
 				*/
-
+				#endif
 			}
 		}
 	}
@@ -1123,17 +1029,17 @@ void create3DMeshUsingPointMap3DOD(int imageWidth, int imageHeight, double * poi
 					(meshPointArray[y*imageWidth + x])->meshPointNormalFilled = true;
 				}
 
+				#ifdef OR_DEBUG
 				/*
 				cout << "meshPointArray[y*imageWidth + x]->luminosityContrast = " << meshPointArray[y*imageWidth + x]->luminosityContrast << endl;
 				cout << "meshPointArray[y*imageWidth + x]->meshPointNormal.x = " << meshPointArray[y*imageWidth + x]->meshPointNormal.x << endl;
 				cout << "meshPointArray[y*imageWidth + x]->meshPointNormal.y = " << meshPointArray[y*imageWidth + x]->meshPointNormal.y << endl;
 				cout << "meshPointArray[y*imageWidth + x]->meshPointNormal.z = " << meshPointArray[y*imageWidth + x]->meshPointNormal.z << endl;
-
 				cout << "meshPointArray[y*imageWidth + x]->point.x = " << meshPointArray[y*imageWidth + x]->point.x << endl;
 				cout << "meshPointArray[y*imageWidth + x]->point.y = " << meshPointArray[y*imageWidth + x]->point.y << endl;
 				cout << "meshPointArray[y*imageWidth + x]->point.z = " << meshPointArray[y*imageWidth + x]->point.z << endl;
 				*/
-
+				#endif
 			}
 		}
 	}
@@ -1242,8 +1148,6 @@ void create3DMeshUsingPointMap3DOD(int imageWidth, int imageHeight, double * poi
 			createContrastMapFromMap(imageWidth, imageHeight, depthMap, depthContrastMap);
 			createDepthContrastBooleanMap(imageWidth, imageHeight, depthContrastMap, depthContrastBooleanMap);	//need to check threshold here
 		#endif
-
-
 
 			currentMeshPointInMesh = firstNewMeshPointInMesh;
 			for(int y = 0; y < (imageHeight); y++)
@@ -1419,52 +1323,39 @@ bool generateFeatureList3DOD(view_info * vi, double * depthMap, double * pointMa
 	createFeaturesUsingBooleanMapUsingDepthMap(imageWidth, imageHeight, depthContrastBooleanMap, depthMap, featuresUsingDepthContrastMap, featuresUsingDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, vi, pointMap);
 	//THIS ALTERNATE METHOD DOESNT WORK WHY NOT?; createFeaturesUsingBooleanMapUsingPointMap(imageWidth, imageHeight, depthContrastBooleanMap, pointMap, featuresUsingDepthContrastMap, featuresUsingDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1);
 
-	//cout << "h1" << endl;
-
 	int maxDotProductResultXposArrayCompleteMap2[3][3][3];
 	int maxDotProductResultYposArrayCompleteMap2[3][3][3];
 
 	createFeaturesUsingBooleanMapUsingDepthMap(imageWidth, imageHeight, luminosityContrastMapMinusDepthContrastMap, depthMap, featuresUsingLuminosityContrastMapMinusDepthContrastMap, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, vi, pointMap);
 	//THIS ALTERNATE METHOD DOESNT WORK WHY NOT?; createFeaturesUsingBooleanMapUsingPointMap(imageWidth, imageHeight, luminosityContrastMapMinusDepthContrastMap, pointMap, featuresUsingLuminosityContrastMapMinusDepthContrastMap, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2);
 
-	//cout << "h2" << endl;
-
-		addBooleanMaps(imageWidth, imageHeight, featuresUsingDepthContrastMapComplete, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete, featuresMapComplete);
-		reconcileFeaturesMap(imageWidth, imageHeight, featuresMapComplete);	//may no longer be required
-			//required after joining boolean corner maps
+	addBooleanMaps(imageWidth, imageHeight, featuresUsingDepthContrastMapComplete, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete, featuresMapComplete);
+	reconcileFeaturesMap(imageWidth, imageHeight, featuresMapComplete);	//may no longer be required
+		//required after joining boolean corner maps
 
 	//now define polygons for which transformations will occur for nn experience feeding features
-
-	//cout << "h3" << endl;
-			//NEW METHOD;
+		
 	#ifndef OR_DEBUG_OLD_FEATURE_GENERATION_METHOD
-		generateFeatureListUsingFeatureArraysUsingPointMap(imageWidth, imageHeight, pointMap, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, firstFeatureInList);
-		generateFeatureListUsingFeatureArraysUsingPointMap(imageWidth, imageHeight, pointMap, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, firstFeatureInList);
-
+	//NEW METHOD;
+	generateFeatureListUsingFeatureArraysUsingPointMap(imageWidth, imageHeight, pointMap, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, firstFeatureInList);
+	generateFeatureListUsingFeatureArraysUsingPointMap(imageWidth, imageHeight, pointMap, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, firstFeatureInList);
 	#else
-			//OLD METHOD;
-		generateFeatureListUsingFeatureArraysUsingDepthMap(imageWidth, imageHeight, depthMap, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, firstFeatureInList, vi);
-		generateFeatureListUsingFeatureArraysUsingDepthMap(imageWidth, imageHeight, depthMap, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, firstFeatureInList, vi);
-
+	//OLD METHOD;
+	generateFeatureListUsingFeatureArraysUsingDepthMap(imageWidth, imageHeight, depthMap, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, firstFeatureInList, vi);
+	generateFeatureListUsingFeatureArraysUsingDepthMap(imageWidth, imageHeight, depthMap, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, firstFeatureInList, vi);
 	#endif
 
-	//cout << "h4" << endl;
+	//#ifdef OR_DEBUG
+	Feature * currentFeatureInList = firstFeatureInList;
+	while(currentFeatureInList->next != NULL)
+	{
+		cout << "currentFeatureInList++" << endl;
+		currentFeatureInList=currentFeatureInList->next;
+	}
+	//#endif
 
-			//DEBUG;
-			Feature * currentFeatureInList = firstFeatureInList;
-			while(currentFeatureInList->next != NULL)
-			{
-				cout << "currentFeatureInList++" << endl;
-				currentFeatureInList=currentFeatureInList->next;
-			}
-
-	//cout << "h5" << endl;
-
-		generateBooleanMapFromFeatureList(imageWidth, imageHeight, firstFeatureInList, featuresMapCompleteOfficial, vi, 1);
-		//reconcileFeaturesMap(imageWidth, imageHeight, featuresMapCompleteOfficial);	//featuresMapCompleteOfficial shouldnt need reconciliation as features have already been checked to not reside close to each other! - fix this!
-
-	//cout << "h6" << endl;
-
+	generateBooleanMapFromFeatureList(imageWidth, imageHeight, firstFeatureInList, featuresMapCompleteOfficial, vi, 1);
+	//reconcileFeaturesMap(imageWidth, imageHeight, featuresMapCompleteOfficial);	//featuresMapCompleteOfficial shouldnt need reconciliation as features have already been checked to not reside close to each other! - fix this!
 
 	string featuresMapCompleteFileNameCPlus =  "featuresMapComplete" + trainOrTestString + PPM_EXTENSION;
 	string featuresMapCompleteOfficialFileNameCPlus = "featuresMapCompleteOfficial" + trainOrTestString + PPM_EXTENSION;
@@ -1472,18 +1363,6 @@ bool generateFeatureList3DOD(view_info * vi, double * depthMap, double * pointMa
 	string featuresUsingDepthContrastMapFileNameCPlus = "featuresUsingDepthContrastMap" + trainOrTestString + PPM_EXTENSION;
 	string featuresUsingLuminosityContrastMapMinusDepthContrastMapCompleteFileNameCPlus = "featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete" + trainOrTestString + PPM_EXTENSION;
 	string featuresUsingLuminosityContrastMapMinusDepthContrastMapFileNameCPlus = "featuresUsingLuminosityContrastMapMinusDepthContrastMap" + trainOrTestString + PPM_EXTENSION;
-
-
-
-	/*	//TEMP REPLACED FOR DEBUG
-	string featuresMapCompleteFileNameCPlus = trainOrTestString + "featuresMapComplete.ppm";
-	string featuresMapCompleteOfficialFileNameCPlus = trainOrTestString + "featuresMapCompleteOfficial.ppm";
-	string featuresUsingDepthContrastMapCompleteFileNameCPlus = trainOrTestString + "featuresUsingDepthContrastMapComplete.ppm";
-	string featuresUsingDepthContrastMapFileNameCPlus = trainOrTestString + "featuresUsingDepthContrastMap.ppm";
-	string featuresUsingLuminosityContrastMapMinusDepthContrastMapCompleteFileNameCPlus = trainOrTestString + "featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete.ppm";
-	string featuresUsingLuminosityContrastMapMinusDepthContrastMapFileNameCPlus = trainOrTestString + "featuresUsingLuminosityContrastMapMinusDepthContrastMap.ppm";
-	*/
-
 
 	char * featuresMapCompleteFileName = const_cast<char*>(featuresMapCompleteFileNameCPlus.c_str());
 	char * featuresMapCompleteOfficialFileName = const_cast<char*>(featuresMapCompleteOfficialFileNameCPlus.c_str());
@@ -1499,15 +1378,12 @@ bool generateFeatureList3DOD(view_info * vi, double * depthMap, double * pointMa
 	//generatePixmapFromBooleanMap(featuresUsingLuminosityContrastMapMinusDepthContrastMapFileName, imageWidth, imageHeight, featuresUsingLuminosityContrastMapMinusDepthContrastMap);
 	generatePixmapFromBooleanMap(featuresUsingLuminosityContrastMapMinusDepthContrastMapCompleteFileName, imageWidth, imageHeight, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete);
 
-
 	delete featuresUsingDepthContrastMap;
 	delete featuresUsingDepthContrastMapComplete;
 	delete featuresUsingLuminosityContrastMapMinusDepthContrastMap;
 	delete featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete;
 	delete featuresMapComplete;
 	delete featuresMapCompleteOfficial;
-
-	//exit(0);
 
 	//{NB must use luminosity contrast rather than depth contrast for sphere detection (ie detect text on spheres)}
 
@@ -1537,11 +1413,13 @@ void reconcileFeaturesMap(int imageWidth, int imageHeight, bool * featuresBoolea
 								bool booleanValInKernel = getBooleanMapValue(kx, ky, imageWidth, featuresBooleanMap);
 								if(booleanValInKernel)
 								{
+									#ifdef OR_DEBUG
 									/*
 									cout << "hit found;" << endl;
 									cout << "x = " << x << endl;
 									cout << "y = " << y << endl;
 									*/
+									#endif
 
 									numberOfHitsFound++;
 								}
@@ -1552,11 +1430,13 @@ void reconcileFeaturesMap(int imageWidth, int imageHeight, bool * featuresBoolea
 
 				if(numberOfHitsFound >= 2)
 				{
+					#ifdef OR_DEBUG
 					/*
 					cout << "numberOfHitsFound >= 2" << endl;
 					cout << "x = " << x << endl;
 					cout << "y = " << y << endl;
 					*/
+					#endif
 
 					for(int ky = y-(FEATURES_BOOLEAN_MAP_RECONCILIATION_HEIGHT/2); ky <= y+(FEATURES_BOOLEAN_MAP_RECONCILIATION_HEIGHT/2); ky++)
 					{
@@ -1572,7 +1452,9 @@ void reconcileFeaturesMap(int imageWidth, int imageHeight, bool * featuresBoolea
 									}
 									else
 									{
+										#ifdef OR_DEBUG
 										//cout << "\treconciling" << endl;
+										#endif
 										setBooleanMapValue(kx, ky, imageWidth, false, featuresBooleanMap);
 									}
 								}
@@ -1785,6 +1667,7 @@ void createFeaturesUsingBooleanMap(int imageWidth, int imageHeight, bool * boole
 					{
 						if((maxDotProductResultXposArrayComplete[uvxIndex][uvyIndex][uvzIndex] == x) && (maxDotProductResultYposArrayComplete[uvxIndex][uvyIndex][uvzIndex] == y))
 						{
+							#ifdef OR_DEBUG
 							/*
 							double depth = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
 							vec xyzWorld;
@@ -1797,6 +1680,7 @@ void createFeaturesUsingBooleanMap(int imageWidth, int imageHeight, bool * boole
 							cout << "xyzWorld.y = " << xyzWorld.y << endl;
 							cout << "xyzWorld.z = " << xyzWorld.z << endl;
 							*/
+							#endif
 
 							setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMapComplete);
 						}
@@ -2014,6 +1898,7 @@ void createFeaturesUsingBooleanMapUsingDepthMap(int imageWidth, int imageHeight,
 					{
 						if((maxDotProductResultXposArrayComplete[uvxIndex][uvyIndex][uvzIndex] == x) && (maxDotProductResultYposArrayComplete[uvxIndex][uvyIndex][uvzIndex] == y))
 						{
+							#ifdef OR_DEBUG
 							/*
 							double depth = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
 							vec xyzWorld;
@@ -2026,6 +1911,7 @@ void createFeaturesUsingBooleanMapUsingDepthMap(int imageWidth, int imageHeight,
 							cout << "xyzWorld.y = " << xyzWorld.y << endl;
 							cout << "xyzWorld.z = " << xyzWorld.z << endl;
 							*/
+							#endif
 
 							setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMapComplete);
 						}
@@ -2195,15 +2081,17 @@ void createFeaturesUsingBooleanMapUsingPointMap(int imageWidth, int imageHeight,
 								double bias = dotproduct(&pixelVector, &unitVector);
 								if(bias > maxDotProductResultArrayComplete[uvxIndex+1][uvyIndex+1][uvzIndex+1])
 								{
+									#ifdef OR_DEBUG
 									/*
 									cout << "found a corner" << endl;
 									cout << "x = " << x << endl;
 									cout << "y = " << y << endl;
 									*/
+									#endif
+									
 									maxDotProductResultArrayComplete[uvxIndex+1][uvyIndex+1][uvzIndex+1] = bias;
 									maxDotProductResultXposArrayComplete[uvxIndex+1][uvyIndex+1][uvzIndex+1] = x;
 									maxDotProductResultYposArrayComplete[uvxIndex+1][uvyIndex+1][uvzIndex+1] = y;
-
 								}
 							}
 						}
@@ -2250,11 +2138,13 @@ void createFeaturesUsingBooleanMapUsingPointMap(int imageWidth, int imageHeight,
 					{
 						if((maxDotProductResultXposArrayComplete[uvxIndex][uvyIndex][uvzIndex] == x) && (maxDotProductResultYposArrayComplete[uvxIndex][uvyIndex][uvzIndex] == y))
 						{
+							#ifdef OR_DEBUG
 							/*
 							cout << "placing corner;" << endl;
 							cout << "x = " << x << endl;
 							cout << "y = " << y << endl;
 							*/
+							#endif
 							setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMapComplete);
 						}
 					}
@@ -2262,8 +2152,6 @@ void createFeaturesUsingBooleanMapUsingPointMap(int imageWidth, int imageHeight,
 			}
 		}
 	}
-
-
 
 	//now we have the nearest 3 features to each corner using the outlined (common unit vector) scenarios
 }
@@ -2294,20 +2182,19 @@ void generateFeatureListUsingFeatureArrays(int imageWidth, int imageHeight, int 
 				corner.y = y;
 				corner.z = 0.0;
 
-
-				//cout << "starting check" << endl;
-
 				if(!checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD, false))
 				{//add corner to list
 
+					#ifdef OR_DEBUG
 					/*
 					cout << "added corner" << endl;
 					cout << "\t crn; x= " << corner.x << endl;
 					cout << "\t crn; y= " << corner.y << endl;
 					cout << "\t crn; z= " << corner.z << endl;
 					*/
+					#endif
 
-					//DEBUG;
+					//fix;
 					bool zerozeroanomolyfound = false;
 					if((corner.x == OR_ZERO_ANOMALY_FEATURE_X_POS) && (corner.y == OR_ZERO_ANOMALY_FEATURE_Y_POS))
 					{
@@ -2324,8 +2211,15 @@ void generateFeatureListUsingFeatureArrays(int imageWidth, int imageHeight, int 
 
 					if(!zerozeroanomolyfound && !backgroundcornerfound)
 					{
-						//cout << "corner z = " << corner.z << endl;
-
+						#ifdef OR_DEBUG
+						/*
+						cout << "found and adding corner;" << endl;
+						cout << "corner x = " << corner.x << endl;
+						cout << "corner y = " << corner.y << endl;
+						cout << "corner z = " << corner.z << endl;
+						*/
+						#endif
+						
 						currentFeatureInList->xViewport = x;
 						currentFeatureInList->yViewport = y;
 
@@ -2360,7 +2254,7 @@ void generateFeatureListUsingFeatureArraysUsingDepthMap(int imageWidth, int imag
 		{
 			for(int uvzIndex = 0; uvzIndex < 3; uvzIndex++)
 			{
-			#ifndef USE_ORIGINAL_WRONG_FEATURE_GEN
+				#ifndef USE_ORIGINAL_WRONG_FEATURE_GEN
 				int x = maxDotProductResultXposArrayComplete[uvxIndex][uvyIndex][uvzIndex];
 				int y = maxDotProductResultYposArrayComplete[uvxIndex][uvyIndex][uvzIndex];
 				double z = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
@@ -2376,27 +2270,26 @@ void generateFeatureListUsingFeatureArraysUsingDepthMap(int imageWidth, int imag
 				corner.x = xyzWorld.x;
 				corner.y = xyzWorld.y;
 				corner.z = xyzWorld.z;
-			#else
+				#else
 
 				corner.x = x;
 				corner.y = y;
 				corner.z = z;
-			#endif
-
-
-				//cout << "starting check" << endl;
+				#endif
 
 				if(!checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD, false))
 				{//add corner to list
 
+					#ifdef OR_DEBUG
 					/*
 					cout << "added corner" << endl;
 					cout << "\t crn; x= " << corner.x << endl;
 					cout << "\t crn; y= " << corner.y << endl;
 					cout << "\t crn; z= " << corner.z << endl;
 					*/
+					#endif
 
-					//DEBUG;
+					//fix;
 					bool zerozeroanomolyfound = false;
 					if((corner.x == OR_ZERO_ANOMALY_FEATURE_X_POS) && (corner.y == OR_ZERO_ANOMALY_FEATURE_Y_POS))
 					{
@@ -2413,8 +2306,15 @@ void generateFeatureListUsingFeatureArraysUsingDepthMap(int imageWidth, int imag
 
 					if(!zerozeroanomolyfound && !backgroundcornerfound)
 					{
-						//cout << "corner z = " << corner.z << endl;
-
+						#ifdef OR_DEBUG
+						/*
+						cout << "found and adding corner;" << endl;
+						cout << "corner x = " << corner.x << endl;
+						cout << "corner y = " << corner.y << endl;
+						cout << "corner z = " << corner.z << endl;
+						*/
+						#endif
+						
 						currentFeatureInList->xViewport = x;
 						currentFeatureInList->yViewport = y;
 
@@ -2465,24 +2365,19 @@ void generateFeatureListUsingFeatureArraysUsingPointMap(int imageWidth, int imag
 				corner.y = yWorld;
 				corner.z = zWorld;
 
-				/*
-				cout << "starting check" << endl;
-				cout << "\t crn; x= " << corner.x << endl;
-				cout << "\t crn; y= " << corner.y << endl;
-				cout << "\t crn; z= " << corner.z << endl;
-				*/
-
 				if(!checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_POINT_MAP_METHOD, true))
 				{//add corner to list
 
+					#ifdef OR_DEBUG
 					/*
 					cout << "added corner" << endl;
 					cout << "\t crn; x= " << corner.x << endl;
 					cout << "\t crn; y= " << corner.y << endl;
 					cout << "\t crn; z= " << corner.z << endl;
 					*/
+					#endif
 
-					//DEBUG;
+					//fix;
 					bool zerozeroanomolyfound = false;
 					if((corner.x == OR_ZERO_ANOMALY_FEATURE_X_POS) && (corner.y == OR_ZERO_ANOMALY_FEATURE_Y_POS))
 					{
@@ -2499,12 +2394,14 @@ void generateFeatureListUsingFeatureArraysUsingPointMap(int imageWidth, int imag
 
 					if(!zerozeroanomolyfound && !backgroundcornerfound)
 					{
+						#ifdef OR_DEBUG
 						/*
 						cout << "found and adding unique corner;" << endl;
 						cout << "corner x = " << corner.x << endl;
 						cout << "corner y = " << corner.y << endl;
 						cout << "corner z = " << corner.z << endl;
 						*/
+						#endif
 
 						currentFeatureInList->xViewport = x;
 						currentFeatureInList->yViewport = y;
@@ -2514,7 +2411,6 @@ void generateFeatureListUsingFeatureArraysUsingPointMap(int imageWidth, int imag
 						currentFeatureInList->next = newFeature;
 						currentFeatureInList = currentFeatureInList->next;
 					}
-
 				}
 			}
 		}
@@ -2522,7 +2418,6 @@ void generateFeatureListUsingFeatureArraysUsingPointMap(int imageWidth, int imag
 
 
 }
-
 
 
 #endif

@@ -23,7 +23,7 @@
  * File Name: ORfeature.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3b1a 05-August-2012
+ * Project Version: 3b2a 28-September-2012
  *
  * Assumes that depth information is less accurate than image information
  *
@@ -177,10 +177,8 @@ void generateFeatureListFromHeitgerFeatureRGBMapWithQuadraticFit(Feature * first
 			currentFeatureInList->xViewport = int(xPos);
 			currentFeatureInList->yViewport = int(yPos);
 
-
 			if(dimension == OR_METHOD3DOD_DIMENSIONS)
 			{
-
 				currentFeatureInList->pointNonWorldCoord.x = xPos;
 				currentFeatureInList->pointNonWorldCoord.y = yPos;
 
@@ -207,6 +205,7 @@ void generateFeatureListFromHeitgerFeatureRGBMapWithQuadraticFit(Feature * first
 					currentFeatureInList->point.y = xyzWorld.y;
 					currentFeatureInList->point.z = xyzWorld.z;
 
+					#ifdef OR_DEBUG
 					/*
 					cout << "xPos = " << xPos << endl;
 					cout << "yPos = " << yPos << endl;
@@ -217,6 +216,7 @@ void generateFeatureListFromHeitgerFeatureRGBMapWithQuadraticFit(Feature * first
 					cout << "currentFeatureInList->point.y = " << currentFeatureInList->point.y << endl;
 					cout << "currentFeatureInList->point.z = " << currentFeatureInList->point.z << endl;
 					*/
+					#endif
 
 				#endif
 			}
@@ -225,7 +225,6 @@ void generateFeatureListFromHeitgerFeatureRGBMapWithQuadraticFit(Feature * first
 				currentFeatureInList->point.x = xPos;
 				currentFeatureInList->point.y = yPos;
 			}
-
 
 			Feature * newFeature = new Feature();
 			currentFeatureInList->next = newFeature;
@@ -315,26 +314,19 @@ void generateEdgeListFromContrastMapWithQuadraticFit(double * contrastMap, bool 
 				double depth = getLumOrContrastOrDepthMapValue(int(xPos), int(yPos), imageWidth, depthMap);
 				#endif
 
-				/*
-				cout << "xPos = " << xPos << endl;
-				cout << "yPos = " << yPos << endl;
-				cout << "depth = " << depth << endl;
-				exit(0);
-				*/
-
 				#ifdef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
-					vec xyzWorld;
-					calculatePointMapValue(xPos, yPos, depth, &xyzWorld, vi);
-					currentZeroCrossingInList->point.x = xyzWorld.x;
-					currentZeroCrossingInList->point.y = xyzWorld.y;
-					currentZeroCrossingInList->point.z = xyzWorld.z;
+				vec xyzWorld;
+				calculatePointMapValue(xPos, yPos, depth, &xyzWorld, vi);
+				currentZeroCrossingInList->point.x = xyzWorld.x;
+				currentZeroCrossingInList->point.y = xyzWorld.y;
+				currentZeroCrossingInList->point.z = xyzWorld.z;
 				#else
-					cout << "error: generateEdgeListFromContrastMapWithQuadraticFit() requires OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH when compiling with 3DOD/use3DODonObjectForegroundDepthCheck" << endl;
-					vec xyzWorld;
-					getPointMapValue(int(yPos), int(yPos), imageWidth*zoom, pointMap, &xyzWorld);
-					currentZeroCrossingInList->point.x = xyzWorld.x;
-					currentZeroCrossingInList->point.y = xyzWorld.y;
-					currentZeroCrossingInList->point.z = xyzWorld.z;
+				cout << "error: generateEdgeListFromContrastMapWithQuadraticFit() requires OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH when compiling with 3DOD/use3DODonObjectForegroundDepthCheck" << endl;
+				vec xyzWorld;
+				getPointMapValue(int(yPos), int(yPos), imageWidth*zoom, pointMap, &xyzWorld);
+				currentZeroCrossingInList->point.x = xyzWorld.x;
+				currentZeroCrossingInList->point.y = xyzWorld.y;
+				currentZeroCrossingInList->point.z = xyzWorld.z;
 				#endif
 			}
 		}
@@ -401,12 +393,13 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 		centroidposForTest.x = centroidpos->x;
 		centroidposForTest.y = centroidpos->y;
 		centroidposForTest.z = centroidpos->z;
+		#ifdef OR_DEBUG
 		/*
 		cout << "centroidposForTest.x = " << centroidposForTest.x;
 		cout << "centroidposForTest.y = " << centroidposForTest.y;
 		cout << "centroidposForTest.z = " << centroidposForTest.z;
-		exit(0);
 		*/
+		#endif
 	}
 	else
 	{
@@ -453,18 +446,12 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 			currentPointForTest.y = currentInPixelContiguousBoundaryStack->point.y;
 			currentPointForTest.z = currentInPixelContiguousBoundaryStack->point.z;
 
+			#ifdef OR_DEBUG
 			//cout << " " << currentPointForTest.x << " " << currentPointForTest.y << " " << currentPointForTest.z << endl;
-			/*
-			cout << "currentPointForTest.x = " << currentPointForTest.x << endl;
-			cout << "currentPointForTest.y = " << currentPointForTest.y << endl;
-			cout << "currentPointForTest.z = " << currentPointForTest.z << endl;
-			*/
+			#endif
 
 			if(calculateTheDistanceBetweenTwoPoints(&previousPointForTest, &currentPointForTest) > OR_METHOD_3DOD_CONTINUOUS_EDGE_MAX_POINT_MOVEMENT)
 			{
-
-
-
 				#ifdef OR_CONTIGUOUS_REGION_DEBUG
 				discontinuousTemp = true;
 				//mark boundary point
@@ -480,20 +467,16 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 				cout << "previousPointForTest.x = " << previousPointForTest.x << endl;
 				cout << "previousPointForTest.y = " << previousPointForTest.y << endl;
 				cout << "previousPointForTest.z = " << previousPointForTest.z << endl;
-
-				//exit(0);
 			}
 			previousPointForTest.x = currentPointForTest.x;
 			previousPointForTest.y = currentPointForTest.y;
 			previousPointForTest.z = currentPointForTest.z;
-
 		}
 		else
 		{
 			currentPointForTest.x = currentInPixelContiguousBoundaryStack->pointNonWorldCoord.x;
 			currentPointForTest.y = currentInPixelContiguousBoundaryStack->pointNonWorldCoord.y;
 			currentPointForTest.z = 0.0;
-
 		}
 
 		#ifdef OR_CONTIGUOUS_REGION_DEBUG
@@ -510,8 +493,10 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 
 		currentDistanceToCenteroid = calculateTheDistanceBetweenTwoPoints(&currentPointForTest, &centroidposForTest);
 
+		#ifdef OR_DEBUG
 		//cout << "currentDistanceToCenteroid = " << currentDistanceToCenteroid << endl;
-
+		#endif
+		
 		if((numberOfBoundaryOrFakeBoundaryPixelsTraced > (MINIMUM_NUMBER_OF_PIXELS_IN_A_BOUNDARY)) && (compareVectors(&currentPointForTest, &initialPointOnBoundary)))
 		{
 			stillTracingPath2 = false;
@@ -519,10 +504,11 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 		}
 		else
 		{
-
 			if(distanceToCenteroidType == DISTANCE_TO_CENTEROID_DECREASING)
 			{
+				#ifdef OR_CONTIGUOUS_REGION_DEBUG
 				//cout << "DISTANCE_TO_CENTEROID_DECREASING" << endl;
+				#endif
 				if(currentDistanceToCenteroid > (previousRelativeMinimaDistanceToCenteroid+maxNoise))
 				{
 					#ifdef OR_CONTIGUOUS_REGION_DEBUG
@@ -534,16 +520,6 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 						contiguousRegionDebugrgbMap[yAtpreviousRelativeMinimaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMinimaDistanceToCenteroid*RGB_NUM + 0] = 255;
 						contiguousRegionDebugrgbMap[yAtpreviousRelativeMinimaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMinimaDistanceToCenteroid*RGB_NUM + 1] = 255;
 						contiguousRegionDebugrgbMap[yAtpreviousRelativeMinimaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMinimaDistanceToCenteroid*RGB_NUM + 2] = 0;
-						/*
-						contiguousRegionDebugrgbMap[yAtpreviousRelativeMinimaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMinimaDistanceToCenteroid*RGB_NUM + 0] = 0;
-						contiguousRegionDebugrgbMap[yAtpreviousRelativeMinimaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMinimaDistanceToCenteroid*RGB_NUM + 1] = 255;
-						contiguousRegionDebugrgbMap[yAtpreviousRelativeMinimaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMinimaDistanceToCenteroid*RGB_NUM + 2] = 255;
-						*/
-						/*
-						contiguousRegionDebugrgbMap[yAtpreviousRelativeMinimaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMinimaDistanceToCenteroid*RGB_NUM + 0] = 0;
-						contiguousRegionDebugrgbMap[yAtpreviousRelativeMinimaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMinimaDistanceToCenteroid*RGB_NUM + 1] = 255;
-						contiguousRegionDebugrgbMap[yAtpreviousRelativeMinimaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMinimaDistanceToCenteroid*RGB_NUM + 2] = 100;
-						*/
 					}
 					#endif
 
@@ -640,8 +616,10 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 			}
 			else if(distanceToCenteroidType == DISTANCE_TO_CENTEROID_INCREASING)
 			{
+				#ifdef OR_CONTIGUOUS_REGION_DEBUG
 				//cout << "DISTANCE_TO_CENTEROID_INCREASING" << endl;
-
+				#endif
+				
 				if(currentDistanceToCenteroid < (previousRelativeMaximaDistanceToCenteroid-maxNoise))
 				{
 					#ifdef OR_CONTIGUOUS_REGION_DEBUG
@@ -653,16 +631,6 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 						contiguousRegionDebugrgbMap[yAtpreviousRelativeMaximaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMaximaDistanceToCenteroid*RGB_NUM + 0] = 255;
 						contiguousRegionDebugrgbMap[yAtpreviousRelativeMaximaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMaximaDistanceToCenteroid*RGB_NUM + 1] = 255;
 						contiguousRegionDebugrgbMap[yAtpreviousRelativeMaximaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMaximaDistanceToCenteroid*RGB_NUM + 2] = 0;
-						/*
-						contiguousRegionDebugrgbMap[yAtpreviousRelativeMaximaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMaximaDistanceToCenteroid*RGB_NUM + 0] = 255;
-						contiguousRegionDebugrgbMap[yAtpreviousRelativeMaximaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMaximaDistanceToCenteroid*RGB_NUM + 1] = 0;
-						contiguousRegionDebugrgbMap[yAtpreviousRelativeMaximaDistanceToCenteroid*tempimageWidth*RGB_NUM + xAtpreviousRelativeMaximaDistanceToCenteroid*RGB_NUM + 2] = 255;
-						*/
-						/*
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 0] = 100;
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 1] = 0;
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 2] = 255;
-						*/
 					}
 					#endif
 
@@ -758,13 +726,14 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 			}
 			else if(distanceToCenteroidType == DISTANCE_TO_CENTEROID_UNCHANGING)
 			{
+				#ifdef OR_CONTIGUOUS_REGION_DEBUG
 				//cout << "DISTANCE_TO_CENTEROID_UNCHANGING" << endl;
-
 				/*
 				cout << "currentDistanceToCenteroid = " << currentDistanceToCenteroid << endl;
 				cout << "previousUnchangingDistanceToCenteroid = " << previousUnchangingDistanceToCenteroid << endl;
 				cout << "maxNoise2 = " << maxNoise2 << endl;
 				*/
+				#endif
 
 				if(currentDistanceToCenteroid < (previousUnchangingDistanceToCenteroid-maxNoise2))
 				{
@@ -841,14 +810,12 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 					#endif
 					#endif
 				}
-
 			}
 			else
 			{
 				cout << "trace error" << endl;
 				exit(0);
 			}
-
 
 			#ifdef OR_CONTIGUOUS_REGION_DEBUG
 			//remark boundary point
@@ -883,8 +850,6 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 							possiblePointOnBoundary.z = 0.0;
 						}
 
-
-
 						#ifdef OR_CONTIGUOUS_REGION_DEBUG_PRINT_BOUNDARY_TRACE
 						//mark boundary point
 						cout << "q = " << q << endl;
@@ -896,7 +861,6 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 						cout << "possiblePointOnBoundary.y = " << possiblePointOnBoundary.y << endl;
 						cout << "possiblePointOnBoundary.z = " << possiblePointOnBoundary.z << endl;
 						#endif
-
 
 						if((numberOfBoundaryOrFakeBoundaryPixelsTraced > (MINIMUM_NUMBER_OF_PIXELS_IN_A_BOUNDARY)) && (compareVectors(&(possiblePointOnBoundary), &initialPointOnBoundary)))
 						{
@@ -956,9 +920,7 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 
 		}
 		numberOfBoundaryOrFakeBoundaryPixelsTraced++;
-
 	}
-
 
 	return currentFeatureInList;
 }
@@ -969,8 +931,8 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 
 //DO: write a new identical version of addCentredFeaturesToFeatureList that instead operates on a MeshPoint list using 1. meshPointNormalContrast and then 2. meshPointLuminosityContrast values
 
-	//nb this routine should work where contrastMap is either the luminosityContrastMap [or the depthContrastMap or the depthGradientContrastMap (3DOD only)]
-	//this routine has not yet been tested
+//nb this routine should work where contrastMap is either the luminosityContrastMap [or the depthContrastMap or the depthGradientContrastMap (3DOD only)]
+//this routine has not yet been tested
 bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFeatureList, int imageWidth, int imageHeight, double contrastMap[], double sensitivity, int dimension, double pointMap[], double depthMap[], int zoom, view_info * vi, bool useEdgeZeroCrossingMap, int interpixelContrastMapType)
 {
 	bool result = true;
@@ -1061,6 +1023,7 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 			cout << "error: illegal dimension" << endl;
 			exit(0);
 		}
+		#ifdef OR_DEBUG
 		/*
 		for(int y = 0; y < imageHeight; y++)
 		{
@@ -1071,6 +1034,7 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 			}
 		}
 		*/
+		#endif
 
 		//generate edge map by creating a boolean map from the contrast map.
 	}
@@ -1085,7 +1049,6 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 	{
   		for(int x = 0; x < imageWidth; x++)
 		{
-
 			//set black
 			if(edgeBoolMap[y*imageWidth +x])
 			{
@@ -1145,11 +1108,7 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 				{
 
 					//1. perform region definition
-					/*
-					#ifdef OR_USE_OLD_RECURSIVE_CONTIGIOUS_REGION_METHODS_WHICH_FAIL_DUE_TO_LIMITED_C_RECURSION_STACK
-					defineRegionCheckNextPixelRecursive(x, y, edgeBoolMap, alreadyProcessed, imageWidth, imageHeight, &regionSize);
-					#else
-					*/
+
 					int regionsumx = 0;
 					int regionsumy = 0;
 					vec regionsumpos;
@@ -1163,13 +1122,10 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 					PixelContiguous * firstInPixelContiguousStack = new PixelContiguous();
 					contiguousRegionFound = defineRegionCheckNextPixelNonRecursive(firstInPixelContiguousStack, x, y, edgeBoolMap, edgeZeroCrossingMap, alreadyProcessed, imageWidth, imageHeight, &regionSize, &regionsumx, &regionsumy, &regionsumpos, dimension, pointMap, depthMap, zoom, useEdgeZeroCrossingMap, vi, &maxXx, &maxXy, interpixelContrastMapType);
 
-
 					#ifdef OR_CONTIGUOUS_REGION_DEBUG_PRINT
 					cout << "regionSize = " << regionSize << endl;
 					cout << "contiguousRegionFound = " << contiguousRegionFound << endl;
 					#endif
-
-
 
 					#ifdef OR_CONTIGUOUS_REGION_DEBUG
 					//temp; generate the display of the unbounded contiguous area;
@@ -1180,19 +1136,8 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 					}
 					#endif
 
-					/*
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG2
-					if(contiguousRegionNumber == 4)
-					{
-						generatePixmapFromRGBMap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
-						exit(0);
-					}
-					#endif
-					*/
-
 					if(contiguousRegionFound && (regionSize > (MIN_REGION_SIZE_TO_CALCULATE_CENTRED_FEATURE/zoom)))
 					{
-
 						#ifdef OR_CONTIGUOUS_REGION_DEBUG
 						contiguousRegionNumber++;
 						#endif
@@ -1200,8 +1145,6 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 						#ifdef OR_CONTIGUOUS_REGION_DEBUG
 						generatePixmapFromRGBMap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
 						#endif
-
-
 
 						double regionaveragex = double(regionsumx)/double(regionSize);
 						double regionaveragey = double(regionsumy)/double(regionSize);
@@ -1454,15 +1397,16 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 						}
 						else
 						{
-
 							currentFeatureInList->xViewport = regionaveragex*zoom;
 							currentFeatureInList->yViewport = regionaveragey*zoom;
 
+							#ifdef OR_DEBUG
 							/*
 							cout << "regionaveragex= " << regionaveragex << endl;
 							cout << "regionaveragey " << regionaveragey << endl;
 							cout << "zoom = " << zoom << endl;
 							*/
+							#endif
 							if(dimension == OR_METHOD3DOD_DIMENSIONS)
 							{
 								currentFeatureInList->point.x = regionsumpos.x;
@@ -1472,15 +1416,6 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 								currentFeatureInList->pointNonWorldCoord.x = (regionaveragex)*zoom;
 								currentFeatureInList->pointNonWorldCoord.y = (regionaveragey)*zoom;
 								currentFeatureInList->pointNonWorldCoord.z = getDepthValueWithOrWithoutForegroundCheck(currentFeatureInList->pointNonWorldCoord.x, currentFeatureInList->pointNonWorldCoord.y, imageWidth, imageHeight, kernelWidthForegroundCheck, kernelHeightForegroundCheck, depthMap, zoom);
-
-								/*
-								calculateDepthMapValue(&(currentFeatureInList->point), &(currentFeatureInList->pointNonWorldCoord), vi);
-								*/
-								/*
-								currentFeatureInList->pointNonWorldCoord.x =
-								currentFeatureInList->pointNonWorldCoord.y =
-								currentFeatureInList->pointNonWorldCoord.z =
-								*/
 							}
 							else
 							{
@@ -1499,9 +1434,8 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 					{
 						deleteContiguousStackAndResetEdgesNonRecursive(firstInPixelContiguousStack, alreadyProcessed, imageWidth, imageHeight);
 
+						#ifdef OR_DEBUG
 						/*
-						cout << "asd2" << endl;
-						//exit(0);
 						for(int x = 0; x < imageWidth; x++);
 						{
 							for(int y = 0; y < imageHeight; y++);
@@ -1513,6 +1447,7 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 							}
 						}
 						*/
+						#endif
 					}
 					delete firstInPixelContiguousStack;
 				}
@@ -1537,10 +1472,10 @@ double getDepthValueWithOrWithoutForegroundCheck(double pointNonWorldCoordx, dou
 {
 	//depth calculations added 13 June 2012 - check these....
 	#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS
-		vec xyzNearbyPointOnObject;
-		double depth = calculateForegroundMinimumDepthWithinKernel(int(pointNonWorldCoordx), int(pointNonWorldCoordy), imageWidth, imageHeight, kernelWidthForegroundCheck, kernelHeightForegroundCheck, depthMap, &xyzNearbyPointOnObject, zoom);
+	vec xyzNearbyPointOnObject;
+	double depth = calculateForegroundMinimumDepthWithinKernel(int(pointNonWorldCoordx), int(pointNonWorldCoordy), imageWidth, imageHeight, kernelWidthForegroundCheck, kernelHeightForegroundCheck, depthMap, &xyzNearbyPointOnObject, zoom);
 	#else
-		double depth = getLumOrContrastOrDepthMapValue(int(pointNonWorldCoordx), int(pointNonWorldCoordy), imageWidth, depthMap);
+	double depth = getLumOrContrastOrDepthMapValue(int(pointNonWorldCoordx), int(pointNonWorldCoordy), imageWidth, depthMap);
 	#endif
 	return depth;
 }
@@ -1577,30 +1512,10 @@ bool addCentredFeaturesToFeatureListUsingMeshList(Feature * firstFeatureInFeatur
 	MeshPoint * currentMeshPointInMesh = firstMeshPointInMeshList;
 	while(currentMeshPointInMesh->next != NULL)
 	{
-		cout << "h2" << endl;
-
-		/*
-		#ifndef OR_TRACE_CONTIGUOUS_REGION_BOUNDARY_RESET_EDGES_DYNAMICALLY_OLD
-		//must remove all edges from list
-		MeshPoint * currentMeshPoint = firstMeshPointInMeshList;
-		while(currentMeshPoint->next != NULL)
-		{
-			if(currentMeshPoint->alreadyProcessed == EDGE_FOUND)
-			{
-				currentMeshPoint->alreadyProcessed = NOT_PROCESSED;
-			}
-			currentMeshPoint = currentMeshPoint->next;
-		}
-		#endif
-		*/
-
 		if(currentMeshPointInMesh->alreadyProcessed == NOT_PROCESSED)
 		{
 			if(currentMeshPointInMesh->edge != true)
 			{
-
-				//cout << "h2b" << endl;
-
 				//1. perform region definition
 				/*
 				#ifdef OR_USE_OLD_RECURSIVE_CONTIGIOUS_REGION_METHODS_WHICH_FAIL_DUE_TO_LIMITED_C_RECURSION_STACK
@@ -1619,12 +1534,8 @@ bool addCentredFeaturesToFeatureListUsingMeshList(Feature * firstFeatureInFeatur
 				PixelContiguous * firstInPixelContiguousStack = new PixelContiguous();
 				contiguousRegionFound = defineRegionCheckNextPixelUsingMeshPointNonRecursive(firstInPixelContiguousStack, currentMeshPointInMesh, &regionSize, contrastValChosen, &regionsumx, &regionsumy, &regionsumpos, useEdgeZeroCrossingMap, aMeshPointOnTheBoundary, sensitivity);
 
-
 				if(contiguousRegionFound && (regionSize > (MIN_REGION_SIZE_TO_CALCULATE_CENTRED_FEATURE)))
 				{
-
-
-
 					double regionaveragex = double(regionsumx)/double(regionSize);
 					double regionaveragey = double(regionsumy)/double(regionSize);
 
@@ -1948,10 +1859,11 @@ bool defineRegionCheckNextPixelNonRecursive(PixelContiguous * firstInPixelContig
 			if((x >= xBoundaryMin) && (x <= xBoundaryMax) && (y >= yBoundaryMin) && (y <= yBoundaryMax))
 			{//map boundary check
 
-
+				#ifdef OR_DEBUG
 				//cout << "xDev = " << xDev << endl;
 				//cout << "yDev = " << yDev << endl;
-
+				#endif
+				
 				int pixelStatus = alreadyProcessed[(y*imageWidth) + x];
 				if(pixelStatus == NOT_PROCESSED)
 				{
@@ -2081,24 +1993,18 @@ bool defineRegionCheckNextPixelNonRecursive(PixelContiguous * firstInPixelContig
 					else
 					{
 						PixelContiguous * newPixel = new PixelContiguous(x, y, currentInPixelContiguousStack);
+						#ifdef OR_DEBUG
 						//cout << "q2 = " << q2 << endl;
+						#endif
 						currentInPixelContiguousStack->next[q2] = newPixel;
 						*regionSize = *regionSize + 1;
 						alreadyProcessed[y*imageWidth + x] = NO_EDGE_FOUND;
 						numberOfNewBranchesFromThisPixel++;
 
 						#ifdef OR_CONTIGUOUS_REGION_DEBUG
-
-
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 0] = ((contiguousRegionNumber/1)%10 * 25);
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 1] = ((contiguousRegionNumber/10)%10 * 25);
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 2] = ((contiguousRegionNumber/100)%10 * 25);
-
-						/*
-						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 0] = 255;
-						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 1] = 0;
-						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 2] = 0;
-						*/
 						#endif
 
 						*sumx = *sumx + pixelXOffset + x;
@@ -2180,21 +2086,6 @@ bool defineRegionCheckNextPixelNonRecursive(PixelContiguous * firstInPixelContig
 
 					if(nextIsNotPrevious)
 					{
-						/*
-						cout << "currentInPixelContiguousStack->next[q]->xInt = " << currentInPixelContiguousStack->next[q]->xInt << endl;
-						cout << "currentInPixelContiguousStack->next[q]->yInt = " << currentInPixelContiguousStack->next[q]->yInt << endl;
-						if(currentInPixelContiguousStack->previous != NULL)
-						{
-							cout << "currentInPixelContiguousStack->previous->xInt = " << currentInPixelContiguousStack->previous->xInt << endl;
-							cout << "currentInPixelContiguousStack->previous->yInt = " << currentInPixelContiguousStack->previous->yInt << endl;
-						}
-						else
-						{
-							cout << "currentInPixelContiguousStack->previous->xInt = NULL" << endl;
-							cout << "currentInPixelContiguousStack->previous->yInt = NULL" << endl;
-						}
-						*/
-
 						foundAReferenceToCrawlTo = true;
 						currentInPixelContiguousStack = currentInPixelContiguousStack->next[q];
 					}
@@ -2230,7 +2121,6 @@ bool defineRegionCheckNextPixelNonRecursive(PixelContiguous * firstInPixelContig
 				}
 			}
 		}
-		//cout << "end" << endl;
 	}
 	else if(!contiguousRegionFound)
 	{
@@ -2247,7 +2137,6 @@ bool defineRegionCheckNextPixelNonRecursive(PixelContiguous * firstInPixelContig
 
 void deleteContiguousStackAndResetEdgesNonRecursive(PixelContiguous * firstInPixelContiguousStack, int alreadyProcessed[], int imageWidth, int imageHeight)
 {
-	//cout << "starting to delete" << endl;
 	PixelContiguous * currentPixelContiguous = firstInPixelContiguousStack;
 	bool stillMoreToDelete = true;
 	while(stillMoreToDelete)
@@ -2320,12 +2209,10 @@ void deleteContiguousStackAndResetEdgesNonRecursive(PixelContiguous * firstInPix
 			}
 		}
 	}
-	//cout << "finished delete" << endl;
 }
 
 void deleteContiguousStackAndResetEdgesNonRecursive(PixelContiguous * firstInPixelContiguousStack)
 {
-	//cout << "starting to delete" << endl;
 	PixelContiguous * currentPixelContiguous = firstInPixelContiguousStack;
 	bool stillMoreToDelete = true;
 	while(stillMoreToDelete)
@@ -2380,7 +2267,6 @@ void deleteContiguousStackAndResetEdgesNonRecursive(PixelContiguous * firstInPix
 			}
 		}
 	}
-	//cout << "finished delete" << endl;
 }
 
 /*
@@ -2456,8 +2342,6 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(PixelContiguous * firs
 				int pixelStatus = currentMeshPoint->adjacentMeshPoint[q]->alreadyProcessed;
 				if(pixelStatus == NOT_PROCESSED)
 				{
-					//cout << "h11" << endl;
-
 					bool passCondition = false;
 					if(OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
 					{
@@ -2486,8 +2370,9 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(PixelContiguous * firs
 
 					if(passCondition)
 					{
-
+						#ifdef OR_DEBUG
 						//cout << "edge found" << endl;
+						#endif
 						currentMeshPoint->adjacentMeshPoint[q]->alreadyProcessed = EDGE_FOUND;
 
 						if(OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
@@ -2569,12 +2454,12 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(PixelContiguous * firs
 								}
 							}
 						}
-
-
 					}
 					else
 					{
+						#ifdef OR_DEBUG
 						//cout << "no edge found" << endl;
+						#endif
 						PixelContiguous * newPixel = new PixelContiguous(currentMeshPoint->adjacentMeshPoint[q], currentInPixelContiguousStack);
 						currentInPixelContiguousStack->next[q2] = newPixel;
 						*regionSize = *regionSize + 1;
@@ -2587,7 +2472,6 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(PixelContiguous * firs
 						sumpos->y = sumpos->y + currentMeshPoint->adjacentMeshPoint[q]->point.y;
 						sumpos->z = sumpos->z + currentMeshPoint->adjacentMeshPoint[q]->point.z;
 
-
 						//shortcut to define a pixel on the boundary of the contiguous region
 						vec difference;
 						subtractVectors(&difference, &(currentMeshPoint->adjacentMeshPoint[q]->point), &(firstMeshPoint->point));
@@ -2598,7 +2482,6 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(PixelContiguous * firs
 						}
 
 						//no kernel boundary check
-
 					}
 				}
 				else if(pixelStatus == NO_EDGE_FOUND)
@@ -2689,9 +2572,6 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(PixelContiguous * firs
 
 bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnBoundary, int alreadyProcessed[], QFZeroCrossing * edgeZeroCrossingMap[], bool useEdgeZeroCrossingMap, int imageWidth, int imageHeight, double * sumx, double * sumy, vec * sumpos, int * numberOfCounts, int minRegionCircumferenceForRegion, int dimension, double pointMap[], double depthMap[], int zoom, PixelContiguous * firstInPixelContiguousBoundaryStack, view_info * vi, int interpixelContrastMapType)
 {
-	//cout << "minRegionCircumferenceForRegion = " << minRegionCircumferenceForRegion << endl;
-	//exit(0);
-
 	double pixelXOffset;
 	double pixelYOffset;
 	int kernelWidthForegroundCheck;
@@ -2761,6 +2641,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 				xyzWorld.x = edgeZeroCrossingMap[firstInPixelContiguousBoundaryStack->yInt*imageWidth + firstInPixelContiguousBoundaryStack->xInt]->point.x;
 				xyzWorld.y = edgeZeroCrossingMap[firstInPixelContiguousBoundaryStack->yInt*imageWidth + firstInPixelContiguousBoundaryStack->xInt]->point.y;
 				xyzWorld.z = edgeZeroCrossingMap[firstInPixelContiguousBoundaryStack->yInt*imageWidth + firstInPixelContiguousBoundaryStack->xInt]->point.z;
+				#ifdef OR_DEBUG
 				/*
 				cout << "xyzWorld.x = " << xyzWorld.x;
 				cout << "xyzWorld.y = " << xyzWorld.y;
@@ -2769,8 +2650,8 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 				cout << "y = " << edgeZeroCrossingMap[firstInPixelContiguousBoundaryStack->yInt*imageWidth + firstInPixelContiguousBoundaryStack->xInt]->zeroCrossingValueY;
 				cout << "x = " << edgeZeroCrossingMap[firstInPixelContiguousBoundaryStack->yInt*imageWidth + firstInPixelContiguousBoundaryStack->xInt]->x;
 				cout << "y = " << edgeZeroCrossingMap[firstInPixelContiguousBoundaryStack->yInt*imageWidth + firstInPixelContiguousBoundaryStack->xInt]->y;
-				exit(0);
 				*/
+				#endif
 			}
 			else
 			{
@@ -2823,7 +2704,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 			contiguousRegionDebugrgbMap[yCurrent*imageWidth*RGB_NUM + xCurrent*RGB_NUM + 2] = 0;
 			//generatePixmapFromRGBMap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
 		}
-					//cout << "xyCurrent = " << xCurrent << "  " << yCurrent << endl;
+		//cout << "xyCurrent = " << xCurrent << "  " << yCurrent << endl;
 		#endif
 
 		vec currentPoint;
@@ -2909,9 +2790,6 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 					#endif
 					*/
 
-
-					//cout << "z8" << endl;
-
 					bool nextIsNotPrevious = true;
 					if(currentInPixelContiguousStack->previous != NULL)
 					{
@@ -2926,7 +2804,6 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 
 						if(currentInPixelContiguousStack->next[q]->pathAlreadyCrawled == true)
 						{
-							//cout << "q = " << q << endl;
 							nextHasNotAlreadyBeenCrawled = false;
 
 						}
@@ -2941,7 +2818,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 
 					}
 
-
+					#ifdef OR_DEBUG
 					/*
 					cout << "\t tracing edge... " << endl;
 					cout << "\t xCurrent = " << xCurrent << endl;
@@ -2951,56 +2828,22 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 					cout << "\t y = " << y << endl;
 					cout << "\t q = " << q << endl;
 					*/
-
-					//cout << "q = " << q << endl;
-
-					/*
-						if((xCurrent == 15) && (yCurrent == 17))
-						{
-							cout << "dag2" << endl;
-							cout << "alreadyProcessed[y*imageWidth + x] = " << alreadyProcessed[y*imageWidth + x] << endl;
-							cout << "nextIsNotPrevious = " << nextIsNotPrevious << endl;
-							cout << "nextHasNotAlreadyBeenCrawled = " << nextHasNotAlreadyBeenCrawled << endl;
-
-						}
-					*/
+					#endif
 
 					if(((alreadyProcessed[y*imageWidth + x] == EDGE_FOUND) && nextIsNotPrevious && nextHasNotAlreadyBeenCrawled) || nextIsInitial)	//add 2 initial points to the list
 					{
-
-						//cout << "z1b" << endl;
-						//cout << "z2" << endl;
-
-						/*
-						if((xCurrent == 15) && (yCurrent == 17) && (q == 8))
-						{
-							cout << "asd" << endl;
-						}
-						if((x == 16) && (y == 18))
-						{
-							cout << "sad" << endl;
-						}
-						if((xCurrent == 15) && (yCurrent == 17))
-						{
-							cout << "dag" << endl;
-						}
-						*/
-
 						#ifdef OR_CONTIGUOUS_REGION_DEBUG
-						//cout << "qd = " << q << endl;
+						//cout << "q = " << q << endl;
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 0] = 255;
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 1] = 0;
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 2] = 0;
 						//generatePixmapFromRGBMap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
 						#endif
 
-
 						numberOfBoundaryOrFakeBoundaryPixelsTraced++;
 						PixelContiguous * newPixel = new PixelContiguous(x, y, currentInPixelContiguousStack);
 						currentInPixelContiguousStack->next[q] = newPixel;
 						numberOfNewBranchesFromThisPixel++;
-
-
 
 						double xpos;
 						double ypos;
@@ -3062,14 +2905,14 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 
 						if((x > 0) && (x < (imageWidth-1)) && (y > 0) && (y < (imageHeight-1)))
 						{//kernel boundary check (needs 1 pixels broth)
-							//cout << "z3" << endl;
-
 
 						}
 						else
 						{
 							cout << "error - boundary found in trace" << endl;
 							exit(0);
+							
+							//?:
 							currentInPixelContiguousStack->next[q]->pathAlreadyCrawled = true;
 							//end of crawl line
 						}
@@ -3084,10 +2927,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 						}
 						*/
 					}
-
 				}
-
-
 			}
 		}
 
@@ -3148,17 +2988,14 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 
 				if(passCondition)
 				{
-
+					#ifdef OR_DEBUG
 					//cout << "minRegionCircumferenceForRegion = " << minRegionCircumferenceForRegion << endl;
 					//cout << "currentInPixelContiguousStack->xInt = " << currentInPixelContiguousStack->xInt << endl;
 					//cout << "currentInPixelContiguousStack->yInt = " << currentInPixelContiguousStack->yInt << endl;
-
+					#endif
+					
 					if(currentInPixelContiguousStack->next[q] != NULL)
 					{
-						//cout << "1. q = " << q << endl;
-
-
-
 						vec currentPointAdjacentPoint;
 						currentPointAdjacentPoint.x = currentInPixelContiguousStack->next[q]->xInt;
 						currentPointAdjacentPoint.y = currentInPixelContiguousStack->next[q]->yInt;
@@ -3171,42 +3008,36 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 							#ifdef NEWCHECKTHIS
 							currentInPixelContiguousStack->finalPathAlreadyCrawled = true;
 							#endif
-							//cout << "1a. q = " << q << endl;
 						}
 						else
 						{
 							if(!foundAReferenceToCrawlTo)
 							{
-								//cout << "1b. q = " << q << endl;
 								if(currentInPixelContiguousStack->next[q]->pathAlreadyCrawled != true)
 								{
-									//cout << "1c. q = " << q << endl;
 									//done above;
 									bool nextIsNotPrevious = true;
 									if(currentInPixelContiguousStack->previous != NULL)
 									{
-										//cout << "1d. q = " << q << endl;
 										if((currentInPixelContiguousStack->next[q]->xInt == currentInPixelContiguousStack->previous->xInt) && (currentInPixelContiguousStack->next[q]->yInt == currentInPixelContiguousStack->previous->yInt))
 										{
-											//cout << "1e. q = " << q << endl;
 											nextIsNotPrevious = false;
 										}
 									}
 									if(nextIsNotPrevious)
 									{
-										//cout << "1f. q = " << q << endl;
-
 										foundAReferenceToCrawlTo = true;
-										//cout << "currentInPixelContiguousStack->xInt = " << currentInPixelContiguousStack->xInt << endl;
-										//cout << "currentInPixelContiguousStack->yInt = " << currentInPixelContiguousStack->yInt << endl;
 										currentInPixelContiguousStack = currentInPixelContiguousStack->next[q];
+										
+										#ifdef OR_DEBUG
+										//cout << "currentInPixelContiguousStack->xInt = " << currentInPixelContiguousStack->xInt << endl;
+										//cout << "currentInPixelContiguousStack->yInt = " << currentInPixelContiguousStack->yInt << endl;										
 										//cout << "foundAReferenceToCrawlTo" << endl;
 										//cout << "q = " << q << endl;
-
 										//cout << "currentInPixelContiguousStack->next[q]->xInt = " << currentInPixelContiguousStack->xInt << endl;
 										//cout << "currentInPixelContiguousStack->next[q]->yInt = " << currentInPixelContiguousStack->yInt << endl;
+										#endif
 									}
-
 								}
 							}
 						}
@@ -3262,7 +3093,10 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 
 	}
 
+	#ifdef OR_DEBUG
 	//cout << "\t\t numberOfBoundaryOrFakeBoundaryPixelsTraced = " << numberOfBoundaryOrFakeBoundaryPixelsTraced << endl;
+	#endif
+	
 	*numberOfCounts = numberOfBoundaryOrFakeBoundaryPixelsTraced;
 
 	return foundATracePath1;
@@ -3277,7 +3111,6 @@ bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(MeshPoint * aMeshPointOnT
 	bool foundATracePath1 = false;
 
 	firstInPixelContiguousBoundaryStack->meshPoint = aMeshPointOnTheBoundary;
-
 
 	vec xyzWorld;
 	vec nonWorld;
@@ -3318,7 +3151,6 @@ bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(MeshPoint * aMeshPointOnT
 	firstInPixelContiguousBoundaryStack->pointNonWorldCoord.y = nonWorld.y;
 
 
-
 	PixelContiguous * currentInPixelContiguousStack = firstInPixelContiguousBoundaryStack;
 
 	int numberOfBoundaryOrFakeBoundaryPixelsTraced = 0;
@@ -3340,7 +3172,6 @@ bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(MeshPoint * aMeshPointOnT
 		}
 		else
 		{
-
 			int q2Min;
 			int q2Max;
 			int q2Increment;
@@ -3356,7 +3187,6 @@ bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(MeshPoint * aMeshPointOnT
 				q2Max = 9;
 				q2Increment = 2;
 			}
-
 
 			for(int q2=q2Min; q2<q2Max; q2=q2+q2Increment)
 			{
@@ -3600,7 +3430,6 @@ bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(MeshPoint * aMeshPointOnT
 					stillTracingPath1 = false;
 				}
 			}
-
 		}
 	}
 
@@ -3624,17 +3453,15 @@ void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeature
 	{
   		for(int x = 0; x < imageWidth; x++)
 		{
-			/*
-			colour currentPixelColour;
-			getRGBMapValues(x, y, imageWidth, rgbMap, &currentPixelColour);
-			*/
 			double featureProbabilityLevelCentrePixel = calculateLuminosityLevelFromRGBMap(x, y, imageWidth, featureRgbMap);
 			if(featureProbabilityLevelCentrePixel >= HEITGER_FEATURE_RGB_MAP_CENTRE_THRESHOLD*sensitivity)
 			{//centre pixel feature detection threshold passed, now calculate surrounding/kernel feature detection threshold level
 
+				#ifdef OR_DEBUG
 				//cout << "(featureProbabilityLevelCentrePixel >= HEITGER_FEATURE_RGB_MAP_CENTRE_THRESHOLD*sensitivity)" << endl;
 				//cout << "featureProbabilityLevelCentrePixel = " << featureProbabilityLevelCentrePixel*sensitivity << endl;
-
+				#endif
+				
 				double featureProbabilityLevelKernelPixels = 0.0;
 				bool centreFeatureFound = true;
 
@@ -3654,7 +3481,6 @@ void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeature
 						{
 							if((kx >= 0) && (kx < imageWidth))
 							{
-
 								if(dimension == OR_METHOD3DOD_DIMENSIONS)
 								{
 									double depthVal = getLumOrContrastOrDepthMapValue(kx*zoom, ky*zoom, imageWidth*zoom, depthMap);
@@ -3666,7 +3492,6 @@ void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeature
 										xyzNearbyPointOnObject.y = ky*zoom;
 										xyzNearbyPointOnObject.z = depthVal;
 										nearbyPointOnObjectFound = true;
-
 									}
 								#else
 									if(depthVal < minDepthForNearbyPoints)
@@ -3680,7 +3505,6 @@ void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeature
 								#endif
 								}
 
-
 								double currentFeatureProbabilityLevelKernelPixel = calculateLuminosityLevelFromRGBMap(kx, ky, imageWidth, featureRgbMap);
 								featureProbabilityLevelKernelPixels = featureProbabilityLevelKernelPixels + currentFeatureProbabilityLevelKernelPixel;
 
@@ -3688,7 +3512,6 @@ void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeature
 								{
 									centreFeatureFound = false;
 								}
-
 							}
 						}
 					}
@@ -3706,15 +3529,16 @@ void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeature
 						#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
 							if(compareDoubles(depthVal, RT_RAYTRACE_NO_HIT_DEPTH_T))	//NEW official [2 june 09] {ensures the pixel is not a background pixel}
 							{//off object
+								#ifdef OR_DEBUG
 								//cout << "feature off object" << endl;
-
+								#endif
+								
 								if(nearbyPointOnObjectFound)
 								{
 						#else
 								if(minDepthForNearbyPoints < depthVal)
 								{
 						#endif
-
 									currentFeatureInList->xViewport = x*zoom;
 									currentFeatureInList->yViewport = y*zoom;
 
@@ -3732,7 +3556,7 @@ void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeature
 									currentFeatureInList->point.y = xyzWorld.y;
 									currentFeatureInList->point.z = xyzWorld.z;
 
-
+									#ifdef OR_DEBUG
 									/*
 									cout << "feature off object" << endl;
 									cout << "xyzNearbyPointOnObject.x = " << xyzNearbyPointOnObject.x << endl;
@@ -3740,6 +3564,7 @@ void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeature
 									cout << "xyzNearbyPointOnObject.z = " << xyzNearbyPointOnObject.z << endl;
 									cout << "depthVal = " << depthVal << endl;
 									*/
+									#endif
 
 									Feature * newFeature = new Feature();
 									currentFeatureInList->next = newFeature;
@@ -3755,8 +3580,7 @@ void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeature
 						#endif
 							else
 							{
-
-
+								#ifdef OR_DEBUG
 								/*
 								cout << "feature on object" << endl;
 								cout << "xyz.x = " << xyz.x << endl;
@@ -3764,6 +3588,7 @@ void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeature
 								cout << "xyz.z = " << xyz.z << endl;
 								cout << "depthVal = " << depthVal << endl;
 								*/
+								#endif
 
 								currentFeatureInList->xViewport = x*zoom;
 								currentFeatureInList->yViewport = y*zoom;
@@ -3787,14 +3612,15 @@ void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeature
 								currentFeatureInList->next = newFeature;
 								currentFeatureInList = currentFeatureInList->next;
 
+								#ifdef OR_DEBUG
 								//cout << "(featureProbabilityLevelKernelPixels >= HEITGER_FEATURE_RGB_MAP_TOTAL_KERNEL_THRESHOLD*sensitivity)" << endl;
 								//cout << "featureProbabilityLevelKernelPixels = " << featureProbabilityLevelKernelPixels*sensitivity << endl;
-
-
+								#endif
 							}
 						}
 						else
 						{
+							#ifdef OR_DEBUG
 							/*
 							cout << "feature on object" << endl;
 							cout << "xyz.x = " << xyz.x << endl;
@@ -3802,6 +3628,7 @@ void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeature
 							cout << "xyz.z = " << xyz.z << endl;
 							cout << "depthVal = " << depthVal << endl;
 							*/
+							#endif
 
 							currentFeatureInList->xViewport = x*zoom;
 							currentFeatureInList->yViewport = y*zoom;
@@ -3813,9 +3640,10 @@ void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeature
 							currentFeatureInList->next = newFeature;
 							currentFeatureInList = currentFeatureInList->next;
 
+							#ifdef OR_DEBUG
 							//cout << "(featureProbabilityLevelKernelPixels >= HEITGER_FEATURE_RGB_MAP_TOTAL_KERNEL_THRESHOLD*sensitivity)" << endl;
 							//cout << "featureProbabilityLevelKernelPixels = " << featureProbabilityLevelKernelPixels*sensitivity << endl;
-
+							#endif
 						}
 					}
 				}
@@ -3847,7 +3675,6 @@ void generateFeatureListFromHeitgerFeatureAsciiMap(Feature * firstFeatureInFeatu
 
 		while (parseFileObject->get(c))
 		{
-			//cout << c;
 			charCount++;
 
 			if((waitingForNewLine) && (c == '\n'))
@@ -3886,7 +3713,6 @@ void generateFeatureListFromHeitgerFeatureAsciiMap(Feature * firstFeatureInFeatu
 			}
 			else if((readingMagnitude) && (c == '\n'))
 			{
-
 				currentFeatureInList->point.x = (atof(XString)) * zoom;
 				currentFeatureInList->point.y = (atof(YString)) * zoom;
 				currentFeatureInList->point.z = 0.0;
@@ -3894,21 +3720,14 @@ void generateFeatureListFromHeitgerFeatureAsciiMap(Feature * firstFeatureInFeatu
 				currentFeatureInList->xViewport = currentFeatureInList->point.x;
 				currentFeatureInList->yViewport = currentFeatureInList->point.y;
 
-
-				/*
-				cout << "XString = " << XString << endl;
-				cout << "YString = " << YString << endl;
-				cout << "magnitudeString = " << magnitudeString << endl;
-				*/
-
+				#ifdef OR_DEBUG
 				/*
 				cout << "feature added to list;" << endl;
 				cout << "currentFeatureInList->point.x = " << currentFeatureInList->point.x << endl;
 				cout << "currentFeatureInList->point.y = " << currentFeatureInList->point.y << endl;
 				cout << "currentFeatureInList->magnitude = " << currentFeatureInList->magnitude << endl;
 				*/
-
-
+				#endif
 
 				Feature * newFeature = new Feature();
 				currentFeatureInList->next = newFeature;
@@ -3954,9 +3773,6 @@ void generateFeatureListFromHeitgerFeatureAsciiMap(Feature * firstFeatureInFeatu
 #ifndef OR_USE_HEITGER_OBJECT_FEATURE_CALCULATION_CODE
 void generateFeatureListFromRGBMap(Feature * firstFeatureInFeatureList, unsigned char * rgbMap, int imageWidth, int imageHeight, int zoom, string trainOrTestString, string mapFileName, view_info * vi)
 {
-
-	//cout << "h1" << endl;
-
 	/*
 	int resampledWidth = (imageWidth/zoom);
 	int resampledHeight = (imageHeight/zoom);
@@ -3971,14 +3787,12 @@ void generateFeatureListFromRGBMap(Feature * firstFeatureInFeatureList, unsigned
   		for(int x = 0; x < imageWidth; x++)
 		{
 			kernelOrientationHighContrastFoundMap[y*imageWidth + x] = 0;
+			#ifdef OR_DEBUG
 			//cout << "kernelOrientationHighContrastFoundMap[y*imageWidth + x] = " << kernelOrientationHighContrastFoundMap[y*imageWidth + x] <<	 endl;
+			#endif
 		}
 	}
 
-
-
-
-	//cout << "h3" << endl;
 
 	//3 orientations, 45 to vertical, vertical, and 45 past vertical
 	for(int kernelOrientation = 0; kernelOrientation < 180; kernelOrientation=kernelOrientation+45)
@@ -4052,8 +3866,6 @@ void generateFeatureListFromRGBMap(Feature * firstFeatureInFeatureList, unsigned
 
 				if(((kernelOrientation == 0) && (x > 0)) || ((kernelOrientation > 0) && (y > 0)))
 				{
-
-
 					contrastStack[stackIndex] = compareRGBPixelsForMatchLumContrastOnly(&kernelCurrentPixelPositionInRGBColour, &previousColourInStack);
 
 					if(stackIndex == (OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_CONTRAST_STACK_SIZE-1))
@@ -4063,23 +3875,21 @@ void generateFeatureListFromRGBMap(Feature * firstFeatureInFeatureList, unsigned
 					if(haveAFullStack)
 					{
 
+						#ifdef OR_DEBUG
 						/*
 						cout << "stackIndex = " << stackIndex << endl;
 						cout << "abs(stackIndex-(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_CONTRAST_STACK_SIZE-1)) = " << abs(stackIndex-(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_CONTRAST_STACK_SIZE-1)) << endl;
 						cout << "abs(stackIndex-(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_CONTRAST_STACK_SIZE/2)) = " << abs(stackIndex-(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_CONTRAST_STACK_SIZE/2)) << endl;
 						cout << "abs(stackIndex-((OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_CONTRAST_STACK_SIZE/2)-1)) = " << abs(stackIndex-((OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_CONTRAST_STACK_SIZE/2)-1)) << endl;
 						*/
-
 						/*
 						cout << "stackIndex = " << stackIndex << endl;
 						cout << "(stackIndex+1)%4  = " << (stackIndex+1)%4 << endl;
 						cout << "(stackIndex+2)%4  = " << (stackIndex+2)%4 << endl;
 						cout << "(stackIndex+3)%4  = " << (stackIndex+3)%4 << endl;
 						*/
-
-
 						//cout << "contrastStack[stackIndex] = " << contrastStack[stackIndex] << endl;
-
+						#endif
 
 						if((contrastStack[stackIndex] < OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_NO_CONTRAST_MAX_THRESHOLD) &&
 						(contrastStack[(stackIndex+1)%4] < OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_NO_CONTRAST_MAX_THRESHOLD) &&
@@ -4089,9 +3899,9 @@ void generateFeatureListFromRGBMap(Feature * firstFeatureInFeatureList, unsigned
 
 							kernelOrientationHighContrastFoundMap[(y-(yIncrement*(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_LENGTH/2)))*imageWidth + (x-(xIncrement*(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_LENGTH/2)))] = kernelOrientationHighContrastFoundMap[(y-(yIncrement*(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_LENGTH/2)))*imageWidth + (x-(xIncrement*(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_LENGTH/2)))] + 1;
 
+							#ifdef OR_DEBUG
 							//cout << "(yIncrement*(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_LENGTH/2)) = " << (yIncrement*(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_LENGTH/2)) << endl;
 							//cout << "(xIncrement*(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_LENGTH/2))) = " << (xIncrement*(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_LENGTH/2)) << endl;
-
 							/*
 							cout << "kernelOrientation = " << kernelOrientation << endl;
 							cout << "scanLine = " << scanLine << endl;
@@ -4103,8 +3913,8 @@ void generateFeatureListFromRGBMap(Feature * firstFeatureInFeatureList, unsigned
 							cout << "x = " << x << endl;
 							cout << "y = " << y << endl;
 							*/
+							#endif
 						}
-
 					}
 
 					if(stackIndex == OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_CONTRAST_STACK_SIZE-1)
@@ -4130,37 +3940,24 @@ void generateFeatureListFromRGBMap(Feature * firstFeatureInFeatureList, unsigned
 	}
 
 
-
-
-
 	Feature * currentFeatureInList = firstFeatureInFeatureList;
 
 	for(int y = 0; y < imageHeight; y++)
 	{
   		for(int x = 0; x < imageWidth; x++)
 		{
-			//temp debug;
-
-			//if(kernelOrientationHighContrastFoundMap[y*imageWidth + x] > 0)
-			//{
-			//	cout << "kernelOrientationHighContrastFoundMap[y*imageWidth + x] = " << kernelOrientationHighContrastFoundMap[y*imageWidth + x] << endl;
-			//}
-
-
-
 			if(kernelOrientationHighContrastFoundMap[y*imageWidth + x] >= (OR_FEATURE_DETECTION_MIN_ORIENTATIONS_WITH_HIGH_CONTRAST))
 			{
-
-				//vec proposedFeature;
-				//proposedFeature.x = x*zoom;
-				//proposedFeature.y = y*zoom;
-				//proposedFeature.z = 0.0;
-				//if(!addFeatureToListAndIfACommonFeatureExistsTakeAverage(&proposedFeature, firstFeatureInFeatureList, COLOUR_HUE_CONTRAST_RADIAL_SUM_RECONCILIATION_KERNEL_WIDTH, false))
-				//{
-				//	//cout << "!foundCommonFeature" << endl;
-				//}
-
-
+				/*
+				vec proposedFeature;
+				proposedFeature.x = x*zoom;
+				proposedFeature.y = y*zoom;
+				proposedFeature.z = 0.0;
+				if(!addFeatureToListAndIfACommonFeatureExistsTakeAverage(&proposedFeature, firstFeatureInFeatureList, COLOUR_HUE_CONTRAST_RADIAL_SUM_RECONCILIATION_KERNEL_WIDTH, false))
+				{
+				      //cout << "!foundCommonFeature" << endl;
+				}
+				*/
 
 				currentFeatureInList->xViewport = x*zoom;
 				currentFeatureInList->yViewport = y*zoom;
@@ -4170,14 +3967,9 @@ void generateFeatureListFromRGBMap(Feature * firstFeatureInFeatureList, unsigned
 				Feature * newFeature = new Feature();
 				currentFeatureInList->next = newFeature;
 				currentFeatureInList = currentFeatureInList->next;
-
-
-
 			}
-			//cout << "h9b" << endl;
 		}
 	}
-
 
 	//check high contrast at particular points within kernel to determine whether a pixel is a feature.
 

@@ -23,7 +23,7 @@
  * File Name: ORdatabaseFileIO.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3b1a 05-August-2012
+ * Project Version: 3b2a 28-September-2012
  *
  *******************************************************************************/
 
@@ -52,6 +52,12 @@ using namespace std;
 
 #ifdef OR_USE_DATABASE
 
+static string databaseFolderName;
+
+void initialiseDatabase(string newDatabaseFolderName)
+{
+	databaseFolderName = newDatabaseFolderName;
+}
 
 bool directoryExists(string * folderName)
 {
@@ -67,12 +73,6 @@ bool directoryExists(string * folderName)
 		folderExists = true;
 	}
 	#else
-	/*
-	if((GetFileAttributes(folderName->c_str())) != INVALID_FILE_ATTRIBUTES)
-	{
-		folderExists = true;
-	}
-	*/
 	DIR * pDir = opendir(folderName->c_str());
 	if(pDir != NULL)
 	{
@@ -129,18 +129,19 @@ bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string * folderName)
 	setCurrentDirectory(folderName);
 }
 
-string DBgenerateServerName(string * objectName, bool trainOrTest)
+string DBgenerateServerDatabaseName(string * objectName, bool trainOrTest)
 {
-	string serverName;
+	string databaseName;
 	if(!trainOrTest)
 	{
-		serverName = OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME_BASE;
+		databaseName = databaseFolderName;
 	}
 	else
 	{
-		//cout << "db11" << endl;
+		#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
 		//cout << "entityName = " << *entityName << endl;
-
+		#endif
+		
 		#ifdef GIA_DATABASE_FILESYSTEM_USE_MULTIPLE_SERVERS
 		char entityFirstCharacter = entityName->at(0);
 		if((entityFirstCharacter < ASCII_TABLE_INDEX_OF_a) || (entityFirstCharacter > ASCII_TABLE_INDEX_OF_z))
@@ -151,17 +152,20 @@ string DBgenerateServerName(string * objectName, bool trainOrTest)
 		}
 
 		int entityFirstCharacterIndex = entityFirstCharacter - ASCII_TABLE_INDEX_OF_a;
+		#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
 		//cout << "entityFirstCharacterIndex = " << entityFirstCharacterIndex << endl;
+		#endif
 		string serverName = serverNameArray[entityFirstCharacterIndex]; 	//this could be a more complex algorithm; eg serverName = (string)"/mnt/" + serverNameArray[entityFirstCharacterIndex]
+		databaseName =  serverName + OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME;
 		#else
-		serverName = OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME_BASE;
+		databaseName = databaseFolderName;
 		#endif
 	}
 	#ifdef OR_DATABASE_DEBUG
 	cout << "serverName = " << serverName << endl;
 	#endif
 
-	return serverName;
+	return databaseName;
 }
 
 
@@ -171,9 +175,8 @@ string DBgenerateFolderName(string * objectName, bool trainOrTest)
 	
 	//eg network/server/ORdatabase/e/x/a/example/...
 	
-	string serverName = DBgenerateServerName(objectName, trainOrTest);
-	string databaseName = OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME;
-	string fileName = serverName + databaseName;
+	string databaseName = DBgenerateServerDatabaseName(objectName, trainOrTest);
+	string fileName = databaseName;
 
 	#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
 	cout << "1fileName = " << fileName << endl;
@@ -199,8 +202,6 @@ string DBgenerateFolderName(string * objectName, bool trainOrTest)
 		int numberOfEntityNameLevels;
 		if(objectName->length() < OR_DATABASE_CONCEPT_NAME_SUBDIRECTORY_INDEX_NUMBER_OF_LEVELS)
 		{
-			//cout << "DBgenerateFileName error: (objectName.length() < OR_DATABASE_CONCEPT_NAME_SUBDIRECTORY_INDEX_NUMBER_OF_LEVELS)" << endl;
-			//cout << "objectName = " << *objectName << endl;
 			numberOfEntityNameLevels = objectName->length();
 		}
 		else
@@ -238,24 +239,15 @@ bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList,
 	int numberOfFeatureGeoMatches = 0;
 	int numberOfFeatureGeoBinnedExactMatches = 0;
 	bool passedGeometricCheck = false;
-	//cout << "\n" << endl;
 	Feature * testcurrentFeatureInNearestFeatureList = testfirstFeatureInNearestFeatureList;
 	while((testcurrentFeatureInNearestFeatureList->next != NULL) && !(testcurrentFeatureInNearestFeatureList->lastFilledFeatureInList))
 	{
-		/*
-		#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
-		testcurrentFeatureInNearestFeatureList->matchFound = false;
-		#endif
-		*/
-
 		bool testpassedDimensionCheck = true;
 		if(dimension == OR_METHOD2DOD_DIMENSIONS)
 		{//NB do not compare transformed object triangle features if OR_METHOD2DOD_DIMENSIONS, as these will always be set to a predefined object triangle
 			if(testcurrentFeatureInNearestFeatureList->OTpointIndex != 0)
 			{
 				testpassedDimensionCheck = false;
-				//cout << "here1" <<endl;
-				//exit(0);
 			}
 		}
 
@@ -264,20 +256,12 @@ bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList,
 			Feature * traincurrentFeatureInNearestFeatureList = trainfirstFeatureInNearestFeatureList;
 			while((traincurrentFeatureInNearestFeatureList->next != NULL) && !(traincurrentFeatureInNearestFeatureList->lastFilledFeatureInList))
 			{
-				/*
-				#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
-				traincurrentFeatureInNearestFeatureList->matchFound = false;
-				#endif
-				*/
-
 				bool trainpassedDimensionCheck = true;
 				if(dimension == OR_METHOD2DOD_DIMENSIONS)
 				{//NB do not compare transformed object triangle features if OR_METHOD2DOD_DIMENSIONS, as these will always be set to a predefined object triangle
 					if(traincurrentFeatureInNearestFeatureList->OTpointIndex != 0)
 					{
 						trainpassedDimensionCheck = false;
-						//cout << "here2" <<endl;
-						//exit(0);
 					}
 				}
 				if(trainpassedDimensionCheck)
@@ -303,18 +287,22 @@ bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList,
 					int trainyBin = determineGeoBinY(traincurrentFeatureInNearestFeatureList->pointTransformed.y);
 					int testxBin = determineGeoBinX(testcurrentFeatureInNearestFeatureList->pointTransformed.x);
 					int testyBin = determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);
+					#ifdef OR_DEBUG
 					//cout << "\ntrainxBin = " << trainxBin << endl;
 					//cout << "trainyBin = " << trainyBin << endl;
 					//cout << "testxBin = " << testxBin << endl;
 					//cout << "testyBin = " << testyBin << endl;
 					//cout << testxBin << "\t" << testyBin << "\t" << trainxBin << "\t" << trainyBin << endl;
+					#endif
 					if((trainxBin == testxBin) && (trainyBin == testyBin))
 					{
 						numberOfFeatureGeoBinnedExactMatches++;
+						#ifdef OR_DEBUG
 						//cout << "\tnumberOfFeatureGeoBinnedExactMatches = " << numberOfFeatureGeoBinnedExactMatches << endl;
+						#endif
 					}
-
 				}
+				
 				traincurrentFeatureInNearestFeatureList = traincurrentFeatureInNearestFeatureList->next;
 			}
 		}
@@ -334,24 +322,7 @@ bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList,
 
 }
 
-/*
-void addFeatureToEndOfFeatureList(Feature * firstFeatureInList, Feature * featureToAdd)
-{
-	Feature * currentFeatureInList = firstFeatureInList;
 
-	// go to last feature in list (ie append to list if list already has items)
-	bool added = false;
-	while((currentFeatureInList->next != NULL) && !added)
-	{
-		currentFeatureInList = currentFeatureInList->next;
-		if(currentFeatureInList->next == NULL)
-		{
-			currentFeatureInList->next = featureToAdd;
-			added = true;
-		}
-	}
-}
-*/
 void addFeatureToEndOfFeatureList(Feature * firstFeatureInList, Feature * featureToAdd)
 {
 	Feature * currentFeatureInList = firstFeatureInList;
@@ -445,7 +416,6 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 
 		while (parseFileObject->get(c))
 		{
-			//cout << c;
 			charCount++;
 
 			if((waitingForNewLine) && (c == CHAR_NEWLINE))
@@ -626,7 +596,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 					#endif
 
 
-
+					#ifdef OR_DEBUG
 					/*
 					cout << "\tfeature added to list;" << endl;
 					cout << "objectNameString = " << objectNameString << endl;
@@ -651,6 +621,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 					cout << "currentFeatureInList->OTpointIndex = " << currentFeatureInList->OTpointIndex << endl;
 					#endif
 					*/
+					#endif
 
 					#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
 					currentFeatureInList->matchFound = false;
@@ -738,11 +709,8 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 		#endif
 			else
 			{
-				//cout << "file i/o error" << endl;
-				//exit(0);
+
 			}
-
-
 		}
 
 		parseFileObject->close();

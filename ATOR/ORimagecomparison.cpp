@@ -23,7 +23,7 @@
  * File Name: ORimagecomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3b1a 05-August-2012
+ * Project Version: 3b2a 28-September-2012
  *
  *******************************************************************************/
 
@@ -207,9 +207,6 @@ void createNormalisedHueContrastMapUsingRGBMapAndCalculateAllContrastValues(int 
 			colour testImagePixelColour;
 			getRGBMapValues(x, y, imageWidth, rgbMap, &testImagePixelColour);
 
-
-
-
 		#ifndef OR_DO_NOT_IGNORE_BACKGROUND_COLOUR
 			if((testImagePixelColour.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (testImagePixelColour.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (testImagePixelColour.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B))
 			{
@@ -218,7 +215,6 @@ void createNormalisedHueContrastMapUsingRGBMapAndCalculateAllContrastValues(int 
 			else
 			{
 		#endif
-
 				int RminusG = (int(testImagePixelColour.r) - int(testImagePixelColour.g));
 				int RminusB = (int(testImagePixelColour.r) - int(testImagePixelColour.b));
 				int GminusB = (int(testImagePixelColour.g) - int(testImagePixelColour.b));
@@ -226,15 +222,16 @@ void createNormalisedHueContrastMapUsingRGBMapAndCalculateAllContrastValues(int 
 				totalRminusB = totalRminusB + abs(RminusB);
 				totalGminusB = totalGminusB + abs(GminusB);
 
+				#ifdef OR_DEBUG
 				/*
 				cout << "(int)testImagePixelColour.r = " << (int)testImagePixelColour.r << endl;
 				cout << "(int)testImagePixelColour.g = " << (int)testImagePixelColour.g << endl;
 				cout << "(int)testImagePixelColour.b = " << (int)testImagePixelColour.b << endl;
-
 				cout << "(int)RminusG = " << (int)RminusG << endl;
 				cout << "(int)RminusB = " << (int)RminusB << endl;
 				cout << "(int)GminusB = " << (int)GminusB << endl;
 				*/
+				#endif
 
 				totalR = totalR + testImagePixelColour.r;
 				totalG = totalG + testImagePixelColour.g;
@@ -247,21 +244,20 @@ void createNormalisedHueContrastMapUsingRGBMapAndCalculateAllContrastValues(int 
 		}
 	}
 
-	//exit(0);
-
 	double averageRminusG = double(totalRminusG)/double(index);
 	double averageRminusB = double(totalRminusB)/double(index);
 	double averageGminusB = double(totalGminusB)/double(index);
 
+	#ifdef OR_DEBUG
 	/*
 	cout << "totalRminusG = " << totalRminusG << endl;
 	cout << "totalRminusB = " << totalRminusB << endl;
 	cout << "totalGminusB = " << totalGminusB << endl;
-
 	cout << "averageRminusG = " << averageRminusG << endl;
 	cout << "averageRminusB = " << averageRminusB << endl;
 	cout << "averageGminusB = " << averageGminusB << endl;
 	*/
+	#endif
 
 	double averager = double(totalR)/(index);
 	double averageg = double(totalG)/(index);
@@ -283,15 +279,12 @@ void createNormalisedHueContrastMapUsingRGBMapAndCalculateAllContrastValues(int 
 
 	int hueContrastIndex = 0;
 
-
-
 	for(int y = 0; y < imageHeight; y++)
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
 			colour testImagePixelColour;
 			getRGBMapValues(x, y, imageWidth, rgbMap, &testImagePixelColour);
-			//cout << "(int)testImagePixelColour.r = " << (int)testImagePixelColour.r << endl;
 
 		#ifndef OR_DO_NOT_IGNORE_BACKGROUND_COLOUR
 			if((testImagePixelColour.r == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (testImagePixelColour.g == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (testImagePixelColour.b == OR_SNAPSHOT_BACKGROUND_COLOUR_B))
@@ -301,7 +294,6 @@ void createNormalisedHueContrastMapUsingRGBMapAndCalculateAllContrastValues(int 
 			else
 			{
 		#endif
-
 				#ifdef OR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_BINNING
 				double rContrastWithRespectToAverage = absDouble(averager - int(testImagePixelColour.r));
 				double gContrastWithRespectToAverage = absDouble(averageg - int(testImagePixelColour.g));
@@ -334,8 +326,6 @@ void createNormalisedHueContrastMapUsingRGBMapAndCalculateAllContrastValues(int 
 				}
 
 
-
-
 				int redContrastTotalAcrossKernel = 0;
 				int greenContrastTotalAcrossKernel = 0;
 				int blueContrastTotalAcrossKernel = 0;
@@ -350,10 +340,8 @@ void createNormalisedHueContrastMapUsingRGBMapAndCalculateAllContrastValues(int 
 							{
 								if(!((kx == x) && (ky == y)))
 								{
-
 									colour testImagePixelColourKernel;
 									getRGBMapValues(kx, ky, imageWidth, rgbMap, &testImagePixelColourKernel);
-									//cout << "\t(testImagePixelColourKernel.r = " << (testImagePixelColourKernel.r << endl;
 
 									#ifdef OR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_BINNING
 									int rContrastWRTkernel = testImagePixelColour.r - testImagePixelColourKernel.r;
@@ -375,24 +363,24 @@ void createNormalisedHueContrastMapUsingRGBMapAndCalculateAllContrastValues(int 
 									redContrastTotalAcrossKernel = redContrastTotalAcrossKernel + abs(rContrastWRTkernel);
 									greenContrastTotalAcrossKernel = greenContrastTotalAcrossKernel + abs(gContrastWRTkernel);
 									blueContrastTotalAcrossKernel = blueContrastTotalAcrossKernel + abs(bContrastWRTkernel);
-
-
 								}
 							}
 						}
 					}
 				}
 
-					//NEW; additional; check for global hue dev [due to lighting conditions]
+				//NEW; additional; check for global hue dev [due to lighting conditions]
 
 				totalRHueContrast = totalRHueContrast + redContrastTotalAcrossKernel;
 				totalGHueContrast = totalGHueContrast + greenContrastTotalAcrossKernel;
 				totalBHueContrast = totalBHueContrast + blueContrastTotalAcrossKernel;
 
+				#ifdef OR_DEBUG
 				//cout << "redContrastTotalAcrossKernel = " << redContrastTotalAcrossKernel << endl;
 				//cout << "greenContrastTotalAcrossKernel = " << greenContrastTotalAcrossKernel << endl;
 				//cout << "blueContrastTotalAcrossKernel = " << blueContrastTotalAcrossKernel << endl;
-
+				#endif
+				
 				double averagerContrastTotalAcrossKernel = redContrastTotalAcrossKernel/(IMAGE_COMPARISON_KERNEL_WIDTH*IMAGE_COMPARISON_KERNEL_HEIGHT);
 				double averagegContrastTotalAcrossKernel = greenContrastTotalAcrossKernel/(IMAGE_COMPARISON_KERNEL_WIDTH*IMAGE_COMPARISON_KERNEL_HEIGHT);
 				double averagebContrastTotalAcrossKernel = blueContrastTotalAcrossKernel/(IMAGE_COMPARISON_KERNEL_WIDTH*IMAGE_COMPARISON_KERNEL_HEIGHT);
@@ -409,7 +397,7 @@ void createNormalisedHueContrastMapUsingRGBMapAndCalculateAllContrastValues(int 
 				normalisedAverageHueContrastAcrossKernel.y = (averagegContrastTotalAcrossKernel/(double(redContrastTotalAcrossKernel+greenContrastTotalAcrossKernel+blueContrastTotalAcrossKernel)/3.0))/double(MAX_RGB_VAL);
 				normalisedAverageHueContrastAcrossKernel.z = (averagebContrastTotalAcrossKernel/(double(redContrastTotalAcrossKernel+greenContrastTotalAcrossKernel+blueContrastTotalAcrossKernel)/3.0))/double(MAX_RGB_VAL);
 
-				/*bad;
+				/*OLD Bad;
 				if(averageRminusG != 0)
 				{
 					normalisedAverageHueContrastAcrossKernel.x = (averagerContrastTotalAcrossKernel/(double(averageRminusG)))/double(MAX_RGB_VAL);
@@ -426,8 +414,7 @@ void createNormalisedHueContrastMapUsingRGBMapAndCalculateAllContrastValues(int 
 
 				setVectorMapValue(x, y, imageWidth, &normalisedAverageHueContrastAcrossKernel, normalisedHueContrastMap);
 
-					//NEW; additional; check for stark differences
-
+				//NEW; additional; check for stark differences
 
 				if(averageHueContrastAcrossKernel > OR_IMAGE_COMPARISON_STARK_LOCAL_CONTRAST_MIN_AVG_COL_DIFF)
 				{
@@ -440,18 +427,12 @@ void createNormalisedHueContrastMapUsingRGBMapAndCalculateAllContrastValues(int 
 		}
 	}
 
-	//cout << "totalRHueContrast = " << totalRHueContrast << endl;
-	//cout << "totalGHueContrast = " << totalGHueContrast << endl;
-	//cout << "totalBHueContrast = " << totalBHueContrast << endl;
-
 	double averageRHueContrast = double(totalRHueContrast)/(double(index*IMAGE_COMPARISON_KERNEL_WIDTH*IMAGE_COMPARISON_KERNEL_HEIGHT));
 	double averageGHueContrast = double(totalGHueContrast)/(double(index*IMAGE_COMPARISON_KERNEL_WIDTH*IMAGE_COMPARISON_KERNEL_HEIGHT));
 	double averageBHueContrast = double(totalBHueContrast)/(double(index*IMAGE_COMPARISON_KERNEL_WIDTH*IMAGE_COMPARISON_KERNEL_HEIGHT));
 
-	//cout << "averageRHueContrast = " << averageRHueContrast << endl;
-	//cout << "averageGHueContrast = " << averageGHueContrast << endl;
-	//cout << "averageBHueContrast = " << averageBHueContrast << endl;
 
+	
 	/*OLD; normalised wrt to average luminosity not saturation
 	*normalisedAverageRHueContrast = (averageRHueContrast/(double(totalR+totalG+totalB)/3.0))*double(index)/double(MAX_RGB_VAL);
 	*normalisedAverageGHueContrast = (averageGHueContrast/(double(totalR+totalG+totalB)/3.0))*double(index)/double(MAX_RGB_VAL);
@@ -477,13 +458,6 @@ void createNormalisedHueContrastMapUsingRGBMapAndCalculateAllContrastValues(int 
 	}
 	*/
 
-
-
-	//cout << "normalisedAverageRHueContrast = " << *normalisedAverageRHueContrast << endl;
-	//cout << "normalisedAverageGHueContrast = " << *normalisedAverageGHueContrast << endl;
-	//cout << "normalisedAverageBHueContrast = " << *normalisedAverageBHueContrast << endl;
-
-
 	double averagerContrastWithRespectToAverage = totalrContrastWithRespectToAverage/index;
 	double averagegContrastWithRespectToAverage = totalgContrastWithRespectToAverage/index;
 	double averagebContrastWithRespectToAverage = totalbContrastWithRespectToAverage/index;
@@ -501,12 +475,23 @@ void createNormalisedHueContrastMapUsingRGBMapAndCalculateAllContrastValues(int 
 	*averageLocalContrast = totalLocalContrast/index;					//not currently used
 	*averageLocalStarkContrast = totalStarkLocalContrast/index;				//not currently used
 
+	#ifdef OR_DEBUG
 	/*
+	cout << "totalRHueContrast = " << totalRHueContrast << endl;
+	cout << "totalGHueContrast = " << totalGHueContrast << endl;
+	cout << "totalBHueContrast = " << totalBHueContrast << endl;
+	cout << "averageRHueContrast = " << averageRHueContrast << endl;
+	cout << "averageGHueContrast = " << averageGHueContrast << endl;
+	cout << "averageBHueContrast = " << averageBHueContrast << endl;
+	cout << "normalisedAverageRHueContrast = " << *normalisedAverageRHueContrast << endl;
+	cout << "normalisedAverageGHueContrast = " << *normalisedAverageGHueContrast << endl;
+	cout << "normalisedAverageBHueContrast = " << *normalisedAverageBHueContrast << endl;	
 	cout << "*averageLocalContrast  = " << *averageLocalContrast << endl;
 	cout << "*averageContrastWithRespectToAverageColour = " << *averageContrastWithRespectToAverageColour << endl;
 	cout << "OR_IMAGE_COMPARISON_HAS_CONTRAST_WRT_AVERAGE_COLOUR_MIN_AVERAGE_COL_DEVIATION = " << OR_IMAGE_COMPARISON_HAS_CONTRAST_WRT_AVERAGE_COLOUR_MIN_AVERAGE_COL_DEVIATION << endl;
 	cout << "OR_IMAGE_COMPARISON_HAS_CONTRAST_WRT_AVERAGE_COLOUR_MIN_AVERAGE_COL_DEVIATION = " << OR_IMAGE_COMPARISON_HAS_CONTRAST_WRT_AVERAGE_COLOUR_MIN_AVERAGE_COL_DEVIATION << endl;
 	*/
+	#endif
 }
 
 bool checkImageHasContrastValuesOnly(double averageContrastWithRespectToAverageColour, double averageStarkContrastWithRespectToAverageColour, double averageLocalContrast, double averageLocalStarkContrast)
@@ -533,9 +518,7 @@ bool checkImageHasContrastValuesOnly(double averageContrastWithRespectToAverageC
 
 
 
-
-	//compareImagesRGBWithPosDevAndLocalStarkContAndHueDev or compareImagesRGBWithPosDevAndLocalStarkContAndLumDev [assumes light source is always white]
-
+//compareImagesRGBWithPosDevAndLocalStarkContAndHueDev or compareImagesRGBWithPosDevAndLocalStarkContAndLumDev [assumes light source is always white]
 
 void calculateAverageColour(int imageWidth, int imageHeight, unsigned char * rgbMap, colour * avgCol)
 {
@@ -552,7 +535,6 @@ void calculateAverageColour(int imageWidth, int imageHeight, unsigned char * rgb
 			totalColr = totalColr + testImagePixelColour.r;
 			totalColg = totalColg + testImagePixelColour.g;
 			totalColb = totalColb + testImagePixelColour.b;
-			//cout
 		}
 	}
 
@@ -584,7 +566,6 @@ double compareImagesRGBWithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly
 		{
 			colour testImagePixelColour;
 			getRGBMapValues(x, y, imageWidth, testrgbMap, &testImagePixelColour);
-			//cout << "(int)testImagePixelColour.r = " << (int)testImagePixelColour.r << endl;
 
 		#ifndef OR_DO_NOT_IGNORE_BACKGROUND_COLOUR
 			#ifdef OR_USE_STAR_MAPS
@@ -618,7 +599,6 @@ double compareImagesRGBWithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly
 							{
 								colour trainImagePixelColour;
 								getRGBMapValues(kx, ky, imageWidth, trainrgbMap, &trainImagePixelColour);
-								//cout << "\t(inttrainImagePixelColour.r = " << (inttrainImagePixelColour.r << endl;
 
 							#ifdef OR_IMAGE_COMPARITOR_USE_NORMALISED_HUE_ERROR_COMPARISON
 								double pixelError = compareRGBPixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
@@ -664,14 +644,14 @@ double compareImagesRGBWithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly
 					}
 				}
 
-					//NEW; additional; check for global hue dev [due to lighting conditions]
+				//NEW; additional; check for global hue dev [due to lighting conditions]
 
 				totalRHueDeviation = totalRHueDeviation + redErrorlowestMatchErrorAcrossKernel;
 				totalGHueDeviation = totalGHueDeviation + greenErrorlowestMatchErrorAcrossKernel;
 				totalBHueDeviation = totalBHueDeviation + blueErrorlowestMatchErrorAcrossKernel;
 				hueDeviationIndex++;
 
-					//NEW; additional; check for stark differences
+				//NEW; additional; check for stark differences
 
 				colour trainImagePixelColourOptimum;
 				getRGBMapValues(XKernelRelativePositionForLowestErrorMatch+x, YKernelRelativePositionForLowestErrorMatch+y, imageWidth, trainrgbMap, &trainImagePixelColourOptimum);
@@ -687,7 +667,6 @@ double compareImagesRGBWithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly
 					totalStarkLocalDeviation = totalStarkLocalDeviation + deviationOptimum;
 					starkLocalDeviationIndex++;
 				}
-
 
 				totalXKernelRelativePositionForLowestErrorMatch = totalXKernelRelativePositionForLowestErrorMatch+XKernelRelativePositionForLowestErrorMatch;
 				totalYKernelRelativePositionForLowestErrorMatch = totalYKernelRelativePositionForLowestErrorMatch+YKernelRelativePositionForLowestErrorMatch;
@@ -706,15 +685,17 @@ double compareImagesRGBWithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly
 
 	*averageXKernelRelativePositionForLowestErrorMatch = totalXKernelRelativePositionForLowestErrorMatch/(matchErrorIndex);
 	*averageYKernelRelativePositionForLowestErrorMatch = totalYKernelRelativePositionForLowestErrorMatch/(matchErrorIndex);
-	//cout << "averageXKernelRelativePositionForLowestErrorMatch = " << averageXKernelRelativePositionForLowestErrorMatch << endl;
-	//cout << "averageYKernelRelativePositionForLowestErrorMatch = " << averageYKernelRelativePositionForLowestErrorMatch << endl;
 
 	double averageMatchErrorNormalised = (totalMatchError/matchErrorIndex);
 	double error = averageMatchErrorNormalised;
 
+	#ifdef OR_DEBUG
+	//cout << "averageXKernelRelativePositionForLowestErrorMatch = " << averageXKernelRelativePositionForLowestErrorMatch << endl;
+	//cout << "averageYKernelRelativePositionForLowestErrorMatch = " << averageYKernelRelativePositionForLowestErrorMatch << endl;
 	//cout << "totalMatchErrorNormalised = " << totalMatchErrorNormalised << endl;
 	//cout << "error = " << error << endl;
-
+	#endif
+	
 	if(starkLocalDeviationIndex > OR_IMAGE_COMPARISON_MAX_TOTAL_NUM_STARK_LOCAL_DEVIATIONS*(imageWidth*imageHeight))
 	{
 		error = 8888.0;
@@ -765,7 +746,6 @@ double compareImagesRGBWithPosDevAndLocalStarkContAndHueDev(int imageWidth, int 
 		{
 			colour testImagePixelColour;
 			getRGBMapValues(x, y, imageWidth, testrgbMap, &testImagePixelColour);
-			//cout << "(int)testImagePixelColour.r = " << (int)testImagePixelColour.r << endl;
 
 		#ifndef OR_DO_NOT_IGNORE_BACKGROUND_COLOUR
 			#ifdef OR_USE_STAR_MAPS
@@ -781,7 +761,6 @@ double compareImagesRGBWithPosDevAndLocalStarkContAndHueDev(int imageWidth, int 
 			else
 			{
 		#endif
-
 				double lowestMatchErrorAcrossKernel = VERY_HIGH_ERROR;
 				int redErrorlowestMatchErrorAcrossKernel = VERY_HIGH_ERROR;
 				int blueErrorlowestMatchErrorAcrossKernel = VERY_HIGH_ERROR;
@@ -901,9 +880,6 @@ double compareImagesRGBWithPosDevAndLocalStarkContAndHueDev(int imageWidth, int 
 	double averagetotalDifferenceFromAverageGHueDeviation = totalDifferenceFromAverageGHueDeviation/(matchErrorIndex);
 	double averagetotalDifferenceFromAverageBHueDeviation = totalDifferenceFromAverageBHueDeviation/(matchErrorIndex);
 	double averagetotalDifferenceFromAverageLumDeviation = totalDifferenceFromAverageLumDeviation/(matchErrorIndex);
-	//cout << "averagetotalDifferenceFromAverageRHueDeviation = " << averagetotalDifferenceFromAverageRHueDeviation << endl;
-	//cout << "averagetotalDifferenceFromAverageGHueDeviation = " << averagetotalDifferenceFromAverageGHueDeviation << endl;
-	//cout << "averagetotalDifferenceFromAverageBHueDeviation = " << averagetotalDifferenceFromAverageBHueDeviation << endl;
 
 	double averagetotalDifferenceFromAverageXKernelRelativePositionPositiveForLowestErrorMatch = totalDifferenceFromAverageXKernelRelativePositionPositiveForLowestErrorMatch/(matchErrorIndex);
 	double averagetotalDifferenceFromAverageXKernelRelativePositionNegativeForLowestErrorMatch = totalDifferenceFromAverageXKernelRelativePositionNegativeForLowestErrorMatch/(matchErrorIndex);
@@ -911,13 +887,7 @@ double compareImagesRGBWithPosDevAndLocalStarkContAndHueDev(int imageWidth, int 
 	double averagetotalDifferenceFromAverageYKernelRelativePositionNegativeForLowestErrorMatch = totalDifferenceFromAverageYKernelRelativePositionNegativeForLowestErrorMatch/(matchErrorIndex);
 	double averageXPositionalDeviation = (averagetotalDifferenceFromAverageXKernelRelativePositionPositiveForLowestErrorMatch + -averagetotalDifferenceFromAverageXKernelRelativePositionNegativeForLowestErrorMatch)/2.0;
 	double averageYPositionalDeviation = (averagetotalDifferenceFromAverageYKernelRelativePositionPositiveForLowestErrorMatch + -averagetotalDifferenceFromAverageYKernelRelativePositionNegativeForLowestErrorMatch)/2.0;
-	//cout << "averagetotalDifferenceFromAverageXKernelRelativePositionPositiveForLowestErrorMatch = " << averageXKernelRelativePositionPositiveForLowestErrorMatch << endl;
-	//cout << "averagetotalDifferenceFromAverageXKernelRelativePositionNegativeForLowestErrorMatch = " << averageXKernelRelativePositionNegativeForLowestErrorMatch << endl;
-	//cout << "averagetotalDifferenceFromAverageYKernelRelativePositionPositiveForLowestErrorMatch = " << averageYKernelRelativePositionPositiveForLowestErrorMatch << endl;
-	//cout << "averagetotalDifferenceFromAverageYKernelRelativePositionNegativeForLowestErrorMatch = " << averageYKernelRelativePositionNegativeForLowestErrorMatch << endl;
-	//cout << "averageXPositionalDeviation = " << averageXPositionalDeviation << endl;
-	//cout << "averageYPositionalDeviation = " << averageYPositionalDeviation << endl;
-
+	
 	double averagePositionalDeviationNormalised = (averageXPositionalDeviation+averageYPositionalDeviation)/2.0;		//normalised to max=1.0 		//IMAGE_COMPARISON_MISFIT_AVG_KERNEL_POSITIONAL_DEVIATION_ERROR)*IMAGE_COMPARISON_MISFIT_AVG_KERNEL_POSITIONAL_DEVIATION_WEIGHTING;
 	double averageMatchErrorNormalised = (totalMatchError/matchErrorIndex);
 	double averageHueDeviationNormalised = ((averagetotalDifferenceFromAverageRHueDeviation + averagetotalDifferenceFromAverageGHueDeviation + averagetotalDifferenceFromAverageBHueDeviation)/(3.0*IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR));	//normalise to ~1
@@ -939,14 +909,23 @@ double compareImagesRGBWithPosDevAndLocalStarkContAndHueDev(int imageWidth, int 
 	}
 #endif
 
-
-
-	//cout << "averagePositionalDeviationNormalised = " << averagePositionalDeviationNormalised << endl;
-	//cout << "totalMatchErrorNormalised = " << totalMatchErrorNormalised << endl;
-	//cout << "averageHueDeviationNormalised = " << averageHueDeviationNormalised << endl;
-	//cout << "error = " << error << endl;
-
-
+	#ifdef OR_DEBUG
+	/*
+	cout << "averagetotalDifferenceFromAverageRHueDeviation = " << averagetotalDifferenceFromAverageRHueDeviation << endl;
+	cout << "averagetotalDifferenceFromAverageGHueDeviation = " << averagetotalDifferenceFromAverageGHueDeviation << endl;
+	cout << "averagetotalDifferenceFromAverageBHueDeviation = " << averagetotalDifferenceFromAverageBHueDeviation << endl;        
+	cout << "averagetotalDifferenceFromAverageXKernelRelativePositionPositiveForLowestErrorMatch = " << averageXKernelRelativePositionPositiveForLowestErrorMatch << endl;
+	cout << "averagetotalDifferenceFromAverageXKernelRelativePositionNegativeForLowestErrorMatch = " << averageXKernelRelativePositionNegativeForLowestErrorMatch << endl;
+	cout << "averagetotalDifferenceFromAverageYKernelRelativePositionPositiveForLowestErrorMatch = " << averageYKernelRelativePositionPositiveForLowestErrorMatch << endl;
+	cout << "averagetotalDifferenceFromAverageYKernelRelativePositionNegativeForLowestErrorMatch = " << averageYKernelRelativePositionNegativeForLowestErrorMatch << endl;
+	cout << "averageXPositionalDeviation = " << averageXPositionalDeviation << endl;
+	cout << "averageYPositionalDeviation = " << averageYPositionalDeviation << endl;
+	cout << "averagePositionalDeviationNormalised = " << averagePositionalDeviationNormalised << endl;
+	cout << "totalMatchErrorNormalised = " << totalMatchErrorNormalised << endl;
+	cout << "averageHueDeviationNormalised = " << averageHueDeviationNormalised << endl;
+	cout << "error = " << error << endl;
+	*/
+	#endif
 
 	return error;
 }
@@ -967,7 +946,6 @@ double compareImagesRGBSmallNoKernel(int imageWidth, int imageHeight, unsigned c
 		{
 			colour testImagePixelColour;
 			getRGBMapValues(x, y, imageWidth, testrgbMap, &testImagePixelColour);
-			//cout << "(int)testImagePixelColour.r = " << (int)testImagePixelColour.r << endl;
 
 		#ifndef OR_DO_NOT_IGNORE_BACKGROUND_COLOUR
 
@@ -980,7 +958,6 @@ double compareImagesRGBSmallNoKernel(int imageWidth, int imageHeight, unsigned c
 			else
 			{
 		#endif
-
 			#ifdef OR_IMAGE_COMPARITOR_USE_NORMALISED_HUE_ERROR_COMPARISON
 				double pixelError = compareRGBPixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColourCentre);
 			#else
@@ -991,7 +968,6 @@ double compareImagesRGBSmallNoKernel(int imageWidth, int imageHeight, unsigned c
 				double hueError = (abs(abs(redError) - abs(greenError)) + abs(abs(redError) - abs(blueError)) + abs(abs(greenError) - abs(blueError)));
 
 				double pixelError = (hueError/IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR);
-
 			#endif
 
 				totalMatchError = totalMatchError+pixelError;
@@ -1004,8 +980,10 @@ double compareImagesRGBSmallNoKernel(int imageWidth, int imageHeight, unsigned c
 
 	double error = (totalMatchError/matchErrorIndex);
 
+	#ifdef OR_DEBUG
 	//cout << "error = " << error << endl;
-
+	#endif
+	
 	return error;
 }
 
@@ -1032,7 +1010,6 @@ double compareImagesRGBWithPosDevAndLocalStarkCont(int imageWidth, int imageHeig
 		{
 			colour testImagePixelColour;
 			getRGBMapValues(x, y, imageWidth, testrgbMap, &testImagePixelColour);
-			//cout << "(int)testImagePixelColour.r = " << (int)testImagePixelColour.r << endl;
 
 		#ifndef OR_DO_NOT_IGNORE_BACKGROUND_COLOUR
 			#ifdef OR_USE_STAR_MAPS
@@ -1048,7 +1025,6 @@ double compareImagesRGBWithPosDevAndLocalStarkCont(int imageWidth, int imageHeig
 			else
 			{
 		#endif
-
 				double lowestMatchErrorAcrossKernel = VERY_HIGH_ERROR;
 				double XKernelRelativePositionForLowestErrorMatch;
 				double YKernelRelativePositionForLowestErrorMatch;
@@ -1063,7 +1039,6 @@ double compareImagesRGBWithPosDevAndLocalStarkCont(int imageWidth, int imageHeig
 							{
 								colour trainImagePixelColour;
 								getRGBMapValues(kx, ky, imageWidth, trainrgbMap, &trainImagePixelColour);
-								//cout << "\t(inttrainImagePixelColour.r = " << (inttrainImagePixelColour.r << endl;
 
 								#ifdef OR_IMAGE_COMPARITOR_USE_NORMALISED_HUE_ERROR_COMPARISON
 								double pixelError = compareRGBPixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
@@ -1086,7 +1061,6 @@ double compareImagesRGBWithPosDevAndLocalStarkCont(int imageWidth, int imageHeig
 										YKernelRelativePositionForLowestErrorMatch = 0.0;
 									}
 								}
-
 							}
 						}
 					}
@@ -1108,7 +1082,6 @@ double compareImagesRGBWithPosDevAndLocalStarkCont(int imageWidth, int imageHeig
 					totalStarkLocalDeviation = totalStarkLocalDeviation + deviationOptimum;
 					starkLocalDeviationIndex++;
 				}
-
 
 				if(XKernelRelativePositionForLowestErrorMatch > 0)
 				{
@@ -1136,15 +1109,10 @@ double compareImagesRGBWithPosDevAndLocalStarkCont(int imageWidth, int imageHeig
 		}
 	}
 
-
 	double averageXKernelRelativePositionPositiveForLowestErrorMatch = totalXKernelRelativePositionPositiveForLowestErrorMatch/(matchErrorIndex);
 	double averageXKernelRelativePositionNegativeForLowestErrorMatch = totalXKernelRelativePositionNegativeForLowestErrorMatch/(matchErrorIndex);
 	double averageYKernelRelativePositionPositiveForLowestErrorMatch = totalYKernelRelativePositionPositiveForLowestErrorMatch/(matchErrorIndex);
 	double averageYKernelRelativePositionNegativeForLowestErrorMatch = totalYKernelRelativePositionNegativeForLowestErrorMatch/(matchErrorIndex);
-	//cout << "averageXKernelRelativePositionPositiveForLowestErrorMatch = " << averageXKernelRelativePositionPositiveForLowestErrorMatch << endl;
-	//cout << "averageXKernelRelativePositionNegativeForLowestErrorMatch = " << averageXKernelRelativePositionNegativeForLowestErrorMatch << endl;
-	//cout << "averageYKernelRelativePositionPositiveForLowestErrorMatch = " << averageYKernelRelativePositionPositiveForLowestErrorMatch << endl;
-	//cout << "averageYKernelRelativePositionNegativeForLowestErrorMatch = " << averageYKernelRelativePositionNegativeForLowestErrorMatch << endl;
 
 	double averageXPositionalDeviation = (averageXKernelRelativePositionPositiveForLowestErrorMatch + -averageXKernelRelativePositionNegativeForLowestErrorMatch)/2.0;
 	double averageYPositionalDeviation = (averageYKernelRelativePositionPositiveForLowestErrorMatch + -averageYKernelRelativePositionNegativeForLowestErrorMatch)/2.0;
@@ -1153,18 +1121,25 @@ double compareImagesRGBWithPosDevAndLocalStarkCont(int imageWidth, int imageHeig
 
 	double error = averageMatchErrorNormalised + averagePositionalDeviationNormalised;
 
-
-	//cout << "averageXPositionalDeviation = " << averageXPositionalDeviation << endl;
-	//cout << "averageYPositionalDeviation = " << averageYPositionalDeviation << endl;
-	//cout << "averagePositionalDeviationNormalised = " << averagePositionalDeviationNormalised << endl;
-	//cout << "totalMatchErrorNormalised = " << totalMatchErrorNormalised << endl;
-	//cout << "error = " << error << endl;
-
 	if(starkLocalDeviationIndex > OR_IMAGE_COMPARISON_MAX_TOTAL_NUM_STARK_LOCAL_DEVIATIONS*(imageWidth*imageHeight))
 	{
 		error = 8888.0;
 	}
 
+	#ifdef OR_DEBUG
+	/*
+	cout << "averageXKernelRelativePositionPositiveForLowestErrorMatch = " << averageXKernelRelativePositionPositiveForLowestErrorMatch << endl;
+	cout << "averageXKernelRelativePositionNegativeForLowestErrorMatch = " << averageXKernelRelativePositionNegativeForLowestErrorMatch << endl;
+	cout << "averageYKernelRelativePositionPositiveForLowestErrorMatch = " << averageYKernelRelativePositionPositiveForLowestErrorMatch << endl;
+	cout << "averageYKernelRelativePositionNegativeForLowestErrorMatch = " << averageYKernelRelativePositionNegativeForLowestErrorMatch << endl;
+	cout << "averageXPositionalDeviation = " << averageXPositionalDeviation << endl;
+	cout << "averageYPositionalDeviation = " << averageYPositionalDeviation << endl;
+	cout << "averagePositionalDeviationNormalised = " << averagePositionalDeviationNormalised << endl;
+	cout << "totalMatchErrorNormalised = " << totalMatchErrorNormalised << endl;
+	cout << "error = " << error << endl;
+	*/
+	#endif
+	
 	return error;
 }
 
@@ -1186,7 +1161,6 @@ double compareImagesRGBWithPosDev(int imageWidth, int imageHeight, unsigned char
 		{
 			colour testImagePixelColour;
 			getRGBMapValues(x, y, imageWidth, testrgbMap, &testImagePixelColour);
-			//cout << "(int)testImagePixelColour.r = " << (int)testImagePixelColour.r << endl;
 
 		#ifndef OR_DO_NOT_IGNORE_BACKGROUND_COLOUR
 			#ifdef OR_USE_STAR_MAPS
@@ -1202,7 +1176,6 @@ double compareImagesRGBWithPosDev(int imageWidth, int imageHeight, unsigned char
 			else
 			{
 		#endif
-
 				double lowestMatchErrorAcrossKernel = VERY_HIGH_ERROR;
 				double XKernelRelativePositionForLowestErrorMatch;
 				double YKernelRelativePositionForLowestErrorMatch;
@@ -1284,39 +1257,33 @@ double compareImagesRGBWithPosDev(int imageWidth, int imageHeight, unsigned char
 	double averageYKernelRelativePositionNegativeForLowestErrorMatch = totalYKernelRelativePositionNegativeForLowestErrorMatch/(matchErrorIndex);
 	#endif
 
-	//cout << "averageXKernelRelativePositionPositiveForLowestErrorMatch = " << averageXKernelRelativePositionPositiveForLowestErrorMatch << endl;
-	//cout << "averageXKernelRelativePositionNegativeForLowestErrorMatch = " << averageXKernelRelativePositionNegativeForLowestErrorMatch << endl;
-	//cout << "averageYKernelRelativePositionPositiveForLowestErrorMatch = " << averageYKernelRelativePositionPositiveForLowestErrorMatch << endl;
-	//cout << "averageYKernelRelativePositionNegativeForLowestErrorMatch = " << averageYKernelRelativePositionNegativeForLowestErrorMatch << endl;
 	double averageXPositionalDeviation = (averageXKernelRelativePositionPositiveForLowestErrorMatch + -averageXKernelRelativePositionNegativeForLowestErrorMatch)/2.0;
-	//cout << "averageXPositionalDeviation = " << averageXPositionalDeviation << endl;
 	double averageYPositionalDeviation = (averageYKernelRelativePositionPositiveForLowestErrorMatch + -averageYKernelRelativePositionNegativeForLowestErrorMatch)/2.0;
-	//cout << "averageYPositionalDeviation = " << averageYPositionalDeviation << endl;
 	double averagePositionalDeviationNormalised = ((averageXPositionalDeviation+averageYPositionalDeviation)/IMAGE_COMPARISON_MISFIT_AVG_KERNEL_POSITIONAL_DEVIATION_ERROR)*IMAGE_COMPARISON_MISFIT_AVG_KERNEL_POSITIONAL_DEVIATION_WEIGHTING;
-	//cout << "averagePositionalDeviationNormalised = " << averagePositionalDeviationNormalised << endl;
 	double averageMatchErrorNormalised = (totalMatchError/matchErrorIndex);
-	//cout << "totalMatchErrorNormalised = " << totalMatchErrorNormalised << endl;
 	#ifdef OR_USE_OLD_BUGGY_BUT_WORKS_CODE
 	double error = averageMatchErrorNormalised + averagePositionalDeviationNormalised;
 	#else
 	double error = averageMatchErrorNormalised;
 	#endif
 
+	#ifdef OR_DEBUG
+	//cout << "averageXKernelRelativePositionPositiveForLowestErrorMatch = " << averageXKernelRelativePositionPositiveForLowestErrorMatch << endl;
+	//cout << "averageXKernelRelativePositionNegativeForLowestErrorMatch = " << averageXKernelRelativePositionNegativeForLowestErrorMatch << endl;
+	//cout << "averageYKernelRelativePositionPositiveForLowestErrorMatch = " << averageYKernelRelativePositionPositiveForLowestErrorMatch << endl;
+	//cout << "averageYKernelRelativePositionNegativeForLowestErrorMatch = " << averageYKernelRelativePositionNegativeForLowestErrorMatch << endl;
+	//cout << "averageXPositionalDeviation = " << averageXPositionalDeviation << endl;
+	//cout << "averageYPositionalDeviation = " << averageYPositionalDeviation << endl;
+	//cout << "averagePositionalDeviationNormalised = " << averagePositionalDeviationNormalised << endl;
+	//cout << "totalMatchErrorNormalised = " << totalMatchErrorNormalised << endl;
 	//cout << "totalMatchError = " << totalMatchError << endl;
-
+	#endif
+	
 	return error;
 }
 #endif
 
 
-	/*
-	double averageXDeviationNormalised = averageXPositionalDeviation/(totalXKernelRelativePositionPositiveForLowestErrorMatch-totalXKernelRelativePositionNegativeForLowestErrorMatch);
-	cout << "averageXDeviationNormalised = " << averageXDeviationNormalised << endl;
-	double averageYDeviationNormalised = averageYPositionalDeviation/(totalYKernelRelativePositionPositiveForLowestErrorMatch-totalYKernelRelativePositionNegativeForLowestErrorMatch);
-	cout << "averageYDeviationNormalised = " << averageYDeviationNormalised << endl;
-	double averagePositionalDeviationNormalised = ((averageXDeviationNormalised+averageYDeviationNormalised)/IMAGE_COMPARISON_MISFIT_AVG_KERNEL_DEVIATION_ERROR)*IMAGE_COMPARISON_MISFIT_AVG_KERNEL_DEVIATION_WEIGHTING;
-
-	*/
 
 
 #ifndef OR_METHOD_CHECK_SNAPSHOT_CONTRAST_BEFORE_SAVING_SNAPSHOT
@@ -1416,6 +1383,7 @@ bool checkImageHasContrast(int imageWidth, int imageHeight, unsigned char * rgbM
 		averagegdeviation = averagegdeviation/(index);
 		averagebdeviation = averagebdeviation/(index);
 
+		#ifdef OR_DEBUG
 		/*
 		cout << "averagerdeviation = " << averagerdeviation << endl;
 		cout << "averagegdeviation = " << averagegdeviation << endl;
@@ -1424,6 +1392,7 @@ bool checkImageHasContrast(int imageWidth, int imageHeight, unsigned char * rgbM
 		cout << "totalgdeviationGreaterThanThreshold = " << totalgdeviationGreaterThanThreshold << endl;
 		cout << "totalbdeviationGreaterThanThreshold = " << totalbdeviationGreaterThanThreshold << endl;
 		*/
+		#endif
 
 		double averagedeviation = averagerdeviation + averagegdeviation + averagebdeviation;
 
@@ -1500,11 +1469,12 @@ void calculateHueError(colour * testImagePixelColour, colour * trainImagePixelCo
 	*hueError = (abs(abs(redError) - abs(greenError)) + abs(abs(redError) - abs(blueError)) + abs(abs(greenError) - abs(blueError)));
 	#endif
 
-	//cout << "hueError = " << hueError << endl;
-
 	*nonHueError = abs(testImagePixelColour->r - trainImagePixelColour->r) + abs(testImagePixelColour->g - trainImagePixelColour->g) + abs(testImagePixelColour->b - trainImagePixelColour->b);
 
+	#ifdef OR_DEBUG
+	//cout << "hueError = " << hueError << endl;	
 	//cout << "nonHueError = " << nonHueError << endl;
+	#endif
 
 }
 #endif
@@ -1539,8 +1509,6 @@ double calculateHueErrorNormalisedBAD(colour * testImagePixelColour, colour * tr
 	*hueError = (abs(abs(redError) - abs(greenError)) + abs(abs(redError) - abs(blueError)) + abs(abs(greenError) - abs(blueError)));
 	#endif
 
-	//cout << "hueError = " << hueError << endl;
-
 	double colourSaturation = abs(testImagePixelColour->r - trainImagePixelColour->g) + abs(testImagePixelColour->r - trainImagePixelColour->b) + abs(testImagePixelColour->b - trainImagePixelColour->g);
 
 	double nonHueError = abs(testImagePixelColour->r - trainImagePixelColour->r) + abs(testImagePixelColour->g - trainImagePixelColour->g) + abs(testImagePixelColour->b - trainImagePixelColour->b);
@@ -1553,8 +1521,12 @@ double calculateHueErrorNormalisedBAD(colour * testImagePixelColour, colour * tr
 	{
 		*nonHueErrorNormalised = 0.0;
 	}
-
+	
+	#ifdef OR_DEBUG
+	//cout << "hueError = " << hueError << endl;
 	//cout << "nonHueError = " << nonHueError << endl;
+	#endif
+	
 	return 0.0;
 }
 
@@ -1569,11 +1541,7 @@ double compareRGBPixelsForMatchBAD(colour * testImagePixelColour, colour * train
 
 	calculateHueError(testImagePixelColour, trainImagePixelColour, &hueError, &nonHueError);
 
-	//cout << "nonHueError = " << nonHueError << endl;
-	//cout << "hueError = " << hueError << endl;
-
 	double pixelError =  (nonHueError/IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_NON_HUE_ERROR) + (hueError/IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR)*IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_WEIGHTING;
-	//cout << "pixelError = " << pixelError << endl;
 	*/
 
 	//new
@@ -1597,13 +1565,13 @@ double compareRGBPixelsForMatchHueOnly(colour * testImagePixelColour, colour * t
 
 	calculateHueError(testImagePixelColour, trainImagePixelColour, &hueError, &nonHueError);
 
-	//cout << "nonHueError = " << nonHueError << endl;
-	//cout << "hueError = " << hueError << endl;
-
 	double pixelError =  (hueError/IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR)*IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_WEIGHTING;
+	
+	#ifdef OR_DEBUG
+	//cout << "nonHueError = " << nonHueError << endl;
+	//cout << "hueError = " << hueError << endl;	
 	//cout << "pixelError = " << pixelError << endl;
-
-
+	#endif
 
 	return pixelError;
 }
@@ -1614,12 +1582,15 @@ double compareRGBPixelsForMatchLumContrastOnly(colour * testImagePixelColour, co
 	double nonHueError;
 
 	calculateHueError(testImagePixelColour, trainImagePixelColour, &hueError, &nonHueError);
-
+	
+	double pixelError =  (nonHueError/IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_NON_HUE_ERROR);
+	
+	#ifdef OR_DEBUG
 	//cout << "nonHueError = " << nonHueError << endl;
 	//cout << "hueError = " << hueError << endl;
-
-	double pixelError =  (nonHueError/IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_NON_HUE_ERROR);
 	//cout << "pixelError = " << pixelError << endl;
+	#endif
+		
 	return 0.0;
 }
 #endif
@@ -1660,8 +1631,6 @@ void createColourHueContrastVecMapFromRGBMapNOTUSED(int imageWidth, int imageHei
 			calculateColourHueContrastVecLevelWithinKernelNOTUSED(x, y, rgbMap, HUE_CONTRAST_VECTOR_MAP_GENERATION_KERNEL_WIDTH, HUE_CONTRAST_VECTOR_MAP_GENERATION_KERNEL_HEIGHT, imageWidth, imageHeight, &colourHueContrastVecVal, &colourHueContrastCategoryIntVal);
 			setXYVectorMapValue(x, y, (imageWidth-1), &colourHueContrastVecVal, colourHueContrastVectorMap);
 			setIntMapValue(x, y, (imageWidth-1), colourHueContrastCategoryIntVal, colourHueContrastCategoryIntMap);
-
-
 		}
 	}
 }
@@ -1683,7 +1652,6 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 
 	for(int r=0; r<4; r++)
 	{
-
 		//now rotate for new mask
 		copyColours(&(pixelRGBColourTemp[0]), &(pixelRGBColour[0]));
 		copyColours(&(pixelRGBColourTemp[1]), &(pixelRGBColour[1]));
@@ -1694,7 +1662,6 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 		copyColours(&(pixelRGBColour[1]), &(pixelRGBColourTemp[0]));
 		copyColours(&(pixelRGBColour[2]), &(pixelRGBColourTemp[3]));
 		copyColours(&(pixelRGBColour[3]), &(pixelRGBColourTemp[1]));
-
 	}
 	*/
 
@@ -1710,6 +1677,7 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	colour bottomRightPixelPositionInRGBColour;
 	getRGBMapValues(pixelX+1, pixelY+1, imageWidth, rgbMap, &bottomRightPixelPositionInRGBColour);
 
+	#ifdef OR_DEBUG
 	/*
 	cout << "topLeftPixelPositionInRGBColour.r = " << (int)topLeftPixelPositionInRGBColour.r << endl;
 	cout << "topLeftPixelPositionInRGBColour.g = " << (int)topLeftPixelPositionInRGBColour.g << endl;
@@ -1724,6 +1692,7 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	cout << "bottomRightPixelPositionInRGBColour.g = " << (int)bottomRightPixelPositionInRGBColour.g << endl;
 	cout << "bottomRightPixelPositionInRGBColour.b = " << (int)bottomRightPixelPositionInRGBColour.b << endl;
 	*/
+	#endif
 
 	//x
 	double xTop = compareRGBPixelsForMatchHueOnly(&topLeftPixelPositionInRGBColour, &topRightPixelPositionInRGBColour);
@@ -1732,15 +1701,13 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	{
 		xTopThreshold = true;
 	}
-	//cout << "xTop = " << xTop << endl;
 	double xBottom = compareRGBPixelsForMatchHueOnly(&bottomLeftPixelPositionInRGBColour, &bottomRightPixelPositionInRGBColour);
 	bool xBottomThreshold = false;
 	if(xBottom > COLOUR_HUE_CONTRAST_THRESHOLD)
 	{
 		xBottomThreshold = true;
 	}
-	//cout << "xBottom = " << xBottom << endl;
-
+	
 	//y
 	double yLeft = compareRGBPixelsForMatchHueOnly(&topLeftPixelPositionInRGBColour, &bottomLeftPixelPositionInRGBColour);
 	bool yLeftThreshold = false;
@@ -1748,7 +1715,6 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	{
 		yLeftThreshold = true;
 	}
-	//cout << "yLeft = " << yLeft << endl;
 
 	double yRight = compareRGBPixelsForMatchHueOnly(&topRightPixelPositionInRGBColour, &bottomRightPixelPositionInRGBColour);
 	bool yRightThreshold = false;
@@ -1756,7 +1722,6 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	{
 		yRightThreshold = true;
 	}
-	//cout << "yRight = " << yRight << endl;
 
 	//diagonal
 	double diagonalTopLeftToBottomRight = compareRGBPixelsForMatchHueOnly(&topLeftPixelPositionInRGBColour, &bottomRightPixelPositionInRGBColour);
@@ -1765,7 +1730,6 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	{
 		diagonalTopLeftToBottomRightThreshold = true;
 	}
-	//cout << "diagonalTopLeftToBottomRight = " << diagonalTopLeftToBottomRight << endl;
 
 	double diagonalTopRightToBottomLeft = compareRGBPixelsForMatchHueOnly(&topRightPixelPositionInRGBColour, &bottomLeftPixelPositionInRGBColour);
 	bool diagonalTopRightToBottomLeftThreshold = false;
@@ -1773,11 +1737,18 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	{
 		diagonalTopRightToBottomLeftThreshold = true;
 	}
-	//cout << "diagonalTopRightToBottomLeft = " << diagonalTopRightToBottomLeft << endl;
 
+	#ifdef OR_DEBUG
+	//cout << "xTop = " << xTop << endl;
+	//cout << "xBottom = " << xBottom << endl;
+	//cout << "yLeft = " << yLeft << endl;
+	//cout << "yRight = " << yRight << endl;
+	//cout << "diagonalTopLeftToBottomRight = " << diagonalTopLeftToBottomRight << endl;
+	//cout << "diagonalTopRightToBottomLeft = " << diagonalTopRightToBottomLeft << endl;
+	#endif
+	
 	if(!xTopThreshold && !xBottomThreshold && yLeftThreshold && yRightThreshold && diagonalTopLeftToBottomRightThreshold && diagonalTopRightToBottomLeftThreshold)
 	{
-		//cout << "x" << endl;
 		// x x
 		// - -
 		colourHueContrastVecVal->x = (xTop + xBottom + diagonalTopLeftToBottomRight/2.0 + diagonalTopRightToBottomLeft/2.0)/3.0;
@@ -1790,7 +1761,6 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	}
 	else if(xTopThreshold && xBottomThreshold && !yLeftThreshold && !yRightThreshold && diagonalTopLeftToBottomRightThreshold && diagonalTopRightToBottomLeftThreshold)
 	{
-		//cout << "x" << endl;
 		// x -
 		// x -
 		colourHueContrastVecVal->x = (xTop + xBottom + diagonalTopLeftToBottomRight/2.0 + diagonalTopRightToBottomLeft/2.0)/3.0;
@@ -1803,7 +1773,6 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	}
 	else if(!xTopThreshold && xBottomThreshold && yLeftThreshold && !yRightThreshold && !diagonalTopLeftToBottomRightThreshold && diagonalTopRightToBottomLeftThreshold)
 	{
-		//cout << "x" << endl;
 		// - -
 		// x -
 		//negative
@@ -1816,7 +1785,6 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	}
 	else if(!xTopThreshold && xBottomThreshold && !yLeftThreshold && yRightThreshold && diagonalTopLeftToBottomRightThreshold && !diagonalTopRightToBottomLeftThreshold)
 	{
-		//cout << "x" << endl;
 		// - -
 		// - x
 		//positive
@@ -1844,7 +1812,6 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	}
 	else if(xTopThreshold && !xBottomThreshold && yLeftThreshold && !yRightThreshold && diagonalTopLeftToBottomRightThreshold && !diagonalTopRightToBottomLeftThreshold)
 	{
-		//cout << "x" << endl;
 		// x -
 		// - -
 		//positive
@@ -1859,7 +1826,6 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	}
 	else if(xTopThreshold && xBottomThreshold && yLeftThreshold && yRightThreshold)
 	{
-		//cout << "x" << endl;
 		// x x
 		// x x
 		colourHueContrastVecVal->x = (xTop + xBottom + diagonalTopLeftToBottomRight/2.0 + diagonalTopRightToBottomLeft/2.0)/3.0;
@@ -1873,7 +1839,6 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	}
 	else if(!xTopThreshold && !xBottomThreshold && !yLeftThreshold && !yRightThreshold && !diagonalTopLeftToBottomRightThreshold && !diagonalTopRightToBottomLeftThreshold)
 	{//no obvious corner
-		//cout << "h1" << endl;
 		// - -
 		// - -
 		colourHueContrastVecVal->x = (xTop + xBottom + diagonalTopLeftToBottomRight/2.0 + diagonalTopRightToBottomLeft/2.0)/3.0;
@@ -1881,7 +1846,6 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 		*colourHueContrastCategoryIntVal = COLOUR_HUE_CONTRAST_CATEGORY_8;
 		//colourHueContrastVecVal->x = 0;
 		//colourHueContrastVecVal->y = 0;
-
 	}
 	else
 	{
@@ -1994,7 +1958,6 @@ double calculateColourHueSumContrastWithinKernelNOTUSED(int pixelX, int pixelY, 
 						getRGBMapValues(x, y, imageWidth, rgbMap, &kernelCurrentPixelPositionInRGBColour);
 
 						sumContrast = sumContrast + compareRGBPixelsForMatchHueOnly(&centrePixelPositionInRGBColour, &kernelCurrentPixelPositionInRGBColour);
-
 					}
 			/*
 				}
@@ -2046,21 +2009,16 @@ double calculateColourHueRadialSumContrastWithinKernelNOTUSED(int pixelX, int pi
 									if((sx >= pixelX-(kernelWidth/2)) && (sx < pixelX+(kernelWidth/2)))
 									{//check kernel pix is within image
 
-
-
 										if((x == pixelX) && (y == pixelY))
 										{
 
 										}
 										else
 										{
-											//cout <<"he1" << endl;
-
 											colour subKernelCurrentPixelPositionInRGBColour;
 											getRGBMapValues(sx, sy, imageWidth, rgbMap, &subKernelCurrentPixelPositionInRGBColour);
 
 											sumContrast = sumContrast + compareRGBPixelsForMatchHueOnly(&subKernelCurrentPixelPositionInRGBColour, &kernelCurrentPixelPositionInRGBColour);
-
 										}
 
 									}
@@ -2080,543 +2038,6 @@ double calculateColourHueRadialSumContrastWithinKernelNOTUSED(int pixelX, int pi
 	return sumContrast;
 }
 #endif
-
-
-
-
-/*highmembutfast;
-
-				#ifdef  OR_IMAGE_COMPARISON_NONSQL_GEOMETRIC_COMPARISON_OPTIMISED_TRAIN_FILE_IO_V2
-
-					//cout << "as" << endl;
-
-					#define OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_MAXIMUM_NUMBER_OF_F_PER_BIN (1000)	//this is a major limitation for large object databases
-
-					string trainObjectNameMostPopular;
-					int trainObjectIndexMostPopular;
-					int trainViewIndexMostPopular;
-					int trainPolyIndexMostPopular;
-					int trainSideIndexMostPopular;
-
-					int trainObjectIndexVote[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_MAXIMUM_NUMBER_OF_F_PER_BIN];
-					int trainViewIndexVote[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_MAXIMUM_NUMBER_OF_F_PER_BIN];
-					int trainPolyIndexVote[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_MAXIMUM_NUMBER_OF_F_PER_BIN];
-					int trainSideIndexVote[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_MAXIMUM_NUMBER_OF_F_PER_BIN];
-					for(int ftest=0;ftest<OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE;ftest++)
-					{
-						for(int x=0;x<OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X;x++)
-						{
-							for(int y=0;y<OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y;y++)
-							{
-								for(int ftrain=0;ftrain<OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_MAXIMUM_NUMBER_OF_F_PER_BIN;ftrain++)
-								{
-									trainObjectIndexVote[ftest][x][y][ftrain] = 0;
-									trainViewIndexVote[ftest][x][y][ftrain] = 0;
-									trainPolyIndexVote[ftest][x][y][ftrain] = 0;
-									trainSideIndexVote[ftest][x][y][ftrain] = 0;
-								}
-							}
-						}
-					}
-
-					//cout << "as2" << endl;
-
-
-					//Feature recordOfClosestMatchedFeature[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_MAXIMUM_NUMBER_OF_F_PER_BIN];
-					string trainObjectNameClosest[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_MAXIMUM_NUMBER_OF_F_PER_BIN];
-					int trainViewIndexClosest[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_MAXIMUM_NUMBER_OF_F_PER_BIN];
-					int trainPolyIndexClosest[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_MAXIMUM_NUMBER_OF_F_PER_BIN];
-					int trainSideIndexClosest[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_MAXIMUM_NUMBER_OF_F_PER_BIN];
-					bool foundAFeatureMatch[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y][OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_MAXIMUM_NUMBER_OF_F_PER_BIN];
-					for(int ftest=0;ftest<OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE;ftest++)
-					{
-						for(int x=0;x<OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X;x++)
-						{
-							for(int y=0;y<OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y;y++)
-							{
-								for(int ftrain=0;ftrain<OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_MAXIMUM_NUMBER_OF_F_PER_BIN;ftrain++)
-								{
-									foundAFeatureMatch[ftest][x][y][ftrain] = false;
-								}
-							}
-						}
-					}
-
-					//cout << "as3" << endl;
-
-					int ftest = 0;
-					int numberOfFeatureGeoMatches = 0;
-					bool passedGeometricCheck = false;
-					Feature * testcurrentFeatureInNearestFeatureList = &(testfeatureArray[testObjectIndex][testViewIndex][testPolyIndex][testSideIndex]);
-					while(testcurrentFeatureInNearestFeatureList->next != NULL)
-					{
-						bool testpassedDimensionCheck = true;
-						if(dimension == OR_METHOD2DOD_DIMENSIONS)
-						{//NB do not compare transformed object triangle features if OR_METHOD2DOD_DIMENSIONS, as these will always be set to a predefined object triangle
-							if(testcurrentFeatureInNearestFeatureList->OTpointIndex != 0)
-							{
-								testpassedDimensionCheck = false;
-							}
-						}
-
-						if(testpassedDimensionCheck)
-						{
-							//cout << "h1" << endl;
-
-							int xBin = determineGeoBinX(testcurrentFeatureInNearestFeatureList->pointTransformed.x);
-							int yBin = determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);
-
-
-
-							//check current bin and nearest bins
-							int xBinIndex = 0;
-							for(int x = xBin-(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X/2); x<=xBin+(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X/2); x++)
-							{
-
-								int yBinIndex =0;
-								for(int y = yBin-(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y/2); y<=yBin+(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y/2); y++)
-								{
-
-									bool insideBin = false;
-
-
-									if(x >= 0 )
-									{
-										if(x < OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS)
-										{
-											if(y >= 0 )
-											{
-												if(y < OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS)
-												{
-													insideBin = true;
-												}
-											}
-										}
-									}
-
-									if(insideBin)
-									{
-										//cout << "h2" << endl;
-										//cout << "x = " << x << endl;
-										//cout << "y = " << y << endl;
-
-										Feature * firstFeatureInTestFeatureMatchingTrainBin =  &(trainfeatureBinArray[x][y]);
-										Feature * currentFeatureInTestFeatureMatchingTrainBin = firstFeatureInTestFeatureMatchingTrainBin;
-										int ftrain = 0;
-
-										while(currentFeatureInTestFeatureMatchingTrainBin->next != NULL)
-										{
-											//cout << "h3" << endl;
-
-											double currentDistanceBetweenTwoPoints = calculateTheDistanceBetweenTwoPoints(&(testcurrentFeatureInNearestFeatureList->pointTransformed), &(currentFeatureInTestFeatureMatchingTrainBin->pointTransformed));
-											if(currentDistanceBetweenTwoPoints < OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR)
-											{
-												if(ftrain < OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_MAXIMUM_NUMBER_OF_F_PER_BIN)
-												{
-													//cout << "ftest = " << ftest << endl;
-													//cout << "xBinIndex = " << xBinIndex << endl;
-													//cout << "yBinIndex = " << yBinIndex << endl;
-													//cout << "ftrain = " << ftrain << endl;
-
-													foundAFeatureMatch[ftest][xBinIndex][yBinIndex][ftrain] = true;
-													trainObjectNameClosest[ftest][xBinIndex][yBinIndex][ftrain] = currentFeatureInTestFeatureMatchingTrainBin->objectName;
-													trainViewIndexClosest[ftest][xBinIndex][yBinIndex][ftrain] = currentFeatureInTestFeatureMatchingTrainBin->viewIndex;
-													trainPolyIndexClosest[ftest][xBinIndex][yBinIndex][ftrain] = currentFeatureInTestFeatureMatchingTrainBin->polyIndex;
-													trainSideIndexClosest[ftest][xBinIndex][yBinIndex][ftrain] = currentFeatureInTestFeatureMatchingTrainBin->sideIndex;
-													//recordOfClosestMatchedFeature[ftest][xBinIndex][yBinIndex][ftrain] =  currentFeatureInTestFeatureMatchingTrainBin;	//not needed
-													//cout << "found an item - good" << endl;
-												}
-											}
-
-											ftrain++;
-
-											currentFeatureInTestFeatureMatchingTrainBin = currentFeatureInTestFeatureMatchingTrainBin->next;
-
-										}
-
-									}
-									yBinIndex++;
-
-								}
-								xBinIndex++;
-							}
-
-							ftest++;
-
-						}
-
-						testcurrentFeatureInNearestFeatureList = testcurrentFeatureInNearestFeatureList->next;
-					}
-
-					//cout << "as4" << endl;
-
-					for(int ftest=0;ftest<OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE;ftest++)
-					{
-						for(int x=0;x<OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X;x++)
-						{
-							for(int y=0;y<OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y;y++)
-							{
-								for(int ftrain=0;ftrain<OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_MAXIMUM_NUMBER_OF_F_PER_BIN;ftrain++)
-								{
-									if(foundAFeatureMatch[ftest][x][y][ftrain])
-									{
-										for(int ftest2=0;ftest2<OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE;ftest2++)
-										{
-											for(int x2=0;x2<OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X;x2++)
-											{
-												for(int y2=0;y2<OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y;y2++)
-												{
-													for(int ftrain2=0;ftrain2<OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_MAXIMUM_NUMBER_OF_F_PER_BIN;ftrain2++)
-													{
-														if(foundAFeatureMatch[ftest2][x2][y2][ftrain2])
-														{
-															if(trainObjectNameClosest[ftest2][x2][y2][ftrain2] == trainObjectNameClosest[ftest][x][y][ftrain])
-															{
-																trainObjectIndexVote[ftest][x][y][ftrain] = trainObjectIndexVote[ftest][x][y][ftrain] + 1;
-															}
-															if(trainViewIndexClosest[ftest2][x2][y2][ftrain2] == trainViewIndexClosest[ftest][x][y][ftrain])
-															{
-																trainViewIndexVote[ftest][x][y][ftrain] = trainViewIndexVote[ftest][x][y][ftrain] + 1;
-															}
-															if(trainPolyIndexClosest[ftest2][x2][y2][ftrain2] == trainPolyIndexClosest[ftest][x][y][ftrain])
-															{
-																trainPolyIndexVote[ftest][x][y][ftrain] = trainPolyIndexVote[ftest][x][y][ftrain] + 1;
-															}
-															if(trainSideIndexClosest[ftest2][x2][y2][ftrain2] == trainSideIndexClosest[ftest][x][y][ftrain])
-															{
-																trainSideIndexVote[ftest][x][y][ftrain] = trainSideIndexVote[ftest][x][y][ftrain] + 1;
-															}
-														}
-
-													}
-												}
-											}
-										}
-									}
-
-								}
-							}
-						}
-					}
-
-
-
-					//cout << "h5" << endl;
-
-					int trainObjectIndexMaxNumVotes = 0;
-					int trainViewIndexMaxNumVotes = 0;
-					int trainPolyIndexMaxNumVotes = 0;
-					int trainSideIndexMaxNumVotes = 0;
-
-					for(int ftest=0;ftest<OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE;ftest++)
-					{
-						for(int x=0;x<OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X;x++)
-						{
-							for(int y=0;y<OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y;y++)
-							{
-								for(int ftrain=0;ftrain<OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_MAXIMUM_NUMBER_OF_F_PER_BIN;ftrain++)
-								{
-									if(trainObjectIndexVote[ftest][x][y][ftrain] > trainObjectIndexMaxNumVotes)
-									{
-										trainObjectIndexMaxNumVotes = trainObjectIndexVote[ftest][x][y][ftrain];
-										trainObjectNameMostPopular = trainObjectNameClosest[ftest][x][y][ftrain];
-									}
-									if(trainViewIndexVote[ftest][x][y][ftrain] > trainViewIndexMaxNumVotes)
-									{
-										trainViewIndexMaxNumVotes = trainViewIndexVote[ftest][x][y][ftrain];
-										trainViewIndexMostPopular = trainViewIndexClosest[ftest][x][y][ftrain];
-									}
-									if(trainPolyIndexVote[ftest][x][y][ftrain] > trainPolyIndexMaxNumVotes)
-									{
-										trainPolyIndexMaxNumVotes = trainPolyIndexVote[ftest][x][y][ftrain];
-										trainPolyIndexMostPopular = trainPolyIndexClosest[ftest][x][y][ftrain];
-									}
-									if(trainSideIndexVote[ftest][x][y][ftrain] > trainSideIndexMaxNumVotes)
-									{
-										trainSideIndexMaxNumVotes = trainSideIndexVote[ftest][x][y][ftrain];
-										trainSideIndexMostPopular = trainSideIndexClosest[ftest][x][y][ftrain];
-									}
-								}
-							}
-						}
-					}
-
-
-					//cout << "h6" << endl;
-
-
-
-
-					if((trainObjectIndexMaxNumVotes >= OR_GEOMETRIC_CHECK_MIN_NUMBER_PASSES) && (trainViewIndexMaxNumVotes >= OR_GEOMETRIC_CHECK_MIN_NUMBER_PASSES) && (trainPolyIndexMaxNumVotes >= OR_GEOMETRIC_CHECK_MIN_NUMBER_PASSES) && (trainSideIndexMaxNumVotes >= OR_GEOMETRIC_CHECK_MIN_NUMBER_PASSES))
-					{
-						passedGeometricCheck = true;
-					}
-
-					string trainObjectString = trainObjectNameMostPopular;
-					int trainViewIndex = trainViewIndexMostPopular;
-					int trainPolyIndex = trainPolyIndexMostPopular;
-					int trainSideIndex = trainSideIndexMostPopular;
-
-
-					cout << "trainObjectIndexMaxNumVotes = " << trainObjectIndexMaxNumVotes << endl;
-					cout << "trainViewIndexMaxNumVotes = " << trainViewIndexMaxNumVotes << endl;
-					cout << "trainPolyIndexMaxNumVotes = " << trainPolyIndexMaxNumVotes << endl;
-					cout << "trainSideIndexMaxNumVotes = " << trainSideIndexMaxNumVotes << endl;
-					cout << "trainObjectString = " << trainObjectString << endl;
-					cout << "trainViewIndex = " << trainViewIndex << endl;
-					cout << "trainPolyIndex = " << trainPolyIndex << endl;
-					cout << "trainSideIndex = " << trainSideIndex << endl;
-
-
-					char trainpolygonIndexString[10];
-					char trainsideIndexString[10];
-					char trainviewIndexString[10];
-
-					sprintf(trainpolygonIndexString, "%d", trainPolyIndex);
-					sprintf(trainsideIndexString, "%d", trainSideIndex);
-					sprintf(trainviewIndexString, "%d", trainViewIndex);
-
-					string traininterpolatedRGBMapFileNameForRayTracing;
-					traininterpolatedRGBMapFileNameForRayTracing = trainObjectString + "interpolatedMesh" + "ViewIndex" + trainviewIndexString + "FacingPoly" + trainpolygonIndexString + "side" + trainsideIndexString;
-
-					//cout << "h7" << endl;
-
-				#else
-
-
-
-*/
-
-/*OLD;
-				#ifdef  OR_IMAGE_COMPARISON_NONSQL_GEOMETRIC_COMPARISON_OPTIMISED_TRAIN_FILE_IO_V2
-
-					string trainObjectNameMostPopular;
-					int trainObjectIndexMostPopular;
-					int trainViewIndexMostPopular;
-					int trainPolyIndexMostPopular;
-					int trainSideIndexMostPopular;
-
-					int trainObjectIndexVote[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE];
-					int trainViewIndexVote[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE];
-					int trainPolyIndexVote[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE];
-					int trainSideIndexVote[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE];
-					for(int i=0;i<OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE;i++)
-					{
-						trainObjectIndexVote[i] = 0;
-						trainViewIndexVote[i] = 0;
-						trainPolyIndexVote[i] = 0;
-						trainSideIndexVote[i] = 0;
-					}
-
-					string trainObjectNameClosest[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE];
-					int trainViewIndexClosest[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE];
-					int trainPolyIndexClosest[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE];
-					int trainSideIndexClosest[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE];
-					bool foundAFeatureMatch[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE];
-					for(int i=0;i<OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE;i++)
-					{
-						foundAFeatureMatch[i] = false;
-					}
-
-					int featureIndexForComparison = 0;
-					int numberOfFeatureGeoMatches = 0;
-					bool passedGeometricCheck = false;
-					Feature * testcurrentFeatureInNearestFeatureList = &(testfeatureArray[testObjectIndex][testViewIndex][testPolyIndex][testSideIndex]);
-					while(testcurrentFeatureInNearestFeatureList->next != NULL)
-					{
-						bool testpassedDimensionCheck = true;
-						if(dimension == OR_METHOD2DOD_DIMENSIONS)
-						{//NB do not compare transformed object triangle features if OR_METHOD2DOD_DIMENSIONS, as these will always be set to a predefined object triangle
-							if(testcurrentFeatureInNearestFeatureList->OTpointIndex != 0)
-							{
-								testpassedDimensionCheck = false;
-							}
-						}
-
-						if(testpassedDimensionCheck)
-						{
-							//cout << "h1" << endl;
-
-							int xBin = (testcurrentFeatureInNearestFeatureList->pointTransformed.x / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_X_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS/2);
-							int yBin = (testcurrentFeatureInNearestFeatureList->pointTransformed.y / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_Y_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS/2);
-
-							double closestDistanceBetweenTwoPoints = REALLY_FAR_AWAY;
-							Feature * recordOfClosestMatchedFeature;
-
-							//check current bin and nearest bins
-							for(int x = xBin-(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X/2); x<=xBin+(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X/2); x++)
-							{
-								for(int y = yBin-(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y/2); y<=yBin+(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y/2); y++)
-								{
-									bool insideBin = false;
-
-
-									if(x >= 0 )
-									{
-										if(x < OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS)
-										{
-											if(y >= 0 )
-											{
-												if(y < OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS)
-												{
-													insideBin = true;
-												}
-											}
-										}
-									}
-
-									if(insideBin)
-									{
-										//cout << "h2" << endl;
-										//cout << "x = " << x << endl;
-										//cout << "y = " << y << endl;
-
-										Feature * firstFeatureInTestFeatureMatchingTrainBin =  &(trainfeatureBinArray[x][y]);
-										Feature * currentFeatureInTestFeatureMatchingTrainBin = firstFeatureInTestFeatureMatchingTrainBin;
-
-										while(currentFeatureInTestFeatureMatchingTrainBin->next != NULL)
-										{
-											//cout << "h3" << endl;
-
-											double currentDistanceBetweenTwoPoints = calculateTheDistanceBetweenTwoPoints(&(testcurrentFeatureInNearestFeatureList->pointTransformed), &(currentFeatureInTestFeatureMatchingTrainBin->pointTransformed));
-											if(currentDistanceBetweenTwoPoints < closestDistanceBetweenTwoPoints)
-											{
-												closestDistanceBetweenTwoPoints = currentDistanceBetweenTwoPoints;
-												recordOfClosestMatchedFeature =  currentFeatureInTestFeatureMatchingTrainBin;
-												//cout << "found an item - good" << endl;
-											}
-
-											currentFeatureInTestFeatureMatchingTrainBin = currentFeatureInTestFeatureMatchingTrainBin->next;
-
-										}
-
-									}
-
-								}
-							}
-
-							if(closestDistanceBetweenTwoPoints < OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR)
-							{
-								//cout << "found a matched item - good" << endl;
-
-								foundAFeatureMatch[featureIndexForComparison] = true;
-								trainObjectNameClosest[featureIndexForComparison] = testcurrentFeatureInNearestFeatureList->objectName;
-								trainViewIndexClosest[featureIndexForComparison] = testcurrentFeatureInNearestFeatureList->viewIndex;
-								trainPolyIndexClosest[featureIndexForComparison] = testcurrentFeatureInNearestFeatureList->polyIndex;
-								trainSideIndexClosest[featureIndexForComparison] = testcurrentFeatureInNearestFeatureList->sideIndex;
-							}
-
-							featureIndexForComparison++;
-
-						}
-
-						testcurrentFeatureInNearestFeatureList = testcurrentFeatureInNearestFeatureList->next;
-					}
-
-					for(int i=0;i<OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE;i++)
-					{
-						if(foundAFeatureMatch[i])
-						{
-							for(int j=0;j<OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE;j++)
-							{
-								if(foundAFeatureMatch[j])
-								{
-									if(trainObjectNameClosest[j] == trainObjectNameClosest[i])
-									{
-										trainObjectIndexVote[i] = trainObjectIndexVote[i] + 1;
-									}
-									if(trainViewIndexClosest[j] == trainViewIndexClosest[i])
-									{
-										trainViewIndexVote[i] = trainViewIndexVote[i] + 1;
-									}
-									if(trainPolyIndexClosest[j] == trainPolyIndexClosest[i])
-									{
-										trainPolyIndexVote[i] = trainPolyIndexVote[i] + 1;
-									}
-									if(trainSideIndexClosest[j] == trainSideIndexClosest[i])
-									{
-										trainSideIndexVote[i] = trainSideIndexVote[i] + 1;
-									}
-								}
-							}
-						}
-					}
-
-					//cout << "h5" << endl;
-
-					int trainObjectIndexMaxNumVotes = 0;
-					int trainViewIndexMaxNumVotes = 0;
-					int trainPolyIndexMaxNumVotes = 0;
-					int trainSideIndexMaxNumVotes = 0;
-
-					for(int i=0;i<OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE;i++)
-					{
-						if(trainObjectIndexVote[i] > trainObjectIndexMaxNumVotes)
-						{
-							trainObjectIndexMaxNumVotes = trainObjectIndexVote[i];
-							trainObjectNameMostPopular = trainObjectNameClosest[i];
-						}
-						if(trainViewIndexVote[i] > trainViewIndexMaxNumVotes)
-						{
-							trainViewIndexMaxNumVotes = trainViewIndexVote[i];
-							trainViewIndexMostPopular = trainViewIndexClosest[i];
-						}
-						if(trainPolyIndexVote[i] > trainPolyIndexMaxNumVotes)
-						{
-							trainPolyIndexMaxNumVotes = trainPolyIndexVote[i];
-							trainPolyIndexMostPopular = trainPolyIndexClosest[i];
-						}
-						if(trainSideIndexVote[i] > trainSideIndexMaxNumVotes)
-						{
-							trainSideIndexMaxNumVotes = trainSideIndexVote[i];
-							trainSideIndexMostPopular = trainSideIndexClosest[i];
-						}
-					}
-
-					//cout << "h6" << endl;
-
-
-
-
-					if((trainObjectIndexMaxNumVotes >= OR_GEOMETRIC_CHECK_MIN_NUMBER_PASSES) && (trainViewIndexMaxNumVotes >= OR_GEOMETRIC_CHECK_MIN_NUMBER_PASSES) && (trainPolyIndexMaxNumVotes >= OR_GEOMETRIC_CHECK_MIN_NUMBER_PASSES) && (trainSideIndexMaxNumVotes >= OR_GEOMETRIC_CHECK_MIN_NUMBER_PASSES))
-					{
-						passedGeometricCheck = true;
-					}
-
-					string trainObjectString = trainObjectNameMostPopular;
-					int trainViewIndex = trainViewIndexMostPopular;
-					int trainPolyIndex = trainPolyIndexMostPopular;
-					int trainSideIndex = trainSideIndexMostPopular;
-
-
-					cout << "trainObjectIndexMaxNumVotes = " << trainObjectIndexMaxNumVotes << endl;
-					cout << "trainViewIndexMaxNumVotes = " << trainViewIndexMaxNumVotes << endl;
-					cout << "trainPolyIndexMaxNumVotes = " << trainPolyIndexMaxNumVotes << endl;
-					cout << "trainSideIndexMaxNumVotes = " << trainSideIndexMaxNumVotes << endl;
-					cout << "trainObjectString = " << trainObjectString << endl;
-					cout << "trainViewIndex = " << trainViewIndex << endl;
-					cout << "trainPolyIndex = " << trainPolyIndex << endl;
-					cout << "trainSideIndex = " << trainSideIndex << endl;
-
-
-					char trainpolygonIndexString[10];
-					char trainsideIndexString[10];
-					char trainviewIndexString[10];
-
-					sprintf(trainpolygonIndexString, "%d", trainPolyIndex);
-					sprintf(trainsideIndexString, "%d", trainSideIndex);
-					sprintf(trainviewIndexString, "%d", trainViewIndex);
-
-					string traininterpolatedRGBMapFileNameForRayTracing;
-					traininterpolatedRGBMapFileNameForRayTracing = trainObjectString + "interpolatedMesh" + "ViewIndex" + trainviewIndexString + "FacingPoly" + trainpolygonIndexString + "side" + trainsideIndexString;
-
-					//cout << "h7" << endl;
-
-				#else
-*/
-
-
-
 
 
 

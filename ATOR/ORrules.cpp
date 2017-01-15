@@ -23,7 +23,7 @@
  * File Name: ORrules.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3b1a 05-August-2012
+ * Project Version: 3b2a 28-September-2012
  *
  *******************************************************************************/
 
@@ -52,7 +52,6 @@ bool convertStringToBool(string stringValue)
 	{
 		stringValue[i] = tolower(stringValue[i]);
 	}
-	//cout << "stringValue = " << stringValue << endl;
 
 	if(stringValue == "true")
 	{
@@ -1062,7 +1061,6 @@ void fillInORRulesExternVariables()
 
 
 
-
 	//OR DISPLAY VARIABLES...
 
 	if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML)
@@ -1827,9 +1825,10 @@ void fillInORRulesExternVariables()
 		strcpy(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING, OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_OFF);
 	}
 
+	#ifdef OR_DEBUG
 	//cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING << endl;
 	//cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED_STRING = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED_STRING << endl;
-
+	#endif
 
 
 	//OR OPTIMISATION IMAGE CROPPING VARIABLES...

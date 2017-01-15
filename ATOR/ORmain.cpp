@@ -23,7 +23,7 @@
  * File Name: ORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3b1a 05-August-2012
+ * Project Version: 3b2a 28-September-2012
  *
  *******************************************************************************/
 
@@ -35,6 +35,9 @@
 #include "ORglobalDefs.h"
 #include "XMLrulesClass.h"
 #include "ORrules.h"
+#ifdef OR_USE_DATABASE
+#include "ORdatabaseFileIO.h"
+#endif
 
 	//for mkdir, chdir, etc	[CreateDirectory, SetCurrentDirectory]
 #ifdef LINUX
@@ -89,6 +92,9 @@ static char errmessage[] = "Usage:  OpenOR.exe [options]\n\n\twhere options are 
 "\n\t-scale [float]    : mapping between depthmap bits and pov (defines resolution and maximum depth range/coverage of depth map)"
 "\n\n multi view options only \n"
 "\n\t-multview [string]     : use multiview list [NEEDS WORK] (def: multViewList.txt) {3DOD every row; ObjectViewFileNameWithNoExtension|imageext|imageWidth|imageHeight|depthext|vieweyex|vieweyey|vieweyez|viewatx|viewaty|viewatz|viewupx|viewupy|viewupz|viewfocal|viewsizew|viewsizeh|scale. 2DOD every row; ObjectViewFileNameWithNoExtension|imageext|imageWidth|imageHeight|xoffset|yoffset}"
+#ifdef OR_USE_DATABASE
+"\n\t-dbfolder          : file system database base folder path"
+#endif
 "\n\n\t-version        : print version"
 "\n\n\tThis program either adds an object (imaged from a particular viewpoint) to a BAI OR database, or finds the closest matching object already existent in the BAI OR database.\n\n";
 
@@ -113,8 +119,10 @@ int main(int argc,char **argv)
 	::GetCurrentDirectory(EXE_FOLDER_PATH_MAX_LENGTH, currentFolder);
 	#endif
 
-	//cout << "currentFolder = " << currentFolder << endl;
-
+	#ifdef OR_USE_DATABASE
+	string databaseFolderName =  OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME + OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME;
+	#endif
+	
 	if (exists_argument(argc,argv,"-workingfolder"))
 	{
 		workingFolderCharStar=get_char_argument(argc,argv,"-workingfolder");
@@ -140,18 +148,11 @@ int main(int argc,char **argv)
 		tempFolderCharStar = currentFolder;
 	}
 
-	/*
-	cout << "workingFolderCharStar = " << workingFolderCharStar << endl;
-	cout << "exeFolderCharStar = " << exeFolderCharStar << endl;
-	cout << "tempFolderCharStar = " << tempFolderCharStar << endl;
-	*/
-
 	#ifdef LINUX
 	chdir(workingFolderCharStar);
 	#else
 	::SetCurrentDirectory(workingFolderCharStar);
 	#endif
-
 
 	if(!parseORRulesXMLFile())
 	{
@@ -248,9 +249,6 @@ int main(int argc,char **argv)
 	sqlusername = sqlusernameCharStar;
 	sqlpassword = sqlpasswordCharStar;
 	#endif
-
-
-
 
 	view_info vi;
 	string ObjectNameArray[10];
@@ -349,12 +347,6 @@ int main(int argc,char **argv)
 		cout << "countNumViFromMultiViewList numberOfViewIndiciesPerObject = " << numberOfViewIndiciesPerObject << endl;
 
 		objectDataSource = OR_OBJECT_DATA_SOURCE_USER_LIST;
-
-		/*
-		cout << "error: cannot currently use a mult (object/) view list - still under testing - must use OR test harness for this feature" << endl;
-		printORCommandLineErrorMessage();
-		exit(0);
-		*/
 	}
 	else
 	{
@@ -369,7 +361,6 @@ int main(int argc,char **argv)
 		imageFileName = imageFileNameCharStar;
 		ObjectNameArray[0] = imageFileName;
 		vi.objectName = imageFileName;
-		//cout << "ObjectNameArray[0] = " << ObjectNameArray[0] << endl;
 	}
 	else
 	{
@@ -380,7 +371,7 @@ int main(int argc,char **argv)
 
 	if (exists_argument(argc,argv,"-version"))
 	{
-		cout << "OpenOR.exe - Project Version: 3b1a 05-August-2012" << endl;
+		cout << "OpenOR.exe - Project Version: 3b2a 28-September-2012" << endl;
 		exit(1);
 	}
 
@@ -576,6 +567,14 @@ int main(int argc,char **argv)
 		}
 	}
 
+	#ifdef OR_USE_DATABASE
+	if(exists_argument(argc,argv,"-dbfolder"))
+	{
+		databaseFolderName=get_char_argument(argc,argv,"-dbfolder");
+	}
+	initialiseDatabase(databaseFolderName);	
+	#endif
+	
 	if(missingDepthMapExtensionDescriptor && !useMultViewList && (dimension == OR_METHOD3DOD_DIMENSIONS))
 	{
 		cout << "error: must either specify an input depth map extension and POV parameters (if not wanting defaults), or a mult (object/) view list for 3DOD" << endl;

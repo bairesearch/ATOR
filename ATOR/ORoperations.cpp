@@ -23,7 +23,7 @@
  * File Name: ORoperations.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3b1a 05-August-2012
+ * Project Version: 3b2a 28-September-2012
  *
  *******************************************************************************/
 
@@ -57,7 +57,6 @@ void createPointMapFromDepthMap(int imageWidth, int imageHeight, double * depthM
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-
 			double depth = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
 
 			vec xyzWorld;
@@ -97,8 +96,6 @@ void printvi(view_info * vi)
 	cout << "vi->viewwidth = " << vi->viewwidth << endl;
 	cout << "vi->viewheight = " << vi->viewheight << endl;
 	cout << "vi->focal_length = " << vi->focal_length << endl;
-
-
 }
 
 
@@ -111,7 +108,6 @@ void printPointMap(int imageWidth, int imageHeight, double * pointMap)
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-
 			vec xyzWorld;
 			getPointMapValue(x, y, imageWidth, pointMap, &xyzWorld);
 
@@ -132,7 +128,6 @@ void printDepthMap(int imageWidth, int imageHeight, double * depthMap)
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-
 			vec xyzWorld;
 			double depth = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
 
@@ -171,7 +166,9 @@ bool addFeatureToListAndIfACommonFeatureExistsTakeAverage(vec * proposedFeature,
 
 			if(distanceBetweenTwoPoints < maxFeatureDistanceError)
 			{
-				//cout << "found a fail" << endl;
+				#ifdef OR_DEBUG
+				//cout << "found a fail" << endl;			
+				#endif
 				int currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature = currentFeatureInList->numberOfFeaturePixelsUsedToGenerateFeature;
 				double newx = (currentFeatureInList->point.x + proposedFeature->x/currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature)/(currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature+1)*currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature;
 				double newy = (currentFeatureInList->point.y + proposedFeature->y/currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature)/(currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature+1)*currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature;
@@ -233,7 +230,8 @@ bool checkFeatureListForCommonFeature(vec * corner, Feature * firstFeatureInList
 	{
 		while(currentFeatureInList->next != NULL)
 		{
-			/*//METHOD2
+			/*
+			//METHOD2
 			if(compareVectors(&(currentFeatureInList->point), corner))
 			{
 				foundCommonFeature = true;
@@ -241,7 +239,6 @@ bool checkFeatureListForCommonFeature(vec * corner, Feature * firstFeatureInList
 			*/
 
 			 //METHOD1;
-
 			double distanceBetweenTwoPoints;
 			if(checkZAlso)
 			{
@@ -254,10 +251,11 @@ bool checkFeatureListForCommonFeature(vec * corner, Feature * firstFeatureInList
 
 			if(distanceBetweenTwoPoints < maxFeatureDistanceError)
 			{
-				//cout << "found a fail" << endl;
+				#ifdef OR_DEBUG
+				//cout << "found a fail" << endl;			
+				#endif
 				foundCommonFeature = true;
 			}
-
 
 			currentFeatureInList=currentFeatureInList->next;
 		}
@@ -286,22 +284,20 @@ void generateBooleanMapFromFeatureList(int imageWidth, int imageHeight, Feature 
 	Feature * currentFeatureInList = firstFeatureInList;
 	while(currentFeatureInList->next != NULL)
 	{
+		#ifdef OR_DEBUG
 		/*
 		cout << "currentFeatureInList->point.x = " << currentFeatureInList->point.x << endl;
 		cout << "currentFeatureInList->point.y = " << currentFeatureInList->point.y << endl;
 		cout << "x = " << currentFeatureInList->xViewport << endl;
 		cout << "y = " << currentFeatureInList->yViewport << endl;
 		*/
+		#endif
 
 		/*
-
 		double xWorld = currentFeatureInList->point.x;
 		double yWorld = currentFeatureInList->point.y;
-
-
 		int x = (xWorld / XYCOORDINATES_CONVERSION_INTO_PIXELS)+(imageWidth/2);
 		int y = (yWorld / XYCOORDINATES_CONVERSION_INTO_PIXELS)+(imageHeight/2);
-
 		now use calculatePointMapValue() instead..
 		*/
 		int x = currentFeatureInList->xViewport / zoom;
@@ -422,8 +418,10 @@ bool checkPolygonListForCommonPolygon(PolygonBAI * polygon, PolygonBAI * firstPo
 	}
 	else
 	{
-		//cout << "DEBUG: (currentPolygonInList->next == NULL)" << endl;
-		//allow first polygon to be added without precondition
+		//allow first polygon to be added without precondition	
+		#ifdef OR_DEBUG
+		//cout << "(currentPolygonInList->next == NULL)" << endl;
+		#endif
 	}
 
 	return foundCommonPolygon;
@@ -447,7 +445,6 @@ bool checkFeatureListForCommonFeatureBasic(Feature * corner, Feature * firstFeat
 	}
 
 	return foundCommonFeature;
-
 }
 
 
@@ -464,8 +461,6 @@ PolygonBAI * addPolysToListForGivenFeatureAndNearestFeatureList(PolygonBAI * fir
 		Feature * currentFeatureInNearestFeatureList2 = firstFeatureInNearestFeatureList;
 		while(currentFeatureInNearestFeatureList2->next != NULL)
 		{
-			//cout << "here1" << endl;
-
 			//make sure poly uses different points;
 			if(compareDoubles(calculateTheDistanceBetweenTwoPoints(&(currentFeature->point), &(currentFeatureInNearestFeatureList->point)),0.0)
 			|| compareDoubles(calculateTheDistanceBetweenTwoPoints(&(currentFeature->point), &(currentFeatureInNearestFeatureList2->point)),0.0)
@@ -477,7 +472,6 @@ PolygonBAI * addPolysToListForGivenFeatureAndNearestFeatureList(PolygonBAI * fir
 			{
 				bool passedAreaTest = false;
 
-				//cout << "here1b" << endl;
 				if(dimension == OR_METHOD3DOD_DIMENSIONS)
 				{
 					//CHECK THIS - need to invent code for this scenario
@@ -492,13 +486,15 @@ PolygonBAI * addPolysToListForGivenFeatureAndNearestFeatureList(PolygonBAI * fir
 						double internalAngle3 = calculateInteriorAngleOfAPolygonVertex(&(currentFeatureInNearestFeatureList2->pointNonWorldCoord), &(currentFeatureInNearestFeatureList->pointNonWorldCoord), &(currentFeature->pointNonWorldCoord));
 
 						bool minAngleTest = true;
-
+						
+						#ifdef OR_DEBUG
 						/*
 						cout << "areaOfT = " << areaOfT << endl;
 						cout << "internalAngle1 = " << internalAngle1 << endl;
 						cout << "internalAngle2 = " << internalAngle2 << endl;
 						cout << "internalAngle3 = " << internalAngle3 << endl;
 						*/
+						#endif
 
 						double minAngleAllowedRadians = (POLYGON_MIN_ANGLE_DEGREES / 180.0) * PI;
 						if((absDouble(internalAngle1) < minAngleAllowedRadians) || (absDouble(internalAngle2) < minAngleAllowedRadians) || (absDouble(internalAngle3) < minAngleAllowedRadians))
@@ -577,8 +573,6 @@ PolygonBAI * addPolysToListForGivenFeatureAndNearestFeatureList(PolygonBAI * fir
 				if(passedAreaTest)
 				{//minimum area of triangle enforcement - eliminates small polys subject to noise, and also eliminates colinear polys
 
-					//cout << "here2" << endl;
-
 					PolygonBAI tempPolygon;
 					copyVectorRT(&(tempPolygon.point1), &(currentFeature->point));
 					copyVectorRT(&(tempPolygon.point2), &(currentFeatureInNearestFeatureList->point));
@@ -587,8 +581,7 @@ PolygonBAI * addPolysToListForGivenFeatureAndNearestFeatureList(PolygonBAI * fir
 					{
 						if(count < numberOfPolygonsPerFeature)
 						{
-							//cout << "here3" << endl;
-
+							#ifdef OR_DEBUG
 							/*
 							cout << "\nnew poly added: " << endl;
 							cout << "currentFeatureInNearestFeatureListz->point.x = " << currentFeature->point.x << endl;
@@ -601,6 +594,7 @@ PolygonBAI * addPolysToListForGivenFeatureAndNearestFeatureList(PolygonBAI * fir
 							cout << "currentFeatureInNearestFeatureList2->point.y = " << currentFeatureInNearestFeatureList2->point.y << endl;
 							cout << "currentFeatureInNearestFeatureList2->point.z = " << currentFeatureInNearestFeatureList2->point.z << endl;
 							*/
+							#endif
 
 							copyVectorRT(&(currentPolygonInList->point1), &(currentFeature->point));
 							copyVectorRT(&(currentPolygonInList->point2), &(currentFeatureInNearestFeatureList->point));
@@ -654,8 +648,6 @@ int calculateNumberOfNearestFeatures(int numberOfPolygonsPerFeature, int numberO
 
 void generateNearestFeaturesList(Feature * firstFeatureInNearestFeatureList, int numberOfNearestFeatures)
 {
-	//	while(currentFeatureInList->next != NULL)
-
 	Feature * currentFeatureInNearestFeatureList = firstFeatureInNearestFeatureList;
 	for(int i=0; i<numberOfNearestFeatures; i++)
 	{
@@ -666,7 +658,6 @@ void generateNearestFeaturesList(Feature * firstFeatureInNearestFeatureList, int
 		currentFeatureInNearestFeatureList->next = newFeature;
 		currentFeatureInNearestFeatureList = currentFeatureInNearestFeatureList->next;
 	}
-
 }
 
 
@@ -684,11 +675,13 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 		{
 			int numberOfNearestFeatures = calculateNumberOfNearestFeatures(NUMBER_OF_POLYGONS_PER_FEATURE, OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM);
 
+			#ifdef OR_DEBUG
 			/*
 			cout << "numberOfPolygonsPerFeature = " << NUMBER_OF_POLYGONS_PER_FEATURE << endl;
 			cout << "numberOfAdditionalFeatures = " << OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM << endl;
 			cout << "numberOfNearestFeatures = " << numberOfNearestFeatures << endl;
 			*/
+			#endif
 
 			Feature *  firstFeatureInNearestFeatureList = new Feature();
 			//generateNearestFeaturesList(firstFeatureInNearestFeatureList, numberOfNearestFeatures);
@@ -724,11 +717,12 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 						{//should not be necessary
 							if(!compareVectors(&(currentFeatureInList2->point), &(currentFeatureInList1->point)))
 							{
-								//cout << "foundASpot" << endl;
 								distanceToNearestFeatureFromFeatureList2 = calculateTheDistanceBetweenTwoPoints(&(currentFeatureInList2->point), &(currentFeatureInList1->point));
 								copyVectors(&(currentFeatureInNearestFeatureList->point), &(currentFeatureInList2->point));
 								copyVectors(&(currentFeatureInNearestFeatureList->pointNonWorldCoord), &(currentFeatureInList2->pointNonWorldCoord));
 								foundASpot = true;
+								
+								#ifdef OR_DEBUG
 								/*
 								cout << "ADDING NEAREST FEATURE:" << endl;
 								cout << "currentFeatureInNearestFeatureList->point.x = " << currentFeatureInNearestFeatureList->point.x << endl;
@@ -738,6 +732,7 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 								cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.y = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.y << endl;
 								cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.z = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.z << endl;
 								*/
+								#endif
 							}
 						}
 					}
@@ -751,7 +746,9 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 				if(!foundASpot)
 				{
 					stillFindingNearestFeatures = false;
-					//cout << "error: !foundASpot" << endl;
+					#ifdef OR_DEBUG
+					//cout << "!foundASpot" << endl;
+					#endif
 				}
 				else
 				{
@@ -762,9 +759,8 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 				}
 			}
 
-			//#define DEBUG_NEAREST_FEATURE_FIND
-			#ifdef DEBUG_NEAREST_FEATURE_FIND
-
+			#ifdef OR_DEBUG
+			/*
 			cout << "DEBUG_NEAREST_FEATURE_FIND:" << endl;
 			cout << "currentFeatureInList1->point.x = " << currentFeatureInList1->point.x << endl;
 			cout << "currentFeatureInList1->point.y = " << currentFeatureInList1->point.y << endl;
@@ -785,12 +781,12 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 
 				currentFeatureInNearestFeatureList=currentFeatureInNearestFeatureList->next;
 			}
+			*/
 			#endif
 
-
-		//#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES
+			//#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES
 			PolygonBAI * backupOfOldCurrentPolygon = currentPolygonInList;
-		//#endif
+			//#endif
 
 			currentPolygonInList = addPolysToListForGivenFeatureAndNearestFeatureList(currentPolygonInList, firstPolygonInList, firstFeatureInNearestFeatureList, NUMBER_OF_POLYGONS_PER_FEATURE, dimension);
 
@@ -813,10 +809,8 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 			cornerIndexList1++;
 		}
 
-
-		//#define DEBUG_POLYGON_GENERATION
-		#ifdef DEBUG_POLYGON_GENERATION
-
+		#ifdef OR_DEBUG
+		/*
 		cout << "DEBUG_POLYGON_GENERATION:" << endl;
 		int numSidesPerPolygon = 3;
 		int numberOfPolygons = 0;
@@ -838,7 +832,7 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 			currentPolygonInList=currentPolygonInList->next;
 		}
 		cout << "numberOfPolygons = " << numberOfPolygons << endl;
-
+		*/
 		#endif
 	}
 
@@ -880,6 +874,7 @@ bool generatePolygonListUsingFeatureList(int imageWidth, int imageHeight, Featur
 						copyVectorRT(&(tempPolygon.point3), &(currentFeatureInList3->point));
 						if(!checkPolygonListForCommonPolygon(&tempPolygon, firstPolygonInList))
 						{
+							#ifdef OR_DEBUG
 							/*
 							cout << "new poly added: " << endl;
 							cout << "currentFeatureInList1->point.x = " <<  currentFeatureInList1->point.x << endl;
@@ -892,6 +887,7 @@ bool generatePolygonListUsingFeatureList(int imageWidth, int imageHeight, Featur
 							cout << "currentFeatureInList3->point.y = " <<  currentFeatureInList3->point.y << endl;
 							cout << "currentFeatureInList3->point.z = " <<  currentFeatureInList3->point.z << endl;
 							*/
+							#endif
 
 							copyVectorRT(&(currentPolygonInList->point1), &(currentFeatureInList1->point));
 							copyVectorRT(&(currentPolygonInList->point2), &(currentFeatureInList2->point));
@@ -914,15 +910,19 @@ bool generatePolygonListUsingFeatureList(int imageWidth, int imageHeight, Featur
 			cornerIndexList1++;
 		}
 
+		#ifdef OR_DEBUG
+		/*
 		int numSidesPerPolygon = 3;
 		int numberOfPolygons = 0;
 		currentPolygonInList = &(firstPolygonInList[trainZoomIndex]);
 		while(currentPolygonInList->next != NULL)
 		{
 			numberOfPolygons++;
-			//cout << "numberOfPolygons++" << endl;	//DEBUG;
 			currentPolygonInList=currentPolygonInList->next;
 		}
+		cout << "numberOfPolygons = " << numberOfPolygons << endl;
+		*/
+		#endif		
 	}
 
 	return result;
@@ -931,7 +931,7 @@ bool generatePolygonListUsingFeatureList(int imageWidth, int imageHeight, Featur
 
 void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int imageHeight, double * depthMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3])
 {
-	//Added by RBB -for polygon calculations [ONLY USE COMPLETE DATA FOR THESE CALCULATIONS!!];
+	//Added by RBB - for polygon calculations [ONLY USE COMPLETE DATA FOR THESE CALCULATIONS];
 
 	double maxDotProductResultArrayCompleteNearestPoint[3][3][3][3];
 	int maxDotProductResultXposArrayCompleteNearestPoint[3][3][3][3];
@@ -953,7 +953,6 @@ void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int 
 		}
 	}
 
-
 	for(int uvxIndex = 0; uvxIndex < 3; uvxIndex++)
 	{
 		for(int uvyIndex = 0; uvyIndex < 3; uvyIndex++)
@@ -971,43 +970,41 @@ void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int 
 
 				int uvxIndex2 = uvxIndex;
 
-					for(int uvyIndex2 = 0; uvyIndex2 < 3; uvyIndex2++)
+				for(int uvyIndex2 = 0; uvyIndex2 < 3; uvyIndex2++)
+				{
+					for(int uvzIndex2 = 0; uvzIndex2 < 3; uvzIndex2++)
 					{
-						for(int uvzIndex2 = 0; uvzIndex2 < 3; uvzIndex2++)
+						if((uvxIndex == uvxIndex2) && (uvyIndex == uvyIndex2) && (uvzIndex == uvzIndex2))
 						{
-							if((uvxIndex == uvxIndex2) && (uvyIndex == uvyIndex2) && (uvzIndex == uvzIndex2))
-							{
 
+						}
+						else
+						{
+							vec ambientPoint;
+							ambientPoint.x = maxDotProductResultXposArrayComplete[uvxIndex2][uvyIndex2][uvzIndex2];
+							ambientPoint.y = maxDotProductResultYposArrayComplete[uvxIndex2][uvyIndex2][uvzIndex2];
+							ambientPoint.z = getLumOrContrastOrDepthMapValue(ambientPoint.x, ambientPoint.y, imageWidth, depthMap);
+
+							double distanceBetweenTwoPoints = calculateTheDistanceBetweenTwoPoints(&corner, &ambientPoint);
+
+
+							if(distanceBetweenTwoPoints> MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD)
+							{
+								if(distanceBetweenTwoPoints < maxDotProductResultArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector])
+								{
+									maxDotProductResultArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = distanceBetweenTwoPoints;
+									maxDotProductResultXposArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = ambientPoint.x;
+									maxDotProductResultYposArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = ambientPoint.y;
+
+								}
 							}
 							else
 							{
-								vec ambientPoint;
-								ambientPoint.x = maxDotProductResultXposArrayComplete[uvxIndex2][uvyIndex2][uvzIndex2];
-								ambientPoint.y = maxDotProductResultYposArrayComplete[uvxIndex2][uvyIndex2][uvzIndex2];
-								ambientPoint.z = getLumOrContrastOrDepthMapValue(ambientPoint.x, ambientPoint.y, imageWidth, depthMap);
-
-								double distanceBetweenTwoPoints = calculateTheDistanceBetweenTwoPoints(&corner, &ambientPoint);
-
-
-								if(distanceBetweenTwoPoints> MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD)
-								{
-									if(distanceBetweenTwoPoints < maxDotProductResultArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector])
-									{
-										maxDotProductResultArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = distanceBetweenTwoPoints;
-										maxDotProductResultXposArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = ambientPoint.x;
-										maxDotProductResultYposArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = ambientPoint.y;
-
-									}
-								}
-								else
-								{
-									//identical features
-								}
+								//identical features
 							}
 						}
 					}
-
-
+				}
 
 				//find closest point using with common unitY;
 				commonUnitVector = VECTOR_VAL_Y;
@@ -1016,37 +1013,37 @@ void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int 
 				{
 					int uvyIndex2 = uvyIndex;
 
-						for(int uvzIndex2 = 0; uvzIndex2 < 3; uvzIndex2++)
+					for(int uvzIndex2 = 0; uvzIndex2 < 3; uvzIndex2++)
+					{
+						if((uvxIndex == uvxIndex2) && (uvyIndex == uvyIndex2) && (uvzIndex == uvzIndex2))
 						{
-							if((uvxIndex == uvxIndex2) && (uvyIndex == uvyIndex2) && (uvzIndex == uvzIndex2))
+							//identical features
+						}
+						else
+						{
+							vec ambientPoint;
+							ambientPoint.x = maxDotProductResultXposArrayComplete[uvxIndex2][uvyIndex2][uvzIndex2];
+							ambientPoint.y = maxDotProductResultYposArrayComplete[uvxIndex2][uvyIndex2][uvzIndex2];
+							ambientPoint.z = getLumOrContrastOrDepthMapValue(ambientPoint.x, ambientPoint.y, imageWidth, depthMap);
+
+							double distanceBetweenTwoPoints = calculateTheDistanceBetweenTwoPoints(&corner, &ambientPoint);
+
+							if(distanceBetweenTwoPoints> MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD)
 							{
-								//identical features
+								if(distanceBetweenTwoPoints < maxDotProductResultArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector])
+								{
+									maxDotProductResultArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = distanceBetweenTwoPoints;
+									maxDotProductResultXposArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = ambientPoint.x;
+									maxDotProductResultYposArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = ambientPoint.y;
+
+								}
 							}
 							else
 							{
-								vec ambientPoint;
-								ambientPoint.x = maxDotProductResultXposArrayComplete[uvxIndex2][uvyIndex2][uvzIndex2];
-								ambientPoint.y = maxDotProductResultYposArrayComplete[uvxIndex2][uvyIndex2][uvzIndex2];
-								ambientPoint.z = getLumOrContrastOrDepthMapValue(ambientPoint.x, ambientPoint.y, imageWidth, depthMap);
-
-								double distanceBetweenTwoPoints = calculateTheDistanceBetweenTwoPoints(&corner, &ambientPoint);
-
-								if(distanceBetweenTwoPoints> MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD)
-								{
-									if(distanceBetweenTwoPoints < maxDotProductResultArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector])
-									{
-										maxDotProductResultArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = distanceBetweenTwoPoints;
-										maxDotProductResultXposArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = ambientPoint.x;
-										maxDotProductResultYposArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = ambientPoint.y;
-
-									}
-								}
-								else
-								{
-									//identical features
-								}
+								//identical features
 							}
 						}
+					}
 
 				}
 
@@ -1059,35 +1056,34 @@ void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int 
 					{
 						int uvzIndex2 = uvzIndex;
 
-							if((uvxIndex == uvxIndex2) && (uvyIndex == uvyIndex2) && (uvzIndex == uvzIndex2))
+						if((uvxIndex == uvxIndex2) && (uvyIndex == uvyIndex2) && (uvzIndex == uvzIndex2))
+						{
+							//identical features
+						}
+						else
+						{
+							vec ambientPoint;
+							ambientPoint.x = maxDotProductResultXposArrayComplete[uvxIndex2][uvyIndex2][uvzIndex2];
+							ambientPoint.y = maxDotProductResultYposArrayComplete[uvxIndex2][uvyIndex2][uvzIndex2];
+							ambientPoint.z = getLumOrContrastOrDepthMapValue(ambientPoint.x, ambientPoint.y, imageWidth, depthMap);
+
+							double distanceBetweenTwoPoints = calculateTheDistanceBetweenTwoPoints(&corner, &ambientPoint);
+
+							if(distanceBetweenTwoPoints> MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD)
 							{
-								//identical features
+								if(distanceBetweenTwoPoints < maxDotProductResultArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector])
+								{
+									maxDotProductResultArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = distanceBetweenTwoPoints;
+									maxDotProductResultXposArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = ambientPoint.x;
+									maxDotProductResultYposArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = ambientPoint.y;
+
+								}
 							}
 							else
 							{
-								vec ambientPoint;
-								ambientPoint.x = maxDotProductResultXposArrayComplete[uvxIndex2][uvyIndex2][uvzIndex2];
-								ambientPoint.y = maxDotProductResultYposArrayComplete[uvxIndex2][uvyIndex2][uvzIndex2];
-								ambientPoint.z = getLumOrContrastOrDepthMapValue(ambientPoint.x, ambientPoint.y, imageWidth, depthMap);
-
-								double distanceBetweenTwoPoints = calculateTheDistanceBetweenTwoPoints(&corner, &ambientPoint);
-
-								if(distanceBetweenTwoPoints> MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD)
-								{
-									if(distanceBetweenTwoPoints < maxDotProductResultArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector])
-									{
-										maxDotProductResultArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = distanceBetweenTwoPoints;
-										maxDotProductResultXposArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = ambientPoint.x;
-										maxDotProductResultYposArrayCompleteNearestPoint[uvxIndex][uvyIndex][uvzIndex][commonUnitVector] = ambientPoint.y;
-
-									}
-								}
-								else
-								{
-									//identical features
-								}
+								//identical features
 							}
-
+						}
 					}
 				}
 
@@ -1231,8 +1227,6 @@ void createInterpolatedDepthMap(int imageWidth, int imageHeight, double * depthM
 						totalDepth = totalDepth + getLumOrContrastOrDepthMapValue(kx, ky, imageWidth, depthMap);
 						numberOfDepthPoints++;
 					}
-
-
 				}
 			}
 
@@ -1252,7 +1246,6 @@ void applyTransformationMatrixToAllReferencesIn2DList(Reference * firstReference
 	Reference * currentReference = firstReferenceInInterpolated2DRGBMap;
 	while(currentReference->next != NULL)
 	{
-
 		vec vecNew;
 		multiplyVectorByMatrix(&vecNew, &(currentReference->vertex1absolutePosition), transformationMatrix);
 		copyVectors(&(currentReference->vertex1absolutePosition), &vecNew);
@@ -1295,7 +1288,6 @@ void restoreBackupVertexAbsPositionsForAllReferencesIn2DList(Reference * firstRe
 	Reference * currentReference = firstReferenceInInterpolated2DRGBMap;
 	while(currentReference->next != NULL)
 	{
-
 		currentReference->vertex1absolutePosition.x = currentReference->vertex1absolutePositionBackup.x;
 		currentReference->vertex1absolutePosition.y = currentReference->vertex1absolutePositionBackup.y;
 		currentReference->vertex1absolutePosition.z = currentReference->vertex1absolutePositionBackup.z;
@@ -1309,12 +1301,8 @@ void restoreBackupVertexAbsPositionsForAllReferencesIn2DList(Reference * firstRe
 		currentReference->vertex4absolutePosition.y = currentReference->vertex4absolutePositionBackup.y;
 		currentReference->vertex4absolutePosition.z = currentReference->vertex4absolutePositionBackup.z;
 
-
 		currentReference = currentReference->next;
 	}
-
-
-
 }
 
 void storeBackupVertexAbsPositionsForAllReferencesIn2DList(Reference * firstReferenceInInterpolated2DRGBMap)
@@ -1322,7 +1310,6 @@ void storeBackupVertexAbsPositionsForAllReferencesIn2DList(Reference * firstRefe
 	Reference * currentReference = firstReferenceInInterpolated2DRGBMap;
 	while(currentReference->next != NULL)
 	{
-
 		currentReference->vertex1absolutePositionBackup.x = currentReference->vertex1absolutePosition.x;
 		currentReference->vertex1absolutePositionBackup.y = currentReference->vertex1absolutePosition.y;
 		currentReference->vertex1absolutePositionBackup.z = currentReference->vertex1absolutePosition.z;
@@ -1336,12 +1323,8 @@ void storeBackupVertexAbsPositionsForAllReferencesIn2DList(Reference * firstRefe
 		currentReference->vertex4absolutePositionBackup.y = currentReference->vertex4absolutePosition.y;
 		currentReference->vertex4absolutePositionBackup.z = currentReference->vertex4absolutePosition.z;
 
-
 		currentReference = currentReference->next;
 	}
-
-
-
 }
 
 

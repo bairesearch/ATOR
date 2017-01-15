@@ -23,7 +23,7 @@
  * File Name: ORmethod3DOD.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3b1a 05-August-2012
+ * Project Version: 3b2a 28-September-2012
  *
  *******************************************************************************/
 
@@ -39,7 +39,7 @@
 #define TRAIN_STRING ".train"
 #define TEST_STRING ".test"
 
-#define OR_SNAPSHOT_SCALE_FACTOR (10)	//10 looks good -  CHECK THIS - why is this not 1.0? I forget
+#define OR_SNAPSHOT_SCALE_FACTOR (10)	//10 looks good -  CHECK THIS - why is this not 1.0?
 
 //not currently used;
 #ifndef USE_OPENGL
