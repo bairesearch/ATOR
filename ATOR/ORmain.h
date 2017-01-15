@@ -26,7 +26,7 @@
  * File Name: ORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3f7a 16-August-2015
+ * Project Version: 3f7b 16-August-2015
  *
  *******************************************************************************/
 
