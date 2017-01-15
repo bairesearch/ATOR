@@ -41,17 +41,14 @@
  *			d) Windows VS compatibility,
  *			e) change of binary name from SE to FD.exe};
  *
- *		(Linux Ubuntu 14.04 Only)
+ *		(Linux Ubuntu 14.04/16.04 Only)
  *		copy (Linux Ubuntu x86_64 compiled) FD.exe to OpenOR.exe working folder
  *
  *		(Linux EL5/6/7 Only)
  *		copy (Linux EL5/6/7 x86_64 compiled) FD.exe to OpenOR.exe working folder
  *
- *		(Windows XP Only)
- *		copy (Windows XP i386 compiled) FD.exe to OpenOR.exe working folder
- *
- *		(Windows 7/8/10 x86_64 Only)
- *		copy (Windows 7/8 x86_64 compiled) FD.exe to OpenOR.exe working folder
+ *		(Windows XP/7/8/10 Only)
+ *		copy (Windows XP/7/8/10 i386 compiled) FD.exe to OpenOR.exe working folder
  *
  *		This version of Heitger FD may be downloaded via;
  *
@@ -65,6 +62,10 @@
  *		(Linux Ubuntu 14.04 Only)
  *		sudo apt-get install freeglut3 OR;
  *		sudo dpkg -i freeglut3_2.8.1-1_amd64.deb
+ *
+ *		(Linux Ubuntu 16.04 Only)
+ *		sudo apt-get install freeglut3 OR;
+ *		sudo dpkg -i freeglut3_2.8.1-2_amd64.deb
  *
  *		(Linux EL5 Only)
  *		yum install freeglut OR;
@@ -108,8 +109,12 @@
  *	Install External Package 3 - ImageMagik;
  *
  *		(Linux Ubuntu 14.04 Only)
- *		sudo apt-get install imagemagick? OR;
- *		sudo dpkg -i imagemagick_6.7.7.10-5ubuntu3_amd64.deb?
+ *		sudo apt-get install imagemagick OR;
+ *		sudo dpkg -i imagemagick_8%3a6.7.7.10-6ubuntu3_amd64.deb imagemagick-common_8%3a6.7.7.10-6ubuntu3_all.deb
+ *
+ *		(Linux Ubuntu 16.04 Only)
+ *		sudo apt-get install imagemagick OR;
+ *		sudo dpkg -i imagemagick_8%3a6.8.9.9-7ubuntu5.1_amd64.deb imagemagick-common_8%3a6.8.9.9-7ubuntu5.1_all.deb
  *
  *		(Linux EL5 Only)
  *		yum install ImageMagick OR;
@@ -145,23 +150,24 @@
  *		sudo apt-get install libjpeg-dev OR;
  *		sudo dpkg -i libjpeg-dev_8c-2ubuntu8_amd64.deb
  *
+ *		(Linux Ubuntu 16.04 Only)
+ *		sudo apt-get install libjpeg-turbo8-dev OR;
+ *		sudo dpkg -i libjpeg-turbo8-dev_1.4.2-0ubuntu3_amd64.deb
+ *
  *		(Linux EL5 Only)
  *		Assuming EL5 Linux JPEG libraries were not preinstalled;
  *		yum install libjpeg libjpeg-devel OR;
- *		rpm -i libjpeg-6b-37.x86-64.rpm
- *		rpm -i libjpeg-devel-6b-37.x86-64.rpm
+ *		rpm -i libjpeg-6b-37.x86-64.rpm libjpeg-devel-6b-37.x86-64.rpm
  *
  *		(Linux EL6 Only)
  *		Assuming EL6 Linux JPEG libraries were not preinstalled;
  *		yum install libjpeg libjpeg-devel OR;
- *		rpm -i libjpeg-6b-46.el6.x86_64.rpm
- *		rpm -i libjpeg-devel-6b-46.el6.x86_64.rpm
+ *		rpm -i libjpeg-6b-46.el6.x86_64.rpm libjpeg-devel-6b-46.el6.x86_64.rpm
  *
  *		(Linux EL7 Only)
  *		Assuming EL7 Linux JPEG libraries were not preinstalled;
  *		yum install libjpeg libjpeg-devel OR;
- *		rpm -i libjpeg-turbo-1.2.90-5.el7.i686.rpm
- *		rpm -i libjpeg-turbo-devel-1.2.90-5.el7.i686.rpm
+ *		rpm -i libjpeg-turbo-1.2.90-5.el7.i686.rpm libjpeg-turbo-devel-1.2.90-5.el7.i686.rpm
  *
  *		(Windows XP Only)
  *		[May only be required for development]
@@ -192,7 +198,11 @@
  *
  *		(Linux Ubuntu 14.04 Only)
  *		sudo apt-get install mysql-client OR;
- * 		sudo dpkg -i mysql-client-5.5_5.5.35-0ubuntu0.13.10.2_amd64.deb
+ * 		sudo dpkg -i mysql-client-5.5_5-x.x-0ubuntu0.14.04.x_amd64.deb
+ *
+ *		(Linux Ubuntu 16.04 Only)
+ *		sudo apt-get install mysql-client OR;
+ * 		sudo dpkg -i mysql-client-5.7.13-0ubuntu0.16.04.2_amd64.deb
  *
  *		(Linux EL5 Only)
  *		yum install mysql OR;
@@ -217,7 +227,12 @@
  *
  *		(Linux Ubuntu 14.04 Only) On the MySQL Server perform the following actions to initiate the server;
  *		sudo apt-get install mysql-server OR;
- * 		sudo dpkg -i mysql-server-5.5_5.5.35-0ubuntu0.13.10.2_amd64.deb
+ * 		sudo dpkg -i mysql-server-5.5_5.x.x-0ubuntu0.14.04.x_amd64.deb
+ *		enter the mysql server root password when prompted (chooseamysqlrootpassword)
+ *
+ *		(Linux Ubuntu 16.04 Only) On the MySQL Server perform the following actions to initiate the server;
+ *		sudo apt-get install mysql-server OR;
+ * 		sudo dpkg -i mysql-server-5.7.13-0ubuntu0.16.04.2_amd64.deb
  *		enter the mysql server root password when prompted (chooseamysqlrootpassword)
  *
  *		(Linux EL5 Only) On the MySQL Server perform the following actions to initiate the server;
@@ -290,8 +305,7 @@
  *		Copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.dll to working folder (location of OpenOR.exe)
  *
  *		(Windows 10 x86_64 Only) On the MySQL Server perform the following actions to initiate the server;
- *		For example. install mysql-installer-community-5.6.28.0.msi
- *				(MySQL can be downloaded from http://dev.mysql.com/downloads/windows/installer/5.6.html)
+ *		For example. install mysql-installer-community-5.6.28.0.msi (MySQL can be downloaded from http://dev.mysql.com/downloads/windows/installer/5.6.html)
  *			Select "I accept the license terms". Click Next
  *			Select Custom. Click Next.
  *			Add MySQL Servers - MySQL Server - MySQL Server 5.6 - MySQL Server 5.6.28 - X86 (ie 32bit server). Click Next.
@@ -321,7 +335,7 @@
  *		Either A) create them automatically using the following method;
  * 			Open Command Line
  *				edit createBAIORmysqlDatabase.sql (from OpenOR source) and specify MYSQLUSERNAME and MYSQLPASSWORD
- *				Linux EL5/EL6/EL7/Ubuntu 14.04:
+ *				Linux EL5/EL6/EL7/Ubuntu 14.04/Ubuntu 16.04:
  *					open terminal (system - gnome-terminal)
  *					cd /home/user/pathofcreateBAIORmysqlDatabase/
  *					mysql -u root -p < createBAIORmysqlDatabase.sql
@@ -494,18 +508,16 @@
  *			Install OpenOffice.org Base MySQL Access Point (this is a useful procedure for developers, even if they install the mysql database via the script/A);
  * 				Install Java Jave Run-time environment (JRE):
  *					Linux Ubuntu:
- *						sudo apt-get install openjdk-7-jdk OR;
- *						sudo dpkg -i openjdk-7-jdk_7u51-2.4.4-0ubuntu0.13.10.1_amd64.deb (and dependencies)
+ *						sudo apt-get install openjdk-7-jdk
  *					Linux EL5/EL6:
- *						yum install java-1.6.0-openjdk java-1.6.0-openjdk-devel OR;
- *						rpm -i java-1.6.0-openjdk...rpm java-1.6.0-openjdk-devel...rpm
+ *						yum install java-1.6.0-openjdk java-1.6.0-openjdk-devel
  *					Windows
  *						install jre-6u20-windows-i586-s.exe (or higher)
  *				on either Platform (windows or Linux);
- *				Windows XP: extract mysql-connector-java-5.1.10.zip, and copy mysql-connector-java-5.1.10-bin.jar to a permanent folder
- *				Windows 7/8: extract mysql-connector-java-5.1.17.zip, and copy mysql-connector-java-5.1.17-bin.jar to a permanent folder
- *				Windows 10: extract mysql-connector-java-5.1.10.zip, and copy mysql-connector-java-5.1.10-bin.jar to a permanent folder
- *					(NB MySQL Connector J can be downloaded from http://dev.mysql.com/downloads/connector/j/)
+ *					Windows XP: extract mysql-connector-java-5.1.10.zip, and copy mysql-connector-java-5.1.10-bin.jar to a permanent folder
+ *					Windows 7/8: extract mysql-connector-java-5.1.17.zip, and copy mysql-connector-java-5.1.17-bin.jar to a permanent folder
+ *					Windows 10: extract mysql-connector-java-5.1.xx.zip, and copy mysql-connector-java-5.1.xx-bin.jar to a permanent folder
+ *						(NB MySQL Connector J can be downloaded from http://dev.mysql.com/downloads/connector/j/)
  *				Open OpenOffice.org Base - create new database [default settings]
  *				Tools - Options - Java - Class path - Add Archive (add mysql-connector-java-5.1.10-bin.jar)
  *				Close OpenOffice.org completely (including quickstarter if Windows)
@@ -567,19 +579,19 @@
  *
  * 		MySQL Server+Client may be downloaded via;
  *
- * 			(Windows) download mysql-5.1.41-win32.msi from http://dev.mysql.com/downloads/
+ * 			(Windows) http://dev.mysql.com/downloads/
  *
  * 2. Object Recognition Software Development Installation Instructions;
  *
  *	Unzip Source Archive
  *
- *	Ensure that all source ANSI files are either Windows/PC (ASCII) or UNIX formatted
+ *	Ensure that all data ANSI files are either Windows/PC (ASCII) or UNIX formatted
  *
  *		(Linux Only)
- *		dos2unix* .cpp* .c* .h* .txt* .ldr* .tal* .DAT* .dat* .data* .xml* .backup
+ *		dos2unix *.txt *.ldr *.tal *.DAT *.dat *.data *.xml *.backup
  *
  *		(Windows Only)
- *		ToDos.exe* .cpp* .c* .h* .ldr* .DAT* .dat* .data* .xml* .backup
+ *		ToDos.exe *.txt *.ldr *.tal *.DAT *.dat *.data *.xml *.backup
  *			[download convert.zip from http://www.textpad.com/add-ons/]
  *
  *	Install Compiler
@@ -590,7 +602,7 @@
  *		(Windows XP Only)
  *		Install MS Visual Studio C++ 2008 Express Edition (VS2008ExpressWithSP1ENUX.iso / vcsetup.exe / vcsetup2008.exe)
  *
- *		(Windows 7/8 x86_64 Only)
+ *		(Windows 7/8/10 x86_64 Only)
  *		Install MS Visual Studio C++ 2010 Express Edition (VS2010Express1.iso / vcsetup.exe)
  *
  *	Compile/Link External Package 1 - Heitger ORfeature Detection (FD)
@@ -618,6 +630,10 @@
  *		(Linux Ubuntu 14.04 Only)
  *		sudo apt-get install freeglut3-dev OR;
  *		sudo dpkg -i freeglut3-dev_2.8.1-1_amd64.deb
+ *
+ *		(Linux Ubuntu 16.04 Only)
+ *		sudo apt-get install freeglut3-dev OR;
+ *		sudo dpkg -i freeglut3-dev_2.8.1-2_amd64.deb
  *
  *		(Linux EL5 Only)
  *		yum install freeglut-devel OR;
@@ -680,6 +696,10 @@
  *		sudo apt-get install libjpeg-dev OR;
  *		sudo dpkg -i libjpeg-dev_8c-2ubuntu8_amd64.deb
  *
+ *		(Linux Ubuntu 16.04 Only)
+ *		sudo apt-get install libjpeg-turbo8-dev OR;
+ *		sudo dpkg -i libjpeg-turbo8-dev_1.4.2-0ubuntu3_amd64.deb
+ *
  *		(Linux EL5 Only);
  *		yum install libjpeg-devel OR;
  *		rpm - i libjpeg-devel-6b-37.x86-64.rpm
@@ -730,7 +750,11 @@
  *
  *		(Linux Ubuntu 14.04 Only)
  *		sudo apt-get install libmysqlclient-dev OR;
- * 		sudo dpkg -i libmysqlclient-dev_5.5.35-0ubuntu0.13.10.2_amd64
+ * 		sudo dpkg -i libmysqlclient-dev-5.5_5-x.x-0ubuntu0.14.04.x_amd64.deb
+ *
+ *		(Linux Ubuntu 16.04 Only)
+ *		sudo apt-get install libmysqlclient-dev OR;
+ * 		sudo dpkg -i libmysqlclient-dev-5.7.13-0ubuntu0.16.04.2_amd64.deb
  *
  *		(Linux EL5 Only)
  *		yum install mysql-devel OR;
@@ -751,7 +775,7 @@
  *		ensure libmysql.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *		Copy C:\Program Files\MySQL\MySQL Server 5.1\lib\libmysql.dll to working folder (location of OpenOR.exe)
  *
- *		(Windows 7/8 x86_64 Only)
+ *		(Windows 7/8/10 x86_64 Only)
  *		copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.lib and libmysql.dll to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\
  *		create folder C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\mysql\
  *		copy all files in C:\Program Files (x86)\MySQL\MySQL Server 5.5\include\ folder to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\mysql\
@@ -760,7 +784,7 @@
  *
  * 		MySQL Server+Client may be downloaded via;
  *
- * 			(Windows) download mysql-5.1.41-win32.msi from http://dev.mysql.com/downloads/
+ * 			(Windows) http://dev.mysql.com/downloads/
  *
  *	OpenOR Compilation
  *
