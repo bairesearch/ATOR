@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORoperations.h
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2016 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3i19e 15-December-2016
+ * Project Version: 3j1a 14-January-2017
  *
  *******************************************************************************/
 
@@ -68,30 +68,30 @@
 
 
 
-void printPointMap(int imageWidth, int imageHeight, double* pointMap);
-void printDepthMap(int imageWidth, int imageHeight, double* depthMap);
-void printvi(RTviewInfo* vi);
+void printPointMap(int imageWidth, const int imageHeight, double* pointMap);
+void printDepthMap(const int imageWidth, const int imageHeight, const double* depthMap);
+void printvi(const RTviewInfo* vi);
 
 
-void createPointMapFromDepthMap(int imageWidth, int imageHeight, double* depthMap, double* pointMap, RTviewInfo* vi);
+void createPointMapFromDepthMap(const int imageWidth, const int imageHeight, const double* depthMap, double* pointMap, RTviewInfo* vi);
 
 
-	bool checkFeatureListForCommonFeature(vec* corner, ORfeature* firstFeatureInList, double maxFeatureDistanceError, bool checkAlsoZ);
-void generateBooleanMapFromFeatureList(int imageWidth, int imageHeight, ORfeature* firstFeatureInList,  bool* featuresMap, RTviewInfo* vi, int zoom);
-void generateBooleanMapFromFeatureListOLD(int imageWidth, int imageHeight, ORfeature* firstFeatureInList,  bool* featuresMap);
-bool generatePolygonListUsingFeatureList(int imageWidth, int imageHeight, ORfeature firstFeatureInList[], ORpolygon firstPolygonInList[], int numberOfZoomIndicies);
-bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeight, ORfeature firstFeatureInList[], ORpolygon firstPolygonInList[], int numberOfZoomIndicies, int dimension);
-	int calculateNumberOfNearestFeatures(int numberOfPolygonsPerFeature, int numberOfNearbyFeaturesToTransform);
-	void generateNearestFeaturesList(ORfeature* firstFeatureInNearestFeatureList, int numberOfNearestFeatures);
-	ORpolygon* addPolysToListForGivenFeatureAndNearestFeatureList(ORpolygon* firstCurrentPolygonInList, ORpolygon* firstPolygonInList, ORfeature* firstFeatureInNearestFeatureList, int numberOfPolygonsPerFeature, int dimension);
-	bool checkFeatureListForCommonFeatureBasic(ORfeature* corner, ORfeature* firstFeatureInList);
+	bool checkFeatureListForCommonFeature(const vec* corner, const ORfeature* firstFeatureInList, const double maxFeatureDistanceError, const bool checkAlsoZ);
+void generateBooleanMapFromFeatureList(const int imageWidth, const int imageHeight, const ORfeature* firstFeatureInList,  bool* featuresMap, const RTviewInfo* vi, const int zoom);
+void generateBooleanMapFromFeatureListOLD(const int imageWidth, const int imageHeight, const ORfeature* firstFeatureInList,  bool* featuresMap);
+bool generatePolygonListUsingFeatureList(const int imageWidth, const int imageHeight, const ORfeature firstFeatureInList[], ORpolygon firstPolygonInList[], const int numberOfZoomIndicies);
+bool generatePolygonListUsingFeatureListLocalised(const int imageWidth, const int imageHeight, const ORfeature firstFeatureInList[], ORpolygon firstPolygonInList[], const int numberOfZoomIndicies, const int dimension);
+	int calculateNumberOfNearestFeatures(const int numberOfPolygonsPerFeature, const int numberOfNearbyFeaturesToTransform);
+	void generateNearestFeaturesList(ORfeature* firstFeatureInNearestFeatureList, const int numberOfNearestFeatures);
+	ORpolygon* addPolysToListForGivenFeatureAndNearestFeatureList(ORpolygon* firstCurrentPolygonInList, const ORpolygon* firstPolygonInList, ORfeature* firstFeatureInNearestFeatureList, const int numberOfPolygonsPerFeature, const int dimension);
+	bool checkFeatureListForCommonFeatureBasic(const ORfeature* corner, const ORfeature* firstFeatureInList);
 
-	bool checkPolygonListForCommonPolygon(ORpolygon* polygon, ORpolygon* firstPolygonInList);
+	bool checkPolygonListForCommonPolygon(const ORpolygon* polygon, const ORpolygon* firstPolygonInList);
 
-bool addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec* proposedFeature, ORfeature* firstFeatureInList, double maxFeatureDistanceError, bool checkAlsoZ);
+bool addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec* proposedFeature, ORfeature* firstFeatureInList, const double maxFeatureDistanceError, const bool checkAlsoZ);
 
 
-void createInterpolatedPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointMapInterpolated);
+void createInterpolatedPointMap(int imageWidth, const int imageHeight, double* pointMap, double* pointMapInterpolated);
 
 
 void storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(LDreference* firstReferenceInInterpolated2DrgbMap);

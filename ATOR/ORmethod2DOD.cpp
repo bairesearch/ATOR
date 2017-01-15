@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORmethod2DOD.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2016 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3i19e 15-December-2016
+ * Project Version: 3j1a 14-January-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -39,7 +39,7 @@
 	#include "LDopengl.h"
 #endif
 
-double calculateXYorientationOfSide(ORpolygon* currentPolygonInList, int side)
+double calculateXYorientationOfSide(const ORpolygon* currentPolygonInList, const int side)
 {
 	double orientationOfSide;
 
@@ -63,7 +63,7 @@ double calculateXYorientationOfSide(ORpolygon* currentPolygonInList, int side)
 	return orientationOfSide;
 }
 
-double calculateXYlengthOfSide(ORpolygon* currentPolygonInList, int side)
+double calculateXYlengthOfSide(const ORpolygon* currentPolygonInList, const int side)
 {
 	double lengthOfSide;
 
@@ -87,7 +87,7 @@ double calculateXYlengthOfSide(ORpolygon* currentPolygonInList, int side)
 	return lengthOfSide;
 }
 
-double calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(ORpolygon* transformedObjectTriangle, int side)
+double calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(const ORpolygon* transformedObjectTriangle, const int side)
 {
 	double perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide;
 
@@ -114,7 +114,7 @@ double calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(ORp
 	return perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide;
 }
 
-double calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(ORpolygon* transformedObjectTriangle, int side)
+double calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(const ORpolygon* transformedObjectTriangle, const int side)
 {
 	double xAxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex;
 
@@ -178,9 +178,9 @@ double calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(ORp
 
 
 
-void TEMPprintReferenceListVertexPositions2DOD(LDreference* firstReferenceInInterpolated2DrgbMap)
+void TEMPprintReferenceListVertexPositions2DOD(const LDreference* firstReferenceInInterpolated2DrgbMap)
 {
-	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
+	const LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 		cout << "TESTX currentReference->vertex1absolutePosition.x  = " << currentReference->vertex1absolutePosition.x  << endl;
@@ -197,7 +197,7 @@ void TEMPprintReferenceListVertexPositions2DOD(LDreference* firstReferenceInInte
 
 
 
-void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ORpolygon* currentPolygonInList, int side, bool first, ORfeature* firstFeatureInList)
+void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ORpolygon* currentPolygonInList, const int side, const bool first, ORfeature* firstFeatureInList)
 {
 	long time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart;
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
@@ -1049,7 +1049,7 @@ double minDoubles(double a, double b)
 
 
 
-void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(LDreference* firstReferenceInInterpolated2DrgbMap, ORpolygon* currentPolygonInList, bool padBoundary, int side, double shearFactor)
+void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList, const bool padBoundary, const int side, const double shearFactor)
 {
 
 	vec A;
@@ -1439,7 +1439,7 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(LDreference* firs
 */
 
 
-void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ORpolygon* currentPolygonInList)
+void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList)
 {
 	vec A;
 	vec B;
@@ -1547,7 +1547,7 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* fi
 
 /*NEWER, Barycentric Technique - descriptive but less efficient;
 
-void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ORpolygon* currentPolygonInList)
+void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList)
 {
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
@@ -1656,7 +1656,7 @@ function PointInTriangle(p, a,b,c)
 
 //NEWER, use triangle area test, but still inefficient method;
 /*
-void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ORpolygon* currentPolygonInList)
+void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList)
 {
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
@@ -1746,7 +1746,7 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* fi
 
 /*OLD thorough but inefficient method;
 
-void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ORpolygon* currentPolygonInList)
+void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList)
 {
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
@@ -1895,7 +1895,7 @@ void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* fi
 
 
 
-void createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, int imageHeight, unsigned char* rgbMap, LDreference* firstReferenceInInterpolatedMap)
+void createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, const int imageHeight, unsigned char* rgbMap, LDreference* firstReferenceInInterpolatedMap)
 {
 	LDreference* currentReferenceInInterpolated2DMap = firstReferenceInInterpolatedMap;
 
@@ -1964,7 +1964,7 @@ void createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, int im
 }
 
 
-void create2DmeshUsingRGBmap2DOD(int imageWidth, int imageHeight, double imageXOffset, double imageYOffset, unsigned char* rgbMap, ORmeshPoint* firstMeshPointInMeshList, ORmeshPoint* meshPointArray[], bool useEdgeZeroCrossingMap)
+void create2DmeshUsingRGBmap2DOD(int imageWidth, const int imageHeight, double imageXOffset, double imageYOffset, unsigned char* rgbMap, ORmeshPoint* firstMeshPointInMeshList, ORmeshPoint* meshPointArray[], const bool useEdgeZeroCrossingMap)
 {
 	//#ifdef OR_USE_CONTRAST_CALC_METHOD_C
 #ifndef LINUX

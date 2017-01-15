@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORmain.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2016 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3i19e 15-December-2016
+ * Project Version: 3j1a 14-January-2017
  *
  *******************************************************************************/
 
@@ -81,7 +81,7 @@ static char errmessage[] = "Usage:  OpenOR.exe [options]\n\n\twhere options are 
 "\n\n\t-version        : print version"
 "\n\n\tThis program either adds an object (imaged from a particular viewpoint) to a BAI OR database, or finds the closest matching object already existent in the BAI OR database.\n\n";
 
-int main(int argc,char* *argv)
+int main(const int argc,const char* *argv)
 {
 	bool result = true;
 
@@ -330,7 +330,7 @@ int main(int argc,char* *argv)
 
 	if(argumentExists(argc, argv, "-version"))
 	{
-		cout << "OpenOR.exe - Project Version: 3i19e 15-December-2016" << endl;
+		cout << "OpenOR.exe - Project Version: 3j1a 14-January-2017" << endl;
 		exit(1);
 	}
 

@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORpolygonList.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2016 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3i19e 15-December-2016
+ * Project Version: 3j1a 14-January-2017
  *
  *******************************************************************************/
 
@@ -477,7 +477,7 @@ ORpixelContiguous::~ORpixelContiguous()
 }
 
 
-ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, int x, int y, bool* hasFoundMeshPoint)
+ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const int x, const int y, bool* hasFoundMeshPoint)
 {
 	ORmeshPoint* foundMeshPoint = NULL;
 	*hasFoundMeshPoint = false;
@@ -496,7 +496,7 @@ ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, int x
 	return foundMeshPoint;
 }
 
-ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, vec* point, bool* hasFoundMeshPoint, int meshZoneLimit)
+ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const vec* point, bool* hasFoundMeshPoint, const int meshZoneLimit)
 {
 	ORmeshPoint* foundMeshPoint = NULL;
 	*hasFoundMeshPoint = false;
@@ -517,7 +517,7 @@ ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, vec* 
 	return foundMeshPoint;
 }
 
-ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, int position)
+ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const int position)
 {
 	ORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	for(int i=0; i < position; i++)

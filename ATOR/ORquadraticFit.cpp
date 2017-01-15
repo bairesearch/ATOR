@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORquadraticFit.cpp (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2016 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3i19e 15-December-2016
+ * Project Version: 3j1a 14-January-2017
  *
  * Assumes that depth information is less accurate than image information
  *******************************************************************************/
@@ -102,7 +102,7 @@ static int globalImageWidth;
 
 
 
-void generateZeroCrossingList(double* luminosityContrastMap, int imageWidth, int imageHeight, ORQFzeroCrossing* firstZeroCrossingInList, bool edgeDetect, double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, int interpixelMapType)
+void generateZeroCrossingList(const double* luminosityContrastMap, const int imageWidth, const int imageHeight, ORQFzeroCrossing* firstZeroCrossingInList, const bool edgeDetect, const double sensitivity, const int dimension, const double* pointMap, const double* depthMap, const int zoom, const int interpixelMapType)
 {
 	globalImageWidth = imageWidth;
 
@@ -117,7 +117,7 @@ void generateZeroCrossingList(double* luminosityContrastMap, int imageWidth, int
 
 }
 
-double calculateAreaOfOneSideOfEdgeInPixel(int xDevPointOnSide, int yDevPointOnSide, double zeroCrossingValueX, double zeroCrossingValueY, double alpha)
+double calculateAreaOfOneSideOfEdgeInPixel(const int xDevPointOnSide, const int yDevPointOnSide, const double zeroCrossingValueX, const double zeroCrossingValueY, const double alpha)
 {
 	bool areaIsJustTriangle = true;
 	//calculate area inside of triangle made up by edge (areaIsJustTriangle) [+ rect adjacent this if it exists (!areaIsJustTriangle)]
@@ -511,7 +511,7 @@ double calculateAreaOfOneSideOfEdgeInPixel(int xDevPointOnSide, int yDevPointOnS
  ****/
 
 //pointMap not currently used
-void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, ORQFzeroCrossing* currentZeroCrossingInList, int imageWidth, int imageHeight, double luminosityContrastMap[], double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, int interpixelMapType)
+void edgiseData(const bool edgeDetect, const bool createEnhancedImageDisplayingQuadraticFitInfo, ORQFzeroCrossing* currentZeroCrossingInList, const int imageWidth, const int imageHeight, const double luminosityContrastMap[], const double sensitivity, const int dimension, const double* pointMap, const double* depthMap, const int zoom, const int interpixelMapType)
 {
 	int kernelWidthForegroundCheck;
 	int kernelHeightForegroundCheck;
@@ -996,7 +996,7 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 
 
 	//x, y are redundant
-bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, ORQFzeroCrossing* currentZeroCrossingInList)
+bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], const bool edgeDetect, const bool createEnhancedImageDisplayingQuadraticFitInfo, ORQFzeroCrossing* currentZeroCrossingInList)
 {
 	//Summary:
 	// calculates eigen values of the C coefficient in coefficients[], an eigen vector, alpha, beta,
@@ -1076,7 +1076,7 @@ bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], bool
 
 
 //returns float value of byte at a particular index
-float getPixelFloat(int x, int y, double luminosityContrastMap[])
+float getPixelFloat(const int x, const int y, const double luminosityContrastMap[])
 {
 	#ifdef EMULATE_EDGISE
 	return float((float(luminosityContrastMap[y*globalImageWidth  + x])/float(MAX_LUMINOSITY_CONTRAST))*128.0);
@@ -1095,7 +1095,7 @@ float getPixelFloat(int x, int y, double luminosityContrastMap[])
 
 
 //determines coefficients of some x, y coordinates of a frame which is being fitted
-void calculateQuadraticFitCoefficients(int x, int y, float coefficient[], double luminosityContrastMap[])
+void calculateQuadraticFitCoefficients(const int x, const int y, float coefficient[], const double luminosityContrastMap[])
 {
 	if(QUADRATIC_FIT_KERNEL_SIZE == QUADRATIC_FIT_KERNEL_SIZE_3X3)
 	{
@@ -1114,7 +1114,7 @@ void calculateQuadraticFitCoefficients(int x, int y, float coefficient[], double
 
 
 
-void calculateQuadraticFitCoefficients3x3(int x, int y, float coefficient[], double luminosityContrastMap[])
+void calculateQuadraticFitCoefficients3x3(const int x, const int y, float coefficient[], const double luminosityContrastMap[])
 {
 	/*
 	@author Dr Friedrich Heitger
@@ -1158,7 +1158,7 @@ void calculateQuadraticFitCoefficients3x3(int x, int y, float coefficient[], dou
 
 }
 
-void calculateQuadraticFitCoefficients5x5(int x, int y, float coefficient[], double luminosityContrastMap[])
+void calculateQuadraticFitCoefficients5x5(const int x, const int y, float coefficient[], const double luminosityContrastMap[])
 {
 	/*
 	@author Dr Friedrich Heitger
@@ -1243,7 +1243,7 @@ void calculateQuadraticFitCoefficients5x5(int x, int y, float coefficient[], dou
 
 
 
-bool checkForTotalPositiveCurvature(float a3, float a4)
+bool checkForTotalPositiveCurvature(const float a3, const float a4)
 {
 	if((a3 > 0) && (a4 > 0))
 	{
@@ -1255,7 +1255,7 @@ bool checkForTotalPositiveCurvature(float a3, float a4)
 	}
 }
 
-bool checkForTotalNegativeCurvature(float a3, float a4)
+bool checkForTotalNegativeCurvature(const float a3, const float a4)
 {
 	if((a3 < 0) && (a4 < 0))
 	{
@@ -1269,7 +1269,7 @@ bool checkForTotalNegativeCurvature(float a3, float a4)
 }
 
 
-bool checkTotalNegativeCurvatureAbovePointThreshold(float a3, float a4)
+bool checkTotalNegativeCurvatureAbovePointThreshold(const float a3, const float a4)
 {
 	if((a3 < A3A4_COEFFICIENT_NEGATIVE_CURVATURE_POINT_THRESHOLD) && (a4 < A3A4_COEFFICIENT_NEGATIVE_CURVATURE_POINT_THRESHOLD))
 	{
@@ -1316,7 +1316,7 @@ bool checkTotalNegativeCurvatureAbovePointThreshold(float a3, float a4)
 
 
 
-bool checkPointZeroCrossingObjectPassesThreshold(ORQFzeroCrossing* zc)
+bool checkPointZeroCrossingObjectPassesThreshold(const ORQFzeroCrossing* zc)
 {
 	bool passedThreshold;
 
@@ -1656,7 +1656,7 @@ bool checkEdgeZeroCrossingObjectContrastGradients(ORQFzeroCrossing* zc)
 /********************************** Matrix Manipulation methods* **********************************/
 
 
-float getSmallestEigenValue(float eigenValue[])
+float getSmallestEigenValue(const float eigenValue[])
 {
 	float minEigenValue;
 
@@ -1676,7 +1676,7 @@ float getSmallestEigenValue(float eigenValue[])
 
 //(this is the new method of discriminating data based on where the pixel
 //solution derivative with respect to it's orientation of curvature is zero)
-void calculateEdgeZeroCrossing(float coefficient[], float beta, float zc[])
+void calculateEdgeZeroCrossing(const float coefficient[], const float beta, float zc[])
 {
 	/********************THEORY***********************************************************
 
@@ -1746,7 +1746,7 @@ void calculateEdgeZeroCrossing(float coefficient[], float beta, float zc[])
 
 
 
-void calculatePointZeroCrossing(float coefficient[], float zc[])
+void calculatePointZeroCrossing(const float coefficient[], float zc[])
 {
 	/********************THEORY***********************************************************
 
@@ -1793,7 +1793,7 @@ void calculatePointZeroCrossing(float coefficient[], float zc[])
 //This method is specifically for Edgise Calculations
 
 	//NB this method only calculates one eigenvector as it accepts only one eigenvalue
-void calculateEigenVector(float coefficient[], float ev, float eigenVector[])
+void calculateEigenVector(const float coefficient[], const float ev, float eigenVector[])
 {
 	/*********************THEORY**********************************************************
 
@@ -1845,7 +1845,7 @@ void calculateEigenVector(float coefficient[], float ev, float eigenVector[])
 
 
 //This method is specifically for Edgise Calculations
-void calculateEigenValues(float coefficient[], float ev[])
+void calculateEigenValues(const float coefficient[], float ev[])
 {
 
 

@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORfeatureGeneration.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2016 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3i19e 15-December-2016
+ * Project Version: 3j1a 14-January-2017
  *
  * Assumes that depth information is less accurate than image information
  *
@@ -109,7 +109,7 @@ int tempimageHeight;
 #endif
 
 
-void generateFeatureListFromHeitgerFeatureRGBmapWithQuadraticFit(ORfeature* firstFeatureInFeatureList, unsigned char* featureRgbMap, int imageWidth, int imageHeight, double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, RTviewInfo* vi, bool interpixelRGBmapType)
+void generateFeatureListFromHeitgerFeatureRGBmapWithQuadraticFit(ORfeature* firstFeatureInFeatureList, unsigned char* featureRgbMap, int imageWidth, const int imageHeight, const double sensitivity, const int dimension, double* pointMap, const double* depthMap, int zoom, RTviewInfo* vi, const bool interpixelRGBmapType)
 {
 	double pixelXOffset;
 	double pixelYOffset;
@@ -233,7 +233,7 @@ void generateFeatureListFromHeitgerFeatureRGBmapWithQuadraticFit(ORfeature* firs
 
 
 
-void generateEdgeListFromRGBmapWithQuadraticFit(unsigned char* rgbMap, bool* edgeBoolMap, ORQFzeroCrossing* edgeZeroCrossingMap[], int imageWidth, int imageHeight, double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, RTviewInfo* vi, int interpixelContrastMapType)
+void generateEdgeListFromRGBmapWithQuadraticFit(unsigned char* rgbMap, bool* edgeBoolMap, ORQFzeroCrossing* edgeZeroCrossingMap[], int imageWidth, const int imageHeight, const double sensitivity, const int dimension, double* pointMap, const double* depthMap, int zoom, RTviewInfo* vi, const int interpixelContrastMapType)
 {
 	double* luminosityMap = new double[imageWidth* imageHeight];
 	double* luminosityContrastMap = new double[imageWidth* imageHeight];
@@ -248,7 +248,7 @@ void generateEdgeListFromRGBmapWithQuadraticFit(unsigned char* rgbMap, bool* edg
 }
 
 //currently assumes zoom = 1
-void generateEdgeListFromContrastMapWithQuadraticFit(double* contrastMap, bool* edgeBoolMap, ORQFzeroCrossing* edgeZeroCrossingMap[], int imageWidth, int imageHeight, double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, RTviewInfo* vi, int interpixelContrastMapType)
+void generateEdgeListFromContrastMapWithQuadraticFit(const double* contrastMap, bool* edgeBoolMap, ORQFzeroCrossing* edgeZeroCrossingMap[], int imageWidth, const int imageHeight, const double sensitivity, const int dimension, double* pointMap, const double* depthMap, int zoom, RTviewInfo* vi, const int interpixelContrastMapType)
 {
 	double pixelXOffset;
 	double pixelYOffset;
@@ -336,7 +336,7 @@ void generateEdgeListFromContrastMapWithQuadraticFit(double* contrastMap, bool* 
 #define DISTANCE_TO_CENTEROID_DECREASING (1)
 #define DISTANCE_TO_CENTEROID_INCREASING (2)
 
-ORfeature* traceEdgeAndAddMinimaAndMaximaFeatures(ORfeature* firstNewFeatureInList, double centroidX, double centroidY, vec* centroidPos, ORpixelContiguous* firstInPixelContiguousBoundaryStack, int dimension, int zoom, int circumferenceForRegion)
+ORfeature* traceEdgeAndAddMinimaAndMaximaFeatures(ORfeature* firstNewFeatureInList, const double centroidX, const double centroidY, const vec* centroidPos, ORpixelContiguous* firstInPixelContiguousBoundaryStack, const int dimension, int zoom, const int circumferenceForRegion)
 {
 	double maxNoise;
 	double maxNoise2;
@@ -926,7 +926,7 @@ ORfeature* traceEdgeAndAddMinimaAndMaximaFeatures(ORfeature* firstNewFeatureInLi
 
 //nb this routine should work where contrastMap is either the luminosityContrastMap [or the depthContrastMap or the depthGradientContrastMap (3DOD only)]
 //this routine has not yet been tested
-bool addCentredFeaturesToFeatureListUsingContrastMap(ORfeature* firstFeatureInFeatureList, int imageWidth, int imageHeight, double contrastMap[], double sensitivity, int dimension, double pointMap[], double depthMap[], int zoom, RTviewInfo* vi, bool useEdgeZeroCrossingMap, int interpixelContrastMapType)
+bool addCentredFeaturesToFeatureListUsingContrastMap(ORfeature* firstFeatureInFeatureList, int imageWidth, int imageHeight, const double contrastMap[], const double sensitivity, int dimension, double pointMap[], double depthMap[], int zoom, RTviewInfo* vi, const bool useEdgeZeroCrossingMap, const int interpixelContrastMapType)
 {
 	bool result = true;
 
@@ -1461,7 +1461,7 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(ORfeature* firstFeatureInFe
 	return result;
 }
 
-double getDepthValueWithOrWithoutForegroundCheck(double pointNonWorldCoordx, double pointNonWorldCoordy, int imageWidth, int imageHeight, int kernelWidthForegroundCheck, int kernelHeightForegroundCheck, double depthMap[], int zoom)
+double getDepthValueWithOrWithoutForegroundCheck(const double pointNonWorldCoordx, const double pointNonWorldCoordy, const int imageWidth, const int imageHeight, const int kernelWidthForegroundCheck, const int kernelHeightForegroundCheck, const double depthMap[], const int zoom)
 {
 	//depth calculations added 13 June 2012 - check these....
 	#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS
@@ -1482,7 +1482,7 @@ void calculateDepthMapValue(vec* xyzWorld, vec* pointNonWorldCoord, RTviewInfo* 
 
 
 
-bool addCentredFeaturesToFeatureListUsingMeshList(ORfeature* firstFeatureInFeatureList, double sensitivity, int dimension, ORmeshPoint* firstMeshPointInMeshList, int contrastValChosen, bool useEdgeZeroCrossingMap)
+bool addCentredFeaturesToFeatureListUsingMeshList(ORfeature* firstFeatureInFeatureList, const double sensitivity, int dimension, ORmeshPoint* firstMeshPointInMeshList, const int contrastValChosen, const bool useEdgeZeroCrossingMap)
 {
 	bool result;
 	//added by RBB 3 Oct 09
@@ -1774,7 +1774,7 @@ void calculateNewXYbasedOnDirection(int xCurrent, int yCurrent, int q, int* x, i
 	*y = yCurrent + q/3 - 1;
 }
 
-bool defineRegionCheckNextPixelNonRecursive(ORpixelContiguous* firstInPixelContiguousStack, int xInitial, int yInitial, bool edgeBoolMap[], ORQFzeroCrossing* edgeZeroCrossingMap[], int alreadyProcessed[], int imageWidth, int imageHeight, double* regionSize, int* sumX, int* sumY, vec* sumPos, int dimension, double pointMap[], double depthMap[], int zoom, bool useEdgeZeroCrossingMap, RTviewInfo* vi, int* maxXx, int* maxXy, int interpixelContrastMapType)
+bool defineRegionCheckNextPixelNonRecursive(ORpixelContiguous* firstInPixelContiguousStack, int xInitial, int yInitial, const bool edgeBoolMap[], constEffective ORQFzeroCrossing* edgeZeroCrossingMap[], int alreadyProcessed[], int imageWidth, const int imageHeight, double* regionSize, int* sumX, int* sumY, vec* sumPos, const int dimension, double pointMap[], const double depthMap[], int zoom, const bool useEdgeZeroCrossingMap, RTviewInfo* vi, int* maxXx, int* maxXy, const int interpixelContrastMapType)
 {
 	double pixelXOffset;
 	double pixelYOffset;
@@ -2128,7 +2128,7 @@ bool defineRegionCheckNextPixelNonRecursive(ORpixelContiguous* firstInPixelConti
 
 }
 
-void deleteContiguousStackAndResetEdgesNonRecursive(ORpixelContiguous* firstInPixelContiguousStack, int alreadyProcessed[], int imageWidth, int imageHeight)
+void deleteContiguousStackAndResetEdgesNonRecursive(ORpixelContiguous* firstInPixelContiguousStack, int alreadyProcessed[], const int imageWidth, const int imageHeight)
 {
 	ORpixelContiguous* currentPixelContiguous = firstInPixelContiguousStack;
 	bool stillMoreToDelete = true;
@@ -2301,7 +2301,7 @@ void clearContiguousStackRecursive(ORpixelContiguous* currentInPixelContiguousSt
 
 
 
-bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(ORpixelContiguous* firstInPixelContiguousStack, ORmeshPoint* firstMeshPoint, double* regionSize, int contrastValChosen, int* sumX, int* sumY, vec* sumPos, bool useEdgeZeroCrossingMap, ORmeshPoint* aMeshPointOnTheBoundary, double sensitivity)
+bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(ORpixelContiguous* firstInPixelContiguousStack, ORmeshPoint* firstMeshPoint, double* regionSize, const int contrastValChosen, int* sumX, int* sumY, vec* sumPos, const bool useEdgeZeroCrossingMap, ORmeshPoint* aMeshPointOnTheBoundary, const double sensitivity)
 {
 	bool unboundedContiguousRegionFound = false;
 	bool contiguousRegionFound = true;
@@ -2563,7 +2563,7 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(ORpixelContiguous* fir
 
 
 
-bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnBoundary, int alreadyProcessed[], ORQFzeroCrossing* edgeZeroCrossingMap[], bool useEdgeZeroCrossingMap, int imageWidth, int imageHeight, double* sumX, double* sumY, vec* sumPos, int* numberOfCounts, int minRegionCircumferenceForRegion, int dimension, double pointMap[], double depthMap[], int zoom, ORpixelContiguous* firstInPixelContiguousBoundaryStack, RTviewInfo* vi, int interpixelContrastMapType)
+bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnBoundary, int alreadyProcessed[], constEffective ORQFzeroCrossing* edgeZeroCrossingMap[], const bool useEdgeZeroCrossingMap, int imageWidth, const int imageHeight, double* sumX, double* sumY, vec* sumPos, int* numberOfCounts, const int minRegionCircumferenceForRegion, const int dimension, double pointMap[], const double depthMap[], int zoom, ORpixelContiguous* firstInPixelContiguousBoundaryStack, RTviewInfo* vi, const int interpixelContrastMapType)
 {
 	double pixelXOffset;
 	double pixelYOffset;
@@ -3099,7 +3099,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 
 
 //now trace edges instead of 1 pixel inside of edge
-bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(ORmeshPoint* aMeshPointOnTheBoundary, double* sumX, double* sumY, vec* sumPos, int* numberOfCounts, int minRegionCircumferenceForRegion, ORpixelContiguous* firstInPixelContiguousBoundaryStack, bool useEdgeZeroCrossingMap)
+bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(ORmeshPoint* aMeshPointOnTheBoundary, double* sumX, double* sumY, vec* sumPos, int* numberOfCounts, const int minRegionCircumferenceForRegion, ORpixelContiguous* firstInPixelContiguousBoundaryStack, const bool useEdgeZeroCrossingMap)
 {
 	bool foundATracePath1 = false;
 
@@ -3438,7 +3438,7 @@ bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(ORmeshPoint* aMeshPointOn
 
 
 
-void generateFeatureListFromHeitgerFeatureRGBMap(ORfeature* firstFeatureInFeatureList, unsigned char* featureRgbMap, int imageWidth, int imageHeight, unsigned char* rgbMap, double sensitivity, int dimension, double* pointMap, double* depthMap, int zoom, RTviewInfo* vi)
+void generateFeatureListFromHeitgerFeatureRGBMap(ORfeature* firstFeatureInFeatureList, unsigned char* featureRgbMap, int imageWidth, const int imageHeight, const unsigned char* rgbMap, const double sensitivity, const int dimension, double* pointMap, const double* depthMap, int zoom, RTviewInfo* vi)
 {
 	ORfeature* currentFeatureInList = firstFeatureInFeatureList;
 
@@ -3645,7 +3645,7 @@ void generateFeatureListFromHeitgerFeatureRGBMap(ORfeature* firstFeatureInFeatur
 	}
 }
 
-void generateFeatureListFromHeitgerFeatureAsciiMap(ORfeature* firstFeatureInFeatureList, string featureMapFileNameAscii, int zoom, RTviewInfo* vi)
+void generateFeatureListFromHeitgerFeatureAsciiMap(ORfeature* firstFeatureInFeatureList, const string featureMapFileNameAscii, int zoom, const RTviewInfo* vi)
 {
 	ORfeature* currentFeatureInList = firstFeatureInFeatureList;
 
@@ -3753,7 +3753,7 @@ void generateFeatureListFromHeitgerFeatureAsciiMap(ORfeature* firstFeatureInFeat
 
 
 #ifndef OR_USE_HEITGER_OBJECT_FEATURE_CALCULATION_CODE
-void generateFeatureListFromRGBMap(ORfeature* firstFeatureInFeatureList, unsigned char* rgbMap, int imageWidth, int imageHeight, int zoom, string trainOrTestString, string mapFileName, RTviewInfo* vi)
+void generateFeatureListFromRGBMap(ORfeature* firstFeatureInFeatureList, unsigned char* rgbMap, int imageWidth, const int imageHeight, int zoom, const string trainOrTestString, const string mapFileName, const RTviewInfo* vi)
 {
 	/*
 	int resampledWidth = (imageWidth/zoom);

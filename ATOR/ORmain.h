@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORmain.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2016 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3i19e 15-December-2016
+ * Project Version: 3j1a 14-January-2017
  *
  *******************************************************************************/
 
@@ -34,7 +34,7 @@
 #ifndef HEADER_OR_MAIN
 #define HEADER_OR_MAIN
 
-int main(int argc,char* *argv);
+int main(const int argc,const char* *argv);
 
 void printORcommandLineErrorMessage();
 

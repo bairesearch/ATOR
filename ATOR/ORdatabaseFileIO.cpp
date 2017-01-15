@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORdatabaseFileIO.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2016 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3i19e 15-December-2016
+ * Project Version: 3j1a 14-January-2017
  *
  *******************************************************************************/
 
@@ -47,7 +47,7 @@
 
 static string databaseFolderName;
 
-void initialiseDatabase(string newDatabaseFolderName)
+void initialiseDatabase(const string newDatabaseFolderName)
 {
 	databaseFolderName = newDatabaseFolderName;
 }
@@ -118,7 +118,7 @@ bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string* folderName)
 	return result;
 }
 
-string DBgenerateServerDatabaseName(string* objectName, bool trainOrTest)
+string DBgenerateServerDatabaseName(const string* objectName, const bool trainOrTest)
 {
 	string databaseName;
 	if(!trainOrTest)
@@ -158,7 +158,7 @@ string DBgenerateServerDatabaseName(string* objectName, bool trainOrTest)
 }
 
 
-string DBgenerateFolderName(string* objectName, bool trainOrTest)
+string DBgenerateFolderName(string* objectName, const bool trainOrTest)
 {
 	//eg network/server/ORdatabase/e/x/a/example/...
 
@@ -221,7 +221,7 @@ string DBgenerateFolderName(string* objectName, bool trainOrTest)
 
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
-bool compareFeaturesListForMatch(ORfeature* testFirstFeatureInNearestFeatureList, ORfeature* trainFirstFeatureInNearestFeatureList, int dimension, bool* exactMatchFound)
+bool compareFeaturesListForMatch(ORfeature* testFirstFeatureInNearestFeatureList, ORfeature* trainFirstFeatureInNearestFeatureList, const int dimension, bool* exactMatchFound)
 {
 	int numberOfFeatureGeoMatches = 0;
 	int numberOfFeatureGeoBinnedExactMatches = 0;
@@ -338,7 +338,7 @@ void addFeatureToEndOfFeatureList(ORfeature* firstFeatureInList, ORfeature* feat
 
 
 
-void createFeaturesListUsingFeaturesFile(string fileName, ORfeature* firstFeatureInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures)
+void createFeaturesListUsingFeaturesFile(const string fileName, ORfeature* firstFeatureInList, const bool createFeatureObjects, const bool appendToList, const bool ignoreOTfeatures)
 {
 	ORfeature* currentFeatureInList = firstFeatureInList;
 
@@ -668,11 +668,11 @@ void createFeaturesListUsingFeaturesFile(string fileName, ORfeature* firstFeatur
 
 
 
-void createTransformedFeaturesFile(ORfeature* firstFeatureInList, string fileName, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest)
+void createTransformedFeaturesFile(const ORfeature* firstFeatureInList, const string fileName, const string objectName, const int viewIndex, const int zoomIndex, const int polyIndex, const int sideIndex, const int trainOrTest)
 {
 	ofstream writeFileObject(fileName.c_str());
 
-	ORfeature* currentFeature = firstFeatureInList;
+	const ORfeature* currentFeature = firstFeatureInList;
 	while(currentFeature->next != NULL)
 	{
 		string polygonIndexString = convertIntToString(polyIndex);
