@@ -26,7 +26,7 @@
  * File Name: ORcomparison.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e3b 01-September-2014
+ * Project Version: 3e4a 02-September-2014
  *
  *******************************************************************************/
 
@@ -85,7 +85,7 @@ void createGeoTableHTMLfromFeatureList(Feature * firstFeatureInNearestFeatureLis
 bool determineIfGeoBinningIdenticalMatchFound(Feature * firstFeatureInNearestFeatureList, int pBinxRequirement[], int pBinyRequirement[]);
 #endif
 */
-void readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(string * rgbMapSmallFacingPolyFileNamePPMcplus, string * rgbMapSmallFacingPolyFileNameJPEGcplus, signed char * concatonatedSignedDctCoeffArrayRequirement, bool printOutput);
+void readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(string * rgbMapSmallFacingPolyFileNamePPM, string * rgbMapSmallFacingPolyFileNameJPEG, signed char * concatonatedSignedDctCoeffArrayRequirement, bool printOutput);
 
 
 #endif

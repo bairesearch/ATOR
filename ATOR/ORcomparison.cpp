@@ -26,7 +26,7 @@
  * File Name: ORcomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e3b 01-September-2014
+ * Project Version: 3e4a 02-September-2014
  *
  *******************************************************************************/
 
@@ -332,7 +332,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 	string DTbinDebugArray[MAX_NUMBER_DT_BIN_RECORDS];
 	int numDTbinRecords = 0;
 	char DTbinRecordTemp[DT_BIN_RECORD_MAX_LENGTH];
-	while (parseFileObjectDTbinDebug.getline(DTbinRecordTemp, DT_BIN_RECORD_MAX_LENGTH))
+	while(parseFileObjectDTbinDebug.getline(DTbinRecordTemp, DT_BIN_RECORD_MAX_LENGTH))
 	{
 		DTbinDebugArray[numDTbinRecords] = DTbinRecordTemp;
 		numDTbinRecords++;
@@ -346,7 +346,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3e3b 01-September-2014<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3e4a 02-September-2014<p>";
 		}
 		else
 		{
@@ -582,7 +582,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 	#ifndef OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_BASIC_NO_SQL
 	FeatureContainer trainfeatureGeoCompArray[numberOfTrainObjects][numberOfTrainViewIndicies][numberOfTrainZoomIndicies][maxNumberOfTrainPolysAcrossAllObjects][OR_METHOD_POLYGON_NUMBER_OF_SIDES];
 	#endif
-
+	
 	for(int trainObjectIndex=0; trainObjectIndex<numberOfTrainObjects; trainObjectIndex++)
 	{
 		for(int trainViewIndex=0; trainViewIndex<numberOfTrainViewIndicies; trainViewIndex++)
@@ -2060,8 +2060,11 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 							testcurrentFeatureInNearestFeatureList = testcurrentFeatureInNearestFeatureList->next;
 							findex1++;
 						}
-						delete currentTestFeature;
-
+						
+						if(!OR_IMAGE_COMPARISON_SQL_GET_TEST_DATA_FROM_SQL && !OR_IMAGE_COMPARISON_GEOMETRIC_COMPARISON_BINNING)
+						{
+							delete currentTestFeature;
+						}
 
 					#else
 						#ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_BASIC_NO_SQL

@@ -26,7 +26,7 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e3b 01-September-2014
+ * Project Version: 3e4a 02-September-2014
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -425,8 +425,7 @@ bool ORmethodCompareTestWithTrain(int dimension, int numberOfTrainObjects, strin
 		cout << "\t start: 5. normalised snapshot comparison" << endl;
 		time5NormalisedSnapshotComparisonStart = getTimeAsLong();
 	}
-
-
+	
 	double averageMatchErrorAcrossAllObjects;
 #ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 	averageMatchErrorAcrossAllObjects = compareNormalisedSnapshotExperienceListWithNeuralNetwork(firstExperienceInTestList, firstInputNeuronInNetwork, firstOutputNeuronInNetwork, numberOfInputNeurons, numberOfOutputNeurons, numberOfTrainPolys);
@@ -495,7 +494,6 @@ bool ORmethodCompareTestWithTrain(int dimension, int numberOfTrainObjects, strin
 	long timeTotalTrain = 0;
 	long timeTotalTest = 0;
 	long timeTotalCompare = 0;
-
 
 	if(time1aALTERNATEODgenerationParseVectorGraphicsFileIndex > 0)
 	{
@@ -605,6 +603,8 @@ bool ORmethodCompareTestWithTrain(int dimension, int numberOfTrainObjects, strin
 		time5bNormalisedSnapshotComparisonCompareSnapshotDataAverage = time5bNormalisedSnapshotComparisonCompareSnapshotDataTotal / time5bNormalisedSnapshotComparisonCompareSnapshotDataIndex;
 	}
 
+//exitOpenGL();
+//exit(0);
 
 	timeTotalTrain = time1aALTERNATEODgenerationParseVectorGraphicsFileTotal+time1ODgenerationTotalTrain+time2ObjectTriangleGenerationPolygonListTotalTrain+time3NormalisedSnapshotGenerationTotalTrain;
 	timeTotalTest = time1aALTERNATEODgenerationParseVectorGraphicsFileTotal+time1ODgenerationTotalTest+time2ObjectTriangleGenerationPolygonListTotalTest+time3NormalisedSnapshotGenerationTotalTest;
