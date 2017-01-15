@@ -23,7 +23,7 @@
  * File Name: ORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3c3a 16-November-2012
+ * Project Version: 3c3g 18-November-2012
  *
  *******************************************************************************/
 
@@ -66,9 +66,9 @@ static char errmessage[] = "Usage:  OpenOR.exe [options]\n\n\twhere options are 
 "\n\t-width [int]           : image width in pixels (def: 768)"
 "\n\t-height [int]          : image height in pixels (def: 576)"
 "\n\t-od3                   : use 3DOD instead of 2DOD"
-"\n\t-sqlIPaddress [string] : ip address of MySQL Server (def: localhost)"
-"\n\t-sqlUsername [string]  : username of MySQL Server BAI database"
-"\n\t-sqlPassword [string]  : password of MySQL Server BAI database"
+"\n\t-sqlipaddress [string] : ip address of MySQL Server (def: localhost)"
+"\n\t-sqlusername [string]  : username of MySQL Server BAI database"
+"\n\t-sqlpassword [string]  : password of MySQL Server BAI database"
 "\n\t-cleartrain            : clear train database"
 "\n\t-workingfolder [string]: working directory name for input files (def: same as exe)"
 "\n\t-exefolder [string]    : exe directory name for executables OpenOR.exe and FD.exe (def: same as exe)"
@@ -214,34 +214,34 @@ int main(int argc,char **argv)
 	char * sqlipaddressCharStar = new char[100];
 	char * sqlusernameCharStar = new char[100];
 	char * sqlpasswordCharStar = new char[100];
-	if (argumentExists(argc,argv,"-sqlIPaddress"))
+	if (argumentExists(argc,argv,"-sqlipaddress"))
 	{
-		sqlipaddressCharStar=getCharArgument(argc,argv,"-sqlIPaddress");
+		sqlipaddressCharStar=getCharArgument(argc,argv,"-sqlipaddress");
 	}
 	else
 	{
-		cout << "error: sqlIPaddress is not defined" << endl;
+		cout << "error: sqlipaddress is not defined" << endl;
 		printORcommandLineErrorMessage();
 		exit(0);
 	}
-	if (argumentExists(argc,argv,"-sqlUsername"))
+	if (argumentExists(argc,argv,"-sqlusername"))
 	{
-		sqlusernameCharStar=getCharArgument(argc,argv,"-sqlUsername");
+		sqlusernameCharStar=getCharArgument(argc,argv,"-sqlusername");
 	}
 	else
 	{
-		cout << "error: sqlUsername is not defined" << endl;
+		cout << "error: sqlusername is not defined" << endl;
 		printORcommandLineErrorMessage();
 		exit(0);
 	}
 
-	if (argumentExists(argc,argv,"-sqlPassword"))
+	if (argumentExists(argc,argv,"-sqlpassword"))
 	{
-		sqlpasswordCharStar=getCharArgument(argc,argv,"-sqlPassword");
+		sqlpasswordCharStar=getCharArgument(argc,argv,"-sqlpassword");
 	}
 	else
 	{
-		cout << "error: sqlPassword is not defined" << endl;
+		cout << "error: sqlpassword is not defined" << endl;
 		printORcommandLineErrorMessage();
 		exit(0);
 	}
@@ -371,7 +371,7 @@ int main(int argc,char **argv)
 
 	if (argumentExists(argc,argv,"-version"))
 	{
-		cout << "OpenOR.exe - Project Version: 3c3a 16-November-2012" << endl;
+		cout << "OpenOR.exe - Project Version: 3c3g 18-November-2012" << endl;
 		exit(1);
 	}
 
