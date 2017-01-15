@@ -26,7 +26,7 @@
  * File Name: ORdatabaseFileIO.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e2d 29-August-2014
+ * Project Version: 3e3a 01-September-2014
  *
  *******************************************************************************/
 
@@ -362,10 +362,9 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 		}
 	}
 
-	char * fileNamecharstar = const_cast<char*>(fileName.c_str());
-	ifstream * parseFileObject = new ifstream(fileNamecharstar);
+	ifstream parseFileObject(fileName.c_str());
 
-	if(parseFileObject->rdbuf( )->is_open( ))
+	if(parseFileObject.rdbuf()->is_open( ))
 	{
 		char c;
 		int charCount = 0;
@@ -392,28 +391,28 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 		bool readingPointZ = false;
 		#endif
 
-		char objectNameString[100] = "";
-		char trainOrTestString[10] = "";
-		char viewIndexString[10] = "";
-		char zoomIndexString[10] = "";
-		char polyIndexString[10] = "";
-		char sideIndexString[10] = "";
+		string objectNameString = "";
+		string trainOrTestString = "";
+		string viewIndexString = "";
+		string zoomIndexString = "";
+		string polyIndexString = "";
+		string sideIndexString = "";
 		#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-		char OTpointIndexString[10] = "";
+		string OTpointIndexString = "";
 		#endif
 		#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
-		char minWidthAndHeightOfOrigOTString[100] = "";
+		string minWidthAndHeightOfOrigOTString = "";
 		#endif
-		char transformedPointXString[100] = "";
-		char transformedPointYString[100] = "";
-		char transformedPointZString[100] = "";
+		string transformedPointXString = "";
+		string transformedPointYString = "";
+		string transformedPointZString = "";
 		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
-		char PointXString[100] = "";
-		char PointYString[100] = "";
-		char PointZString[100] = "";
+		string PointXString = "";
+		string PointYString = "";
+		string PointZString = "";
 		#endif
 
-		while (parseFileObject->get(c))
+		while(parseFileObject.get(c))
 		{
 			charCount++;
 
@@ -434,10 +433,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 			}
 			else if(readingObjectName)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(objectNameString, typeString);
+				objectNameString = objectNameString + c;
 			}
 			else if((readingTestOrTrainIndex) && (c == CHAR_SPACE))
 			{
@@ -446,10 +442,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 			}
 			else if(readingTestOrTrainIndex)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(trainOrTestString, typeString);
+				trainOrTestString = trainOrTestString + c;
 			}
 			else if((readingViewIndex) && (c == CHAR_SPACE))
 			{
@@ -458,10 +451,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 			}
 			else if(readingViewIndex)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(viewIndexString, typeString);
+				viewIndexString = viewIndexString + c;
 			}
 			else if((readingZoomIndex) && (c == CHAR_SPACE))
 			{
@@ -470,10 +460,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 			}
 			else if(readingZoomIndex)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(zoomIndexString, typeString);
+				zoomIndexString = zoomIndexString + c;
 			}
 			else if((readingPolyIndex) && (c == CHAR_SPACE))
 			{
@@ -482,10 +469,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 			}
 			else if(readingPolyIndex)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(polyIndexString, typeString);
+				polyIndexString = polyIndexString + c;
 			}
 			else if((readingSideIndex) && (c == CHAR_SPACE))
 			{
@@ -498,10 +482,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 			}
 			else if(readingSideIndex)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(sideIndexString, typeString);
+				sideIndexString = sideIndexString + c;
 			}
 		#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 			else if((readingOTIndex) && (c == CHAR_SPACE))
@@ -515,10 +496,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 			}
 			else if(readingOTIndex)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(OTpointIndexString, typeString);
+				OTpointIndexString = OTpointIndexString + c;
 			}
 		#endif
 		#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
@@ -529,10 +507,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 			}
 			else if(readingminWidthAndHeightOfOrigOT)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(minWidthAndHeightOfOrigOTString, typeString);
+				minWidthAndHeightOfOrigOTString = minWidthAndHeightOfOrigOTString + c;
 			}
 		#endif
 			else if((readingtransformedPointX) && (c == CHAR_SPACE))
@@ -542,10 +517,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 			}
 			else if(readingtransformedPointX)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(transformedPointXString, typeString);
+				transformedPointXString = transformedPointXString + c;
 			}
 			else if((readingtransformedPointY) && (c == CHAR_SPACE))
 			{
@@ -554,10 +526,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 			}
 			else if(readingtransformedPointY)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(transformedPointYString, typeString);
+				transformedPointYString = transformedPointYString + c;
 			}
 		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
 			else if((readingtransformedPointZ) && (c == CHAR_SPACE))
@@ -571,27 +540,27 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 		#endif
 			{
 
-				if(!ignoreOTfeatures || ((int)(atof(OTpointIndexString)) == 0))
+				if(!ignoreOTfeatures || ((int)(atof(OTpointIndexString.c_str())) == 0))
 				{
 					currentFeatureInList->objectName = objectNameString;
-					currentFeatureInList->trainOrTest = (bool)(atof(trainOrTestString));
-					currentFeatureInList->viewIndex = (int)(atof(viewIndexString));
-					currentFeatureInList->zoomIndex = (int)(atof(zoomIndexString));
-					currentFeatureInList->polyIndex = (int)(atof(polyIndexString));
-					currentFeatureInList->sideIndex = (int)(atof(sideIndexString));
+					currentFeatureInList->trainOrTest = (bool)(atof(trainOrTestString.c_str()));
+					currentFeatureInList->viewIndex = (int)(atof(viewIndexString.c_str()));
+					currentFeatureInList->zoomIndex = (int)(atof(zoomIndexString.c_str()));
+					currentFeatureInList->polyIndex = (int)(atof(polyIndexString.c_str()));
+					currentFeatureInList->sideIndex = (int)(atof(sideIndexString.c_str()));
 					#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-					currentFeatureInList->OTpointIndex = (int)(atof(OTpointIndexString));
+					currentFeatureInList->OTpointIndex = (int)(atof(OTpointIndexString.c_str()));
 					#endif
 					#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
-					currentFeatureInList->minWidthAndHeightOfOrigOT = (int)(atof(minWidthAndHeightOfOrigOTString));
+					currentFeatureInList->minWidthAndHeightOfOrigOT = (int)(atof(minWidthAndHeightOfOrigOTString.c_str()));
 					#endif
-					currentFeatureInList->pointTransformed.x = (atof(transformedPointXString));
-					currentFeatureInList->pointTransformed.y = (atof(transformedPointYString));
-					currentFeatureInList->pointTransformed.z = (atof(transformedPointZString));
+					currentFeatureInList->pointTransformed.x = (atof(transformedPointXString.c_str()));
+					currentFeatureInList->pointTransformed.y = (atof(transformedPointYString.c_str()));
+					currentFeatureInList->pointTransformed.z = (atof(transformedPointZString.c_str()));
 					#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
-					currentFeatureInList->point.x = (atof(PointXString));
-					currentFeatureInList->point.y = (atof(PointYString));
-					currentFeatureInList->point.z = (atof(PointZString));
+					currentFeatureInList->point.x = (atof(PointXString.c_str()));
+					currentFeatureInList->point.y = (atof(PointYString.c_str()));
+					currentFeatureInList->point.z = (atof(PointZString.c_str()));
 					#endif
 
 
@@ -637,25 +606,25 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 
 					currentFeatureInList=currentFeatureInList->next;
 				}
-				objectNameString[0] = '\0';
-				trainOrTestString[0] = '\0';
-				viewIndexString[0] = '\0';
-				zoomIndexString[0] = '\0';
-				polyIndexString[0] = '\0';
-				sideIndexString[0] = '\0';
+				objectNameString = "";
+				trainOrTestString = "";
+				viewIndexString = "";
+				zoomIndexString = "";
+				polyIndexString = "";
+				sideIndexString = "";
 				#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-				OTpointIndexString[0] = '\0';
+				OTpointIndexString = "";
 				#endif
 				#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
-				minWidthAndHeightOfOrigOTString[0] = '\0';
+				minWidthAndHeightOfOrigOTString = "";
 				#endif
-				transformedPointXString[0] = '\0';
-				transformedPointYString[0] = '\0';
-				transformedPointZString[0] = '\0';
+				transformedPointXString = "";
+				transformedPointYString = "";
+				transformedPointZString = "";
 				#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
-				PointXString[0] = '\0';
-				PointYString[0] = '\0';
-				PointZString[0] = '\0';
+				PointXString = "";
+				PointYString = "";
+				PointZString = "";
 				#endif
 
 				lineCount++;
@@ -668,10 +637,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 			}
 			else if(readingtransformedPointZ)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(transformedPointZString, typeString);
+				transformedPointZString = transformedPointZString + c;
 			}
 		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
 			else if((readingPointX) && (c == CHAR_SPACE))
@@ -681,10 +647,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 			}
 			else if(readingPointX)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(PointXString, typeString);
+				PointXString = PointXString + c;
 			}
 			else if((readingPointY) && (c == CHAR_SPACE))
 			{
@@ -693,17 +656,11 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 			}
 			else if(readingPointY)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(PointYString, typeString);
+				PointYString = PointYString + c;
 			}
 			else if(readingPointZ)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(PointZString, typeString);
+				PointZString = PointZString + c;
 			}
 		#endif
 			else
@@ -712,8 +669,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 			}
 		}
 
-		parseFileObject->close();
-		delete parseFileObject;
+		parseFileObject.close();
 	}
 	else
 	{
@@ -726,8 +682,7 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 
 void createTransformedFeaturesFile(Feature * firstFeatureInList, string fileName, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest)
 {
-	char * fileNamecharstar = const_cast<char*>(fileName.c_str());
-	ofstream writeFileObject(fileNamecharstar);
+	ofstream writeFileObject(fileName.c_str());
 
 	Feature * currentFeature = firstFeatureInList;
 	while(currentFeature->next != NULL)
@@ -743,11 +698,7 @@ void createTransformedFeaturesFile(Feature * firstFeatureInList, string fileName
 		#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
 		char minWidthAndHeightOfOrigOTString[10];
 		#endif
-		char transformedpositionCoordinatesString[100];
-		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
-		char positionCoordinatesString[100];
-		#endif
-
+		
 		sprintf(polygonIndexString, "%d", polyIndex);
 		sprintf(sideIndexString, "%d", sideIndex);
 		sprintf(viewIndexString, "%d", viewIndex);
@@ -759,9 +710,9 @@ void createTransformedFeaturesFile(Feature * firstFeatureInList, string fileName
 		sprintf(minWidthAndHeightOfOrigOTString, "%d", currentFeature->minWidthAndHeightOfOrigOT);
 		#endif
 		sprintf(trainOrTestString, "%d", ((int)trainOrTest));
-		convertPositionCoordinatesToString(&(currentFeature->pointTransformed), transformedpositionCoordinatesString);
+		string transformedpositionCoordinatesString = convertPositionCoordinatesToString(&(currentFeature->pointTransformed));
 		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
-		convertPositionCoordinatesToString(&(currentFeature->point), positionCoordinatesString);
+		string positionCoordinatesString = convertPositionCoordinatesToString(&(currentFeature->point));
 		#endif
 
 		#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES

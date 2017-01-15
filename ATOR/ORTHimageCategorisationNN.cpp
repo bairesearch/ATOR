@@ -26,11 +26,11 @@
  * File Name: ORTHimageCategorisationNN.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e2d 29-August-2014
+ * Project Version: 3e3a 01-September-2014
  * Test Harness for OR Image Categorisation NN method (not yet implemented)
  *******************************************************************************/
 
-/*Description;
+/*Description (OLD);
 
 This was considered a possible solution to the information theory problem (image /snapshot categorisation) which looked like it could possibly work (seemed like it was on the right track).
 
@@ -630,14 +630,12 @@ bool generatePixelMapExperienceFromImage(string imageFileName, Experience * curr
 	//1. generate random camera + lighting position conditions;
 		//CHECK THIS - need to randomly vary lighting conditions
 
-	char * charstarrayImageFileName = const_cast<char*>(imageFileName.c_str()); //NOT USED for 2D!
-
 	//3. load pixmap into RAM objectImage from generated pixmap
 	pixmap * objectImage;
 	#ifdef DEBUG_TH_OR_IMAGE_CATEGORISTION_NN_3
 	cout << "image file being loaded = " << charstarrayImageFileName << endl;
 	#endif
-	objectImage = loadPPM(charstarrayImageFileName);
+	objectImage = loadPPM(imageFileName);
 
 	//4. produce contrast map from pixmap image
 	unsigned char * rgbMap = new unsigned char [objectImage->wide * objectImage->high * RGB_NUM];
@@ -679,24 +677,16 @@ bool generatePixelMapExperienceFromImage(string imageFileName, Experience * curr
 	string imageFileNameStart = "";
 	imageFileNameStart = charstarrayImageFileName;
 	string PPMFileNameLuminosity = (imageFileNameStart) + LUMINOSITY_MAP_PPM_EXTENSION;
-	char * PPMFileNameLuminosityCharArray = const_cast<char*>(PPMFileNameLuminosity.c_str());
-	cout << "PPMFileNameLuminosityCharArray = " << PPMFileNameLuminosityCharArray << endl;
-	generatePixmapFromLuminosityMap(PPMFileNameLuminosityCharArray, objectImage->wide, objectImage->high, luminosityMap);
+	generatePixmapFromLuminosityMap(PPMFileNameLuminosity, objectImage->wide, objectImage->high, luminosityMap);
 
 	string PPMFileNameContrast = (imageFileNameStart) + LUMINOSITY_CONTRAST_MAP_PPM_EXTENSION;
-	char * PPMFileNameContrastCharArray = const_cast<char*>(PPMFileNameContrast.c_str());
-	cout << "PPMFileNameContrastCharArray = " << PPMFileNameContrastCharArray << endl;
-	generatePixmapFromLuminosityContrastMap(PPMFileNameContrastCharArray, objectImage->wide, objectImage->high, luminosityContrastMap);
+	generatePixmapFromLuminosityContrastMap(PPMFileNameContrast, objectImage->wide, objectImage->high, luminosityContrastMap);
 
 	string PPMFileNameLuminosityBoolean = (imageFileNameStart) + LUMINOSITY_BOOLEAN_MAP_PPM_EXTENSION;
-	char * PPMFileNameLuminosityBooleanCharArray = const_cast<char*>(PPMFileNameLuminosityBoolean.c_str());
-	cout << "PPMFileNameLuminosityBooleanCharArray = " << PPMFileNameLuminosityBooleanCharArray << endl;
-	generatePixmapFromBooleanMap(PPMFileNameLuminosityBooleanCharArray, objectImage->wide, objectImage->high, luminosityBooleanMap);
+	generatePixmapFromBooleanMap(PPMFileNameLuminosityBoolean, objectImage->wide, objectImage->high, luminosityBooleanMap);
 
 	string PPMFileNameContrastBoolean = (imageFileNameStart) + LUMINOSITY_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION;
-	char * PPMFileNameContrastBooleanCharArray = const_cast<char*>(PPMFileNameContrastBoolean.c_str());
-	cout << "PPMFileNameContrastBooleanCharArray = " << PPMFileNameContrastBooleanCharArray << endl;
-	generatePixmapFromBooleanMap(PPMFileNameContrastBooleanCharArray, objectImage->wide, objectImage->high, luminosityContrastBooleanMap);
+	generatePixmapFromBooleanMap(PPMFileNameContrastBoolean, objectImage->wide, objectImage->high, luminosityContrastBooleanMap);
 	#endif
 
 	//memory clean up
@@ -725,10 +715,9 @@ void createImageFileNameMatchListFromMatchFile(string fileName, FileNameMatch * 
 {
 	FileNameMatch * currentMatchInList = firstMatchInList;
 
-	char * fileNamecharstar = const_cast<char*>(fileName.c_str());
-	ifstream * parseFileObject = new ifstream(fileNamecharstar);
+	ifstream parseFileObject(fileNamecharstar.c_str());
 
-	if(parseFileObject->rdbuf( )->is_open( ))
+	if(parseFileObject.rdbuf()->is_open())
 	{
 		char c;
 		int charCount = 0;
@@ -738,10 +727,10 @@ void createImageFileNameMatchListFromMatchFile(string fileName, FileNameMatch * 
 		bool readingObjectName1 = true;
 		bool readingObjectName2 = false;
 
-		char objectName1String[100] = "";
-		char objectName2String[100] = "";
+		string objectName1String = "";
+		string objectName2String = "";
 
-		while (parseFileObject->get(c))
+		while(parseFileObject.get(c))
 		{
 			charCount++;
 
@@ -762,10 +751,7 @@ void createImageFileNameMatchListFromMatchFile(string fileName, FileNameMatch * 
 			}
 			else if(readingObjectName1)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(objectName1String, typeString);
+				objectName1String = objectName1String + c;
 			}
 			else if((readingObjectName2) && (c == CHAR_SPACE))
 			{
@@ -786,8 +772,8 @@ void createImageFileNameMatchListFromMatchFile(string fileName, FileNameMatch * 
 
 				currentMatchInList=currentMatchInList->next;
 
-				objectName1String[0] = '\0';
-				objectName2String[0] = '\0';
+				objectName1String = "";
+				objectName2String = "";
 
 				readingObjectName2 = false;
 				readingObjectName1 = true;
@@ -795,15 +781,11 @@ void createImageFileNameMatchListFromMatchFile(string fileName, FileNameMatch * 
 			}
 			else if(readingObjectName2)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(objectName2String, typeString);
+				objectName2String = objectName2String + c;
 			}
 		}
 
-		parseFileObject->close();
-		delete parseFileObject;
+		parseFileObject.close();
 	}
 	else
 	{

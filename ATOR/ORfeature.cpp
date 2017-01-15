@@ -26,7 +26,7 @@
  * File Name: ORfeature.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e2d 29-August-2014
+ * Project Version: 3e3a 01-September-2014
  *
  * Assumes that depth information is less accurate than image information
  *
@@ -3659,10 +3659,9 @@ void generateFeatureListFromHeitgerFeatureAsciiMap(Feature * firstFeatureInFeatu
 {
 	Feature * currentFeatureInList = firstFeatureInFeatureList;
 
-	char * fileNamecharstar = const_cast<char*>(featureMapFileNameAscii.c_str());
-	ifstream * parseFileObject = new ifstream(fileNamecharstar);
+	ifstream parseFileObject(featureMapFileNameAscii.c_str());
 
-	if(parseFileObject->rdbuf( )->is_open( ))
+	if(parseFileObject.rdbuf()->is_open())
 	{
 		char c;
 		int charCount = 0;
@@ -3672,11 +3671,11 @@ void generateFeatureListFromHeitgerFeatureAsciiMap(Feature * firstFeatureInFeatu
 		bool readingY = false;
 		bool readingMagnitude = false;
 
-		char XString[100] = "";
-		char YString[100] = "";
-		char magnitudeString[100] = "";
+		string XString = "";
+		string YString = "";
+		string magnitudeString = "";
 
-		while (parseFileObject->get(c))
+		while(parseFileObject.get(c))
 		{
 			charCount++;
 
@@ -3697,10 +3696,7 @@ void generateFeatureListFromHeitgerFeatureAsciiMap(Feature * firstFeatureInFeatu
 			}
 			else if(readingX)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(XString, typeString);
+				XString = XString + c;
 			}
 			else if((readingY) && (c == ' '))
 			{
@@ -3709,17 +3705,14 @@ void generateFeatureListFromHeitgerFeatureAsciiMap(Feature * firstFeatureInFeatu
 			}
 			else if(readingY)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(YString, typeString);
+				YString = YString + c;
 			}
 			else if((readingMagnitude) && (c == '\n'))
 			{
-				currentFeatureInList->point.x = (atof(XString)) * zoom;
-				currentFeatureInList->point.y = (atof(YString)) * zoom;
+				currentFeatureInList->point.x = (atof(XString.c_str())) * zoom;
+				currentFeatureInList->point.y = (atof(YString.c_str())) * zoom;
 				currentFeatureInList->point.z = 0.0;
-				currentFeatureInList->magnitude = (atof(magnitudeString));
+				currentFeatureInList->magnitude = (atof(magnitudeString.c_str()));
 				currentFeatureInList->xViewport = currentFeatureInList->point.x;
 				currentFeatureInList->yViewport = currentFeatureInList->point.y;
 
@@ -3736,9 +3729,9 @@ void generateFeatureListFromHeitgerFeatureAsciiMap(Feature * firstFeatureInFeatu
 				currentFeatureInList->next = newFeature;
 				currentFeatureInList=currentFeatureInList->next;
 
-				XString[0] = '\0';
-				YString[0] = '\0';
-				magnitudeString[0] = '\0';
+				XString = "";
+				YString = "";
+				magnitudeString = "";
 
 				lineCount++;
 				readingMagnitude = false;
@@ -3746,10 +3739,7 @@ void generateFeatureListFromHeitgerFeatureAsciiMap(Feature * firstFeatureInFeatu
 			}
 			else if(readingMagnitude)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(magnitudeString, typeString);
+				magnitudeString = magnitudeString + c;
 			}
 			else
 			{
@@ -3760,8 +3750,7 @@ void generateFeatureListFromHeitgerFeatureAsciiMap(Feature * firstFeatureInFeatu
 
 		}
 
-		parseFileObject->close();
-		delete parseFileObject;
+		parseFileObject.close();
 	}
 	else
 	{

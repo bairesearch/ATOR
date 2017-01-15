@@ -26,7 +26,7 @@
  * File Name: ORTHmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e2d 29-August-2014
+ * Project Version: 3e3a 01-September-2014
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -59,7 +59,7 @@ int main
 	int imageHeight = 576;
 	unsigned char * rgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
 	bool * edgeBoolMap = new bool[imageWidth*imageHeight];
-	char * rgbMapFileName = "testedge.ppm";
+	string rgbMapFileName = "testedge.ppm";
 	pixmap * rgbPixMap;
 	cout << "rgbPixMap = loadPPM(" << rgbMapFileName << ");" << endl;
 	rgbPixMap = loadPPM(rgbMapFileName);

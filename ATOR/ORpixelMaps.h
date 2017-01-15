@@ -26,7 +26,7 @@
  * File Name: ORpixelMaps.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e2d 29-August-2014
+ * Project Version: 3e3a 01-September-2014
  *
  *******************************************************************************/
 
@@ -84,13 +84,13 @@ void getXYvectorMapValue(int x, int y, int imageWidth, double * XYvectorMap, vec
 
 void createDepthContrastBooleanMap(int imageWidth, int imageHeight, double * depthContrastMap, bool * depthContrastBooleanMap);
 
-void generatePixmapFromDepthGradientMap(char * imageFileName, int imageWidth, int imageHeight, double * depthGradientMap);
+void generatePixmapFromDepthGradientMap(string imageFileName, int imageWidth, int imageHeight, double * depthGradientMap);
 void generateRGBmapFromDepthGradientMap(int imageWidth, int imageHeight, double * depthGradientMap, unsigned char * rgbMap);
-void generatePixmapFromDepthGradientContrastMap(char * imageFileName, int imageWidth, int imageHeight, double * depthGradientContrastMap);
+void generatePixmapFromDepthGradientContrastMap(string imageFileName, int imageWidth, int imageHeight, double * depthGradientContrastMap);
 void generateRGBmapFromDepthGradientContrastMap(int imageWidth, int imageHeight, double * depthGradientContrastMap, unsigned char * rgbMap);
 void createDepthGradientContrastBooleanMap(int imageWidth, int imageHeight, double * depthGradientContrastMap, bool * depthGradientContrastBooleanMap);
 
-void generatePixmapFromPointNormalContrastMap(char * imageFileName, int imageWidth, int imageHeight, double * pointNormalContrastMap);
+void generatePixmapFromPointNormalContrastMap(string imageFileName, int imageWidth, int imageHeight, double * pointNormalContrastMap);
 void generateRGBmapFromPointNormalContrastMap(int imageWidth, int imageHeight, double * pointNormalContrastMap, unsigned char * rgbMap);
 void createPointNormalContrastBooleanMap(int imageWidth, int imageHeight, double * pointNormalContrastMap, bool * pointNormalContrastBooleanMap);
 

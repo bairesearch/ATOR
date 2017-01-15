@@ -26,7 +26,7 @@
  * File Name: ORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e2d 29-August-2014
+ * Project Version: 3e3a 01-September-2014
  *
  *******************************************************************************/
 
@@ -113,7 +113,7 @@ int main(int argc,char **argv)
 	string databaseFolderName =  OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME + OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME;
 	#endif
 
-	if (argumentExists(argc,argv,"-workingfolder"))
+	if(argumentExists(argc,argv,"-workingfolder"))
 	{
 		workingFolderCharStar=getCharArgument(argc,argv,"-workingfolder");
 	}
@@ -121,7 +121,7 @@ int main(int argc,char **argv)
 	{
 		workingFolderCharStar = currentFolder;
 	}
-	if (argumentExists(argc,argv,"-exefolder"))
+	if(argumentExists(argc,argv,"-exefolder"))
 	{
 		exeFolderCharStar=getCharArgument(argc,argv,"-exefolder");
 	}
@@ -129,7 +129,7 @@ int main(int argc,char **argv)
 	{
 		exeFolderCharStar = currentFolder;
 	}
-	if (argumentExists(argc,argv,"-tempfolder"))
+	if(argumentExists(argc,argv,"-tempfolder"))
 	{
 		tempFolderCharStar=getCharArgument(argc,argv,"-tempfolder");
 	}
@@ -150,7 +150,7 @@ int main(int argc,char **argv)
 	setCurrentDirectory(tempFolderCharStar);
 
 	int dimension;
-	if (argumentExists(argc,argv,"-od3"))
+	if(argumentExists(argc,argv,"-od3"))
 	{
 		dimension = OR_METHOD3DOD_DIMENSIONS;
 	}
@@ -160,7 +160,7 @@ int main(int argc,char **argv)
 	}
 
 	bool clearTrainTable;
-	if (argumentExists(argc,argv,"-cleartrain"))
+	if(argumentExists(argc,argv,"-cleartrain"))
 	{
 		clearTrainTable = true;
 	}
@@ -170,7 +170,7 @@ int main(int argc,char **argv)
 	}
 
 	int trainOrTest;
-	if (argumentExists(argc,argv,"-trainortest"))
+	if(argumentExists(argc,argv,"-trainortest"))
 	{
 		trainOrTest = int(getFloatArgument(argc,argv,"-trainortest"));
 
@@ -196,7 +196,7 @@ int main(int argc,char **argv)
 	char * sqlipaddressCharStar = new char[100];
 	char * sqlusernameCharStar = new char[100];
 	char * sqlpasswordCharStar = new char[100];
-	if (argumentExists(argc,argv,"-sqlipaddress"))
+	if(argumentExists(argc,argv,"-sqlipaddress"))
 	{
 		sqlipaddressCharStar=getCharArgument(argc,argv,"-sqlipaddress");
 	}
@@ -206,7 +206,7 @@ int main(int argc,char **argv)
 		printORcommandLineErrorMessage();
 		exit(0);
 	}
-	if (argumentExists(argc,argv,"-sqlusername"))
+	if(argumentExists(argc,argv,"-sqlusername"))
 	{
 		sqlusernameCharStar=getCharArgument(argc,argv,"-sqlusername");
 	}
@@ -217,7 +217,7 @@ int main(int argc,char **argv)
 		exit(0);
 	}
 
-	if (argumentExists(argc,argv,"-sqlpassword"))
+	if(argumentExists(argc,argv,"-sqlpassword"))
 	{
 		sqlpasswordCharStar=getCharArgument(argc,argv,"-sqlpassword");
 	}
@@ -337,7 +337,7 @@ int main(int argc,char **argv)
 
 	char * imageFileNameCharStar = new char[100];
 	string imageFileName;
-	if (argumentExists(argc,argv,"-object"))
+	if(argumentExists(argc,argv,"-object"))
 	{
 		imageFileNameCharStar=getCharArgument(argc,argv,"-object");
 		imageFileName = imageFileNameCharStar;
@@ -351,15 +351,15 @@ int main(int argc,char **argv)
 		exit(0);
 	}
 
-	if (argumentExists(argc,argv,"-version"))
+	if(argumentExists(argc,argv,"-version"))
 	{
-		cout << "OpenOR.exe - Project Version: 3e2d 29-August-2014" << endl;
+		cout << "OpenOR.exe - Project Version: 3e3a 01-September-2014" << endl;
 		exit(1);
 	}
 
 	char * imageExtensionNameCharStar = new char[100];
 	string imageExtensionName;
-	if (argumentExists(argc,argv,"-imageext"))
+	if(argumentExists(argc,argv,"-imageext"))
 	{
 		imageExtensionNameCharStar=getCharArgument(argc,argv,"-imageext");
 		imageExtensionName = imageExtensionNameCharStar;
@@ -375,7 +375,7 @@ int main(int argc,char **argv)
 		}
 	}
 
-	if (argumentExists(argc,argv,"-width"))
+	if(argumentExists(argc,argv,"-width"))
 	{
 		vi.imageWidth=getFloatArgument(argc,argv,"-width");
 	}
@@ -389,7 +389,7 @@ int main(int argc,char **argv)
 		}
 	}
 
-	if (argumentExists(argc,argv,"-height"))
+	if(argumentExists(argc,argv,"-height"))
 	{
 		vi.imageHeight=getFloatArgument(argc,argv,"-height");
 	}
@@ -538,7 +538,7 @@ int main(int argc,char **argv)
 	}
 
 	int viewNumber = 0;
-	if (argumentExists(argc,argv,"-view"))
+	if(argumentExists(argc,argv,"-view"))
 	{
 		viewNumber=getFloatArgument(argc,argv,"-view");
 

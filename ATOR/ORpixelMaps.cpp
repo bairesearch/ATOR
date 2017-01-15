@@ -26,7 +26,7 @@
  * File Name: ORpixelMaps.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e2d 29-August-2014
+ * Project Version: 3e3a 01-September-2014
  *
  *******************************************************************************/
 
@@ -450,7 +450,7 @@ void generateRGBmapFromDepthGradientContrastMap(int imageWidth, int imageHeight,
 	}
 }
 
-void generatePixmapFromDepthGradientContrastMap(char * imageFileName, int imageWidth, int imageHeight, double * depthGradientContrastMap)
+void generatePixmapFromDepthGradientContrastMap(string imageFileName, int imageWidth, int imageHeight, double * depthGradientContrastMap)
 {
 	int x,y;
 	pixmap* pm;
@@ -472,7 +472,7 @@ void generatePixmapFromDepthGradientContrastMap(char * imageFileName, int imageW
 }
 
 
-void generatePixmapFromDepthGradientMap(char * imageFileName, int imageWidth, int imageHeight, double * depthGradientMap)
+void generatePixmapFromDepthGradientMap(string imageFileName, int imageWidth, int imageHeight, double * depthGradientMap)
 {
 	int x,y;
 	pixmap* pm;
@@ -1864,7 +1864,7 @@ void generateRGBmapFromPointNormalContrastMap(int imageWidth, int imageHeight, d
 }
 
 
-void generatePixmapFromPointNormalContrastMap(char * imageFileName, int imageWidth, int imageHeight, double * pointNormalContrastMap)
+void generatePixmapFromPointNormalContrastMap(string imageFileName, int imageWidth, int imageHeight, double * pointNormalContrastMap)
 {
 	int x,y;
 	pixmap* pm;

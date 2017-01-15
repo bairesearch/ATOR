@@ -26,7 +26,7 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e2d 29-August-2014
+ * Project Version: 3e3a 01-September-2014
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -296,6 +296,7 @@ bool ORmethodTest(int dimension, int numberOfTestObjects, string testObjectNameA
 	{
 		result = false;
 	}
+	cout << "ORmethodTrainOrTest complete" << endl;
 
 	if(!ORmethodCompareTestWithTrain(dimension, numberOfTestObjects, testObjectNameArray, imageWidthFacingPoly, imageHeightFacingPoly, numberOfTestPolys, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestZoomIndicies, trainOrTest, viewNumber))
 	{
@@ -731,10 +732,9 @@ bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 		DBgenerateFolderName(&(objectNameArray[o]), trainOrTest);
 		#endif
 		string objectSceneFileName = objectNameArray[o] + SCENE_FILE_NAME_EXTENSION;
-
 		string objectSceneFileNameCollapsed = objectNameArray[o] + "CollapsedForRaytracing" + SCENE_FILE_NAME_EXTENSION;
-		char * topLevelSceneFileName =   const_cast<char*>(objectSceneFileName.c_str());
-		char * topLevelSceneFileNameCollapsed = const_cast<char*>(objectSceneFileNameCollapsed.c_str());
+		string topLevelSceneFileName = objectSceneFileName;
+		string topLevelSceneFileNameCollapsed = objectSceneFileName;
 		Reference * initialReferenceInSceneFile = new Reference();
 		Reference * topLevelReferenceInSceneFile = new Reference(topLevelSceneFileName, 1, true);	//The information in this object is not required or meaningful, but needs to be passed into the parseFile/parseReferenceList recursive function
 		if(objectDataSource == OR_OBJECT_DATA_SOURCE_GENERATE_DATA)
@@ -1055,12 +1055,13 @@ bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 					time3NormalisedSnapshotGenerationIndexTest++;
 				}
 
-				cout << "\t time3NormalisedSnapshotGeneration = " << time3NormalisedSnapshotGenerationEnd-time3NormalisedSnapshotGenerationStart << endl;
+				cout << "\t time3NormalisedSnapshotGeneration1 = " << time3NormalisedSnapshotGenerationEnd-time3NormalisedSnapshotGenerationStart << endl;
 
 			}
 			#endif
 
-			delete firstReferenceInInterpolatedMesh;
+			//delete firstReferenceInInterpolatedMesh;
+			cout << "deleted firstReferenceInInterpolatedMesh" << endl;
 
 			/*
 			//NEED TO FIX THIS - MEM ISSUE
@@ -1221,7 +1222,7 @@ bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 					time3NormalisedSnapshotGenerationIndexTest++;
 				}
 
-				cout << "\t\t time3NormalisedSnapshotGeneration = " << time3NormalisedSnapshotGenerationEnd-time3NormalisedSnapshotGenerationStart << endl;
+				cout << "\t\t time3NormalisedSnapshotGeneration2 = " << time3NormalisedSnapshotGenerationEnd-time3NormalisedSnapshotGenerationStart << endl;
 
 			}
 		#endif
@@ -1420,30 +1421,27 @@ bool createRGBandPointMap(Reference * initialReferenceInSceneFile, double * poin
 
 
 	#ifdef OR_USE_SINGLE_TRAIN_STAR_MAP
-		string preexistingImageFileNameCPlus;
+		string preexistingImageFileName;
 		if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 		{
-			preexistingImageFileNameCPlus = objectName + PNG_EXTENSION;
+			preexistingImageFileName = objectName + PNG_EXTENSION;
 		}
 		else if(trainOrTest == TEST)
 		{
-			preexistingImageFileNameCPlus = objectName + "_r" + rotationviewIndexString + PNG_EXTENSION;
+			preexistingImageFileName = objectName + "_r" + rotationviewIndexString + PNG_EXTENSION;
 		}
 	#else
-		string preexistingImageFileNameCPlus = objectName + "_r" + rotationviewIndexString + PNG_EXTENSION;
+		string preexistingImageFileName = objectName + "_r" + rotationviewIndexString + PNG_EXTENSION;
 	#endif
 
 		#ifdef OR_DEBUG
-		//cout << "preexistingImageFileNameCPlus = " << preexistingImageFileNameCPlus << endl;
+		//cout << "preexistingImageFileName = " << preexistingImageFileName << endl;
 		#endif
 
-		char * preexistingImageFileName = const_cast<char*>(preexistingImageFileNameCPlus.c_str());
-
-		string rgbMapFileNameCPlus = mapFileName + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-		char * rgbMapFileName = const_cast<char*>(rgbMapFileNameCPlus.c_str());
+		string rgbMapFileName = mapFileName + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 
 		string convertPNGtoPPMCommand = "";
-		convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolderCharStar + "/" + preexistingImageFileNameCPlus + " " + rgbMapFileNameCPlus;
+		convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolderCharStar + "/" + preexistingImageFileName + " " + rgbMapFileName;
 		cout << "system(" << convertPNGtoPPMCommand << ");" << endl;
 		system(convertPNGtoPPMCommand.c_str());
 
@@ -1503,26 +1501,23 @@ bool createRGBandPointMap(Reference * initialReferenceInSceneFile, double * poin
 			cout << "\t 2. preexisting images are placed in current directory; eg house.png, house.depth.png" << endl;
 		}
 
-		string objectImageNameCPlus;
+		string objectImageName;
 
 		if(viewIndex > 0)
 		{
 			//must have view number appending file name
-			objectImageNameCPlus = vi->objectName + ".view" + viewIndexString + vi->imageExtensionName;
+			objectImageName = vi->objectName + ".view" + viewIndexString + vi->imageExtensionName;
 
 		}
 		else
 		{
-			objectImageNameCPlus = vi->objectName + vi->imageExtensionName;
+			objectImageName = vi->objectName + vi->imageExtensionName;
 		}
 
-		char * objectImageName = const_cast<char*>(objectImageNameCPlus.c_str());
-
-		string rgbMapFileNameCPlus = mapFileName + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-		char * rgbMapFileName = const_cast<char*>(rgbMapFileNameCPlus.c_str());
+		string rgbMapFileName = mapFileName + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 
 		string convertPNGtoPPMCommand = "";
-		convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolderCharStar + "/" + objectImageNameCPlus + " " + rgbMapFileNameCPlus;
+		convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolderCharStar + "/" + objectImageName + " " + rgbMapFileName;
 		if(OR_PRINT_ALGORITHM_PROGRESS)
 		{
 			cout << "system(" << convertPNGtoPPMCommand << ");" << endl;
@@ -1547,25 +1542,22 @@ bool createRGBandPointMap(Reference * initialReferenceInSceneFile, double * poin
 
 		if(dimension == OR_METHOD3DOD_DIMENSIONS)
 		{
-			string objectDepthNameCPlus = "";
+			string objectDepthName = "";
 
 			if(viewIndex > 0)
 			{
 				//must have view number appending file name
-				objectDepthNameCPlus = objectDepthNameCPlus + vi->objectName + ".view" + viewIndexString + vi->depthExtensionName;
+				objectDepthName = objectDepthName + vi->objectName + ".view" + viewIndexString + vi->depthExtensionName;
 			}
 			else
 			{
-				objectDepthNameCPlus = objectDepthNameCPlus + vi->objectName + vi->depthExtensionName;
+				objectDepthName = objectDepthName + vi->objectName + vi->depthExtensionName;
 			}
 
-			char * objectDepthName = const_cast<char*>(objectDepthNameCPlus.c_str());
-
-			string depthMap24BitFileNameCPlus = mapFileName + DEPTHMAP24BIT_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-			char * depthMap24BitFileName = const_cast<char*>(depthMap24BitFileNameCPlus.c_str());
+			string depthMap24BitFileName = mapFileName + DEPTHMAP24BIT_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 
 			string convertPNGtoPPMCommand = "";
-			convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolderCharStar + "/" + objectDepthNameCPlus + " " + depthMap24BitFileNameCPlus;
+			convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolderCharStar + "/" + objectDepthName + " " + depthMap24BitFileName;
 			if(OR_PRINT_ALGORITHM_PROGRESS)
 			{
 				cout << "system(" << convertPNGtoPPMCommand << ");" << endl;
@@ -1589,10 +1581,8 @@ bool createRGBandPointMap(Reference * initialReferenceInSceneFile, double * poin
 			freePixmap(depth24BitPixMap);
 
 				//debug;
-			string depthMapTempTestNameCPlus = mapFileName + "temptest" + DEPTHMAP24BIT_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-			char * depthMapTempTestName = const_cast<char*>(depthMapTempTestNameCPlus.c_str());
-			string depthMap24BitTempTestFileNameCPlus = mapFileName + "temptest" + DEPTHMAP24BIT_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-			char * depthMap24BitTempTestFileName = const_cast<char*>(depthMap24BitTempTestFileNameCPlus.c_str());
+			string depthMapTempTestName = mapFileName + "temptest" + DEPTHMAP24BIT_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
+			string depthMap24BitTempTestFileName = mapFileName + "temptest" + DEPTHMAP24BIT_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 			generatePixmapFromDepthMapOrDepthContrastMap(depthMapTempTestName, imageWidth, imageHeight, depthMap);
 			generatePixmapFromDepthMap24Bit(depthMap24BitTempTestFileName, imageWidth, imageHeight, depthMap, vi->depthScale, 0.0);
 
@@ -1660,7 +1650,7 @@ bool createRGBandPointMap(Reference * initialReferenceInSceneFile, double * poin
 		createPointMapFromDepthMap(imageWidth, imageHeight, depthMap, pointMap, vi);		//this is to overwrite the default point map using a consistent point map generation
 		#endif
 
-		string rgbMapFileNameCPlus = mapFileName + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
+		string rgbMapFileName = mapFileName + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 
 		createLuminosityMapFromRGBMap(imageWidth, imageHeight, rgbMap, luminosityMap);
 		createLuminosityBooleanMap(imageWidth, imageHeight, luminosityMap, luminosityBooleanMap);
@@ -1708,45 +1698,24 @@ bool createRGBandPointMap(Reference * initialReferenceInSceneFile, double * poin
 		}
 
 
-		string luminosityMapFileNameCPlus = mapFileName + LUMINOSITY_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-		string luminosityBooleanMapFileNameCPlus = mapFileName + LUMINOSITY_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-		string luminosityContrastMapFileNameCPlus = mapFileName + LUMINOSITY_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-		string luminosityContrastBooleanMapFileNameCPlus = mapFileName + LUMINOSITY_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
+		string luminosityMapFileName = mapFileName + LUMINOSITY_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
+		string luminosityBooleanMapFileName = mapFileName + LUMINOSITY_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
+		string luminosityContrastMapFileName = mapFileName + LUMINOSITY_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
+		string luminosityContrastBooleanMapFileName = mapFileName + LUMINOSITY_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 
-		string depthMap24BitFileNameCPlus = mapFileName + DEPTHMAP24BIT_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
+		string depthMap24BitFileName = mapFileName + DEPTHMAP24BIT_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 
-		string normalMapFileNameCPlus = mapFileName + NORMALMAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
-		string depthMapFileNameCPlus = mapFileName + DEPTHMAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
-		string depthContrastMapFileNameCPlus = mapFileName + DEPTH_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
-		string depthContrastBooleanMapFileNameCPlus = mapFileName + DEPTH_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
-		string depthGradientMapFileNameCPlus = mapFileName + DEPTH_GRADIENT_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
-		string depthGradientContrastMapFileNameCPlus = mapFileName + DEPTH_GRADIENT_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
-		string depthGradientContrastBooleanMapFileNameCPlus = mapFileName + DEPTH_GRADIENT_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
-		string luminosityContrastMapMinusDepthContrastMapFileNameCPlus = mapFileName + LUMINOSITY_CONTRAST_MINUS_DEPTH_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
+		string normalMapFileName = mapFileName + NORMALMAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
+		string depthMapFileName = mapFileName + DEPTHMAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
+		string depthContrastMapFileName = mapFileName + DEPTH_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
+		string depthContrastBooleanMapFileName = mapFileName + DEPTH_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
+		string depthGradientMapFileName = mapFileName + DEPTH_GRADIENT_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
+		string depthGradientContrastMapFileName = mapFileName + DEPTH_GRADIENT_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
+		string depthGradientContrastBooleanMapFileName = mapFileName + DEPTH_GRADIENT_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
+		string luminosityContrastMapMinusDepthContrastMapFileName = mapFileName + LUMINOSITY_CONTRAST_MINUS_DEPTH_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
 
-		string pointNormalContrastMapFileNameCPlus = mapFileName + POINT_NORMAL_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
-		string pointNormalContrastBooleanMapFileNameCPlus = mapFileName + POINT_NORMAL_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
-
-		char * rgbMapFileName = const_cast<char*>(rgbMapFileNameCPlus.c_str());
-		char * luminosityMapFileName = const_cast<char*>(luminosityMapFileNameCPlus.c_str());
-		char * luminosityBooleanMapFileName = const_cast<char*>(luminosityBooleanMapFileNameCPlus.c_str());
-		char * luminosityContrastMapFileName = const_cast<char*>(luminosityContrastMapFileNameCPlus.c_str());
-		char * luminosityContrastBooleanMapFileName = const_cast<char*>(luminosityContrastBooleanMapFileNameCPlus.c_str());
-
-		char * depthMap24BitFileName = const_cast<char*>(depthMap24BitFileNameCPlus.c_str());
-
-		char * normalMapFileName = const_cast<char*>(normalMapFileNameCPlus.c_str());	//NOT USED FOR 2D!
-		char * depthMapFileName = const_cast<char*>(depthMapFileNameCPlus.c_str());	//NOT USED FOR 2D!
-		char * depthContrastMapFileName = const_cast<char*>(depthContrastMapFileNameCPlus.c_str());	//NOT USED FOR 2D!
-		char * depthContrastBooleanMapFileName = const_cast<char*>(depthContrastBooleanMapFileNameCPlus.c_str());	//NOT USED FOR 2D!
-		char * depthGradientMapFileName = const_cast<char*>(depthGradientMapFileNameCPlus.c_str());	//NOT USED FOR 2D!
-		char * depthGradientContrastMapFileName = const_cast<char*>(depthGradientContrastMapFileNameCPlus.c_str());	//NOT USED FOR 2D!
-		char * depthGradientContrastBooleanMapFileName = const_cast<char*>(depthGradientContrastBooleanMapFileNameCPlus.c_str());	//NOT USED FOR 2D!
-		char * luminosityContrastMapMinusDepthContrastMapFileName = const_cast<char*>(luminosityContrastMapMinusDepthContrastMapFileNameCPlus.c_str());	//NOT USED FOR 2D!
-
-		char * pointNormalContrastMapFileName = const_cast<char*>(pointNormalContrastMapFileNameCPlus.c_str());	//NOT USED FOR 2D!
-		char * pointNormalContrastBooleanMapFileName = const_cast<char*>(pointNormalContrastBooleanMapFileNameCPlus.c_str());	//NOT USED FOR 2D!
-
+		string pointNormalContrastMapFileName = mapFileName + POINT_NORMAL_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
+		string pointNormalContrastBooleanMapFileName = mapFileName + POINT_NORMAL_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED FOR 2D!
 
 		generatePixmapFromRGBmap(rgbMapFileName, imageWidth, imageHeight, rgbMap);
 		generatePixmapFromBooleanMap(luminosityBooleanMapFileName, imageWidth, imageHeight, luminosityBooleanMap);
@@ -2955,8 +2924,7 @@ bool createOrAddPointsToFeaturesList(double * pointMap, unsigned char * rgbMap, 
 
 		bool * featuresMapCompleteOfficial = new bool[resampledWidth*resampledHeight];
 		generateBooleanMapFromFeatureList(resampledWidth, resampledHeight, &(firstFeatureInList[zoomIndex]), featuresMapCompleteOfficial, vi, zoom);
-		string featuresMapCompleteOfficialFileNameCPlus = mapFileNameWithZoom + FEATURESMAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-		char * featuresMapCompleteOfficialFileName = const_cast<char*>(featuresMapCompleteOfficialFileNameCPlus.c_str());
+		string featuresMapCompleteOfficialFileName = mapFileNameWithZoom + FEATURESMAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 		generatePixmapFromBooleanMap(featuresMapCompleteOfficialFileName, resampledWidth, resampledHeight, featuresMapCompleteOfficial);
 		delete featuresMapCompleteOfficial;
 	}
@@ -3057,9 +3025,7 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(ViewInfo * vi, unsigned char * rg
 	}
 
 	string rgbMapFileName = mapFileName + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-	char * charstarRgbMapFileName = const_cast<char*>(rgbMapFileName.c_str());
 	string featureMapFileName = mapFileName + FEATUREMAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-	char * charstarfeatureMapFileName = const_cast<char*>(featureMapFileName.c_str());
 	unsigned char * featureRgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
 
 
@@ -3137,7 +3103,7 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(ViewInfo * vi, unsigned char * rg
 	{
 		cout << "featurePixMapTrain = loadPPM(" << featureMapFileName << ");" << endl;
 	}
-	featurePixMap = loadPPM(charstarfeatureMapFileName);
+	featurePixMap = loadPPM(featureMapFileName);
 
 	#ifdef TEMP_TEST_HEITGER_FEATURE_THRESHOLD_IMAGE_SIZE_DEPENDENCE
 		if(OR_PRINT_ALGORITHM_PROGRESS)
@@ -3536,79 +3502,44 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 
 								string interpolatedMapFileNameForRayTracingLDR = interpolatedMapFileNameForRayTracing + SCENE_FILE_NAME_EXTENSION;
 								string interpolatedMapFileNameForRayTracingTAL = interpolatedMapFileNameForRayTracing + TAL_EXTENSION;
-								string rgbMapFacingPolyFileNameCPlus = interpolatedMapFileNameForRayTracing + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
+								string rgbMapFacingPolyFileName = interpolatedMapFileNameForRayTracing + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 								#ifdef OR_IMAGE_COMPARISON_USE_OLD_AVERAGE_CONTRAST_THRESHOLDING
-								string rgbDevMapFacingPolyFileNameCPlus = interpolatedMapFileNameForRayTracing + RGB_DEV_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
+								string rgbDevMapFacingPolyFileName = interpolatedMapFileNameForRayTracing + RGB_DEV_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 								#endif
 
 								#ifdef OR_METHOD_USE_SMALL_IMAGE_FIRST_COMPARISON
- 								string rgbMapFacingPolySmallFileNameCPlus = interpolatedMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
+ 								string rgbMapFacingPolySmallFileName = interpolatedMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 								#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
- 								string booleanContrastRgbMapFacingPolySmallFileNameCPlus = interpolatedMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_BOOLEAN_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
+ 								string booleanContrastRgbMapFacingPolySmallFileName = interpolatedMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_BOOLEAN_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 								#endif
 								#ifdef OR_METHOD_3DOD_USE_SNAPSHOT_DEPTH_MAPS
- 								string depthMapFacingPolySmallFileNameCPlus = interpolatedMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + DEPTHMAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
+ 								string depthMapFacingPolySmallFileName = interpolatedMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + DEPTHMAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 								#endif
 								#ifdef OR_IMAGE_COMPARISON_USE_OLD_AVERAGE_CONTRAST_THRESHOLDING
-								string rgbDevMapFacingPolySmallFileNameCPlus = interpolatedMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_DEV_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
+								string rgbDevMapFacingPolySmallFileName = interpolatedMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_DEV_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 								#endif
 								#endif
 
 								//#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
- 								string rgbMapFacingPolySmallFileNameJPEGCPlus = interpolatedMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + JPEG_EXTENSION;
+ 								string rgbMapFacingPolySmallFileNameJPEG = interpolatedMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + JPEG_EXTENSION;
 								//#endif
 
-								string luminosityMapFacingPolyFileNameCPlus = interpolatedMapFileNameForRayTracing + LUMINOSITY_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-								string luminosityBooleanMapFacingPolyFileNameCPlus = interpolatedMapFileNameForRayTracing + LUMINOSITY_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-								string luminosityContrastMapFacingPolyFileNameCPlus = interpolatedMapFileNameForRayTracing + LUMINOSITY_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-								string luminosityContrastBooleanMapFacingPolyFileNameCPlus = interpolatedMapFileNameForRayTracing + LUMINOSITY_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-								string transformedFeaturesNearestFileNameCPlus = interpolatedMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + trainOrTestString + TFD_EXTENSION;
-								string transformedFeaturesAllFileNameCPlus = interpolatedMapFileNameForRayTracing + TRANSFORMED_FEATURES_ALL_EXTENSION_PART + trainOrTestString + TFD_EXTENSION;
-								string transformedFeaturesOTFileNameCPlus = interpolatedMapFileNameForRayTracing + TRANSFORMED_FEATURES_OT_EXTENSION_PART + trainOrTestString + TFD_EXTENSION;
+								string luminosityMapFacingPolyFileName = interpolatedMapFileNameForRayTracing + LUMINOSITY_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
+								string luminosityBooleanMapFacingPolyFileName = interpolatedMapFileNameForRayTracing + LUMINOSITY_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
+								string luminosityContrastMapFacingPolyFileName = interpolatedMapFileNameForRayTracing + LUMINOSITY_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
+								string luminosityContrastBooleanMapFacingPolyFileName = interpolatedMapFileNameForRayTracing + LUMINOSITY_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
+								string transformedFeaturesNearestFileName = interpolatedMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + trainOrTestString + TFD_EXTENSION;
+								string transformedFeaturesAllFileName = interpolatedMapFileNameForRayTracing + TRANSFORMED_FEATURES_ALL_EXTENSION_PART + trainOrTestString + TFD_EXTENSION;
+								string transformedFeaturesOTFileName = interpolatedMapFileNameForRayTracing + TRANSFORMED_FEATURES_OT_EXTENSION_PART + trainOrTestString + TFD_EXTENSION;
 
-								string normalMapFacingPolyFileNameCPlus = interpolatedMapFileNameForRayTracing + NORMALMAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;		//NOT USED for 2D!
-								string depthMapFacingPolyFileNameCPlus = interpolatedMapFileNameForRayTracing + DEPTHMAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;		//NOT USED for 2D!
-								string depthContrastMapFacingPolyFileNameCPlus = interpolatedMapFileNameForRayTracing + DEPTH_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;		//NOT USED for 2D!
-								string depthContrastBooleanMapFacingPolyFileNameCPlus = interpolatedMapFileNameForRayTracing + DEPTH_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED for 2D!
-								string depthGradientMapFacingPolyFileNameCPlus = interpolatedMapFileNameForRayTracing + DEPTH_GRADIENT_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED for 2D!
-								string depthGradientContrastMapFacingPolyFileNameCPlus = interpolatedMapFileNameForRayTracing + DEPTH_GRADIENT_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED for 2D!
-								string depthGradientContrastBooleanMapFacingPolyFileNameCPlus = interpolatedMapFileNameForRayTracing + DEPTH_GRADIENT_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED for 2D!
+								string normalMapFacingPolyFileName = interpolatedMapFileNameForRayTracing + NORMALMAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;		//NOT USED for 2D!
+								string depthMapFacingPolyFileName = interpolatedMapFileNameForRayTracing + DEPTHMAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;		//NOT USED for 2D!
+								string depthContrastMapFacingPolyFileName = interpolatedMapFileNameForRayTracing + DEPTH_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;		//NOT USED for 2D!
+								string depthContrastBooleanMapFacingPolyFileName = interpolatedMapFileNameForRayTracing + DEPTH_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED for 2D!
+								string depthGradientMapFacingPolyFileName = interpolatedMapFileNameForRayTracing + DEPTH_GRADIENT_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED for 2D!
+								string depthGradientContrastMapFacingPolyFileName = interpolatedMapFileNameForRayTracing + DEPTH_GRADIENT_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED for 2D!
+								string depthGradientContrastBooleanMapFacingPolyFileName = interpolatedMapFileNameForRayTracing + DEPTH_GRADIENT_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;	//NOT USED for 2D!
 
-								char * charstarinterpolatedMapFileNameForRayTracingLDR = const_cast<char*>(interpolatedMapFileNameForRayTracingLDR.c_str());
-								char * charstarinterpolatedMapFileNameForRayTracingTAL = const_cast<char*>(interpolatedMapFileNameForRayTracingTAL.c_str());
-								char * rgbMapFacingPolyFileName = const_cast<char*>(rgbMapFacingPolyFileNameCPlus.c_str());
-								#ifdef OR_IMAGE_COMPARISON_USE_OLD_AVERAGE_CONTRAST_THRESHOLDING
-								char * rgbDevMapFacingPolyFileName = const_cast<char*>(rgbDevMapFacingPolyFileNameCPlus.c_str());
-								#endif
-
-								#ifdef OR_METHOD_USE_SMALL_IMAGE_FIRST_COMPARISON
- 								char * rgbMapFacingPolySmallFileName = const_cast<char*>(rgbMapFacingPolySmallFileNameCPlus.c_str());
-								#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
-								char * booleanContrastRgbMapFacingPolySmallFileName = const_cast<char*>(booleanContrastRgbMapFacingPolySmallFileNameCPlus.c_str());
-								#endif
-								#ifdef OR_METHOD_3DOD_USE_SNAPSHOT_DEPTH_MAPS
- 								char * depthMapFacingPolySmallFileName = const_cast<char*>(depthMapFacingPolySmallFileNameCPlus.c_str());
-								#endif
-								#ifdef OR_IMAGE_COMPARISON_USE_OLD_AVERAGE_CONTRAST_THRESHOLDING
-								char * rgbDevMapFacingPolySmallFileName = const_cast<char*>(rgbDevMapFacingPolySmallFileNameCPlus.c_str());
-								#endif
-								#endif
-
-								//#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
-								char * rgbMapFacingPolySmallFileNameJPEG = const_cast<char*>(rgbMapFacingPolySmallFileNameJPEGCPlus.c_str());
-								//#endif
-								char * luminosityMapFacingPolyFileName = const_cast<char*>(luminosityMapFacingPolyFileNameCPlus.c_str());
-								char * luminosityBooleanMapFacingPolyFileName = const_cast<char*>(luminosityBooleanMapFacingPolyFileNameCPlus.c_str());
-								char * luminosityContrastMapFacingPolyFileName = const_cast<char*>(luminosityContrastMapFacingPolyFileNameCPlus.c_str());
-								char * luminosityContrastBooleanMapFacingPolyFileName = const_cast<char*>(luminosityContrastBooleanMapFacingPolyFileNameCPlus.c_str());
-
-								char * normalMapFacingPolyFileName = const_cast<char*>(normalMapFacingPolyFileNameCPlus.c_str());	//NOT USED for 2D!
-								char * depthMapFacingPolyFileName = const_cast<char*>(depthMapFacingPolyFileNameCPlus.c_str());	//NOT USED for 2D!
-								char * depthContrastMapFacingPolyFileName = const_cast<char*>(depthContrastMapFacingPolyFileNameCPlus.c_str());	//NOT USED for 2D!
-								char * depthContrastBooleanMapFacingPolyFileName = const_cast<char*>(depthContrastBooleanMapFacingPolyFileNameCPlus.c_str());	//NOT USED for 2D!
-								char * depthGradientMapFacingPolyFileName = const_cast<char*>(depthGradientMapFacingPolyFileNameCPlus.c_str());	//NOT USED for 2D!
-								char * depthGradientContrastMapFacingPolyFileName = const_cast<char*>(depthGradientContrastMapFacingPolyFileNameCPlus.c_str());	//NOT USED for 2D!
-								char * depthGradientContrastBooleanMapFacingPolyFileName = const_cast<char*>(depthGradientContrastBooleanMapFacingPolyFileNameCPlus.c_str());	//NOT USED for 2D!
 
 
 								ViewInfo viFacingPoly;		//used by raytracer, and 3DOD with OR_TEST_ORI_AND_POS_NOISE_DURING_TRANING_AND_TESTING
@@ -4088,7 +4019,7 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 										rgbPixMapSmall = loadPPM(rgbMapFacingPolySmallFileName);
 										createRGBMapFromPixmapImage(rgbPixMapSmall, rgbMapSmallFacingPoly);
 										freePixmap(rgbPixMapSmall);
-										remove(rgbMapFacingPolySmallFileName);
+										remove(rgbMapFacingPolySmallFileName.c_str());
 
 									#else
 
@@ -4198,7 +4129,7 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 											generatePixmapFromRGBmap(rgbMapFacingPolySmallFileName, smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly);
 										}
 
-										readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(&rgbMapFacingPolySmallFileNameCPlus, &rgbMapFacingPolySmallFileNameJPEGCPlus, currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff, false);
+										readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(&rgbMapFacingPolySmallFileName, &rgbMapFacingPolySmallFileNameJPEG, currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff, false);
 
 									#ifndef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
 										#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
@@ -4214,8 +4145,8 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 
 										if(!generatePixmapFiles)
 										{
-											remove(rgbMapFacingPolySmallFileName);
-											remove(rgbMapFacingPolySmallFileNameJPEG);
+											remove(rgbMapFacingPolySmallFileName.c_str());
+											remove(rgbMapFacingPolySmallFileNameJPEG.c_str());
 										}
 									}
 
@@ -4241,12 +4172,12 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 									{
 										if(createNearbyFeaturesFile)
 										{
-											createTransformedFeaturesFile(currentPolygonInList->firstFeatureInNearestFeatureList, transformedFeaturesNearestFileNameCPlus, objectName, viewIndex, zoomIndex, numberOfTrainOrTestPolys[zoomIndex], side, trainOrTest);		//create ascii file containing nearby transformed features
+											createTransformedFeaturesFile(currentPolygonInList->firstFeatureInNearestFeatureList, transformedFeaturesNearestFileName, objectName, viewIndex, zoomIndex, numberOfTrainOrTestPolys[zoomIndex], side, trainOrTest);		//create ascii file containing nearby transformed features
 										}
 									}
 									if(OR_METHOD_CREATE_ALL_FEATURES_FILE)
 									{
-										createTransformedFeaturesFile(&(firstFeatureInList[zoomIndex]), transformedFeaturesAllFileNameCPlus, objectName, viewIndex, zoomIndex, numberOfTrainOrTestPolys[zoomIndex], side, trainOrTest);							//create ascii file containing all transformed features
+										createTransformedFeaturesFile(&(firstFeatureInList[zoomIndex]), transformedFeaturesAllFileName, objectName, viewIndex, zoomIndex, numberOfTrainOrTestPolys[zoomIndex], side, trainOrTest);							//create ascii file containing all transformed features
 									}
 									if(OR_METHOD_CREATE_OT_FEATURES_FILE)
 									{
@@ -4266,7 +4197,7 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 										firstFeatureInTransformedObjectTriangleList->next = secondFeatureInTransformedObjectTriangleList;
 										secondFeatureInTransformedObjectTriangleList->next = thirdFeatureInTransformedObjectTriangleList;
 										thirdFeatureInTransformedObjectTriangleList->next = lastFeatureInTransformedObjectTriangleList;
-										createTransformedFeaturesFile(firstFeatureInTransformedObjectTriangleList, transformedFeaturesOTFileNameCPlus, objectName, viewIndex, zoomIndex, numberOfTrainOrTestPolys[zoomIndex], side, trainOrTest);							//create ascii file containing all transformed features
+										createTransformedFeaturesFile(firstFeatureInTransformedObjectTriangleList, transformedFeaturesOTFileName, objectName, viewIndex, zoomIndex, numberOfTrainOrTestPolys[zoomIndex], side, trainOrTest);							//create ascii file containing all transformed features
 										delete firstFeatureInTransformedObjectTriangleList;
 									}
 
@@ -4418,7 +4349,7 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 							#else
 								#ifndef OR_MANY_NUMBER_OF_OUTPUT_FILES
 								generatePixmapFromRGBmap(rgbMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly);
-								remove(charstarinterpolatedMapFileNameForRayTracingTAL);
+								remove(charstarinterpolatedMapFileNameForRayTracingTAL.c_str());
 								#else
 								if((featurePosNoise1 ==0) && (featurePosNoise2 == 0))
 								{
@@ -4468,7 +4399,7 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 								else
 								{
 									generatePixmapFromRGBmap(rgbMapFacingPolyFileName, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly);
-									remove(charstarinterpolatedMapFileNameForRayTracingTAL);
+									remove(charstarinterpolatedMapFileNameForRayTracingTAL.c_str());
 								}
 								#endif
 							#endif
@@ -4778,10 +4709,9 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 
 	int lineCount = 0;
 
-	char * fileNamecharstar = const_cast<char*>(fileName.c_str());
-	ifstream * parseFileObject = new ifstream(fileNamecharstar);
+	ifstream parseFileObject(fileName.c_str());
 
-	if(parseFileObject->rdbuf( )->is_open( ))
+	if(parseFileObject.rdbuf()->is_open())
 	{
 		char c;
 		int charCount = 0;
@@ -4810,30 +4740,30 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 		bool readingxoffset = false;
 		bool readingyoffset = false;
 
-		char objectNameString[100] = "";
-		char imageextString[100] = "";
-		char imageWidthString[100] = "";
-		char imageHeightString[100] = "";
+		string objectNameString = "";
+		string imageextString = "";
+		string imageWidthString = "";
+		string imageHeightString = "";
 
-		char depthextString[100] = "";
-		char vieweyexString[100] = "";
-		char vieweyeyString[100] = "";
-		char vieweyezString[100] = "";
-		char viewatxString[100] = "";
-		char viewatyString[100] = "";
-		char viewatzString[100] = "";
-		char viewupxString[100] = "";
-		char viewupyString[100] = "";
-		char viewupzString[100] = "";
-		char viewfocalString[100] = "";
-		char viewsizewString[100] = "";
-		char viewsizehString[100] = "";
-		char scaleString[100] = "";
+		string depthextString = "";
+		string vieweyexString = "";
+		string vieweyeyString = "";
+		string vieweyezString = "";
+		string viewatxString = "";
+		string viewatyString = "";
+		string viewatzString = "";
+		string viewupxString = "";
+		string viewupyString = "";
+		string viewupzString = "";
+		string viewfocalString = "";
+		string viewsizewString = "";
+		string viewsizehString = "";
+		string scaleString = "";
 
-		char xoffsetString[100] = "";
-		char yoffsetString[100] = "";
+		string xoffsetString = "";
+		string yoffsetString = "";
 
-		while (parseFileObject->get(c))
+		while(parseFileObject.get(c))
 		{
 			charCount++;
 			bool finalise = false;
@@ -4856,10 +4786,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingObjectName)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(objectNameString, typeString);
+				objectNameString = objectNameString + c;
 			}
 
 			else if((readingimageext) && (c == CHAR_SPACE))
@@ -4869,10 +4796,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingimageext)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(imageextString, typeString);
+				imageextString = imageextString + c;
 			}
 
 			else if((readingimageWidth) && (c == CHAR_SPACE))
@@ -4882,10 +4806,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingimageWidth)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(imageWidthString, typeString);
+				imageWidthString = imageWidthString + c;
 			}
 
 			else if((readingimageHeight) && (c == CHAR_SPACE))
@@ -4907,10 +4828,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingimageHeight)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(imageHeightString, typeString);
+				imageHeightString = imageHeightString + c;
 			}
 
 			else if((readingdepthext) && (c == CHAR_SPACE))
@@ -4920,10 +4838,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingdepthext)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(depthextString, typeString);
+				depthextString = depthextString + c;
 			}
 
 			else if((readingvieweyex) && (c == CHAR_SPACE))
@@ -4933,10 +4848,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingvieweyex)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(vieweyexString, typeString);
+				vieweyexString = vieweyexString + c;
 			}
 			else if((readingvieweyey) && (c == CHAR_SPACE))
 			{
@@ -4945,10 +4857,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingvieweyey)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(vieweyeyString, typeString);
+				vieweyeyString = vieweyeyString + c;
 			}
 			else if((readingvieweyez) && (c == CHAR_SPACE))
 			{
@@ -4957,10 +4866,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingvieweyez)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(vieweyezString, typeString);
+				vieweyezString = vieweyezString + c;
 			}
 
 			else if((readingviewatx) && (c == CHAR_SPACE))
@@ -4970,10 +4876,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingviewatx)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(viewatxString, typeString);
+				viewatxString = viewatxString + c;
 			}
 			else if((readingviewaty) && (c == CHAR_SPACE))
 			{
@@ -4982,10 +4885,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingviewaty)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(viewatyString, typeString);
+				viewatyString = viewatyString + c;
 			}
 			else if((readingviewatz) && (c == CHAR_SPACE))
 			{
@@ -4994,10 +4894,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingviewatz)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(viewatzString, typeString);
+				viewatzString = viewatzString + c;
 			}
 
 			else if((readingviewupx) && (c == CHAR_SPACE))
@@ -5007,10 +4904,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingviewupx)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(viewupxString, typeString);
+				viewupxString = viewupxString + c;
 			}
 			else if((readingviewupy) && (c == CHAR_SPACE))
 			{
@@ -5019,10 +4913,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingviewupy)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(viewupyString, typeString);
+				viewupyString = viewupyString + c;
 			}
 			else if((readingviewupz) && (c == CHAR_SPACE))
 			{
@@ -5031,10 +4922,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingviewupz)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(viewupzString, typeString);
+				viewupzString = viewupzString + c;
 			}
 
 			else if((readingviewfocal) && (c == CHAR_SPACE))
@@ -5044,10 +4932,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingviewfocal)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(viewfocalString, typeString);
+				viewfocalString = viewfocalString + c;
 			}
 
 			else if((readingviewsizew) && (c == CHAR_SPACE))
@@ -5057,10 +4942,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingviewsizew)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(viewsizewString, typeString);
+				viewsizewString = viewsizewString + c;
 			}
 			else if((readingviewsizeh) && (c == CHAR_SPACE))
 			{
@@ -5069,10 +4951,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingviewsizeh)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(viewsizehString, typeString);
+				viewsizehString = viewsizehString + c;
 			}
 
 			else if((readingscale) && (c == CHAR_NEWLINE))
@@ -5082,10 +4961,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingscale)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(scaleString, typeString);
+				scaleString = scaleString + c;
 			}
 
 
@@ -5096,10 +4972,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingxoffset)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(xoffsetString, typeString);
+				xoffsetString = xoffsetString + c;
 			}
 			else if((readingyoffset) && (c == CHAR_NEWLINE))
 			{
@@ -5108,10 +4981,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 			else if(readingyoffset)
 			{
-				char typeString[2];
-				typeString[0] = c;
-				typeString[1] = '\0';
-				strcat(yoffsetString, typeString);
+				yoffsetString = yoffsetString + c;
 			}
 
 			else
@@ -5126,31 +4996,31 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 				{
 					vi->objectName = objectNameString;
 					vi->imageExtensionName = imageextString;
-					vi->imageWidth = atof(imageWidthString);
-					vi->imageHeight = atof(imageHeightString);
+					vi->imageWidth = atof(imageWidthString.c_str());
+					vi->imageHeight = atof(imageHeightString.c_str());
 
 					if(dimension == OR_METHOD2DOD_DIMENSIONS)
 					{
-						vi->xOffset = atof(xoffsetString);
-						vi->yOffset = atof(yoffsetString);
+						vi->xOffset = atof(xoffsetString.c_str());
+						vi->yOffset = atof(yoffsetString.c_str());
 
 					}
 					else if(dimension == OR_METHOD3DOD_DIMENSIONS)
 					{
 						vi->depthExtensionName = depthextString;
-						vi->eye.x = atof(vieweyexString);
-						vi->eye.y = atof(vieweyeyString);
-						vi->eye.z = atof(vieweyezString);
-						vi->viewAt.x = atof(viewatxString);
-						vi->viewAt.y = atof(viewatyString);
-						vi->viewAt.z = atof(viewatzString);
-						vi->viewUp.x = atof(viewupxString);
-						vi->viewUp.y = atof(viewupyString);
-						vi->viewUp.z = atof(viewupzString);
-						vi->focalLength = atof(viewfocalString);
-						vi->viewWidth = atof(viewsizewString);
-						vi->viewHeight = atof(viewsizehString);
-						vi->depthScale = atof(scaleString);
+						vi->eye.x = atof(vieweyexString.c_str());
+						vi->eye.y = atof(vieweyeyString.c_str());
+						vi->eye.z = atof(vieweyezString.c_str());
+						vi->viewAt.x = atof(viewatxString.c_str());
+						vi->viewAt.y = atof(viewatyString.c_str());
+						vi->viewAt.z = atof(viewatzString.c_str());
+						vi->viewUp.x = atof(viewupxString.c_str());
+						vi->viewUp.y = atof(viewupyString.c_str());
+						vi->viewUp.z = atof(viewupzString.c_str());
+						vi->focalLength = atof(viewfocalString.c_str());
+						vi->viewWidth = atof(viewsizewString.c_str());
+						vi->viewHeight = atof(viewsizehString.c_str());
+						vi->depthScale = atof(scaleString.c_str());
 					}
 					else
 					{
@@ -5181,28 +5051,28 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 					cout << "vi->depthScale = " << vi->depthScale << endl;
 				}
 
-				objectNameString[0] = '\0';
-				imageextString[0] = '\0';
-				imageWidthString[0] = '\0';
-				imageHeightString[0] = '\0';
+				objectNameString = "";
+				imageextString = "";
+				imageWidthString = "";
+				imageHeightString = "";
 
-				depthextString[0] = '\0';
-				vieweyexString[0] = '\0';
-				vieweyeyString[0] = '\0';
-				vieweyezString[0] = '\0';
-				viewatxString[0] = '\0';
-				viewatyString[0] = '\0';
-				viewatzString[0] = '\0';
-				viewupxString[0] = '\0';
-				viewupyString[0] = '\0';
-				viewupzString[0] = '\0';
-				viewfocalString[0] = '\0';
-				viewsizewString[0] = '\0';
-				viewsizehString[0] = '\0';
-				scaleString[0] = '\0';
+				depthextString = "";
+				vieweyexString = "";
+				vieweyeyString = "";
+				vieweyezString = "";
+				viewatxString = "";
+				viewatyString = "";
+				viewatzString = "";
+				viewupxString = "";
+				viewupyString = "";
+				viewupzString = "";
+				viewfocalString = "";
+				viewsizewString = "";
+				viewsizehString = "";
+				scaleString = "";
 
-				xoffsetString[0] = '\0';
-				yoffsetString[0] = '\0';
+				xoffsetString = "";
+				yoffsetString = "";
 
 				lineCount++;
 				readingObjectName = true;
@@ -5210,8 +5080,7 @@ int createViFromMultiViewList(ViewInfo * vi, string fileName, int multiViewViewI
 			}
 		}
 
-		parseFileObject->close();
-		delete parseFileObject;
+		parseFileObject.close();
 	}
 	else
 	{

@@ -26,7 +26,7 @@
  * File Name: ORrules.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3e2d 29-August-2014
+ * Project Version: 3e3a 01-September-2014
  *
  *******************************************************************************/
 
@@ -1807,13 +1807,11 @@ void fillInORrulesExternVariables()
 	char tempStringCharStar[100];
 
 	tempString = "";
-	tempStringCharStar[0] = '\0';
 	sprintf(tempStringCharStar, "%d", OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY);
 	tempString = tempString + "-quality " + tempStringCharStar + "%";
 	strcpy(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING, tempString.c_str());
 
 	tempString = "";
-	tempStringCharStar[0] = '\0';
 	sprintf(tempStringCharStar, "%d", OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED);
 	tempString = tempString + "-quality " + tempStringCharStar + "%";
 	strcpy(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED_STRING, tempString.c_str());

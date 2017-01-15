@@ -26,7 +26,7 @@
  * File Name: ORdatabaseSQL.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e2d 29-August-2014
+ * Project Version: 3e3a 01-September-2014
  *
  *******************************************************************************/
 
@@ -88,7 +88,7 @@ void convertSQLdatabaseStringToSnapshotMaps(int imageWidthFacingPoly, int imageH
 void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * firstFeatureContainerInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour * normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], unsigned char * rgb8bitSmallMapForInstantDBqueryAccessRequirement, int smallImageWidth, int smallImageHeight, string trainTableName, int trainOrTest);
 void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest, bool ignoreOTfeatures, unsigned char * rgb8bitSmallMapForInstantDBqueryAccess, int smallImageWidth, int smallImageHeight, bool addPermutationsOfTrainFeaturesForGeoBinning, int maxNumFeaturePermutations, string tableName, long * databaseTableSize);
 void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, bool createFeatureObjects, bool ignoreOTfeatures, int numFeatures);
-void createSQLSelectRowCommand(char sqlSelectRowCommand[], int numFeatures);
+string createSQLSelectRowCommand(int numFeatures);
 void createFeatureListUsingDatabaseQuery(Feature * firstFeatureInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures, string sqlDatabaseTestTableName, long testID, string testObjectName, int testViewIndex, int testZoomIndex, int testPolyIndex, int testSideIndex, bool useTestID);
 //#endif
 

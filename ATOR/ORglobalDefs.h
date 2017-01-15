@@ -26,7 +26,7 @@
  * File Name: ORglobalDefs.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3e2d 29-August-2014
+ * Project Version: 3e3a 01-September-2014
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
@@ -1641,9 +1641,11 @@ extern double OR_RULES_XML_SPARE_PARAMETER_2;	//this needs to be made dynamic in
 
 
 
-
-
-
+	/**********
+	OR COMPARISON DEBUG VARS 
+	***********/
+	
+//#define OR_DEBUG_COMPARISON
 
 
 	/**********

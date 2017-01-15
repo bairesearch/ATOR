@@ -26,7 +26,7 @@
  * File Name: ORdatabaseSQL.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e2d 29-August-2014
+ * Project Version: 3e3a 01-September-2014
  *
  *******************************************************************************/
 
@@ -267,7 +267,7 @@ void createFeatureListUsingDatabaseQuery(Feature * firstFeatureInList, bool crea
 
 	string sqlSelectCommand = "";	//eg SELECT `pBinxy` FROM `objectRecog`.`snapshot` WHERE ( ( `pBinxy` = 823 ) );
 	string sqlSelectCommandP1 = "SELECT ";
-	char sqlSelectCommandP2[OR_IMAGE_COMPARISON_SQL_DATABASE_TEST_AND_TRAIN_TABLES_GET_QUERY_MAX_LENGTH];
+	string sqlSelectCommandP2 = "";
 	string sqlSelectCommandP3 = " FROM ";
 	string sqlSelectCommandP4 = "";	//OR_MYSQL_DATABASE_NAME;
 	string sqlSelectCommandP5 = "";		//".";
@@ -308,7 +308,7 @@ void createFeatureListUsingDatabaseQuery(Feature * firstFeatureInList, bool crea
 	}
 
 	int numFeatures = OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE;	//this value is already dependent upon whether ignoreOTfeatures is true of false
-	createSQLSelectRowCommand(sqlSelectCommandP2, numFeatures);
+	sqlSelectCommandP2 = createSQLSelectRowCommand(numFeatures);
 
 	sqlSelectCommand = sqlSelectCommandP1 + sqlSelectCommandP2 + sqlSelectCommandP3 + sqlSelectCommandP4 + sqlSelectCommandP5 + sqlSelectCommandP6 + sqlSelectCommandP7 + sqlSelectCommandP8 + sqlSelectCommandP9 + sqlSelectCommandP10 + sqlSelectCommandP11 + sqlSelectCommandP12;
 	#ifdef OR_SQL_DATABASE_DEBUG
@@ -367,7 +367,7 @@ void createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(FeatureCon
 	string sqlSelectCommandOpen = "";	//eg SELECT `pBinxy` FROM `objectRecog`.`snapshot` WHERE ( ( `pBinxy` = 823 ) );
 	string sqlSelectCommandClose = "";
 	string sqlSelectCommandSelect = "SELECT ";
-	char sqlSelectCommandSelectContents[OR_IMAGE_COMPARISON_SQL_DATABASE_TEST_AND_TRAIN_TABLES_GET_QUERY_MAX_LENGTH];
+	string sqlSelectCommandSelectContents = "";
 
 #ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL_DIRECT_ACCESS_USE_JOIN_OPT
 	cout << "SQL join optimisation not yet coded" << endl;
@@ -381,7 +381,7 @@ void createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(FeatureCon
 	sqlSelectCommandWhereOpen = sqlSelectCommandWhereOpen + " WHERE (" + OR_MYSQL_FIELD_NAME_ID + " IN (";	//only query train objects
 
 	int numFeatures = OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE;	//this value is already dependent upon whether ignoreOTfeatures is true of false
-	createSQLSelectRowCommand(sqlSelectCommandSelectContents, numFeatures);
+	sqlSelectCommandSelectContents = createSQLSelectRowCommand(numFeatures);
 
 	string sqlSelectCommandWhereContentsSelect = "SELECT ";
 	string sqlSelectCommandWhereContentsSelectContents = OR_MYSQL_FIELD_NAME_DECISIONTREE_SNAPSHOT_REF_ID;
@@ -912,7 +912,7 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * 
 
 	string sqlSelectCommand = "";	//eg SELECT `pBinxy` FROM `objectRecog`.`snapshot` WHERE ( ( `pBinxy` = 823 ) );
 	string sqlSelectCommandP1 = "SELECT ";
-	char sqlSelectCommandP2[OR_IMAGE_COMPARISON_SQL_DATABASE_TEST_AND_TRAIN_TABLES_GET_QUERY_MAX_LENGTH];
+	string sqlSelectCommandP2 = "";
 	string sqlSelectCommandP3 = " FROM ";
 	string sqlSelectCommandP4 = "";	//OR_MYSQL_DATABASE_NAME;
 	string sqlSelectCommandP5 = "";		//".";
@@ -1454,7 +1454,7 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * 
 		numFeatures = OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS;
 	}
 
-	createSQLSelectRowCommand(sqlSelectCommandP2, numFeatures);
+	sqlSelectCommandP2 = createSQLSelectRowCommand(numFeatures);
 
 	//do not extract snapshot images (small or large) from DB at this stage of development
 
@@ -1799,10 +1799,10 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 
 
 
-void createSQLSelectRowCommand(char sqlSelectRowCommand[], int numFeatures)
+string createSQLSelectRowCommand(int numFeatures)
 {
-	string sqlSelectCommandP2 = "";
-	sqlSelectCommandP2 = sqlSelectCommandP2 + OR_MYSQL_FIELD_NAME_ID + ", " + OR_MYSQL_FIELD_NAME_OBJECTNAME + ", " + OR_MYSQL_FIELD_NAME_TRAINORTESTNUM + ", " + OR_MYSQL_FIELD_NAME_VIEWNUM + ", " + OR_MYSQL_FIELD_NAME_ZOOMNUM + ", " + OR_MYSQL_FIELD_NAME_POLYNUM + ", " + OR_MYSQL_FIELD_NAME_SIDENUM;
+	string sqlSelectCommand = "";
+	sqlSelectCommand = sqlSelectCommand + OR_MYSQL_FIELD_NAME_ID + ", " + OR_MYSQL_FIELD_NAME_OBJECTNAME + ", " + OR_MYSQL_FIELD_NAME_TRAINORTESTNUM + ", " + OR_MYSQL_FIELD_NAME_VIEWNUM + ", " + OR_MYSQL_FIELD_NAME_ZOOMNUM + ", " + OR_MYSQL_FIELD_NAME_POLYNUM + ", " + OR_MYSQL_FIELD_NAME_SIDENUM;
 
 	for(int featureNum=0; featureNum<numFeatures; featureNum++)
 	{
@@ -1810,11 +1810,11 @@ void createSQLSelectRowCommand(char sqlSelectRowCommand[], int numFeatures)
 		sprintf(featureNumString, "%d", featureNum+1);
 
 		#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-		sqlSelectCommandP2 = sqlSelectCommandP2 + ", " + OR_MYSQL_FIELD_NAME_OTNUM + featureNumString;
+		sqlSelectCommand = sqlSelectCommand + ", " + OR_MYSQL_FIELD_NAME_OTNUM + featureNumString;
 		#endif
-		sqlSelectCommandP2 = sqlSelectCommandP2 + ", " + OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDX + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDY + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDZ + featureNumString;
+		sqlSelectCommand = sqlSelectCommand + ", " + OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDX + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDY + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDZ + featureNumString;
 		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
-		sqlSelectCommandP2 = sqlSelectCommandP2 + ", " + OR_MYSQL_FIELD_NAME_POINTX + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTY + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTZ + featureNumString;
+		sqlSelectCommand = sqlSelectCommand + ", " + OR_MYSQL_FIELD_NAME_POINTX + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTY + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTZ + featureNumString;
 		#endif
 	}
 
@@ -1825,9 +1825,9 @@ void createSQLSelectRowCommand(char sqlSelectRowCommand[], int numFeatures)
 		{
 			char geobinDimensionString[10];
 			sprintf(geobinDimensionString, "%d", geobinDimension+1);
-			sqlSelectCommandP2 = sqlSelectCommandP2 + ", " + OR_MYSQL_FIELD_NAME_GEO_BINS_X + geobinDimensionString + ", " + OR_MYSQL_FIELD_NAME_GEO_BINS_Y + geobinDimensionString;
+			sqlSelectCommand = sqlSelectCommand + ", " + OR_MYSQL_FIELD_NAME_GEO_BINS_X + geobinDimensionString + ", " + OR_MYSQL_FIELD_NAME_GEO_BINS_Y + geobinDimensionString;
 		}
-		sqlSelectCommandP2 = sqlSelectCommandP2 + ", " + OR_MYSQL_FIELD_NAME_GEO_BINS_XY;
+		sqlSelectCommand = sqlSelectCommand + ", " + OR_MYSQL_FIELD_NAME_GEO_BINS_XY;
 	}
 
 	if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
@@ -1837,27 +1837,22 @@ void createSQLSelectRowCommand(char sqlSelectRowCommand[], int numFeatures)
 			char dctCoeffNumString[10];
 			sprintf(dctCoeffNumString, "%d", dctCoeffNum);
 
-			sqlSelectCommandP2 = sqlSelectCommandP2 + ", " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BINS + dctCoeffNumString;
+			sqlSelectCommand = sqlSelectCommand + ", " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BINS + dctCoeffNumString;
 		}
-		sqlSelectCommandP2 = sqlSelectCommandP2 + ", " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL;
+		sqlSelectCommand = sqlSelectCommand + ", " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL;
 	}
 
 	if(OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING)
 	{
-		sqlSelectCommandP2 = sqlSelectCommandP2 + ", " + OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_R_BINS + ", " + OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_G_BINS + ", " + OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_B_BINS + ", " + OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_RGB_BINS;
+		sqlSelectCommand = sqlSelectCommand + ", " + OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_R_BINS + ", " + OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_G_BINS + ", " + OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_B_BINS + ", " + OR_MYSQL_FIELD_NAME_COLOUR_AVERAGE_RGB_BINS;
 	}
 
 	if(OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE)
 	{
-		sqlSelectCommandP2 = sqlSelectCommandP2 + ", " + OR_MYSQL_FIELD_NAME_ALL_IMAGE_TEXT;
+		sqlSelectCommand = sqlSelectCommand + ", " + OR_MYSQL_FIELD_NAME_ALL_IMAGE_TEXT;
 	}
 
-	int i;
-	for(i=0; i<sqlSelectCommandP2.length(); i++)
-	{
-		sqlSelectRowCommand[i] = sqlSelectCommandP2[i];
-	}
-	sqlSelectRowCommand[i] = '\0';
+	return sqlSelectCommand;
 }
 
 
@@ -1958,18 +1953,12 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 
 									#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 									char OTpointIndexString[10];
-									#endif
-									char transformedpositionCoordinatesString[100];
-									#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
-									char positionCoordinatesString[100];
-									#endif
-
-									#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 									sprintf(OTpointIndexString, "%d", currentFeature->OTpointIndex);
 									#endif
-									convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->pointTransformed), transformedpositionCoordinatesString);
+									
+									string transformedpositionCoordinatesString = convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->pointTransformed));
 									#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
-									convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->point), positionCoordinatesString);
+									string positionCoordinatesString = convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->point));
 									#endif
 
 									#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
@@ -2048,18 +2037,12 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 
 									#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 									char OTpointIndexString[10];
-									#endif
-									char transformedpositionCoordinatesString[100];
-									#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
-									char positionCoordinatesString[100];
-									#endif
-
-									#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 									sprintf(OTpointIndexString, "%d", currentFeature->OTpointIndex);
 									#endif
-									convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->pointTransformed), transformedpositionCoordinatesString);
+									
+									string transformedpositionCoordinatesString = convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->pointTransformed));
 									#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
-									convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->point), positionCoordinatesString);
+									string positionCoordinatesString = convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->point));
 									#endif
 
 									#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
