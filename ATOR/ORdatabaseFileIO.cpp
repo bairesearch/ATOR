@@ -23,7 +23,7 @@
  * File Name: ORdatabaseFileIO.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3c1a 11-October-2012
+ * Project Version: 3c2a 19-October-2012
  *
  *******************************************************************************/
 
@@ -67,28 +67,34 @@ bool directoryExists(string * folderName)
 	struct stat st;
 	if(stat(folderName->c_str(), &st) == 0)
 	{
-		#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
+		#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
 		cout << "\tdirectoryExists: folderName = " << *folderName << endl;
 		#endif
 		folderExists = true;
 	}
 	#else
-	DIR * pDir = opendir(folderName->c_str());
-	if(pDir != NULL)
+	DWORD ftyp = GetFileAttributes(folderName->c_str());
+	if(ftyp != INVALID_FILE_ATTRIBUTES)
+	{
+		if(ftyp & FILE_ATTRIBUTE_DIRECTORY)
+		{
+			folderExists = true;
+		}
+	}
+	/*
+	if((GetFileAttributes(folderName->c_str())) != INVALID_FILE_ATTRIBUTES)
 	{
 		folderExists = true;
-		closedir(pDir);
 	}
+	*/
 	#endif
 
 	return folderExists;
-
-
 }
 
 bool makeDirectory(string * folderName)
 {
-	#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
+	#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
 	cout << "\tmakeDirectory: folderName = " << *folderName << endl;
 	#endif
 	bool result = true;
@@ -96,7 +102,7 @@ bool makeDirectory(string * folderName)
 	#ifdef LINUX
 	mkdir(folderName->c_str(), 0755);
 	#else
-	if( _mkdir(folderName->c_str()) != 0)	//CreateDirectory(folderName->c_str(), 0);
+	if(CreateDirectory(folderName->c_str(), 0) == 0)	//if( _mkdir(folderName->c_str()) != 0)	//
 	{
 		result = false;
 	}
@@ -107,19 +113,25 @@ bool makeDirectory(string * folderName)
 
 bool setCurrentDirectory(string * folderName)
 {
-	#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
+	bool result = true;
+	#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
 	cout << "\tsetCurrentDirectory: folderName = " << *folderName << endl;
 	#endif
 	#ifdef LINUX
 	chdir(folderName->c_str());
 	#else
-	::SetCurrentDirectory(folderName->c_str());
+	if(SetCurrentDirectory(folderName->c_str()) == 0)
+	{
+		result = false;
+	}
 	#endif
+	return result;
 }
 
 bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string * folderName)
 {
-	#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
+	bool result = true;
+	#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
 	cout << "checkIfFolderExistsAndIfNotMakeAndSetAsCurrent: folderName = " << *folderName << endl;
 	#endif
 	if(!directoryExists(folderName))
@@ -127,6 +139,8 @@ bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string * folderName)
 		makeDirectory(folderName);
 	}
 	setCurrentDirectory(folderName);
+
+	return result;
 }
 
 string DBgenerateServerDatabaseName(string * objectName, bool trainOrTest)

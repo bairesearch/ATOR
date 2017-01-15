@@ -23,7 +23,7 @@
  * File Name: ORTHmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3c1a 11-October-2012
+ * Project Version: 3c2a 19-October-2012
  *
  *******************************************************************************/
 #ifndef HEADER_TH_OR_MAIN
