@@ -26,7 +26,7 @@
  * File Name: ORdatabaseFileIO.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3f5c 21-July-2015
+ * Project Version: 3f5d 21-July-2015
  *
  *******************************************************************************/
 
@@ -151,7 +151,7 @@ string DBgenerateServerDatabaseName(string* objectName, bool trainOrTest)
 		#endif
 	}
 	#ifdef OR_DATABASE_DEBUG
-	cout << "serverName = " << serverName << endl;
+	cout << "databaseName = " << databaseName << endl;
 	#endif
 
 	return databaseName;
@@ -160,8 +160,6 @@ string DBgenerateServerDatabaseName(string* objectName, bool trainOrTest)
 
 string DBgenerateFolderName(string* objectName, bool trainOrTest)
 {
-	string tempFolder = tempFolder;
-
 	//eg network/server/ORdatabase/e/x/a/example/...
 
 	string databaseName = DBgenerateServerDatabaseName(objectName, trainOrTest);

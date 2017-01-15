@@ -26,7 +26,7 @@
  * File Name: ORglobalDefs.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3f5c 21-July-2015
+ * Project Version: 3f5d 21-July-2015
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
@@ -739,7 +739,7 @@
 
 #define OR_USE_DATABASE	//this needs to be debugged (not yet tested)
 
-//#define OR_DEBUG
+#define OR_DEBUG
 
 //#define OR_ASSERT_MATCHES_FOR_ALL_SIDES		//removed 10 June 2012
 
@@ -753,8 +753,8 @@ OR_METHOD_3DOD_IGNORE_OT_FEATURES_DURING_GEO_COMPARISON
 */
 
 #ifdef OR_USE_DATABASE
-	//#define OR_DATABASE_DEBUG
-	//#define OR_DATABASE_DEBUG_FILESYSTEM_IO
+	#define OR_DATABASE_DEBUG
+	#define OR_DATABASE_DEBUG_FILESYSTEM_IO
 #endif
 
 #ifndef OR_USE_DATABASE
