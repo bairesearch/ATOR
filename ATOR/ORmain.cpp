@@ -26,7 +26,7 @@
  * File Name: ORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3f4a 11-July-2015
+ * Project Version: 3f5a 21-July-2015
  *
  *******************************************************************************/
 
@@ -54,7 +54,7 @@ static char errmessage[] = "Usage:  OpenOR.exe [options]\n\n\twhere options are 
 "\n\t-sqlpassword [string]  : password of MySQL Server BAI database"
 "\n\t-cleartrain            : clear train database"
 "\n\t-workingfolder [string]: working directory name for input files (def: same as exe)"
-"\n\t-exefolder [string]    : exe directory name for executables OpenOR.exe and FD.exe (def: same as exe)"
+"\n\t-exefolder [string]    : exe directory name for executables; OpenOR.exe and FD.exe (def: same as exe)"
 "\n\t-tempfolder [string]    : temp directory name for temporary and output files (def: same as exe)"
 "\n\n single view options only \n"
 "\n\t-view [int]            : input object view number (def: 0) [if > 0, must append \".viewX\" to file name]"
@@ -330,7 +330,7 @@ int main(int argc,char* *argv)
 
 	if(argumentExists(argc,argv,"-version"))
 	{
-		cout << "OpenOR.exe - Project Version: 3f4a 11-July-2015" << endl;
+		cout << "OpenOR.exe - Project Version: 3f5a 21-July-2015" << endl;
 		exit(1);
 	}
 

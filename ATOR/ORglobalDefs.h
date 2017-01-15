@@ -26,7 +26,7 @@
  * File Name: ORglobalDefs.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3f4a 11-July-2015
+ * Project Version: 3f5a 21-July-2015
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
@@ -41,7 +41,7 @@
  *			d) Windows VS compatibility,
  *			e) change of binary name from SE to FD.exe};
  *
- *		(Linux Ubuntu 14.01 Only)
+ *		(Linux Ubuntu 14.04 Only)
  *		copy (Linux Ubuntu x86_64 compiled) FD.exe to OpenOR.exe working folder
  *
  *		(Linux EL5 Only)
@@ -65,7 +65,7 @@
  *
  *	Install External Package 2 - Freeglut;
  *
- *		(Linux Ubuntu 14.01 Only)
+ *		(Linux Ubuntu 14.04 Only)
  *		sudo apt-get install freeglut3 OR;
  *		sudo dpkg -i freeglut3_2.8.1-1_amd64.deb
  *
@@ -92,7 +92,7 @@
  *
  *	Install External Package 3 - ImageMagik;
  *
- *		(Linux Ubuntu 14.01 Only)
+ *		(Linux Ubuntu 14.04 Only)
  *		sudo apt-get install imagemagick? OR;
  *		sudo dpkg -i imagemagick_6.7.7.10-5ubuntu3_amd64.deb?
  *
@@ -120,7 +120,7 @@
  *
  *	Install External Package 4 - JPEG development libraries (Independent JPEG Group)
  *
- *		(Linux Ubuntu 14.01 Only)
+ *		(Linux Ubuntu 14.04 Only)
  *		sudo apt-get install libjpeg-dev OR;
  *		sudo dpkg -i libjpeg-dev_8c-2ubuntu8_amd64.deb
  *
@@ -142,16 +142,10 @@
  *		copy jpeglib.h, jconfig.h, and jmorecfg.h in JPEG folder to C:\Program Files\Microsoft Visual Studio 9.0\VC\Include\
  *		ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *
- *		(Windows 7 x86_64 Only)
+ *		(Windows 7/8 x86_64 Only)
  *		[May only be required for development]
  *		copy jpeg.lib [in JPEG\Release folder] to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib
  *		copy jpeglib.h, jconfig.h, and jmorecfg.h [in JPEG folder] to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\
- *		ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
- *
- *		(Windows 8 x86_64 Only)
- *		[May only be required for development]
- *		copy jpeg.lib [in JPEG\Release folder] to C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\lib
- *		copy jpeglib.h, jconfig.h, and jmorecfg.h [in JPEG folder] to C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\Include\
  *		ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *
  *		JPEG library may be downloaded via;
@@ -162,7 +156,7 @@
  *
  *	Install External Package 5a - MySQL Client
  *
- *		(Linux Ubuntu 14.01 Only)
+ *		(Linux Ubuntu 14.04 Only)
  *		sudo apt-get install mysql-client OR;
  * 		sudo dpkg -i mysql-client-5.5_5.5.35-0ubuntu0.13.10.2_amd64.deb
  *
@@ -178,7 +172,7 @@
  *
  *		5b. Part i)
  *
- *		(Linux Ubuntu 14.01 Only) On the MySQL Server perform the following actions to initiate the server;
+ *		(Linux Ubuntu 14.04 Only) On the MySQL Server perform the following actions to initiate the server;
  *		sudo apt-get install mysql-server OR;
  * 		sudo dpkg -i mysql-server-5.5_5.5.35-0ubuntu0.13.10.2_amd64.deb
  *		enter the mysql server root password when prompted (chooseamysqlrootpassword)
@@ -543,7 +537,7 @@
  *
  *	Compile/Link External Package 2 - Freeglut development libraries
  *
- *		(Linux Ubuntu 14.01 Only)
+ *		(Linux Ubuntu 14.04 Only)
  *		sudo apt-get install freeglut3-dev OR;
  *		sudo dpkg -i freeglut3-dev_2.8.1-1_amd64.deb
  *
@@ -563,20 +557,12 @@
  * 		copy freeglut.lib to: C:\Program Files\Microsoft Visual Studio 9.0\VC\lib\
  * 		copy freeglut.dll to: C:\WINDOWS\system32\
  *
- *		(Windows 7 x86_64 Only);
+ *		(Windows 7/8 x86_64 Only);
  *		unpack source code freeglut 2.6.0 (compiled) - 32bit.zip
  *		copy freeglut.h to: C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\GL\ (note: you'll have to create the GL folder)
  * 		copy freeglut_ext.h to: C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\GL\
  * 		copy freeglut_std.h to: C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\GL\
  * 		copy freeglut.lib to: C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\
- * 		copy freeglut.dll to: C:\WINDOWS\SysWOW64 [or System32]
- *
- *		(Windows 8 x86_64 Only);
- *		unpack source code freeglut 2.6.0 (compiled) - 32bit.zip
- *		copy freeglut.h to: C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\GL\ (note: you'll have to create the GL folder)
- * 		copy freeglut_ext.h to: C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\GL\
- * 		copy freeglut_std.h to: C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\GL\
- * 		copy freeglut.lib to: C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\lib\
  * 		copy freeglut.dll to: C:\WINDOWS\SysWOW64 [or System32]
  *
  *		Freeglut may be downloaded via;
@@ -590,7 +576,7 @@
  *
  *	Compile/Link External Package 4 -  JPEG development libraries (Independent JPEG Group)
  *
- *		(Linux Ubuntu 14.01 Only)
+ *		(Linux Ubuntu 14.04 Only)
  *		sudo apt-get install libjpeg-dev OR;
  *		sudo dpkg -i libjpeg-dev_8c-2ubuntu8_amd64.deb
  *
@@ -633,7 +619,7 @@
  *
  *	Compile/Link External Package 5 -  Install MySQL Development Libraries
  *
- *		(Linux Ubuntu 14.01 Only)
+ *		(Linux Ubuntu 14.04 Only)
  *		sudo apt-get install libmysqlclient-dev OR;
  * 		sudo dpkg -i libmysqlclient-dev_5.5.35-0ubuntu0.13.10.2_amd64
  *
@@ -651,17 +637,10 @@
  *		ensure libmysql.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *		Copy C:\Program Files\MySQL\MySQL Server 5.1\lib\libmysql.dll to working folder (location of OpenOR.exe)
  *
- *		(Windows 7 x86_64 Only)
+ *		(Windows 7/8 x86_64 Only)
  *		copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.lib and libmysql.dll to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\
  *		create folder C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\mysql\
  *		copy all files in C:\Program Files (x86)\MySQL\MySQL Server 5.5\include\ folder to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\mysql\
- *		ensure libmysql.lib is added to MS Visual Studio OR project - Linker - additional dependencies
- *		Copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.dll to working folder (location of OpenOR.exe)
- *
- *		(Windows 8 x86_64 Only)
- *		copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.lib and libmysql.dll to C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\lib\
- *		create folder C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\mysql\
- *		copy all files in C:\Program Files (x86)\MySQL\MySQL Server 5.5\include\ folder to C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\mysql\
  *		ensure libmysql.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *		Copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.dll to working folder (location of OpenOR.exe)
  *
