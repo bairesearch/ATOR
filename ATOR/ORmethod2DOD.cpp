@@ -6,7 +6,8 @@
  * it under the terms of the GNU Affero General Public License version 3
  * only, as published by the Free Software Foundation. The use of
  * intermediary programs or interfaces including file i/o is considered
- * remote network interaction.
+ * remote network interaction. This does not imply such arrangements
+ * do not constitute derivative works.
  *
  * BAIPROJECT is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -25,7 +26,7 @@
  * File Name: ORmethod2DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3d3b 24-May-2014
+ * Project Version: 3d4a 8-June-2014
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
