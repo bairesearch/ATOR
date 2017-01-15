@@ -3,7 +3,7 @@
  * File Name: ORcomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7c 10-June-2012
+ * Project Version: 3a7d 11-June-2012
  *
  *******************************************************************************/
 
@@ -328,7 +328,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3a7c 10-June-2012<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3a7d 11-June-2012<p>";
 		}
 		else
 		{
@@ -1024,9 +1024,11 @@ char * trainsnapshotMapsText;
 					
 					#ifndef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 					bool foundMatchRecord[3];	//for each test side
+					double currentLowestErrorRecord[3];
 					for(int i=0; i<3; i++)
 					{
 						foundMatchRecord[i] = false;
+						currentLowestErrorRecord[i] = -1.0;
 					}
 					#endif
 					
@@ -2191,6 +2193,7 @@ char * trainsnapshotMapsText;
 														
 														#ifndef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 														foundMatchRecord[testSideIndex] = true;
+														currentLowestErrorRecord[testSideIndex] = currentLowestError;
 														#endif
 														
 														#ifdef DEBUG_OR_OUTPUT_DT_BIN_READ_FROM_FILE_AND_WORK_OUT_WHY_BIN_IS_NOT_BEING_DETECTED
@@ -2210,7 +2213,7 @@ char * trainsnapshotMapsText;
 												else
 												{
 													#ifdef DEBUG_OR_OUTPUT_DT_BIN_READ_FROM_FILE_AND_WORK_OUT_WHY_BIN_IS_NOT_BEING_DETECTED
-													if(DTbinDebugMatchFound && !localMatchFound)
+													if(DTbinDebugMatchFound)
 													{
 														cout << "error: (2DTbinDebugMatchFound && !localMatchFound): DTbin = " << DTbin << endl;
 													}													
@@ -2222,7 +2225,7 @@ char * trainsnapshotMapsText;
 											else
 											{
 												#ifdef DEBUG_OR_OUTPUT_DT_BIN_READ_FROM_FILE_AND_WORK_OUT_WHY_BIN_IS_NOT_BEING_DETECTED
-												if(DTbinDebugMatchFound && !localMatchFound)
+												if(DTbinDebugMatchFound)
 												{
 													cout << "error: (1DTbinDebugMatchFound && !localMatchFound): DTbin = " << DTbin << endl;
 												}													
@@ -2372,6 +2375,7 @@ char * trainsnapshotMapsText;
 
 
 				#ifndef TEST_VIEWTIME_SPEED_Z_FOR_WEBSITE
+					#ifdef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 					if(averageMatchErrorAcrossSides < OR_IMAGE_COMPARITOR_MATCH_ERROR_THRESHOLD)
 					{
 						char averageMatchErrorAcrossSidesString[10];
@@ -2379,10 +2383,10 @@ char * trainsnapshotMapsText;
 
 						//cout << "transformed RGB check passed 2" << endl;
 						
-						#ifdef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 						if(((trainPolyIndexWithLowestErrorRecord[0][2] == trainPolyIndexWithLowestErrorRecord[1][2]) && (trainPolyIndexWithLowestErrorRecord[0][2] == trainPolyIndexWithLowestErrorRecord[2][2])) && ((trainPolyIndexWithLowestErrorRecord[0][3] == trainPolyIndexWithLowestErrorRecord[1][3]) && (trainPolyIndexWithLowestErrorRecord[0][3] == trainPolyIndexWithLowestErrorRecord[2][3])))
 						{//all sides are referring to the same poly, and all sides are referring to the same zoom
-						#endif
+
+					#endif
 						
 							#ifdef OR_DEBUG_COMPARISON_ALLOW_SAME_OBJECT_AND_SAME_VIEW_TO_BE_COMPARED
 							if(1)
@@ -2830,7 +2834,14 @@ char * trainsnapshotMapsText;
 										string ICRmatchRow = "<TR><TD>" + testObjectNameArray[testObjectIndex] + "</TD><TD>" + testviewIndexString + "</TD><TD>" + testzoomIndexString + "</TD><TD>" + testpolygonIndexString + "</TD><TD>" + testsideIndexString + "</TD><TD>" + testImgSrcHtmlTags + "</TD><TD>" + trainobjectIndexString + "</TD><TD>" + trainviewIndexString + "</TD><TD>" + trainzoomIndexString + "</TD><TD>" + trainpolygonIndexString + "</TD><TD>" + trainsideIndexString + "</TD><TD>" + trainImgSrcHtmlTags + "</TD>";
 										#endif
 
+										#ifdef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 										ICRmatchRow = ICRmatchRow + "<TD>" + averageMatchErrorAcrossSidesString + "</TD></TR>";
+										#else
+										char currentLowestErrorString[10];
+										sprintf(currentLowestErrorString, "%0.3f", currentLowestErrorRecord[s]);
+										ICRmatchRow = ICRmatchRow + "<TD>" + currentLowestErrorString + "</TD></TR>";										
+										#endif
+										
 										writeStringToFileObject2(ICRmatchRow, &writeFileObject);
 										
 
@@ -2844,8 +2855,9 @@ char * trainsnapshotMapsText;
 							//cout << "h3" << endl;
 						#ifdef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 						}
-						#endif
+
 					}
+					#endif
 				#endif
 
 

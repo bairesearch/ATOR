@@ -3,7 +3,7 @@
  * File Name: ORquadraticFit.h (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3a7c 10-June-2012
+ * Project Version: 3a7d 11-June-2012
  *
  *******************************************************************************/
 
