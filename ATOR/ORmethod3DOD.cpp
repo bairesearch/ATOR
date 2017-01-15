@@ -23,7 +23,7 @@
  * File Name: ORmethod3DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3c6c 22-July-2013
+ * Project Version: 3c7b 12-October-2013
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
