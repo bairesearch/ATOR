@@ -26,7 +26,7 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e5a 03-September-2014
+ * Project Version: 3e5b 03-September-2014
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -1064,7 +1064,7 @@ bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 			}
 			#endif
 
-			//delete firstReferenceInInterpolatedMesh;
+			//delete firstReferenceInInterpolatedMesh;	//this cannot be deleted because it is still used by glutDisplayFunc
 			//cout << "deleted firstReferenceInInterpolatedMesh" << endl;
 
 			/*
