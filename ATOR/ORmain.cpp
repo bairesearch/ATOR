@@ -66,9 +66,9 @@ static char errmessage[] = "Usage:  OpenOR.exe [options]\n\n\twhere options are 
 "\n\t-width [int]           : image width in pixels (def: 768)"
 "\n\t-height [int]          : image height in pixels (def: 576)"
 "\n\t-od3                   : use 3DOD instead of 2DOD"
-"\n\t-sqlipaddress [string] : ip address of MySQL Server (def: localhost)"
-"\n\t-sqlusername [string]  : username of MySQL Server BAI database"
-"\n\t-sqlpassword [string]  : password of MySQL Server BAI database"
+"\n\t-sqlIPaddress [string] : ip address of MySQL Server (def: localhost)"
+"\n\t-sqlUsername [string]  : username of MySQL Server BAI database"
+"\n\t-sqlPassword [string]  : password of MySQL Server BAI database"
 "\n\t-cleartrain            : clear train database"
 "\n\t-workingfolder [string]: working directory name for input files (def: same as exe)"
 "\n\t-exefolder [string]    : exe directory name for executables OpenOR.exe and FD.exe (def: same as exe)"
@@ -91,7 +91,7 @@ static char errmessage[] = "Usage:  OpenOR.exe [options]\n\n\twhere options are 
 "\n\t-viewsizeh [float]: viewport height (def: 3)"
 "\n\t-scale [float]    : mapping between depthmap bits and pov (defines resolution and maximum depth range/coverage of depth map)"
 "\n\n multi view options only \n"
-"\n\t-multview [string]     : use multiview list [NEEDS WORK] (def: multViewList.txt) {3DOD every row; ObjectViewFileNameWithNoExtension|imageext|imageWidth|imageHeight|depthext|vieweyex|vieweyey|vieweyez|viewatx|viewaty|viewatz|viewupx|viewupy|viewupz|viewfocal|viewsizew|viewsizeh|scale. 2DOD every row; ObjectViewFileNameWithNoExtension|imageext|imageWidth|imageHeight|xoffset|yoffset}"
+"\n\t-multview [string]     : use multiview list [NEEDS WORK] (def: multViewList.txt) {3DOD every row; ObjectViewFileNameWithNoExtension|imageext|imageWidth|imageHeight|depthext|vieweyex|vieweyey|vieweyez|viewatx|viewaty|viewatz|viewupx|viewupy|viewupz|viewfocal|viewsizew|viewsizeh|scale. 2DOD every row; ObjectViewFileNameWithNoExtension|imageext|imageWidth|imageHeight|xOffset|yOffset}"
 #ifdef OR_USE_DATABASE
 "\n\t-dbfolder          : file system database base folder path (def: /home/systemusername/source/ORfsdatabase)"
 #endif
@@ -123,25 +123,25 @@ int main(int argc,char **argv)
 	string databaseFolderName =  OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME + OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME;
 	#endif
 	
-	if (exists_argument(argc,argv,"-workingfolder"))
+	if (argumentExists(argc,argv,"-workingfolder"))
 	{
-		workingFolderCharStar=get_char_argument(argc,argv,"-workingfolder");
+		workingFolderCharStar=getCharArgument(argc,argv,"-workingfolder");
 	}
 	else
 	{
 		workingFolderCharStar = currentFolder;
 	}
-	if (exists_argument(argc,argv,"-exefolder"))
+	if (argumentExists(argc,argv,"-exefolder"))
 	{
-		exeFolderCharStar=get_char_argument(argc,argv,"-exefolder");
+		exeFolderCharStar=getCharArgument(argc,argv,"-exefolder");
 	}
 	else
 	{
 		exeFolderCharStar = currentFolder;
 	}
-	if (exists_argument(argc,argv,"-tempfolder"))
+	if (argumentExists(argc,argv,"-tempfolder"))
 	{
-		tempFolderCharStar=get_char_argument(argc,argv,"-tempfolder");
+		tempFolderCharStar=getCharArgument(argc,argv,"-tempfolder");
 	}
 	else
 	{
@@ -154,12 +154,12 @@ int main(int argc,char **argv)
 	::SetCurrentDirectory(workingFolderCharStar);
 	#endif
 
-	if(!parseORRulesXMLFile())
+	if(!parseORrulesXMLfile())
 	{
 		cout << "error: no rules file detected" << endl;
 		exit(0);
 	}
-	fillInORRulesExternVariables();
+	fillInORrulesExternVariables();
 
 	#ifdef LINUX
 	chdir(tempFolderCharStar);
@@ -168,7 +168,7 @@ int main(int argc,char **argv)
 	#endif
 
 	int dimension;
-	if (exists_argument(argc,argv,"-od3"))
+	if (argumentExists(argc,argv,"-od3"))
 	{
 		dimension = OR_METHOD3DOD_DIMENSIONS;
 	}
@@ -178,7 +178,7 @@ int main(int argc,char **argv)
 	}
 
 	bool clearTrainTable;
-	if (exists_argument(argc,argv,"-cleartrain"))
+	if (argumentExists(argc,argv,"-cleartrain"))
 	{
 		clearTrainTable = true;
 	}
@@ -188,69 +188,69 @@ int main(int argc,char **argv)
 	}
 
 	int trainOrTest;
-	if (exists_argument(argc,argv,"-trainortest"))
+	if (argumentExists(argc,argv,"-trainortest"))
 	{
-		trainOrTest = int(get_float_argument(argc,argv,"-trainortest"));
+		trainOrTest = int(getFloatArgument(argc,argv,"-trainortest"));
 
 		if(!((trainOrTest == TEST) || (trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST)))
 		{
 			cout << "error: trainortest value is illegal" << endl;
-			printORCommandLineErrorMessage();
+			printORcommandLineErrorMessage();
 			exit(0);
 		}
 	}
 	else
 	{
 		cout << "error: trainortest is not defined" << endl;
-		printORCommandLineErrorMessage();
+		printORcommandLineErrorMessage();
 		exit(0);
 
 	}
 
 	#ifndef OR_METHOD3DOD_TEST
-	string sqlipaddress;
-	string sqlusername;
-	string sqlpassword;
+	string sqlIPaddress;
+	string sqlUsername;
+	string sqlPassword;
 	char * sqlipaddressCharStar = new char[100];
 	char * sqlusernameCharStar = new char[100];
 	char * sqlpasswordCharStar = new char[100];
-	if (exists_argument(argc,argv,"-sqlipaddress"))
+	if (argumentExists(argc,argv,"-sqlIPaddress"))
 	{
-		sqlipaddressCharStar=get_char_argument(argc,argv,"-sqlipaddress");
+		sqlipaddressCharStar=getCharArgument(argc,argv,"-sqlIPaddress");
 	}
 	else
 	{
-		cout << "error: sqlipaddress is not defined" << endl;
-		printORCommandLineErrorMessage();
+		cout << "error: sqlIPaddress is not defined" << endl;
+		printORcommandLineErrorMessage();
 		exit(0);
 	}
-	if (exists_argument(argc,argv,"-sqlusername"))
+	if (argumentExists(argc,argv,"-sqlUsername"))
 	{
-		sqlusernameCharStar=get_char_argument(argc,argv,"-sqlusername");
+		sqlusernameCharStar=getCharArgument(argc,argv,"-sqlUsername");
 	}
 	else
 	{
-		cout << "error: sqlusername is not defined" << endl;
-		printORCommandLineErrorMessage();
+		cout << "error: sqlUsername is not defined" << endl;
+		printORcommandLineErrorMessage();
 		exit(0);
 	}
 
-	if (exists_argument(argc,argv,"-sqlpassword"))
+	if (argumentExists(argc,argv,"-sqlPassword"))
 	{
-		sqlpasswordCharStar=get_char_argument(argc,argv,"-sqlpassword");
+		sqlpasswordCharStar=getCharArgument(argc,argv,"-sqlPassword");
 	}
 	else
 	{
-		cout << "error: sqlpassword is not defined" << endl;
-		printORCommandLineErrorMessage();
+		cout << "error: sqlPassword is not defined" << endl;
+		printORcommandLineErrorMessage();
 		exit(0);
 	}
-	sqlipaddress = sqlipaddressCharStar;
-	sqlusername = sqlusernameCharStar;
-	sqlpassword = sqlpasswordCharStar;
+	sqlIPaddress = sqlipaddressCharStar;
+	sqlUsername = sqlusernameCharStar;
+	sqlPassword = sqlpasswordCharStar;
 	#endif
 
-	view_info vi;
+	ViewInfo vi;
 	string ObjectNameArray[10];
 	int imageWidthFacingPoly;
 	int imageHeightFacingPoly;
@@ -266,20 +266,20 @@ int main(int argc,char **argv)
 	if(dimension == OR_METHOD2DOD_DIMENSIONS)
 	{
 
-		vi.imgwidth = TH_OR_METHOD2DOD_DEFAULT_IMAGE_WIDTH;
-		vi.imgheight = TH_OR_METHOD2DOD_DEFAULT_IMAGE_HEIGHT;
-		vi.viewwidth = TH_OR_METHOD2DOD_DEFAULT_VIEWSIZE_WIDTH;
-		vi.viewheight = TH_OR_METHOD2DOD_DEFAULT_VIEWSIZE_HEIGHT;
-		vi.focal_length = TH_OR_METHOD2DOD_DEFAULT_FOCAL;
+		vi.imageWidth = TH_OR_METHOD2DOD_DEFAULT_IMAGE_WIDTH;
+		vi.imageHeight = TH_OR_METHOD2DOD_DEFAULT_IMAGE_HEIGHT;
+		vi.viewWidth = TH_OR_METHOD2DOD_DEFAULT_VIEWSIZE_WIDTH;
+		vi.viewHeight = TH_OR_METHOD2DOD_DEFAULT_VIEWSIZE_HEIGHT;
+		vi.focalLength = TH_OR_METHOD2DOD_DEFAULT_FOCAL;
 		vi.eye.x = TH_OR_METHOD2DOD_DEFAULT_EYE_X;		//CHECK THIS; preferably the eye moves around the object
 		vi.eye.y = TH_OR_METHOD2DOD_DEFAULT_EYE_Y;
 		vi.eye.z = TH_OR_METHOD2DOD_DEFAULT_EYE_Z;
-		vi.viewat.x = TH_OR_METHOD2DOD_DEFAULT_VIEWAT_X;
-		vi.viewat.y = TH_OR_METHOD2DOD_DEFAULT_VIEWAT_Y;
-		vi.viewat.z = TH_OR_METHOD2DOD_DEFAULT_VIEWAT_Z;
-		vi.viewup.x = TH_OR_METHOD2DOD_DEFAULT_VIEWUP_X;
-		vi.viewup.y = TH_OR_METHOD2DOD_DEFAULT_VIEWUP_Y;
-		vi.viewup.z = TH_OR_METHOD2DOD_DEFAULT_VIEWUP_Z;
+		vi.viewAt.x = TH_OR_METHOD2DOD_DEFAULT_VIEWAT_X;
+		vi.viewAt.y = TH_OR_METHOD2DOD_DEFAULT_VIEWAT_Y;
+		vi.viewAt.z = TH_OR_METHOD2DOD_DEFAULT_VIEWAT_Z;
+		vi.viewUp.x = TH_OR_METHOD2DOD_DEFAULT_VIEWUP_X;
+		vi.viewUp.y = TH_OR_METHOD2DOD_DEFAULT_VIEWUP_Y;
+		vi.viewUp.z = TH_OR_METHOD2DOD_DEFAULT_VIEWUP_Z;
 
 		ObjectNameArray[0] = OR_METHOD2DOD_OBJECT_0_NAME;
 
@@ -296,21 +296,21 @@ int main(int argc,char **argv)
 	}
 	else if(dimension == OR_METHOD3DOD_DIMENSIONS)
 	{
-		vi.imgwidth = TH_OR_METHOD3DOD_DEFAULT_IMAGE_WIDTH;
-		vi.imgheight = TH_OR_METHOD3DOD_DEFAULT_IMAGE_HEIGHT;
-		vi.viewwidth = TH_OR_METHOD3DOD_DEFAULT_VIEWSIZE_WIDTH;
-		vi.viewheight = TH_OR_METHOD3DOD_DEFAULT_VIEWSIZE_HEIGHT;
-		vi.focal_length = TH_OR_METHOD3DOD_DEFAULT_FOCAL;
+		vi.imageWidth = TH_OR_METHOD3DOD_DEFAULT_IMAGE_WIDTH;
+		vi.imageHeight = TH_OR_METHOD3DOD_DEFAULT_IMAGE_HEIGHT;
+		vi.viewWidth = TH_OR_METHOD3DOD_DEFAULT_VIEWSIZE_WIDTH;
+		vi.viewHeight = TH_OR_METHOD3DOD_DEFAULT_VIEWSIZE_HEIGHT;
+		vi.focalLength = TH_OR_METHOD3DOD_DEFAULT_FOCAL;
 		vi.eye.x = TH_OR_METHOD3DOD_DEFAULT_EYE_X;		//CHECK THIS; preferably the eye moves around the object
 		vi.eye.y = TH_OR_METHOD3DOD_DEFAULT_EYE_Y;
 		vi.eye.z = TH_OR_METHOD3DOD_DEFAULT_EYE_Z;
-		vi.viewat.x = TH_OR_METHOD3DOD_DEFAULT_VIEWAT_X;
-		vi.viewat.y = TH_OR_METHOD3DOD_DEFAULT_VIEWAT_Y;
-		vi.viewat.z = TH_OR_METHOD3DOD_DEFAULT_VIEWAT_Z;
-		vi.viewup.x = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_X;
-		vi.viewup.y = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_Y;
-		vi.viewup.z = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_Z;
-		vi.depthscale =  OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE;
+		vi.viewAt.x = TH_OR_METHOD3DOD_DEFAULT_VIEWAT_X;
+		vi.viewAt.y = TH_OR_METHOD3DOD_DEFAULT_VIEWAT_Y;
+		vi.viewAt.z = TH_OR_METHOD3DOD_DEFAULT_VIEWAT_Z;
+		vi.viewUp.x = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_X;
+		vi.viewUp.y = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_Y;
+		vi.viewUp.z = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_Z;
+		vi.depthScale =  OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE;
 
 		ObjectNameArray[0] = OR_METHOD3DOD_OBJECT_0_NAME;
 
@@ -326,7 +326,7 @@ int main(int argc,char **argv)
 	else
 	{
 		cout << "illegal number of dimension" << endl;
-		printORCommandLineErrorMessage();
+		printORcommandLineErrorMessage();
 		exit(0);
 	}
 
@@ -334,13 +334,13 @@ int main(int argc,char **argv)
 	char * multViewListFileNameCharStar = new char[100];
 	string multViewListFileName;
 	bool useMultViewList = false;
-	if(exists_argument(argc,argv,"-multview"))
+	if(argumentExists(argc,argv,"-multview"))
 	{
-		multViewListFileNameCharStar=get_char_argument(argc,argv,"-multview");
+		multViewListFileNameCharStar=getCharArgument(argc,argv,"-multview");
 		multViewListFileName = multViewListFileNameCharStar;
 		useMultViewList = true;
 
-		view_info tempViewInfo;
+		ViewInfo tempViewInfo;
 		string multViewListFileNameWithFullPath = "";
 		multViewListFileNameWithFullPath = multViewListFileNameWithFullPath + workingFolderCharStar + "/" + multViewListFileName;
 		numberOfViewIndiciesPerObject = createViFromMultiViewList(&tempViewInfo, multViewListFileNameWithFullPath, 0, dimension);
@@ -355,9 +355,9 @@ int main(int argc,char **argv)
 
 	char * imageFileNameCharStar = new char[100];
 	string imageFileName;
-	if (exists_argument(argc,argv,"-object"))
+	if (argumentExists(argc,argv,"-object"))
 	{
-		imageFileNameCharStar=get_char_argument(argc,argv,"-object");
+		imageFileNameCharStar=getCharArgument(argc,argv,"-object");
 		imageFileName = imageFileNameCharStar;
 		ObjectNameArray[0] = imageFileName;
 		vi.objectName = imageFileName;
@@ -365,11 +365,11 @@ int main(int argc,char **argv)
 	else
 	{
 		cout << "error: must specify input object name" << endl;
-		printORCommandLineErrorMessage();
+		printORcommandLineErrorMessage();
 		exit(0);
 	}
 
-	if (exists_argument(argc,argv,"-version"))
+	if (argumentExists(argc,argv,"-version"))
 	{
 		cout << "OpenOR.exe - Project Version: 3c3a 16-November-2012" << endl;
 		exit(1);
@@ -377,9 +377,9 @@ int main(int argc,char **argv)
 
 	char * imageExtensionNameCharStar = new char[100];
 	string imageExtensionName;
-	if (exists_argument(argc,argv,"-imageext"))
+	if (argumentExists(argc,argv,"-imageext"))
 	{
-		imageExtensionNameCharStar=get_char_argument(argc,argv,"-imageext");
+		imageExtensionNameCharStar=getCharArgument(argc,argv,"-imageext");
 		imageExtensionName = imageExtensionNameCharStar;
 		vi.imageExtensionName = imageExtensionName;
 	}
@@ -388,35 +388,35 @@ int main(int argc,char **argv)
 		if(!useMultViewList)
 		{
 			cout << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
-			printORCommandLineErrorMessage();
+			printORcommandLineErrorMessage();
 			exit(0);
 		}
 	}
 
-	if (exists_argument(argc,argv,"-width"))
+	if (argumentExists(argc,argv,"-width"))
 	{
-		vi.imgwidth=get_float_argument(argc,argv,"-width");
+		vi.imageWidth=getFloatArgument(argc,argv,"-width");
 	}
 	else
 	{
 		if(!useMultViewList)
 		{
 			cout << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
-			printORCommandLineErrorMessage();
+			printORcommandLineErrorMessage();
 			exit(0);
 		}
 	}
 
-	if (exists_argument(argc,argv,"-height"))
+	if (argumentExists(argc,argv,"-height"))
 	{
-		vi.imgheight=get_float_argument(argc,argv,"-height");
+		vi.imageHeight=getFloatArgument(argc,argv,"-height");
 	}
 	else
 	{
 		if(!useMultViewList)
 		{
 			cout << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
-			printORCommandLineErrorMessage();
+			printORcommandLineErrorMessage();
 			exit(0);
 		}
 	}
@@ -426,9 +426,9 @@ int main(int argc,char **argv)
 
 	char * depthExtensionNameCharStar = new char[100];
 	string depthExtensionName;
-	if(exists_argument(argc,argv,"-depthext"))
+	if(argumentExists(argc,argv,"-depthext"))
 	{
-		depthExtensionNameCharStar=get_char_argument(argc,argv,"-depthext");
+		depthExtensionNameCharStar=getCharArgument(argc,argv,"-depthext");
 		depthExtensionName = depthExtensionNameCharStar;
 		vi.depthExtensionName = depthExtensionName;
 	}
@@ -438,117 +438,117 @@ int main(int argc,char **argv)
 		missingDepthMapExtensionDescriptor = true;
 	}
 
-	if(exists_argument(argc,argv,"-vieweyex"))
+	if(argumentExists(argc,argv,"-vieweyex"))
 	{
-		vi.eye.x=get_float_argument(argc,argv,"-vieweyex");
+		vi.eye.x=getFloatArgument(argc,argv,"-vieweyex");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(exists_argument(argc,argv,"-vieweyey"))
+	if(argumentExists(argc,argv,"-vieweyey"))
 	{
-		vi.eye.y=get_float_argument(argc,argv,"-vieweyey");
+		vi.eye.y=getFloatArgument(argc,argv,"-vieweyey");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(exists_argument(argc,argv,"-vieweyez"))
+	if(argumentExists(argc,argv,"-vieweyez"))
 	{
-		vi.eye.z=get_float_argument(argc,argv,"-vieweyez");
+		vi.eye.z=getFloatArgument(argc,argv,"-vieweyez");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(exists_argument(argc,argv,"-viewatx"))
+	if(argumentExists(argc,argv,"-viewatx"))
 	{
-		vi.viewat.x=get_float_argument(argc,argv,"-viewatx");
+		vi.viewAt.x=getFloatArgument(argc,argv,"-viewatx");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(exists_argument(argc,argv,"-viewaty"))
+	if(argumentExists(argc,argv,"-viewaty"))
 	{
-		vi.viewat.y=get_float_argument(argc,argv,"-viewaty");
+		vi.viewAt.y=getFloatArgument(argc,argv,"-viewaty");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(exists_argument(argc,argv,"-viewatz"))
+	if(argumentExists(argc,argv,"-viewatz"))
 	{
-		vi.viewat.z=get_float_argument(argc,argv,"-viewatz");
+		vi.viewAt.z=getFloatArgument(argc,argv,"-viewatz");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(exists_argument(argc,argv,"-viewupx"))
+	if(argumentExists(argc,argv,"-viewupx"))
 	{
-		vi.viewup.x=get_float_argument(argc,argv,"-viewupx");
+		vi.viewUp.x=getFloatArgument(argc,argv,"-viewupx");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(exists_argument(argc,argv,"-viewupy"))
+	if(argumentExists(argc,argv,"-viewupy"))
 	{
-		vi.viewup.y=get_float_argument(argc,argv,"-viewupy");
+		vi.viewUp.y=getFloatArgument(argc,argv,"-viewupy");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(exists_argument(argc,argv,"-viewupz"))
+	if(argumentExists(argc,argv,"-viewupz"))
 	{
-		vi.viewup.z=get_float_argument(argc,argv,"-viewupz");
+		vi.viewUp.z=getFloatArgument(argc,argv,"-viewupz");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(exists_argument(argc,argv,"-viewfocal"))
+	if(argumentExists(argc,argv,"-viewfocal"))
 	{
-		vi.focal_length=get_float_argument(argc,argv,"-viewfocal");
+		vi.focalLength=getFloatArgument(argc,argv,"-viewfocal");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(exists_argument(argc,argv,"-viewsizew"))
+	if(argumentExists(argc,argv,"-viewsizew"))
 	{
-		vi.viewwidth=get_float_argument(argc,argv,"-viewsizew");
+		vi.viewWidth=getFloatArgument(argc,argv,"-viewsizew");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(exists_argument(argc,argv,"-viewsizeh"))
+	if(argumentExists(argc,argv,"-viewsizeh"))
 	{
-		vi.viewheight=get_float_argument(argc,argv,"-viewsizeh");
+		vi.viewHeight=getFloatArgument(argc,argv,"-viewsizeh");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(exists_argument(argc,argv,"-scale"))
+	if(argumentExists(argc,argv,"-scale"))
 	{
-		vi.depthscale=get_float_argument(argc,argv,"-scale");
+		vi.depthScale=getFloatArgument(argc,argv,"-scale");
 	}
 	else
 	{
@@ -556,9 +556,9 @@ int main(int argc,char **argv)
 	}
 
 	int viewNumber = 0;
-	if (exists_argument(argc,argv,"-view"))
+	if (argumentExists(argc,argv,"-view"))
 	{
-		viewNumber=get_float_argument(argc,argv,"-view");
+		viewNumber=getFloatArgument(argc,argv,"-view");
 
 		if(useMultViewList)
 		{
@@ -568,9 +568,9 @@ int main(int argc,char **argv)
 	}
 
 	#ifdef OR_USE_DATABASE
-	if(exists_argument(argc,argv,"-dbfolder"))
+	if(argumentExists(argc,argv,"-dbfolder"))
 	{
-		databaseFolderName=get_char_argument(argc,argv,"-dbfolder");
+		databaseFolderName=getCharArgument(argc,argv,"-dbfolder");
 		databaseFolderName = databaseFolderName + '/';
 	}
 	initialiseDatabase(databaseFolderName);	
@@ -579,34 +579,34 @@ int main(int argc,char **argv)
 	if(missingDepthMapExtensionDescriptor && !useMultViewList && (dimension == OR_METHOD3DOD_DIMENSIONS))
 	{
 		cout << "error: must either specify an input depth map extension and POV parameters (if not wanting defaults), or a mult (object/) view list for 3DOD" << endl;
-		printORCommandLineErrorMessage();
+		printORcommandLineErrorMessage();
 		//exit(0);
 	}
 
 
 	if(trainOrTest == TRAIN)
 	{
-		if(!ORMethodTrain(dimension, numberOfObjects, ObjectNameArray, numberOfPolys, objectDataSource, &vi, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, numberOfViewIndiciesPerObject, numberOfViewIndiciesPerObjectWithUniquePolygons, numberOfZoomIndicies, trainOrTest, sqlipaddress, sqlusername, sqlpassword, clearTrainTable, viewNumber, multViewListFileName))
+		if(!ORmethodTrain(dimension, numberOfObjects, ObjectNameArray, numberOfPolys, objectDataSource, &vi, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, numberOfViewIndiciesPerObject, numberOfViewIndiciesPerObjectWithUniquePolygons, numberOfZoomIndicies, trainOrTest, sqlIPaddress, sqlUsername, sqlPassword, clearTrainTable, viewNumber, multViewListFileName))
 		{
 			result = false;
-			cout << "ORMethodTrain reports failure" << endl;
+			cout << "ORmethodTrain reports failure" << endl;
 		}
 		else
 		{
-			cout << "ORMethodTrain completed" << endl;
+			cout << "ORmethodTrain completed" << endl;
 		}
 
 	}
 	else if((trainOrTest == TEST) || (trainOrTest == TRAIN_AND_TEST))
 	{
-		if(!ORMethodTest(dimension, numberOfObjects, ObjectNameArray, numberOfPolys, objectDataSource, &vi, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, numberOfViewIndiciesPerObject, numberOfViewIndiciesPerObjectWithUniquePolygons, numberOfZoomIndicies, trainOrTest, sqlipaddress, sqlusername, sqlpassword, clearTrainTable, viewNumber, multViewListFileName))
+		if(!ORmethodTest(dimension, numberOfObjects, ObjectNameArray, numberOfPolys, objectDataSource, &vi, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, numberOfViewIndiciesPerObject, numberOfViewIndiciesPerObjectWithUniquePolygons, numberOfZoomIndicies, trainOrTest, sqlIPaddress, sqlUsername, sqlPassword, clearTrainTable, viewNumber, multViewListFileName))
 		{
 			result = false;
-			cout << "ORMethodTest reports failure" << endl;
+			cout << "ORmethodTest reports failure" << endl;
 		}
 		else
 		{
-			cout << "ORMethodTest completed" << endl;
+			cout << "ORmethodTest completed" << endl;
 		}
 	}
 
@@ -617,7 +617,7 @@ int main(int argc,char **argv)
 	cout << "OR execution time: " << timeAndDateString << " (finish)" << endl;
 }
 
-void printORCommandLineErrorMessage()
+void printORcommandLineErrorMessage()
 {
 	if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL)
 	{

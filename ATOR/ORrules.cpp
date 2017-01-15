@@ -70,7 +70,7 @@ bool convertStringToBool(string stringValue)
 }
 
 
-void fillInORRulesExternVariables()
+void fillInORrulesExternVariables()
 {
 
 
@@ -1956,13 +1956,13 @@ void fillInORRulesExternVariables()
 	OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM = (OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE);
 
 	#ifdef DEBUG_OR_PRINT_OR_RULES_EXTERN_VARS
-	printORRulesExternVariables();
+	printORrulesExternVariables();
 	#endif
 
 }
 
 
-void printORRulesExternVariables()
+void printORrulesExternVariables()
 {
 
 	//OR_IMAGE_COMPARISON_DECISION_TREE...

@@ -137,10 +137,10 @@ public:
 
 int main();
 void deriveDCTcoefficients(string exampleImageFileName, signed char dctCoeff[]);
-NeuronContainer * initialiseImageNeuralNetwork(int NNTypeBeingTested, NeuronContainer * firstInputNeuronInNetwork, long * numberOfInputNeurons, long numberOfOutputNeurons, string exampleImageFileName);
-bool generateDCTArrayExperienceFromImage(string imageFileName, Experience * currentExperience, int objectDecision);
+NeuronContainer * initialiseImageNeuralNetwork(int NNtypeBeingTested, NeuronContainer * firstInputNeuronInNetwork, long * numberOfInputNeurons, long numberOfOutputNeurons, string exampleImageFileName);
+bool generateDCTarrayExperienceFromImage(string imageFileName, Experience * currentExperience, int objectDecision);
 bool generatePixelMapExperienceFromImage(string imageFileName, Experience * currentExperience, int objectDecision);
-void generateExperienceFrom1Array(double * array, int arrayLength, double maxInputValueForNormalisation, Experience * tempExperience, int objectDecision);
+void generateExperienceFromOneArray(double * array, int arrayLength, double maxInputValueForNormalisation, Experience * tempExperience, int objectDecision);
 int ORTHimageCategorisationNN();
 void createImageFileNameMatchListFromMatchFile(string fileName, FileNameMatch * firstMatchInList);
 

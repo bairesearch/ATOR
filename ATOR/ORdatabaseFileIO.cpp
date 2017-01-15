@@ -248,12 +248,12 @@ string DBgenerateFolderName(string * objectName, bool trainOrTest)
 
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
-bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList, Feature * trainfirstFeatureInNearestFeatureList, int dimension, bool * exactMatchFound)
+bool compareFeaturesListForMatch(Feature * testFirstFeatureInNearestFeatureList, Feature * trainFirstFeatureInNearestFeatureList, int dimension, bool * exactMatchFound)
 {
 	int numberOfFeatureGeoMatches = 0;
 	int numberOfFeatureGeoBinnedExactMatches = 0;
 	bool passedGeometricCheck = false;
-	Feature * testcurrentFeatureInNearestFeatureList = testfirstFeatureInNearestFeatureList;
+	Feature * testcurrentFeatureInNearestFeatureList = testFirstFeatureInNearestFeatureList;
 	while((testcurrentFeatureInNearestFeatureList->next != NULL) && !(testcurrentFeatureInNearestFeatureList->lastFilledFeatureInList))
 	{
 		bool testpassedDimensionCheck = true;
@@ -267,7 +267,7 @@ bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList,
 
 		if(testpassedDimensionCheck)
 		{
-			Feature * traincurrentFeatureInNearestFeatureList = trainfirstFeatureInNearestFeatureList;
+			Feature * traincurrentFeatureInNearestFeatureList = trainFirstFeatureInNearestFeatureList;
 			while((traincurrentFeatureInNearestFeatureList->next != NULL) && !(traincurrentFeatureInNearestFeatureList->lastFilledFeatureInList))
 			{
 				bool trainpassedDimensionCheck = true;

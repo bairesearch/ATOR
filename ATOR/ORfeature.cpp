@@ -116,7 +116,7 @@ int tempimageHeight;
 #endif
 
 
-void generateFeatureListFromHeitgerFeatureRGBMapWithQuadraticFit(Feature * firstFeatureInFeatureList, unsigned char * featureRgbMap, int imageWidth, int imageHeight, double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, view_info * vi, bool interpixelRGBMapType)
+void generateFeatureListFromHeitgerFeatureRGBmapWithQuadraticFit(Feature * firstFeatureInFeatureList, unsigned char * featureRgbMap, int imageWidth, int imageHeight, double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, ViewInfo * vi, bool interpixelRGBmapType)
 {
 	double pixelXOffset;
 	double pixelYOffset;
@@ -124,7 +124,7 @@ void generateFeatureListFromHeitgerFeatureRGBMapWithQuadraticFit(Feature * first
 	int xBoundaryMin;
 	int yBoundaryMax;
 	int yBoundaryMin;
-	if(interpixelRGBMapType == INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT)
+	if(interpixelRGBmapType == INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT)
 	{
 		//without OR_USE_CONTRAST_CALC_METHOD_C
 		pixelXOffset = 0;
@@ -134,7 +134,7 @@ void generateFeatureListFromHeitgerFeatureRGBMapWithQuadraticFit(Feature * first
 		yBoundaryMax = imageHeight-1;
 		yBoundaryMin = 0;
 	}
-	else if(interpixelRGBMapType == INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST)
+	else if(interpixelRGBmapType == INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST)
 	{
 		//such as luminosityContrast map with OR_USE_CONTRAST_CALC_METHOD_C
 		pixelXOffset = 0.5;
@@ -144,7 +144,7 @@ void generateFeatureListFromHeitgerFeatureRGBMapWithQuadraticFit(Feature * first
 		yBoundaryMax = imageHeight-2;
 		yBoundaryMin = 0;
 	}
-	else if(interpixelRGBMapType == INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST)
+	else if(interpixelRGBmapType == INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST)
 	{
 		//such as gradientContrast or pointNormalContrast map with OR_USE_CONTRAST_CALC_METHOD_C
 		pixelXOffset = 0;
@@ -159,14 +159,14 @@ void generateFeatureListFromHeitgerFeatureRGBMapWithQuadraticFit(Feature * first
 	createLuminosityMapFromRGBMap(imageWidth, imageHeight, featureRgbMap, luminosityMap);
 
 
-	QFZeroCrossing * firstZeroCrossingInList = new QFZeroCrossing();
-	generateZeroCrossingList(luminosityMap, imageWidth, imageHeight, firstZeroCrossingInList, POINT_DETECT, sensitivity, dimension, pointMap, depthMap, zoom, interpixelRGBMapType);	//need to check that an interpixel rgbmap will not cause issues here - I dont think so considering are taking the lowest depth map value within the 3x3 kernel anyway
+	QFzeroCrossing * firstZeroCrossingInList = new QFzeroCrossing();
+	generateZeroCrossingList(luminosityMap, imageWidth, imageHeight, firstZeroCrossingInList, POINT_DETECT, sensitivity, dimension, pointMap, depthMap, zoom, interpixelRGBmapType);	//need to check that an interpixel rgbmap will not cause issues here - I dont think so considering are taking the lowest depth map value within the 3x3 kernel anyway
 
 
 	//add zerocrossing data to feature list
 	Feature * currentFeatureInList = firstFeatureInFeatureList;
 
-	QFZeroCrossing * currentZeroCrossingInList = firstZeroCrossingInList;
+	QFzeroCrossing * currentZeroCrossingInList = firstZeroCrossingInList;
 	while(currentZeroCrossingInList->next != NULL)
 	{
 		if((currentZeroCrossingInList->x >= xBoundaryMin) && (currentZeroCrossingInList->x <= xBoundaryMax) && (currentZeroCrossingInList->y >= yBoundaryMin) && (currentZeroCrossingInList->y <= yBoundaryMax))
@@ -198,7 +198,7 @@ void generateFeatureListFromHeitgerFeatureRGBMapWithQuadraticFit(Feature * first
 					currentFeatureInList->point.y = xyzWorld.y;
 					currentFeatureInList->point.z = xyzWorld.z;
 				#else
-					cout << "error: generateFeatureListFromHeitgerFeatureRGBMapWithQuadraticFit() requires OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH when compiling with 3DOD/use3DODonObjectForegroundDepthCheck" << endl;
+					cout << "error: generateFeatureListFromHeitgerFeatureRGBmapWithQuadraticFit() requires OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH when compiling with 3DOD/use3DODonObjectForegroundDepthCheck" << endl;
 					vec xyzWorld;
 					getPointMapValue(int(xPos), int(yPos), imageWidth*zoom, pointMap, &xyzWorld);
 					currentFeatureInList->point.x = xyzWorld.x;
@@ -240,7 +240,7 @@ void generateFeatureListFromHeitgerFeatureRGBMapWithQuadraticFit(Feature * first
 
 
 
-void generateEdgeListFromRGBMapWithQuadraticFit(unsigned char * rgbMap, bool * edgeBoolMap, QFZeroCrossing * edgeZeroCrossingMap[], int imageWidth, int imageHeight, double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, view_info * vi, int interpixelContrastMapType)
+void generateEdgeListFromRGBmapWithQuadraticFit(unsigned char * rgbMap, bool * edgeBoolMap, QFzeroCrossing * edgeZeroCrossingMap[], int imageWidth, int imageHeight, double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, ViewInfo * vi, int interpixelContrastMapType)
 {
 	double * luminosityMap = new double[imageWidth * imageHeight];
 	double * luminosityContrastMap = new double[imageWidth * imageHeight];
@@ -255,7 +255,7 @@ void generateEdgeListFromRGBMapWithQuadraticFit(unsigned char * rgbMap, bool * e
 }
 
 //currently assumes zoom = 1
-void generateEdgeListFromContrastMapWithQuadraticFit(double * contrastMap, bool * edgeBoolMap, QFZeroCrossing * edgeZeroCrossingMap[], int imageWidth, int imageHeight, double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, view_info * vi, int interpixelContrastMapType)
+void generateEdgeListFromContrastMapWithQuadraticFit(double * contrastMap, bool * edgeBoolMap, QFzeroCrossing * edgeZeroCrossingMap[], int imageWidth, int imageHeight, double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, ViewInfo * vi, int interpixelContrastMapType)
 {
 	double pixelXOffset;
 	double pixelYOffset;
@@ -279,7 +279,7 @@ void generateEdgeListFromContrastMapWithQuadraticFit(double * contrastMap, bool 
 	}
 
 
-	QFZeroCrossing * firstZeroCrossingInList = new QFZeroCrossing();
+	QFzeroCrossing * firstZeroCrossingInList = new QFzeroCrossing();
 	generateZeroCrossingList(contrastMap, imageWidth, imageHeight, firstZeroCrossingInList, EDGE_DETECT, sensitivity, dimension, pointMap, depthMap, zoom, interpixelContrastMapType);		//need to check that an interpixel rgbmap will not cause issues here - I dont think so considering are taking the lowest depth map value within the 3x3 kernel anyway
 
 	 for(int y=0; y < imageHeight; y++)
@@ -292,7 +292,7 @@ void generateEdgeListFromContrastMapWithQuadraticFit(double * contrastMap, bool 
 
 	//add zerocrossing data to edge map/list
 
-	QFZeroCrossing * currentZeroCrossingInList = firstZeroCrossingInList;
+	QFzeroCrossing * currentZeroCrossingInList = firstZeroCrossingInList;
 	while(currentZeroCrossingInList->next != NULL)
 	{
 		//check zoom
@@ -343,7 +343,7 @@ void generateEdgeListFromContrastMapWithQuadraticFit(double * contrastMap, bool 
 #define DISTANCE_TO_CENTEROID_DECREASING (1)
 #define DISTANCE_TO_CENTEROID_INCREASING (2)
 
-Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList, double centroidx, double centroidy, vec * centroidpos, PixelContiguous * firstInPixelContiguousBoundaryStack, int dimension, int zoom, int circumferenceForRegion)
+Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList, double centroidX, double centroidY, vec * centroidPos, PixelContiguous * firstInPixelContiguousBoundaryStack, int dimension, int zoom, int circumferenceForRegion)
 {
 	double maxNoise;
 	double maxNoise2;
@@ -390,9 +390,9 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 		previousPointForTest.x = currentPointForTest.x;
 		previousPointForTest.y = currentPointForTest.y;
 		previousPointForTest.z = currentPointForTest.z;
-		centroidposForTest.x = centroidpos->x;
-		centroidposForTest.y = centroidpos->y;
-		centroidposForTest.z = centroidpos->z;
+		centroidposForTest.x = centroidPos->x;
+		centroidposForTest.y = centroidPos->y;
+		centroidposForTest.z = centroidPos->z;
 		#ifdef OR_DEBUG
 		/*
 		cout << "centroidposForTest.x = " << centroidposForTest.x;
@@ -406,8 +406,8 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 		currentPointForTest.x = currentInPixelContiguousBoundaryStack->pointNonWorldCoord.x;
 		currentPointForTest.y = currentInPixelContiguousBoundaryStack->pointNonWorldCoord.y;
 		currentPointForTest.z = 0.0;
-		centroidposForTest.x = centroidx;
-		centroidposForTest.y = centroidy;
+		centroidposForTest.x = centroidX;
+		centroidposForTest.y = centroidY;
 		centroidposForTest.z = 0.0;
 
 	}
@@ -484,7 +484,7 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 		contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 0] = 0;
 		contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 1] = 255;
 		contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 2] = 255;
-		//generatePixmapFromRGBMap("debugContiguousRegionDetectionRGB.ppm", tempimageWidth, tempimageHeight, contiguousRegionDebugrgbMap);
+		//generatePixmapFromRGBmap("debugContiguousRegionDetectionRGB.ppm", tempimageWidth, tempimageHeight, contiguousRegionDebugrgbMap);
 		#ifdef OR_CONTIGUOUS_REGION_DEBUG_PRINT_BOUNDARY_TRACE
 		cout << "nonworldx = " << nonworldx << endl;
 		cout << "nonworldy " << nonworldy << endl;
@@ -933,7 +933,7 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 
 //nb this routine should work where contrastMap is either the luminosityContrastMap [or the depthContrastMap or the depthGradientContrastMap (3DOD only)]
 //this routine has not yet been tested
-bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFeatureList, int imageWidth, int imageHeight, double contrastMap[], double sensitivity, int dimension, double pointMap[], double depthMap[], int zoom, view_info * vi, bool useEdgeZeroCrossingMap, int interpixelContrastMapType)
+bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFeatureList, int imageWidth, int imageHeight, double contrastMap[], double sensitivity, int dimension, double pointMap[], double depthMap[], int zoom, ViewInfo * vi, bool useEdgeZeroCrossingMap, int interpixelContrastMapType)
 {
 	bool result = true;
 
@@ -996,9 +996,9 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 	//1. edge process image using ORquadraticFit
 	bool * edgeBoolMap = new bool[imageWidth*imageHeight];
 #ifndef LINUX
-	QFZeroCrossing ** edgeZeroCrossingMap = new QFZeroCrossing *[imageWidth*imageHeight];
+	QFzeroCrossing ** edgeZeroCrossingMap = new QFzeroCrossing *[imageWidth*imageHeight];
 #else
-	QFZeroCrossing * edgeZeroCrossingMap[imageWidth*imageHeight];
+	QFzeroCrossing * edgeZeroCrossingMap[imageWidth*imageHeight];
 #endif
 	if(useEdgeZeroCrossingMap)
 	{
@@ -1143,7 +1143,7 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 						#endif
 
 						#ifdef OR_CONTIGUOUS_REGION_DEBUG
-						generatePixmapFromRGBMap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
+						generatePixmapFromRGBmap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
 						#endif
 
 						double regionaveragex = double(regionsumx)/double(regionSize);
@@ -1294,7 +1294,7 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 							traceSuccessful = traceEdgeCheckNextPixelNonRecursive(maxXx, maxXy, alreadyProcessed, edgeZeroCrossingMap, useEdgeZeroCrossingMap, imageWidth, imageHeight, &boundarysumx, &boundarysumy, &boundarysumpos, &circumferenceForRegion, minCircumferenceOfRegion, dimension, pointMap, depthMap, zoom, firstInPixelContiguousBoundaryStack, vi, interpixelContrastMapType);
 
 							#ifdef OR_CONTIGUOUS_REGION_DEBUG
-							generatePixmapFromRGBMap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
+							generatePixmapFromRGBmap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
 							#endif
 
 							/*
@@ -1385,7 +1385,7 @@ bool addCentredFeaturesToFeatureListUsingContrastMap(Feature * firstFeatureInFea
 								}
 
 								#ifdef OR_CONTIGUOUS_REGION_DEBUG
-								generatePixmapFromRGBMap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
+								generatePixmapFromRGBmap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
 								#endif
 							}
 
@@ -1481,7 +1481,7 @@ double getDepthValueWithOrWithoutForegroundCheck(double pointNonWorldCoordx, dou
 }
 
 /*
-void calculateDepthMapValue(vec * xyzWorld, vec * pointNonWorldCoord, view_info * vi)
+void calculateDepthMapValue(vec * xyzWorld, vec * pointNonWorldCoord, ViewInfo * vi)
 {	//see calculatePointMapValue
 
 }
@@ -1633,7 +1633,7 @@ bool addCentredFeaturesToFeatureListUsingMeshList(Feature * firstFeatureInFeatur
 						bool foundStart = false;
 						bool foundStartAgain = false;
 						int circumferenceForRegion;
-						traceEdgeCheckNextPixelUsingMeshPointRecursive(currentMeshPointInMesh, &sumx, &sumy, &sumpos, &xStart, &yStart, &foundStartAgain, &foundStart, &circumferenceForRegion, minCircumferenceOfRegion);
+						traceEdgeCheckNextPixelUsingMeshPointRecursive(currentMeshPointInMesh, &sumX, &sumY, &sumPos, &xStart, &yStart, &foundStartAgain, &foundStart, &circumferenceForRegion, minCircumferenceOfRegion);
 						#else
 						*/
 						double boundarysumx = 0;
@@ -1781,7 +1781,7 @@ void calculateNewXYbasedOnDirection(int xCurrent, int yCurrent, int q, int * x, 
 	*y = yCurrent + q/3 - 1;
 }
 
-bool defineRegionCheckNextPixelNonRecursive(PixelContiguous * firstInPixelContiguousStack, int xInitial, int yInitial, bool edgeBoolMap[], QFZeroCrossing * edgeZeroCrossingMap[], int alreadyProcessed[], int imageWidth, int imageHeight, double * regionSize, int * sumx, int * sumy, vec * sumpos, int dimension, double pointMap[], double depthMap[], int zoom, bool useEdgeZeroCrossingMap, view_info * vi, int * maxXx, int * maxXy, int interpixelContrastMapType)
+bool defineRegionCheckNextPixelNonRecursive(PixelContiguous * firstInPixelContiguousStack, int xInitial, int yInitial, bool edgeBoolMap[], QFzeroCrossing * edgeZeroCrossingMap[], int alreadyProcessed[], int imageWidth, int imageHeight, double * regionSize, int * sumX, int * sumY, vec * sumPos, int dimension, double pointMap[], double depthMap[], int zoom, bool useEdgeZeroCrossingMap, ViewInfo * vi, int * maxXx, int * maxXy, int interpixelContrastMapType)
 {
 	double pixelXOffset;
 	double pixelYOffset;
@@ -1884,7 +1884,7 @@ bool defineRegionCheckNextPixelNonRecursive(PixelContiguous * firstInPixelContig
 						//PUT THIS CODE BACK IN - TEMP REMOVED FOR DEBUG
 						if(useEdgeZeroCrossingMap)
 						{
-							double subpixelArea = calculateAreaOfOneSideOfEdgeInAPixel(-(x-xCurrent), -(y-yCurrent), edgeZeroCrossingMap[y*imageWidth + x]->zeroCrossingValueX, edgeZeroCrossingMap[y*imageWidth + x]->zeroCrossingValueY, edgeZeroCrossingMap[y*imageWidth + x]->alpha);
+							double subpixelArea = calculateAreaOfOneSideOfEdgeInPixel(-(x-xCurrent), -(y-yCurrent), edgeZeroCrossingMap[y*imageWidth + x]->zeroCrossingValueX, edgeZeroCrossingMap[y*imageWidth + x]->zeroCrossingValueY, edgeZeroCrossingMap[y*imageWidth + x]->alpha);
 							#ifdef OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY_EXTRA_NOT_NECESSARY_AND_BUGGY
 							*regionSize = *regionSize + subpixelArea;
 							#endif
@@ -1960,7 +1960,7 @@ bool defineRegionCheckNextPixelNonRecursive(PixelContiguous * firstInPixelContig
 									#endif
 									#endif
 
-									double subpixelAreaAdjacent = calculateAreaOfOneSideOfEdgeInAPixel(-xAdjacentDev1, -yAdjacentDev1, edgeZeroCrossingMap[yAdjacentPixel1*imageWidth + xAdjacentPixel1]->zeroCrossingValueX, edgeZeroCrossingMap[yAdjacentPixel1*imageWidth + xAdjacentPixel1]->zeroCrossingValueY, edgeZeroCrossingMap[yAdjacentPixel1*imageWidth + xAdjacentPixel1]->alpha);
+									double subpixelAreaAdjacent = calculateAreaOfOneSideOfEdgeInPixel(-xAdjacentDev1, -yAdjacentDev1, edgeZeroCrossingMap[yAdjacentPixel1*imageWidth + xAdjacentPixel1]->zeroCrossingValueX, edgeZeroCrossingMap[yAdjacentPixel1*imageWidth + xAdjacentPixel1]->zeroCrossingValueY, edgeZeroCrossingMap[yAdjacentPixel1*imageWidth + xAdjacentPixel1]->alpha);
 									#ifdef OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY_EXTRA_NOT_NECESSARY_AND_BUGGY
 									*regionSize = *regionSize + subpixelAreaAdjacent;
 									#endif
@@ -1980,7 +1980,7 @@ bool defineRegionCheckNextPixelNonRecursive(PixelContiguous * firstInPixelContig
 									#endif
 									#endif
 
-									double subpixelAreaAdjacent = calculateAreaOfOneSideOfEdgeInAPixel(-xAdjacentDev2, -yAdjacentDev2, edgeZeroCrossingMap[yAdjacentPixel2*imageWidth + xAdjacentPixel2]->zeroCrossingValueX, edgeZeroCrossingMap[yAdjacentPixel2*imageWidth + xAdjacentPixel2]->zeroCrossingValueY, edgeZeroCrossingMap[yAdjacentPixel2*imageWidth + xAdjacentPixel2]->alpha);
+									double subpixelAreaAdjacent = calculateAreaOfOneSideOfEdgeInPixel(-xAdjacentDev2, -yAdjacentDev2, edgeZeroCrossingMap[yAdjacentPixel2*imageWidth + xAdjacentPixel2]->zeroCrossingValueX, edgeZeroCrossingMap[yAdjacentPixel2*imageWidth + xAdjacentPixel2]->zeroCrossingValueY, edgeZeroCrossingMap[yAdjacentPixel2*imageWidth + xAdjacentPixel2]->alpha);
 									#ifdef OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY_EXTRA_NOT_NECESSARY_AND_BUGGY
 									*regionSize = *regionSize + subpixelAreaAdjacent;
 									#endif
@@ -2007,8 +2007,8 @@ bool defineRegionCheckNextPixelNonRecursive(PixelContiguous * firstInPixelContig
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 2] = ((contiguousRegionNumber/100)%10 * 25);
 						#endif
 
-						*sumx = *sumx + pixelXOffset + x;
-						*sumy = *sumy + pixelYOffset + y;
+						*sumX = *sumX + pixelXOffset + x;
+						*sumY = *sumY + pixelYOffset + y;
 
 						if(dimension == OR_METHOD3DOD_DIMENSIONS)
 						{
@@ -2023,9 +2023,9 @@ bool defineRegionCheckNextPixelNonRecursive(PixelContiguous * firstInPixelContig
 							getPointMapValue((x+pixelXOffset)*zoom, (y+pixelYOffset)*zoom, imageWidth*zoom, pointMap, &xyzWorld);
 						#endif
 
-							sumpos->x = sumpos->x +  xyzWorld.x;
-							sumpos->y = sumpos->y +  xyzWorld.y;
-							sumpos->z = sumpos->z +  xyzWorld.z;
+							sumPos->x = sumPos->x +  xyzWorld.x;
+							sumPos->y = sumPos->y +  xyzWorld.y;
+							sumPos->z = sumPos->z +  xyzWorld.z;
 						}
 
 
@@ -2308,7 +2308,7 @@ void clearContiguousStackRecursive(PixelContiguous * currentInPixelContiguousSta
 
 
 
-bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(PixelContiguous * firstInPixelContiguousStack, MeshPoint * firstMeshPoint, double * regionSize, int contrastValChosen, int * sumx, int * sumy, vec * sumpos, bool useEdgeZeroCrossingMap, MeshPoint * aMeshPointOnTheBoundary, double sensitivity)
+bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(PixelContiguous * firstInPixelContiguousStack, MeshPoint * firstMeshPoint, double * regionSize, int contrastValChosen, int * sumX, int * sumY, vec * sumPos, bool useEdgeZeroCrossingMap, MeshPoint * aMeshPointOnTheBoundary, double sensitivity)
 {
 	bool unboundedContiguousRegionFound = false;
 	bool contiguousRegionFound = true;
@@ -2379,7 +2379,7 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(PixelContiguous * firs
 						{
 							if(useEdgeZeroCrossingMap)
 							{
-								double subpixelArea = calculateAreaOfOneSideOfEdgeInAPixel(-(xDev), -(yDev), currentMeshPoint->adjacentMeshPoint[q]->zeroCrossingValueX, currentMeshPoint->adjacentMeshPoint[q]->zeroCrossingValueY, currentMeshPoint->adjacentMeshPoint[q]->alpha);
+								double subpixelArea = calculateAreaOfOneSideOfEdgeInPixel(-(xDev), -(yDev), currentMeshPoint->adjacentMeshPoint[q]->zeroCrossingValueX, currentMeshPoint->adjacentMeshPoint[q]->zeroCrossingValueY, currentMeshPoint->adjacentMeshPoint[q]->alpha);
 								#ifdef OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY_EXTRA_NOT_NECESSARY_AND_BUGGY
 								*regionSize = *regionSize + subpixelArea;
 								#endif
@@ -2435,7 +2435,7 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(PixelContiguous * firs
 									if((currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj1]->alreadyProcessed == NOT_PROCESSED) && (currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj1]->edge == true))
 									{
 										currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj1]->alreadyProcessed = EDGE_FOUND;
-										double subpixelAreaAdjacent = calculateAreaOfOneSideOfEdgeInAPixel(-xAdjacentDev1, -yAdjacentDev1, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj1]->zeroCrossingValueX, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj1]->zeroCrossingValueY, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj1]->alpha);
+										double subpixelAreaAdjacent = calculateAreaOfOneSideOfEdgeInPixel(-xAdjacentDev1, -yAdjacentDev1, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj1]->zeroCrossingValueX, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj1]->zeroCrossingValueY, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj1]->alpha);
 										#ifdef OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY_EXTRA_NOT_NECESSARY_AND_BUGGY
 										*regionSize = *regionSize + subpixelAreaAdjacent;
 										#endif
@@ -2446,7 +2446,7 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(PixelContiguous * firs
 									if((currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj2]->alreadyProcessed == NOT_PROCESSED) && (currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj2]->edge == true))
 									{
 										currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj2]->alreadyProcessed = EDGE_FOUND;
-										double subpixelAreaAdjacent = calculateAreaOfOneSideOfEdgeInAPixel(-xAdjacentDev2, -yAdjacentDev2, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj2]->zeroCrossingValueX, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj2]->zeroCrossingValueY, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj2]->alpha);
+										double subpixelAreaAdjacent = calculateAreaOfOneSideOfEdgeInPixel(-xAdjacentDev2, -yAdjacentDev2, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj2]->zeroCrossingValueX, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj2]->zeroCrossingValueY, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj2]->alpha);
 										#ifdef OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY_EXTRA_NOT_NECESSARY_AND_BUGGY
 										*regionSize = *regionSize + subpixelAreaAdjacent;
 										#endif
@@ -2466,11 +2466,11 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(PixelContiguous * firs
 						currentMeshPoint->adjacentMeshPoint[q]->alreadyProcessed = NO_EDGE_FOUND;
 						numberOfNewBranchesFromThisPixel++;
 
-						*sumx = *sumx + currentMeshPoint->adjacentMeshPoint[q]->xInt;
-						*sumy = *sumy + currentMeshPoint->adjacentMeshPoint[q]->yInt;
-						sumpos->x = sumpos->x + currentMeshPoint->adjacentMeshPoint[q]->point.x;
-						sumpos->y = sumpos->y + currentMeshPoint->adjacentMeshPoint[q]->point.y;
-						sumpos->z = sumpos->z + currentMeshPoint->adjacentMeshPoint[q]->point.z;
+						*sumX = *sumX + currentMeshPoint->adjacentMeshPoint[q]->xInt;
+						*sumY = *sumY + currentMeshPoint->adjacentMeshPoint[q]->yInt;
+						sumPos->x = sumPos->x + currentMeshPoint->adjacentMeshPoint[q]->point.x;
+						sumPos->y = sumPos->y + currentMeshPoint->adjacentMeshPoint[q]->point.y;
+						sumPos->z = sumPos->z + currentMeshPoint->adjacentMeshPoint[q]->point.z;
 
 						//shortcut to define a pixel on the boundary of the contiguous region
 						vec difference;
@@ -2570,7 +2570,7 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(PixelContiguous * firs
 
 
 
-bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnBoundary, int alreadyProcessed[], QFZeroCrossing * edgeZeroCrossingMap[], bool useEdgeZeroCrossingMap, int imageWidth, int imageHeight, double * sumx, double * sumy, vec * sumpos, int * numberOfCounts, int minRegionCircumferenceForRegion, int dimension, double pointMap[], double depthMap[], int zoom, PixelContiguous * firstInPixelContiguousBoundaryStack, view_info * vi, int interpixelContrastMapType)
+bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnBoundary, int alreadyProcessed[], QFzeroCrossing * edgeZeroCrossingMap[], bool useEdgeZeroCrossingMap, int imageWidth, int imageHeight, double * sumX, double * sumY, vec * sumPos, int * numberOfCounts, int minRegionCircumferenceForRegion, int dimension, double pointMap[], double depthMap[], int zoom, PixelContiguous * firstInPixelContiguousBoundaryStack, ViewInfo * vi, int interpixelContrastMapType)
 {
 	double pixelXOffset;
 	double pixelYOffset;
@@ -2626,8 +2626,8 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 		yposInitial = pixelYOffset + firstInPixelContiguousBoundaryStack->yInt;
 
 	}
-	*sumx = *sumx + xposInitial;
-	*sumy = *sumy + yposInitial;
+	*sumX = *sumX + xposInitial;
+	*sumY = *sumY + yposInitial;
 	firstInPixelContiguousBoundaryStack->pointNonWorldCoord.x = xposInitial;
 	firstInPixelContiguousBoundaryStack->pointNonWorldCoord.y = yposInitial;
 
@@ -2673,9 +2673,9 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 
 			}
 
-			sumpos->x = sumpos->x + xyzWorld.x;
-			sumpos->y = sumpos->y + xyzWorld.y;
-			sumpos->z = sumpos->z + xyzWorld.z;
+			sumPos->x = sumPos->x + xyzWorld.x;
+			sumPos->y = sumPos->y + xyzWorld.y;
+			sumPos->z = sumPos->z + xyzWorld.z;
 			firstInPixelContiguousBoundaryStack->point.x = xyzWorld.x;
 			firstInPixelContiguousBoundaryStack->point.y = xyzWorld.y;
 			firstInPixelContiguousBoundaryStack->point.z = xyzWorld.z;
@@ -2702,7 +2702,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 			contiguousRegionDebugrgbMap[yCurrent*imageWidth*RGB_NUM + xCurrent*RGB_NUM + 0] = 0;
 			contiguousRegionDebugrgbMap[yCurrent*imageWidth*RGB_NUM + xCurrent*RGB_NUM + 1] = 255;
 			contiguousRegionDebugrgbMap[yCurrent*imageWidth*RGB_NUM + xCurrent*RGB_NUM + 2] = 0;
-			//generatePixmapFromRGBMap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
+			//generatePixmapFromRGBmap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
 		}
 		//cout << "xyCurrent = " << xCurrent << "  " << yCurrent << endl;
 		#endif
@@ -2786,7 +2786,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 					contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 0] = 255;
 					contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 1] = 0;
 					contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 2] = 255;
-					//generatePixmapFromRGBMap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
+					//generatePixmapFromRGBmap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
 					#endif
 					*/
 
@@ -2837,7 +2837,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 0] = 255;
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 1] = 0;
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 2] = 0;
-						//generatePixmapFromRGBMap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
+						//generatePixmapFromRGBmap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
 						#endif
 
 						numberOfBoundaryOrFakeBoundaryPixelsTraced++;
@@ -2859,8 +2859,8 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 							ypos = pixelYOffset + newPixel->yInt;
 
 						}
-						*sumx = *sumx + xpos;
-						*sumy = *sumy + ypos;
+						*sumX = *sumX + xpos;
+						*sumY = *sumY + ypos;
 						newPixel->pointNonWorldCoord.x = xpos;
 						newPixel->pointNonWorldCoord.y = ypos;
 
@@ -2894,9 +2894,9 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 
 							}
 
-							sumpos->x = sumpos->x + xyzWorld.x;
-							sumpos->y = sumpos->y + xyzWorld.y;
-							sumpos->z = sumpos->z + xyzWorld.z;
+							sumPos->x = sumPos->x + xyzWorld.x;
+							sumPos->y = sumPos->y + xyzWorld.y;
+							sumPos->z = sumPos->z + xyzWorld.z;
 							newPixel->point.x = xyzWorld.x;
 							newPixel->point.y = xyzWorld.y;
 							newPixel->point.z = xyzWorld.z;
@@ -3068,7 +3068,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 				contiguousRegionDebugrgbMap[currentInPixelContiguousStack->yInt*imageWidth*RGB_NUM + currentInPixelContiguousStack->xInt*RGB_NUM + 0] = 200;
 				contiguousRegionDebugrgbMap[currentInPixelContiguousStack->yInt*imageWidth*RGB_NUM + currentInPixelContiguousStack->xInt*RGB_NUM + 1] = 200;
 				contiguousRegionDebugrgbMap[currentInPixelContiguousStack->yInt*imageWidth*RGB_NUM + currentInPixelContiguousStack->xInt*RGB_NUM + 2] = 200;
-				//generatePixmapFromRGBMap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
+				//generatePixmapFromRGBmap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
 				//cout << "currentInPixelContiguousStack->xInt = " << currentInPixelContiguousStack->xInt << endl;
 				//cout << "currentInPixelContiguousStack->yInt = " << currentInPixelContiguousStack->yInt << endl;
 				#endif
@@ -3106,7 +3106,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 
 
 //now trace edges instead of 1 pixel inside of edge
-bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(MeshPoint * aMeshPointOnTheBoundary, double * sumx, double * sumy, vec * sumpos, int * numberOfCounts, int minRegionCircumferenceForRegion, PixelContiguous * firstInPixelContiguousBoundaryStack, bool useEdgeZeroCrossingMap)
+bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(MeshPoint * aMeshPointOnTheBoundary, double * sumX, double * sumY, vec * sumPos, int * numberOfCounts, int minRegionCircumferenceForRegion, PixelContiguous * firstInPixelContiguousBoundaryStack, bool useEdgeZeroCrossingMap)
 {
 	bool foundATracePath1 = false;
 
@@ -3136,12 +3136,12 @@ bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(MeshPoint * aMeshPointOnT
 		nonWorld.y = firstInPixelContiguousBoundaryStack->meshPoint->yInt;
 	}
 
-	sumpos->x = sumpos->x + xyzWorld.x;
-	sumpos->y = sumpos->y + xyzWorld.y;
-	sumpos->z = sumpos->z + xyzWorld.z;
+	sumPos->x = sumPos->x + xyzWorld.x;
+	sumPos->y = sumPos->y + xyzWorld.y;
+	sumPos->z = sumPos->z + xyzWorld.z;
 
-	*sumx = *sumx + nonWorld.x;
-	*sumy = *sumy + nonWorld.y;
+	*sumX = *sumX + nonWorld.x;
+	*sumY = *sumY + nonWorld.y;
 
 	firstInPixelContiguousBoundaryStack->point.x = xyzWorld.x;
 	firstInPixelContiguousBoundaryStack->point.y = xyzWorld.y;
@@ -3285,12 +3285,12 @@ bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(MeshPoint * aMeshPointOnT
 								nonWorld.y = newPixel->meshPoint->yInt;
 							}
 
-							sumpos->x = sumpos->x + xyzWorld.x;
-							sumpos->y = sumpos->y + xyzWorld.y;
-							sumpos->z = sumpos->z + xyzWorld.z;
+							sumPos->x = sumPos->x + xyzWorld.x;
+							sumPos->y = sumPos->y + xyzWorld.y;
+							sumPos->z = sumPos->z + xyzWorld.z;
 
-							*sumx = *sumx + nonWorld.x;
-							*sumy = *sumy + nonWorld.y;
+							*sumX = *sumX + nonWorld.x;
+							*sumY = *sumY + nonWorld.y;
 
 							newPixel->point.x = xyzWorld.x;
 							newPixel->point.y = xyzWorld.y;
@@ -3445,7 +3445,7 @@ bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(MeshPoint * aMeshPointOnT
 
 
 
-void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeatureList, unsigned char * featureRgbMap, int imageWidth, int imageHeight, unsigned char * rgbMap, double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, view_info * vi)
+void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeatureList, unsigned char * featureRgbMap, int imageWidth, int imageHeight, unsigned char * rgbMap, double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, ViewInfo * vi)
 {
 	Feature * currentFeatureInList = firstFeatureInFeatureList;
 
@@ -3652,7 +3652,7 @@ void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeature
 	}
 }
 
-void generateFeatureListFromHeitgerFeatureAsciiMap(Feature * firstFeatureInFeatureList, string featureMapFileNameAscii, int zoom, view_info * vi)
+void generateFeatureListFromHeitgerFeatureAsciiMap(Feature * firstFeatureInFeatureList, string featureMapFileNameAscii, int zoom, ViewInfo * vi)
 {
 	Feature * currentFeatureInList = firstFeatureInFeatureList;
 
@@ -3771,14 +3771,14 @@ void generateFeatureListFromHeitgerFeatureAsciiMap(Feature * firstFeatureInFeatu
 
 
 #ifndef OR_USE_HEITGER_OBJECT_FEATURE_CALCULATION_CODE
-void generateFeatureListFromRGBMap(Feature * firstFeatureInFeatureList, unsigned char * rgbMap, int imageWidth, int imageHeight, int zoom, string trainOrTestString, string mapFileName, view_info * vi)
+void generateFeatureListFromRGBMap(Feature * firstFeatureInFeatureList, unsigned char * rgbMap, int imageWidth, int imageHeight, int zoom, string trainOrTestString, string mapFileName, ViewInfo * vi)
 {
 	/*
 	int resampledWidth = (imageWidth/zoom);
 	int resampledHeight = (imageHeight/zoom);
 
 	unsigned char * resampledRGBAtDesiredzoomChar = new unsigned char[resampledWidth*resampledHeight*RGB_NUM];
-	resampleRGBMap(rgbMap, imageWidth, imageHeight, resampledRGBAtDesiredzoomChar, zoom);
+	resampleRGBmap(rgbMap, imageWidth, imageHeight, resampledRGBAtDesiredzoomChar, zoom);
 	*/
 
 	int * kernelOrientationHighContrastFoundMap = new int[imageWidth*imageHeight];
@@ -3866,7 +3866,7 @@ void generateFeatureListFromRGBMap(Feature * firstFeatureInFeatureList, unsigned
 
 				if(((kernelOrientation == 0) && (x > 0)) || ((kernelOrientation > 0) && (y > 0)))
 				{
-					contrastStack[stackIndex] = compareRGBPixelsForMatchLumContrastOnly(&kernelCurrentPixelPositionInRGBColour, &previousColourInStack);
+					contrastStack[stackIndex] = compareRGBpixelsForMatchLumContrastOnly(&kernelCurrentPixelPositionInRGBColour, &previousColourInStack);
 
 					if(stackIndex == (OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_CONTRAST_STACK_SIZE-1))
 					{
@@ -3953,7 +3953,7 @@ void generateFeatureListFromRGBMap(Feature * firstFeatureInFeatureList, unsigned
 				proposedFeature.x = x*zoom;
 				proposedFeature.y = y*zoom;
 				proposedFeature.z = 0.0;
-				if(!addFeatureToListAndIfACommonFeatureExistsTakeAverage(&proposedFeature, firstFeatureInFeatureList, COLOUR_HUE_CONTRAST_RADIAL_SUM_RECONCILIATION_KERNEL_WIDTH, false))
+				if(!addFeatureToListAndIfCommonFeatureExistsTakeAverage(&proposedFeature, firstFeatureInFeatureList, COLOUR_HUE_CONTRAST_RADIAL_SUM_RECONCILIATION_KERNEL_WIDTH, false))
 				{
 				      //cout << "!foundCommonFeature" << endl;
 				}
@@ -4118,7 +4118,7 @@ void defineRegionCheckNextPixelUsingMeshPointRecursive(MeshPoint * currentMeshPo
 
 
 
-void traceEdgeCheckNextPixelRecursive(int xCurrent, int yCurrent, int alreadyProcessed[], int imageWidth, int imageHeight, int * sumx, int * sumy, vec * sumpos, int * xStart, int * yStart, bool * foundStartAgain, bool * foundStart, int * numberOfCounts, int minRegionCircumferenceForRegion, int dimension, double pointMap[], double depthMap[], int zoom, bool alreadyProcessedInSearchForTheOuterBoundary[])
+void traceEdgeCheckNextPixelRecursive(int xCurrent, int yCurrent, int alreadyProcessed[], int imageWidth, int imageHeight, int * sumX, int * sumY, vec * sumPos, int * xStart, int * yStart, bool * foundStartAgain, bool * foundStart, int * numberOfCounts, int minRegionCircumferenceForRegion, int dimension, double pointMap[], double depthMap[], int zoom, bool alreadyProcessedInSearchForTheOuterBoundary[])
 {
 	bool currentpixelStatus = alreadyProcessed[(yCurrent*imageWidth) + xCurrent];
 
@@ -4265,11 +4265,11 @@ void traceEdgeCheckNextPixelRecursive(int xCurrent, int yCurrent, int alreadyPro
 							if((tempFoundStartAgain == true) && (tempfoundStart == true) && (tempnumberOfCounts > minRegionCircumferenceForRegion))
 							{
 								*foundStartAgain = true;
-								*sumx = localsumx + tempsumx;
-								*sumy = localsumy + tempsumy;
-								sumpos->x = localsumpos.x + templocalsumpos.x;
-								sumpos->y = localsumpos.y + templocalsumpos.y;
-								sumpos->z = localsumpos.z + templocalsumpos.z;
+								*sumX = localsumx + tempsumx;
+								*sumY = localsumy + tempsumy;
+								sumPos->x = localsumpos.x + templocalsumpos.x;
+								sumPos->y = localsumpos.y + templocalsumpos.y;
+								sumPos->z = localsumpos.z + templocalsumpos.z;
 								*numberOfCounts = localsumnumberofhits + tempnumberOfCounts;
 							}
 						}
@@ -4295,7 +4295,7 @@ void traceEdgeCheckNextPixelRecursive(int xCurrent, int yCurrent, int alreadyPro
 
 
 
-void traceEdgeCheckNextPixelUsingMeshPointRecursive(MeshPoint * currentMeshPoint, int * sumx, int * sumy, vec * sumpos, int * xStart, int * yStart, bool * foundStartAgain, bool * foundStart, int * numberOfCounts, int minRegionCircumferenceForRegion)
+void traceEdgeCheckNextPixelUsingMeshPointRecursive(MeshPoint * currentMeshPoint, int * sumX, int * sumY, vec * sumPos, int * xStart, int * yStart, bool * foundStartAgain, bool * foundStart, int * numberOfCounts, int minRegionCircumferenceForRegion)
 {
 	bool currentpixelStatus = currentMeshPoint->alreadyProcessed;
 	int xCurrent = currentMeshPoint->xInt;
@@ -4432,11 +4432,11 @@ void traceEdgeCheckNextPixelUsingMeshPointRecursive(MeshPoint * currentMeshPoint
 							if((tempFoundStartAgain == true) && (tempfoundStart == true) && (tempnumberOfCounts > minRegionCircumferenceForRegion))
 							{
 								*foundStartAgain = true;
-								*sumx = localsumx + tempsumx;
-								*sumy = localsumy + tempsumy;
-								sumpos->x = localsumpos.x + templocalsumpos.x;
-								sumpos->y = localsumpos.y + templocalsumpos.y;
-								sumpos->z = localsumpos.z + templocalsumpos.z;
+								*sumX = localsumx + tempsumx;
+								*sumY = localsumy + tempsumy;
+								sumPos->x = localsumpos.x + templocalsumpos.x;
+								sumPos->y = localsumpos.y + templocalsumpos.y;
+								sumPos->z = localsumpos.z + templocalsumpos.z;
 								*numberOfCounts = localsumnumberofhits + tempnumberOfCounts;
 							}
 						}

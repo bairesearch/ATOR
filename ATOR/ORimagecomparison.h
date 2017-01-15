@@ -122,28 +122,28 @@
 #define RADIAL_CONTRAST_SUB_KERNEL_HEIGHT (3)
 
 void disablePixelsThatAreNotContainedInTheObjectTriangle2DOD(int imageWidth, int imageHeight, unsigned char * rgbMap);
-void applyGaussianKernelToRGBMap(int imageWidth, int imageHeight, double sigma, unsigned char * rgbMap, unsigned char * rgbMapWithGaussianApplied);
-void applyGaussianKernelToLuminosityMapOrRGBMapComponent(int imageWidth, int imageHeight, double sigma, double * luminosityMap, double * luminosityMapWithGaussianApplied, unsigned char * rgbMap, unsigned char * rgbMapWithGaussianApplied, bool useRGBmapComponent, int rgbMapComponentNumber);
+void applyGaussianKernelToRGBmap(int imageWidth, int imageHeight, double sigma, unsigned char * rgbMap, unsigned char * rgbMapWithGaussianApplied);
+void applyGaussianKernelToLuminosityMapOrRGBmapComponent(int imageWidth, int imageHeight, double sigma, double * luminosityMap, double * luminosityMapWithGaussianApplied, unsigned char * rgbMap, unsigned char * rgbMapWithGaussianApplied, bool useRGBmapComponent, int rgbMapComponentNumber);
 
 
-void createNormalisedHueContrastMapUsingRGBMapAndCalculateAllContrastValues(int imageWidth, int imageHeight, unsigned char * rgbMap, double * normalisedHueContrastMap, double * normalisedAverageRHueContrast, double * normalisedAverageGHueContrast, double * normalisedAverageBHueContrast, double * averageContrastWithRespectToAverageColour, double * averageStarkContrastWithRespectToAverageColour, double * averageLocalContrast, double * averageLocalStarkContrast);
+void createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(int imageWidth, int imageHeight, unsigned char * rgbMap, double * normalisedHueContrastMap, double * normalisedAverageHueContrastR, double * normalisedAverageHueContrastG, double * normalisedAverageHueContrastB, double * averageContrastWithRespectToAverageColour, double * averageStarkContrastWithRespectToAverageColour, double * averageLocalContrast, double * averageLocalStarkContrast);
 bool checkImageHasContrastValuesOnly(double averageContrastWithRespectToAverageColour, double averageStarkContrastWithRespectToAverageColour, double averageLocalContrast, double averageLocalStarkContrast);
 
 
 
 void calculateAverageColour(int imageWidth, int imageHeight, unsigned char * rgbMap, colour * avgCol);
 
-double compareImagesRGBSmallNoKernel(int imageWidth, int imageHeight, unsigned char * testrgbMap, unsigned char * trainrgbMap);
+double compareImagesRGBsmallNoKernel(int imageWidth, int imageHeight, unsigned char * rgbMapTest, unsigned char * rgbMapTrain);
 
 #ifndef OR_IMAGE_COMPARISON_USE_NEW_COMPARITOR
-double compareImagesRGBWithPosDevAndLocalStarkCont(int imageWidth, int imageHeight, unsigned char * testrgbMap, unsigned char * trainrgbMap);
-double compareImagesRGBWithPosDev(int imageWidth, int imageHeight, unsigned char * testrgbMap, unsigned char * trainrgbMap);				//OLD
+double compareImagesRGBwithPosDevAndLocalStarkCont(int imageWidth, int imageHeight, unsigned char * rgbMapTest, unsigned char * rgbMapTrain);
+double compareImagesRGBwithPosDev(int imageWidth, int imageHeight, unsigned char * rgbMapTest, unsigned char * rgbMapTrain);				//OLD
 #endif
 #ifndef OR_METHOD_CHECK_SNAPSHOT_CONTRAST_BEFORE_SAVING_SNAPSHOT
 bool checkImageHasContrast(int imageWidth, int imageHeight, unsigned char * rgbMap);
 #endif
-double compareImagesRGBWithPosDevAndLocalStarkContAndHueDev(int imageWidth, int imageHeight, unsigned char * testrgbMap, unsigned char * trainrgbMap);
-	double compareImagesRGBWithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly(int imageWidth, int imageHeight, unsigned char * testrgbMap, unsigned char * trainrgbMap, double * averageRHueDeviation, double * averageGHueDeviation, double * averageBHueDeviation, double * averageXKernelRelativePositionForLowestErrorMatch, double * averageYKernelRelativePositionForLowestErrorMatch);
+double compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(int imageWidth, int imageHeight, unsigned char * rgbMapTest, unsigned char * rgbMapTrain);
+	double compareImagesRGBwithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly(int imageWidth, int imageHeight, unsigned char * rgbMapTest, unsigned char * rgbMapTrain, double * averageHueDeviationR, double * averageHueDeviationG, double * averageHueDeviationB, double * averageXkernelRelativePositionForLowestErrorMatch, double * averageYkernelRelativePositionForLowestErrorMatch);
 
 
 	void createColourHueContrastVecMapFromRGBMapNOTUSED(int imageWidth, int imageHeight, unsigned char * rgbMap, double * colourHueContrastVectorMap, int * colourHueContrastCategoryIntMap);
@@ -153,13 +153,13 @@ double compareImagesRGBWithPosDevAndLocalStarkContAndHueDev(int imageWidth, int 
 
 
 #ifndef OR_USE_HEITGER_OBJECT_FEATURE_CALCULATION_CODE
-double compareRGBPixelsForMatchHueOnly(colour * testImagePixelColour, colour * trainImagePixelColour);
-double compareRGBPixelsForMatchLumContrastOnly(colour * testImagePixelColour, colour * trainImagePixelColour);
+double compareRGBpixelsForMatchHueOnly(colour * testImagePixelColour, colour * trainImagePixelColour);
+double compareRGBpixelsForMatchLumContrastOnly(colour * testImagePixelColour, colour * trainImagePixelColour);
 	void calculateHueError(colour * testImagePixelColour, colour * trainImagePixelColour, double * hueError, double * nonHueError);
 #endif
 
 #ifdef OR_IMAGE_COMPARISON_USE_BAD_CODE
-double compareRGBPixelsForMatchBAD(colour * testImagePixelColour, colour * trainImagePixelColour);
+double compareRGBpixelsForMatchBAD(colour * testImagePixelColour, colour * trainImagePixelColour);
 	double calculateHueErrorNormalisedBAD(colour * testImagePixelColour, colour * trainImagePixelColour, double * hueError, double * nonHueErrorNormalised);
 #endif
 

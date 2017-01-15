@@ -72,7 +72,7 @@ string DBgenerateFolderName(string * objectName, bool trainOrTest);
 
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
-	bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList, Feature * trainfirstFeatureInNearestFeatureList, int dimension, bool * exactMatchFound);
+	bool compareFeaturesListForMatch(Feature * testFirstFeatureInNearestFeatureList, Feature * trainFirstFeatureInNearestFeatureList, int dimension, bool * exactMatchFound);
 	void addFeatureToEndOfFeatureList(Feature * firstFeatureInList, Feature * featureToAdd);
 	void createTransformedFeaturesFile(Feature * firstFeatureInList, string fileName, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest);
 	void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeatureInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures);

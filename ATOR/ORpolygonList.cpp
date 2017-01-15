@@ -59,7 +59,7 @@ ObjectReferenceList::~ObjectReferenceList()
 }
 
 
-SnapshotIDReferenceList::SnapshotIDReferenceList(void)
+SnapshotIDreferenceList::SnapshotIDreferenceList(void)
 {
 	referenceID = 0;
 
@@ -67,7 +67,7 @@ SnapshotIDReferenceList::SnapshotIDReferenceList(void)
 	previous = NULL;
 }
 
-SnapshotIDReferenceList::~SnapshotIDReferenceList()
+SnapshotIDreferenceList::~SnapshotIDreferenceList()
 {
 	if(next != NULL)
 	{

@@ -58,29 +58,29 @@ int main
 	bool * edgeBoolMap = new bool[imageWidth*imageHeight];
 	char * rgbMapFileName = "testedge.ppm";
 	pixmap * rgbPixMap;
-	cout << "rgbPixMap = load_ppm(" << rgbMapFileName << ");" << endl;
-	rgbPixMap = load_ppm(rgbMapFileName);
+	cout << "rgbPixMap = loadPPM(" << rgbMapFileName << ");" << endl;
+	rgbPixMap = loadPPM(rgbMapFileName);
 	cout << "imageWidth = " << imageWidth << endl;
 	cout << "imageHeight = " << imageHeight << endl;
 	cout << "createRGBMapFromPixmapImage(rgbPixMap, rgbMap);" << endl;
 	createRGBMapFromPixmapImage(rgbPixMap, rgbMap);
-	free_pixmap(rgbPixMap);
+	freePixmap(rgbPixMap);
 	double * nullpointer = NULL;
-	view_info * vi = NULL;
+	ViewInfo * vi = NULL;
 
-	generateEdgeListFromRGBMapWithQuadraticFit(rgbMap, edgeBoolMap, imageWidth, imageHeight, 1.0, false, nullpointer, nullpointer, 1, vi);
+	generateEdgeListFromRGBmapWithQuadraticFit(rgbMap, edgeBoolMap, imageWidth, imageHeight, 1.0, false, nullpointer, nullpointer, 1, vi);
 }
 int mainTemp
 #else
 */
 int main()
 {
-	if(!parseORRulesXMLFile())
+	if(!parseORrulesXMLfile())
 	{
 		cout << "error: no rules file detected" << endl;
 		exit(0);
 	}
-	fillInORRulesExternVariables();
+	fillInORrulesExternVariables();
 
 
 	#ifdef COMPILE_TH_OR_METHOD_2DOD
@@ -91,44 +91,44 @@ int main()
 		int maxNumberOfPolygonsTrain = OR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TRAIN;
 		int numberOfTrainViewIndiciesPerObject = OR_METHOD2DOD_NUMBER_OF_VIEWINDICIES_TRAIN;
 
-		view_info viTrain;
+		ViewInfo viTrain;
 
-		viTrain.imgwidth = TH_OR_METHOD2DOD_DEFAULT_IMAGE_WIDTH;
-		viTrain.imgheight = TH_OR_METHOD2DOD_DEFAULT_IMAGE_HEIGHT;
-		viTrain.viewwidth = TH_OR_METHOD2DOD_DEFAULT_VIEWSIZE_WIDTH;
-		viTrain.viewheight = TH_OR_METHOD2DOD_DEFAULT_VIEWSIZE_HEIGHT;
-		viTrain.focal_length = TH_OR_METHOD2DOD_DEFAULT_FOCAL;
+		viTrain.imageWidth = TH_OR_METHOD2DOD_DEFAULT_IMAGE_WIDTH;
+		viTrain.imageHeight = TH_OR_METHOD2DOD_DEFAULT_IMAGE_HEIGHT;
+		viTrain.viewWidth = TH_OR_METHOD2DOD_DEFAULT_VIEWSIZE_WIDTH;
+		viTrain.viewHeight = TH_OR_METHOD2DOD_DEFAULT_VIEWSIZE_HEIGHT;
+		viTrain.focalLength = TH_OR_METHOD2DOD_DEFAULT_FOCAL;
 
 		viTrain.eye.x = TH_OR_METHOD2DOD_DEFAULT_EYE_X;		//CHECK THIS; preferably the eye moves around the object
 		viTrain.eye.y = TH_OR_METHOD2DOD_DEFAULT_EYE_Y;
 		viTrain.eye.z = TH_OR_METHOD2DOD_DEFAULT_EYE_Z;
-		viTrain.viewat.x = TH_OR_METHOD2DOD_DEFAULT_VIEWAT_X;
-		viTrain.viewat.y = TH_OR_METHOD2DOD_DEFAULT_VIEWAT_Y;
-		viTrain.viewat.z = TH_OR_METHOD2DOD_DEFAULT_VIEWAT_Z;
-		viTrain.viewup.x = TH_OR_METHOD2DOD_DEFAULT_VIEWUP_X;
-		viTrain.viewup.y = TH_OR_METHOD2DOD_DEFAULT_VIEWUP_Y;
-		viTrain.viewup.z = TH_OR_METHOD2DOD_DEFAULT_VIEWUP_Z;
+		viTrain.viewAt.x = TH_OR_METHOD2DOD_DEFAULT_VIEWAT_X;
+		viTrain.viewAt.y = TH_OR_METHOD2DOD_DEFAULT_VIEWAT_Y;
+		viTrain.viewAt.z = TH_OR_METHOD2DOD_DEFAULT_VIEWAT_Z;
+		viTrain.viewUp.x = TH_OR_METHOD2DOD_DEFAULT_VIEWUP_X;
+		viTrain.viewUp.y = TH_OR_METHOD2DOD_DEFAULT_VIEWUP_Y;
+		viTrain.viewUp.z = TH_OR_METHOD2DOD_DEFAULT_VIEWUP_Z;
 
 		int maxNumberOfPolygonsTest = OR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TEST;
 		int numberOfTestViewIndiciesPerObject = OR_METHOD2DOD_NUMBER_OF_VIEWINDICIES_TEST;
 
-		view_info viTest;
+		ViewInfo viTest;
 
-		viTest.imgwidth = TH_OR_METHOD2DOD_DEFAULT2_IMAGE_WIDTH;
-		viTest.imgheight = TH_OR_METHOD2DOD_DEFAULT2_IMAGE_HEIGHT;
-		viTest.viewwidth = TH_OR_METHOD2DOD_DEFAULT2_VIEWSIZE_WIDTH;
-		viTest.viewheight = TH_OR_METHOD2DOD_DEFAULT2_VIEWSIZE_HEIGHT;
-		viTest.focal_length = TH_OR_METHOD2DOD_DEFAULT2_FOCAL;
+		viTest.imageWidth = TH_OR_METHOD2DOD_DEFAULT2_IMAGE_WIDTH;
+		viTest.imageHeight = TH_OR_METHOD2DOD_DEFAULT2_IMAGE_HEIGHT;
+		viTest.viewWidth = TH_OR_METHOD2DOD_DEFAULT2_VIEWSIZE_WIDTH;
+		viTest.viewHeight = TH_OR_METHOD2DOD_DEFAULT2_VIEWSIZE_HEIGHT;
+		viTest.focalLength = TH_OR_METHOD2DOD_DEFAULT2_FOCAL;
 
 		viTest.eye.x = TH_OR_METHOD2DOD_DEFAULT2_EYE_X;		//CHECK THIS; preferably the eye moves around the object, however not to the same locations as used during training
 		viTest.eye.y = TH_OR_METHOD2DOD_DEFAULT2_EYE_Y;
 		viTest.eye.z = TH_OR_METHOD2DOD_DEFAULT2_EYE_Z;
-		viTest.viewat.x = TH_OR_METHOD2DOD_DEFAULT2_VIEWAT_X;
-		viTest.viewat.y = TH_OR_METHOD2DOD_DEFAULT2_VIEWAT_Y;
-		viTest.viewat.z = TH_OR_METHOD2DOD_DEFAULT2_VIEWAT_Z;
-		viTest.viewup.x = TH_OR_METHOD2DOD_DEFAULT2_VIEWUP_X;
-		viTest.viewup.y = TH_OR_METHOD2DOD_DEFAULT2_VIEWUP_Y;
-		viTest.viewup.z = TH_OR_METHOD2DOD_DEFAULT2_VIEWUP_Z;
+		viTest.viewAt.x = TH_OR_METHOD2DOD_DEFAULT2_VIEWAT_X;
+		viTest.viewAt.y = TH_OR_METHOD2DOD_DEFAULT2_VIEWAT_Y;
+		viTest.viewAt.z = TH_OR_METHOD2DOD_DEFAULT2_VIEWAT_Z;
+		viTest.viewUp.x = TH_OR_METHOD2DOD_DEFAULT2_VIEWUP_X;
+		viTest.viewUp.y = TH_OR_METHOD2DOD_DEFAULT2_VIEWUP_Y;
+		viTest.viewUp.z = TH_OR_METHOD2DOD_DEFAULT2_VIEWUP_Z;
 
 		string trainObjectNameArray[10];
 		trainObjectNameArray[0] = OR_METHOD2DOD_OBJECT_0_NAME;
@@ -173,7 +173,7 @@ int main()
 		int * numberOfTrainPolys = new int[numberOfTrainObjects*numberOfTrainViewIndiciesPerObjectWithUniquePolygons*numberOfTrainZoomIndicies];
 		int * numberOfTestPolys = new int[numberOfTestObjects*numberOfTestViewIndiciesPerObjectWithUniquePolygons*numberOfTestZoomIndicies];
 
-		ORTHMethod(dimension, numberOfTrainObjects, trainObjectNameArray, numberOfTestObjects, testObjectNameArray, numberOfTrainPolys, numberOfTestPolys, objectDataSource, &viTrain, &viTest, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTrain, maxNumberOfPolygonsTest, numberOfTrainViewIndiciesPerObject, numberOfTestViewIndiciesPerObject, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTrainZoomIndicies, numberOfTestZoomIndicies);
+		ORTHmethod(dimension, numberOfTrainObjects, trainObjectNameArray, numberOfTestObjects, testObjectNameArray, numberOfTrainPolys, numberOfTestPolys, objectDataSource, &viTrain, &viTest, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTrain, maxNumberOfPolygonsTest, numberOfTrainViewIndiciesPerObject, numberOfTestViewIndiciesPerObject, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTrainZoomIndicies, numberOfTestZoomIndicies);
 
 	#elif defined COMPILE_TH_OR_METHOD_3DOD
 
@@ -183,44 +183,44 @@ int main()
 		int maxNumberOfPolygonsTrain = OR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TRAIN;
 		int numberOfTrainViewIndiciesPerObject = OR_METHOD3DOD_NUMBER_OF_VIEWINDICIES_TRAIN;
 
-		view_info viTrain;
+		ViewInfo viTrain;
 
-		viTrain.imgwidth = TH_OR_METHOD3DOD_DEFAULT_IMAGE_WIDTH;
-		viTrain.imgheight = TH_OR_METHOD3DOD_DEFAULT_IMAGE_HEIGHT;
-		viTrain.viewwidth = TH_OR_METHOD3DOD_DEFAULT_VIEWSIZE_WIDTH;
-		viTrain.viewheight = TH_OR_METHOD3DOD_DEFAULT_VIEWSIZE_HEIGHT;
-		viTrain.focal_length = TH_OR_METHOD3DOD_DEFAULT_FOCAL;
+		viTrain.imageWidth = TH_OR_METHOD3DOD_DEFAULT_IMAGE_WIDTH;
+		viTrain.imageHeight = TH_OR_METHOD3DOD_DEFAULT_IMAGE_HEIGHT;
+		viTrain.viewWidth = TH_OR_METHOD3DOD_DEFAULT_VIEWSIZE_WIDTH;
+		viTrain.viewHeight = TH_OR_METHOD3DOD_DEFAULT_VIEWSIZE_HEIGHT;
+		viTrain.focalLength = TH_OR_METHOD3DOD_DEFAULT_FOCAL;
 
 		viTrain.eye.x = TH_OR_METHOD3DOD_DEFAULT_EYE_X;		//CHECK THIS; preferably the eye moves around the object
 		viTrain.eye.y = TH_OR_METHOD3DOD_DEFAULT_EYE_Y;
 		viTrain.eye.z = TH_OR_METHOD3DOD_DEFAULT_EYE_Z;
-		viTrain.viewat.x = TH_OR_METHOD3DOD_DEFAULT_VIEWAT_X;
-		viTrain.viewat.y = TH_OR_METHOD3DOD_DEFAULT_VIEWAT_Y;
-		viTrain.viewat.z = TH_OR_METHOD3DOD_DEFAULT_VIEWAT_Z;
-		viTrain.viewup.x = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_X;
-		viTrain.viewup.y = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_Y;	//[house3DOD1: 0 / 50 (view1) / 100 (view2)] / [house3DOD2: 0 / 50 (view1) / 100 (view2)]
-		viTrain.viewup.z = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_Z;	//[house3DOD1: 100] / [house3DOD2: -100]
+		viTrain.viewAt.x = TH_OR_METHOD3DOD_DEFAULT_VIEWAT_X;
+		viTrain.viewAt.y = TH_OR_METHOD3DOD_DEFAULT_VIEWAT_Y;
+		viTrain.viewAt.z = TH_OR_METHOD3DOD_DEFAULT_VIEWAT_Z;
+		viTrain.viewUp.x = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_X;
+		viTrain.viewUp.y = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_Y;	//[house3DOD1: 0 / 50 (view1) / 100 (view2)] / [house3DOD2: 0 / 50 (view1) / 100 (view2)]
+		viTrain.viewUp.z = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_Z;	//[house3DOD1: 100] / [house3DOD2: -100]
 
 		int maxNumberOfPolygonsTest = OR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TEST;
 		int numberOfTestViewIndiciesPerObject = OR_METHOD3DOD_NUMBER_OF_VIEWINDICIES_TEST;
 
-		view_info viTest;
+		ViewInfo viTest;
 
-		viTest.imgwidth = TH_OR_METHOD3DOD_DEFAULT2_IMAGE_WIDTH;
-		viTest.imgheight = TH_OR_METHOD3DOD_DEFAULT2_IMAGE_HEIGHT;
-		viTest.viewwidth = TH_OR_METHOD3DOD_DEFAULT2_VIEWSIZE_WIDTH;
-		viTest.viewheight = TH_OR_METHOD3DOD_DEFAULT2_VIEWSIZE_HEIGHT;
-		viTest.focal_length = TH_OR_METHOD3DOD_DEFAULT2_FOCAL;
+		viTest.imageWidth = TH_OR_METHOD3DOD_DEFAULT2_IMAGE_WIDTH;
+		viTest.imageHeight = TH_OR_METHOD3DOD_DEFAULT2_IMAGE_HEIGHT;
+		viTest.viewWidth = TH_OR_METHOD3DOD_DEFAULT2_VIEWSIZE_WIDTH;
+		viTest.viewHeight = TH_OR_METHOD3DOD_DEFAULT2_VIEWSIZE_HEIGHT;
+		viTest.focalLength = TH_OR_METHOD3DOD_DEFAULT2_FOCAL;
 
 		viTest.eye.x = TH_OR_METHOD3DOD_DEFAULT2_EYE_X;		//CHECK THIS; preferably the eye moves around the object, however not to the same locations as used during training
 		viTest.eye.y = TH_OR_METHOD3DOD_DEFAULT2_EYE_Y;
 		viTest.eye.z = TH_OR_METHOD3DOD_DEFAULT2_EYE_Z;
-		viTest.viewat.x = TH_OR_METHOD3DOD_DEFAULT2_VIEWAT_X;
-		viTest.viewat.y = TH_OR_METHOD3DOD_DEFAULT2_VIEWAT_Y;
-		viTest.viewat.z = TH_OR_METHOD3DOD_DEFAULT2_VIEWAT_Z;
-		viTest.viewup.x = TH_OR_METHOD3DOD_DEFAULT2_VIEWUP_X;
-		viTest.viewup.y = TH_OR_METHOD3DOD_DEFAULT2_VIEWUP_Y;
-		viTest.viewup.z = TH_OR_METHOD3DOD_DEFAULT2_VIEWUP_Z;
+		viTest.viewAt.x = TH_OR_METHOD3DOD_DEFAULT2_VIEWAT_X;
+		viTest.viewAt.y = TH_OR_METHOD3DOD_DEFAULT2_VIEWAT_Y;
+		viTest.viewAt.z = TH_OR_METHOD3DOD_DEFAULT2_VIEWAT_Z;
+		viTest.viewUp.x = TH_OR_METHOD3DOD_DEFAULT2_VIEWUP_X;
+		viTest.viewUp.y = TH_OR_METHOD3DOD_DEFAULT2_VIEWUP_Y;
+		viTest.viewUp.z = TH_OR_METHOD3DOD_DEFAULT2_VIEWUP_Z;
 
 		string trainObjectNameArray[10];
 		trainObjectNameArray[0] = OR_METHOD3DOD_OBJECT_0_NAME;
@@ -266,7 +266,7 @@ int main()
 		int * numberOfTrainPolys = new int[numberOfTrainObjects*numberOfTrainViewIndiciesPerObjectWithUniquePolygons*numberOfTrainZoomIndicies];
 		int * numberOfTestPolys = new int[numberOfTestObjects*numberOfTestViewIndiciesPerObjectWithUniquePolygons*numberOfTestZoomIndicies];
 
-		ORTHMethod(dimension, numberOfTrainObjects, trainObjectNameArray, numberOfTestObjects, testObjectNameArray, numberOfTrainPolys, numberOfTestPolys, objectDataSource, &viTrain, &viTest, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTrain, maxNumberOfPolygonsTest, numberOfTrainViewIndiciesPerObject, numberOfTestViewIndiciesPerObject, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTrainZoomIndicies, numberOfTestZoomIndicies);
+		ORTHmethod(dimension, numberOfTrainObjects, trainObjectNameArray, numberOfTestObjects, testObjectNameArray, numberOfTrainPolys, numberOfTestPolys, objectDataSource, &viTrain, &viTest, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTrain, maxNumberOfPolygonsTest, numberOfTrainViewIndiciesPerObject, numberOfTestViewIndiciesPerObject, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTrainZoomIndicies, numberOfTestZoomIndicies);
 	#else
 		cout << "error: COMPILE_TH_OR_METHOD_3DOD or COMPILE_TH_OR_METHOD_2DOD must be defined for TH OR" << endl;
 		exit(0);

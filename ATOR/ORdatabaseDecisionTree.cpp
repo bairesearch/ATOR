@@ -122,7 +122,7 @@ void createAndOrParseIntoDirectory(string * folderNameFullPath, string * folderN
 #endif
 
 //#define OR_IMAGE_COMPARISON_GEOMETRIC_COMPARISON_BINNING
-void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, Feature * firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char * currentDirectoryCharStar, int * currentDirectoryLength, string * initialDirectory, char * decisionTreeultipleRowInsertQueryTextCharStar, long * decisionTreeSQLMultipleRowInsertQueryLength)
+void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, Feature * firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char * currentDirectoryCharStar, int * currentDirectoryLength, string * initialDirectory, char * decisionTreeMultipleRowInsertQueryTextCharStar, long * decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string currentDirectory = *initialDirectory;
 	int currentDirectoryLengthInitial = *currentDirectoryLength;
@@ -288,8 +288,8 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 							geoxyBins[3] = geoyBin[1];
 
 							#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
-							SnapshotIDReferenceList * firstReferenceInDTBinListGeo = new SnapshotIDReferenceList();
-							SnapshotIDReferenceList * currentReferenceInDTBinListGeo = firstReferenceInDTBinListGeo;
+							SnapshotIDreferenceList * firstReferenceInDTBinListGeo = new SnapshotIDreferenceList();
+							SnapshotIDreferenceList * currentReferenceInDTBinListGeo = firstReferenceInDTBinListGeo;
 							#endif
 
 							//int numberOfIntelligentGeoBins = countIncrements(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2);  //2^(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2);
@@ -410,7 +410,7 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 									bool placedNewDTBinReference = false;
 									bool dtBinAlreadyAddedToList = false;
 									currentReferenceInDTBinListGeo = firstReferenceInDTBinListGeo;
-									SnapshotIDReferenceList * previousReferenceInDTBinListGeo = firstReferenceInDTBinListGeo;
+									SnapshotIDreferenceList * previousReferenceInDTBinListGeo = firstReferenceInDTBinListGeo;
 									bool DTBinListGeoIndex = 0;
 									int currentDTBinValue = currentReferenceInDTBinListGeo->referenceID;
 									#ifdef OR_DEBUG
@@ -426,12 +426,12 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 										{
 											if(currentReferenceInDTBinListGeo->referenceID >= currentDTBinValue)
 											{
-												SnapshotIDReferenceList * newReferenceInDTBinListGeo = new SnapshotIDReferenceList();
+												SnapshotIDreferenceList * newReferenceInDTBinListGeo = new SnapshotIDreferenceList();
 												newReferenceInDTBinListGeo->referenceID = dtBinTemp;
 												//cout << "add bin to list; newReferenceInDTBinListGeo->referenceID = " << newReferenceInDTBinListGeo->referenceID << endl;
 												if(DTBinListGeoIndex > 0)
 												{
-													SnapshotIDReferenceList * tempRef = previousReferenceInDTBinListGeo->next;
+													SnapshotIDreferenceList * tempRef = previousReferenceInDTBinListGeo->next;
 													tempRef->previous = newReferenceInDTBinListGeo;
 													newReferenceInDTBinListGeo->next = tempRef;
 													newReferenceInDTBinListGeo->previous = previousReferenceInDTBinListGeo;
@@ -439,7 +439,7 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 												}
 												else
 												{
-													SnapshotIDReferenceList * tempRef = firstReferenceInDTBinListGeo;
+													SnapshotIDreferenceList * tempRef = firstReferenceInDTBinListGeo;
 													tempRef->previous = newReferenceInDTBinListGeo;
 													newReferenceInDTBinListGeo->next = tempRef;
 													firstReferenceInDTBinListGeo = newReferenceInDTBinListGeo;
@@ -547,11 +547,11 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 
 											if(OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
 											{
-												addSnapshotIDReferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeultipleRowInsertQueryTextCharStar, decisionTreeSQLMultipleRowInsertQueryLength);
+												addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 											}
 											else
 											{
-												addSnapshotIDReferenceToImageComparisonDecisionTreeLoopFinal(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeultipleRowInsertQueryTextCharStar, decisionTreeSQLMultipleRowInsertQueryLength);
+												addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 											}
 
 							#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_HIGH_REDUNDANCY_DETERMINISTIC_BY_ITERATING_OVER_ALL_ADJACENT_BINS_FAST_RECOG_BUT_USE_MORE_HD
@@ -616,7 +616,7 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 }
 
 //#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING
-void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopAvgHueDev(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, Feature * firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char * currentDirectoryCharStar, int * currentDirectoryLength, string * initialDirectory, char * decisionTreeultipleRowInsertQueryTextCharStar, long * decisionTreeSQLMultipleRowInsertQueryLength)
+void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, Feature * firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char * currentDirectoryCharStar, int * currentDirectoryLength, string * initialDirectory, char * decisionTreeMultipleRowInsertQueryTextCharStar, long * decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string * currentDirectory = initialDirectory;
 	int currentDirectoryLengthInitial = *currentDirectoryLength;
@@ -720,14 +720,14 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopAvgHueDev(int imageW
 				}
 				#endif
 
-				addSnapshotIDReferenceToImageComparisonDecisionTreeLoopFinal(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeultipleRowInsertQueryTextCharStar, decisionTreeSQLMultipleRowInsertQueryLength);
+				addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 			}
 		}
 	}
 }
 
 //#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
-void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, Feature * firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char * currentDirectoryCharStar, int * currentDirectoryLength, string * initialDirectory, char * decisionTreeultipleRowInsertQueryTextCharStar, long * decisionTreeSQLMultipleRowInsertQueryLength)
+void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, Feature * firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char * currentDirectoryCharStar, int * currentDirectoryLength, string * initialDirectory, char * decisionTreeMultipleRowInsertQueryTextCharStar, long * decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string currentDirectory = *initialDirectory;
 	int currentDirectoryLengthInitial = *currentDirectoryLength;
@@ -737,9 +737,9 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 		int DCTCoeff64BitValueStringLengthTemp = 0;	//not used
 		int concatonatedDctCoeffArrayBiasInt[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
 		#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
-		convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(firstFeatureInList->dctCoeff, dctCoeffArrayBinnedStringTemp, &DCTCoeff64BitValueStringLengthTemp, concatonatedDctCoeffArrayBiasInt);
+		convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffArrayBinnedStringTemp, &DCTCoeff64BitValueStringLengthTemp, concatonatedDctCoeffArrayBiasInt);
 		#else
-		convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(firstFeatureInList->dctCoeff, concatonatedDctCoeffArrayBiasInt);
+		convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, concatonatedDctCoeffArrayBiasInt);
 		#endif
 	#endif
 
@@ -772,8 +772,8 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 	}
 
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
-	SnapshotIDReferenceList * firstReferenceInDTBinListFourier = new SnapshotIDReferenceList();
-	SnapshotIDReferenceList * currentReferenceInDTBinListFourier = firstReferenceInDTBinListFourier;
+	SnapshotIDreferenceList * firstReferenceInDTBinListFourier = new SnapshotIDreferenceList();
+	SnapshotIDreferenceList * currentReferenceInDTBinListFourier = firstReferenceInDTBinListFourier;
 	#endif
 	int numberOfIntelligentFourierBins = pow(2.0, OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS);
 	#ifdef OR_DEBUG
@@ -935,7 +935,7 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 			bool placedNewDTBinReference = false;
 			bool dtBinAlreadyAddedToList = false;
 			currentReferenceInDTBinListFourier = firstReferenceInDTBinListFourier;
-			SnapshotIDReferenceList * previousReferenceInDTBinListFourier = firstReferenceInDTBinListFourier;
+			SnapshotIDreferenceList * previousReferenceInDTBinListFourier = firstReferenceInDTBinListFourier;
 			bool DTBinListFourierIndex = 0;
 			int currentDTBinValue = currentReferenceInDTBinListFourier->referenceID;
 			#ifdef OR_DEBUG
@@ -951,14 +951,14 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 				{
 					if(currentReferenceInDTBinListFourier->referenceID >= currentDTBinValue)
 					{
-						SnapshotIDReferenceList * newReferenceInDTBinListFourier = new SnapshotIDReferenceList();
+						SnapshotIDreferenceList * newReferenceInDTBinListFourier = new SnapshotIDreferenceList();
 						newReferenceInDTBinListFourier->referenceID = dtBinTemp;
 						#ifdef OR_DEBUG
 						//cout << "add bin to list; newReferenceInDTBinListFourier->referenceID = " << newReferenceInDTBinListFourier->referenceID << endl;
 						#endif
 						if(DTBinListFourierIndex > 0)
 						{
-							SnapshotIDReferenceList * tempRef = previousReferenceInDTBinListFourier->next;
+							SnapshotIDreferenceList * tempRef = previousReferenceInDTBinListFourier->next;
 							tempRef->previous = newReferenceInDTBinListFourier;
 							newReferenceInDTBinListFourier->next = tempRef;
 							newReferenceInDTBinListFourier->previous = previousReferenceInDTBinListFourier;
@@ -966,7 +966,7 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 						}
 						else
 						{
-							SnapshotIDReferenceList * tempRef = firstReferenceInDTBinListFourier;
+							SnapshotIDreferenceList * tempRef = firstReferenceInDTBinListFourier;
 							tempRef->previous = newReferenceInDTBinListFourier;
 							newReferenceInDTBinListFourier->next = tempRef;
 							firstReferenceInDTBinListFourier = newReferenceInDTBinListFourier;
@@ -1009,8 +1009,8 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 					#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
 					if(OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 					{
-						*decisionTreeSQLMultipleRowInsertQueryLength = 0;
-						insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeStart(OR_MYSQL_TABLE_NAME_DECISIONTREE, decisionTreeultipleRowInsertQueryTextCharStar, decisionTreeSQLMultipleRowInsertQueryLength);
+						*decisionTreeSQLmultipleRowInsertQueryLength = 0;
+						insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart(OR_MYSQL_TABLE_NAME_DECISIONTREE, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 
 					}
 					#endif
@@ -1030,18 +1030,18 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 						char dctCoeffArrayBinnedString[1000];
 						int DCTCoeff64BitValueStringLengthNOTUSED = 0;	//not used
 						int concatonatedSignedDctCoeffArrayBiasIntTemp[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
-						convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(firstFeatureInList->dctCoeff, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED, concatonatedSignedDctCoeffArrayBiasIntTemp);
+						convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED, concatonatedSignedDctCoeffArrayBiasIntTemp);
 						#else
 						char dctCoeffArrayBinnedString[1000];
 						int DCTCoeff64BitValueStringLengthNOTUSED = 0;	//not used
-						convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(firstFeatureInList->dctCoeff, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED);
+						convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED);
 						#endif
 					#else
 						#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 						int concatonatedSignedDctCoeffArrayBiasIntTemp[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
-						firstFeatureInList->dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(firstFeatureInList->dctCoeff, concatonatedSignedDctCoeffArrayBiasIntTemp);
+						firstFeatureInList->dctCoeffArrayBinned = convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, concatonatedSignedDctCoeffArrayBiasIntTemp);
 						#else
-						firstFeatureInList->dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(firstFeatureInList->dctCoeff);
+						firstFeatureInList->dctCoeffArrayBinned = convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff);
 						#endif
 
 						char dctCoeffArrayBinnedString[25];
@@ -1072,26 +1072,26 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 				
 					if(OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
 					{
-						addSnapshotIDReferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeultipleRowInsertQueryTextCharStar, decisionTreeSQLMultipleRowInsertQueryLength);
+						addSnapshotIDreferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 					}
 					else if(OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 					{
-						addSnapshotIDReferenceToImageComparisonDecisionTreeLoopGeo(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeultipleRowInsertQueryTextCharStar, decisionTreeSQLMultipleRowInsertQueryLength);
+						addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 					}
 					else if(OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
 					{
-						addSnapshotIDReferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeultipleRowInsertQueryTextCharStar, decisionTreeSQLMultipleRowInsertQueryLength);
+						addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 					}
 					else
 					{
-						addSnapshotIDReferenceToImageComparisonDecisionTreeLoopFinal(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeultipleRowInsertQueryTextCharStar, decisionTreeSQLMultipleRowInsertQueryLength);
+						addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 					}
 
 
 					#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
 					if(OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 					{
-						insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeEnd(decisionTreeultipleRowInsertQueryTextCharStar, decisionTreeSQLMultipleRowInsertQueryLength);
+						insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeEnd(decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 					}
 					#endif
 
@@ -1138,40 +1138,40 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 }
 
 //#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON
-void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, Feature * firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char * currentDirectoryCharStar, int * currentDirectoryLength, string * initialDirectory, char * decisionTreeultipleRowInsertQueryTextCharStar, long * decisionTreeSQLMultipleRowInsertQueryLength)
+void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, Feature * firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char * currentDirectoryCharStar, int * currentDirectoryLength, string * initialDirectory, char * decisionTreeMultipleRowInsertQueryTextCharStar, long * decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string currentDirectory = *initialDirectory;
 
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
-	createOrParseSnapshotIDReferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, false, &currentDirectory, currentDirectoryCharStar, currentDirectoryLength);
+	createOrParseSnapshotIDreferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, false, &currentDirectory, currentDirectoryCharStar, currentDirectoryLength);
 	#else
-	createOrParseSnapshotIDReferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, true, &currentDirectory, NULL, NULL);
+	createOrParseSnapshotIDreferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, true, &currentDirectory, NULL, NULL);
 	#endif
 
 	if(OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 	{
-		addSnapshotIDReferenceToImageComparisonDecisionTreeLoopGeo(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeultipleRowInsertQueryTextCharStar, decisionTreeSQLMultipleRowInsertQueryLength);
+		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 	}
 	else if(OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
 	{
-		addSnapshotIDReferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeultipleRowInsertQueryTextCharStar, decisionTreeSQLMultipleRowInsertQueryLength);
+		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 	}
 	else
 	{
-		addSnapshotIDReferenceToImageComparisonDecisionTreeLoopFinal(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeultipleRowInsertQueryTextCharStar, decisionTreeSQLMultipleRowInsertQueryLength);
+		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 	}
 }
 
 
-void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopFinal(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, Feature * firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char * currentDirectoryCharStar, int * currentDirectoryLength, string * initialDirectory, char * decisionTreeultipleRowInsertQueryTextCharStar, long * decisionTreeSQLMultipleRowInsertQueryLength)
+void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, Feature * firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures,  char * currentDirectoryCharStar, int * currentDirectoryLength, string * initialDirectory, char * decisionTreeMultipleRowInsertQueryTextCharStar, long * decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string * currentDirectory = initialDirectory;
 
 #ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
-	insertSnapshotIDReferenceIntoSQLDatabaseDecisionTreeIteration(currentDirectoryCharStar, *currentDirectoryLength, snapshotReferenceID, &databaseTableSizeDecisionTree, decisionTreeultipleRowInsertQueryTextCharStar, decisionTreeSQLMultipleRowInsertQueryLength);
+	insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration(currentDirectoryCharStar, *currentDirectoryLength, snapshotReferenceID, &databaseTableSizeDecisionTree, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 	#else
-	insertSnapshotIDReferenceIntoSQLDatabaseDecisionTree(OR_MYSQL_TABLE_NAME_DECISIONTREE, currentDirectoryCharStar, *currentDirectoryLength, snapshotReferenceID, &databaseTableSizeDecisionTree);
+	insertSnapshotIDreferenceIntoSQLdatabaseDecisionTree(OR_MYSQL_TABLE_NAME_DECISIONTREE, currentDirectoryCharStar, *currentDirectoryLength, snapshotReferenceID, &databaseTableSizeDecisionTree);
 	#endif
 #else
 
@@ -1185,14 +1185,14 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopFinal(int imageWidth
 }
 
 
-void addSnapshotIDReferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTCombinations(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, Feature * firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures)
+void addSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcombinations(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, Feature * firstFeatureInList, long snapshotReferenceID, bool ignoreOTfeatures)
 {
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
-	char * decisionTreeultipleRowInsertQueryTextCharStar = new char[100000000];	//requires 100MB in ram, for ~ 1000,000 sql inserted rows, each <= 100 characters in length
+	char * decisionTreeMultipleRowInsertQueryTextCharStar = new char[100000000];	//requires 100MB in ram, for ~ 1000,000 sql inserted rows, each <= 100 characters in length
 	#else
-	char * decisionTreeultipleRowInsertQueryTextCharStar = NULL;	//not initiated yet
+	char * decisionTreeMultipleRowInsertQueryTextCharStar = NULL;	//not initiated yet
 	#endif
-	long decisionTreeSQLMultipleRowInsertQueryLength = 0;
+	long decisionTreeSQLmultipleRowInsertQueryLength = 0;
 
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 		string initialDirectory = "";	//not used
@@ -1210,47 +1210,47 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTCo
 		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
 		if(!OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 		{
-			decisionTreeSQLMultipleRowInsertQueryLength = 0;	//requires 100MB in ram, for ~ 1000,000 sql inserted rows, each <= 100 characters in length
-			insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeStart(OR_MYSQL_TABLE_NAME_DECISIONTREE, decisionTreeultipleRowInsertQueryTextCharStar, &decisionTreeSQLMultipleRowInsertQueryLength);
+			decisionTreeSQLmultipleRowInsertQueryLength = 0;	//requires 100MB in ram, for ~ 1000,000 sql inserted rows, each <= 100 characters in length
+			insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart(OR_MYSQL_TABLE_NAME_DECISIONTREE, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 		}
 		else
 		{
 			//cannot initiate at this stage if DCT enabled, or else too many rows in SQL insert statement
 		}
 		#endif
-		addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeultipleRowInsertQueryTextCharStar, &decisionTreeSQLMultipleRowInsertQueryLength);
+		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopDCT(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 
 		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
 		if(!OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 		{
-			insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeEnd(decisionTreeultipleRowInsertQueryTextCharStar, &decisionTreeSQLMultipleRowInsertQueryLength);
+			insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeEnd(decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 		}
 		#endif
 	}
 	else if(OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
 	{
-		addSnapshotIDReferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeultipleRowInsertQueryTextCharStar, &decisionTreeSQLMultipleRowInsertQueryLength);
+		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 	}
 	else if(OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 	{
 		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
 		if(!OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
 		{
-			decisionTreeSQLMultipleRowInsertQueryLength = 0;	//requires 100MB in ram, for ~ 1000,000 sql inserted rows, each <= 100 characters in length
-			insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeStart(OR_MYSQL_TABLE_NAME_DECISIONTREE, decisionTreeultipleRowInsertQueryTextCharStar, &decisionTreeSQLMultipleRowInsertQueryLength);
+			decisionTreeSQLmultipleRowInsertQueryLength = 0;	//requires 100MB in ram, for ~ 1000,000 sql inserted rows, each <= 100 characters in length
+			insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart(OR_MYSQL_TABLE_NAME_DECISIONTREE, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 		}
 		#endif
-		addSnapshotIDReferenceToImageComparisonDecisionTreeLoopGeo(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeultipleRowInsertQueryTextCharStar, &decisionTreeSQLMultipleRowInsertQueryLength);
+		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
 		if(!OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
 		{
-			insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeEnd(decisionTreeultipleRowInsertQueryTextCharStar, &decisionTreeSQLMultipleRowInsertQueryLength);
+			insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeEnd(decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 		}
 		#endif
 	}
 	else if(OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
 	{
-		addSnapshotIDReferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeultipleRowInsertQueryTextCharStar, &decisionTreeSQLMultipleRowInsertQueryLength);
+		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 	}
 	else
 	{
@@ -1259,13 +1259,13 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTCo
 	}
 
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
-	delete decisionTreeultipleRowInsertQueryTextCharStar;
+	delete decisionTreeMultipleRowInsertQueryTextCharStar;
 	#endif
 
 
 }
 
-void createSnapshotIDReferenceImageComparisonDecisionTreeString(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour * normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], char * currentDirectoryCharStar, int * currentDirectoryLength, string * currentDirectory)
+void createSnapshotIDreferenceImageComparisonDecisionTreeString(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour * normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], char * currentDirectoryCharStar, int * currentDirectoryLength, string * currentDirectory)
 {
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 	*currentDirectory = "";
@@ -1301,9 +1301,9 @@ void createSnapshotIDReferenceImageComparisonDecisionTreeString(int imageWidth, 
 		#endif
 		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 		int concatonatedDctCoeffArrayBiasIntNOTUSED[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
-		convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(concatonatedSignedDctCoeffArrayRequirement, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED, concatonatedDctCoeffArrayBiasIntNOTUSED);
+		convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED, concatonatedDctCoeffArrayBiasIntNOTUSED);
 		#else
-		convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(concatonatedSignedDctCoeffArrayRequirement, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED);
+		convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED);
 		#endif
 		#ifdef OR_DEBUG
 		/*
@@ -1316,9 +1316,9 @@ void createSnapshotIDReferenceImageComparisonDecisionTreeString(int imageWidth, 
 	#else
 		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 		int concatonatedDctCoeffArrayBiasIntNOTUSED[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
-		unsigned long dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(concatonatedSignedDctCoeffArrayRequirement, concatonatedDctCoeffArrayBiasIntNOTUSED);
+		unsigned long dctCoeffArrayBinned = convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement, concatonatedDctCoeffArrayBiasIntNOTUSED);
 		#else
-		unsigned long dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(concatonatedSignedDctCoeffArrayRequirement);
+		unsigned long dctCoeffArrayBinned = convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement);
 		#endif
 		#ifdef OR_DEBUG
 		//cout << "generated dctCoeffArrayBinned = " << dctCoeffArrayBinned << endl;
@@ -1347,7 +1347,7 @@ void createSnapshotIDReferenceImageComparisonDecisionTreeString(int imageWidth, 
 
 	if(OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
 	{
-		createOrParseSnapshotIDReferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, false, currentDirectory, currentDirectoryCharStar, currentDirectoryLength);
+		createOrParseSnapshotIDreferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, false, currentDirectory, currentDirectoryCharStar, currentDirectoryLength);
 	}
 
 	if(OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
@@ -1426,30 +1426,30 @@ void createSnapshotIDReferenceImageComparisonDecisionTreeString(int imageWidth, 
 	}
 }
 
-void createFeatureContainerListUsingUsingGetSnapshotIDReferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTCheck(FeatureContainer * firstFeatureContainerInTestFeatureMatchingTrainBin, bool ignoreOTfeatures, int imageWidth, int imageHeight, unsigned char * rgbMapSmall, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour * normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], int trainOrTest)
+void createFeatureContainerListUsingUsingGetSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcheck(FeatureContainer * firstFeatureContainerInTestFeatureMatchingTrainBin, bool ignoreOTfeatures, int imageWidth, int imageHeight, unsigned char * rgbMapSmall, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour * normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], int trainOrTest)
 {
 	string currentDirectory = "";
 	char currentDirectoryCharStar[OR_IMAGE_COMPARISON_DECISION_TREE_BIN_MAX_LENGTH];
 	int currentDirectoryLength;
 
-	createSnapshotIDReferenceImageComparisonDecisionTreeString(imageWidth, imageHeight, rgbMapSmall, pBinxyValueRequirement, pBinxRequirement, pBinyRequirement, normalisedAverageHueDeviationRequirement, concatonatedSignedDctCoeffArrayRequirement, currentDirectoryCharStar, &currentDirectoryLength, &currentDirectory);
+	createSnapshotIDreferenceImageComparisonDecisionTreeString(imageWidth, imageHeight, rgbMapSmall, pBinxyValueRequirement, pBinxRequirement, pBinyRequirement, normalisedAverageHueDeviationRequirement, concatonatedSignedDctCoeffArrayRequirement, currentDirectoryCharStar, &currentDirectoryLength, &currentDirectory);
 
 	createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(firstFeatureContainerInTestFeatureMatchingTrainBin, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, trainOrTest);
 }
 
 
-void getSnapshotIDReferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTCheck(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour * normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], SnapshotIDReferenceList * firstReferenceInSnapshotIDReferenceList, int trainOrTest, string * DTbin)
+void getSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcheck(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour * normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], SnapshotIDreferenceList * firstReferenceInSnapshotIDreferenceList, int trainOrTest, string * DTbin)
 {
 	string currentDirectory = "";
 	char currentDirectoryCharStar[OR_IMAGE_COMPARISON_DECISION_TREE_BIN_MAX_LENGTH];
 	int currentDirectoryLength;
 
-	createSnapshotIDReferenceImageComparisonDecisionTreeString(imageWidth, imageHeight, rgbMapSmall, pBinxyValueRequirement, pBinxRequirement, pBinyRequirement, normalisedAverageHueDeviationRequirement, concatonatedSignedDctCoeffArrayRequirement, currentDirectoryCharStar, &currentDirectoryLength, &currentDirectory);
+	createSnapshotIDreferenceImageComparisonDecisionTreeString(imageWidth, imageHeight, rgbMapSmall, pBinxyValueRequirement, pBinxRequirement, pBinyRequirement, normalisedAverageHueDeviationRequirement, concatonatedSignedDctCoeffArrayRequirement, currentDirectoryCharStar, &currentDirectoryLength, &currentDirectory);
 
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
-		createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(firstReferenceInSnapshotIDReferenceList, OR_MYSQL_TABLE_NAME_DECISIONTREE, currentDirectoryCharStar, currentDirectoryLength, trainOrTest);
+		createSnapshotIDreferenceListUsingSQLdatabaseDecisionTreeTableQuery(firstReferenceInSnapshotIDreferenceList, OR_MYSQL_TABLE_NAME_DECISIONTREE, currentDirectoryCharStar, currentDirectoryLength, trainOrTest);
 	#else
-		getSnapshotIDReferencesInImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, firstReferenceInSnapshotIDReferenceList, &currentDirectory);
+		getSnapshotIDreferencesInImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, firstReferenceInSnapshotIDreferenceList, &currentDirectory);
 	#endif
 
 	currentDirectoryCharStar[currentDirectoryLength] = '\0';
@@ -1463,11 +1463,11 @@ void getSnapshotIDReferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTCh
 
 
 #ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
-void getSnapshotIDReferencesInImageComparisonDecisionTree(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, SnapshotIDReferenceList * firstReferenceInSnapshotIDReferenceList, string * currentDirectory)
+void getSnapshotIDreferencesInImageComparisonDecisionTree(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, SnapshotIDreferenceList * firstReferenceInSnapshotIDreferenceList, string * currentDirectory)
 {
 	if(OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
 	{
-		createOrParseSnapshotIDReferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, false, currentDirectory, NULL, NULL);
+		createOrParseSnapshotIDreferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, false, currentDirectory, NULL, NULL);
 	}
 
 	bool parseSuccessful = false;
@@ -1490,14 +1490,14 @@ void getSnapshotIDReferencesInImageComparisonDecisionTree(int imageWidth, int im
 		string snapshotIDReferenceListFileName = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_DEFAULT_LIST_FILE_NAME;
 		*currentDirectory = *currentDirectory + "/" + snapshotIDReferenceListFileName;
 
-		parseSnapshotIDReferenceList(currentDirectory, firstReferenceInSnapshotIDReferenceList);
+		parseSnapshotIDreferenceList(currentDirectory, firstReferenceInSnapshotIDreferenceList);
 	}
 }
 #endif
 
 
 #ifdef OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD_METHOD_3_LUMINOSITY_ONLY
-void createOrParseSnapshotIDReferenceImageComparisonDecisionTree(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, bool createOrParse, string * currentDirectory, char * currentDirectoryCharStar, int * currDirIndex)
+void createOrParseSnapshotIDreferenceImageComparisonDecisionTree(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, bool createOrParse, string * currentDirectory, char * currentDirectoryCharStar, int * currDirIndex)
 {
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_BINARY_TO_CHAR_CONVERSION_OPT
 	int index = 0;		//used to convert binary to char
@@ -1596,7 +1596,7 @@ void createOrParseSnapshotIDReferenceImageComparisonDecisionTree(int imageWidth,
 }
 
 #elif defined OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD_METHOD_2_ALL_RGB_COMPONENTS
-void createOrParseSnapshotIDReferenceImageComparisonDecisionTree(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, bool createOrParse, string * currentDirectory, char * currentDirectoryCharStar, int * currDirIndex)
+void createOrParseSnapshotIDreferenceImageComparisonDecisionTree(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, bool createOrParse, string * currentDirectory, char * currentDirectoryCharStar, int * currDirIndex)
 {
 	#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON_THRESHOLD
 	int numTrue = 0;
@@ -1722,7 +1722,7 @@ void createOrParseSnapshotIDReferenceImageComparisonDecisionTree(int imageWidth,
 }
 
 #elif defined OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD_METHOD_1_ALL_RGB_COMPONENTS_WITH_DIRECTION
-void createOrParseSnapshotIDReferenceImageComparisonDecisionTree(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, bool createOrParse, string * currentDirectory, char * currentDirectoryCharStar, int * currDirIndex)
+void createOrParseSnapshotIDreferenceImageComparisonDecisionTree(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, bool createOrParse, string * currentDirectory, char * currentDirectoryCharStar, int * currDirIndex)
 {
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_NORMALISE_RGB_MAP
 	double averageLuminosity = calculateAverageLuminosity(imageWidth, imageHeight, rgbMapSmall);
@@ -1905,9 +1905,9 @@ void addSnapshotIDReferenceToList(string * parseFileName, long snapshotID)
 }
 
 
-void parseSnapshotIDReferenceList(string * parseFileName, SnapshotIDReferenceList * firstReferenceInSnapshotIDReferenceList)
+void parseSnapshotIDreferenceList(string * parseFileName, SnapshotIDreferenceList * firstReferenceInSnapshotIDreferenceList)
 {
-	SnapshotIDReferenceList * currentReferenceInSnapshotIDReferenceList = firstReferenceInSnapshotIDReferenceList;
+	SnapshotIDreferenceList * currentReferenceInSnapshotIDReferenceList = firstReferenceInSnapshotIDreferenceList;
 
 	ifstream parseFileObject(parseFileName->c_str());		//append to snapshot id reference list
 
@@ -1928,7 +1928,7 @@ void parseSnapshotIDReferenceList(string * parseFileName, SnapshotIDReferenceLis
 				//cout << "currentReferenceInSnapshotIDReferenceList->referenceID = " << currentReferenceInSnapshotIDReferenceList->referenceID << endl;
 				#endif
 				
-				SnapshotIDReferenceList * newReferenceInSnapshotIDReferenceList = new SnapshotIDReferenceList();
+				SnapshotIDreferenceList * newReferenceInSnapshotIDReferenceList = new SnapshotIDreferenceList();
 				currentReferenceInSnapshotIDReferenceList->next = newReferenceInSnapshotIDReferenceList;
 				currentReferenceInSnapshotIDReferenceList = currentReferenceInSnapshotIDReferenceList->next;
 

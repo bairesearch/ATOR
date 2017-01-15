@@ -479,7 +479,7 @@ void createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(FeatureCon
 
 
 
-void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTree(string sqlDatabaseDecisionTreeTableName, char * decisionTreeBinText, int decisionTreeBinTextLength, long snapshotReferenceID, long * databaseTableSize)
+void insertSnapshotIDreferenceIntoSQLdatabaseDecisionTree(string sqlDatabaseDecisionTreeTableName, char * decisionTreeBinText, int decisionTreeBinTextLength, long snapshotReferenceID, long * databaseTableSize)
 {
 	string sqlInsertCommand = "";	//eg INSERT INTO snapshot (pBinxy) VALUES (430);
 	string sqlInsertCommandP1 = "INSERT INTO ";
@@ -545,7 +545,7 @@ void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTree(string sqlDatabaseDeci
 	cout << "sqlInsertCommandCharStar = " << sqlInsertCommandCharStar << endl;
 	//exit(0);
 	#endif
-	performSQLRealInsertQuery(sqlInsertCommandCharStar, i);
+	performSQLrealInsertQuery(sqlInsertCommandCharStar, i);
 	*databaseTableSize = *databaseTableSize + 1;
 }
 
@@ -554,7 +554,7 @@ void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTree(string sqlDatabaseDeci
 
 #ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
 
-void insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeStart(string sqlDatabaseDecisionTreeTableName, char * decisionTreeultipleRowInsertQueryTextCharStar, long * decisionTreeSQLMultipleRowInsertQueryLength)
+void insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart(string sqlDatabaseDecisionTreeTableName, char * decisionTreeMultipleRowInsertQueryTextCharStar, long * decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string sqlInsertCommand = "";	//eg INSERT INTO snapshot (pBinxy) VALUES (430);
 	string sqlInsertCommandP1 = "INSERT INTO ";
@@ -569,19 +569,19 @@ void insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeStart(string sqlDat
 
 	for(int j=0; j<sqlInsertCommand.length(); j++)
 	{
-		decisionTreeultipleRowInsertQueryTextCharStar[*decisionTreeSQLMultipleRowInsertQueryLength] = sqlInsertCommand[j];
-		*decisionTreeSQLMultipleRowInsertQueryLength = *decisionTreeSQLMultipleRowInsertQueryLength + 1;
+		decisionTreeMultipleRowInsertQueryTextCharStar[*decisionTreeSQLmultipleRowInsertQueryLength] = sqlInsertCommand[j];
+		*decisionTreeSQLmultipleRowInsertQueryLength = *decisionTreeSQLmultipleRowInsertQueryLength + 1;
 	}
 
 	#ifdef OR_SQL_DATABASE_DEBUG
-	//cout << "insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeStart()" << endl;
+	//cout << "insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart()" << endl;
 	//cout << "sqlInsertCommand = " << sqlInsertCommand << endl;
 	#endif
 
 }
 
 
-void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTreeIteration(char * decisionTreeBinText, int decisionTreeBinTextLength, long snapshotReferenceID, long * databaseTableSize, char * decisionTreeultipleRowInsertQueryTextCharStar, long * decisionTreeSQLMultipleRowInsertQueryLength)
+void insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration(char * decisionTreeBinText, int decisionTreeBinTextLength, long snapshotReferenceID, long * databaseTableSize, char * decisionTreeMultipleRowInsertQueryTextCharStar, long * decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string sqlInsertCommand = "";	//eg INSERT INTO snapshot (pBinxy) VALUES (430);
 	string sqlInsertCommandP6 = "";
@@ -625,21 +625,21 @@ void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTreeIteration(char * decisi
 
 	for(int j=0; j<i; j++)
 	{
-		decisionTreeultipleRowInsertQueryTextCharStar[*decisionTreeSQLMultipleRowInsertQueryLength] = sqlInsertCommandCharStar[j];
-		*decisionTreeSQLMultipleRowInsertQueryLength = *decisionTreeSQLMultipleRowInsertQueryLength + 1;
+		decisionTreeMultipleRowInsertQueryTextCharStar[*decisionTreeSQLmultipleRowInsertQueryLength] = sqlInsertCommandCharStar[j];
+		*decisionTreeSQLmultipleRowInsertQueryLength = *decisionTreeSQLmultipleRowInsertQueryLength + 1;
 	}
 	#ifdef OR_SQL_DATABASE_DEBUG
-	//cout << "insertSnapshotIDReferenceIntoSQLDatabaseDecisionTreeIteration()" << endl;
-	//cout << "decisionTreeultipleRowInsertQueryTextCharStar = " << decisionTreeultipleRowInsertQueryTextCharStar << endl;
+	//cout << "insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration()" << endl;
+	//cout << "decisionTreeMultipleRowInsertQueryTextCharStar = " << decisionTreeMultipleRowInsertQueryTextCharStar << endl;
 	#endif
 
 	*databaseTableSize = *databaseTableSize + 1;
 }
 
 
-void insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeEnd(char * decisionTreeultipleRowInsertQueryTextCharStar, long * decisionTreeSQLMultipleRowInsertQueryLength)
+void insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeEnd(char * decisionTreeMultipleRowInsertQueryTextCharStar, long * decisionTreeSQLmultipleRowInsertQueryLength)
 {
-	if(decisionTreeultipleRowInsertQueryTextCharStar[(*decisionTreeSQLMultipleRowInsertQueryLength)-1] != ' ')
+	if(decisionTreeMultipleRowInsertQueryTextCharStar[(*decisionTreeSQLmultipleRowInsertQueryLength)-1] != ' ')
 	{
 		string sqlInsertCommand = "";	//eg INSERT INTO snapshot (pBinxy) VALUES (430);
 		string sqlInsertCommandP1 = ";";
@@ -648,12 +648,12 @@ void insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeEnd(char * decision
 
 		for(int i=0; i<sqlInsertCommand.length(); i++)
 		{
-	 		decisionTreeultipleRowInsertQueryTextCharStar[(*decisionTreeSQLMultipleRowInsertQueryLength)-1] = sqlInsertCommand[i];	//-1 is to overwrite previous ','
-			*decisionTreeSQLMultipleRowInsertQueryLength = *decisionTreeSQLMultipleRowInsertQueryLength+1;
+	 		decisionTreeMultipleRowInsertQueryTextCharStar[(*decisionTreeSQLmultipleRowInsertQueryLength)-1] = sqlInsertCommand[i];	//-1 is to overwrite previous ','
+			*decisionTreeSQLmultipleRowInsertQueryLength = *decisionTreeSQLmultipleRowInsertQueryLength+1;
 		}
-		*decisionTreeSQLMultipleRowInsertQueryLength = *decisionTreeSQLMultipleRowInsertQueryLength-1;
+		*decisionTreeSQLmultipleRowInsertQueryLength = *decisionTreeSQLmultipleRowInsertQueryLength-1;
 
-		performSQLRealInsertQuery(decisionTreeultipleRowInsertQueryTextCharStar, *decisionTreeSQLMultipleRowInsertQueryLength);
+		performSQLrealInsertQuery(decisionTreeMultipleRowInsertQueryTextCharStar, *decisionTreeSQLmultipleRowInsertQueryLength);
 	}
 	else
 	{
@@ -662,7 +662,7 @@ void insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeEnd(char * decision
 }
 
 /*old; this code is to insert multiple rows into multiple tables
-void insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeStart(char * decisionTreeultipleRowInsertQueryTextCharStar, int decisionTreeSQLMultipleRowInsertQueryLength)
+void insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart(char * decisionTreeMultipleRowInsertQueryTextCharStar, int decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string sqlInsertCommand = "";	//eg INSERT INTO snapshot (pBinxy) VALUES (430);
 	string sqlInsertCommandP1 = "INSERT ALL ";
@@ -671,13 +671,13 @@ void insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeStart(char * decisi
 
 	for(int i=0; i<sqlInsertCommand.length(); i++)
 	{
-	 	decisionTreeultipleRowInsertQueryTextCharStar[decisionTreeSQLMultipleRowInsertQueryLength+i] = sqlInsertCommand[i];
+	 	decisionTreeMultipleRowInsertQueryTextCharStar[decisionTreeSQLmultipleRowInsertQueryLength+i] = sqlInsertCommand[i];
 	}
 }
 */
 
 /*old; this code is to insert multiple rows into multiple tables
-void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTreeIteration(string sqlDatabaseDecisionTreeTableName, char * decisionTreeBinText, int decisionTreeBinTextLength, long snapshotReferenceID, long * databaseTableSize, char * decisionTreeultipleRowInsertQueryTextCharStar, int decisionTreeSQLMultipleRowInsertQueryLength)
+void insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration(string sqlDatabaseDecisionTreeTableName, char * decisionTreeBinText, int decisionTreeBinTextLength, long snapshotReferenceID, long * databaseTableSize, char * decisionTreeMultipleRowInsertQueryTextCharStar, int decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string sqlInsertCommand = "";	//eg INSERT INTO snapshot (pBinxy) VALUES (430);
 	string sqlInsertCommandP1 = "\n\tINTO ";
@@ -730,8 +730,8 @@ void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTreeIteration(string sqlDat
 
 	for(int j=0; j<i; j++)
 	{
-		decisionTreeultipleRowInsertQueryTextCharStar[decisionTreeSQLMultipleRowInsertQueryLength] = sqlInsertCommandCharStar[j];
-		*decisionTreeSQLMultipleRowInsertQueryLength = *decisionTreeSQLMultipleRowInsertQueryLength + 1;
+		decisionTreeMultipleRowInsertQueryTextCharStar[decisionTreeSQLmultipleRowInsertQueryLength] = sqlInsertCommandCharStar[j];
+		*decisionTreeSQLmultipleRowInsertQueryLength = *decisionTreeSQLmultipleRowInsertQueryLength + 1;
 	}
 
 	*databaseTableSize = *databaseTableSize + 1;
@@ -741,7 +741,7 @@ void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTreeIteration(string sqlDat
 #endif
 
 
-void createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(SnapshotIDReferenceList * firstReferenceInSnapshotIDReferenceList, string sqlDatabaseDecisionTreeTableName, char * decisionTreeBinText, int decisionTreeBinTextLength, int trainOrTest)
+void createSnapshotIDreferenceListUsingSQLdatabaseDecisionTreeTableQuery(SnapshotIDreferenceList * firstReferenceInSnapshotIDreferenceList, string sqlDatabaseDecisionTreeTableName, char * decisionTreeBinText, int decisionTreeBinTextLength, int trainOrTest)
 {
 	int query_state;
 	MYSQL_ROW row;
@@ -835,7 +835,7 @@ void createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(Snapsho
 		int tableIndex = 0;
 		result = mysql_store_result(connection);
 
-		SnapshotIDReferenceList * currentReferenceInSnapshotIDReferenceList = firstReferenceInSnapshotIDReferenceList;
+		SnapshotIDreferenceList * currentReferenceInSnapshotIDReferenceList = firstReferenceInSnapshotIDreferenceList;
 
 		while((row = mysql_fetch_row(result)) != NULL)
 		{//only use first matching feature; nb that when train table is separated from test table every feature will have a unique objectname, viewnum, zoomnum, polynum and testside
@@ -849,7 +849,7 @@ void createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(Snapsho
 			bool snapshotIDReferenceAlreadyAddedToList = false;
 			if(tableIndex > 0)
 			{
-				SnapshotIDReferenceList * currentReferenceInSnapshotIDReferenceListTemp = firstReferenceInSnapshotIDReferenceList;
+				SnapshotIDreferenceList * currentReferenceInSnapshotIDReferenceListTemp = firstReferenceInSnapshotIDreferenceList;
 				while(currentReferenceInSnapshotIDReferenceListTemp->next != NULL)
 				{
 					if(tableID == currentReferenceInSnapshotIDReferenceListTemp->referenceID)
@@ -867,7 +867,7 @@ void createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(Snapsho
 				//cout << "tableID = " << tableID << endl;
 				#endif
 
-				SnapshotIDReferenceList * newReferenceInSnapshotIDReferenceList = new SnapshotIDReferenceList();
+				SnapshotIDreferenceList * newReferenceInSnapshotIDReferenceList = new SnapshotIDreferenceList();
 				currentReferenceInSnapshotIDReferenceList->next = newReferenceInSnapshotIDReferenceList;
 				currentReferenceInSnapshotIDReferenceList = currentReferenceInSnapshotIDReferenceList->next;
 			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_LOOKUP_DO_NOT_ALLOW_REPEATS
@@ -896,7 +896,7 @@ void createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(Snapsho
 
 
 
-void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * firstFeatureContainerInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour * normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], unsigned char * rgb8BitSmallMapForInstantDBQueryAccessRequirement, int smallImageWidth, int smallImageHeight, string trainTableName, int trainOrTest)
+void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * firstFeatureContainerInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour * normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], unsigned char * rgb8bitSmallMapForInstantDBqueryAccessRequirement, int smallImageWidth, int smallImageHeight, string trainTableName, int trainOrTest)
 {
 	if(!createFeatureObjects)
 	{
@@ -1277,18 +1277,18 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * 
 			char dctCoeffArrayBinnedString[1000];
 			int DCTCoeff64BitValueStringLengthNOTUSED = 0;	//not used
 			int concatonatedDctCoeffArrayBiasIntNOTUSED[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS];
-			convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(firstFeatureInList->dctCoeff, dctCoeffNumValString, &DCTCoeff64BitValueStringLengthNOTUSED, concatonatedDctCoeffArrayBiasIntNOTUSED);
+			convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffNumValString, &DCTCoeff64BitValueStringLengthNOTUSED, concatonatedDctCoeffArrayBiasIntNOTUSED);
 			#else
 			char dctCoeffNumValString[1000];
 			int DCTCoeff64BitValueStringLengthNOTUSED = 0;	//not used
-			convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(firstFeatureInList->dctCoeff, dctCoeffNumValString, &DCTCoeff64BitValueStringLengthNOTUSED);
+			convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffNumValString, &DCTCoeff64BitValueStringLengthNOTUSED);
 			#endif
 		#else
 			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 			int concatonatedDctCoeffArrayBiasIntNOTUSED[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS];
-			unsigned long dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(concatonatedSignedDctCoeffArrayRequirement, concatonatedDctCoeffArrayBiasIntNOTUSED);
+			unsigned long dctCoeffArrayBinned = convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement, concatonatedDctCoeffArrayBiasIntNOTUSED);
 			#else
-			unsigned long dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(concatonatedSignedDctCoeffArrayRequirement);
+			unsigned long dctCoeffArrayBinned = convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement);
 			#endif
 			char dctCoeffNumValString[25];
 			sprintf(dctCoeffNumValString, "%ld", dctCoeffArrayBinned);
@@ -1306,7 +1306,7 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * 
 			for(int y=0; y<smallImageHeight; y++)
 			{
 				colour currentSmallImageValue;
-				getRGBMapValues(x, y, smallImageWidth, rgb8BitSmallMapForInstantDBQueryAccessRequirement, &currentSmallImageValue);
+				getRGBMapValues(x, y, smallImageWidth, rgb8bitSmallMapForInstantDBqueryAccessRequirement, &currentSmallImageValue);
 
 				for(int colour=0; colour < 3; colour++)
 				{
@@ -1357,7 +1357,7 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * 
 			for(int y=0; y<smallImageHeight; y++)
 			{
 				colour currentSmallImageValue;
-				getRGBMapValues(x, y, smallImageWidth, rgb8BitSmallMapForInstantDBQueryAccessRequirement, &currentSmallImageValue);
+				getRGBMapValues(x, y, smallImageWidth, rgb8bitSmallMapForInstantDBqueryAccessRequirement, &currentSmallImageValue);
 
 				for(int colour=0; colour < 3; colour++)
 				{
@@ -1862,7 +1862,7 @@ void createSQLSelectRowCommand(char sqlSelectRowCommand[], int numFeatures)
 
 
 
-void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest, bool ignoreOTfeatures, unsigned char * rgb8BitSmallMapForInstantDBQueryAccess, int smallImageWidth, int smallImageHeight, bool addPermutationsOfTrainFeaturesForGeoBinning, int maxNumFeaturePermutations, string tableName, long * databaseTableSize)
+void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest, bool ignoreOTfeatures, unsigned char * rgb8bitSmallMapForInstantDBqueryAccess, int smallImageWidth, int smallImageHeight, bool addPermutationsOfTrainFeaturesForGeoBinning, int maxNumFeaturePermutations, string tableName, long * databaseTableSize)
 {
 	Feature * currentFeatureInTempList = firstFeatureInList;
 	
@@ -2206,7 +2206,7 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 										sprintf(simxstring, "%d", x);
 
 										colour tempCol;
-										getRGBMapValues(x, y, smallImageWidth, rgb8BitSmallMapForInstantDBQueryAccess, &tempCol);
+										getRGBMapValues(x, y, smallImageWidth, rgb8bitSmallMapForInstantDBqueryAccess, &tempCol);
 										for(int c = 0; c< RGB_NUM; c++)
 										{
 											string colourName;
@@ -2250,7 +2250,7 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 								//exit(0);
 								#endif
 								char * sqlInsertCommandCharStar = const_cast<char*>(sqlInsertCommand.c_str());
-								performSQLInsertQuery(sqlInsertCommandCharStar);
+								performSQLinsertQuery(sqlInsertCommandCharStar);
 								*databaseTableSize = *databaseTableSize + 1;
 
 							}
@@ -2289,7 +2289,7 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 								#ifdef OR_SQL_DATABASE_DEBUG
 								cout << "sqlInsertCommand = " << sqlInsertCommandCharStar << endl;
 								#endif
-								performSQLRealInsertQuery(sqlInsertCommandCharStar, i);
+								performSQLrealInsertQuery(sqlInsertCommandCharStar, i);
 
 								*databaseTableSize = *databaseTableSize + 1;
 							}
@@ -2324,20 +2324,20 @@ long powLong(long val, int degree)
 
 #ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
 #ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
-void convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(signed char concatonatedSignedDctCoeffArray[], char * DCTCoeff64BitValueString, int * DCTCoeff64BitValueStringLength, int concatonatedDctCoeffArrayBiasInt[])
+void convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(signed char concatonatedSignedDctCoeffArray[], char * DCTcoeff64bitValueString, int * DCTcoeff64bitValueStringLength, int concatonatedDctCoeffArrayBiasInt[])
 #else
-void convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(signed char concatonatedSignedDctCoeffArray[], char * DCTCoeff64BitValueString, int * DCTCoeff64BitValueStringLength)
+void convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(signed char concatonatedSignedDctCoeffArray[], char * DCTcoeff64bitValueString, int * DCTcoeff64bitValueStringLength)
 #endif
 #else
 #ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
-unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(signed char concatonatedSignedDctCoeffArray[], int concatonatedDctCoeffArrayBiasInt[])
+unsigned long convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(signed char concatonatedSignedDctCoeffArray[], int concatonatedDctCoeffArrayBiasInt[])
 #else
-unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(signed char concatonatedSignedDctCoeffArray[])
+unsigned long convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(signed char concatonatedSignedDctCoeffArray[])
 #endif
 #endif
 {
 	#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
-	*DCTCoeff64BitValueStringLength = 0;
+	*DCTcoeff64bitValueStringLength = 0;
 	int index = 0;		//used to convert binary to char
 	char binaryConvertedToChar = 0x00;
 	#else
@@ -2463,8 +2463,8 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 				//cout << "int(binaryConvertedToChar) = " << int(binaryConvertedToChar) << endl;
 				#endif
 				index = 0;
-				DCTCoeff64BitValueString[*DCTCoeff64BitValueStringLength] = binaryConvertedToChar;
-				*DCTCoeff64BitValueStringLength = *DCTCoeff64BitValueStringLength + 1;
+				DCTcoeff64bitValueString[*DCTcoeff64bitValueStringLength] = binaryConvertedToChar;
+				*DCTcoeff64bitValueStringLength = *DCTcoeff64bitValueStringLength + 1;
 				binaryConvertedToChar = 0x00;
 			}
 
@@ -2516,13 +2516,13 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 		//cout << "binaryConvertedToChar = " << binaryConvertedToChar << endl;
 		//cout << "int(binaryConvertedToChar) = " << int(binaryConvertedToChar) << endl;
 		#endif
-		DCTCoeff64BitValueString[*DCTCoeff64BitValueStringLength] = binaryConvertedToChar;
-		*DCTCoeff64BitValueStringLength = *DCTCoeff64BitValueStringLength + 1;
+		DCTcoeff64bitValueString[*DCTcoeff64bitValueStringLength] = binaryConvertedToChar;
+		*DCTcoeff64bitValueStringLength = *DCTcoeff64bitValueStringLength + 1;
 	}
 
 	//add null character onto end of string
-	DCTCoeff64BitValueString[*DCTCoeff64BitValueStringLength] = '\0';
-	*DCTCoeff64BitValueStringLength = *DCTCoeff64BitValueStringLength + 1;
+	DCTcoeff64bitValueString[*DCTcoeff64bitValueStringLength] = '\0';
+	*DCTcoeff64bitValueStringLength = *DCTcoeff64bitValueStringLength + 1;
 	#else
 	#ifdef OR_DEBUG
 	//cout << "finished: dctCoeffArrayBinned = " << dctCoeffArrayBinned << endl;

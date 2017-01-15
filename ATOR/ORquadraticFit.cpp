@@ -60,7 +60,7 @@ int isnan(double d)
 #endif
 
 
-QFZeroCrossing::QFZeroCrossing(void)
+QFzeroCrossing::QFzeroCrossing(void)
 {
 	x = 0;	//x pos pixel
 	y = 0;	//y pos pixel
@@ -72,17 +72,17 @@ QFZeroCrossing::QFZeroCrossing(void)
 	{
 		coefficient[i] = 0.0;
 	}
-	dzalpha = 0.0;
-	dzbeta = 0.0;
-	dzTwoalpha = 0.0;
-	dzTwobeta = 0.0;
+	dzAlpha = 0.0;
+	dzBeta = 0.0;
+	dzTwoAlpha = 0.0;
+	dzTwoBeta = 0.0;
 	confidence = 0.0;
 
 
 	depth = 0.0;	//for 3DOD only
 	#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
-	nearbyHitXValue = 0;
-	nearbyHitYValue = 0;
+	nearbyHitValueX = 0;
+	nearbyHitValueY = 0;
 	#endif
 	//#ifdef OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP
 	point.x = 0.0;
@@ -94,7 +94,7 @@ QFZeroCrossing::QFZeroCrossing(void)
 	next = NULL;
 }
 
-QFZeroCrossing::~QFZeroCrossing()
+QFzeroCrossing::~QFzeroCrossing()
 {
 	if(next != NULL)
 	{
@@ -111,7 +111,7 @@ static int globalImageWidth;
 
 
 
-void generateZeroCrossingList(double * luminosityContrastMap, int imageWidth, int imageHeight, QFZeroCrossing * firstZeroCrossingInList, bool edgeDetect, double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, int interpixelMapType)
+void generateZeroCrossingList(double * luminosityContrastMap, int imageWidth, int imageHeight, QFzeroCrossing * firstZeroCrossingInList, bool edgeDetect, double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, int interpixelMapType)
 {
 	globalImageWidth = imageWidth;
 
@@ -126,7 +126,7 @@ void generateZeroCrossingList(double * luminosityContrastMap, int imageWidth, in
 
 }
 
-double calculateAreaOfOneSideOfEdgeInAPixel(int xDevPointOnSide, int yDevPointOnSide, double zeroCrossingValueX, double zeroCrossingValueY, double alpha)
+double calculateAreaOfOneSideOfEdgeInPixel(int xDevPointOnSide, int yDevPointOnSide, double zeroCrossingValueX, double zeroCrossingValueY, double alpha)
 {
 	bool areaIsJustTriangle = true;
 	//calculate area inside of triangle made up by edge (areaIsJustTriangle) [+ rect adjacent this if it exists (!areaIsJustTriangle)]
@@ -520,7 +520,7 @@ double calculateAreaOfOneSideOfEdgeInAPixel(int xDevPointOnSide, int yDevPointOn
  ****/
 
 //pointMap not currently used
-void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, QFZeroCrossing * currentZeroCrossingInList, int imageWidth, int imageHeight, double luminosityContrastMap[], double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, int interpixelMapType)
+void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, QFzeroCrossing * currentZeroCrossingInList, int imageWidth, int imageHeight, double luminosityContrastMap[], double sensitivity, int dimension, double * pointMap, double * depthMap, int zoom, int interpixelMapType)
 {
 	int kernelWidthForegroundCheck;
 	int kernelHeightForegroundCheck;
@@ -711,10 +711,10 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 								currentZeroCrossingInList->alpha = 0.0;
 								currentZeroCrossingInList->beta = 0.0;
 
-								currentZeroCrossingInList->dzalpha = 0.0;
-								currentZeroCrossingInList->dzbeta = 0.0;
-								currentZeroCrossingInList->dzTwoalpha = 0.0;
-								currentZeroCrossingInList->dzTwobeta = 0.0;
+								currentZeroCrossingInList->dzAlpha = 0.0;
+								currentZeroCrossingInList->dzBeta = 0.0;
+								currentZeroCrossingInList->dzTwoAlpha = 0.0;
+								currentZeroCrossingInList->dzTwoBeta = 0.0;
 								currentZeroCrossingInList->confidence = 0.0;
 
 								passZeroCrossingTest = true;
@@ -734,8 +734,8 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 								cout << "currentZeroCrossingInList->zeroCrossingValueY = " << currentZeroCrossingInList->zeroCrossingValueY << endl;
 								cout << "currentZeroCrossingInList->x = " << currentZeroCrossingInList->x << endl;
 								cout << "currentZeroCrossingInList->y = " << currentZeroCrossingInList->y << endl;
-								cout << "currentZeroCrossingInList->dzTwoalpha = " << currentZeroCrossingInList->dzTwoalpha << endl;
-								cout << "currentZeroCrossingInList->dzTwobeta = " << currentZeroCrossingInList->dzTwobeta << endl;
+								cout << "currentZeroCrossingInList->dzTwoAlpha = " << currentZeroCrossingInList->dzTwoAlpha << endl;
+								cout << "currentZeroCrossingInList->dzTwoBeta = " << currentZeroCrossingInList->dzTwoBeta << endl;
 								cout << "currentZeroCrossingInList->dzTwox = " << currentZeroCrossingInList->coefficient[3] << endl;
 								cout << "currentZeroCrossingInList->dzTwoy = " << currentZeroCrossingInList->coefficient[4] << endl;
 								cout << "currentZeroCrossingInList->beta = " << currentZeroCrossingInList->beta << endl;
@@ -835,8 +835,8 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 									
 									currentZeroCrossingInList->depth = depthVal;
 									#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
-									currentZeroCrossingInList->nearbyHitXValue = x;
-									currentZeroCrossingInList->nearbyHitYValue = y;
+									currentZeroCrossingInList->nearbyHitValueX = x;
+									currentZeroCrossingInList->nearbyHitValueY = y;
 									#endif
 								}
 								else
@@ -851,14 +851,14 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 									*/
 									currentZeroCrossingInList->depth = minDepthForNearbyPoints;
 									#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
-									currentZeroCrossingInList->nearbyHitXValue = xyzNearbyPointOnObject.x;
-									currentZeroCrossingInList->nearbyHitYValue = xyzNearbyPointOnObject.y;
+									currentZeroCrossingInList->nearbyHitValueX = xyzNearbyPointOnObject.x;
+									currentZeroCrossingInList->nearbyHitValueY = xyzNearbyPointOnObject.y;
 									#endif
 								}
 							}
 							#endif
 
-							QFZeroCrossing * zc = new QFZeroCrossing();
+							QFzeroCrossing * zc = new QFzeroCrossing();
 							currentZeroCrossingInList->next = zc;
 							currentZeroCrossingInList = currentZeroCrossingInList->next;
 						}
@@ -898,8 +898,8 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 								cout << "currentZeroCrossingInList->zeroCrossingValueY = " << currentZeroCrossingInList->zeroCrossingValueY << endl;
 								cout << "currentZeroCrossingInList->x = " << currentZeroCrossingInList->x << endl;
 								cout << "currentZeroCrossingInList->y = " << currentZeroCrossingInList->y << endl;
-								//cout << "currentZeroCrossingInList->dzTwoalpha = " << currentZeroCrossingInList->dzTwoalpha << endl;
-								//cout << "currentZeroCrossingInList->dzTwobeta = " << currentZeroCrossingInList->dzTwobeta << endl;
+								//cout << "currentZeroCrossingInList->dzTwoAlpha = " << currentZeroCrossingInList->dzTwoAlpha << endl;
+								//cout << "currentZeroCrossingInList->dzTwoBeta = " << currentZeroCrossingInList->dzTwoBeta << endl;
 								//cout << "currentZeroCrossingInList->dzTwox = " << currentZeroCrossingInList->coefficient[3] << endl;
 								//cout << "currentZeroCrossingInList->dzTwoy = " << currentZeroCrossingInList->coefficient[4] << endl;
 								*/
@@ -942,8 +942,8 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 									
 									currentZeroCrossingInList->depth = depthVal;
 									#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
-									currentZeroCrossingInList->nearbyHitXValue = x;
-									currentZeroCrossingInList->nearbyHitYValue = y;
+									currentZeroCrossingInList->nearbyHitValueX = x;
+									currentZeroCrossingInList->nearbyHitValueY = y;
 									#endif
 								}
 								else
@@ -961,14 +961,14 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 									
 									currentZeroCrossingInList->depth = minDepthForNearbyPoints;
 									#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
-									currentZeroCrossingInList->nearbyHitXValue = xyzNearbyPointOnObject.x;
-									currentZeroCrossingInList->nearbyHitYValue = xyzNearbyPointOnObject.y;
+									currentZeroCrossingInList->nearbyHitValueX = xyzNearbyPointOnObject.x;
+									currentZeroCrossingInList->nearbyHitValueY = xyzNearbyPointOnObject.y;
 									#endif
 								}
 							}
 							#endif
 
-							QFZeroCrossing * zc = new QFZeroCrossing();
+							QFzeroCrossing * zc = new QFzeroCrossing();
 							currentZeroCrossingInList->next = zc;
 							currentZeroCrossingInList = currentZeroCrossingInList->next;
 						}
@@ -985,11 +985,11 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 	{
 		if(edgeDetect)
 		{
-			generatePixmapFromRGBMap("debugEdgeDetectionQuadraticFitMapEnhancedRGB.ppm", enhancedImageWidth, enhancedImageHeight, quadraticFitMapEnhancedRGB);
+			generatePixmapFromRGBmap("debugEdgeDetectionQuadraticFitMapEnhancedRGB.ppm", enhancedImageWidth, enhancedImageHeight, quadraticFitMapEnhancedRGB);
 		}
 		else
 		{
-			generatePixmapFromRGBMap("debugPointDetectionQuadraticFitMapEnhancedRGB.ppm", enhancedImageWidth, enhancedImageHeight, quadraticFitMapEnhancedRGB);
+			generatePixmapFromRGBmap("debugPointDetectionQuadraticFitMapEnhancedRGB.ppm", enhancedImageWidth, enhancedImageHeight, quadraticFitMapEnhancedRGB);
 		}
 		//exit(0);
 	}
@@ -1003,7 +1003,7 @@ void edgiseData(bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitI
 
 
 	//x, y are redundant
-bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, QFZeroCrossing * currentZeroCrossingInList)
+bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], bool edgeDetect, bool createEnhancedImageDisplayingQuadraticFitInfo, QFzeroCrossing * currentZeroCrossingInList)
 {
 	//Summary:
 	// calculates eigen values of the C coefficient in coefficients[], an eigen vector, alpha, beta,
@@ -1323,7 +1323,7 @@ bool checkTotalNegativeCurvatureAbovePointThreshold(float a3, float a4)
 
 
 
-bool checkPointZeroCrossingObjectPassesThreshold(QFZeroCrossing * zc)
+bool checkPointZeroCrossingObjectPassesThreshold(QFzeroCrossing * zc)
 {
 	bool passedThreshold;
 
@@ -1382,10 +1382,10 @@ bool checkPointZeroCrossingObjectPassesThreshold(QFZeroCrossing * zc)
 /***
  * FOR LOW EFFICIENCY ZEROCROSSING CALCULATIONS (with passing of zeroCrossing object)
  *
- * checkEdgeZeroCrossingObjectPassesThreshold(QFZeroCrossing * zc)
+ * checkEdgeZeroCrossingObjectPassesThreshold(QFzeroCrossing * zc)
  */
 
-bool checkEdgeZeroCrossingObjectPassesThreshold(QFZeroCrossing * zc)
+bool checkEdgeZeroCrossingObjectPassesThreshold(QFzeroCrossing * zc)
 {
 	bool passedThreshold;
 
@@ -1442,10 +1442,10 @@ bool checkEdgeZeroCrossingObjectPassesThreshold(QFZeroCrossing * zc)
 /***
  * FOR LOW EFFICIENCY ZEROCROSSING CALCULATIONS (with passing of zeroCrossing object)
  *
- * checkEdgeZeroCrossingObjectContrastGradients(QFZeroCrossing * zc)
+ * checkEdgeZeroCrossingObjectContrastGradients(QFzeroCrossing * zc)
  */
 
-bool checkEdgeZeroCrossingObjectContrastGradients(QFZeroCrossing * zc)
+bool checkEdgeZeroCrossingObjectContrastGradients(QFzeroCrossing * zc)
 {
 
 	/********************THEORY***********************************************************
@@ -1603,10 +1603,10 @@ bool checkEdgeZeroCrossingObjectContrastGradients(QFZeroCrossing * zc)
 							+ coefficient[5]/2.0*((float)cos(beta))*((float)sin(beta))
 							+ coefficient[4]*((float)sin(beta))*((float)sin(beta));
 
-	zc->dzalpha = dzdalpha;
-	zc->dzbeta = dzdbeta;
-	zc->dzTwoalpha = dzTwodAlpha;
-	zc->dzTwobeta = dzTwodBeta;
+	zc->dzAlpha = dzdalpha;
+	zc->dzBeta = dzdbeta;
+	zc->dzTwoAlpha = dzTwodAlpha;
+	zc->dzTwoBeta = dzTwodBeta;
 
 	//method 1
 	if(absDouble(dzdalpha) <= MAXIMUM_GRADIENT_OF_CURVATURE_WITH_RESPECT_TO_ORIENTATION_OF_CURVE)

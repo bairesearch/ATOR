@@ -275,9 +275,9 @@ double calculatePointNormalContrastLevelWithinKernel(int pixelX, int pixelY, dou
 				for(int y = (pixelY-1); y<= (pixelY+1)-1; y++)
 				{
 					vec interpixelNormalValue;
-					getXYVectorMapValue((pixelX-1), y, imageWidth, pointNormalMap, &interpixelNormalValue);
+					getXYvectorMapValue((pixelX-1), y, imageWidth, pointNormalMap, &interpixelNormalValue);
 					vec adjacentInterpixelNormalValue;
-					getXYVectorMapValue((pixelX-1)+1, y, imageWidth, pointNormalMap, &adjacentInterpixelNormalValue);
+					getXYvectorMapValue((pixelX-1)+1, y, imageWidth, pointNormalMap, &adjacentInterpixelNormalValue);
 
 					double currentContrastLevelX = absDouble(interpixelNormalValue.x - adjacentInterpixelNormalValue.x);
 					double currentContrastLevelY = absDouble(interpixelNormalValue.y - adjacentInterpixelNormalValue.y);
@@ -289,9 +289,9 @@ double calculatePointNormalContrastLevelWithinKernel(int pixelX, int pixelY, dou
 				for(int x = (pixelX-1); x<= (pixelX+1)-1; x++)
 				{
 					vec interpixelNormalValue;
-					getXYVectorMapValue(x, (pixelY-1), imageWidth, pointNormalMap, &interpixelNormalValue);
+					getXYvectorMapValue(x, (pixelY-1), imageWidth, pointNormalMap, &interpixelNormalValue);
 					vec adjacentInterpixelNormalValue;
-					getXYVectorMapValue(x, (pixelY-1)+1, imageWidth, pointNormalMap, &adjacentInterpixelNormalValue);
+					getXYvectorMapValue(x, (pixelY-1)+1, imageWidth, pointNormalMap, &adjacentInterpixelNormalValue);
 
 					double currentContrastLevelX = absDouble(interpixelNormalValue.x - adjacentInterpixelNormalValue.x);
 					double currentContrastLevelY = absDouble(interpixelNormalValue.y - adjacentInterpixelNormalValue.y);
@@ -322,7 +322,7 @@ double calculatePointNormalContrastLevelWithinKernel(int pixelX, int pixelY, dou
 
 
 
-void cropRGBMap(int originalImageWidth, int originalImageHeight, int cropXPos, int cropYPos, int croppedWidth, int croppedHeight, unsigned char * rgbMapUncropped, unsigned char * rgbMap)
+void cropRGBmap(int originalImageWidth, int originalImageHeight, int cropXPos, int cropYPos, int croppedWidth, int croppedHeight, unsigned char * rgbMapUncropped, unsigned char * rgbMap)
 {
 	int croppedYPos = 0;
 	for(int y = cropYPos; y < cropYPos+croppedHeight; y++)
@@ -365,30 +365,30 @@ void cropDepthMap(int originalImageWidth, int originalImageHeight, int cropXPos,
 
 
 
-void setXYVectorMapValue(int x, int y, int imageWidth, vec * XYVectorVal, double * XYVectorMap)
+void setXYvectorMapValue(int x, int y, int imageWidth, vec * XYvectorVal, double * XYvectorMap)
 {
-	XYVectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_X] = XYVectorVal->x;
-	XYVectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_Y] = XYVectorVal->y;
+	XYvectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_X] = XYvectorVal->x;
+	XYvectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_Y] = XYvectorVal->y;
 }
 
-void getXYVectorMapValue(int x, int y, int imageWidth, double * XYVectorMap, vec * XYVectorVal)
+void getXYvectorMapValue(int x, int y, int imageWidth, double * XYvectorMap, vec * XYvectorVal)
 {
-	XYVectorVal->x = XYVectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_X];
-	XYVectorVal->y = XYVectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_Y];
+	XYvectorVal->x = XYvectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_X];
+	XYvectorVal->y = XYvectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_Y];
 }
 
 
 
 
 
-void generateRGBMapFromDepthGradientMap(int imageWidth, int imageHeight, double * depthGradientMap, unsigned char * rgbMap)
+void generateRGBmapFromDepthGradientMap(int imageWidth, int imageHeight, double * depthGradientMap, unsigned char * rgbMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
   		for(int x = 0; x < imageWidth; x++)
 		{
 			vec depthGradient;
-			getXYVectorMapValue(x, y, imageWidth,depthGradientMap,&depthGradient);
+			getXYvectorMapValue(x, y, imageWidth,depthGradientMap,&depthGradient);
 
 
 			int r;
@@ -427,7 +427,7 @@ void generateRGBMapFromDepthGradientMap(int imageWidth, int imageHeight, double 
 
 
 
-void generateRGBMapFromDepthGradientContrastMap(int imageWidth, int imageHeight, double * depthGradientContrastMap, unsigned char * rgbMap)
+void generateRGBmapFromDepthGradientContrastMap(int imageWidth, int imageHeight, double * depthGradientContrastMap, unsigned char * rgbMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -452,7 +452,7 @@ void generatePixmapFromDepthGradientContrastMap(char * imageFileName, int imageW
 	int x,y;
 	pixmap* pm;
 
-	pm = new_pixmap(imageWidth, imageHeight);
+	pm = newPixmap(imageWidth, imageHeight);
 
 	for(y = 0; y < imageHeight; y++)
 	{
@@ -461,7 +461,7 @@ void generatePixmapFromDepthGradientContrastMap(char * imageFileName, int imageW
 			double depthGradientContrastVal;
 			depthGradientContrastVal = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthGradientContrastMap);
 			int depthGradientContrastValNormalised = minInt((int)(depthGradientContrastVal/ESTIMATE_MAX_DEPTH_GRADIENT_CONTRAST*255.0), 255);
-			placepoint_ppm(pm, x, y, depthGradientContrastValNormalised, depthGradientContrastValNormalised, depthGradientContrastValNormalised);
+			placepointPPM(pm, x, y, depthGradientContrastValNormalised, depthGradientContrastValNormalised, depthGradientContrastValNormalised);
 		}
 	}
 
@@ -474,14 +474,14 @@ void generatePixmapFromDepthGradientMap(char * imageFileName, int imageWidth, in
 	int x,y;
 	pixmap* pm;
 
-	pm = new_pixmap(imageWidth, imageHeight);
+	pm = newPixmap(imageWidth, imageHeight);
 
 	for(y = 0; y < imageHeight; y++)
 	{
   		for(x = 0; x < imageWidth; x++)
 		{
 			vec depthGradient;
-			getXYVectorMapValue(x, y, imageWidth,depthGradientMap,&depthGradient);
+			getXYvectorMapValue(x, y, imageWidth,depthGradientMap,&depthGradient);
 
 
 			int r;
@@ -525,8 +525,8 @@ void generatePixmapFromDepthGradientMap(char * imageFileName, int imageWidth, in
 			}
 
 
-			placepoint_ppm(pm, x, y, r, g, b);
-			//placepoint_ppm(nm, x, y, (int)((depthGradient.x+1.0)*128.0), (int)((depthGradient.y+1.0)*128.0), 0);
+			placepointPPM(pm, x, y, r, g, b);
+			//placepointPPM(nm, x, y, (int)((depthGradient.x+1.0)*128.0), (int)((depthGradient.y+1.0)*128.0), 0);
 
 		}
 	}
@@ -1207,7 +1207,7 @@ void createDepthGradientMapFromDepthMap(int imageWidth, int imageHeight, double 
 		{
 			vec depthGradientVal;
 			calculateDepthGradientValueWithinKernel(x, y, depthMap, kernelWidth, kernelHeight, imageWidth, imageHeight, &depthGradientVal);
-			setXYVectorMapValue(x, y, imageWidth, &depthGradientVal, depthGradientMap);
+			setXYvectorMapValue(x, y, imageWidth, &depthGradientVal, depthGradientMap);
 		}
 	}
 }
@@ -1420,9 +1420,9 @@ double calculateDepthGradientContrastValueWithinKernel(int pixelX, int pixelY, d
 							//METHOD2OLD - works but does not detect features;
 
 							vec kernelCurrentPixelPositionInDepthGradientMapGradient;
-							getXYVectorMapValue(x, y, imageWidth, depthGradientMap, &kernelCurrentPixelPositionInDepthGradientMapGradient);
+							getXYvectorMapValue(x, y, imageWidth, depthGradientMap, &kernelCurrentPixelPositionInDepthGradientMapGradient);
 							vec centrePixelPositionInDepthGradientMapGradient;
-							getXYVectorMapValue(pixelX, pixelY, imageWidth, depthGradientMap, &centrePixelPositionInDepthGradientMapGradient);
+							getXYvectorMapValue(pixelX, pixelY, imageWidth, depthGradientMap, &centrePixelPositionInDepthGradientMapGradient);
 
 							double currentContrastLevel = 0.0;
 							double currentContrastLevelX = absDouble(centrePixelPositionInDepthGradientMapGradient.x - kernelCurrentPixelPositionInDepthGradientMapGradient.x);
@@ -1441,9 +1441,9 @@ double calculateDepthGradientContrastValueWithinKernel(int pixelX, int pixelY, d
 							/*
 							//METHOD1OLD;
 							vec kernelCurrentPixelPositionInDepthGradientMapGradient;
-							getXYVectorMapValue(x, y, imageWidth, depthGradientMap, &kernelCurrentPixelPositionInDepthGradientMapGradient);
+							getXYvectorMapValue(x, y, imageWidth, depthGradientMap, &kernelCurrentPixelPositionInDepthGradientMapGradient);
 							vec centrePixelPositionInDepthGradientMapGradient;
-							getXYVectorMapValue(pixelX, pixelY, imageWidth, depthGradientMap, &centrePixelPositionInDepthGradientMapGradient);
+							getXYvectorMapValue(pixelX, pixelY, imageWidth, depthGradientMap, &centrePixelPositionInDepthGradientMapGradient);
 
 							double currentContrastLevel = 0.0;
 							if((centrePixelPositionInDepthGradientMapGradient.x > 0) && (kernelCurrentPixelPositionInDepthGradientMapGradient.x < 0))
@@ -1484,9 +1484,9 @@ double calculateDepthGradientContrastValueWithinKernel(int pixelX, int pixelY, d
 				for(int y = (pixelY-1); y<= (pixelY+1)-1; y++)
 				{
 					vec interpixelGradientValue;
-					getXYVectorMapValue((pixelX-1), y, imageWidth, depthGradientMap, &interpixelGradientValue);
+					getXYvectorMapValue((pixelX-1), y, imageWidth, depthGradientMap, &interpixelGradientValue);
 					vec adjacentInterpixelGradientValue;
-					getXYVectorMapValue((pixelX-1)+1, y, imageWidth, depthGradientMap, &adjacentInterpixelGradientValue);
+					getXYvectorMapValue((pixelX-1)+1, y, imageWidth, depthGradientMap, &adjacentInterpixelGradientValue);
 
 					double currentContrastLevelX = absDouble(interpixelGradientValue.x - adjacentInterpixelGradientValue.x);
 					double currentContrastLevelY = absDouble(interpixelGradientValue.y - adjacentInterpixelGradientValue.y);
@@ -1498,9 +1498,9 @@ double calculateDepthGradientContrastValueWithinKernel(int pixelX, int pixelY, d
 				for(int x = (pixelX-1); x<= (pixelX+1)-1; x++)
 				{
 					vec interpixelGradientValue;
-					getXYVectorMapValue(x, (pixelY-1), imageWidth, depthGradientMap, &interpixelGradientValue);
+					getXYvectorMapValue(x, (pixelY-1), imageWidth, depthGradientMap, &interpixelGradientValue);
 					vec adjacentInterpixelGradientValue;
-					getXYVectorMapValue(x, (pixelY-1)+1, imageWidth, depthGradientMap, &adjacentInterpixelGradientValue);
+					getXYvectorMapValue(x, (pixelY-1)+1, imageWidth, depthGradientMap, &adjacentInterpixelGradientValue);
 
 					double currentContrastLevelX = absDouble(interpixelGradientValue.x - adjacentInterpixelGradientValue.x);
 					double currentContrastLevelY = absDouble(interpixelGradientValue.y - adjacentInterpixelGradientValue.y);
@@ -1570,7 +1570,7 @@ double calculateDepthGradientContrastValueWithinKernelWRONG(int pixelX, int pixe
 					if(depthGradientSimilarityArray[yDiff*DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_WIDTH_NUMBER_SAMPLES+xDiff] == DEPTH_GRADIENT_SIMILARITY_INDICATOR_UNDEFINED)
 					{
 						vec kernelCurrentPixelPositionInDepthGradientMapGradient;
-						getXYVectorMapValue(x, y, imageWidth, depthGradientMap, &kernelCurrentPixelPositionInDepthGradientMapGradient);
+						getXYvectorMapValue(x, y, imageWidth, depthGradientMap, &kernelCurrentPixelPositionInDepthGradientMapGradient);
 
 
 						for(int y2 = pixelY-(kernelHeight/(DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_HEIGHT_NUMBER_SAMPLES-1)); y2<= pixelY+(kernelHeight/(DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_HEIGHT_NUMBER_SAMPLES-1)); y2=y2+(kernelHeight/(DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_HEIGHT_NUMBER_SAMPLES-1)))
@@ -1596,7 +1596,7 @@ double calculateDepthGradientContrastValueWithinKernelWRONG(int pixelX, int pixe
 										if(depthGradientSimilarityArray[yDiff2*DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_WIDTH_NUMBER_SAMPLES+xDiff2] == DEPTH_GRADIENT_SIMILARITY_INDICATOR_UNDEFINED)
 										{
 											vec kernelCurrentPixelPositionInDepthGradientMapGradient2;
-											getXYVectorMapValue(x2, y2, imageWidth, depthGradientMap, &kernelCurrentPixelPositionInDepthGradientMapGradient2);
+											getXYvectorMapValue(x2, y2, imageWidth, depthGradientMap, &kernelCurrentPixelPositionInDepthGradientMapGradient2);
 
 											double currentContrastLevelX = kernelCurrentPixelPositionInDepthGradientMapGradient2.x - kernelCurrentPixelPositionInDepthGradientMapGradient.x;
 											double currentContrastLevelY = kernelCurrentPixelPositionInDepthGradientMapGradient2.y - kernelCurrentPixelPositionInDepthGradientMapGradient.y;
@@ -1832,7 +1832,7 @@ void createPointNormalContrastBooleanMap(int imageWidth, int imageHeight, double
 	}
 }
 
-void generateRGBMapFromPointNormalContrastMap(int imageWidth, int imageHeight, double * pointNormalContrastMap, unsigned char * rgbMap)
+void generateRGBmapFromPointNormalContrastMap(int imageWidth, int imageHeight, double * pointNormalContrastMap, unsigned char * rgbMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1866,7 +1866,7 @@ void generatePixmapFromPointNormalContrastMap(char * imageFileName, int imageWid
 	int x,y;
 	pixmap* pm;
 
-	pm = new_pixmap(imageWidth, imageHeight);
+	pm = newPixmap(imageWidth, imageHeight);
 
 	for(y = 0; y < imageHeight; y++)
 	{
@@ -1878,7 +1878,7 @@ void generatePixmapFromPointNormalContrastMap(char * imageFileName, int imageWid
 		#ifdef USE_CONTRAST_PIXMAP_INVERSE
 			contrastNormalised = -(contrastNormalised-MAX_RGB_VAL);
 		#endif
-			placepoint_ppm(pm, x, y, contrastNormalised, contrastNormalised, contrastNormalised);
+			placepointPPM(pm, x, y, contrastNormalised, contrastNormalised, contrastNormalised);
 		}
 	}
 
@@ -1917,7 +1917,7 @@ double findDepthOfGivenPixel(int xEye1, int yEye1, int imageWidth, int imageHeig
 
 
 //this function should probably be moved elsewhere
-void resampleRGBMap(unsigned char * rgbMap, int imageWidth, int imageHeight, unsigned char * resampledRGBMapAtDesiredzoomChar, int zoom, int ignoreBackgroundComparisonMethod)
+void resampleRGBmap(unsigned char * rgbMap, int imageWidth, int imageHeight, unsigned char * resampledRGBmapAtDesiredZoomChar, int zoom, int ignoreBackgroundComparisonMethod)
 {
 	int resampledWidth = (imageWidth/zoom);
 	int resampledHeight = (imageHeight/zoom);
@@ -1988,9 +1988,9 @@ void resampleRGBMap(unsigned char * rgbMap, int imageWidth, int imageHeight, uns
 		{
   			for(int x = 0; x < resampledWidth; x++)
 			{
-				resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED];
-				resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN];
-				resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE];
+				resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED];
+				resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN];
+				resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE];
 			}
 		}
 		*/
@@ -2053,22 +2053,22 @@ void resampleRGBMap(unsigned char * rgbMap, int imageWidth, int imageHeight, uns
 				{
 					if(resampledRGBMapAtDesiredzoomBool[y*resampledWidth + x] == false)
 					{
-						resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = (unsigned char)(OR_SNAPSHOT_BACKGROUND_COLOUR_R);
-						resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = (unsigned char)(OR_SNAPSHOT_BACKGROUND_COLOUR_G);
-						resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = (unsigned char)(OR_SNAPSHOT_BACKGROUND_COLOUR_B);
+						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = (unsigned char)(OR_SNAPSHOT_BACKGROUND_COLOUR_R);
+						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = (unsigned char)(OR_SNAPSHOT_BACKGROUND_COLOUR_G);
+						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = (unsigned char)(OR_SNAPSHOT_BACKGROUND_COLOUR_B);
 					}
 					else
 					{
-						resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED]);
-						resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN]);
-						resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE]);
+						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED]);
+						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN]);
+						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE]);
 					}
 				}
 				else
 				{
-					resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED]);
-					resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN]);
-					resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE]);
+					resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED]);
+					resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN]);
+					resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE]);
 				}
 			}
 		}
@@ -2080,9 +2080,9 @@ void resampleRGBMap(unsigned char * rgbMap, int imageWidth, int imageHeight, uns
 		{
   			for(int x = 0; x < resampledWidth; x++)
 			{
-				resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = rgbMap[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED];
-				resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = rgbMap[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN];
-				resampledRGBMapAtDesiredzoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = rgbMap[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE];
+				resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = rgbMap[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED];
+				resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = rgbMap[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN];
+				resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = rgbMap[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE];
 			}
 		}
 	}
@@ -2096,7 +2096,7 @@ void resampleRGBMap(unsigned char * rgbMap, int imageWidth, int imageHeight, uns
 
 
 //this function should probably be moved elsewhere
-void resampleLumOrContrastOrDepthMap(double * lumOrContrastOrDepthMap, int imageWidth, int imageHeight, double * resampledLumOrContrastOrDepthMapAtDesiredzoomChar, int zoom, double offMapValue)
+void resampleLumOrContrastOrDepthMap(double * lumOrContrastOrDepthMap, int imageWidth, int imageHeight, double * resampledLumOrContrastOrDepthMapAtDesiredZoomChar, int zoom, double offMapValue)
 {
 	int resampledWidth = (imageWidth/zoom);
 	int resampledHeight = (imageHeight/zoom);
@@ -2210,17 +2210,17 @@ void resampleLumOrContrastOrDepthMap(double * lumOrContrastOrDepthMap, int image
 				{
 					if(resampledMapAtDesiredzoomBool[y*resampledWidth + x] == false)
 					{
-						resampledLumOrContrastOrDepthMapAtDesiredzoomChar[y*resampledWidth + x] = (unsigned char)(OR_SNAPSHOT_BACKGROUND_COLOUR_R);
+						resampledLumOrContrastOrDepthMapAtDesiredZoomChar[y*resampledWidth + x] = (unsigned char)(OR_SNAPSHOT_BACKGROUND_COLOUR_R);
 					}
 					else
 					{
-						resampledLumOrContrastOrDepthMapAtDesiredzoomChar[y*resampledWidth + x] = (unsigned char)(resampledMapAtDesiredzoomInt[y*resampledWidth + x]);
+						resampledLumOrContrastOrDepthMapAtDesiredZoomChar[y*resampledWidth + x] = (unsigned char)(resampledMapAtDesiredzoomInt[y*resampledWidth + x]);
 
 					}
 				}
 				else
 				{
-					resampledLumOrContrastOrDepthMapAtDesiredzoomChar[y*resampledWidth + x] = (unsigned char)(resampledMapAtDesiredzoomInt[y*resampledWidth + x]);
+					resampledLumOrContrastOrDepthMapAtDesiredZoomChar[y*resampledWidth + x] = (unsigned char)(resampledMapAtDesiredzoomInt[y*resampledWidth + x]);
 
 				}
 			}
@@ -2234,7 +2234,7 @@ void resampleLumOrContrastOrDepthMap(double * lumOrContrastOrDepthMap, int image
 		{
   			for(int x = 0; x < resampledWidth; x++)
 			{
-				resampledLumOrContrastOrDepthMapAtDesiredzoomChar[y*resampledWidth + x] = lumOrContrastOrDepthMap[y*resampledWidth + x];
+				resampledLumOrContrastOrDepthMapAtDesiredZoomChar[y*resampledWidth + x] = lumOrContrastOrDepthMap[y*resampledWidth + x];
 			}
 		}
 	}

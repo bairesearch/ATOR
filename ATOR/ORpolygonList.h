@@ -62,18 +62,18 @@ public:
 
 
 
-class SnapshotIDReferenceList{
+class SnapshotIDreferenceList{
 private:
 	/*There are currently no private attributes of this class*/
 public:
 
-	SnapshotIDReferenceList(void); // constructor declaration
-	~SnapshotIDReferenceList();	//  and destructor.
+	SnapshotIDreferenceList(void); // constructor declaration
+	~SnapshotIDreferenceList();	//  and destructor.
 
 	long referenceID;
 
-	SnapshotIDReferenceList * next;
-	SnapshotIDReferenceList * previous;	//only used for ORdatabaseDecisionTree.cpp
+	SnapshotIDreferenceList * next;
+	SnapshotIDreferenceList * previous;	//only used for ORdatabaseDecisionTree.cpp
 };
 
 

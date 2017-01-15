@@ -137,12 +137,12 @@ int ORTHimageCategorisationNN()
 	bool result = true;
 
 
-	if(!parseORRulesXMLFile())
+	if(!parseORrulesXMLfile())
 	{
 		cout << "error: no rules file detected" << endl;
 		exit(0);
 	}
-	fillInORRulesExternVariables();
+	fillInORrulesExternVariables();
 
 	#define IRRELEVANT (0)
 
@@ -183,14 +183,14 @@ int ORTHimageCategorisationNN()
 	#endif
 
 
- 	int NNTypeBeingTested = OR_IMAGE_CATEGORISTION_NN_USE_PIXMAP_EXPERIENCE;
+ 	int NNtypeBeingTested = OR_IMAGE_CATEGORISTION_NN_USE_PIXMAP_EXPERIENCE;
 
 
 	for(int nn=0; nn< numberOfNeuralNetworks; nn++)
 	{
 		firstInputNeuronInNetwork[nn] = new NeuronContainer();
 
-		firstOutputNeuronInNetwork[nn] = initialiseImageNeuralNetwork(NNTypeBeingTested, firstInputNeuronInNetwork[nn], &numberOfInputNeurons, numberOfOutputNeurons, exampleImageFileName);
+		firstOutputNeuronInNetwork[nn] = initialiseImageNeuralNetwork(NNtypeBeingTested, firstInputNeuronInNetwork[nn], &numberOfInputNeurons, numberOfOutputNeurons, exampleImageFileName);
 
 		//method A: dumb NN use random weights/biases
 		resetNeuralNetworkWithRandomBiasAndWeights(firstInputNeuronInNetwork[nn]);
@@ -261,23 +261,23 @@ int ORTHimageCategorisationNN()
 
 
 			/*
-			if(NNTypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_GEO_EXPERIENCE)
+			if(NNtypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_GEO_EXPERIENCE)
 			{
 				numberOfOutputNeurons = PROPERTIES_EXPERIENCE_NUMBER_OF_DIFFERENT_OUTPUT_DECISIONS;
 				generateExperienceFromUnitPropertiesDecision(tempUnitReference, tempUnitRefenceOpponent, objectDecision, currentExperience, currentPhase);
 			}
-			else */if(NNTypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_DCT_EXPERIENCE)
+			else */if(NNtypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_DCT_EXPERIENCE)
 			{
-				generateDCTArrayExperienceFromImage(imageFileName, currentExperience, objectDecision);
+				generateDCTarrayExperienceFromImage(imageFileName, currentExperience, objectDecision);
 
 			}
-			else if(NNTypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_PIXMAP_EXPERIENCE)
+			else if(NNtypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_PIXMAP_EXPERIENCE)
 			{
 				generatePixelMapExperienceFromImage(imageFileName, currentExperience, objectDecision);
 			}
 			else
 			{
-				cout << "error: initialiseImageNeuralNetwork(): illegal NNTypeBeingTested" << endl;
+				cout << "error: initialiseImageNeuralNetwork(): illegal NNtypeBeingTested" << endl;
 				exit(0);
 			}
 
@@ -492,19 +492,19 @@ int ORTHimageCategorisationNN()
 void deriveDCTcoefficients(string exampleImageFileName, signed char dctCoeff[])
 {
 	signed char * dctCoeffArrayY = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
-	signed char * dctCoeffArrayYCr = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
-	signed char * dctCoeffArrayYCb = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
+	signed char * dctCoeffArrayYcr = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
+	signed char * dctCoeffArrayYcb = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
 	signed char * dctCoeffArrayYDummy = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
 	signed char * dctCoeffArrayYCrDummy = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
 	signed char * dctCoeffArrayYCbDummy = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
 
 	string rgbMapFacingPolySmallFileNameJPEG = "temp.jpg";
 
-	readDCTCoeffIndividualArraysAndConvertToConcatonatedSignedDctCoeffArray(exampleImageFileName, rgbMapFacingPolySmallFileNameJPEG, dctCoeff, false);
+	readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(exampleImageFileName, rgbMapFacingPolySmallFileNameJPEG, dctCoeff, false);
 }
 
 
-NeuronContainer * initialiseImageNeuralNetwork(int NNTypeBeingTested, NeuronContainer * firstInputNeuronInNetwork, long * numberOfInputNeurons, long numberOfOutputNeurons, string exampleImageFileName)
+NeuronContainer * initialiseImageNeuralNetwork(int NNtypeBeingTested, NeuronContainer * firstInputNeuronInNetwork, long * numberOfInputNeurons, long numberOfOutputNeurons, string exampleImageFileName)
 {
 	NeuronContainer * firstOutputNeuronInNetwork;
 
@@ -514,23 +514,23 @@ NeuronContainer * initialiseImageNeuralNetwork(int NNTypeBeingTested, NeuronCont
 	Experience * tempExperience = new Experience;
 
 	/*
-	if(NNTypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_GEO_EXPERIENCE)
+	if(NNtypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_GEO_EXPERIENCE)
 	{
 		numberOfOutputNeurons = PROPERTIES_EXPERIENCE_NUMBER_OF_DIFFERENT_OUTPUT_DECISIONS;
 		generateExperienceFromUnitPropertiesDecision(tempUnitReference, tempUnitRefenceOpponent, tempObjectDecision, tempExperience, currentPhase);
 	}
-	else */if(NNTypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_DCT_EXPERIENCE)
+	else */if(NNtypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_DCT_EXPERIENCE)
 	{
-		generateDCTArrayExperienceFromImage(exampleImageFileName, tempExperience, tempObjectDecision);
+		generateDCTarrayExperienceFromImage(exampleImageFileName, tempExperience, tempObjectDecision);
 
 	}
-	else if(NNTypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_PIXMAP_EXPERIENCE)
+	else if(NNtypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_PIXMAP_EXPERIENCE)
 	{
 		generatePixelMapExperienceFromImage(exampleImageFileName, tempExperience, tempObjectDecision);
 	}
 	else
 	{
-		cout << "error: initialiseImageNeuralNetwork(): illegal NNTypeBeingTested" << endl;
+		cout << "error: initialiseImageNeuralNetwork(): illegal NNtypeBeingTested" << endl;
 		exit(0);
 	}
 
@@ -542,12 +542,12 @@ NeuronContainer * initialiseImageNeuralNetwork(int NNTypeBeingTested, NeuronCont
 		//arbitrary NN number of layers heuristic - need to optimise this
 
 
-	/*if(NNTypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_GEO_EXPERIENCE)
+	/*if(NNtypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_GEO_EXPERIENCE)
 	{
 		numberOfLayers = GAME_NUMBER_OF_NN_LAYERS;
 		firstOutputNeuronInNetwork = formNeuralNetWithOptimisedProperties(firstInputNeuronInNetwork, numberOfInputNeurons, numberOfOutputNeurons, numberOfLayers);
 	}
-	else */if(NNTypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_DCT_EXPERIENCE)
+	else */if(NNtypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_DCT_EXPERIENCE)
 	{
 		numberOfLayers = OR_IMAGE_COMPARISON_NN_NUMBER_OF_NN_LAYERS_DCT_EXPERIENCE;
 		int layerDivergenceType = LAYER_DIVERGENCE_TYPE_LINEAR_CONVERGING;
@@ -556,7 +556,7 @@ NeuronContainer * initialiseImageNeuralNetwork(int NNTypeBeingTested, NeuronCont
 		double probabilityNeuronConnectionWithAllPreviousLayersNeurons = 0.5;
 		firstOutputNeuronInNetwork = formNeuralNet(firstInputNeuronInNetwork, *numberOfInputNeurons, numberOfOutputNeurons, numberOfLayers, layerDivergenceType, meanLayerDivergenceFactor, probabilityNeuronConnectionWithPreviousLayerNeuron, probabilityNeuronConnectionWithAllPreviousLayersNeurons);
 	}
-	else if(NNTypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_PIXMAP_EXPERIENCE)
+	else if(NNtypeBeingTested == OR_IMAGE_CATEGORISTION_NN_USE_PIXMAP_EXPERIENCE)
 	{
 		numberOfLayers = OR_IMAGE_COMPARISON_NN_NUMBER_OF_NN_LAYERS_PIXMAP_EXPERIENCE;
 		int layerDivergenceType = OR_IMAGE_COMPARISON_NN_DIVERGENCE_TYPE; 	//LAYER_DIVERGENCE_TYPE_LINEAR_DIVERGING_SQUARE2D	//DEFAULT = LAYER_DIVERGENCE_TYPE_LINEAR_DIVERGING_SQUARE2D;
@@ -579,7 +579,7 @@ NeuronContainer * initialiseImageNeuralNetwork(int NNTypeBeingTested, NeuronCont
 }
 
 
-void generateExperienceFrom1Array(double * array, int arrayLength, double maxInputValueForNormalisation, Experience * currentExperience, int objectDecision)
+void generateExperienceFromOneArray(double * array, int arrayLength, double maxInputValueForNormalisation, Experience * currentExperience, int objectDecision)
 {
 	currentExperience->classTargetValue = objectDecision;
 	ExperienceInput * currentExperienceInput = currentExperience->firstExperienceInput;
@@ -598,7 +598,7 @@ void generateExperienceFrom1Array(double * array, int arrayLength, double maxInp
 
 
 
-bool generateDCTArrayExperienceFromImage(string imageFileName, Experience * currentExperience, int objectDecision)
+bool generateDCTarrayExperienceFromImage(string imageFileName, Experience * currentExperience, int objectDecision)
 {
 	//now derive DCT coefficients
 	signed char dctCoeff[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
@@ -615,7 +615,7 @@ bool generateDCTArrayExperienceFromImage(string imageFileName, Experience * curr
 		}
 	}
 	double maxInputValueForNormalisation = maxValue;
-	generateExperienceFrom1Array(dctCoeffDouble, OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX, maxInputValueForNormalisation, currentExperience, objectDecision);
+	generateExperienceFromOneArray(dctCoeffDouble, OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX, maxInputValueForNormalisation, currentExperience, objectDecision);
 
 }
 
@@ -634,7 +634,7 @@ bool generatePixelMapExperienceFromImage(string imageFileName, Experience * curr
 	#ifdef DEBUG_TH_OR_IMAGE_CATEGORISTION_NN_3
 	cout << "image file being loaded = " << charstarrayImageFileName << endl;
 	#endif
-	objectImage = load_ppm(charstarrayImageFileName);
+	objectImage = loadPPM(charstarrayImageFileName);
 
 	//4. produce contrast map from pixmap image
 	unsigned char * rgbMap = new unsigned char [objectImage->wide * objectImage->high * RGB_NUM];
@@ -705,11 +705,11 @@ bool generatePixelMapExperienceFromImage(string imageFileName, Experience * curr
 	delete objectImage;
 	delete objectImageContrast;
 	delete objectImageLuminosity;
-	//free_pixmap(objectImage);
-	//free_pixmap(objectImageContrast);
-	//free_pixmap(objectImageLuminosity);
+	//freePixmap(objectImage);
+	//freePixmap(objectImageContrast);
+	//freePixmap(objectImageLuminosity);
 	*/
-	free_pixmap(objectImage);
+	freePixmap(objectImage);
 
 	return result;
 }

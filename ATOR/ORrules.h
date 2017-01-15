@@ -45,7 +45,7 @@ using namespace std;
 
 bool convertStringToBool(string stringValue);
 
-void fillInORRulesExternVariables();
-void printORRulesExternVariables();
+void fillInORrulesExternVariables();
+void printORrulesExternVariables();
 
 #endif

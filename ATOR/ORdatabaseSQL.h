@@ -66,13 +66,13 @@ int countIncrements(int maxIncrement);
 //#ifdef OR_IMAGE_COMPARISON_DECISION_TREE
 void createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(FeatureContainer * firstFeatureContainerInTestFeatureMatchingTrainBin, bool ignoreOTfeatures, char * decisionTreeBinText, int decisionTreeBinTextLength, int trainOrTest);
 
-void createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(SnapshotIDReferenceList * firstReferenceInSnapshotIDReferenceList, string sqlDatabaseDecisionTreeTableName, char * decisionTreeBinText, int decisionTreeBinTextLength, int trainOrTest);
-void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTree(string sqlDatabaseDecisionTreeTableName, char * decisionTreeBinText, int decisionTreeBinTextLength, long snapshotReferenceID, long * databaseTableSize);
+void createSnapshotIDreferenceListUsingSQLdatabaseDecisionTreeTableQuery(SnapshotIDreferenceList * firstReferenceInSnapshotIDreferenceList, string sqlDatabaseDecisionTreeTableName, char * decisionTreeBinText, int decisionTreeBinTextLength, int trainOrTest);
+void insertSnapshotIDreferenceIntoSQLdatabaseDecisionTree(string sqlDatabaseDecisionTreeTableName, char * decisionTreeBinText, int decisionTreeBinTextLength, long snapshotReferenceID, long * databaseTableSize);
 
 #ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
-void insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeStart(string sqlDatabaseDecisionTreeTableName, char * decisionTreeultipleRowInsertQueryTextCharStar, long * decisionTreeSQLMultipleRowInsertQueryLength);
-void insertSnapshotIDReferenceIntoSQLDatabaseDecisionTreeIteration(char * decisionTreeBinText, int decisionTreeBinTextLength, long snapshotReferenceID, long * databaseTableSize, char * decisionTreeultipleRowInsertQueryTextCharStar, long * decisionTreeSQLMultipleRowInsertQueryLength);
-void insertAllSnapshotIDReferencesIntoSQLDatabaseDecisionTreeEnd(char * decisionTreeultipleRowInsertQueryTextCharStar, long * decisionTreeSQLMultipleRowInsertQueryLength);
+void insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart(string sqlDatabaseDecisionTreeTableName, char * decisionTreeMultipleRowInsertQueryTextCharStar, long * decisionTreeSQLmultipleRowInsertQueryLength);
+void insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration(char * decisionTreeBinText, int decisionTreeBinTextLength, long snapshotReferenceID, long * databaseTableSize, char * decisionTreeMultipleRowInsertQueryTextCharStar, long * decisionTreeSQLmultipleRowInsertQueryLength);
+void insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeEnd(char * decisionTreeMultipleRowInsertQueryTextCharStar, long * decisionTreeSQLmultipleRowInsertQueryLength);
 #endif
 
 //#endif
@@ -82,8 +82,8 @@ void convertSQLdatabaseStringToSnapshotMaps(int imageWidthFacingPoly, int imageH
 
 
 //#ifdef OR_IMAGE_COMPARISON_SQL
-void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * firstFeatureContainerInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour * normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], unsigned char * rgb8BitSmallMapForInstantDBQueryAccessRequirement, int smallImageWidth, int smallImageHeight, string trainTableName, int trainOrTest);
-void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest, bool ignoreOTfeatures, unsigned char * rgb8BitSmallMapForInstantDBQueryAccess, int smallImageWidth, int smallImageHeight, bool addPermutationsOfTrainFeaturesForGeoBinning, int maxNumFeaturePermutations, string tableName, long * databaseTableSize);
+void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * firstFeatureContainerInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour * normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], unsigned char * rgb8bitSmallMapForInstantDBqueryAccessRequirement, int smallImageWidth, int smallImageHeight, string trainTableName, int trainOrTest);
+void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest, bool ignoreOTfeatures, unsigned char * rgb8bitSmallMapForInstantDBqueryAccess, int smallImageWidth, int smallImageHeight, bool addPermutationsOfTrainFeaturesForGeoBinning, int maxNumFeaturePermutations, string tableName, long * databaseTableSize);
 void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, bool createFeatureObjects, bool ignoreOTfeatures, int numFeatures);
 void createSQLSelectRowCommand(char sqlSelectRowCommand[], int numFeatures);
 void createFeatureListUsingDatabaseQuery(Feature * firstFeatureInList, bool createFeatureObjects, bool appendToList, bool ignoreOTfeatures, string sqlDatabaseTestTableName, long testID, string testObjectName, int testViewIndex, int testZoomIndex, int testPolyIndex, int testSideIndex, bool useTestID);
@@ -93,15 +93,15 @@ void createFeatureListUsingDatabaseQuery(Feature * firstFeatureInList, bool crea
 long powLong(long val, int degree);
 	#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
-	void convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(signed char concatonatedSignedDctCoeffArray[], char * DCTCoeff64BitValueString, int * DCTCoeff64BitValueStringLength, int concatonatedDctCoeffArrayBiasInt[]);
+	void convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(signed char concatonatedSignedDctCoeffArray[], char * DCTcoeff64bitValueString, int * DCTcoeff64bitValueStringLength, int concatonatedDctCoeffArrayBiasInt[]);
 	#else
-	void convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(signed char concatonatedSignedDctCoeffArray[], char * DCTCoeff64BitValueString, int * DCTCoeff64BitValueStringLength);
+	void convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(signed char concatonatedSignedDctCoeffArray[], char * DCTcoeff64bitValueString, int * DCTcoeff64bitValueStringLength);
 	#endif
 	#else
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
-	unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(signed char concatonatedSignedDctCoeffArray[], int concatonatedDctCoeffArrayBiasInt[]);
+	unsigned long convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(signed char concatonatedSignedDctCoeffArray[], int concatonatedDctCoeffArrayBiasInt[]);
 	#else
-	unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(signed char concatonatedSignedDctCoeffArray[]);
+	unsigned long convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(signed char concatonatedSignedDctCoeffArray[]);
 	#endif
 	#endif
 

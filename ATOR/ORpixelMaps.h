@@ -76,19 +76,19 @@ void createPointNormalContrastMapFromPointNormalMap(int imageWidth, int imageHei
 	double calculatePointNormalContrastLevelWithinKernel(int pixelX, int pixelY, double * pointNormalMap, int kernelWidth, int kernelHeight, int imageWidth, int imageHeight);
 
 
-void setXYVectorMapValue(int x, int y, int imageWidth, vec * XYVectorVal, double * XYVectorMap);
-void getXYVectorMapValue(int x, int y, int imageWidth, double * XYVectorMap, vec * XYVectorVal);
+void setXYvectorMapValue(int x, int y, int imageWidth, vec * XYvectorVal, double * XYvectorMap);
+void getXYvectorMapValue(int x, int y, int imageWidth, double * XYvectorMap, vec * XYvectorVal);
 
 void createDepthContrastBooleanMap(int imageWidth, int imageHeight, double * depthContrastMap, bool * depthContrastBooleanMap);
 
 void generatePixmapFromDepthGradientMap(char * imageFileName, int imageWidth, int imageHeight, double * depthGradientMap);
-void generateRGBMapFromDepthGradientMap(int imageWidth, int imageHeight, double * depthGradientMap, unsigned char * rgbMap);
+void generateRGBmapFromDepthGradientMap(int imageWidth, int imageHeight, double * depthGradientMap, unsigned char * rgbMap);
 void generatePixmapFromDepthGradientContrastMap(char * imageFileName, int imageWidth, int imageHeight, double * depthGradientContrastMap);
-void generateRGBMapFromDepthGradientContrastMap(int imageWidth, int imageHeight, double * depthGradientContrastMap, unsigned char * rgbMap);
+void generateRGBmapFromDepthGradientContrastMap(int imageWidth, int imageHeight, double * depthGradientContrastMap, unsigned char * rgbMap);
 void createDepthGradientContrastBooleanMap(int imageWidth, int imageHeight, double * depthGradientContrastMap, bool * depthGradientContrastBooleanMap);
 
 void generatePixmapFromPointNormalContrastMap(char * imageFileName, int imageWidth, int imageHeight, double * pointNormalContrastMap);
-void generateRGBMapFromPointNormalContrastMap(int imageWidth, int imageHeight, double * pointNormalContrastMap, unsigned char * rgbMap);
+void generateRGBmapFromPointNormalContrastMap(int imageWidth, int imageHeight, double * pointNormalContrastMap, unsigned char * rgbMap);
 void createPointNormalContrastBooleanMap(int imageWidth, int imageHeight, double * pointNormalContrastMap, bool * pointNormalContrastBooleanMap);
 
 
@@ -128,11 +128,11 @@ void createNormalMap(int imageWidth, int imageHeight, double * luminosityContras
 double findDepthOfGivenPixel(int xEye1, int yEye1, int imageWidth, int imageHeight, double * luminosityContrastMapEye1, double * luminosityContrastMapEye2, unsigned char * rgbMapEye1, unsigned char * rgbMapEye2, double * calculatedxEye2, double * calculatedyEye2);
 
 
-void cropRGBMap(int originalImageWidth, int originalImageHeight, int cropXPos, int cropYPos, int croppedWidth, int croppedHeight, unsigned char * rgbMapUncropped, unsigned char * rgbMap);
+void cropRGBmap(int originalImageWidth, int originalImageHeight, int cropXPos, int cropYPos, int croppedWidth, int croppedHeight, unsigned char * rgbMapUncropped, unsigned char * rgbMap);
 void cropDepthMap(int originalImageWidth, int originalImageHeight, int cropXPos, int cropYPos, int croppedWidth, int croppedHeight, double * depthMapUncropped, double * depthMap);
 
-void resampleRGBMap(unsigned char * rgbMap, int imageWidth, int imageHeight, unsigned char * resampledRGBMapAtDesiredzoomChar, int zoom, int ignoreBackgroundComparisonMethod);
-void resampleLumOrContrastOrDepthMap(double * lumOrContrastOrDepthMap, int imageWidth, int imageHeight, double * resampledLumOrContrastOrDepthMapAtDesiredzoomChar, int zoom, double offMapValue);
+void resampleRGBmap(unsigned char * rgbMap, int imageWidth, int imageHeight, unsigned char * resampledRGBmapAtDesiredZoomChar, int zoom, int ignoreBackgroundComparisonMethod);
+void resampleLumOrContrastOrDepthMap(double * lumOrContrastOrDepthMap, int imageWidth, int imageHeight, double * resampledLumOrContrastOrDepthMapAtDesiredZoomChar, int zoom, double offMapValue);
 
 void createArbitraryContrastBooleanMap(int imageWidth, int imageHeight, double * contrastMap, bool * contrastBooleanMap, double sensitivity);
 

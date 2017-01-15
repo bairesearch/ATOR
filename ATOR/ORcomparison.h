@@ -56,7 +56,7 @@ extern long time5bNormalisedSnapshotComparisonCompareSnapshotDataIndex;
 //#endif
 
 //#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
-void filldctCoeffSelectionArrays();
+void fillDCTcoeffSelectionArrays();
 //#endif
 
 #ifdef OR_IMAGE_COMPARISON_SQL
@@ -70,23 +70,23 @@ void writeStringToFileObject2(string s, ofstream * writeFileObject);
 //#endif
 
 //#ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING
-void convertNormalisedHueDeviationMapTo3x8BitMap(int imageWidth, int imageHeight, double * rgbDevIEnormalisedHueContrastMapSmallFacingPoly, unsigned char * rgbDev8BitSmallMapFacingPoly);
-	void cullAndBinNormalisedHueContrast(vec * normalisedHueContrast, colour * cullednormalisedHueContrast);
+void convertNormalisedHueDeviationMapTo3x8bitMap(int imageWidth, int imageHeight, double * rgbDevIEnormalisedHueContrastMapSmallFacingPoly, unsigned char * rgbDev8BitSmallMapFacingPoly);
+	void cullAndBinNormalisedHueContrast(vec * normalisedHueContrast, colour * culledNormalisedHueContrast);
 //#endif
 //#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
-void convertDCTCoeffIndividualArraysToConcatonatedSignedDctCoeffArray(signed char dctCoeffArrayY[], signed char dctCoeffArrayYCr[], signed char dctCoeffArrayYCb[], signed char concatonatedSignedDctCoeffArray[]);
+void convertDCTcoeffIndividualArraysToConcatonatedSignedDCTcoeffArray(signed char dctCoeffArrayY[], signed char dctCoeffArrayYcr[], signed char dctCoeffArrayYcb[], signed char concatonatedSignedDctCoeffArray[]);
 //#endif
 
 void convertImageFileType(string * imageBaseFileName, string * imageBaseFileNameConverted, string imageExtension, string imageExtensionConverted);
 #ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
-void createGeoTableHTMLfromFeatureList(Feature * firstFeatureInNearestFeatureList, bool applyBinning, string * geoTableHTMLOutputString);
+void createGeoTableHTMLfromFeatureList(Feature * firstFeatureInNearestFeatureList, bool applyBinning, string * geoTableHTMLoutputString);
 #endif
 /*
 #ifdef DEBUG_OR_OUTPUT_DT_BIN
 bool determineIfGeoBinningIdenticalMatchFound(Feature * firstFeatureInNearestFeatureList, int pBinxRequirement[], int pBinyRequirement[]);
 #endif
 */
-void readDCTCoeffIndividualArraysAndConvertToConcatonatedSignedDctCoeffArray(string * rgbMapSmallFacingPolyFileNamePPMCPlus, string * rgbMapSmallFacingPolyFileNameJPEGCPlus, signed char * concatonatedSignedDctCoeffArrayRequirement, bool printOutput);
+void readDCTcoeffIndividualArraysAndConvertToConcatonatedSignedDCTcoeffArray(string * rgbMapSmallFacingPolyFileNamePPMcplus, string * rgbMapSmallFacingPolyFileNameJPEGcplus, signed char * concatonatedSignedDctCoeffArrayRequirement, bool printOutput);
 
 
 #endif

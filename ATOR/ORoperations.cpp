@@ -50,7 +50,7 @@ double minObjectDepthAsDeterminedByCurrentFocus = MIN_OBJECT_DEPTH_AS_DETERMINED
 
 
 
-void createPointMapFromDepthMap(int imageWidth, int imageHeight, double * depthMap, double * pointMap, view_info * vi)
+void createPointMapFromDepthMap(int imageWidth, int imageHeight, double * depthMap, double * pointMap, ViewInfo * vi)
 {
 	//fill luminosityMap
 	for(int y = 0; y < imageHeight; y++)
@@ -78,24 +78,24 @@ void createPointMapFromDepthMap(int imageWidth, int imageHeight, double * depthM
 	}
 }
 
-void printvi(view_info * vi)
+void printvi(ViewInfo * vi)
 {
 	cout << "printvi()" << endl;
 
-	cout << "vi->viewat.x = " << vi->viewat.x << endl;
-	cout << "vi->viewat.y = " << vi->viewat.y << endl;
-	cout << "vi->viewat.z = " << vi->viewat.z << endl;
-	cout << "vi->viewup.x = " << vi->viewup.x << endl;
-	cout << "vi->viewup.y = " << vi->viewup.y << endl;
-	cout << "vi->viewup.z = " << vi->viewup.z << endl;
+	cout << "vi->viewAt.x = " << vi->viewAt.x << endl;
+	cout << "vi->viewAt.y = " << vi->viewAt.y << endl;
+	cout << "vi->viewAt.z = " << vi->viewAt.z << endl;
+	cout << "vi->viewUp.x = " << vi->viewUp.x << endl;
+	cout << "vi->viewUp.y = " << vi->viewUp.y << endl;
+	cout << "vi->viewUp.z = " << vi->viewUp.z << endl;
 	cout << "vi->eye.x = " << vi->eye.x << endl;
 	cout << "vi->eye.y = " << vi->eye.y << endl;
 	cout << "vi->eye.z = " << vi->eye.z << endl;
-	cout << "vi->imgwidth = " << vi->imgwidth << endl;
-	cout << "vi->imgheight = " << vi->imgheight << endl;
-	cout << "vi->viewwidth = " << vi->viewwidth << endl;
-	cout << "vi->viewheight = " << vi->viewheight << endl;
-	cout << "vi->focal_length = " << vi->focal_length << endl;
+	cout << "vi->imageWidth = " << vi->imageWidth << endl;
+	cout << "vi->imageHeight = " << vi->imageHeight << endl;
+	cout << "vi->viewWidth = " << vi->viewWidth << endl;
+	cout << "vi->viewHeight = " << vi->viewHeight << endl;
+	cout << "vi->focalLength = " << vi->focalLength << endl;
 }
 
 
@@ -143,7 +143,7 @@ void printDepthMap(int imageWidth, int imageHeight, double * depthMap)
 
 
 
-bool addFeatureToListAndIfACommonFeatureExistsTakeAverage(vec * proposedFeature, Feature * firstFeatureInList, double maxFeatureDistanceError, bool checkZAlso)
+bool addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec * proposedFeature, Feature * firstFeatureInList, double maxFeatureDistanceError, bool checkAlsoZ)
 {
 	bool foundCommonFeature = false;
 
@@ -155,7 +155,7 @@ bool addFeatureToListAndIfACommonFeatureExistsTakeAverage(vec * proposedFeature,
 		{
 			 //METHOD1;
 			double distanceBetweenTwoPoints;
-			if(checkZAlso)
+			if(checkAlsoZ)
 			{
 				distanceBetweenTwoPoints = calculateTheDistanceBetweenTwoPoints(&(currentFeatureInList->point), proposedFeature);
 			}
@@ -220,7 +220,7 @@ bool addFeatureToListAndIfACommonFeatureExistsTakeAverage(vec * proposedFeature,
 
 
 
-bool checkFeatureListForCommonFeature(vec * corner, Feature * firstFeatureInList, double maxFeatureDistanceError, bool checkZAlso)
+bool checkFeatureListForCommonFeature(vec * corner, Feature * firstFeatureInList, double maxFeatureDistanceError, bool checkAlsoZ)
 {
 	bool foundCommonFeature = false;
 
@@ -240,7 +240,7 @@ bool checkFeatureListForCommonFeature(vec * corner, Feature * firstFeatureInList
 
 			 //METHOD1;
 			double distanceBetweenTwoPoints;
-			if(checkZAlso)
+			if(checkAlsoZ)
 			{
 				distanceBetweenTwoPoints = calculateTheDistanceBetweenTwoPoints(&(currentFeatureInList->point), corner);
 			}
@@ -270,7 +270,7 @@ bool checkFeatureListForCommonFeature(vec * corner, Feature * firstFeatureInList
 }
 
 
-void generateBooleanMapFromFeatureList(int imageWidth, int imageHeight, Feature * firstFeatureInList,  bool * featuresMap, view_info * vi, int zoom)
+void generateBooleanMapFromFeatureList(int imageWidth, int imageHeight, Feature * firstFeatureInList,  bool * featuresMap, ViewInfo * vi, int zoom)
 {
 	//initialise featuresMap
 	for(int y = 0; y < imageHeight; y++)
@@ -1241,9 +1241,9 @@ void createInterpolatedDepthMap(int imageWidth, int imageHeight, double * depthM
 
 
 
-void applyTransformationMatrixToAllReferencesIn2DList(Reference * firstReferenceInInterpolated2DRGBMap, mat * transformationMatrix)
+void applyTransformationMatrixToAllReferencesIn2Dlist(Reference * firstReferenceInInterpolated2DrgbMap, mat * transformationMatrix)
 {
-	Reference * currentReference = firstReferenceInInterpolated2DRGBMap;
+	Reference * currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 		vec vecNew;
@@ -1260,9 +1260,9 @@ void applyTransformationMatrixToAllReferencesIn2DList(Reference * firstReference
 	}
 }
 
-void applyTranslationToAllReferencesIn2DList(Reference * firstReferenceInInterpolated2DRGBMap, vec * translationVector)
+void applyTranslationToAllReferencesIn2Dlist(Reference * firstReferenceInInterpolated2DrgbMap, vec * translationVector)
 {
-	Reference * currentReference = firstReferenceInInterpolated2DRGBMap;
+	Reference * currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 		currentReference->vertex1absolutePosition.x = currentReference->vertex1absolutePosition.x + translationVector->x;
@@ -1283,9 +1283,9 @@ void applyTranslationToAllReferencesIn2DList(Reference * firstReferenceInInterpo
 }
 
 
-void restoreBackupVertexAbsPositionsForAllReferencesIn2DList(Reference * firstReferenceInInterpolated2DRGBMap)
+void restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(Reference * firstReferenceInInterpolated2DrgbMap)
 {
-	Reference * currentReference = firstReferenceInInterpolated2DRGBMap;
+	Reference * currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 		currentReference->vertex1absolutePosition.x = currentReference->vertex1absolutePositionBackup.x;
@@ -1305,9 +1305,9 @@ void restoreBackupVertexAbsPositionsForAllReferencesIn2DList(Reference * firstRe
 	}
 }
 
-void storeBackupVertexAbsPositionsForAllReferencesIn2DList(Reference * firstReferenceInInterpolated2DRGBMap)
+void storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(Reference * firstReferenceInInterpolated2DrgbMap)
 {
-	Reference * currentReference = firstReferenceInInterpolated2DRGBMap;
+	Reference * currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
 	{
 		currentReference->vertex1absolutePositionBackup.x = currentReference->vertex1absolutePosition.x;

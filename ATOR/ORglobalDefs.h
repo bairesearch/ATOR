@@ -585,19 +585,19 @@
  *
  * Usage Examples;
  *
- * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -cleartrain -multview multViewList2DOD.txt -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
+ * ./OpenOR.exe -sqlIPaddress localhost -sqlUsername MYSQLUSERNAME -sqlPassword MYSQLPASSWORD -trainortest 1 -object house2DOD -cleartrain -multview multViewList2DOD.txt -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
  *
- * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
- * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
- * OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "E:\Files\source\sourcevs\source\working" -exefolder "E:\Files\source\sourcevs\source\working" -workingfolder "E:\Files\source\sourcevs\source\working"
- * OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "E:\Files\source\sourcevs\source\working" -exefolder "E:\Files\source\sourcevs\source\working" -workingfolder "E:\Files\source\sourcevs\source\working"
+ * ./OpenOR.exe -sqlIPaddress localhost -sqlUsername MYSQLUSERNAME -sqlPassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
+ * ./OpenOR.exe -sqlIPaddress localhost -sqlUsername MYSQLUSERNAME -sqlPassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
+ * OpenOR.exe -sqlIPaddress localhost -sqlUsername MYSQLUSERNAME -sqlPassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "E:\Files\source\sourcevs\source\working" -exefolder "E:\Files\source\sourcevs\source\working" -workingfolder "E:\Files\source\sourcevs\source\working"
+ * OpenOR.exe -sqlIPaddress localhost -sqlUsername MYSQLUSERNAME -sqlPassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "E:\Files\source\sourcevs\source\working" -exefolder "E:\Files\source\sourcevs\source\working" -workingfolder "E:\Files\source\sourcevs\source\working"
  *
  *
  *
- * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -od3 -cleartrain -multview multViewList3DOD.txt -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
+ * ./OpenOR.exe -sqlIPaddress localhost -sqlUsername MYSQLUSERNAME -sqlPassword MYSQLPASSWORD -trainortest 1 -object house3DOD -od3 -cleartrain -multview multViewList3DOD.txt -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
  *
- * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -cleartrain -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
- * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -view 1 -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
+ * ./OpenOR.exe -sqlIPaddress localhost -sqlUsername MYSQLUSERNAME -sqlPassword MYSQLPASSWORD -trainortest 1 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -cleartrain -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
+ * ./OpenOR.exe -sqlIPaddress localhost -sqlUsername MYSQLUSERNAME -sqlPassword MYSQLPASSWORD -trainortest 0 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -view 1 -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
  *
  *
  * Future Developments;
