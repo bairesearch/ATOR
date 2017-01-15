@@ -3,7 +3,7 @@
  * File Name: ORdatabaseSQL.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7a 06-June-2012
+ * Project Version: 3a7b 09-June-2012
  *
  *******************************************************************************/
 
@@ -84,6 +84,10 @@ long calculateGeoxyBinMultiDimensional(int geoxBin[], int geoyBin[]);
 
 void convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(signed char concatonatedSignedDctCoeffArray[], int geoxBin[], int geoyBin[], unsigned long * linearCombination);
 
+int determineGeoBinX(double featurePointTransformedXpos);
+int determineGeoBinY(double featurePointTransformedYpos);
+unsigned int determineDCTBinUnsigned(int arrayValueSigned, double * arrayValueUnsignedDouble);
+double determineDCTBinUnsignedDouble(int arrayValueSigned);
 
 
 #endif

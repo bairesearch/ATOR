@@ -3,7 +3,7 @@
  * File Name: ORdatabaseDecisionTree.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7a 06-June-2012
+ * Project Version: 3a7b 09-June-2012
  *
  *******************************************************************************/
 
@@ -145,10 +145,10 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 						int geoyBin[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS];
 						int geoxyBinTemp[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2];						
 						double geoBinDoubleTemp[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2];
-						geoBinDoubleTemp[0] = (currentFeatureInTempList->pointTransformed.x / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_X_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS/2);
-						geoBinDoubleTemp[1] = (currentFeatureInTempList->pointTransformed.y / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_Y_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS/2);
-						geoBinDoubleTemp[2] = (currentFeatureInTempList2->pointTransformed.x / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_X_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS/2);
-						geoBinDoubleTemp[3] = (currentFeatureInTempList2->pointTransformed.y / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_Y_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS/2);
+						geoBinDoubleTemp[0] = determineGeoBinX(currentFeatureInTempList->pointTransformed.x);
+						geoBinDoubleTemp[1] = determineGeoBinY(currentFeatureInTempList->pointTransformed.y);
+						geoBinDoubleTemp[2] = determineGeoBinX(currentFeatureInTempList2->pointTransformed.x);
+						geoBinDoubleTemp[3] = determineGeoBinY(currentFeatureInTempList2->pointTransformed.y);
 						geoxBin[0] = geoBinDoubleTemp[0]; 
 						geoyBin[0] = geoBinDoubleTemp[1];
 						geoxBin[1] = geoBinDoubleTemp[2];
@@ -799,6 +799,12 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 		{
 			firstIntelligentBinPermutation = true;
 		}
+		#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V3
+		bool firstIntelligentBinPermutation = false;
+		if(fourierExceptionIndex1 == 0)
+		{
+			firstIntelligentBinPermutation = true;
+		}		
 		#endif
 
 		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
@@ -825,7 +831,7 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 		for(int fourierExceptionIndex2=0; fourierExceptionIndex2<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; fourierExceptionIndex2++)
 		{
 			bool biasIsOnForThisBin = false;
-			if(((fourierExceptionIndex1>>fourierExceptionIndex2)%2) == 0)
+			if(((fourierExceptionIndex1>>fourierExceptionIndex2)%2) == 0)	//test 1/0 of bit x in fourierExceptionIndex1 (NB fourierExceptionIndex1 is 7 bit)
 			{//bit is off
 				//cout << "bit is off; fourierExceptionIndex = " << fourierExceptionIndex1 << ", fourierExceptionIndex2 = " << fourierExceptionIndex2 << endl;  
 				biasIsOnForThisBin = false;
@@ -843,13 +849,14 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 
 		}
 		if(numberOfBinsThatAreBiased <= double(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS)*OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_LIMIT_PERMUTATIONS_MAX_NUM_BIAS_BINS_RATIO)
-		{
+		{//ie, numberOfBinsThatAreBiased <= 3
 		#endif
-
+		
+			int numberOfBinsThatNeedBiasesApplied = 0; 
 			for(int fourierExceptionIndex2=0; fourierExceptionIndex2<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; fourierExceptionIndex2++)
 			{
 				bool biasIsOnForThisBin = false;
-				if(((fourierExceptionIndex1>>fourierExceptionIndex2)%2) == 0)
+				if(((fourierExceptionIndex1>>fourierExceptionIndex2)%2) == 0)	//test 1/0 of bit x in fourierExceptionIndex1 (NB fourierExceptionIndex1 is 7 bit)
 				{//bit is off
 					#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
 					performAtLeastOneIntelligentGeoBinBias = true;
@@ -865,52 +872,62 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 					//cout << "bit is on; fourierExceptionIndex = " << fourierExceptionIndex1 << ", fourierExceptionIndex2 = " << fourierExceptionIndex2 << endl;  												
 					biasIsOnForThisBin = true;
 				}
-
-				int bias;
-				bool performIntelligentFourierBinBias;
+				
+				
+				//This section updated 9 June 2012 to support OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V3 
+				int bias = 0;
+				bool performIntelligentFourierBinBias = false;
+				if(concatonatedDctCoeffArrayBiasInt[fourierExceptionIndex2] == OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_NEG)
+				{
+					//cout << "here1" << endl;
+					performIntelligentFourierBinBias = true;	//not used
+					bias = -1*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
+					//cout << "bias = " << bias << endl;
+				}
+				else if(concatonatedDctCoeffArrayBiasInt[fourierExceptionIndex2] == OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_POS)
+				{
+					//cout << "here2" << endl;
+					performIntelligentFourierBinBias = true;	//not used
+					bias = 1*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
+					//cout << "bias = " << bias << endl;
+				}
+				else if(concatonatedDctCoeffArrayBiasInt[fourierExceptionIndex2] == OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_SAME)
+				{
+					//cout << "here3" << endl;
+					performIntelligentFourierBinBias = false;	//not used
+					//do not add
+				}
 				if(!biasIsOnForThisBin)
 				{//then assume central bin, no change in this fourier bin
 					performIntelligentFourierBinBias = false;	//not used
 				}
 				else
-				{//then assume biased bin if necessary, positive or negative
-					if(concatonatedDctCoeffArrayBiasInt[fourierExceptionIndex2] == OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_NEG)
+				{//then assume biased bin if necessary, positive or negative				
+					if(performIntelligentFourierBinBias)
 					{
-						//cout << "here1" << endl;
-						performIntelligentFourierBinBias = true;	//not used
-						bias = -1*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
-						//cout << "bias = " << bias << endl;
-						firstFeatureInList->dctCoeff[fourierExceptionIndex2] = firstFeatureInList->dctCoeff[fourierExceptionIndex2]+bias;			
-					}
-					else if(concatonatedDctCoeffArrayBiasInt[fourierExceptionIndex2] == OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_POS)
-					{
-						//cout << "here2" << endl;
-						performIntelligentFourierBinBias = true;	//not used
-						bias = 1*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
-						//cout << "bias = " << bias << endl;
+						numberOfBinsThatNeedBiasesApplied++;
 						firstFeatureInList->dctCoeff[fourierExceptionIndex2] = firstFeatureInList->dctCoeff[fourierExceptionIndex2]+bias;
 					}
-					else if(concatonatedDctCoeffArrayBiasInt[fourierExceptionIndex2] == OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_SAME)
-					{
-						//cout << "here3" << endl;
-						performIntelligentFourierBinBias = false;	//not used
-						//do not add
-					}
 				}
+				
+				
 				#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
 				#if (OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS < 100)
 
 				int arrayValueSignedTemp = firstFeatureInList->dctCoeff[fourierExceptionIndex2];
-				if(arrayValueSignedTemp > OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET)
-				{
-					arrayValueSignedTemp = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET; 
-				}
-				else if(arrayValueSignedTemp < -OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET)
-				{
-					arrayValueSignedTemp = -OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET; 
-				}
-				unsigned int arrayValueUnsignedTemp = (unsigned int)(double(arrayValueSignedTemp)/double(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL) + double(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET));	//convert to unsigned
-
+				double arrayValueUnsignedDouble;
+				unsigned int arrayValueUnsignedTemp = determineDCTBinUnsigned(arrayValueSignedTemp, &arrayValueUnsignedDouble);
+					/*original 2010/2011 code; nb how it does not apply "/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL"...
+					if(arrayValueSignedTemp > OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET)
+					{
+						arrayValueSignedTemp = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET; 
+					}
+					else if(arrayValueSignedTemp < -OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET)
+					{
+						arrayValueSignedTemp = -OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET; 
+					}
+					unsigned int arrayValueUnsignedTemp = (unsigned int)(determineDCTBinUnsignedDouble(arrayValueSignedTemp));	//convert to unsigned
+					*/
 
 				dtBinTemp = dtBinTemp + arrayValueUnsignedTemp*(pow(100, fourierExceptionIndex2));
 				/*
@@ -925,7 +942,7 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 				#endif
 				#endif												
 			}
-
+			
 			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
 			bool placedNewDTBinReference = false;
 			bool dtBinAlreadyAddedToList = false;
@@ -977,14 +994,25 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 				previousReferenceInDTBinListFourier = currentReferenceInDTBinListFourier;
 				currentReferenceInDTBinListFourier = currentReferenceInDTBinListFourier->next;
 			}
-			#endif											
+			#endif	
+			
+			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V3
+			bool performUniqueIntelligentGeoBinBias = true;
+			if(numberOfBinsThatNeedBiasesApplied < numberOfBinsThatAreBiased)
+			{
+				performUniqueIntelligentGeoBinBias = false;
+			}
+			#endif													
 
 			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
 			if(!dtBinAlreadyAddedToList)
 			{
 			#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
 			if(performAtLeastOneIntelligentGeoBinBias || firstIntelligentBinPermutation)
-			{												
+			{
+			#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V3
+			if(performUniqueIntelligentGeoBinBias || firstIntelligentBinPermutation)
+			{																
 			#endif											
 
 
@@ -1113,6 +1141,8 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
 		}
 		#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
+		}
+		#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V3
 		}
 		#endif
 		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_LIMIT_PERMUTATIONS
@@ -1738,6 +1768,18 @@ void createOrParseSnapshotIDReferenceImageComparisonDecisionTree(int imageWidth,
 #elif defined OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD_METHOD_1_ALL_RGB_COMPONENTS_WITH_DIRECTION
 void createOrParseSnapshotIDReferenceImageComparisonDecisionTree(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, bool createOrParse, string * currentDirectory, char * currentDirectoryCharStar, int * currDirIndex)
 {
+	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_NORMALISE_RGB_MAP
+	double averageLuminosity = calculateAverageLuminosity(imageWidth, imageHeight, rgbMapSmall);
+	double averageNormalisedLuminosity = MAX_LUMINOSITY*OR_IMAGE_COMPARISON_DECISION_TREE_NORMALISE_RGB_MAP_AVERAGED_NORMALISED_LUMINOSITY_FRACTION;
+	double contrastThresholdNormalisationFactor = averageLuminosity/averageNormalisedLuminosity;	
+	/*
+	unsigned char * normalisedRgbMapSmall = new unsigned char[imageWidth*imageHeight*RGB_NUM];
+	void normaliseRGBMapBasedOnAverageLuminosity(normalisedRgbMapSmall, imageWidth, imageHeight, rgbMapSmall)
+	rgbMapSmall = normalisedRgbMapSmall;
+	*/
+	#endif
+	
+	
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_BINARY_TO_CHAR_CONVERSION_OPT
 	int index = 0;		//used to convert binary to char
 	char binaryConvertedToChar = 0x00;
@@ -1764,7 +1806,12 @@ void createOrParseSnapshotIDReferenceImageComparisonDecisionTree(int imageWidth,
 					int contrastThreshold;
 					
 					#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
-					contrastThreshold = (LUMINOSITY_CONTRAST_FRACTION_THRESHOLD*MAX_LUMINOSITY)*OR_IMAGE_COMPARISON_DECISION_TREE_CONTRAST_THRESHOLD_FACTOR;	//needs to be dynamic based upon normalisation based upon average rgb values in image
+						#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_NORMALISE_RGB_MAP
+						contrastThreshold = (OR_IMAGE_COMPARISON_DECISION_TREE_RGB_CONTRAST_THRESHOLD_FRACTION*MAX_RGB_VAL)*contrastThresholdNormalisationFactor;	//WRONG: normalisation should apply to entire image, not individual snapshots.. 
+						#else
+						contrastThreshold = (OR_IMAGE_COMPARISON_DECISION_TREE_RGB_CONTRAST_THRESHOLD_FRACTION*MAX_RGB_VAL);					
+						//contrastThreshold = (LUMINOSITY_CONTRAST_FRACTION_THRESHOLD*MAX_LUMINOSITY)*OR_IMAGE_COMPARISON_DECISION_TREE_CONTRAST_THRESHOLD_FACTOR;	//OLD			
+						#endif
 					#else
 					contrastThreshold = 0;
 					#endif

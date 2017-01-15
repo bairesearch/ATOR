@@ -3,7 +3,7 @@
  * File Name: ORimagecomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7a 06-June-2012
+ * Project Version: 3a7b 09-June-2012
  *
  *******************************************************************************/
 
@@ -2143,8 +2143,8 @@ double calculateColourHueRadialSumContrastWithinKernelNOTUSED(int pixelX, int pi
 						{
 							//cout << "h1" << endl;
 
-							int xBin = (testcurrentFeatureInNearestFeatureList->pointTransformed.x / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_X_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS/2);
-							int yBin = (testcurrentFeatureInNearestFeatureList->pointTransformed.y / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_Y_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS/2);
+							int xBin = determineGeoBinX(testcurrentFeatureInNearestFeatureList->pointTransformed.x);
+							int yBin = determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);
 
 
 

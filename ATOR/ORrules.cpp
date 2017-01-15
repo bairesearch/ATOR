@@ -3,7 +3,7 @@
  * File Name: ORrules.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3a7a 06-June-2012
+ * Project Version: 3a7b 09-June-2012
  *
  *******************************************************************************/
 
@@ -877,6 +877,16 @@ void fillInORRulesExternVariables()
 				}			
 				//OR_SQL_DATABASE_STORE_ALL_NEARBY_AND_OT_FEATURES = true
 			}
+
+			#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
+
+			OR_METHOD_CREATE_NEARBY_FEATURES_FILE_ALWAYS = true;
+			if(OR_METHOD_CREATE_NEARBY_FEATURES_FILE_ALWAYS)
+			{
+				OR_METHOD_CREATE_NEARBY_FEATURES_FILE = true;
+			}			
+
+			#endif
 		}
 
 	#endif

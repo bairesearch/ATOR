@@ -3,7 +3,7 @@
  * File Name: ORdatabaseFileIO.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7a 06-June-2012
+ * Project Version: 3a7b 09-June-2012
  *
  *******************************************************************************/
 
@@ -33,12 +33,15 @@ bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList,
 	int numberOfFeatureGeoMatches = 0;
 	bool passedGeometricCheck = false;
 
-
-
-
 	Feature * testcurrentFeatureInNearestFeatureList = testfirstFeatureInNearestFeatureList;
-	while(testcurrentFeatureInNearestFeatureList->next != NULL)
+	while((testcurrentFeatureInNearestFeatureList->next != NULL) && !(testcurrentFeatureInNearestFeatureList->lastFilledFeatureInList))
 	{
+		/*
+		#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
+		testcurrentFeatureInNearestFeatureList->matchFound = false;
+		#endif	
+		*/
+		
 		bool testpassedDimensionCheck = true;
 		if(dimension == OR_METHOD2DOD_DIMENSIONS)
 		{//NB do not compare transformed object triangle features if OR_METHOD2DOD_DIMENSIONS, as these will always be set to a predefined object triangle
@@ -49,11 +52,18 @@ bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList,
 				//exit(0);
 			}
 		}
+
 		if(testpassedDimensionCheck)
 		{
 			Feature * traincurrentFeatureInNearestFeatureList = trainfirstFeatureInNearestFeatureList;
-			while(traincurrentFeatureInNearestFeatureList->next != NULL)
+			while((traincurrentFeatureInNearestFeatureList->next != NULL) && !(traincurrentFeatureInNearestFeatureList->lastFilledFeatureInList))
 			{
+				/*
+				#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
+				traincurrentFeatureInNearestFeatureList->matchFound = false;
+				#endif	
+				*/
+							
 				bool trainpassedDimensionCheck = true;
 				if(dimension == OR_METHOD2DOD_DIMENSIONS)
 				{//NB do not compare transformed object triangle features if OR_METHOD2DOD_DIMENSIONS, as these will always be set to a predefined object triangle
@@ -73,9 +83,14 @@ bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList,
 					#else
 						requiredMaxError = OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR;
 					#endif
+									
 					if(compareVectorsArbitraryError(&(testcurrentFeatureInNearestFeatureList->pointTransformed), &(traincurrentFeatureInNearestFeatureList->pointTransformed), requiredMaxError))
 					{
 						numberOfFeatureGeoMatches++;
+						#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
+						testcurrentFeatureInNearestFeatureList->matchFound = true;
+						traincurrentFeatureInNearestFeatureList->matchFound = true;
+						#endif
 					}
 
 				}
@@ -412,13 +427,19 @@ void createFeaturesListUsingFeaturesFile(string fileName, Feature * firstFeature
 					#endif
 					*/
 
-
+					#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
+					currentFeatureInList->matchFound = false;
+					#endif	
+				
 					if(createFeatureObjects)
 					{
 						Feature * newFeature = new Feature();
 						currentFeatureInList->next = newFeature;
 					}
-
+					
+					currentFeatureInList->lastFilledFeatureInList = false;		//added 8 June 2012 to combat overrun bug
+					currentFeatureInList->next->lastFilledFeatureInList = true;		//added 8 June 2012 to combat overrun bug
+					
 					currentFeatureInList=currentFeatureInList->next;
 				}
 				objectNameString[0] = '\0';

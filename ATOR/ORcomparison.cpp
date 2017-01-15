@@ -3,7 +3,7 @@
  * File Name: ORcomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7a 06-June-2012
+ * Project Version: 3a7b 09-June-2012
  *
  *******************************************************************************/
 
@@ -255,6 +255,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 			}
 			else
 			{
+				//cout << "this is currently being executed (8 June 2012 - 16:50)" << endl;
 				useGeneratedTestPixmapFiles = true;
 				useGeneratedTrainPixmapFiles = true;
 			}
@@ -310,11 +311,11 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE></HEAD><BODY>Results<p>Source Version 3a7a<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Source Version 3a7a<p>";
 		}
 		else
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Image Comparitor Results For Normalised Snapshots (CONFIDENTIAL - PROVIDED UNDER CONTRACT)</TITLE></HEAD><BODY><h1>Image Comparitor Results For Normalised Snapshots (CONFIDENTIAL - PROVIDED UNDER CONTRACT)</h1><p>Source Version 2d2g<p>Richard Bruce Baxter Object Recognition Method - Australian Provisional Patent Filed";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Image Comparitor Results For Normalised Snapshots (CONFIDENTIAL - PROVIDED UNDER CONTRACT)</TITLE><style type=\"text/css\">body{font-size:50%}</style></HEAD><BODY><h1>Image Comparitor Results For Normalised Snapshots (CONFIDENTIAL - PROVIDED UNDER CONTRACT)</h1><p>Source Version 2d2g<p>Richard Bruce Baxter Object Recognition Method - Australian Provisional Patent Filed";
 		}
 
 
@@ -353,6 +354,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 	double * testdepthMapSmall = new double[(imageWidthFacingPoly/smallImageRatio)*(imageHeightFacingPoly/smallImageRatio)];
 	//#endif
 #endif
+
 //#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
 	signed char * testdctCoeffArrayY = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
 	signed char * testdctCoeffArrayYCr = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
@@ -360,9 +362,11 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 	signed char * testdctCoeffArrayYDummy = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
 	signed char * testdctCoeffArrayYCrDummy = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
 	signed char * testdctCoeffArrayYCbDummy = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
-
 	signed char * testconcatonatedSignedDctCoeffArrayRequirement = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
+
 //#endif
+
+
 
 //#ifdef OR_IMAGE_COMPARISON_SQL_GET_TEST_DATA_FROM_SQL
 	//#ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING
@@ -385,6 +389,7 @@ char * testsnapshotMapsText;
 char * trainsnapshotMapsText;
 #endif
 */
+
 
 #ifdef TEMPTEST3GEOACCURACY
 	int numberOfNearestFeatures = calculateNumberOfNearestFeatures(NUMBER_OF_POLYGONS_PER_FEATURE, OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM);
@@ -433,6 +438,7 @@ char * trainsnapshotMapsText;
 		}
 	}
 #endif
+
 
 	//generature featurelists now; this is an optimisation.
 
@@ -620,14 +626,7 @@ char * trainsnapshotMapsText;
 								string trainrgbMapFacingPolyFileNameCPlus = traininterpolatedRGBMapFileNameForRayTracing + RGB_MAP_PPM_EXTENSION_PART + TRAIN_STRING + PPM_EXTENSION;
 								char * trainrgbMapFacingPolyFileName = const_cast<char*>(trainrgbMapFacingPolyFileNameCPlus.c_str());
 
-								pixmap * trainrgbPixMap;
-
-								//cout << "\t trainrgbPixMap = load_ppm(" << trainrgbMapFacingPolyFileName << ");" << endl;
-								trainrgbPixMap = load_ppm(trainrgbMapFacingPolyFileName);
-
-								//cout << "\t createRGBMapFromPixmapImage(trainrgbPixMap, trainrgbMap);" << endl;
-								createRGBMapFromPixmapImage(trainrgbPixMap, trainrgbMap);
-								free_pixmap(trainrgbPixMap);
+								readImage(trainrgbMapFacingPolyFileName, trainrgbMap);
 
 								colour avgCol;
 								calculateAverageColour(imageWidthFacingPoly, imageHeightFacingPoly, trainrgbMap, &avgCol);
@@ -761,10 +760,10 @@ char * trainsnapshotMapsText;
 									{
 										//cout << "2" << endl;
 
-										int x1Bin = (currentFeatureInTempList->pointTransformed.x / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_X_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS/2);
-										int y1Bin = (currentFeatureInTempList->pointTransformed.y / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_Y_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS/2);
-										int x2Bin = (currentFeatureInTempList2->pointTransformed.x / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_X_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS/2);
-										int y2Bin = (currentFeatureInTempList2->pointTransformed.y / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_Y_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS/2);
+										int x1Bin = determineGeoBinX(currentFeatureInTempList->pointTransformed.x);
+										int y1Bin = determineGeoBinY(currentFeatureInTempList->pointTransformed.y);
+										int x2Bin = determineGeoBinX(currentFeatureInTempList2->pointTransformed.x);
+										int y2Bin = determineGeoBinY(currentFeatureInTempList2->pointTransformed.y);
 
 
 										//cout << "3" << endl;
@@ -1046,24 +1045,10 @@ char * trainsnapshotMapsText;
 								string testrgbMapFacingPolyFileNameCPlus = testinterpolatedRGBMapFileNameForRayTracing + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING + PPM_EXTENSION;
 								char * testrgbMapFacingPolyFileName = const_cast<char*>(testrgbMapFacingPolyFileNameCPlus.c_str());
 
-								pixmap * testrgbPixMap;
-								//cout << "testrgbPixMap = load_ppm(" << testrgbMapFacingPolyFileName << ");" << endl;
-								testrgbPixMap = load_ppm(testrgbMapFacingPolyFileName);
-
-								//cout << "createRGBMapFromPixmapImage(testrgbPixMap, testrgbMap);" << endl;
-								createRGBMapFromPixmapImage(testrgbPixMap, testrgbMap);
-
-								free_pixmap(testrgbPixMap);
-
-
+								readImage(testrgbMapFacingPolyFileName, testrgbMap);
 
 								#ifdef OR_METHOD_USE_SMALL_IMAGE_FIRST_COMPARISON
-								pixmap * testrgbPixMapSmall;
-								cout << "testrgbPixMapSmall = load_ppm(" << testrgbMapSmallFacingPolyFileName << ");" << endl;
-								testrgbPixMapSmall = load_ppm(testrgbMapSmallFacingPolyFileName);
-								cout << "createRGBMapFromPixmapImage(testrgbPixMapSmall, testrgbMapSmall);" << endl;
-								createRGBMapFromPixmapImage(testrgbPixMapSmall, testrgbMapSmall);
-								free_pixmap(testrgbPixMapSmall);
+								readImage(testrgbMapSmallFacingPolyFileName, testrgbMapSmall);
 								#endif
 
 							}
@@ -1095,9 +1080,12 @@ char * trainsnapshotMapsText;
 							}
 
 							#ifdef TEMPTEST3GEOACCURACY
+							//cout << "TEMPTEST3GEOACCURACY Part 2" << endl;							
 							string testinterpolatedNearestFeaturesMapFileName;
 							testinterpolatedNearestFeaturesMapFileName = testinterpolatedRGBMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + TEST_STRING + TFD_EXTENSION;
+							//cout << "testinterpolatedNearestFeaturesMapFileName = " << testinterpolatedNearestFeaturesMapFileName << endl;
 							createFeaturesListUsingFeaturesFile(testinterpolatedNearestFeaturesMapFileName, testfirstFeatureInNearestFeatureList, false, false, false);
+							//cout << "end" << endl;
 							#endif
 						}
 
@@ -1237,7 +1225,7 @@ char * trainsnapshotMapsText;
 							rgb8BitSmallMapForInstantDBQueryAccessRequirement = NULL;
 						}
 
-						signed char * testconcatonatedSignedDctCoeffArrayRequirement;
+						signed char * testconcatonatedSignedDctCoeffArrayRequirement = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
 						if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
 						{
 							if(OR_IMAGE_COMPARISON_SQL_GET_TEST_DATA_FROM_SQL)
@@ -1254,9 +1242,8 @@ char * trainsnapshotMapsText;
 								//cout << "stored currentTestFeature->dctCoeffArrayBinned = " << currentTestFeature->dctCoeffArrayBinned << endl;
 							}
 							else
-							{
-								testconcatonatedSignedDctCoeffArrayRequirement = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
-								
+							{	
+															
 								/*RECENTLY REMOVED;
 								if(OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE)
 								{
@@ -1266,77 +1253,8 @@ char * trainsnapshotMapsText;
 
 								string testrgbMapSmallFacingPolyFileNameJPEGCPlus = testinterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING + JPG_EXTENSION;
 								char * testrgbMapSmallFacingPolyFileNameJPEG = const_cast<char*>(testrgbMapSmallFacingPolyFileNameJPEGCPlus.c_str());						
-								string convertSmallImageRGBtoJPEGCommand = "";
-
-								/*									
-								convertSmallImageRGBtoJPEGCommand = convertSmallImageRGBtoJPEGCommand + "convert " +	testrgbMapSmallFacingPolyFileName + " " + testrgbMapSmallFacingPolyFileNameJPEG;
-								system(convertSmallImageRGBtoJPEGCommand.c_str());
-								int dctCoeffArrayHeight = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;
-								int dctCoeffArrayWidth = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;
-								readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(testrgbMapSmallFacingPolyFileNameJPEG, testdctCoeffArrayY, testdctCoeffArrayYCr, testdctCoeffArrayYCb, dctCoeffArrayHeight, dctCoeffArrayWidth, true);
-								*/
-
-								if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ENHANCED_CHROMA_SUBSAMPLING)
-								{
-									int dctCoeffArrayHeight = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;
-									int dctCoeffArrayWidth = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;
-									for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-									{
-										testdctCoeffArrayY[i] = 0;
-									}
-									for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-									{
-										testdctCoeffArrayYCr[i] = 0;
-									}
-									for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-									{
-										testdctCoeffArrayYCb[i] = 0;
-									}							
-
-									//cout << "testrgbMapSmallFacingPolyFileName = " << testrgbMapSmallFacingPolyFileName << endl;
-									//cout << "testrgbMapSmallFacingPolyFileNameJPEG = " << testrgbMapSmallFacingPolyFileNameJPEG << endl;
-									
-									convertSmallImageRGBtoJPEGCommand = convertSmallImageRGBtoJPEGCommand + "convert " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING + " " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING + " " + testrgbMapSmallFacingPolyFileName + " " + testrgbMapSmallFacingPolyFileNameJPEG;
-									system(convertSmallImageRGBtoJPEGCommand.c_str());
-									readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(testrgbMapSmallFacingPolyFileNameJPEG, testdctCoeffArrayY, testdctCoeffArrayYCrDummy, testdctCoeffArrayYCbDummy, dctCoeffArrayHeight, dctCoeffArrayWidth, true);
-									convertSmallImageRGBtoJPEGCommand = "";
-									convertSmallImageRGBtoJPEGCommand = convertSmallImageRGBtoJPEGCommand + "convert " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED_STRING + " " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING + " " + testrgbMapSmallFacingPolyFileName + " " + testrgbMapSmallFacingPolyFileNameJPEG;
-									system(convertSmallImageRGBtoJPEGCommand.c_str());
-									readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(testrgbMapSmallFacingPolyFileNameJPEG, testdctCoeffArrayYDummy, testdctCoeffArrayYCr, testdctCoeffArrayYCb, dctCoeffArrayHeight, dctCoeffArrayWidth, true);
-									//cout << "here14b" << endl;
-									//exit(0);
-								}
-								else
-								{
 								
-									//cout << "testrgbMapSmallFacingPolyFileName = " << testrgbMapSmallFacingPolyFileName << endl;
-									//cout << "testrgbMapSmallFacingPolyFileNameJPEG = " << testrgbMapSmallFacingPolyFileNameJPEG << endl;
-																	
-									convertSmallImageRGBtoJPEGCommand = convertSmallImageRGBtoJPEGCommand + "convert " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING + " " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING + " " + testrgbMapSmallFacingPolyFileName + " " + testrgbMapSmallFacingPolyFileNameJPEG;
-									system(convertSmallImageRGBtoJPEGCommand.c_str());
-									int dctCoeffArrayHeight = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;
-									int dctCoeffArrayWidth = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;
-									for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-									{
-										testdctCoeffArrayY[i] = 0;
-									}
-									for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-									{
-										testdctCoeffArrayYCr[i] = 0;
-									}
-									for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-									{
-										testdctCoeffArrayYCb[i] = 0;
-									}
-									readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(testrgbMapSmallFacingPolyFileNameJPEG, testdctCoeffArrayY, testdctCoeffArrayYCr, testdctCoeffArrayYCb, dctCoeffArrayHeight, dctCoeffArrayWidth, true);
-									//cout << "here14" << endl;
-									//exit(0);
-								}
-
-								
-								
-								//long binnedAllDCTCoeff64BitValue = convertDCTCoeffIndividualArraysToBinnedAllDCTCoeff64BitValue(testdctCoeffArrayY, testdctCoeffArrayYCr, testdctCoeffArrayYCb, testconcatonatedSignedDctCoeffArrayRequirement);	//may not be used here
-								convertDCTCoeffIndividualArraysToConcatonatedSignedDctCoeffArray(testdctCoeffArrayY, testdctCoeffArrayYCr, testdctCoeffArrayYCb, testconcatonatedSignedDctCoeffArrayRequirement);
+								readDCTCoeffIndividualArraysAndConvertToConcatonatedSignedDctCoeffArray(&testrgbMapSmallFacingPolyFileNameCPlus, &testrgbMapSmallFacingPolyFileNameJPEGCPlus, testconcatonatedSignedDctCoeffArrayRequirement, false);
 
 								/*RECENTLY REMOVED;
 								if(OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE)
@@ -1387,10 +1305,10 @@ char * trainsnapshotMapsText;
 									bool geoBinWithinRange = false;
 									if(OR_IMAGE_COMPARISON_GEOMETRIC_COMPARISON_BINNING)
 									{
-										xBin = (testcurrentFeatureInNearestFeatureList->pointTransformed.x / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_X_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS/2);
-										yBin = (testcurrentFeatureInNearestFeatureList->pointTransformed.y / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_Y_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS/2);
-										x2Bin = (testcurrentFeatureInNearestFeatureList2->pointTransformed.x / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_X_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS/2);
-										y2Bin = (testcurrentFeatureInNearestFeatureList2->pointTransformed.y / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_Y_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS/2);
+										xBin = determineGeoBinX(testcurrentFeatureInNearestFeatureList->pointTransformed.x);
+										yBin = determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);
+										x2Bin = determineGeoBinX(testcurrentFeatureInNearestFeatureList2->pointTransformed.x);
+										y2Bin = determineGeoBinY(testcurrentFeatureInNearestFeatureList2->pointTransformed.y);
 
 									
 									#ifndef OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NO_EXPLICIT_FOR_LOOPS
@@ -2033,24 +1951,14 @@ char * trainsnapshotMapsText;
 														string testrgbMapFacingPolyFileNameCPlus = testinterpolatedRGBMapFileNameForRayTracing + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING + PPM_EXTENSION;
 														char * testrgbMapFacingPolyFileName = const_cast<char*>(testrgbMapFacingPolyFileNameCPlus.c_str());
 
-														pixmap * testrgbPixMap;
-														//cout << "testrgbPixMap = load_ppm(" << testrgbMapFacingPolyFileName << ");" << endl;
-														testrgbPixMap = load_ppm(testrgbMapFacingPolyFileName);
-
-														//cout << "createRGBMapFromPixmapImage(testrgbPixMap, testrgbMap);" << endl;
-														createRGBMapFromPixmapImage(testrgbPixMap, testrgbMap);
-
-														free_pixmap(testrgbPixMap);
+														readImage(testrgbMapFacingPolyFileName, testrgbMap);
 
 													#ifdef OR_METHOD_USE_SMALL_IMAGE_FIRST_COMPARISON
 														//cout << "h3" << endl;
 														string testrgbMapSmallFacingPolyFileNameCPlus = testinterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING + PPM_EXTENSION;
 														char * testrgbMapSmallFacingPolyFileName = const_cast<char*>(testrgbMapSmallFacingPolyFileNameCPlus.c_str());
-														pixmap * testrgbPixMapSmall;
-														testrgbPixMapSmall = load_ppm(testrgbMapSmallFacingPolyFileName);
-														createRGBMapFromPixmapImage(testrgbPixMapSmall, testrgbMapSmall);
-														free_pixmap(testrgbPixMapSmall);
-														//cout << "h4" << endl;
+														
+														readImage(testrgbMapSmallFacingPolyFileName, testrgbMapSmall);
 													#endif
 													}
 												}
@@ -2068,24 +1976,11 @@ char * trainsnapshotMapsText;
 												char * trainrgbMapSmallFacingPolyFileName = const_cast<char*>(trainrgbMapSmallFacingPolyFileNameCPlus.c_str());
 											#endif
 
-												pixmap * trainrgbPixMap;
-
-												//cout << "\t trainrgbPixMap = load_ppm(" << trainrgbMapFacingPolyFileName << ");" << endl;
-												trainrgbPixMap = load_ppm(trainrgbMapFacingPolyFileName);
-
-
-												//cout << "\t createRGBMapFromPixmapImage(trainrgbPixMap, trainrgbMap);" << endl;
-												createRGBMapFromPixmapImage(trainrgbPixMap, trainrgbMap);
-												free_pixmap(trainrgbPixMap);
-
-
+												readImage(trainrgbMapFacingPolyFileName, trainrgbMap);
+												
 											#ifdef OR_METHOD_USE_SMALL_IMAGE_FIRST_COMPARISON
 												//cout << "h5" << endl;
-												pixmap * trainrgbPixMapSmall;
-												//cout << "trainrgbMapSmallFacingPolyFileName = " << trainrgbMapSmallFacingPolyFileName << endl;
-												trainrgbPixMapSmall = load_ppm(trainrgbMapSmallFacingPolyFileName);
-												createRGBMapFromPixmapImage(trainrgbPixMapSmall, trainrgbMapSmall);
-												free_pixmap(trainrgbPixMapSmall);
+												readImage(trainrgbMapSmallFacingPolyFileName, trainrgbMapSmall);
 												//cout << "h6" << endl;
 											#endif	
 											}
@@ -2493,8 +2388,10 @@ char * trainsnapshotMapsText;
 
 										string traininterpolatedRGBMapFileNameForRayTracing;
 										string testinterpolatedRGBMapFileNameForRayTracing;
-
+										
 									#ifdef TEMPTEST3GEOACCURACY
+										cout << "TEMPTEST3GEOACCURACY Part 3" << endl;
+									
 										#ifdef OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML_PRINT_OBJECT_NAMES
 
 											traininterpolatedRGBMapFileNameForRayTracing = trainobjectIndexString + "interpolatedMesh" + "ViewIndex" + trainviewIndexString + "ZoomIndex" + trainzoomIndexString + "FacingPoly" + trainpolygonIndexString + "side" + trainsideIndexString;
@@ -2533,9 +2430,6 @@ char * trainsnapshotMapsText;
 										bool passedGeometricCheck = compareFeaturesListForMatch(testfirstFeatureInNearestFeatureList, trainfirstFeatureInNearestFeatureList, dimension);
 										cout << "passedGeometricCheck = " << passedGeometricCheck << endl;
 									#endif
-
-
-
 
 										#ifdef OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML_PRINT_OBJECT_NAMES
 											traininterpolatedRGBMapFileNameForRayTracing = trainobjectIndexString + "interpolatedMesh" + "ViewIndex" + trainviewIndexString + "ZoomIndex" + trainzoomIndexString + "FacingPoly" + trainpolygonIndexString + "side" + trainsideIndexString;
@@ -2592,76 +2486,175 @@ char * trainsnapshotMapsText;
 											generatePixmapFromRGBMap(testrgbMapFacingPolyFileNameCharStar, imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly);
 										}
 										*/
+										
 
+										string trainImgSrcHtmlTags = "";
+										string testImgSrcHtmlTags = "";
+										char imageWidthFacingPolyString[10];
+										char imageHeightFacingPolyString[10]; 
+										sprintf(imageWidthFacingPolyString, "%d", imageWidthFacingPoly);	//increase image size for small images - for better visualisation [rather than zoom in browser]
+										sprintf(imageHeightFacingPolyString, "%d", imageHeightFacingPoly);	//increase image size for small images - for better visualisation [rather than zoom in browser]										
 										if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL)
-										{
-
-											string convertPPMtoPNGCommand = "convert " + trainrgbMapFacingPolyFileNameCPlusWithoutExt + PPM_EXTENSION + " " + trainrgbMapFacingPolyFileNameCPlusWithoutExt + PNG_EXTENSION;
-											if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
-											{
-												cout << "system(" << convertPPMtoPNGCommand << ");" << endl;
-											}
-											system(convertPPMtoPNGCommand.c_str());
-											string convertPPMtoPNGCommand2 = "convert " + testrgbMapFacingPolyFileNameCPlusWithoutExt + PPM_EXTENSION + " " + testrgbMapFacingPolyFileNameCPlusWithoutExt + PNG_EXTENSION;
-											if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
-											{
-												cout << "system(" << convertPPMtoPNGCommand2 << ");" << endl;
-											}
-
-											system(convertPPMtoPNGCommand2.c_str());
-											
-											#define DEBUG_OR_IMAGE_COMPARISON_LIST_MATCHED_FILE_NAMES
-											#ifdef DEBUG_OR_IMAGE_COMPARISON_LIST_MATCHED_FILE_NAMES
-											string ICRmatchRow = "<TR><TD>" + testObjectNameArray[testObjectIndex] + "</TD><TD>" + testviewIndexString + "</TD><TD>" + testzoomIndexString + "</TD><TD>" + testpolygonIndexString + "</TD><TD>" + testrgbMapFacingPolyFileNameCPlusWithoutExt + PPM_EXTENSION + "</TD><TD><img src=\"" + testrgbMapFacingPolyFileNameCPlusWithoutExt + PNG_EXTENSION + "\" border=0> </TD><TD>" + trainobjectIndexString + "</TD><TD>" + trainviewIndexString + "</TD><TD>" + trainzoomIndexString + "</TD><TD>" + trainpolygonIndexString + "</TD><TD>" + trainrgbMapFacingPolyFileNameCPlusWithoutExt + PPM_EXTENSION + "</TD><TD><img src=\"" + trainrgbMapFacingPolyFileNameCPlusWithoutExt + PNG_EXTENSION + "\" border=0> </TD>";											
-											#else
-											string ICRmatchRow = "<TR><TD>" + testObjectNameArray[testObjectIndex] + "</TD><TD>" + testviewIndexString + "</TD><TD>" + testzoomIndexString + "</TD><TD>" + testpolygonIndexString + "</TD><TD>" + testsideIndexString + "</TD><TD><img src=\"" + testrgbMapFacingPolyFileNameCPlusWithoutExt + PNG_EXTENSION + "\" border=0> </TD><TD>" + trainobjectIndexString + "</TD><TD>" + trainviewIndexString + "</TD><TD>" + trainzoomIndexString + "</TD><TD>" + trainpolygonIndexString + "</TD><TD>" + trainsideIndexString + "</TD><TD><img src=\"" + trainrgbMapFacingPolyFileNameCPlusWithoutExt + PNG_EXTENSION + "\" border=0> </TD>";
+										{																																			    
+											convertImageFileType(&trainrgbMapFacingPolyFileNameCPlusWithoutExt, &trainrgbMapFacingPolyFileNameCPlusWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
+											convertImageFileType(&testrgbMapFacingPolyFileNameCPlusWithoutExt, &testrgbMapFacingPolyFileNameCPlusWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
+											trainImgSrcHtmlTags = trainImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + trainrgbMapFacingPolyFileNameCPlusWithoutExt + PNG_EXTENSION + "\" border=0>";
+											testImgSrcHtmlTags = testImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + testrgbMapFacingPolyFileNameCPlusWithoutExt + PNG_EXTENSION + "\" border=0>";	
+																					
+											#ifdef DEBUG_OR_OUTPUT_SMALL_IMAGES
+											string trainrgbMapSmallFacingPolyFileNameCPlusWithoutExt = traininterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + TRAIN_STRING; 
+											string testrgbMapSmallFacingPolyFileNameCPlusWithoutExt = testinterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING;
+											convertImageFileType(&trainrgbMapSmallFacingPolyFileNameCPlusWithoutExt, &trainrgbMapSmallFacingPolyFileNameCPlusWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
+											convertImageFileType(&testrgbMapSmallFacingPolyFileNameCPlusWithoutExt, &testrgbMapSmallFacingPolyFileNameCPlusWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
+											trainImgSrcHtmlTags = trainImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + trainrgbMapSmallFacingPolyFileNameCPlusWithoutExt + PNG_EXTENSION + "\" border=0>";
+											testImgSrcHtmlTags = testImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + testrgbMapSmallFacingPolyFileNameCPlusWithoutExt + PNG_EXTENSION + "\" border=0>";											
 											#endif
 											
-											#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_COMPARISON_DCT_TABLES_TO_HTML
-											string DCTTableHTMLOutputString;
-											setpointerToDCTTableHTMLOutputString(&DCTTableHTMLOutputString);
+											#ifdef DEBUG_OR_OUTPUT_DECISION_TREE_IMAGES		
+											string trainbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt = traininterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_BOOLEAN_CONTRAST_MAP_PPM_EXTENSION_PART + TRAIN_STRING; 
+											string testbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt = testinterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_BOOLEAN_CONTRAST_MAP_PPM_EXTENSION_PART + TEST_STRING;											
+											convertImageFileType(&trainbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt, &trainbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
+											convertImageFileType(&testbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt, &testbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
+											trainImgSrcHtmlTags = trainImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + trainbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt + PNG_EXTENSION + "\" border=0>";
+											testImgSrcHtmlTags = testImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + testbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt + PNG_EXTENSION + "\" border=0>";											
+											#ifdef DEBUG_OR_OUTPUT_DECISION_TREE_IMAGES_DIFF
+												string diffbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt = traininterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_BOOLEAN_CONTRAST_MAP_PPM_EXTENSION_PART; 
+												string diffbooleanContrastRgbMapFacingPolySmallFileNameCPlus = diffbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt + PPM_EXTENSION; 
+												string trainbooleanContrastRgbMapFacingPolySmallFileNameCPlus = trainbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt + PPM_EXTENSION; 
+												string testbooleanContrastRgbMapFacingPolySmallFileNameCPlus = testbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt + PPM_EXTENSION;																																		
+												//cout << "there1" << endl;
+												#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD_METHOD_1_ALL_RGB_COMPONENTS_WITH_DIRECTION
+												int booleanContrastrgbMapSmallWidth = (2*imageWidthFacingPoly)/smallImageRatio;
+												int booleanContrastrgbMapSmallHeight = (2*imageHeightFacingPoly)/smallImageRatio;
+												#else
+												int booleanContrastrgbMapSmallWidth = imageWidthFacingPoly/smallImageRatio;
+												int booleanContrastrgbMapSmallHeight = imageHeightFacingPoly/smallImageRatio;										
+												#endif
+												unsigned char * trainbooleanContrastrgbMapSmall = new unsigned char[booleanContrastrgbMapSmallWidth*booleanContrastrgbMapSmallHeight*RGB_NUM];
+												unsigned char * testbooleanContrastrgbMapSmall = new unsigned char[booleanContrastrgbMapSmallWidth*booleanContrastrgbMapSmallHeight*RGB_NUM];	
+												//cout << "trainbooleanContrastRgbMapFacingPolySmallFileNameCPlus = " << trainbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt << endl;
+												readImage(&trainbooleanContrastRgbMapFacingPolySmallFileNameCPlus, trainbooleanContrastrgbMapSmall);
+												//cout << "testbooleanContrastRgbMapFacingPolySmallFileNameCPlus = " << testbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt << endl;											
+												readImage(&testbooleanContrastRgbMapFacingPolySmallFileNameCPlus, testbooleanContrastrgbMapSmall);
+												//cout << "asv2" << endl;
+												char * diffbooleanContrastRgbMapFacingPolySmallFileName = const_cast<char*>(diffbooleanContrastRgbMapFacingPolySmallFileNameCPlus.c_str());
+												//cout << "asv3" << endl;
+												generateBooleanDiffMapFromRGBMaps(diffbooleanContrastRgbMapFacingPolySmallFileName, booleanContrastrgbMapSmallWidth, booleanContrastrgbMapSmallHeight, trainbooleanContrastrgbMapSmall, testbooleanContrastrgbMapSmall);
+												//cout << "asv4" << endl;
+												/*
+												bool * diffbooleanContrastrgbMapSmall = new bool[booleanContrastrgbMapSmallWidth*booleanContrastrgbMapSmallHeight];
+												createBooleanDiffMapFromRGBMaps(diffbooleanContrastrgbMapSmall, booleanContrastrgbMapSmallWidth, booleanContrastrgbMapSmallHeight, trainbooleanContrastrgbMapSmall, testbooleanContrastrgbMapSmall);
+												generatePixmapFromBooleanMap(diffbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt, booleanContrastrgbMapSmallWidth, booleanContrastrgbMapSmallHeight, bool * booleanMap);
+												*/
+												//cout << "there2" << endl;
+												convertImageFileType(&diffbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt, &diffbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt, PPM_EXTENSION, PNG_EXTENSION);
+												trainImgSrcHtmlTags = trainImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + diffbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt + PNG_EXTENSION + "\" border=0>";
+												testImgSrcHtmlTags = testImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + diffbooleanContrastRgbMapFacingPolySmallFileNameCPlusWithoutExt + PNG_EXTENSION + "\" border=0>";												
+											#endif
+											#endif
+											
+											#ifdef DEBUG_OR_OUTPUT_DCT_TABLES											
 											string testrgbMapSmallFacingPolyFileNameJPEGCPlusTemp = testinterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING + ".temp" + JPG_EXTENSION;
 											string trainrgbMapSmallFacingPolyFileNameJPEGCPlusTemp = traininterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + TRAIN_STRING + ".temp" + JPG_EXTENSION;
 											string testrgbMapSmallFacingPolyFileNamePPMCPlusTemp = testinterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + TEST_STRING + PPM_EXTENSION;
 											string trainrgbMapSmallFacingPolyFileNamePPMCPlusTemp = traininterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + TRAIN_STRING + PPM_EXTENSION;
-											int dctCoeffArrayHeight = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;
-											int dctCoeffArrayWidth = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;	
-											string testconvertSmallImageRGBtoJPEGCommandTemp = ""; 
-											string trainconvertSmallImageRGBtoJPEGCommandTemp = "";
-											testconvertSmallImageRGBtoJPEGCommandTemp = testconvertSmallImageRGBtoJPEGCommandTemp + "convert " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_TEMP_STRING + " " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING + " " + testrgbMapSmallFacingPolyFileNamePPMCPlusTemp + " " + testrgbMapSmallFacingPolyFileNameJPEGCPlusTemp;
-											trainconvertSmallImageRGBtoJPEGCommandTemp = trainconvertSmallImageRGBtoJPEGCommandTemp + "convert " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_TEMP_STRING + " " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING + " " + trainrgbMapSmallFacingPolyFileNamePPMCPlusTemp + " " + trainrgbMapSmallFacingPolyFileNameJPEGCPlusTemp;
-											system(testconvertSmallImageRGBtoJPEGCommandTemp.c_str());
-											system(trainconvertSmallImageRGBtoJPEGCommandTemp.c_str());												
-											char * testrgbMapSmallFacingPolyFileNameJPEGCPlusTempCharStar = const_cast<char*>(testrgbMapSmallFacingPolyFileNameJPEGCPlusTemp.c_str());
-											char * trainrgbMapSmallFacingPolyFileNameJPEGCPlusTempCharStar = const_cast<char*>(trainrgbMapSmallFacingPolyFileNameJPEGCPlusTemp.c_str());
-											signed char * tempNullSignedCharArray = NULL;
-											readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(testrgbMapSmallFacingPolyFileNameJPEGCPlusTempCharStar, tempNullSignedCharArray, tempNullSignedCharArray, tempNullSignedCharArray, dctCoeffArrayHeight, dctCoeffArrayWidth, false);
-											readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(trainrgbMapSmallFacingPolyFileNameJPEGCPlusTempCharStar, tempNullSignedCharArray, tempNullSignedCharArray, tempNullSignedCharArray, dctCoeffArrayHeight, dctCoeffArrayWidth, false);
-											ICRmatchRow = ICRmatchRow +  "<TD>" + DCTTableHTMLOutputString + "</TD></TR>";
-											#else
-											ICRmatchRow = ICRmatchRow + "<TD>" + averageMatchErrorAcrossSidesString + "</TD></TR>";
-											#endif
-											writeStringToFileObject2(ICRmatchRow, &writeFileObject);
+											
+											//cout << "qt0" << endl;
+											string testDCTTableHTMLOutputString = "";
+											string trainDCTTableHTMLOutputString = "";	
+											string testDCTBinnedPrelimTableHTMLOutputString = "<BR /><TABLE><TR>";
+											string trainDCTBinnedPrelimTableHTMLOutputString = "<BR /><TABLE><TR>";											
+											string testDCTBinnedTableHTMLOutputString = "<BR /><TABLE><TR>";
+											string trainDCTBinnedTableHTMLOutputString = "<BR /><TABLE><TR>";												
+											signed char testconcatonatedSignedDctCoeffArrayRequirementTemp[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
+											signed char trainconcatonatedSignedDctCoeffArrayRequirementTemp[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
+											setpointerToDCTTableHTMLOutputString(&testDCTTableHTMLOutputString);
+											readDCTCoeffIndividualArraysAndConvertToConcatonatedSignedDctCoeffArray(&testrgbMapSmallFacingPolyFileNamePPMCPlusTemp, &testrgbMapSmallFacingPolyFileNameJPEGCPlusTemp, testconcatonatedSignedDctCoeffArrayRequirementTemp, true);
+											setpointerToDCTTableHTMLOutputString(&trainDCTTableHTMLOutputString);
+											readDCTCoeffIndividualArraysAndConvertToConcatonatedSignedDctCoeffArray(&trainrgbMapSmallFacingPolyFileNamePPMCPlusTemp, &trainrgbMapSmallFacingPolyFileNameJPEGCPlusTemp, trainconcatonatedSignedDctCoeffArrayRequirementTemp, true);
+											//cout << "qt1" << endl;
+											//next code extracted from convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue (determinations of arrayValueUnsigned)
+											for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; i++)
+											{
+												int arrayValueSigned = testconcatonatedSignedDctCoeffArrayRequirementTemp[i];
+												
+												char tempDataValueString[10];
+												sprintf(tempDataValueString, "%d", arrayValueSigned);
+												testDCTBinnedPrelimTableHTMLOutputString = testDCTBinnedPrelimTableHTMLOutputString + "<TD>" + tempDataValueString + "</TD>";
+												
+												double arrayValueUnsignedDouble;
+												int arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);												
+												sprintf(tempDataValueString, "%u", arrayValueUnsigned);
+												testDCTBinnedTableHTMLOutputString = testDCTBinnedTableHTMLOutputString + "<TD>" + tempDataValueString + "</TD>";												
+											}
+											for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; i++)
+											{
+												int arrayValueSigned = trainconcatonatedSignedDctCoeffArrayRequirementTemp[i];
+												
+												char tempDataValueString[10];
+												sprintf(tempDataValueString, "%d", arrayValueSigned);
+												trainDCTBinnedPrelimTableHTMLOutputString = trainDCTBinnedPrelimTableHTMLOutputString + "<TD>" + tempDataValueString + "</TD>";
+												
+												double arrayValueUnsignedDouble;
+												int arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);												
+												sprintf(tempDataValueString, "%u", arrayValueUnsigned);
+												trainDCTBinnedTableHTMLOutputString = trainDCTBinnedTableHTMLOutputString + "<TD>" + tempDataValueString + "</TD>";
+											}
+											//cout << "qt2" << endl;
+											testDCTBinnedPrelimTableHTMLOutputString = testDCTBinnedPrelimTableHTMLOutputString + "</TR></TABLE>";
+											trainDCTBinnedPrelimTableHTMLOutputString = trainDCTBinnedPrelimTableHTMLOutputString + "</TR></TABLE>";											
+											testDCTBinnedTableHTMLOutputString = testDCTBinnedTableHTMLOutputString + "</TR></TABLE>";
+											trainDCTBinnedTableHTMLOutputString = trainDCTBinnedTableHTMLOutputString + "</TR></TABLE>";
+											testImgSrcHtmlTags = testImgSrcHtmlTags + testDCTTableHTMLOutputString;	
+											trainImgSrcHtmlTags = trainImgSrcHtmlTags + trainDCTTableHTMLOutputString;
+											testImgSrcHtmlTags = testImgSrcHtmlTags + testDCTBinnedPrelimTableHTMLOutputString;
+											trainImgSrcHtmlTags = trainImgSrcHtmlTags + trainDCTBinnedPrelimTableHTMLOutputString;											
+											testImgSrcHtmlTags = testImgSrcHtmlTags + testDCTBinnedTableHTMLOutputString;
+											trainImgSrcHtmlTags = trainImgSrcHtmlTags + trainDCTBinnedTableHTMLOutputString;
+											#endif	
+											
+											
+											#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
+											//cout << "DEBUG_OR_OUTPUT_GEO_COORDINATES" << endl;
+											string traininterpolatedNearestFeaturesMapFileName = traininterpolatedRGBMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + TRAIN_STRING + TFD_EXTENSION;
+											createFeaturesListUsingFeaturesFile(traininterpolatedNearestFeaturesMapFileName, trainfirstFeatureInNearestFeatureList, false, false, false);
+											string testinterpolatedNearestFeaturesMapFileName = testinterpolatedRGBMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + TEST_STRING + TFD_EXTENSION;
+											createFeaturesListUsingFeaturesFile(testinterpolatedNearestFeaturesMapFileName, testfirstFeatureInNearestFeatureList, false, false, false);	
+											bool passedGeometricCheck = compareFeaturesListForMatch(testfirstFeatureInNearestFeatureList, trainfirstFeatureInNearestFeatureList, dimension);	//required to set matchFound								
+											string trainGeoTableHTMLOutputString = "";
+											string testGeoTableHTMLOutputString = "";
+											string trainGeoBinnedTableHTMLOutputString = "";
+											string testGeoBinnedTableHTMLOutputString = "";
+											createGeoTableHTMLfromFeatureList(trainfirstFeatureInNearestFeatureList, false, &trainGeoTableHTMLOutputString);
+											createGeoTableHTMLfromFeatureList(testfirstFeatureInNearestFeatureList, false, &testGeoTableHTMLOutputString);							
+											createGeoTableHTMLfromFeatureList(trainfirstFeatureInNearestFeatureList, true, &trainGeoBinnedTableHTMLOutputString);
+											createGeoTableHTMLfromFeatureList(testfirstFeatureInNearestFeatureList, true, &testGeoBinnedTableHTMLOutputString);
+											//cout << "endDEBUG_OR_OUTPUT_GEO_COORDINATES" << endl;
+											trainImgSrcHtmlTags = trainImgSrcHtmlTags + "<br />" + trainGeoTableHTMLOutputString;
+											testImgSrcHtmlTags = testImgSrcHtmlTags + "<br />" + testGeoTableHTMLOutputString;	
+											trainImgSrcHtmlTags = trainImgSrcHtmlTags + trainGeoBinnedTableHTMLOutputString;
+											testImgSrcHtmlTags = testImgSrcHtmlTags + testGeoBinnedTableHTMLOutputString;																						
+											#endif	
+																		
+										
 										}
 										else
-										{
-
-
-											string convertPPMtoPNGCommand = "convert " + trainrgbMapFacingPolyFileNameCPlusWithoutExt + PPM_EXTENSION + " " + trainrgbMapFacingPolyFileNameCPlusWithoutExtSanitised + PNG_EXTENSION;
-											if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
-											{
-												cout << "system(" << convertPPMtoPNGCommand << ");" << endl;
-											}
-											system(convertPPMtoPNGCommand.c_str());
-											string convertPPMtoPNGCommand2 = "convert " + testrgbMapFacingPolyFileNameCPlusWithoutExt + PPM_EXTENSION + " " + testrgbMapFacingPolyFileNameCPlusWithoutExtSanitised + PNG_EXTENSION;
-											if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
-											{
-												cout << "system(" << convertPPMtoPNGCommand2 << ");" << endl;
-											}
-											system(convertPPMtoPNGCommand2.c_str());
-											string ICRmatchRow = "<TR><TD>" + testObjectNameArray[testObjectIndex] + "</TD><TD>" + testviewIndexString + "</TD><TD>" + testzoomIndexString + "</TD><TD>" + testpolygonIndexString + "</TD><TD>" + testsideIndexString + "</TD><TD><img src=\"" + testrgbMapFacingPolyFileNameCPlusWithoutExtSanitised + PNG_EXTENSION + "\" border=0> </TD><TD>" + trainobjectIndexString + "</TD><TD>" + trainviewIndexString + "</TD><TD>" + trainzoomIndexString + "</TD><TD>" + trainpolygonIndexString + "</TD><TD>" + trainsideIndexString + "</TD><TD><img src=\"" + trainrgbMapFacingPolyFileNameCPlusWithoutExtSanitised + PNG_EXTENSION + "\" border=0> </TD> <TD>" + averageMatchErrorAcrossSidesString + "</TD></TR>";
-											writeStringToFileObject2(ICRmatchRow, &writeFileObject);
+										{																																						    
+											convertImageFileType(&trainrgbMapFacingPolyFileNameCPlusWithoutExt, &trainrgbMapFacingPolyFileNameCPlusWithoutExtSanitised, PPM_EXTENSION, PNG_EXTENSION);
+											convertImageFileType(&testrgbMapFacingPolyFileNameCPlusWithoutExt, &testrgbMapFacingPolyFileNameCPlusWithoutExtSanitised, PPM_EXTENSION, PNG_EXTENSION);
+											trainImgSrcHtmlTags = trainImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + trainrgbMapFacingPolyFileNameCPlusWithoutExtSanitised + PNG_EXTENSION + "\" border=0>";
+											testImgSrcHtmlTags = testImgSrcHtmlTags + "<img height=" + imageWidthFacingPolyString + " src=\"" + testrgbMapFacingPolyFileNameCPlusWithoutExtSanitised + PNG_EXTENSION + "\" border=0>";								
 										}
+										
+										#define DEBUG_OR_IMAGE_COMPARISON_LIST_MATCHED_FILE_NAMES
+										#ifdef DEBUG_OR_IMAGE_COMPARISON_LIST_MATCHED_FILE_NAMES
+										string ICRmatchRow = "<TR><TD>" + testObjectNameArray[testObjectIndex] + "</TD><TD>" + testviewIndexString + "</TD><TD>" + testzoomIndexString + "</TD><TD>" + testpolygonIndexString + "</TD><TD>" + testrgbMapFacingPolyFileNameCPlusWithoutExt + PPM_EXTENSION + "</TD><TD>" + testImgSrcHtmlTags + "</TD><TD>" + trainobjectIndexString + "</TD><TD>" + trainviewIndexString + "</TD><TD>" + trainzoomIndexString + "</TD><TD>" + trainpolygonIndexString + "</TD><TD>" + trainrgbMapFacingPolyFileNameCPlusWithoutExt + PPM_EXTENSION + "</TD><TD>" + trainImgSrcHtmlTags + "</TD>";											
+										#else
+										string ICRmatchRow = "<TR><TD>" + testObjectNameArray[testObjectIndex] + "</TD><TD>" + testviewIndexString + "</TD><TD>" + testzoomIndexString + "</TD><TD>" + testpolygonIndexString + "</TD><TD>" + testsideIndexString + "</TD><TD>" + testImgSrcHtmlTags + "</TD><TD>" + trainobjectIndexString + "</TD><TD>" + trainviewIndexString + "</TD><TD>" + trainzoomIndexString + "</TD><TD>" + trainpolygonIndexString + "</TD><TD>" + trainsideIndexString + "</TD><TD>" + trainImgSrcHtmlTags + "</TD>";
+										#endif
+
+										ICRmatchRow = ICRmatchRow + "<TD>" + averageMatchErrorAcrossSidesString + "</TD></TR>";
+										writeStringToFileObject2(ICRmatchRow, &writeFileObject);
 
 									}
 								}
@@ -2742,12 +2735,16 @@ char * trainsnapshotMapsText;
 	//#endif
 #endif
 
+/*
 //#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
 	delete testdctCoeffArrayY;
 	delete testdctCoeffArrayYCr;
 	delete testdctCoeffArrayYCb;
 	delete testconcatonatedSignedDctCoeffArrayRequirement;
+	
 //#endif
+*/
+
 
 //#ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING
 	delete trainrgbDevMap;
@@ -2799,7 +2796,19 @@ char * trainsnapshotMapsText;
 
 
 
-
+void convertImageFileType(string * imageBaseFileName, string * imageBaseFileNameConverted, string imageExtension, string imageExtensionConverted)
+{
+	string convertPPMtoPNGCommand = "convert " + *imageBaseFileName + imageExtension + " " + *imageBaseFileNameConverted + imageExtensionConverted;
+	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
+	{
+		cout << "system(" << convertPPMtoPNGCommand << ");" << endl;
+	}
+	system(convertPPMtoPNGCommand.c_str());
+}
+										
+										
+										
+										
 
 #define VERY_HIGH_ERROR (99999999999999.0)
 
@@ -2913,6 +2922,100 @@ void convertDCTCoeffIndividualArraysToConcatonatedSignedDctCoeffArray(signed cha
 	*/
 	
 
+}
+
+#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES 
+static char * stringFormatDouble = "%0.6f";
+static char * stringFormatDec = "%d";
+			
+void createGeoTableHTMLfromFeatureList(Feature * firstFeatureInNearestFeatureList, bool applyBinning, string * geoTableHTMLOutputString)
+{
+	*geoTableHTMLOutputString = *geoTableHTMLOutputString + "<TABLE>";
+
+	Feature * currentFeatureInList = firstFeatureInNearestFeatureList;
+	while((currentFeatureInList->next != NULL) && !(currentFeatureInList->lastFilledFeatureInList))
+	{
+		//cout << currentFeatureInList->OTpointIndex << "\t" << currentFeatureInList->pointTransformed.x <<  "\t" << currentFeatureInList->pointTransformed.y <<  "\t" << currentFeatureInList->pointTransformed.z << "\t" << currentFeatureInList->point.x <<  "\t" << currentFeatureInList->point.y <<  "\t" << currentFeatureInList->point.z <<endl;
+		if(currentFeatureInList->matchFound)
+		{
+			char coordinateXString[10];
+			char coordinateYString[10];
+			char coordinateZString[10];			
+			if(applyBinning)
+			{
+				int xBin = determineGeoBinX(currentFeatureInList->pointTransformed.x);
+				int yBin = determineGeoBinY(currentFeatureInList->pointTransformed.y);
+				int zBin = 0;
+				sprintf(coordinateXString, "%d", xBin);
+				sprintf(coordinateYString, "%d", yBin);	
+				sprintf(coordinateZString, "%d", zBin);	
+			}
+			else
+			{
+				sprintf(coordinateXString, "%0.6f", currentFeatureInList->pointTransformed.x);
+				sprintf(coordinateYString, "%0.6f", currentFeatureInList->pointTransformed.y);	
+				sprintf(coordinateZString, "%0.6f", currentFeatureInList->pointTransformed.z);	
+			}
+
+			*geoTableHTMLOutputString = *geoTableHTMLOutputString + "<TR><TD>" + coordinateXString + "</TD><TD>" + coordinateYString + "</TD><TD>" + coordinateZString + "</TD></TR>";
+		}
+
+		currentFeatureInList = currentFeatureInList->next;
+	}
+
+	*geoTableHTMLOutputString = *geoTableHTMLOutputString + "</TABLE>";
+}
+#endif
+										
+										
+void readDCTCoeffIndividualArraysAndConvertToConcatonatedSignedDctCoeffArray(string * rgbMapSmallFacingPolyFileNamePPMCPlus, string * rgbMapSmallFacingPolyFileNameJPEGCPlus, signed char * concatonatedSignedDctCoeffArrayRequirement, bool printOutput)
+{
+	//cout << "*rgbMapSmallFacingPolyFileNamePPMCPlus = " << *rgbMapSmallFacingPolyFileNamePPMCPlus << endl;
+	//cout << "*rgbMapSmallFacingPolyFileNameJPEGCPlus = " << *rgbMapSmallFacingPolyFileNameJPEGCPlus << endl;
+		
+	int dctCoeffArrayHeight = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;
+	int dctCoeffArrayWidth = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;	
+
+	signed char dctCoeffArrayY[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
+	signed char dctCoeffArrayYCr[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
+	signed char dctCoeffArrayYCb[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
+	signed char dctCoeffArrayYDummy[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
+	signed char dctCoeffArrayYCrDummy[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
+	signed char dctCoeffArrayYCbDummy[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
+		
+	string convertSmallImageRGBtoJPEGCommand = "";	
+	char * rgbMapSmallFacingPolyFileNameJPEG  = const_cast<char*>(rgbMapSmallFacingPolyFileNameJPEGCPlus->c_str());									
+		
+	if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ENHANCED_CHROMA_SUBSAMPLING)
+	{				
+		convertSmallImageRGBtoJPEGCommand = convertSmallImageRGBtoJPEGCommand + "convert " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING + " " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING + " " + *rgbMapSmallFacingPolyFileNamePPMCPlus + " " + *rgbMapSmallFacingPolyFileNameJPEGCPlus;
+		system(convertSmallImageRGBtoJPEGCommand.c_str());
+		readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(rgbMapSmallFacingPolyFileNameJPEG, dctCoeffArrayY, dctCoeffArrayYCrDummy, dctCoeffArrayYCbDummy, dctCoeffArrayHeight, dctCoeffArrayWidth, printOutput);
+		convertSmallImageRGBtoJPEGCommand = "";
+		convertSmallImageRGBtoJPEGCommand = convertSmallImageRGBtoJPEGCommand + "convert " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED_STRING + " " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING + " " + *rgbMapSmallFacingPolyFileNamePPMCPlus + " " + *rgbMapSmallFacingPolyFileNameJPEGCPlus;
+		system(convertSmallImageRGBtoJPEGCommand.c_str());
+		readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(rgbMapSmallFacingPolyFileNameJPEG, dctCoeffArrayYDummy, dctCoeffArrayYCr, dctCoeffArrayYCb, dctCoeffArrayHeight, dctCoeffArrayWidth, printOutput);
+		//cout << "here14b" << endl;
+		//exit(0);
+	}
+	else
+	{							
+		convertSmallImageRGBtoJPEGCommand = convertSmallImageRGBtoJPEGCommand + "convert " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING + " " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING + " " + *rgbMapSmallFacingPolyFileNamePPMCPlus + " " + *rgbMapSmallFacingPolyFileNameJPEGCPlus;
+		system(convertSmallImageRGBtoJPEGCommand.c_str());
+		readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(rgbMapSmallFacingPolyFileNameJPEG, dctCoeffArrayY, dctCoeffArrayYCr, dctCoeffArrayYCb, dctCoeffArrayHeight, dctCoeffArrayWidth, printOutput);
+	}	
+								
+	//long binnedAllDCTCoeff64BitValue = convertDCTCoeffIndividualArraysToBinnedAllDCTCoeff64BitValue(dctCoeffArrayY, dctCoeffArrayYCr, dctCoeffArrayYCb, concatonatedSignedDctCoeffArrayRequirement);	//may not be used here
+	convertDCTCoeffIndividualArraysToConcatonatedSignedDctCoeffArray(dctCoeffArrayY, dctCoeffArrayYCr, dctCoeffArrayYCb, concatonatedSignedDctCoeffArrayRequirement);										
+
+	/*
+	for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX; i++)
+	{
+		cout << "concatonatedSignedDctCoeffArrayRequirement[i] = " << int(concatonatedSignedDctCoeffArrayRequirement[i]) << endl;
+	}
+	*/
+												
+	//cout << "end63" << endl;
 }
 
 

@@ -3,7 +3,7 @@
  * File Name: ORdatabaseSQL.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7a 06-June-2012
+ * Project Version: 3a7b 09-June-2012
  *
  *******************************************************************************/
 
@@ -2057,10 +2057,10 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 
 						int geoxBin[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS];
 						int geoyBin[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS];
-						geoxBin[0] = (currentFeatureInTempList->pointTransformed.x / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_X_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS/2);
-						geoyBin[0] = (currentFeatureInTempList->pointTransformed.y / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_Y_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS/2);
-						geoxBin[1] = (currentFeatureInTempList2->pointTransformed.x / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_X_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS/2);
-						geoyBin[1] = (currentFeatureInTempList2->pointTransformed.y / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_Y_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS/2);
+						geoxBin[0] = determineGeoBinX(currentFeatureInTempList->pointTransformed.x);
+						geoyBin[0] = determineGeoBinY(currentFeatureInTempList->pointTransformed.y);
+						geoxBin[1] = determineGeoBinX(currentFeatureInTempList2->pointTransformed.x);
+						geoyBin[1] = determineGeoBinY(currentFeatureInTempList2->pointTransformed.y);
 
 
 						
@@ -2250,8 +2250,8 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 										char geobinDimensionString[10];
 										sprintf(geobinDimensionString, "%d", geobinDimension+1);
 
-										geoxBin[geobinDimension] = (currentFeature->pointTransformed.x / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_X_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS/2);
-										geoyBin[geobinDimension] = (currentFeature->pointTransformed.y / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_Y_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS/2);
+										geoxBin[geobinDimension] = determineGeoBinX(currentFeature->pointTransformed.x);
+										geoyBin[geobinDimension] = determineGeoBinY(currentFeature->pointTransformed.y);
 
 										//cout << "geoxBin[" << geobinDimension << "] = " << geoxBin[geobinDimension] << endl;
 										//cout << "geoyBin[" << geobinDimension << "] = " << geoyBin[geobinDimension] << endl;
@@ -2571,23 +2571,13 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 		
 		//cout << "arrayValueSigned = " << arrayValueSigned << endl;
 		
-		if(arrayValueSigned > OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL)
-		{
-			arrayValueSigned = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL; 
-		}
-		else if(arrayValueSigned < -OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL)
-		{
-			arrayValueSigned = -OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL; 
-		}
-			
-		int arrayValueUnsigned; 
+		double arrayValueUnsignedDouble;
+		int arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);	//should be unsigned int
+		
+		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 		int numDistintValsPerColumn = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
 		if(numDistintValsPerColumn != 1)
-		{
-			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
-			double arrayValueUnsignedDouble = double(arrayValueSigned)/double(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL) + double(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET);
-			arrayValueUnsigned = (unsigned int)(arrayValueUnsignedDouble);
-			
+		{			
 			//cout << "arrayValueUnsignedDouble = " << arrayValueUnsignedDouble << endl;
 			//cout << "arrayValueUnsigned = " << arrayValueUnsigned << endl;
 			
@@ -2605,15 +2595,9 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 			{
 				concatonatedDctCoeffArrayBiasInt[i] = OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_SAME;
 			}
-
-			#else
-			arrayValueUnsigned = (unsigned int)(double(arrayValueSigned)/double(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL) + double(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET));
-			#endif
-		}
-		else
-		{
-			arrayValueUnsigned = arrayValueSigned + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET;
-		}
+		}		
+		#endif
+		
 		//cout << "arrayValueUnsigned = " << arrayValueUnsigned << endl;
 				
 		
@@ -2730,27 +2714,9 @@ void convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(signed char
 		int arrayValueSigned = concatonatedSignedDctCoeffArray[i];
 		//cout << "concatonatedSignedDctCoeffArray[i] = " << concatonatedSignedDctCoeffArray[i] << endl;
 
-		if(arrayValueSigned > OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL)
-		{
-			arrayValueSigned = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL; 
-		}
-		else if(arrayValueSigned < -OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL)
-		{
-			arrayValueSigned = -OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL; 
-		}
-
-		int arrayValueUnsigned; 
-		int numDistintValsPerColumn = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
-		if(numDistintValsPerColumn != 1)
-		{
-			arrayValueUnsigned = (unsigned int)(double(arrayValueSigned)/double(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL) + double(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET));
-		}
-		else
-		{
-			arrayValueUnsigned = arrayValueSigned + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET;
-		}
-
-		
+		double arrayValueUnsignedDouble;
+		int arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);		//should be unsigned int
+			
 		linearCombinationArray[index] = arrayValueUnsigned;
 		//cout << "linearCombinationArray[index] = " << linearCombinationArray[index] << endl;
 		index++;
@@ -2789,6 +2755,52 @@ void convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(signed char
 	*linearCombination = (unsigned long)(linearCombinationDouble/OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK_DOUBLE_TO_U_LONG_CONVERSION);
 	//cout << "linearCombination = " << *linearCombination << endl;	
 }
+
+
+int determineGeoBinX(double featurePointTransformedXpos)
+{
+	int geoBinX = (featurePointTransformedXpos / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_X_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS/2);
+	return geoBinX;
+}
+
+int determineGeoBinY(double featurePointTransformedYpos)
+{
+	int geoBinY = (featurePointTransformedYpos / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_Y_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS/2);
+	return geoBinY;
+}
+
+unsigned int determineDCTBinUnsigned(int arrayValueSigned, double * arrayValueUnsignedDouble)
+{
+	if(arrayValueSigned > OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL)
+	{
+		arrayValueSigned = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
+	}
+	else if(arrayValueSigned < -OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL)
+	{
+		arrayValueSigned = -OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL; 
+	}
+
+	unsigned int arrayValueUnsigned; 
+	int numDistintValsPerColumn = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
+	if(numDistintValsPerColumn != 1)
+	{
+		*arrayValueUnsignedDouble = determineDCTBinUnsignedDouble(arrayValueSigned);
+		arrayValueUnsigned = (unsigned int)(*arrayValueUnsignedDouble);
+	}
+	else
+	{
+		arrayValueUnsigned = arrayValueSigned + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET;
+	}
+	
+	return arrayValueUnsigned;
+}
+
+double determineDCTBinUnsignedDouble(int arrayValueSigned)
+{
+	double arrayValueUnsignedDouble = double(arrayValueSigned)/double(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL) + double(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET);
+	return arrayValueUnsignedDouble;
+}
+
 
 
 //#endif

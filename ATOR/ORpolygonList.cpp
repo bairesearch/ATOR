@@ -3,13 +3,12 @@
  * File Name: ORpolygonList.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7a 06-June-2012
+ * Project Version: 3a7b 09-June-2012
  *
  *******************************************************************************/
 
 #include "ORpolygonList.h"
 #include "SHAREDvector.h"
-#include "RTglobalDefs.h"	//required for ESTIMATE_MAX_DEPTH_T_REAL
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -133,7 +132,11 @@ Feature::Feature(void)
 	pointTransformed.x = 0.0;
 	pointTransformed.y = 0.0;
 	pointTransformed.z = 0.0;
-
+	
+	#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
+	matchFound = false;
+	#endif
+	
 #endif
 
 //#ifdef OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
@@ -155,7 +158,11 @@ Feature::Feature(void)
 	yViewport = 0;
 	magnitude = 0.0;
 	numberOfFeaturePixelsUsedToGenerateFeature = 0;
+	
+	lastFilledFeatureInList = true;
 	next = NULL;
+	
+	
 }
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON

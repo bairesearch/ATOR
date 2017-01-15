@@ -3,7 +3,7 @@
  * File Name: SHAREDglobalDefs.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Description: Generic Construct Functions: shared global definitions (configure to compile different BAI projects)
- * Project Version: 3a7a 06-June-2012
+ * Project Version: 3a7b 09-June-2012
  *
  *******************************************************************************/
  
@@ -191,28 +191,25 @@ int OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_CO
 
 //OR_SHARED_VARS...	//general contrast threshold constraints
 
+bool OR_USE_CONTRAST_CALC_METHOD_C;			//RTglobalDefs.h	//OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY may be more recommended with OR_USE_CONTRAST_CALC_METHOD_B 
+bool OR_USE_CONTRAST_CALC_METHOD_B;			//RTglobalDefs.h	//OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY may be more recommended with OR_USE_CONTRAST_CALC_METHOD_B
+
+double LUMINOSITY_CONTRAST_FRACTION_THRESHOLD;		//RTglobalDefs.h
 double DEPTH_GRADIENT_CONTRAST_FRACTION_THRESHOLD;	//this needs to be dynamic - not static - and should be dependant upon focal length
 double DEPTH_CONTRAST_FRACTION_THRESHOLD;		//this needs to be dynamic - not static - and should be dependant upon focal length
 double POINT_NORMAL_CONTRAST_FRACTION_THRESHOLD;
 
-/*moved to RTglobalDefs.h
-double LUMINOSITY_CONTRAST_FRACTION_THRESHOLD;
-
-double LUMINOSITY_FRACTION_THRESHOLD;
-double ESTIMATE_MAX_DEPTH_T_REAL;
-
-double MAX_LUMINOSITY_CONTRAST;
-double MAX_NORMAL_CONTRAST;
-
-double EDGE_LUMINOSITY_CONTRAST_THRESHOLD;
-double EDGE_LUMINOSITY_THRESHOLD;
-*/
+double LUMINOSITY_FRACTION_THRESHOLD;			//RTglobalDefs.h
 double OR_MAX_DEPTH_NOISE;
+double ESTIMATE_MAX_DEPTH_T_REAL;			//RTglobalDefs.h
 
+double MAX_LUMINOSITY_CONTRAST;				//RTglobalDefs.h
+double MAX_NORMAL_CONTRAST;				//RTglobalDefs.h
 double ESTIMATE_MAX_DEPTH_CONTRAST;
 double ESTIMATE_MAX_DEPTH_GRADIENT_CONTRAST;
 	
-
+double EDGE_LUMINOSITY_CONTRAST_THRESHOLD;		//RTglobalDefs.h
+double EDGE_LUMINOSITY_THRESHOLD;			//RTglobalDefs.h
 double EDGE_NORMAL_CONTRAST_THRESHOLD;
 double EDGE_DEPTH_CONTRAST_THRESHOLD;
 double EDGE_DEPTH_GRADIENT_CONTRAST_THRESHOLD;
@@ -291,7 +288,8 @@ int DEFAULT_NORMAL_MAP_GENERATION_KERNEL_WIDTH;
 int DEFAULT_NORMAL_MAP_GENERATION_KERNEL_HEIGHT;
 
 bool DEFAULT_CONTRAST_MAP_GENERATION_INTERPIXEL;
-
+int DEFAULT_CONTRAST_MAP_GENERATION_KERNEL_WIDTH;
+int DEFAULT_CONTRAST_MAP_GENERATION_KERNEL_HEIGHT;
 
 
 //OR_QUADRATIC_FIT...

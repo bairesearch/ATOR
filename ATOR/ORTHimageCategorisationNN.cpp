@@ -3,7 +3,7 @@
  * File Name: ORTHimageCategorisationNN.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7a 06-June-2012
+ * Project Version: 3a7b 09-June-2012
  * Test Harness for OR Image Categorisation NN method (not yet implemented)
  *******************************************************************************/
 
@@ -498,66 +498,9 @@ void deriveDCTcoefficients(string exampleImageFileName, signed char dctCoeff[])
 	signed char * dctCoeffArrayYCrDummy = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
 	signed char * dctCoeffArrayYCbDummy = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
 
-	string convertSmallImageRGBtoJPEGCommand = "";
-	char rgbMapFacingPolySmallFileNameJPEG[100] = "temp.jpg";
+	string rgbMapFacingPolySmallFileNameJPEG = "temp.jpg";
 	
-	if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ENHANCED_CHROMA_SUBSAMPLING)
-	{
-		int dctCoeffArrayHeight = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;
-		int dctCoeffArrayWidth = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;
-		for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-		{
-			dctCoeffArrayY[i] = 0;
-		}
-		for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-		{
-			dctCoeffArrayYCr[i] = 0;
-		}
-		for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-		{
-			dctCoeffArrayYCb[i] = 0;
-		}							
-		convertSmallImageRGBtoJPEGCommand = "";
-		convertSmallImageRGBtoJPEGCommand = convertSmallImageRGBtoJPEGCommand + "convert " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING + " " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING + " " + exampleImageFileName + " " + rgbMapFacingPolySmallFileNameJPEG;
-		system(convertSmallImageRGBtoJPEGCommand.c_str());
-		readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(rgbMapFacingPolySmallFileNameJPEG, dctCoeffArrayY, dctCoeffArrayYCrDummy, dctCoeffArrayYCbDummy, dctCoeffArrayHeight, dctCoeffArrayWidth, true);
-		convertSmallImageRGBtoJPEGCommand = "";
-		convertSmallImageRGBtoJPEGCommand = convertSmallImageRGBtoJPEGCommand + "convert " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED_STRING + " " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING + " " + exampleImageFileName + " " + rgbMapFacingPolySmallFileNameJPEG;
-		system(convertSmallImageRGBtoJPEGCommand.c_str());
-		readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(rgbMapFacingPolySmallFileNameJPEG, dctCoeffArrayYDummy, dctCoeffArrayYCr, dctCoeffArrayYCb, dctCoeffArrayHeight, dctCoeffArrayWidth, true);
-
-		//exit(0);
-	}
-	else
-	{
-		//cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING << endl;
-		//cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING << endl;
-		//cout << "rgbMapFacingPolySmallFileName = " << rgbMapFacingPolySmallFileName << endl;
-		//cout << "rgbMapFacingPolySmallFileNameJPEG = " << rgbMapFacingPolySmallFileNameJPEG << endl;
-
-		convertSmallImageRGBtoJPEGCommand = convertSmallImageRGBtoJPEGCommand + "convert " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING + " " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING + " " + exampleImageFileName + " " + rgbMapFacingPolySmallFileNameJPEG;
-		//cout << "convertSmallImageRGBtoJPEGCommand = " << convertSmallImageRGBtoJPEGCommand << endl;
-		system(convertSmallImageRGBtoJPEGCommand.c_str());
-		int dctCoeffArrayHeight = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;
-		int dctCoeffArrayWidth = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;
-		for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-		{
-			dctCoeffArrayY[i] = 0;
-		}
-		for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-		{
-			dctCoeffArrayYCr[i] = 0;
-		}
-		for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-		{
-			dctCoeffArrayYCb[i] = 0;
-		}
-		readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(rgbMapFacingPolySmallFileNameJPEG, dctCoeffArrayY, dctCoeffArrayYCr, dctCoeffArrayYCb, dctCoeffArrayHeight, dctCoeffArrayWidth, true);
-		//cout << "here14" << endl;
-		//exit(0);
-	}
-	convertDCTCoeffIndividualArraysToConcatonatedSignedDctCoeffArray(dctCoeffArrayY, dctCoeffArrayYCr, dctCoeffArrayYCb, dctCoeff);
-
+	readDCTCoeffIndividualArraysAndConvertToConcatonatedSignedDctCoeffArray(exampleImageFileName, rgbMapFacingPolySmallFileNameJPEG, dctCoeff, false);
 }
 			
 			

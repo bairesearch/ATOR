@@ -188,11 +188,11 @@
 		
 		
 		<miscellaneousItem name="WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE" stringValue="" fractionalValue="104" />
-		<miscellaneousItem name="OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO" stringValue="" fractionalValue="4" />
+		<miscellaneousItem name="OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO" stringValue="" fractionalValue="6" />
 		<miscellaneousItem name="OR_METHOD_3DOD_USE_SMALL_IMAGE_RATIO" stringValue="" fractionalValue="5" />
 		
-		<miscellaneousItem name="OR_METHOD_2DOD_NORM_SNAPSHOT_X" stringValue="" fractionalValue="28" />
-		<miscellaneousItem name="OR_METHOD_2DOD_NORM_SNAPSHOT_Y" stringValue="" fractionalValue="28" />
+		<miscellaneousItem name="OR_METHOD_2DOD_NORM_SNAPSHOT_X" stringValue="" fractionalValue="30" />
+		<miscellaneousItem name="OR_METHOD_2DOD_NORM_SNAPSHOT_Y" stringValue="" fractionalValue="30" />
 		<miscellaneousItem name="OR_METHOD_3DOD_NORM_SNAPSHOT_X" stringValue="" fractionalValue="40" />
 		<miscellaneousItem name="OR_METHOD_3DOD_NORM_SNAPSHOT_X" stringValue="" fractionalValue="40" />	
 		

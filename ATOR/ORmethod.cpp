@@ -3,7 +3,7 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7a 06-June-2012
+ * Project Version: 3a7b 09-June-2012
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -3443,6 +3443,7 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 	unsigned char * rgbDev8BitSmallMapFacingPoly = new unsigned char[smallImageWidth*smallImageHeight*RGB_NUM];
 	//#endif
 //#endif
+
 //#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
 	signed char * dctCoeffArrayY = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
 	signed char * dctCoeffArrayYCr = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
@@ -3452,6 +3453,7 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 	signed char * dctCoeffArrayYCbDummy = new signed char[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D];
 
 //#endif
+
 
 	double * luminosityMapFacingPoly = new double[imageWidthFacingPoly * imageHeightFacingPoly];
 	bool * luminosityBooleanMapFacingPoly = new bool[imageWidthFacingPoly*imageHeightFacingPoly];
@@ -4292,65 +4294,10 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 										{
 											generatePixmapFromRGBMap(rgbMapFacingPolySmallFileName, smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly);
 										}
-
-										string convertSmallImageRGBtoJPEGCommand = "";
-
-										if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ENHANCED_CHROMA_SUBSAMPLING)
-										{
-											int dctCoeffArrayHeight = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;
-											int dctCoeffArrayWidth = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;
-											for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-											{
-												dctCoeffArrayY[i] = 0;
-											}
-											for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-											{
-												dctCoeffArrayYCr[i] = 0;
-											}
-											for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-											{
-												dctCoeffArrayYCb[i] = 0;
-											}							
-											convertSmallImageRGBtoJPEGCommand = "";
-											convertSmallImageRGBtoJPEGCommand = convertSmallImageRGBtoJPEGCommand + "convert " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING + " " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING + " " + rgbMapFacingPolySmallFileName + " " + rgbMapFacingPolySmallFileNameJPEG;
-											system(convertSmallImageRGBtoJPEGCommand.c_str());
-											readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(rgbMapFacingPolySmallFileNameJPEG, dctCoeffArrayY, dctCoeffArrayYCrDummy, dctCoeffArrayYCbDummy, dctCoeffArrayHeight, dctCoeffArrayWidth, true);
-											convertSmallImageRGBtoJPEGCommand = "";
-											convertSmallImageRGBtoJPEGCommand = convertSmallImageRGBtoJPEGCommand + "convert " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED_STRING + " " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING + " " + rgbMapFacingPolySmallFileName + " " + rgbMapFacingPolySmallFileNameJPEG;
-											system(convertSmallImageRGBtoJPEGCommand.c_str());
-											readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(rgbMapFacingPolySmallFileNameJPEG, dctCoeffArrayYDummy, dctCoeffArrayYCr, dctCoeffArrayYCb, dctCoeffArrayHeight, dctCoeffArrayWidth, true);
-											
-											//exit(0);
-										}
-										else
-										{
-											//cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING << endl;
-											//cout << "OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING = " << OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING << endl;
-											//cout << "rgbMapFacingPolySmallFileName = " << rgbMapFacingPolySmallFileName << endl;
-											//cout << "rgbMapFacingPolySmallFileNameJPEG = " << rgbMapFacingPolySmallFileNameJPEG << endl;
-											
-											convertSmallImageRGBtoJPEGCommand = convertSmallImageRGBtoJPEGCommand + "convert " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_STRING + " " + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_STRING + " " + rgbMapFacingPolySmallFileName + " " + rgbMapFacingPolySmallFileNameJPEG;
-											//cout << "convertSmallImageRGBtoJPEGCommand = " << convertSmallImageRGBtoJPEGCommand << endl;
-											system(convertSmallImageRGBtoJPEGCommand.c_str());
-											int dctCoeffArrayHeight = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;
-											int dctCoeffArrayWidth = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D;
-											for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-											{
-												dctCoeffArrayY[i] = 0;
-											}
-											for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-											{
-												dctCoeffArrayYCr[i] = 0;
-											}
-											for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D; i++)
-											{
-												dctCoeffArrayYCb[i] = 0;
-											}
-											readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(rgbMapFacingPolySmallFileNameJPEG, dctCoeffArrayY, dctCoeffArrayYCr, dctCoeffArrayYCb, dctCoeffArrayHeight, dctCoeffArrayWidth, true);
-											//cout << "here14" << endl;
-											//exit(0);
-										}
-										convertDCTCoeffIndividualArraysToConcatonatedSignedDctCoeffArray(dctCoeffArrayY, dctCoeffArrayYCr, dctCoeffArrayYCb, currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff);
+										
+										readDCTCoeffIndividualArraysAndConvertToConcatonatedSignedDctCoeffArray(&rgbMapFacingPolySmallFileNameCPlus, &rgbMapFacingPolySmallFileNameJPEGCPlus, currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff, false);
+								
+										
 										#ifndef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
 										currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff);
 										#endif

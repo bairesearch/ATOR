@@ -3,7 +3,7 @@
  * File Name: ORpolygonList.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7a 06-June-2012
+ * Project Version: 3a7b 09-June-2012
  *
  *******************************************************************************/
 
@@ -88,6 +88,11 @@ public:
 	double minWidthAndHeightOfOrigOT;
 	#endif
 	vec pointTransformed;
+
+	#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
+	bool matchFound;	//added 8 June 2012 for debugging
+	#endif
+	
 #endif
 
 //#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
@@ -102,8 +107,9 @@ public:
 	char snapshotMapsText[OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_MAX_DATA_LENGTH];
 	int snapshotMapsTextLength;
 
-
+	bool lastFilledFeatureInList;	//added 8 June 2012 to fix overrun
 	Feature * next;
+
 };
 
 class PolygonBAI{
