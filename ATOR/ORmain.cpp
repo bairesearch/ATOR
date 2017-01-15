@@ -24,9 +24,9 @@
 /*******************************************************************************
  *
  * File Name: ORmain.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2005-2016 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3i15a 11-August-2016
+ * Project Version: 3i15b 11-August-2016
  *
  *******************************************************************************/
 
@@ -100,25 +100,25 @@ int main(int argc,char* *argv)
 	string databaseFolderName =  OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME + OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME;
 	#endif
 
-	if(argumentExists(argc,argv,"-workingfolder"))
+	if(argumentExists(argc, argv, "-workingfolder"))
 	{
-		workingFolder = getStringArgument(argc,argv,"-workingfolder");
+		workingFolder = getStringArgument(argc, argv, "-workingfolder");
 	}
 	else
 	{
 		workingFolder = currentFolder;
 	}
-	if(argumentExists(argc,argv,"-exefolder"))
+	if(argumentExists(argc, argv, "-exefolder"))
 	{
-		exeFolder = getStringArgument(argc,argv,"-exefolder");
+		exeFolder = getStringArgument(argc, argv, "-exefolder");
 	}
 	else
 	{
 		exeFolder = currentFolder;
 	}
-	if(argumentExists(argc,argv,"-tempfolder"))
+	if(argumentExists(argc, argv, "-tempfolder"))
 	{
-		tempFolder = getStringArgument(argc,argv,"-tempfolder");
+		tempFolder = getStringArgument(argc, argv, "-tempfolder");
 	}
 	else
 	{
@@ -137,7 +137,7 @@ int main(int argc,char* *argv)
 	setCurrentDirectory(tempFolder);
 
 	int dimension;
-	if(argumentExists(argc,argv,"-od3"))
+	if(argumentExists(argc, argv, "-od3"))
 	{
 		dimension = OR_METHOD3DOD_DIMENSIONS;
 	}
@@ -147,7 +147,7 @@ int main(int argc,char* *argv)
 	}
 
 	bool clearTrainTable;
-	if(argumentExists(argc,argv,"-cleartrain"))
+	if(argumentExists(argc, argv, "-cleartrain"))
 	{
 		clearTrainTable = true;
 	}
@@ -157,9 +157,9 @@ int main(int argc,char* *argv)
 	}
 
 	int trainOrTest;
-	if(argumentExists(argc,argv,"-trainortest"))
+	if(argumentExists(argc, argv, "-trainortest"))
 	{
-		trainOrTest = int(getFloatArgument(argc,argv,"-trainortest"));
+		trainOrTest = int(getFloatArgument(argc, argv, "-trainortest"));
 
 		if(!((trainOrTest == TEST) || (trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST)))
 		{
@@ -180,9 +180,9 @@ int main(int argc,char* *argv)
 	string sqlIPaddress = "";
 	string sqlUsername = "";
 	string sqlPassword = "";
-	if(argumentExists(argc,argv,"-sqlipaddress"))
+	if(argumentExists(argc, argv, "-sqlipaddress"))
 	{
-		sqlIPaddress = getStringArgument(argc,argv,"-sqlipaddress");
+		sqlIPaddress = getStringArgument(argc, argv, "-sqlipaddress");
 	}
 	else
 	{
@@ -190,9 +190,9 @@ int main(int argc,char* *argv)
 		printORcommandLineErrorMessage();
 		exit(0);
 	}
-	if(argumentExists(argc,argv,"-sqlusername"))
+	if(argumentExists(argc, argv, "-sqlusername"))
 	{
-		sqlUsername = getStringArgument(argc,argv,"-sqlusername");
+		sqlUsername = getStringArgument(argc, argv, "-sqlusername");
 	}
 	else
 	{
@@ -201,9 +201,9 @@ int main(int argc,char* *argv)
 		exit(0);
 	}
 
-	if(argumentExists(argc,argv,"-sqlpassword"))
+	if(argumentExists(argc, argv, "-sqlpassword"))
 	{
-		sqlPassword = getStringArgument(argc,argv,"-sqlpassword");
+		sqlPassword = getStringArgument(argc, argv, "-sqlpassword");
 	}
 	else
 	{
@@ -296,9 +296,9 @@ int main(int argc,char* *argv)
 	string multViewList = "";
 	string multViewListFileName = "";
 	bool useMultViewList = false;
-	if(argumentExists(argc,argv,"-multview"))
+	if(argumentExists(argc, argv, "-multview"))
 	{
-		multViewListFileName = getStringArgument(argc,argv,"-multview");
+		multViewListFileName = getStringArgument(argc, argv, "-multview");
 		useMultViewList = true;
 
 		RTviewInfo tempViewInfo;
@@ -315,9 +315,9 @@ int main(int argc,char* *argv)
 	}
 
 	string imageFileName = "";
-	if(argumentExists(argc,argv,"-object"))
+	if(argumentExists(argc, argv, "-object"))
 	{
-		imageFileName = getStringArgument(argc,argv,"-object");
+		imageFileName = getStringArgument(argc, argv, "-object");
 		ObjectNameArray[0] = imageFileName;
 		vi.objectName = imageFileName;
 	}
@@ -328,16 +328,16 @@ int main(int argc,char* *argv)
 		exit(0);
 	}
 
-	if(argumentExists(argc,argv,"-version"))
+	if(argumentExists(argc, argv, "-version"))
 	{
-		cout << "OpenOR.exe - Project Version: 3i15a 11-August-2016" << endl;
+		cout << "OpenOR.exe - Project Version: 3i15b 11-August-2016" << endl;
 		exit(1);
 	}
 
 	string imageExtensionName = "";
-	if(argumentExists(argc,argv,"-imageext"))
+	if(argumentExists(argc, argv, "-imageext"))
 	{
-		imageExtensionName = getStringArgument(argc,argv,"-imageext");
+		imageExtensionName = getStringArgument(argc, argv, "-imageext");
 		vi.imageExtensionName = imageExtensionName;
 	}
 	else
@@ -350,9 +350,9 @@ int main(int argc,char* *argv)
 		}
 	}
 
-	if(argumentExists(argc,argv,"-width"))
+	if(argumentExists(argc, argv, "-width"))
 	{
-		vi.imageWidth=getFloatArgument(argc,argv,"-width");
+		vi.imageWidth = getFloatArgument(argc, argv, "-width");
 	}
 	else
 	{
@@ -364,9 +364,9 @@ int main(int argc,char* *argv)
 		}
 	}
 
-	if(argumentExists(argc,argv,"-height"))
+	if(argumentExists(argc, argv, "-height"))
 	{
-		vi.imageHeight=getFloatArgument(argc,argv,"-height");
+		vi.imageHeight = getFloatArgument(argc, argv, "-height");
 	}
 	else
 	{
@@ -382,9 +382,9 @@ int main(int argc,char* *argv)
 	bool missingDepthMapExtensionDescriptor = false;
 
 	string depthExtensionName = "";
-	if(argumentExists(argc,argv,"-depthext"))
+	if(argumentExists(argc, argv, "-depthext"))
 	{
-		depthExtensionName = getStringArgument(argc,argv,"-depthext");
+		depthExtensionName = getStringArgument(argc, argv, "-depthext");
 		vi.depthExtensionName = depthExtensionName;
 	}
 	else
@@ -393,117 +393,117 @@ int main(int argc,char* *argv)
 		missingDepthMapExtensionDescriptor = true;
 	}
 
-	if(argumentExists(argc,argv,"-vieweyex"))
+	if(argumentExists(argc, argv, "-vieweyex"))
 	{
-		vi.eye.x=getFloatArgument(argc,argv,"-vieweyex");
+		vi.eye.x = getFloatArgument(argc, argv, "-vieweyex");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc,argv,"-vieweyey"))
+	if(argumentExists(argc, argv, "-vieweyey"))
 	{
-		vi.eye.y=getFloatArgument(argc,argv,"-vieweyey");
+		vi.eye.y = getFloatArgument(argc, argv, "-vieweyey");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc,argv,"-vieweyez"))
+	if(argumentExists(argc, argv, "-vieweyez"))
 	{
-		vi.eye.z=getFloatArgument(argc,argv,"-vieweyez");
+		vi.eye.z = getFloatArgument(argc, argv, "-vieweyez");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc,argv,"-viewatx"))
+	if(argumentExists(argc, argv, "-viewatx"))
 	{
-		vi.viewAt.x=getFloatArgument(argc,argv,"-viewatx");
+		vi.viewAt.x = getFloatArgument(argc, argv, "-viewatx");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc,argv,"-viewaty"))
+	if(argumentExists(argc, argv, "-viewaty"))
 	{
-		vi.viewAt.y=getFloatArgument(argc,argv,"-viewaty");
+		vi.viewAt.y = getFloatArgument(argc, argv, "-viewaty");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc,argv,"-viewatz"))
+	if(argumentExists(argc, argv, "-viewatz"))
 	{
-		vi.viewAt.z=getFloatArgument(argc,argv,"-viewatz");
+		vi.viewAt.z = getFloatArgument(argc, argv, "-viewatz");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc,argv,"-viewupx"))
+	if(argumentExists(argc, argv, "-viewupx"))
 	{
-		vi.viewUp.x=getFloatArgument(argc,argv,"-viewupx");
+		vi.viewUp.x = getFloatArgument(argc, argv, "-viewupx");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc,argv,"-viewupy"))
+	if(argumentExists(argc, argv, "-viewupy"))
 	{
-		vi.viewUp.y=getFloatArgument(argc,argv,"-viewupy");
+		vi.viewUp.y = getFloatArgument(argc, argv, "-viewupy");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc,argv,"-viewupz"))
+	if(argumentExists(argc, argv, "-viewupz"))
 	{
-		vi.viewUp.z=getFloatArgument(argc,argv,"-viewupz");
+		vi.viewUp.z = getFloatArgument(argc, argv, "-viewupz");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc,argv,"-viewfocal"))
+	if(argumentExists(argc, argv, "-viewfocal"))
 	{
-		vi.focalLength=getFloatArgument(argc,argv,"-viewfocal");
+		vi.focalLength = getFloatArgument(argc, argv, "-viewfocal");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc,argv,"-viewsizew"))
+	if(argumentExists(argc, argv, "-viewsizew"))
 	{
-		vi.viewWidth=getFloatArgument(argc,argv,"-viewsizew");
+		vi.viewWidth = getFloatArgument(argc, argv, "-viewsizew");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc,argv,"-viewsizeh"))
+	if(argumentExists(argc, argv, "-viewsizeh"))
 	{
-		vi.viewHeight=getFloatArgument(argc,argv,"-viewsizeh");
+		vi.viewHeight = getFloatArgument(argc, argv, "-viewsizeh");
 	}
 	else
 	{
 		missingaPOVDescriptor = true;
 	}
 
-	if(argumentExists(argc,argv,"-scale"))
+	if(argumentExists(argc, argv, "-scale"))
 	{
-		vi.depthScale=getFloatArgument(argc,argv,"-scale");
+		vi.depthScale = getFloatArgument(argc, argv, "-scale");
 	}
 	else
 	{
@@ -511,9 +511,9 @@ int main(int argc,char* *argv)
 	}
 
 	int viewNumber = 0;
-	if(argumentExists(argc,argv,"-view"))
+	if(argumentExists(argc, argv, "-view"))
 	{
-		viewNumber=getFloatArgument(argc,argv,"-view");
+		viewNumber = getFloatArgument(argc, argv, "-view");
 
 		if(useMultViewList)
 		{
@@ -523,9 +523,9 @@ int main(int argc,char* *argv)
 	}
 
 	#ifdef OR_USE_DATABASE
-	if(argumentExists(argc,argv,"-dbfolder"))
+	if(argumentExists(argc, argv, "-dbfolder"))
 	{
-		databaseFolderName = getStringArgument(argc,argv,"-dbfolder");
+		databaseFolderName = getStringArgument(argc, argv, "-dbfolder");
 		databaseFolderName = databaseFolderName + '/';
 	}
 	initialiseDatabase(databaseFolderName);
