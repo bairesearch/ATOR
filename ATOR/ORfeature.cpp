@@ -26,7 +26,7 @@
  * File Name: ORfeature.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7c 27-January-2015
+ * Project Version: 3e7d 27-January-2015
  *
  * Assumes that depth information is less accurate than image information
  *
@@ -1879,7 +1879,7 @@ bool defineRegionCheckNextPixelNonRecursive(ORpixelContiguous* firstInPixelConti
 						{
 							double subpixelArea = calculateAreaOfOneSideOfEdgeInPixel(-(x-xCurrent), -(y-yCurrent), edgeZeroCrossingMap[y*imageWidth + x]->zeroCrossingValueX, edgeZeroCrossingMap[y*imageWidth + x]->zeroCrossingValueY, edgeZeroCrossingMap[y*imageWidth + x]->alpha);
 							#ifdef OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY_EXTRA_NOT_NECESSARY_AND_BUGGY
-							*regionSize =* regionSize + subpixelArea;
+							*regionSize = *regionSize + subpixelArea;
 							#endif
 
 							//now add subpixel area for a diagonal adjacent pixels if necessary
@@ -1955,7 +1955,7 @@ bool defineRegionCheckNextPixelNonRecursive(ORpixelContiguous* firstInPixelConti
 
 									double subpixelAreaAdjacent = calculateAreaOfOneSideOfEdgeInPixel(-xAdjacentDev1, -yAdjacentDev1, edgeZeroCrossingMap[yAdjacentPixel1*imageWidth + xAdjacentPixel1]->zeroCrossingValueX, edgeZeroCrossingMap[yAdjacentPixel1*imageWidth + xAdjacentPixel1]->zeroCrossingValueY, edgeZeroCrossingMap[yAdjacentPixel1*imageWidth + xAdjacentPixel1]->alpha);
 									#ifdef OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY_EXTRA_NOT_NECESSARY_AND_BUGGY
-									*regionSize =* regionSize + subpixelAreaAdjacent;
+									*regionSize = *regionSize + subpixelAreaAdjacent;
 									#endif
 
 								}
@@ -1975,7 +1975,7 @@ bool defineRegionCheckNextPixelNonRecursive(ORpixelContiguous* firstInPixelConti
 
 									double subpixelAreaAdjacent = calculateAreaOfOneSideOfEdgeInPixel(-xAdjacentDev2, -yAdjacentDev2, edgeZeroCrossingMap[yAdjacentPixel2*imageWidth + xAdjacentPixel2]->zeroCrossingValueX, edgeZeroCrossingMap[yAdjacentPixel2*imageWidth + xAdjacentPixel2]->zeroCrossingValueY, edgeZeroCrossingMap[yAdjacentPixel2*imageWidth + xAdjacentPixel2]->alpha);
 									#ifdef OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY_EXTRA_NOT_NECESSARY_AND_BUGGY
-									*regionSize =* regionSize + subpixelAreaAdjacent;
+									*regionSize = *regionSize + subpixelAreaAdjacent;
 									#endif
 								}
 							}
@@ -1990,7 +1990,7 @@ bool defineRegionCheckNextPixelNonRecursive(ORpixelContiguous* firstInPixelConti
 						//cout << "q2 = " << q2 << endl;
 						#endif
 						currentInPixelContiguousStack->next[q2] = newPixel;
-						*regionSize =* regionSize + 1;
+						*regionSize = *regionSize + 1;
 						alreadyProcessed[y*imageWidth + x] = NO_EDGE_FOUND;
 						numberOfNewBranchesFromThisPixel++;
 
@@ -2000,8 +2000,8 @@ bool defineRegionCheckNextPixelNonRecursive(ORpixelContiguous* firstInPixelConti
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 2] = ((contiguousRegionNumber/100)%10* 25);
 						#endif
 
-						*sumX =* sumX + pixelXOffset + x;
-						*sumY =* sumY + pixelYOffset + y;
+						*sumX = *sumX + pixelXOffset + x;
+						*sumY = *sumY + pixelYOffset + y;
 
 						if(dimension == OR_METHOD3DOD_DIMENSIONS)
 						{
@@ -2374,7 +2374,7 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(ORpixelContiguous* fir
 							{
 								double subpixelArea = calculateAreaOfOneSideOfEdgeInPixel(-(xDev), -(yDev), currentMeshPoint->adjacentMeshPoint[q]->zeroCrossingValueX, currentMeshPoint->adjacentMeshPoint[q]->zeroCrossingValueY, currentMeshPoint->adjacentMeshPoint[q]->alpha);
 								#ifdef OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY_EXTRA_NOT_NECESSARY_AND_BUGGY
-								*regionSize =* regionSize + subpixelArea;
+								*regionSize = *regionSize + subpixelArea;
 								#endif
 
 								//now add subpixel area for a diagonal adjacent pixels if necessary
@@ -2430,7 +2430,7 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(ORpixelContiguous* fir
 										currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj1]->alreadyProcessed = EDGE_FOUND;
 										double subpixelAreaAdjacent = calculateAreaOfOneSideOfEdgeInPixel(-xAdjacentDev1, -yAdjacentDev1, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj1]->zeroCrossingValueX, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj1]->zeroCrossingValueY, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj1]->alpha);
 										#ifdef OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY_EXTRA_NOT_NECESSARY_AND_BUGGY
-										*regionSize =* regionSize + subpixelAreaAdjacent;
+										*regionSize = *regionSize + subpixelAreaAdjacent;
 										#endif
 									}
 								}
@@ -2441,7 +2441,7 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(ORpixelContiguous* fir
 										currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj2]->alreadyProcessed = EDGE_FOUND;
 										double subpixelAreaAdjacent = calculateAreaOfOneSideOfEdgeInPixel(-xAdjacentDev2, -yAdjacentDev2, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj2]->zeroCrossingValueX, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj2]->zeroCrossingValueY, currentMeshPoint->adjacentMeshPoint[q]->adjacentMeshPoint[rAdj2]->alpha);
 										#ifdef OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY_EXTRA_NOT_NECESSARY_AND_BUGGY
-										*regionSize =* regionSize + subpixelAreaAdjacent;
+										*regionSize = *regionSize + subpixelAreaAdjacent;
 										#endif
 									}
 								}
@@ -2455,12 +2455,12 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(ORpixelContiguous* fir
 						#endif
 						ORpixelContiguous* newPixel = new ORpixelContiguous(currentMeshPoint->adjacentMeshPoint[q], currentInPixelContiguousStack);
 						currentInPixelContiguousStack->next[q2] = newPixel;
-						*regionSize =* regionSize + 1;
+						*regionSize = *regionSize + 1;
 						currentMeshPoint->adjacentMeshPoint[q]->alreadyProcessed = NO_EDGE_FOUND;
 						numberOfNewBranchesFromThisPixel++;
 
-						*sumX =* sumX + currentMeshPoint->adjacentMeshPoint[q]->xInt;
-						*sumY =* sumY + currentMeshPoint->adjacentMeshPoint[q]->yInt;
+						*sumX = *sumX + currentMeshPoint->adjacentMeshPoint[q]->xInt;
+						*sumY = *sumY + currentMeshPoint->adjacentMeshPoint[q]->yInt;
 						sumPos->x = sumPos->x + currentMeshPoint->adjacentMeshPoint[q]->point.x;
 						sumPos->y = sumPos->y + currentMeshPoint->adjacentMeshPoint[q]->point.y;
 						sumPos->z = sumPos->z + currentMeshPoint->adjacentMeshPoint[q]->point.z;
@@ -2619,8 +2619,8 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 		yposInitial = pixelYOffset + firstInPixelContiguousBoundaryStack->yInt;
 
 	}
-	*sumX =* sumX + xposInitial;
-	*sumY =* sumY + yposInitial;
+	*sumX = *sumX + xposInitial;
+	*sumY = *sumY + yposInitial;
 	firstInPixelContiguousBoundaryStack->pointNonWorldCoord.x = xposInitial;
 	firstInPixelContiguousBoundaryStack->pointNonWorldCoord.y = yposInitial;
 
@@ -2852,8 +2852,8 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 							ypos = pixelYOffset + newPixel->yInt;
 
 						}
-						*sumX =* sumX + xpos;
-						*sumY =* sumY + ypos;
+						*sumX = *sumX + xpos;
+						*sumY = *sumY + ypos;
 						newPixel->pointNonWorldCoord.x = xpos;
 						newPixel->pointNonWorldCoord.y = ypos;
 
@@ -3133,8 +3133,8 @@ bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(ORmeshPoint* aMeshPointOn
 	sumPos->y = sumPos->y + xyzWorld.y;
 	sumPos->z = sumPos->z + xyzWorld.z;
 
-	*sumX =* sumX + nonWorld.x;
-	*sumY =* sumY + nonWorld.y;
+	*sumX = *sumX + nonWorld.x;
+	*sumY = *sumY + nonWorld.y;
 
 	firstInPixelContiguousBoundaryStack->point.x = xyzWorld.x;
 	firstInPixelContiguousBoundaryStack->point.y = xyzWorld.y;
@@ -3282,8 +3282,8 @@ bool traceEdgeCheckNextPixelUsingMeshPointNonRecursive(ORmeshPoint* aMeshPointOn
 							sumPos->y = sumPos->y + xyzWorld.y;
 							sumPos->z = sumPos->z + xyzWorld.z;
 
-							*sumX =* sumX + nonWorld.x;
-							*sumY =* sumY + nonWorld.y;
+							*sumX = *sumX + nonWorld.x;
+							*sumY = *sumY + nonWorld.y;
 
 							newPixel->point.x = xyzWorld.x;
 							newPixel->point.y = xyzWorld.y;
@@ -4011,7 +4011,7 @@ void defineRegionCheckNextPixelRecursive(int xCurrent, int yCurrent, bool edgeBo
 			}
 			else
 			{
-				*regionSize =* regionSize + 1;
+				*regionSize = *regionSize + 1;
 				alreadyProcessed[y*imageWidth + x] = NO_EDGE_FOUND;
 
 				if((x > 0) && (x < (imageWidth-1)) && (y > 0 ) && (y < (imageHeight-1)))
@@ -4074,7 +4074,7 @@ void defineRegionCheckNextPixelUsingMeshPointRecursive(ORmeshPoint* currentMeshP
 				else
 				{
 					//cout << "no edge found" << endl;
-					*regionSize =* regionSize + 1;
+					*regionSize = *regionSize + 1;
 					currentMeshPoint->adjacentMeshPoint[q]->alreadyProcessed = NO_EDGE_FOUND;
 
 					//no kernel boundary check
@@ -4104,7 +4104,7 @@ void traceEdgeCheckNextPixelRecursive(int xCurrent, int yCurrent, int alreadyPro
 {
 	bool currentpixelStatus = alreadyProcessed[(yCurrent*imageWidth) + xCurrent];
 
-	if(foundStart && (xCurrent ==* xStart) && (yCurrent ==* yStart))
+	if(foundStart && (xCurrent == *xStart) && (yCurrent == *yStart))
 	{
 		if(*foundStartAgain)
 		{
@@ -4177,8 +4177,8 @@ void traceEdgeCheckNextPixelRecursive(int xCurrent, int yCurrent, int alreadyPro
 			}
 			else
 			{
-				tempstartx =* xStart;
-				tempstarty =* yStart;
+				tempstartx = *xStart;
+				tempstarty = *yStart;
 				tempfoundStart = foundStart;
 			}
 		}
@@ -4282,7 +4282,7 @@ void traceEdgeCheckNextPixelUsingMeshPointRecursive(ORmeshPoint* currentMeshPoin
 	bool currentpixelStatus = currentMeshPoint->alreadyProcessed;
 	int xCurrent = currentMeshPoint->xInt;
 	int yCurrent = currentMeshPoint->yInt;
-	if(foundStart && (xCurrent ==* xStart) && (yCurrent ==* yStart))
+	if(foundStart && (xCurrent == *xStart) && (yCurrent == *yStart))
 	{
 		if(*foundStartAgain)
 		{
@@ -4356,8 +4356,8 @@ void traceEdgeCheckNextPixelUsingMeshPointRecursive(ORmeshPoint* currentMeshPoin
 			}
 			else
 			{
-				tempstartx =* xStart;
-				tempstarty =* yStart;
+				tempstartx = *xStart;
+				tempstarty = *yStart;
 				tempfoundStart = true; //foundStart;
 			}
 		}

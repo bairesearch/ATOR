@@ -26,7 +26,7 @@
  * File Name: ORcomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7c 27-January-2015
+ * Project Version: 3e7d 27-January-2015
  *
  *******************************************************************************/
 
@@ -334,7 +334,7 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3e7c 27-January-2015<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3e7d 27-January-2015<p>";
 		}
 		else
 		{
@@ -2867,7 +2867,7 @@ static char* stringFormatDec = "%d";
 
 void createGeoTableHTMLfromFeatureList(ORfeature* firstFeatureInNearestFeatureList, bool applyBinning, string* geoTableHTMLoutputString)
 {
-	*geoTableHTMLoutputString =* geoTableHTMLoutputString + "<TABLE>";
+	*geoTableHTMLoutputString = *geoTableHTMLoutputString + "<TABLE>";
 
 	ORfeature* currentFeatureInList = firstFeatureInNearestFeatureList;
 	while((currentFeatureInList->next != NULL) && !(currentFeatureInList->lastFilledFeatureInList))
@@ -2896,13 +2896,13 @@ void createGeoTableHTMLfromFeatureList(ORfeature* firstFeatureInNearestFeatureLi
 				sprintf(coordinateZString, "%0.6f", currentFeatureInList->pointTransformed.z);
 			}
 
-			*geoTableHTMLoutputString =* geoTableHTMLoutputString + "<TR><TD>" + coordinateXString + "</TD><TD>" + coordinateYString + "</TD><TD>" + coordinateZString + "</TD></TR>";
+			*geoTableHTMLoutputString = *geoTableHTMLoutputString + "<TR><TD>" + coordinateXString + "</TD><TD>" + coordinateYString + "</TD><TD>" + coordinateZString + "</TD></TR>";
 		}
 
 		currentFeatureInList = currentFeatureInList->next;
 	}
 
-	*geoTableHTMLoutputString =* geoTableHTMLoutputString + "</TABLE>";
+	*geoTableHTMLoutputString = *geoTableHTMLoutputString + "</TABLE>";
 }
 #endif
 

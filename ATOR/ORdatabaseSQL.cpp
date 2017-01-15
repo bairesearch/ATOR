@@ -26,7 +26,7 @@
  * File Name: ORdatabaseSQL.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3e7c 27-January-2015
+ * Project Version: 3e7d 27-January-2015
  *
  *******************************************************************************/
 
@@ -538,7 +538,7 @@ void insertSnapshotIDreferenceIntoSQLdatabaseDecisionTree(string sqlDatabaseDeci
 	//exit(0);
 	#endif
 	performSQLrealInsertQuery(sqlInsertCommandCharStar, i);
-	*databaseTableSize =* databaseTableSize + 1;
+	*databaseTableSize = *databaseTableSize + 1;
 }
 
 
@@ -562,7 +562,7 @@ void insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart(string sqlDat
 	for(int j=0; j<sqlInsertCommand.length(); j++)
 	{
 		decisionTreeMultipleRowInsertQueryTextCharStar[*decisionTreeSQLmultipleRowInsertQueryLength] = sqlInsertCommand[j];
-		*decisionTreeSQLmultipleRowInsertQueryLength =* decisionTreeSQLmultipleRowInsertQueryLength + 1;
+		*decisionTreeSQLmultipleRowInsertQueryLength = *decisionTreeSQLmultipleRowInsertQueryLength + 1;
 	}
 
 	#ifdef OR_SQL_DATABASE_DEBUG
@@ -618,14 +618,14 @@ void insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration(char* decisio
 	for(int j=0; j<i; j++)
 	{
 		decisionTreeMultipleRowInsertQueryTextCharStar[*decisionTreeSQLmultipleRowInsertQueryLength] = sqlInsertCommandCharStar[j];
-		*decisionTreeSQLmultipleRowInsertQueryLength =* decisionTreeSQLmultipleRowInsertQueryLength + 1;
+		*decisionTreeSQLmultipleRowInsertQueryLength = *decisionTreeSQLmultipleRowInsertQueryLength + 1;
 	}
 	#ifdef OR_SQL_DATABASE_DEBUG
 	//cout << "insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration()" << endl;
 	//cout << "decisionTreeMultipleRowInsertQueryTextCharStar = " << decisionTreeMultipleRowInsertQueryTextCharStar << endl;
 	#endif
 
-	*databaseTableSize =* databaseTableSize + 1;
+	*databaseTableSize = *databaseTableSize + 1;
 }
 
 
@@ -641,9 +641,9 @@ void insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeEnd(char* decisionT
 		for(int i=0; i<sqlInsertCommand.length(); i++)
 		{
 	 		decisionTreeMultipleRowInsertQueryTextCharStar[(*decisionTreeSQLmultipleRowInsertQueryLength)-1] = sqlInsertCommand[i];	//-1 is to overwrite previous ','
-			*decisionTreeSQLmultipleRowInsertQueryLength =* decisionTreeSQLmultipleRowInsertQueryLength+1;
+			*decisionTreeSQLmultipleRowInsertQueryLength = *decisionTreeSQLmultipleRowInsertQueryLength+1;
 		}
-		*decisionTreeSQLmultipleRowInsertQueryLength =* decisionTreeSQLmultipleRowInsertQueryLength-1;
+		*decisionTreeSQLmultipleRowInsertQueryLength = *decisionTreeSQLmultipleRowInsertQueryLength-1;
 
 		performSQLrealInsertQuery(decisionTreeMultipleRowInsertQueryTextCharStar,* decisionTreeSQLmultipleRowInsertQueryLength);
 	}
@@ -723,10 +723,10 @@ void insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration(string sqlDat
 	for(int j=0; j<i; j++)
 	{
 		decisionTreeMultipleRowInsertQueryTextCharStar[decisionTreeSQLmultipleRowInsertQueryLength] = sqlInsertCommandCharStar[j];
-		*decisionTreeSQLmultipleRowInsertQueryLength =* decisionTreeSQLmultipleRowInsertQueryLength + 1;
+		*decisionTreeSQLmultipleRowInsertQueryLength = *decisionTreeSQLmultipleRowInsertQueryLength + 1;
 	}
 
-	*databaseTableSize =* databaseTableSize + 1;
+	*databaseTableSize = *databaseTableSize + 1;
 }
 */
 
@@ -2226,7 +2226,7 @@ void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, str
 								#endif
 								char* sqlInsertCommandCharStar = const_cast<char*>(sqlInsertCommand.c_str());
 								performSQLinsertQuery(sqlInsertCommandCharStar);
-								*databaseTableSize =* databaseTableSize + 1;
+								*databaseTableSize = *databaseTableSize + 1;
 
 							}
 							else
@@ -2266,7 +2266,7 @@ void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, str
 								#endif
 								performSQLrealInsertQuery(sqlInsertCommandCharStar, i);
 
-								*databaseTableSize =* databaseTableSize + 1;
+								*databaseTableSize = *databaseTableSize + 1;
 							}
 						}
 					}
@@ -2439,7 +2439,7 @@ unsigned long convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(sign
 				#endif
 				index = 0;
 				DCTcoeff64bitValueString[*DCTcoeff64bitValueStringLength] = binaryConvertedToChar;
-				*DCTcoeff64bitValueStringLength =* DCTcoeff64bitValueStringLength + 1;
+				*DCTcoeff64bitValueStringLength = *DCTcoeff64bitValueStringLength + 1;
 				binaryConvertedToChar = 0x00;
 			}
 
@@ -2492,12 +2492,12 @@ unsigned long convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(sign
 		//cout << "int(binaryConvertedToChar) = " << int(binaryConvertedToChar) << endl;
 		#endif
 		DCTcoeff64bitValueString[*DCTcoeff64bitValueStringLength] = binaryConvertedToChar;
-		*DCTcoeff64bitValueStringLength =* DCTcoeff64bitValueStringLength + 1;
+		*DCTcoeff64bitValueStringLength = *DCTcoeff64bitValueStringLength + 1;
 	}
 
 	//add null character onto end of string
 	DCTcoeff64bitValueString[*DCTcoeff64bitValueStringLength] = '\0';
-	*DCTcoeff64bitValueStringLength =* DCTcoeff64bitValueStringLength + 1;
+	*DCTcoeff64bitValueStringLength = *DCTcoeff64bitValueStringLength + 1;
 	#else
 	#ifdef OR_DEBUG
 	//cout << "finished: dctCoeffArrayBinned = " << dctCoeffArrayBinned << endl;
