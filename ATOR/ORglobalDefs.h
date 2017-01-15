@@ -35,6 +35,9 @@
  *			a) ras format endian swap, b) ras format relaxed,
  *			c) multiple endian outputs for Keypoints exe, d) Windows VS compatibility,
  *			e) change of binary name from SE to FD.exe};
+ *		
+ *		(Linux Ubuntu 13.1 Only)
+ *		copy (Linux Ubuntu x86_64 compiled) FD.exe to OpenOR.exe working folder
  *
  *		(Linux EL5 Only)
  *		copy (Linux EL5 x86_64 compiled) FD.exe to OpenOR.exe working folder
@@ -50,26 +53,43 @@
  *
  *	Install External Package 2 - Freeglut;
  *
+ *		(Linux Ubuntu 13.1 Only)
+ *		sudo apt-get install freeglut3 OR;
+ *		sudo dpkg -i freeglut3_2.8.1-1_amd64.deb
+ *
  *		(Linux EL5 Only)
+ *		yum install freeglut OR;
  *		rpm -i freeglut-2.4.0-7.1.el5.x86_64.rpm
  *
  *		(Linux EL6 Only)
+ *		yum install freeglut OR;
  *		rpm -i freeglut-2.6.0-1.el6.x86_64.rpm
  *
  *		(Windows XP Only)
  *		unzip freeglut 2.4.0 (compiled).zip
- *				copy freeglut.dll from freeglut 2.4.0 (compiled).zip to c:\Windows\System32
+ *		copy freeglut.dll from freeglut 2.4.0 (compiled).zip to c:\Windows\System32
  *
  *		(Windows 7 x86_64 Only)
  *		unzip freeglut 2.6.0 (compiled).zip
- * 			copy freeglut.dll from freeglut 2.6.0 (compiled) - 32bit.zip to: C:\WINDOWS\SysWOW64 [or System32]
+ * 		copy freeglut.dll from freeglut 2.6.0 (compiled) - 32bit.zip to: C:\WINDOWS\SysWOW64 [or System32]
+ *
+ *	Freeglut may be downloaded via;
+ *
+ *	* (Linux) distribution repository
+ *	* (Windows) see http://tempvariable.blogspot.com.au/2008/02/installing-freeglut-on-visual-studio.html / http://www.transmissionzero.co.uk/software/freeglut-devel/
  *
  *	Install External Package 3 - ImageMagik;
  *
- *		(Linux EL5 Only)
+ *		(Linux Ubuntu 13.1 Only)
+ *		sudo apt-get install imagemagick? OR;
+ *		sudo dpkg -i imagemagick_6.7.7.10-5ubuntu3_amd64.deb?
+ *
+ *		(Linux EL5 Only) 
+ *		yum install ImageMagick OR;
  *		rpm -i ImageMagick-c++-6.2.8.0-4.el5_1.1.x86_64.rpm
  *
  *		(Linux EL6 Only)
+ *		yum install ImageMagick OR;
  *		rpm -i ImageMagick-c++-6.5.4.7-5.el6.x86_64.rpm
  *
  *		(Windows XP Only)
@@ -80,13 +100,19 @@
  *
  *	Install External Package 4 - JPEG development libraries (Independent JPEG Group)
  *
+ *		(Linux Ubuntu 13.1 Only)
+ *		sudo apt-get install libjpeg-dev OR;
+ *		sudo dpkg -i libjpeg-dev_8c-2ubuntu8_amd64.deb
+ *
  *		(Linux EL5 Only)
- *		Use preinstalled EL5 Linux JPEG libraries;
+ *		Assuming EL5 Linux JPEG libraries were not preinstalled;
+ *		yum install libjpeg libjpeg-devel OR;
  *		rpm -i libjpeg-6b-37.x86-64.rpm
  *		rpm -i libjpeg-devel-6b-37.x86-64.rpm
  *
  *		(Linux EL6 Only)
- *		Use preinstalled EL5 Linux JPEG libraries;
+ *		Assuming EL6 Linux JPEG libraries were not preinstalled;
+ *		yum install libjpeg libjpeg-devel OR;
  *		rpm -i libjpeg-6b-46.el6.x86_64.rpm
  *		rpm -i libjpeg-devel-6b-46.el6.x86_64.rpm
  *
@@ -102,19 +128,38 @@
  *		copy jpeglib.h, jconfig.h, and jmorecfg.h [in JPEG folder] to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\
  *		ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *
- * Install External Package 5 - MySQL Server;
+ *	Install External Package 5a - MySQL Client
  *
- *		5. Part a)
+ *		(Linux Ubuntu 13.1 Only)
+ *		sudo apt-get install mysql-client OR;
+ * 		sudo dpkg -i mysql-client-5.5_5.5.35-0ubuntu0.13.10.2_amd64.deb
+ *
+ *		(Linux EL5 Only)
+ *		yum install mysql OR;
+ *		rpm -i mysql-5.0.77-3.el5.x86_64.rpm
+ *
+ *		(Linux EL6 x86_64 Only)
+ *		yum install mysql OR;
+ *		rpm -i mysql-5.1.47-4.el6.x86_64.rpm
+ *
+ * 	Install External Package 5b - MySQL Server;
+ *
+ *		5b. Part i)
+ *
+ *		(Linux Ubuntu 13.1 Only) On the MySQL Server perform the following actions to initiate the server;
+ *		sudo apt-get install mysql-server OR;
+ * 		sudo dpkg -i mysql-server-5.5_5.5.35-0ubuntu0.13.10.2_amd64.deb
+ *		enter the mysql server root password when prompted (chooseamysqlrootpassword)
  *
  *		(Linux EL5 Only) On the MySQL Server perform the following actions to initiate the server;
- *		rpm -i mysql-5.0.77-3.el5.x86_64.rpm
+ *		yum install mysql-server OR;
  *		rpm -i mysql-server-5.0.77-3.el5.x86_64.rpm
  *		chkconfig mysqld on
  *		/etc/init.d/mysqld start
  *		mysqladmin -u root password chooseamysqlrootpassword
  *
  *		(Linux EL6 x86_64 Only) On the MySQL Server perform the following actions to initiate the server;
- *		rpm -i mysql-5.1.47-4.el6.x86_64.rpm
+ *		yum install mysql-server OR;
  *		rpm -i mysql-server-5.1.47-4.el6.x86_64.rpm
  *		chkconfig mysqld on
  *		/etc/init.d/mysqld start
@@ -179,13 +224,13 @@
  *
  *		Restart PC
  *
- *		5. Part b)
+ *		5b. Part ii)
  *
  *		(Linux or Windows) load the BAI template tables into the MySQL server's objectRecog database:
  *
  *		Either A) create them automatically using the following method;
  * 			Open Command Line
- *				Linux:
+ *				Linux EL5/EL6/Ubuntu:
  *					open terminal (system - gnome-terminal)
  *					cd c:\home\user\source\source\
  *					mysql -u root -p < createBAIORmysqlDatabase.sql
@@ -342,7 +387,7 @@
  *
  *				CREATE INDEX dtBinIndex ON dt (dtBin(60));
  *
- *		or B) create them manually using OpenOffice.org Base via the following method;
+ *		or B) create them manually using OpenOffice.org Base via the following method [yet to test on Ubuntu];
  * 			Open Command Line
  *				Linux:
  *					open terminal (system - gnome-terminal)
@@ -356,7 +401,11 @@
  *			exit (exit mysql command line interface)
  *			Install OpenOffice.org Base MySQL Access Point (this is a useful procedure for developers, even if they install the mysql database via the script B);
  * 				Install Java Jave Run-time environment (JRE):
- *					Linux:
+ *					Linux Ubuntu:
+ *						sudo apt-get install openjdk-7-jdk OR;
+ *						sudo dpkg -i openjdk-7-jdk_7u51-2.4.4-0ubuntu0.13.10.1_amd64.deb (and dependencies)
+ *					Linux EL5/EL6:
+ *						yum install java-1.6.0-openjdk java-1.6.0-openjdk-devel OR;
  *						rpm -i java-1.6.0-openjdk...rpm
  *						rpm -i java-1.6.0-openjdk-devel...rpm
  *					Windows
@@ -462,10 +511,16 @@
  *
  *	Install Freeglut development libraries
  *
+ *		(Linux Ubuntu 13.1 Only)
+ *		sudo apt-get install freeglut3-dev OR;
+ *		sudo dpkg -i freeglut3-dev_2.8.1-1_amd64.deb
+ *		
  *		(Linux EL5 Only)
+ *		yum install freeglut-devel OR;
  *		rpm - i freeglut-devel-2.4.0-7.1.el5.x86_64.rpm
  *
  *		(Linux EL6 Only)
+ *		yum install freeglut-devel OR;
  *		rpm -i freeglut-devel-2.6.0-1.el6.x86_64.rpm
  *
  *		(Windows XP Only);
@@ -484,10 +539,24 @@
  * 		copy freeglut.lib to: C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\
  * 		copy freeglut.dll to: C:\WINDOWS\SysWOW64 [or System32]
  *
+ *	Freeglut may be downloaded via;
+ *
+ *	* (Linux) distribution repository
+ *	* (Windows) see http://tempvariable.blogspot.com.au/2008/02/installing-freeglut-on-visual-studio.html / http://www.transmissionzero.co.uk/software/freeglut-devel/
+ *
  *	Install JPEG Development libraries (Independent JPEG Group)
  *
- *		(Linux EL5/EL6 Only);
- *		rpm - i libjpeg-devel-6b-37.x86-64.rpm
+ *		(Linux Ubuntu 13.1 Only)
+ *		sudo apt-get install libjpeg-dev OR;
+ *		sudo dpkg -i libjpeg-dev_8c-2ubuntu8_amd64.deb
+ *
+ *		(Linux EL5 Only);
+ *		yum install libjpeg-devel
+ *		rpm - i libjpeg-devel-6b-37.x86-64.rpm/libjpeg-devel-6b-38.x86-64.rpm
+ *
+ *		(Linux EL6 Only);
+ *		yum install libjpeg-devel
+ *		rpm - i libjpeg-devel-6b-46.el6.x86_64.rpm
  *
  * 		(Windows XP / Windows 7 x86_64 Only)
  *		Build JPEG Libraries from source;
@@ -513,6 +582,10 @@
  *			ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *
  *	Install MySQL Development Libraries
+ *
+ *		(Linux Ubuntu 13.1 Only)
+ *		sudo apt-get install libmysqlclient-dev OR;
+ * 		sudo dpkg -i libmysqlclient-dev_5.5.35-0ubuntu0.13.10.2_amd64
  *
  *		(Linux EL5 Only)
  *		rpm -i mysql-devel-5.0.77-3.el5.x86_64.rpm
@@ -541,7 +614,7 @@
  *		open SHAREDglobalDefs.h,
  *			ensure #define LINUX is added
  *			ensure only #define COMPILE_OR is uncommented
- *		copy makefile.OR makefile
+ *		cp makefile.OR.EL6 makefile (or cp makefile.OR.UB13 makefile)
  *		./clear.bat (rm *.o)
  *		make
  *
