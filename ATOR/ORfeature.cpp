@@ -1,21 +1,21 @@
 /*******************************************************************************
- * 
+ *
  * This file is part of BAIPROJECT.
- * 
+ *
  * BAIPROJECT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3
  * only, as published by the Free Software Foundation.
- * 
+ *
  * BAIPROJECT is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License version 3 for more details
  * (a copy is included in the LICENSE file that accompanied this code).
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
  * for a copy of the AGPLv3 License.
- * 
+ *
  *******************************************************************************/
 
 /*******************************************************************************
@@ -23,7 +23,7 @@
  * File Name: ORfeature.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3d2b 14-April-2014
+ * Project Version: 3d2c 14-April-2014
  *
  * Assumes that depth information is less accurate than image information
  *
@@ -496,7 +496,7 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 		#ifdef OR_DEBUG
 		//cout << "currentDistanceToCenteroid = " << currentDistanceToCenteroid << endl;
 		#endif
-		
+
 		if((numberOfBoundaryOrFakeBoundaryPixelsTraced > (MINIMUM_NUMBER_OF_PIXELS_IN_A_BOUNDARY)) && (compareVectors(&currentPointForTest, &initialPointOnBoundary)))
 		{
 			stillTracingPath2 = false;
@@ -619,7 +619,7 @@ Feature * traceEdgeAndAddMinimaAndMaximaFeatures(Feature * firstNewFeatureInList
 				#ifdef OR_CONTIGUOUS_REGION_DEBUG
 				//cout << "DISTANCE_TO_CENTEROID_INCREASING" << endl;
 				#endif
-				
+
 				if(currentDistanceToCenteroid < (previousRelativeMaximaDistanceToCenteroid-maxNoise))
 				{
 					#ifdef OR_CONTIGUOUS_REGION_DEBUG
@@ -1863,7 +1863,7 @@ bool defineRegionCheckNextPixelNonRecursive(PixelContiguous * firstInPixelContig
 				//cout << "xDev = " << xDev << endl;
 				//cout << "yDev = " << yDev << endl;
 				#endif
-				
+
 				int pixelStatus = alreadyProcessed[(y*imageWidth) + x];
 				if(pixelStatus == NOT_PROCESSED)
 				{
@@ -2911,7 +2911,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 						{
 							cout << "error - boundary found in trace" << endl;
 							exit(0);
-							
+
 							//?:
 							currentInPixelContiguousStack->next[q]->pathAlreadyCrawled = true;
 							//end of crawl line
@@ -2993,7 +2993,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 					//cout << "currentInPixelContiguousStack->xInt = " << currentInPixelContiguousStack->xInt << endl;
 					//cout << "currentInPixelContiguousStack->yInt = " << currentInPixelContiguousStack->yInt << endl;
 					#endif
-					
+
 					if(currentInPixelContiguousStack->next[q] != NULL)
 					{
 						vec currentPointAdjacentPoint;
@@ -3028,10 +3028,10 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 									{
 										foundAReferenceToCrawlTo = true;
 										currentInPixelContiguousStack = currentInPixelContiguousStack->next[q];
-										
+
 										#ifdef OR_DEBUG
 										//cout << "currentInPixelContiguousStack->xInt = " << currentInPixelContiguousStack->xInt << endl;
-										//cout << "currentInPixelContiguousStack->yInt = " << currentInPixelContiguousStack->yInt << endl;										
+										//cout << "currentInPixelContiguousStack->yInt = " << currentInPixelContiguousStack->yInt << endl;
 										//cout << "foundAReferenceToCrawlTo" << endl;
 										//cout << "q = " << q << endl;
 										//cout << "currentInPixelContiguousStack->next[q]->xInt = " << currentInPixelContiguousStack->xInt << endl;
@@ -3096,7 +3096,7 @@ bool traceEdgeCheckNextPixelNonRecursive(int xInitialOnBoundary, int yInitialOnB
 	#ifdef OR_DEBUG
 	//cout << "\t\t numberOfBoundaryOrFakeBoundaryPixelsTraced = " << numberOfBoundaryOrFakeBoundaryPixelsTraced << endl;
 	#endif
-	
+
 	*numberOfCounts = numberOfBoundaryOrFakeBoundaryPixelsTraced;
 
 	return foundATracePath1;
@@ -3461,7 +3461,7 @@ void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeature
 				//cout << "(featureProbabilityLevelCentrePixel >= HEITGER_FEATURE_RGB_MAP_CENTRE_THRESHOLD*sensitivity)" << endl;
 				//cout << "featureProbabilityLevelCentrePixel = " << featureProbabilityLevelCentrePixel*sensitivity << endl;
 				#endif
-				
+
 				double featureProbabilityLevelKernelPixels = 0.0;
 				bool centreFeatureFound = true;
 
@@ -3532,7 +3532,7 @@ void generateFeatureListFromHeitgerFeatureRGBMap(Feature * firstFeatureInFeature
 								#ifdef OR_DEBUG
 								//cout << "feature off object" << endl;
 								#endif
-								
+
 								if(nearbyPointOnObjectFound)
 								{
 						#else

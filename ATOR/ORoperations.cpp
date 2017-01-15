@@ -1,21 +1,21 @@
 /*******************************************************************************
- * 
+ *
  * This file is part of BAIPROJECT.
- * 
+ *
  * BAIPROJECT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3
  * only, as published by the Free Software Foundation.
- * 
+ *
  * BAIPROJECT is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License version 3 for more details
  * (a copy is included in the LICENSE file that accompanied this code).
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
  * for a copy of the AGPLv3 License.
- * 
+ *
  *******************************************************************************/
 
 /*******************************************************************************
@@ -23,7 +23,7 @@
  * File Name: ORoperations.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3d2b 14-April-2014
+ * Project Version: 3d2c 14-April-2014
  *
  *******************************************************************************/
 
@@ -167,7 +167,7 @@ bool addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec * proposedFeature, 
 			if(distanceBetweenTwoPoints < maxFeatureDistanceError)
 			{
 				#ifdef OR_DEBUG
-				//cout << "found a fail" << endl;			
+				//cout << "found a fail" << endl;
 				#endif
 				int currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature = currentFeatureInList->numberOfFeaturePixelsUsedToGenerateFeature;
 				double newx = (currentFeatureInList->point.x + proposedFeature->x/currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature)/(currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature+1)*currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature;
@@ -252,7 +252,7 @@ bool checkFeatureListForCommonFeature(vec * corner, Feature * firstFeatureInList
 			if(distanceBetweenTwoPoints < maxFeatureDistanceError)
 			{
 				#ifdef OR_DEBUG
-				//cout << "found a fail" << endl;			
+				//cout << "found a fail" << endl;
 				#endif
 				foundCommonFeature = true;
 			}
@@ -418,7 +418,7 @@ bool checkPolygonListForCommonPolygon(PolygonBAI * polygon, PolygonBAI * firstPo
 	}
 	else
 	{
-		//allow first polygon to be added without precondition	
+		//allow first polygon to be added without precondition
 		#ifdef OR_DEBUG
 		//cout << "(currentPolygonInList->next == NULL)" << endl;
 		#endif
@@ -486,7 +486,7 @@ PolygonBAI * addPolysToListForGivenFeatureAndNearestFeatureList(PolygonBAI * fir
 						double internalAngle3 = calculateInteriorAngleOfAPolygonVertex(&(currentFeatureInNearestFeatureList2->pointNonWorldCoord), &(currentFeatureInNearestFeatureList->pointNonWorldCoord), &(currentFeature->pointNonWorldCoord));
 
 						bool minAngleTest = true;
-						
+
 						#ifdef OR_DEBUG
 						/*
 						cout << "areaOfT = " << areaOfT << endl;
@@ -721,7 +721,7 @@ bool generatePolygonListUsingFeatureListLocalised(int imageWidth, int imageHeigh
 								copyVectors(&(currentFeatureInNearestFeatureList->point), &(currentFeatureInList2->point));
 								copyVectors(&(currentFeatureInNearestFeatureList->pointNonWorldCoord), &(currentFeatureInList2->pointNonWorldCoord));
 								foundASpot = true;
-								
+
 								#ifdef OR_DEBUG
 								/*
 								cout << "ADDING NEAREST FEATURE:" << endl;
@@ -922,7 +922,7 @@ bool generatePolygonListUsingFeatureList(int imageWidth, int imageHeight, Featur
 		}
 		cout << "numberOfPolygons = " << numberOfPolygons << endl;
 		*/
-		#endif		
+		#endif
 	}
 
 	return result;

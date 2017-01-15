@@ -1,21 +1,21 @@
 /*******************************************************************************
- * 
+ *
  * This file is part of BAIPROJECT.
- * 
+ *
  * BAIPROJECT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3
  * only, as published by the Free Software Foundation.
- * 
+ *
  * BAIPROJECT is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License version 3 for more details
  * (a copy is included in the LICENSE file that accompanied this code).
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
  * for a copy of the AGPLv3 License.
- * 
+ *
  *******************************************************************************/
 
 /*******************************************************************************
@@ -23,7 +23,7 @@
  * File Name: ORTHimageCategorisationNN.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3d2b 14-April-2014
+ * Project Version: 3d2c 14-April-2014
  * Test Harness for OR Image Categorisation NN method (not yet implemented)
  *******************************************************************************/
 
@@ -230,7 +230,7 @@ int ORTHimageCategorisationNN()
 			#ifdef OR_DEBUG
 			//cout << "\timageFileName = " << imageFileName << endl;
 			#endif
-			
+
 			#ifdef OR_IMAGE_CATEGORISTION_NN_USE_SMALL_IMAGES
 			string imageFileNameSmall = imageFileName + ".small.ppm";
 
@@ -353,7 +353,7 @@ int ORTHimageCategorisationNN()
 				#ifdef OR_DEBUG
 				//cout << "bitArrayIndex = " << bitArrayIndex << endl;
 				#endif
-				
+
 				for(int i=0; i<COMPILE_TH_OR_IMAGE_CATEGORISTION_NN_USE_MULTI_BIT_OUTPUT_PER_NET_NUM_BITS; i++)
 				{
 					bool bitValue = bitArray[i];
@@ -400,7 +400,7 @@ int ORTHimageCategorisationNN()
 							double experienceBackPropagationPassErrorAlternateDecision = calculateExperienceErrorForHypotheticalDecision(firstInputNeuronInNetwork[nn], firstOutputNeuronInNetwork[nn], numberOfInputNeurons, numberOfOutputNeurons, currentExperience);
 
 							#ifdef OR_DEBUG
-							//cout << "experienceBackPropagationPassErrorAlternateDecision = " << experienceBackPropagationPassErrorAlternateDecision << endl;							
+							//cout << "experienceBackPropagationPassErrorAlternateDecision = " << experienceBackPropagationPassErrorAlternateDecision << endl;
 							/*
 							if(nn == 0)
 							{
@@ -454,7 +454,7 @@ int ORTHimageCategorisationNN()
 			#ifdef OR_DEBUG
 			//cout << "categorisationValue = " << categorisationValue << endl;
 			#endif
-			
+
 			if(m == 0)
 			{
 				previousCategorisationValue = categorisationValue;
@@ -777,7 +777,7 @@ void createImageFileNameMatchListFromMatchFile(string fileName, FileNameMatch * 
 				//cout << "objectName1String = " << objectName1String << endl;
 				//cout << "objectName2String = " << objectName2String << endl;
 				#endif
-				
+
 				FileNameMatch * newMatch = new FileNameMatch();
 				currentMatchInList->next = newMatch;
 

@@ -1,21 +1,21 @@
 /*******************************************************************************
- * 
+ *
  * This file is part of BAIPROJECT.
- * 
+ *
  * BAIPROJECT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3
  * only, as published by the Free Software Foundation.
- * 
+ *
  * BAIPROJECT is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License version 3 for more details
  * (a copy is included in the LICENSE file that accompanied this code).
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
  * for a copy of the AGPLv3 License.
- * 
+ *
  *******************************************************************************/
 
 /*******************************************************************************
@@ -23,7 +23,7 @@
  * File Name: ORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3d2b 14-April-2014
+ * Project Version: 3d2c 14-April-2014
  *
  *******************************************************************************/
 
@@ -109,7 +109,7 @@ int main(int argc,char **argv)
 	#ifdef OR_USE_DATABASE
 	string databaseFolderName =  OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME + OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME;
 	#endif
-	
+
 	if (argumentExists(argc,argv,"-workingfolder"))
 	{
 		workingFolderCharStar=getCharArgument(argc,argv,"-workingfolder");
@@ -350,7 +350,7 @@ int main(int argc,char **argv)
 
 	if (argumentExists(argc,argv,"-version"))
 	{
-		cout << "OpenOR.exe - Project Version: 3d2b 14-April-2014" << endl;
+		cout << "OpenOR.exe - Project Version: 3d2c 14-April-2014" << endl;
 		exit(1);
 	}
 
@@ -552,9 +552,9 @@ int main(int argc,char **argv)
 		databaseFolderName=getCharArgument(argc,argv,"-dbfolder");
 		databaseFolderName = databaseFolderName + '/';
 	}
-	initialiseDatabase(databaseFolderName);	
+	initialiseDatabase(databaseFolderName);
 	#endif
-	
+
 	if(missingDepthMapExtensionDescriptor && !useMultViewList && (dimension == OR_METHOD3DOD_DIMENSIONS))
 	{
 		cout << "error: must either specify an input depth map extension and POV parameters (if not wanting defaults), or a mult (object/) view list for 3DOD" << endl;

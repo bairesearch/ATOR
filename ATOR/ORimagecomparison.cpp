@@ -1,21 +1,21 @@
 /*******************************************************************************
- * 
+ *
  * This file is part of BAIPROJECT.
- * 
+ *
  * BAIPROJECT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3
  * only, as published by the Free Software Foundation.
- * 
+ *
  * BAIPROJECT is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License version 3 for more details
  * (a copy is included in the LICENSE file that accompanied this code).
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
  * for a copy of the AGPLv3 License.
- * 
+ *
  *******************************************************************************/
 
 /*******************************************************************************
@@ -23,7 +23,7 @@
  * File Name: ORimagecomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3d2b 14-April-2014
+ * Project Version: 3d2c 14-April-2014
  *
  *******************************************************************************/
 
@@ -380,7 +380,7 @@ void createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(int 
 				//cout << "greenContrastTotalAcrossKernel = " << greenContrastTotalAcrossKernel << endl;
 				//cout << "blueContrastTotalAcrossKernel = " << blueContrastTotalAcrossKernel << endl;
 				#endif
-				
+
 				double averagerContrastTotalAcrossKernel = redContrastTotalAcrossKernel/(IMAGE_COMPARISON_KERNEL_WIDTH*IMAGE_COMPARISON_KERNEL_HEIGHT);
 				double averagegContrastTotalAcrossKernel = greenContrastTotalAcrossKernel/(IMAGE_COMPARISON_KERNEL_WIDTH*IMAGE_COMPARISON_KERNEL_HEIGHT);
 				double averagebContrastTotalAcrossKernel = blueContrastTotalAcrossKernel/(IMAGE_COMPARISON_KERNEL_WIDTH*IMAGE_COMPARISON_KERNEL_HEIGHT);
@@ -432,7 +432,7 @@ void createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(int 
 	double averageBHueContrast = double(totalBHueContrast)/(double(index*IMAGE_COMPARISON_KERNEL_WIDTH*IMAGE_COMPARISON_KERNEL_HEIGHT));
 
 
-	
+
 	/*OLD; normalised wrt to average luminosity not saturation
 	*normalisedAverageHueContrastR = (averageRHueContrast/(double(totalR+totalG+totalB)/3.0))*double(index)/double(MAX_RGB_VAL);
 	*normalisedAverageHueContrastG = (averageGHueContrast/(double(totalR+totalG+totalB)/3.0))*double(index)/double(MAX_RGB_VAL);
@@ -485,7 +485,7 @@ void createNormalisedHueContrastMapUsingRGBmapAndCalculateAllContrastValues(int 
 	cout << "averageBHueContrast = " << averageBHueContrast << endl;
 	cout << "normalisedAverageHueContrastR = " << *normalisedAverageHueContrastR << endl;
 	cout << "normalisedAverageHueContrastG = " << *normalisedAverageHueContrastG << endl;
-	cout << "normalisedAverageHueContrastB = " << *normalisedAverageHueContrastB << endl;	
+	cout << "normalisedAverageHueContrastB = " << *normalisedAverageHueContrastB << endl;
 	cout << "*averageLocalContrast  = " << *averageLocalContrast << endl;
 	cout << "*averageContrastWithRespectToAverageColour = " << *averageContrastWithRespectToAverageColour << endl;
 	cout << "OR_IMAGE_COMPARISON_HAS_CONTRAST_WRT_AVERAGE_COLOUR_MIN_AVERAGE_COL_DEVIATION = " << OR_IMAGE_COMPARISON_HAS_CONTRAST_WRT_AVERAGE_COLOUR_MIN_AVERAGE_COL_DEVIATION << endl;
@@ -695,7 +695,7 @@ double compareImagesRGBwithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly
 	//cout << "totalMatchErrorNormalised = " << totalMatchErrorNormalised << endl;
 	//cout << "error = " << error << endl;
 	#endif
-	
+
 	if(starkLocalDeviationIndex > OR_IMAGE_COMPARISON_MAX_TOTAL_NUM_STARK_LOCAL_DEVIATIONS*(imageWidth*imageHeight))
 	{
 		error = 8888.0;
@@ -887,7 +887,7 @@ double compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(int imageWidth, int 
 	double averagetotalDifferenceFromAverageYKernelRelativePositionNegativeForLowestErrorMatch = totalDifferenceFromAverageYKernelRelativePositionNegativeForLowestErrorMatch/(matchErrorIndex);
 	double averageXPositionalDeviation = (averagetotalDifferenceFromAverageXKernelRelativePositionPositiveForLowestErrorMatch + -averagetotalDifferenceFromAverageXKernelRelativePositionNegativeForLowestErrorMatch)/2.0;
 	double averageYPositionalDeviation = (averagetotalDifferenceFromAverageYKernelRelativePositionPositiveForLowestErrorMatch + -averagetotalDifferenceFromAverageYKernelRelativePositionNegativeForLowestErrorMatch)/2.0;
-	
+
 	double averagePositionalDeviationNormalised = (averageXPositionalDeviation+averageYPositionalDeviation)/2.0;		//normalised to max=1.0 		//IMAGE_COMPARISON_MISFIT_AVG_KERNEL_POSITIONAL_DEVIATION_ERROR)*IMAGE_COMPARISON_MISFIT_AVG_KERNEL_POSITIONAL_DEVIATION_WEIGHTING;
 	double averageMatchErrorNormalised = (totalMatchError/matchErrorIndex);
 	double averageHueDeviationNormalised = ((averagetotalDifferenceFromAverageRHueDeviation + averagetotalDifferenceFromAverageGHueDeviation + averagetotalDifferenceFromAverageBHueDeviation)/(3.0*IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR));	//normalise to ~1
@@ -913,7 +913,7 @@ double compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(int imageWidth, int 
 	/*
 	cout << "averagetotalDifferenceFromAverageRHueDeviation = " << averagetotalDifferenceFromAverageRHueDeviation << endl;
 	cout << "averagetotalDifferenceFromAverageGHueDeviation = " << averagetotalDifferenceFromAverageGHueDeviation << endl;
-	cout << "averagetotalDifferenceFromAverageBHueDeviation = " << averagetotalDifferenceFromAverageBHueDeviation << endl;        
+	cout << "averagetotalDifferenceFromAverageBHueDeviation = " << averagetotalDifferenceFromAverageBHueDeviation << endl;
 	cout << "averagetotalDifferenceFromAverageXKernelRelativePositionPositiveForLowestErrorMatch = " << averageXKernelRelativePositionPositiveForLowestErrorMatch << endl;
 	cout << "averagetotalDifferenceFromAverageXKernelRelativePositionNegativeForLowestErrorMatch = " << averageXKernelRelativePositionNegativeForLowestErrorMatch << endl;
 	cout << "averagetotalDifferenceFromAverageYKernelRelativePositionPositiveForLowestErrorMatch = " << averageYKernelRelativePositionPositiveForLowestErrorMatch << endl;
@@ -983,7 +983,7 @@ double compareImagesRGBsmallNoKernel(int imageWidth, int imageHeight, unsigned c
 	#ifdef OR_DEBUG
 	//cout << "error = " << error << endl;
 	#endif
-	
+
 	return error;
 }
 
@@ -1139,7 +1139,7 @@ double compareImagesRGBwithPosDevAndLocalStarkCont(int imageWidth, int imageHeig
 	cout << "error = " << error << endl;
 	*/
 	#endif
-	
+
 	return error;
 }
 
@@ -1278,7 +1278,7 @@ double compareImagesRGBwithPosDev(int imageWidth, int imageHeight, unsigned char
 	//cout << "totalMatchErrorNormalised = " << totalMatchErrorNormalised << endl;
 	//cout << "totalMatchError = " << totalMatchError << endl;
 	#endif
-	
+
 	return error;
 }
 #endif
@@ -1472,7 +1472,7 @@ void calculateHueError(colour * testImagePixelColour, colour * trainImagePixelCo
 	*nonHueError = abs(testImagePixelColour->r - trainImagePixelColour->r) + abs(testImagePixelColour->g - trainImagePixelColour->g) + abs(testImagePixelColour->b - trainImagePixelColour->b);
 
 	#ifdef OR_DEBUG
-	//cout << "hueError = " << hueError << endl;	
+	//cout << "hueError = " << hueError << endl;
 	//cout << "nonHueError = " << nonHueError << endl;
 	#endif
 
@@ -1521,12 +1521,12 @@ double calculateHueErrorNormalisedBAD(colour * testImagePixelColour, colour * tr
 	{
 		*nonHueErrorNormalised = 0.0;
 	}
-	
+
 	#ifdef OR_DEBUG
 	//cout << "hueError = " << hueError << endl;
 	//cout << "nonHueError = " << nonHueError << endl;
 	#endif
-	
+
 	return 0.0;
 }
 
@@ -1566,10 +1566,10 @@ double compareRGBpixelsForMatchHueOnly(colour * testImagePixelColour, colour * t
 	calculateHueError(testImagePixelColour, trainImagePixelColour, &hueError, &nonHueError);
 
 	double pixelError =  (hueError/IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR)*IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_WEIGHTING;
-	
+
 	#ifdef OR_DEBUG
 	//cout << "nonHueError = " << nonHueError << endl;
-	//cout << "hueError = " << hueError << endl;	
+	//cout << "hueError = " << hueError << endl;
 	//cout << "pixelError = " << pixelError << endl;
 	#endif
 
@@ -1582,15 +1582,15 @@ double compareRGBpixelsForMatchLumContrastOnly(colour * testImagePixelColour, co
 	double nonHueError;
 
 	calculateHueError(testImagePixelColour, trainImagePixelColour, &hueError, &nonHueError);
-	
+
 	double pixelError =  (nonHueError/IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_NON_HUE_ERROR);
-	
+
 	#ifdef OR_DEBUG
 	//cout << "nonHueError = " << nonHueError << endl;
 	//cout << "hueError = " << hueError << endl;
 	//cout << "pixelError = " << pixelError << endl;
 	#endif
-		
+
 	return 0.0;
 }
 #endif
@@ -1707,7 +1707,7 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	{
 		xBottomThreshold = true;
 	}
-	
+
 	//y
 	double yLeft = compareRGBpixelsForMatchHueOnly(&topLeftPixelPositionInRGBColour, &bottomLeftPixelPositionInRGBColour);
 	bool yLeftThreshold = false;
@@ -1746,7 +1746,7 @@ void calculateColourHueContrastVecLevelWithinKernelNOTUSED(int pixelX, int pixel
 	//cout << "diagonalTopLeftToBottomRight = " << diagonalTopLeftToBottomRight << endl;
 	//cout << "diagonalTopRightToBottomLeft = " << diagonalTopRightToBottomLeft << endl;
 	#endif
-	
+
 	if(!xTopThreshold && !xBottomThreshold && yLeftThreshold && yRightThreshold && diagonalTopLeftToBottomRightThreshold && diagonalTopRightToBottomLeftThreshold)
 	{
 		// x x

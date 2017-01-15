@@ -1,21 +1,21 @@
 /*******************************************************************************
- * 
+ *
  * This file is part of BAIPROJECT.
- * 
+ *
  * BAIPROJECT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3
  * only, as published by the Free Software Foundation.
- * 
+ *
  * BAIPROJECT is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License version 3 for more details
  * (a copy is included in the LICENSE file that accompanied this code).
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
  * for a copy of the AGPLv3 License.
- * 
+ *
  *******************************************************************************/
 
 /*******************************************************************************
@@ -23,7 +23,7 @@
  * File Name: ORmethod3DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3d2b 14-April-2014
+ * Project Version: 3d2c 14-April-2014
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -1334,7 +1334,7 @@ bool generateFeatureList3DOD(ViewInfo * vi, double * depthMap, double * pointMap
 		//required after joining boolean corner maps
 
 	//now define polygons for which transformations will occur for nn experience feeding features
-		
+
 	#ifndef OR_DEBUG_OLD_FEATURE_GENERATION_METHOD
 	//NEW METHOD;
 	generateFeatureListUsingFeatureArraysUsingPointMap(imageWidth, imageHeight, pointMap, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, firstFeatureInList);
@@ -2088,7 +2088,7 @@ void createFeaturesUsingBooleanMapUsingPointMap(int imageWidth, int imageHeight,
 									cout << "y = " << y << endl;
 									*/
 									#endif
-									
+
 									maxDotProductResultArrayComplete[uvxIndex+1][uvyIndex+1][uvzIndex+1] = bias;
 									maxDotProductResultXposArrayComplete[uvxIndex+1][uvyIndex+1][uvzIndex+1] = x;
 									maxDotProductResultYposArrayComplete[uvxIndex+1][uvyIndex+1][uvzIndex+1] = y;
@@ -2219,7 +2219,7 @@ void generateFeatureListUsingFeatureArrays(int imageWidth, int imageHeight, int 
 						cout << "corner z = " << corner.z << endl;
 						*/
 						#endif
-						
+
 						currentFeatureInList->xViewport = x;
 						currentFeatureInList->yViewport = y;
 
@@ -2314,7 +2314,7 @@ void generateFeatureListUsingFeatureArraysUsingDepthMap(int imageWidth, int imag
 						cout << "corner z = " << corner.z << endl;
 						*/
 						#endif
-						
+
 						currentFeatureInList->xViewport = x;
 						currentFeatureInList->yViewport = y;
 

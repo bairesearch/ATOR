@@ -1,11 +1,11 @@
 /*******************************************************************************
- * 
+ *
  * This file is part of BAIPROJECT.
- * 
+ *
  * BAIPROJECT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3
  * only, as published by the Free Software Foundation.
- * 
+ *
  * BAIPROJECT is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
  * for a copy of the AGPLv3 License.
- * 
+ *
  *******************************************************************************/
 
 /*******************************************************************************
@@ -23,7 +23,7 @@
  * File Name: ORdatabaseFileIO.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3d2b 14-April-2014
+ * Project Version: 3d2c 14-April-2014
  *
  *******************************************************************************/
 
@@ -137,7 +137,7 @@ string DBgenerateServerDatabaseName(string * objectName, bool trainOrTest)
 		#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
 		//cout << "entityName = " << *entityName << endl;
 		#endif
-		
+
 		#ifdef GIA_DATABASE_FILESYSTEM_USE_MULTIPLE_SERVERS
 		char entityFirstCharacter = entityName->at(0);
 		if((entityFirstCharacter < ASCII_TABLE_INDEX_OF_a) || (entityFirstCharacter > ASCII_TABLE_INDEX_OF_z))
@@ -168,9 +168,9 @@ string DBgenerateServerDatabaseName(string * objectName, bool trainOrTest)
 string DBgenerateFolderName(string * objectName, bool trainOrTest)
 {
 	string tempFolder = tempFolderCharStar;
-	
+
 	//eg network/server/ORdatabase/e/x/a/example/...
-	
+
 	string databaseName = DBgenerateServerDatabaseName(objectName, trainOrTest);
 	string fileName = databaseName;
 
@@ -183,17 +183,17 @@ string DBgenerateFolderName(string * objectName, bool trainOrTest)
 	{
 		fileName = fileName + OR_DATABASE_TEST_FOLDER_NAME + "/";
 		string testFolderName = OR_DATABASE_TEST_FOLDER_NAME;
-		checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&testFolderName);	
+		checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&testFolderName);
 	}
 	else
 	{
 		#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
 		cout << "*objectName = " << *objectName << endl;
 		#endif
-		
+
 		fileName = fileName + OR_DATABASE_TRAIN_FOLDER_NAME + "/";
 		string trainFolderName = OR_DATABASE_TRAIN_FOLDER_NAME;
-		checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&trainFolderName);		
+		checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&trainFolderName);
 
 		int numberOfEntityNameLevels;
 		if(objectName->length() < OR_DATABASE_CONCEPT_NAME_SUBDIRECTORY_INDEX_NUMBER_OF_LEVELS)
@@ -298,7 +298,7 @@ bool compareFeaturesListForMatch(Feature * testFirstFeatureInNearestFeatureList,
 						#endif
 					}
 				}
-				
+
 				traincurrentFeatureInNearestFeatureList = traincurrentFeatureInNearestFeatureList->next;
 			}
 		}

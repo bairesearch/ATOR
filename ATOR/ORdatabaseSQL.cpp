@@ -1,21 +1,21 @@
 /*******************************************************************************
- * 
+ *
  * This file is part of BAIPROJECT.
- * 
+ *
  * BAIPROJECT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3
  * only, as published by the Free Software Foundation.
- * 
+ *
  * BAIPROJECT is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License version 3 for more details
  * (a copy is included in the LICENSE file that accompanied this code).
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
  * for a copy of the AGPLv3 License.
- * 
+ *
  *******************************************************************************/
 
 /*******************************************************************************
@@ -23,7 +23,7 @@
  * File Name: ORdatabaseSQL.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3d2b 14-April-2014
+ * Project Version: 3d2c 14-April-2014
  *
  *******************************************************************************/
 
@@ -508,7 +508,7 @@ void insertSnapshotIDreferenceIntoSQLdatabaseDecisionTree(string sqlDatabaseDeci
 	{
 	 	sqlInsertCommandCharStar[i] = sqlInsertCommand[i];
 	}
-	
+
 	//must be done this way as decisionTreeBinText may contain null characters
 
 	#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DO_NOT_USE_REAL_SQL_QUERY
@@ -601,7 +601,7 @@ void insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration(char * decisi
 	{
 	 	sqlInsertCommandCharStar[i] = sqlInsertCommand[i];
 	}
-		
+
 	//must be done this way as decisionTreeBinText may contain null characters
 
 	#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DO_NOT_USE_REAL_SQL_QUERY
@@ -944,7 +944,7 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * 
 	char linearCombinationString[100];
 	sprintf(linearCombinationString, "%ld", linearCombination);
 	#ifdef OR_DEBUG
-	//cout << "linearCombination = " << linearCombination << endl;	
+	//cout << "linearCombination = " << linearCombination << endl;
 	//cout << "linearCombinationString = " << linearCombinationString << endl;
 	#endif
 	sqlSelectCommandP8 = sqlSelectCommandP8 + " AND " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL + " >= (" + linearCombinationString + " - " + OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK_MAX_DIFF + ")" " AND " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL + " <= (" + linearCombinationString + " + " + OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK_MAX_DIFF + ")";
@@ -1463,7 +1463,7 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * 
 
 
 	query_state = mysql_query(connection, sqlSelectCommandCharStar);
-	#ifdef OR_DEBUG	
+	#ifdef OR_DEBUG
 	//cout << "select qeuery performed" << endl;
 	#endif
 	if (query_state !=0)
@@ -1706,7 +1706,7 @@ void addSQLRowDataToFeatureList(MYSQL_ROW row, Feature * firstFeatureInList, boo
 	#ifdef OR_DEBUG
 	//cout << "\n\nadding features to list\n\n" << endl;
 	#endif
-	
+
 	for(int featureNum=0; featureNum<numFoundFeatures; featureNum++)
 	{
 		if((!ignoreOTfeatures) || (OTpointIndex[featureNum] == 0))
@@ -1865,7 +1865,7 @@ void createSQLSelectRowCommand(char sqlSelectRowCommand[], int numFeatures)
 void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, string objectName, int viewIndex, int zoomIndex, int polyIndex, int sideIndex, int trainOrTest, bool ignoreOTfeatures, unsigned char * rgb8bitSmallMapForInstantDBqueryAccess, int smallImageWidth, int smallImageHeight, bool addPermutationsOfTrainFeaturesForGeoBinning, int maxNumFeaturePermutations, string tableName, long * databaseTableSize)
 {
 	Feature * currentFeatureInTempList = firstFeatureInList;
-	
+
 	//now bin the features;
 
 	int findex1 = 0;
@@ -1994,7 +1994,7 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 										//cout << "geoxBin[" << geobinDimension << "] = " << geoxBin[geobinDimension] << endl;
 										//cout << "geoyBin[" << geobinDimension << "] = " << geoyBin[geobinDimension] << endl;
 										#endif
-										
+
 										char geobinxString[10];
 										char geobinyString[10];
 										sprintf(geobinxString, "%d", geoxBin[geobinDimension]);
@@ -2103,7 +2103,7 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 										//cout << "geoxBin[" << geobinDimension << "] = " << geoxBin[geobinDimension] << endl;
 										//cout << "geoyBin[" << geobinDimension << "] = " << geoyBin[geobinDimension] << endl;
 										#endif
-										
+
 										char geobinxString[10];
 										char geobinyString[10];
 										sprintf(geobinxString, "%d", geoxBin[geobinDimension]);
@@ -2138,7 +2138,7 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 							#ifdef OR_DEBUG
 							//cout << "geoxyBin = " << geoxyBin << endl;
 							#endif
-							
+
 							if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
 							{
 								currentFeature = firstFeatureInList;
@@ -2266,14 +2266,14 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 								{
 	 								sqlInsertCommandCharStar[i] = sqlInsertCommand[i];
 								}
-									
+
 								//must be done this way as decisionTreeBinText may contain null characters
 
 								#ifdef OR_DEBUG
 								//cout << "OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_MAX_DATA_LENGTH = " << OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_MAX_DATA_LENGTH << endl;
 								//cout << "OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_DATA_LENGTH = " << OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_DATA_LENGTH << endl;
 								#endif
-								
+
 								sqlInsertCommandCharStar[i] = '\'';
 								i++;
 								currentFeature = firstFeatureInList;
@@ -2350,7 +2350,7 @@ unsigned long convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(sign
 		#ifdef OR_DEBUG
 		//cout << " concatonatedSignedDctCoeffArray[i] = " << int(concatonatedSignedDctCoeffArray[i]) << endl;
 		#endif
-		
+
 		/*
 		//OLD; perform interpolation before signed to unsigned conversion
 
@@ -2419,7 +2419,7 @@ unsigned long convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(sign
 		#ifdef OR_DEBUG
 		//cout << "arrayValueSigned = " << arrayValueSigned << endl;
 		#endif
-		
+
 		double arrayValueUnsignedDouble;
 		unsigned int arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);	//used to be int
 
@@ -2431,7 +2431,7 @@ unsigned long convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(sign
 			//cout << "arrayValueUnsignedDouble = " << arrayValueUnsignedDouble << endl;
 			//cout << "arrayValueUnsigned = " << arrayValueUnsigned << endl;
 			#endif
-			
+
 			if(arrayValueUnsignedDouble >= (double(arrayValueUnsigned)+0.5-DOUBLE_MIN_PRECISION+OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD))
 			{
 				concatonatedDctCoeffArrayBiasInt[i] = OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_POS;
@@ -2502,7 +2502,7 @@ unsigned long convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(sign
 		int power = ((OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS-i-1)*2)+1; 	//13,11,9,7,5,3,1
 		dctCoeffArrayBinned = dctCoeffArrayBinned + long(arrayValueUnsigned)*powLong(10, power);
 		#ifdef OR_DEBUG
-		//cout << "power = " << power << endl;		
+		//cout << "power = " << power << endl;
 		//cout << i << ": arrayValueUnsigned = " << arrayValueUnsigned << ", dctCoeffArrayBinned = " << dctCoeffArrayBinned << endl;
 		#endif
 	#endif
@@ -2546,7 +2546,7 @@ long calculateGeoxyBinMultiDimensional(int geoxBin[], int geoyBin[])
 		//cout << "geoyBin[0] = " << geoyBin[0] << endl;
 		//cout << "geoyBin[1] = " << geoyBin[1] << endl;
 		#endif
-		
+
 		geoxyBin =
 			 ((long(geoyBin[0]) * OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS * OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS * OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS)
 			+ (long(geoxBin[0]) * OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS * OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS)
@@ -2556,7 +2556,7 @@ long calculateGeoxyBinMultiDimensional(int geoxBin[], int geoyBin[])
 		#ifdef OR_DEBUG
 		//cout << "geoxyBin = " << geoxyBin << endl;
 		#endif
-	}	
+	}
 	else
 	{
 		cout << "OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS != 2; this scenario has not been programmed" << endl;
@@ -2581,7 +2581,7 @@ void convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(signed char
 
 		linearCombinationArray[index] = arrayValueUnsigned;
 		#ifdef OR_DEBUG
-		//cout << "concatonatedSignedDctCoeffArray[i] = " << concatonatedSignedDctCoeffArray[i] << endl;		
+		//cout << "concatonatedSignedDctCoeffArray[i] = " << concatonatedSignedDctCoeffArray[i] << endl;
 		//cout << "linearCombinationArray[index] = " << linearCombinationArray[index] << endl;
 		#endif
 		index++;

@@ -1,21 +1,21 @@
 /*******************************************************************************
- * 
+ *
  * This file is part of BAIPROJECT.
- * 
+ *
  * BAIPROJECT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3
  * only, as published by the Free Software Foundation.
- * 
+ *
  * BAIPROJECT is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License version 3 for more details
  * (a copy is included in the LICENSE file that accompanied this code).
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
  * for a copy of the AGPLv3 License.
- * 
+ *
  *******************************************************************************/
 
 /*******************************************************************************
@@ -23,7 +23,7 @@
  * File Name: ORdatabaseDecisionTree.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3d2b 14-April-2014
+ * Project Version: 3d2c 14-April-2014
  *
  *******************************************************************************/
 
@@ -102,7 +102,7 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 	int maxNumFeaturePermutations;
 
 	Feature * currentFeatureInTempList = firstFeatureInList;
-		
+
 	//now bin the features;
 	int findex1 = 0;
 
@@ -149,7 +149,7 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 							cout << "geoxyBinTemp[i] = " << geoxyBinTemp[i] << endl;
 							*/
 							#endif
-							
+
 							if(geoxyBinDoubleTemp[i] >= double(geoxyBinTemp[i])+0.5-DOUBLE_MIN_PRECISION+OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD)
 							{
 								geoxyBinBiasInt[i] = OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_POS;
@@ -650,7 +650,7 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(int imageW
 				sprintf(currentCombinergbBinString, "%d", currentCombinergbBin);
 				*/
 				#endif
-				
+
 				char currentrBinString[25];
 				sprintf(currentrBinString, "%d", r);
 				char currentgBinString[25];
@@ -684,7 +684,7 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(int imageW
 				#ifdef OR_DEBUG
 				//cout << "currentDirectory 2 = " << currentDirectory << endl;
 				#endif
-				
+
 				#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 				for(int i=0; i<currentDirectory.length(); i++)
 				{
@@ -856,7 +856,7 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 					bias = -1*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
 					#ifdef OR_DEBUG
 					//cout << "bias = " << bias << endl;
-					#endif					
+					#endif
 				}
 				else if(concatonatedDctCoeffArrayBiasInt[fourierExceptionIndex2] == OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_POS)
 				{
@@ -1036,14 +1036,14 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 						*currentDirectoryLength = *currentDirectoryLength + 1;
 					}
 					#endif
-					
+
 					#ifdef OR_DEBUG
 					//cout << "currentDirectoryLength = " << *currentDirectoryLength << endl;
 					//cout << "currentDirectory = " << currentDirectory << endl;
 					//cout << "currentDirectoryCharStar = " << currentDirectoryCharStar << endl;
-					//cout << "firstFeatureInList->dctCoeffArrayBinned = " << firstFeatureInList->dctCoeffArrayBinned << endl;					
+					//cout << "firstFeatureInList->dctCoeffArrayBinned = " << firstFeatureInList->dctCoeffArrayBinned << endl;
 					#endif
-				
+
 					if(OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
 					{
 						addSnapshotIDreferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
@@ -1361,7 +1361,7 @@ void createSnapshotIDreferenceImageComparisonDecisionTreeString(int imageWidth, 
 	}
 
 	currentDirectoryCharStar[*currentDirectoryLength] = '\0';
-	
+
 	if(OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
 	{
 		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
@@ -1497,7 +1497,7 @@ void createOrParseSnapshotIDreferenceImageComparisonDecisionTree(int imageWidth,
 			#ifdef OR_DEBUG
 			//cout << "contrastVal = " << contrastVal << endl;
 			#endif
-			
+
 			bool passContrastThreshold = false;
 			int contrastThreshold;
 
@@ -1901,7 +1901,7 @@ void parseSnapshotIDreferenceList(string * parseFileName, SnapshotIDreferenceLis
 				#ifdef OR_DEBUG
 				//cout << "currentReferenceInSnapshotIDReferenceList->referenceID = " << currentReferenceInSnapshotIDReferenceList->referenceID << endl;
 				#endif
-				
+
 				SnapshotIDreferenceList * newReferenceInSnapshotIDReferenceList = new SnapshotIDreferenceList();
 				currentReferenceInSnapshotIDReferenceList->next = newReferenceInSnapshotIDReferenceList;
 				currentReferenceInSnapshotIDReferenceList = currentReferenceInSnapshotIDReferenceList->next;

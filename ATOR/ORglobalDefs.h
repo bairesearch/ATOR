@@ -1,21 +1,21 @@
 /*******************************************************************************
- * 
+ *
  * This file is part of BAIPROJECT.
- * 
+ *
  * BAIPROJECT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3
  * only, as published by the Free Software Foundation.
- * 
+ *
  * BAIPROJECT is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License version 3 for more details
  * (a copy is included in the LICENSE file that accompanied this code).
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
  * for a copy of the AGPLv3 License.
- * 
+ *
  *******************************************************************************/
 
 /*******************************************************************************
@@ -23,7 +23,7 @@
  * File Name: ORglobalDefs.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3d2b 14-April-2014
+ * Project Version: 3d2c 14-April-2014
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
@@ -35,7 +35,7 @@
  *			a) ras format endian swap, b) ras format relaxed,
  *			c) multiple endian outputs for Keypoints exe, d) Windows VS compatibility,
  *			e) change of binary name from SE to FD.exe};
- *		
+ *
  *		(Linux Ubuntu 13.1 Only)
  *		copy (Linux Ubuntu x86_64 compiled) FD.exe to OpenOR.exe working folder
  *
@@ -48,8 +48,8 @@
  *		(Windows Only)
  *		copy (Windows XP i386 compiled) FD.exe to OpenOR.exe working folder
  *
- *		(Windows 7 x86_64 Only)
- *		copy (Windows 7 x86_64 compiled) FD.exe to OpenOR.exe working folder
+ *		(Windows 7/8 x86_64 Only)
+ *		copy (Windows 7/8 x86_64 compiled) FD.exe to OpenOR.exe working folder
  *
  *	Install External Package 2 - Freeglut;
  *
@@ -69,7 +69,7 @@
  *		unzip freeglut 2.4.0 (compiled).zip
  *		copy freeglut.dll from freeglut 2.4.0 (compiled).zip to c:\Windows\System32
  *
- *		(Windows 7 x86_64 Only)
+ *		(Windows 7/8 x86_64 Only)
  *		unzip freeglut 2.6.0 (compiled).zip
  * 		copy freeglut.dll from freeglut 2.6.0 (compiled) - 32bit.zip to: C:\WINDOWS\SysWOW64 [or System32]
  *
@@ -84,7 +84,7 @@
  *		sudo apt-get install imagemagick? OR;
  *		sudo dpkg -i imagemagick_6.7.7.10-5ubuntu3_amd64.deb?
  *
- *		(Linux EL5 Only) 
+ *		(Linux EL5 Only)
  *		yum install ImageMagick OR;
  *		rpm -i ImageMagick-c++-6.2.8.0-4.el5_1.1.x86_64.rpm
  *
@@ -97,6 +97,9 @@
  *
  *		(Windows 7 x86_64 Only)
  *		install ImageMagick-6.7.2-1-Q16-windows-x64-dll.exe (use default settings)
+ *
+ *		(Windows 8 x86_64 Only)
+ *		install ImageMagick-6.8.9-0-Q16-x64-dll.exe (use default settings)
  *
  *	Install External Package 4 - JPEG development libraries (Independent JPEG Group)
  *
@@ -126,6 +129,12 @@
  *		Is there any?
  *		copy jpeg.lib [in JPEG\Release folder] to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib
  *		copy jpeglib.h, jconfig.h, and jmorecfg.h [in JPEG folder] to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\
+ *		ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
+ *
+ *		(Windows 8 x86_64 Only)
+ *		Is there any?
+ *		copy jpeg.lib [in JPEG\Release folder] to C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\lib
+ *		copy jpeglib.h, jconfig.h, and jmorecfg.h [in JPEG folder] to C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\Include\
  *		ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *
  *	Install External Package 5a - MySQL Client
@@ -165,12 +174,6 @@
  *		/etc/init.d/mysqld start
  *		mysqladmin -u root password chooseamysqlrootpassword
  *
- *				OLD: (Windows 7 x86_64 Only) On the MySQL Server perform the following actions to initiate the server;
- *				For example. install mysql-installer-5.5.15.0.msi
- *					set to 32bit - NB this assumes Microsoft Visual Studio Express [2008/2010] with 32bit only compilation
- *					Select Defaults (developer install)...
- *					set password
- *
  *		(Windows XP Only) On the MySQL Server perform the following actions to initiate the server;
  *		For example. install mysql-5.1.41-win32.msi
  *			{During installation perform the following configurations; select 'c include files / libraries' [for development], and select 'include bin directory in Windows PATH'}
@@ -195,8 +198,8 @@
  *		Copy C:\Program Files\MySQL\MySQL Server 5.1\lib\libmysql.dll to working folder (location of OpenOR.exe)
  *			[NB on Windows XP, may need to place MySQL libraries in ... otherwise follow development installation instructions]
  *
- *		(Windows 7 x86_64 Only) On the MySQL Server perform the following actions to initiate the server;
- *		For example. install mysql-5.5.15-win32.msi (NB 32 bit mysql installation is required assuming Microsoft Visual Studio Express [2008/2010] with 32bit only compilation)
+ *		(Windows 7/8 x86_64 Only) On the MySQL Server perform the following actions to initiate the server;
+ *		For example. install mysql-5.5.15-win32.msi (NB 32 bit mysql installation is required assuming Microsoft Visual Studio Express [2008/2010/2013] with 32bit only compilation)
  *			{During installation ensure the following configurations; select 'c include files / libraries' [for development], and select 'include bin directory in Windows PATH'}
  *			Click Next
  *			Select 'Custom' setup type. Click Next
@@ -218,8 +221,6 @@
  *			Click Finish
  *		the MySQL server should be initiated during installation, and a root password should be assigned
  *		Copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.dll to working folder (location of OpenOR.exe)
- *		[NO: copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.lib to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib]
- *		copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\include\mysql.h to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\
  *		ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *
  *		Restart PC
@@ -496,6 +497,9 @@
  *		(Windows 7 x86_64 Only)
  *		Install MS Visual Studio C++ 2010 Express Edition (VS2010Express1.iso / vcsetup.exe)
  *
+ *		(Windows 8 x86_64 Only)
+ *		Install MS Visual Studio Express 2013 for Windows Desktop (VS2013_RTM_DskExp_ENU.iso / wdexpress_full.exe)
+ *
  *	Compile FD executable
  *
  *		(Linux Only)
@@ -504,7 +508,7 @@
  *		This will create FD.exe in the current folder
  *
  *		(Windows Only)
- *		Open FD.sln using MS Visual Studio C++ 20xx Express Edition
+ *		Open FD.sln using MS Visual Studio C++ 2008/2010/2013 Express Edition
  *		edit FDdefs.h, and comment out the LINUX preprocessor def
  *		Build All
  *		This will create FD.exe in the Release folder
@@ -514,7 +518,7 @@
  *		(Linux Ubuntu 13.1 Only)
  *		sudo apt-get install freeglut3-dev OR;
  *		sudo dpkg -i freeglut3-dev_2.8.1-1_amd64.deb
- *		
+ *
  *		(Linux EL5 Only)
  *		yum install freeglut-devel OR;
  *		rpm - i freeglut-devel-2.4.0-7.1.el5.x86_64.rpm
@@ -539,6 +543,14 @@
  * 		copy freeglut.lib to: C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\
  * 		copy freeglut.dll to: C:\WINDOWS\SysWOW64 [or System32]
  *
+ *		(Windows 8 x86_64 Only);
+ *		unpack source code freeglut 2.6.0 (compiled) - 32bit.zip
+ *		copy freeglut.h to: C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\GL\ (note: you'll have to create the GL folder)
+ * 		copy freeglut_ext.h to: C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\GL\
+ * 		copy freeglut_std.h to: C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\GL\
+ * 		copy freeglut.lib to: C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\lib\
+ * 		copy freeglut.dll to: C:\WINDOWS\SysWOW64 [or System32]
+ *
  *	Freeglut may be downloaded via;
  *
  *	* (Linux) distribution repository
@@ -558,7 +570,7 @@
  *		yum install libjpeg-devel
  *		rpm - i libjpeg-devel-6b-46.el6.x86_64.rpm
  *
- * 		(Windows XP / Windows 7 x86_64 Only)
+ * 		(Windows XP / Windows 7 / Windows 8 x86_64 Only)
  *		Build JPEG Libraries from source;
  *			Either A) unzip the BAI JPEG development package, Eg 'JPEG source - with visual studio 6 Sept 11a.zip / JPEG v7 source - with visual studio 17 April 10a.zip / JPEG source - with visual studio 12 Oct 09a.zip'
  *				copy jconfig.h.microsoftvisualstudio jconfig.h (ie, overwrite jconfig.h with jconfig.h.microsoftvisualstudio)
@@ -605,6 +617,13 @@
  *		copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.lib and libmysql.dll to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\
  *		create folder C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\mysql\
  *		copy all files in C:\Program Files (x86)\MySQL\MySQL Server 5.5\include\ folder to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\mysql\
+ *		ensure libmysql.lib is added to MS Visual Studio OR project - Linker - additional dependencies
+ *		Copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.dll to working folder (location of OpenOR.exe)
+ *
+ *		(Windows 8 x86_64 Only)
+ *		copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.lib and libmysql.dll to C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\lib\
+ *		create folder C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\mysql\
+ *		copy all files in C:\Program Files (x86)\MySQL\MySQL Server 5.5\include\ folder to C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\mysql\
  *		ensure libmysql.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *		Copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.dll to working folder (location of OpenOR.exe)
  *
@@ -655,23 +674,37 @@
  * - [2f] [Re] compile and test in Windows using MS Visual Studio (make installation procedure compatible with both GNU and commercial licenses)
  * - [2g] Preparation for PHP GUI; multiview support, workingfolder, etc
  * - [FAILED2h] SQL comparison Linear Combination Network (instead of DCT tree)
+ * - [3a+] Fixed optimisation implementation
  *
  * Usage Examples;
  *
- * ./OpenOR.exe -sqlIPaddress localhost -sqlUsername MYSQLUSERNAME -sqlPassword MYSQLPASSWORD -trainortest 1 -object house2DOD -cleartrain -multview multViewList2DOD.txt -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
+ * Linux:
  *
- * ./OpenOR.exe -sqlIPaddress localhost -sqlUsername MYSQLUSERNAME -sqlPassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
- * ./OpenOR.exe -sqlIPaddress localhost -sqlUsername MYSQLUSERNAME -sqlPassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
- * OpenOR.exe -sqlIPaddress localhost -sqlUsername MYSQLUSERNAME -sqlPassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "E:\Files\source\sourcevs\source\working" -exefolder "E:\Files\source\sourcevs\source\working" -workingfolder "E:\Files\source\sourcevs\source\working"
- * OpenOR.exe -sqlIPaddress localhost -sqlUsername MYSQLUSERNAME -sqlPassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "E:\Files\source\sourcevs\source\working" -exefolder "E:\Files\source\sourcevs\source\working" -workingfolder "E:\Files\source\sourcevs\source\working"
+ * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
+ * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object unknown2DOD1 -imageext .png -width 768 -height 576 -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
+ * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
  *
+ * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -od3 -cleartrain -multview multViewList3DOD.txt -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
  *
+ * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -cleartrain -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
+ * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -view 1 -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
+ * 
+ * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
+ * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
  *
- * ./OpenOR.exe -sqlIPaddress localhost -sqlUsername MYSQLUSERNAME -sqlPassword MYSQLPASSWORD -trainortest 1 -object house3DOD -od3 -cleartrain -multview multViewList3DOD.txt -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
+ * Windows:
  *
- * ./OpenOR.exe -sqlIPaddress localhost -sqlUsername MYSQLUSERNAME -sqlPassword MYSQLPASSWORD -trainortest 1 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -cleartrain -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
- * ./OpenOR.exe -sqlIPaddress localhost -sqlUsername MYSQLUSERNAME -sqlPassword MYSQLPASSWORD -trainortest 0 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -view 1 -tempfolder "/home/systemusername/baior/temp" -exefolder "/home/systemusername/baior/bin" -workingfolder "/home/systemusername/source/source"
+ * OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
+ * OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object unknown2DOD1 -imageext .png -width 768 -height 576 -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
+ * OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
  *
+ * OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -od3 -cleartrain -multview multViewList3DOD.txt -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
+ *
+ * OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -cleartrain -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
+ * OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -view 1 -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
+ * 
+ * OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
+ * OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
  *
  * Future Developments;
  *	- since in snapshots, num polygons approaches and even exceeds num pixels - we should consider a raytracer instead of using opengl

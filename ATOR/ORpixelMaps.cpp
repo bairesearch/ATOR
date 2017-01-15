@@ -1,21 +1,21 @@
 /*******************************************************************************
- * 
+ *
  * This file is part of BAIPROJECT.
- * 
+ *
  * BAIPROJECT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3
  * only, as published by the Free Software Foundation.
- * 
+ *
  * BAIPROJECT is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License version 3 for more details
  * (a copy is included in the LICENSE file that accompanied this code).
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
  * for a copy of the AGPLv3 License.
- * 
+ *
  *******************************************************************************/
 
 /*******************************************************************************
@@ -23,7 +23,7 @@
  * File Name: ORpixelMaps.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3d2b 14-April-2014
+ * Project Version: 3d2c 14-April-2014
  *
  *******************************************************************************/
 
@@ -758,10 +758,10 @@ double calculateContrastLevelWithinKernelWithForegroundDepthCheckOLD(int pixelX,
 								}
 								#endif
 							}
-							
+
 							#ifdef OR_DEBUG
 							//cout << "kx = " << x-pixelX << endl;
-							//cout << "ky = " << y-pixelY << endl;							
+							//cout << "ky = " << y-pixelY << endl;
 							//cout << "contrastLevel = " << contrastLevel << endl;
 							#endif
 						}
@@ -1007,10 +1007,10 @@ double getContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixe
 								}
 								#endif
 							}
-							
+
 							#ifdef OR_DEBUG
 							//cout << "x = " << x << endl;
-							//cout << "y = " << y << endl;							
+							//cout << "y = " << y << endl;
 							//cout << "contrastLevel = " << contrastLevel << endl;
 							#endif
 						}
@@ -1182,7 +1182,7 @@ double calculateContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, in
 						}
 						#ifdef OR_DEBUG
 						//cout << "x = " << x << endl;
-						//cout << "y = " << y << endl;						
+						//cout << "y = " << y << endl;
 						//cout << "contrastLevel = " << contrastLevel << endl;
 						#endif
 					}
@@ -1566,7 +1566,7 @@ double calculateDepthGradientContrastValueWithinKernelWRONG(int pixelX, int pixe
 					//cout << "yDiff  = " << yDiff << endl;
 					//cout << "xDiff  = " << xDiff << endl;
 					#endif
-					
+
 					if(depthGradientSimilarityArray[yDiff*DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_WIDTH_NUMBER_SAMPLES+xDiff] == DEPTH_GRADIENT_SIMILARITY_INDICATOR_UNDEFINED)
 					{
 						vec kernelCurrentPixelPositionInDepthGradientMapGradient;
@@ -1587,12 +1587,12 @@ double calculateDepthGradientContrastValueWithinKernelWRONG(int pixelX, int pixe
 
 										int yDiff2 = y2-pixelY+(kernelHeight/(DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_HEIGHT_NUMBER_SAMPLES-1));
 										int xDiff2 = x2-pixelX+(kernelWidth/(DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_WIDTH_NUMBER_SAMPLES-1));
-										
+
 										#ifdef OR_DEBUG
 										//cout << "xDiff2  = " << xDiff2 << endl;
 										//cout << "yDiff2  = " << yDiff2 << endl;
 										#endif
-										
+
 										if(depthGradientSimilarityArray[yDiff2*DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_WIDTH_NUMBER_SAMPLES+xDiff2] == DEPTH_GRADIENT_SIMILARITY_INDICATOR_UNDEFINED)
 										{
 											vec kernelCurrentPixelPositionInDepthGradientMapGradient2;
@@ -1672,7 +1672,7 @@ double calculateDepthGradientContrastValueWithinKernelWRONG(int pixelX, int pixe
 	}
 	else
 	{
-	
+
 	}
 
 	return contrastLevel;
@@ -1851,10 +1851,10 @@ void generateRGBmapFromPointNormalContrastMap(int imageWidth, int imageHeight, d
 			col.g = pointNormalContrastValNormalised;
 			col.b = pointNormalContrastValNormalised;
 			#ifdef OR_DEBUG
-			//cout << "pointNormalContrastVal = " << pointNormalContrastVal << endl;			
+			//cout << "pointNormalContrastVal = " << pointNormalContrastVal << endl;
 			//cout << "pointNormalContrastVal col.r = " << (int)(col.r) << endl;
 			#endif
-			
+
 			setRGBMapValues(x, y, imageWidth, &col, rgbMap);
 		}
 	}
@@ -1952,7 +1952,7 @@ void resampleRGBmap(unsigned char * rgbMap, int imageWidth, int imageHeight, uns
 	if(zoom > 1)
 	{
 		//create resampledRGBMapAtDesiredzoomInt
-		
+
 		//initialise resampledRGBMapAtDesiredzoomInt
 		for(int y = 0; y < resampledHeight; y++)
 		{
@@ -1963,7 +1963,7 @@ void resampleRGBmap(unsigned char * rgbMap, int imageWidth, int imageHeight, uns
 				resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = 0.0;
 			}
 		}
-		
+
 		//add to resampledRGBMapAtDesiredzoomInt
 
 		//Method 2; take max value; this will create aliasing but this is better than gray values on corner edges
@@ -2027,7 +2027,7 @@ void resampleRGBmap(unsigned char * rgbMap, int imageWidth, int imageHeight, uns
 
 			}
 		}
-		
+
 		//normalise resampledRGBMapAtDesiredzoomInt
 		for(int y = 0; y < resampledHeight; y++)
 		{
@@ -2136,7 +2136,7 @@ void resampleLumOrContrastOrDepthMap(double * lumOrContrastOrDepthMap, int image
 				resampledMapAtDesiredzoomInt[y*resampledWidth + x] = 0.0;
 			}
 		}
-			
+
 		//add to resampledMapAtDesiredzoomInt
 
 		//Method 2; take max value; this will create aliasing but this is better than gray values on corner edges
@@ -2191,7 +2191,7 @@ void resampleLumOrContrastOrDepthMap(double * lumOrContrastOrDepthMap, int image
 
 			}
 		}
-		
+
 		//normalise resampledMapAtDesiredzoomInt
 		for(int y = 0; y < resampledHeight; y++)
 		{

@@ -1,21 +1,21 @@
 /*******************************************************************************
- * 
+ *
  * This file is part of BAIPROJECT.
- * 
+ *
  * BAIPROJECT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3
  * only, as published by the Free Software Foundation.
- * 
+ *
  * BAIPROJECT is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License version 3 for more details
  * (a copy is included in the LICENSE file that accompanied this code).
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * version 3 along with BAIPROJECT.  If not, see <http://www.gnu.org/licenses/>
  * for a copy of the AGPLv3 License.
- * 
+ *
  *******************************************************************************/
 
 /*******************************************************************************
@@ -23,7 +23,7 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3d2b 14-April-2014
+ * Project Version: 3d2c 14-April-2014
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -719,15 +719,15 @@ bool ORmethodTrainOrTest(int dimension, int numberOfObjects, string objectNameAr
 		{
 			cout << " objectIndex = " << o << endl;
 		}
-		
+
 		#ifdef OR_USE_DATABASE
 		#ifdef OR_DATABASE_DEBUG
 		cout << "DBgenerateFolderName: objectNameArray[o] = " << objectNameArray[o] << endl;
 		#endif
 		DBgenerateFolderName(&(objectNameArray[o]), trainOrTest);
-		#endif		
+		#endif
 		string objectSceneFileName = objectNameArray[o] + SCENE_FILE_NAME_EXTENSION;
-	
+
 		string objectSceneFileNameCollapsed = objectNameArray[o] + "CollapsedForRaytracing" + SCENE_FILE_NAME_EXTENSION;
 		char * topLevelSceneFileName =   const_cast<char*>(objectSceneFileName.c_str());
 		char * topLevelSceneFileNameCollapsed = const_cast<char*>(objectSceneFileNameCollapsed.c_str());
@@ -1432,7 +1432,7 @@ bool createRGBandPointMap(Reference * initialReferenceInSceneFile, double * poin
 		#ifdef OR_DEBUG
 		//cout << "preexistingImageFileNameCPlus = " << preexistingImageFileNameCPlus << endl;
 		#endif
-		
+
 		char * preexistingImageFileName = const_cast<char*>(preexistingImageFileNameCPlus.c_str());
 
 		string rgbMapFileNameCPlus = mapFileName + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
@@ -1800,7 +1800,7 @@ bool createRGBandPointMap(Reference * initialReferenceInSceneFile, double * poin
 	#ifdef OR_DEBUG
 	//TEMPprintReferenceListVertexPositions2DOD(firstReferenceInInterpolatedMesh);
 	#endif
-	
+
 	delete normalMap;
 	delete luminosityMap;
 	delete luminosityBooleanMap;
@@ -1813,7 +1813,7 @@ bool createRGBandPointMap(Reference * initialReferenceInSceneFile, double * poin
 	delete depthGradientContrastMap;
 	delete depthGradientContrastBooleanMap;
 	delete luminosityContrastMapMinusDepthContrastMap;
-	
+
 	return result;
 }
 
@@ -2021,7 +2021,7 @@ Reference * convertMeshPointToReferences3DOD(MeshPoint * currentMeshPointInMeshL
 				cout << "currentReferenceInInterpolatedMesh->vertex3relativePosition.z = " << currentReferenceInInterpolatedMesh->vertex3relativePosition.z << endl;
 				*/
 				#endif
-				
+
 				Reference * newReference = new Reference();
 				currentReferenceInInterpolatedMesh->next = newReference;
 				currentReferenceInInterpolatedMesh = currentReferenceInInterpolatedMesh->next;
@@ -2945,7 +2945,7 @@ bool createOrAddPointsToFeaturesList(double * pointMap, unsigned char * rgbMap, 
 				numberOfFeatures++;
 				//cout << "currentFeatureInList++" << endl;
 				currentFeatureInList=currentFeatureInList->next;
-			}		
+			}
 			cout << "numberOfFeatures at zoom " << zoom << " = " << numberOfFeatures << endl;
 		}
 
@@ -3012,7 +3012,7 @@ bool addCornerFeaturesToFeatureListUsingRGBmap(ViewInfo * vi, unsigned char * rg
 {
 	char currentTempFolder[EXE_FOLDER_PATH_MAX_LENGTH];
 	getCurrentDirectory(currentTempFolder);
-		
+
 	bool result = true;
 
 	//added by RBB 3 Oct 09
@@ -3510,7 +3510,7 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 								#ifdef OR_DEBUG
 								//cout << "zoomIndex = " << zoomIndex << ", numberOfTrainOrTestPolys[zoomIndex] = " << numberOfTrainOrTestPolys[zoomIndex] << ", side = " << side << endl;
 								#endif
-								
+
 								#ifdef OR_TEST_ORI_AND_POS_NOISE_DURING_TRANING_AND_TESTING
 								//cout << "\t featurePosNoise1 = " << featurePosNoise1 << ", featurePosNoise2 = " << featurePosNoise2 << ", featurePosNoise3 = " << featurePosNoise3 << endl;
 
@@ -3536,7 +3536,7 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 								#ifdef OR_IMAGE_COMPARISON_USE_OLD_AVERAGE_CONTRAST_THRESHOLDING
 								string rgbDevMapFacingPolyFileNameCPlus = interpolatedMapFileNameForRayTracing + RGB_DEV_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 								#endif
-								
+
 								#ifdef OR_METHOD_USE_SMALL_IMAGE_FIRST_COMPARISON
  								string rgbMapFacingPolySmallFileNameCPlus = interpolatedMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 								#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
@@ -3549,11 +3549,11 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 								string rgbDevMapFacingPolySmallFileNameCPlus = interpolatedMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_DEV_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 								#endif
 								#endif
-								
+
 								//#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
  								string rgbMapFacingPolySmallFileNameJPEGCPlus = interpolatedMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + JPEG_EXTENSION;
 								//#endif
-								
+
 								string luminosityMapFacingPolyFileNameCPlus = interpolatedMapFileNameForRayTracing + LUMINOSITY_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 								string luminosityBooleanMapFacingPolyFileNameCPlus = interpolatedMapFileNameForRayTracing + LUMINOSITY_BOOLEAN_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 								string luminosityContrastMapFacingPolyFileNameCPlus = interpolatedMapFileNameForRayTracing + LUMINOSITY_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
@@ -4148,7 +4148,7 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 										#endif
 										#endif
 								#endif
-								
+
 									//d. prepare feature lists with additional snapshot characterisation data (DCT, average hue etc) used for SQL database snapshot binning
 									if(OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING)
 									{
@@ -4207,7 +4207,7 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 										#ifdef OR_DEBUG
 										//cout << "currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned = " << currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned << endl;
 										#endif
-										
+
 										if(!generatePixmapFiles)
 										{
 											remove(rgbMapFacingPolySmallFileName);
