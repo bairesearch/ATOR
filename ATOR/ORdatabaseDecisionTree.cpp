@@ -23,7 +23,7 @@
  * File Name: ORdatabaseDecisionTree.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3c5c 21-December-2012
+ * Project Version: 3c6c 22-July-2013
  *
  *******************************************************************************/
 
@@ -390,18 +390,20 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 										}
 
 										#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
-										#if (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS < 100)
-										dtBinTemp = dtBinTemp + geoxyBins[geoExceptionIndex2]*(pow(100, geoExceptionIndex2));
+										if(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS < 100)
+										{
+											dtBinTemp = dtBinTemp + geoxyBins[geoExceptionIndex2]*(pow(100, geoExceptionIndex2));
 
-										#ifdef OR_DEBUG
-										//cout << "dtBinTemp = " << dtBinTemp << endl;
-										//cout << " geoxyBins[geoExceptionIndex2] = " <<  geoxyBins[geoExceptionIndex2] << endl;
-										#endif
-										
-										#else
-										cout << "invalid OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS, must be < 100" << endl;
-										exit(0);
-										#endif
+											#ifdef OR_DEBUG
+											//cout << "dtBinTemp = " << dtBinTemp << endl;
+											//cout << " geoxyBins[geoExceptionIndex2] = " <<  geoxyBins[geoExceptionIndex2] << endl;
+											#endif
+										}
+										else
+										}
+											cout << "invalid OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS, must be < 100" << endl;
+											exit(0);
+										}
 										#endif
 										//CHECK THIS; do: apply check; only insert new row into dt if it is unique to the given snapshot ID
 									}
@@ -911,23 +913,24 @@ void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 					}
 				}
 
-
 				#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
-				#if (OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS < 100)
+				if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS < 100)
+				{
+					int arrayValueSignedTemp = firstFeatureInList->dctCoeff[fourierExceptionIndex2];
+					double arrayValueUnsignedDouble;
+					unsigned int arrayValueUnsignedTemp = determineDCTBinUnsigned(arrayValueSignedTemp, &arrayValueUnsignedDouble);
 
-				int arrayValueSignedTemp = firstFeatureInList->dctCoeff[fourierExceptionIndex2];
-				double arrayValueUnsignedDouble;
-				unsigned int arrayValueUnsignedTemp = determineDCTBinUnsigned(arrayValueSignedTemp, &arrayValueUnsignedDouble);
-
-				dtBinTemp = dtBinTemp + arrayValueUnsignedTemp*(pow(100, fourierExceptionIndex2));
-				#ifdef OR_DEBUG
-				//cout << "fourierExceptionIndex2 = " << fourierExceptionIndex2 << endl;
-				//cout << "dtBinTemp = " << dtBinTemp << endl;
-				#endif
-				#else
-				cout << "invalid OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS, must be < 100" << endl;
-				exit(0);
-				#endif
+					dtBinTemp = dtBinTemp + arrayValueUnsignedTemp*(pow(100, fourierExceptionIndex2));
+					#ifdef OR_DEBUG
+					//cout << "fourierExceptionIndex2 = " << fourierExceptionIndex2 << endl;
+					//cout << "dtBinTemp = " << dtBinTemp << endl;
+					#endif
+				}
+				else
+				{
+					cout << "invalid OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS, must be < 100" << endl;
+					exit(0);
+				}
 				#endif
 			}
 
