@@ -26,7 +26,7 @@
  * File Name: ORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2014 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3d5c 05-August-2014
+ * Project Version: 3d6a 05-August-2014
  *
  *******************************************************************************/
 
@@ -353,7 +353,7 @@ int main(int argc,char **argv)
 
 	if (argumentExists(argc,argv,"-version"))
 	{
-		cout << "OpenOR.exe - Project Version: 3d5c 05-August-2014" << endl;
+		cout << "OpenOR.exe - Project Version: 3d6a 05-August-2014" << endl;
 		exit(1);
 	}
 
