@@ -1,0 +1,27 @@
+<rules>
+	<objectRecognition>
+	
+	
+		<miscellaneousItem name="OR_IMAGE_COMPARISON_DECISION_TREE" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="OR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_DEV_BINNING" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="OR_IMAGE_COMPARISON_SQL_SMALL_HUE_DEV_MAP_COMPARISON" stringValue="false" fractionalValue="" />
+		
+
+
+		<miscellaneousItem name="OR_SNAPSHOT_WINDOW_POSITION_X" stringValue="" fractionalValue="0" />
+		<miscellaneousItem name="OR_SNAPSHOT_WINDOW_POSITION_Y" stringValue="" fractionalValue="800" />
+		
+
+	
+		<miscellaneousItem name="WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE" stringValue="" fractionalValue="104" />
+
+	
+		
+	</objectRecognition>
+</rules>
