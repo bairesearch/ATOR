@@ -93,7 +93,7 @@ static char errmessage[] = "Usage:  OpenOR.exe [options]\n\n\twhere options are 
 "\n\n multi view options only \n"
 "\n\t-multview [string]     : use multiview list [NEEDS WORK] (def: multViewList.txt) {3DOD every row; ObjectViewFileNameWithNoExtension|imageext|imageWidth|imageHeight|depthext|vieweyex|vieweyey|vieweyez|viewatx|viewaty|viewatz|viewupx|viewupy|viewupz|viewfocal|viewsizew|viewsizeh|scale. 2DOD every row; ObjectViewFileNameWithNoExtension|imageext|imageWidth|imageHeight|xoffset|yoffset}"
 #ifdef OR_USE_DATABASE
-"\n\t-dbfolder          : file system database base folder path (def: /home/systemusername/source/ORfsdatabase/)"
+"\n\t-dbfolder          : file system database base folder path (def: /home/systemusername/source/ORfsdatabase)"
 #endif
 "\n\n\t-version        : print version"
 "\n\n\tThis program either adds an object (imaged from a particular viewpoint) to a BAI OR database, or finds the closest matching object already existent in the BAI OR database.\n\n";
@@ -571,6 +571,7 @@ int main(int argc,char **argv)
 	if(exists_argument(argc,argv,"-dbfolder"))
 	{
 		databaseFolderName=get_char_argument(argc,argv,"-dbfolder");
+		databaseFolderName = databaseFolderName + '/';
 	}
 	initialiseDatabase(databaseFolderName);	
 	#endif
