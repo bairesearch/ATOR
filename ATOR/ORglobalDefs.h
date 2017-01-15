@@ -26,7 +26,7 @@
  * File Name: ORglobalDefs.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3h15a 29-February-2016
+ * Project Version: 3h15b 29-February-2016
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
@@ -35,25 +35,22 @@
  *  	{FD v0.5b/c executable (Eg Linux: FD.exe, Windows: FD.exe)
  *		"heitger feature detection with RBB Endian Mod v0.5b" is
  *		olof Henricsson 96-06-07 release of Friedrich Heitger's SE binary with
- *			a) ras format endian swap, 
+ *			a) ras format endian swap,
  *			b) ras format relaxed,
- *			c) multiple endian outputs for Keypoints exe, 
+ *			c) multiple endian outputs for Keypoints exe,
  *			d) Windows VS compatibility,
  *			e) change of binary name from SE to FD.exe};
  *
  *		(Linux Ubuntu 14.04 Only)
  *		copy (Linux Ubuntu x86_64 compiled) FD.exe to OpenOR.exe working folder
  *
- *		(Linux EL5 Only)
- *		copy (Linux EL5 x86_64 compiled) FD.exe to OpenOR.exe working folder
- *
- *		(Linux EL6 Only)
- *		copy (Linux EL6 x86_64 compiled) FD.exe to OpenOR.exe working folder
+ *		(Linux EL5/6/7 Only)
+ *		copy (Linux EL5/6/7 x86_64 compiled) FD.exe to OpenOR.exe working folder
  *
  *		(Windows XP Only)
  *		copy (Windows XP i386 compiled) FD.exe to OpenOR.exe working folder
  *
- *		(Windows 7/8 x86_64 Only)
+ *		(Windows 7/8/10 x86_64 Only)
  *		copy (Windows 7/8 x86_64 compiled) FD.exe to OpenOR.exe working folder
  *
  *		This version of Heitger FD may be downloaded via;
@@ -77,6 +74,10 @@
  *		yum install freeglut OR;
  *		rpm -i freeglut-2.6.0-1.el6.x86_64.rpm
  *
+ *		(Linux EL7 Only)
+ *		yum install freeglut OR;
+ *		rpm -i freeglut-2.8.1-3.el7.x86_64.rpm
+ *
  *		(Windows XP Only)
  *		unzip freeglut 2.4.0 (compiled).zip
  *		copy freeglut.dll from freeglut 2.4.0 (compiled).zip to c:\Windows\System32
@@ -85,9 +86,24 @@
  *		unzip freeglut 2.6.0 (compiled).zip
  * 		copy freeglut.dll from freeglut 2.6.0 (compiled) - 32bit.zip to: C:\WINDOWS\SysWOW64 [or System32]
  *
+ *		(Windows 10 x86_64 Only)
+ *		unzip freeglut 2.8.1 (compiled).zip
+ * 		copy freeglut.dll from freeglut 2.8.1 (compiled) - 32bit.zip to: C:\WINDOWS\SysWOW64 [or System32]
+ *
  *		Freeglut may be downloaded via;
  *
- *			(Windows) see http://tempvariable.blogspot.com.au/2008/02/installing-freeglut-on-visual-studio.html / http://www.transmissionzero.co.uk/software/freeglut-devel/
+ *			(Linux) distribution repository
+ *			(Windows)
+ *				Install Visual C++ 2010 (download VS2010Express1.iso from Microsoft.com)
+ *				download freeglut-2.8.1.tar.gz from https://sourceforge.net/projects/freeglut/files/freeglut/2.8.1/
+ *				open freeglut-2.8.1/VisualStudio/2010/freeglut.vcxproj
+ *				change to 'Release'
+ *				Build Solution
+ *				extract files from freeglut-2.8.1\VisualStudio\lib\x86 folder;
+ *					copy freeglut.dll to freeglut 2.8.1 (compiled) - 32bit\System32
+ *					copy freeglut.lib to freeglut 2.8.1 (compiled) - 32bit\lib
+ *				extract files from freeglut-2.6.0/Include/GL
+ *					Copy 4 files to freeglut 2.8.1 (compiled) - 32bit\include\GL
  *
  *	Install External Package 3 - ImageMagik;
  *
@@ -103,6 +119,10 @@
  *		yum install ImageMagick OR;
  *		rpm -i ImageMagick-c++-6.5.4.7-5.el6.x86_64.rpm
  *
+ *		(Linux EL7 Only)
+ *		yum install ImageMagick OR;
+ *		rpm -i ImageMagick-c++-6.7.8.9-10.el7.x86_64.rpm
+ *
  *		(Windows XP Only)
  *		install  ImageMagick-6.5.5-4-Q16-windows-dll.exe
  *
@@ -111,6 +131,9 @@
  *
  *		(Windows 8 x86_64 Only)
  *		install ImageMagick-6.8.9-0-Q16-x64-dll.exe (use default settings)
+ *
+ *		(Windows 10 x86_64 Only)
+ *		install ImageMagick-6.9.3-7-Q16-x64-dll.exe (use default settings)
  *
  *		ImageMagick may be downloaded via;
  *
@@ -134,6 +157,12 @@
  *		rpm -i libjpeg-6b-46.el6.x86_64.rpm
  *		rpm -i libjpeg-devel-6b-46.el6.x86_64.rpm
  *
+ *		(Linux EL7 Only)
+ *		Assuming EL7 Linux JPEG libraries were not preinstalled;
+ *		yum install libjpeg libjpeg-devel OR;
+ *		rpm -i libjpeg-turbo-1.2.90-5.el7.i686.rpm
+ *		rpm -i libjpeg-turbo-devel-1.2.90-5.el7.i686.rpm
+ *
  *		(Windows XP Only)
  *		[May only be required for development]
  *		copy jpeg.lib in JPEG\Release folder to C:\Program Files\Microsoft Visual Studio 9.0\VC\lib\
@@ -146,10 +175,18 @@
  *		copy jpeglib.h, jconfig.h, and jmorecfg.h [in JPEG folder] to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\
  *		ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *
+ *		(Windows 10 x86_64 Only)
+ *		[May only be required for development]
+ *		copy jpeg-static.lib [in libjpeg-turbo\lib folder] to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib
+ *		rename jpeg-static.lib to jpeg.lib in C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib
+ *		copy jpeglib.h, jconfig.h, and jmorecfg.h [in libjpeg-turbo\include folder] to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\
+ *		ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
+ *
  *		JPEG library may be downloaded via;
  *
- * 			(Windows) <http://www.baxterai.com/utils/misc/libjpeg/JPEG source - with visual studio 6 Sept 11aSMALL.zip> 
- * 			Alternatively, the raw source may be downloaded from http://www.ijg.org/files/jpegsr7.zip (release 7 / 27-Jun-2009)
+ *			(Windows XP/7/8): <http://www.baxterai.com/utils/misc/libjpeg/JPEG source - with visual studio 6 Sept 11aSMALL.zip>
+ * 				Alternatively, the raw source may be downloaded from http://www.ijg.org/files/jpegsr7.zip (release 7 / 27-Jun-2009)
+ *			(Windows 10): https://sourceforge.net/projects/libjpeg-turbo/files/1.2.90 (1.3beta1)/libjpeg-turbo-1.2.90-vc.exe
  *
  *	Install External Package 5a - MySQL Client
  *
@@ -164,6 +201,15 @@
  *		(Linux EL6 x86_64 Only)
  *		yum install mysql OR;
  *		rpm -i mysql-5.1.47-4.el6.x86_64.rpm
+ *
+ *		(Linux EL7 x86_64 Only)
+ *		rpm -e akonadi-mysql
+ *		download http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+ *		rpm -i mysql-community-release-el7-5.noarch.rpm
+ *		yum update
+ *		...
+ *		yum install mysql OR;
+ *		rpm -i mysql-community-client-5.6.29-2.el7.x86_64.rpm
  *
  * 	Install External Package 5b - MySQL Server;
  *
@@ -186,6 +232,13 @@
  *		rpm -i mysql-server-5.1.47-4.el6.x86_64.rpm
  *		chkconfig mysqld on
  *		/etc/init.d/mysqld start
+ *		mysqladmin -u root password chooseamysqlrootpassword
+ *
+ *		(Linux EL7 x86_64 Only) On the MySQL Server perform the following actions to initiate the server;
+ *		yum install mysql-server OR;
+ *		rpm -i mysql-community-server-5.6.29-2.el7.x86_64.rpm
+ *		systemctl enable mysqld.service
+ *		systemctl start mysqld
  *		mysqladmin -u root password chooseamysqlrootpassword
  *
  *		(Windows XP Only) On the MySQL Server perform the following actions to initiate the server;
@@ -235,8 +288,30 @@
  *			Click Finish
  *		the MySQL server should be initiated during installation, and a root password should be assigned
  *		Copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.dll to working folder (location of OpenOR.exe)
- *		ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *
+ *		(Windows 10 x86_64 Only) On the MySQL Server perform the following actions to initiate the server;
+ *		For example. install mysql-installer-community-5.6.28.0.msi
+ *				(MySQL can be downloaded from http://dev.mysql.com/downloads/windows/installer/5.6.html)
+ *			Select "I accept the license terms". Click Next
+ *			Select Custom. Click Next.
+ *			Add MySQL Servers - MySQL Server - MySQL Server 5.6 - MySQL Server 5.6.28 - X86 (ie 32bit server). Click Next. 
+ *				Alternatively, a 64 bit MySQL server could be installed so long as the MySQL client libraries added to VC match the compilation version of OR (ie 32bit). 
+ *				These can be downloaded separately here; http://dev.mysql.com/downloads/mysql/ (within mysql-5.6.29-win32.zip).
+ *			Click Execute
+ *			Click Next, Click Next, to Type and Networking
+ *			(Type and Networking) Leave Config Type: 'Developer Machine' selected.
+ *			(Type and Networking) Leave Connectivity 'TCP/IP' selected. Untick 'Open Firewall port for network access'.
+ *			(Type and Networking) Click Next
+ *			(Account and Roles) Set MySQL root password, chooseamysqlrootpassword. Click next
+ *			(Windows Service) Click next
+ *			Execute
+ *			Rightclick on Startmenu - Control Panel - System and Security - System - Advanced System Settings - environment variables - system variables - Path - edit - New
+ *				add "C:\Program Files (x86)\MySQL\MySQL Server 5.6\bin"
+ *			Copy C:\Program Files (x86)\MySQL\MySQL Server 5.6\lib\libmysql.dll to working folder (location of OpenOR.exe)
+ *			Create folder C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\mysql
+ *			Copy all files in C:\Program Files (x86)\MySQL\MySQL Server 5.6\Include to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\mysql
+ *			Copy all files in C:\Program Files (x86)\MySQL\MySQL Server 5.6\lib to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib
+ *		
  *		Restart PC
  *
  *		5b. Part ii)
@@ -245,8 +320,8 @@
  *
  *		Either A) create them automatically using the following method;
  * 			Open Command Line
- *				edit createBAIORmysqlDatabase.sql (from OpenOR source) and specify MYSQLUSERNAME and MYSQLPASSWORD 
- *				Linux EL5/EL6/Ubuntu 14.04:
+ *				edit createBAIORmysqlDatabase.sql (from OpenOR source) and specify MYSQLUSERNAME and MYSQLPASSWORD
+ *				Linux EL5/EL6/EL7/Ubuntu 14.04:
  *					open terminal (system - gnome-terminal)
  *					cd /home/user/pathofcreateBAIORmysqlDatabase/
  *					mysql -u root -p < createBAIORmysqlDatabase.sql
@@ -425,9 +500,12 @@
  *						yum install java-1.6.0-openjdk java-1.6.0-openjdk-devel OR;
  *						rpm -i java-1.6.0-openjdk...rpm java-1.6.0-openjdk-devel...rpm
  *					Windows
- *						install jre-6u20-windows-i586-s.exe
+ *						install jre-6u20-windows-i586-s.exe (or higher)
  *				on either Platform (windows or Linux);
- *				extract mysql-connector-java-5.1.10.zip, and copy mysql-connector-java-5.1.10-bin.jar to a permanent folder
+ *				Windows XP: extract mysql-connector-java-5.1.10.zip, and copy mysql-connector-java-5.1.10-bin.jar to a permanent folder
+ *				Windows 7/8: extract mysql-connector-java-5.1.17.zip, and copy mysql-connector-java-5.1.17-bin.jar to a permanent folder
+ *				Windows 10: extract mysql-connector-java-5.1.10.zip, and copy mysql-connector-java-5.1.10-bin.jar to a permanent folder
+ *					(NB MySQL Connector J can be downloaded from http://dev.mysql.com/downloads/connector/j/)
  *				Open OpenOffice.org Base - create new database [default settings]
  *				Tools - Options - Java - Class path - Add Archive (add mysql-connector-java-5.1.10-bin.jar)
  *				Close OpenOffice.org completely (including quickstarter if Windows)
@@ -549,6 +627,10 @@
  *		yum install freeglut-devel OR;
  *		rpm -i freeglut-devel-2.6.0-1.el6.x86_64.rpm
  *
+ *		(Linux EL7 Only)
+ *		yum install freeglut-devel OR;
+ *		rpm -i freeglut-devel-2.8.1-3.el7.x86_64.rpm
+ *
  *		(Windows XP Only);
  *		unpack source code freeglut 2.4.0 (compiled).zip
  *		copy freeglut.h to: C:\Program Files\Microsoft Visual Studio 9.0\VC\include\GL\ (note: you'll have to create the GL folder)
@@ -565,9 +647,28 @@
  * 		copy freeglut.lib to: C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\
  * 		copy freeglut.dll to: C:\WINDOWS\SysWOW64 [or System32]
  *
+ *		(Windows 10 x86_64 Only);
+ *		unpack source code freeglut 2.8.1 (compiled) - 32bit.zip
+ *		copy freeglut.h to: C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\GL\ (note: you'll have to create the GL folder)
+ * 		copy freeglut_ext.h to: C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\GL\
+ * 		copy freeglut_std.h to: C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\GL\
+ * 		copy freeglut.lib to: C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\
+ * 		copy freeglut.dll to: C:\WINDOWS\SysWOW64 [or System32]
+ *
  *		Freeglut may be downloaded via;
  *
- *			(Windows) see http://tempvariable.blogspot.com.au/2008/02/installing-freeglut-on-visual-studio.html / http://www.transmissionzero.co.uk/software/freeglut-devel/
+ *			(Linux) distribution repository
+ *			(Windows)
+ *				Install Visual C++ 2010 (download VS2010Express1.iso from Microsoft.com)
+ *				download freeglut-2.8.1.tar.gz from https://sourceforge.net/projects/freeglut/files/freeglut/2.8.1/
+ *				open freeglut-2.8.1/VisualStudio/2010/freeglut.vcxproj
+ *				change to 'Release'
+ *				Build Solution
+ *				extract files from freeglut-2.8.1\VisualStudio\lib\x86 folder;
+ *					copy freeglut.dll to freeglut 2.8.1 (compiled) - 32bit\System32
+ *					copy freeglut.lib to freeglut 2.8.1 (compiled) - 32bit\lib
+ *				extract files from freeglut-2.6.0/Include/GL
+ *					Copy 4 files to freeglut 2.8.1 (compiled) - 32bit\include\GL
  *
  * 	Compile/Link External Package 3 -  ImageMagik
  *
@@ -586,6 +687,10 @@
  *		(Linux EL6 Only);
  *		yum install libjpeg-devel OR;
  *		rpm - i libjpeg-devel-6b-46.el6.x86_64.rpm
+ *
+ *		(Linux EL7 Only);
+ *		yum install libjpeg-devel OR;
+ *		rpm - i libjpeg-turbo-devel-1.2.90-5.el7.x86_64.rpm
  *
  * 		(Windows XP / Windows 7 x86_64 / Windows 8 x86_64 Only)
  *		Build JPEG Libraries from source;
@@ -610,10 +715,16 @@
  *			copy jpeglib.h, jconfig.h, and jmorecfg.h in JPEG folder to C:\Program Files\Microsoft Visual Studio 9.0\VC\Include\
  *			ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
  *
+ *		(Windows 10 x86_64 Only)
+ *		copy jpeg.lib [in libjpeg-turbo\lib folder] to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib
+ *		copy jpeglib.h, jconfig.h, and jmorecfg.h [in libjpeg-turbo\include folder] to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\
+ *		ensure jpeg.lib is added to MS Visual Studio OR project - Linker - additional dependencies
+ *
  *		JPEG library may be downloaded via;
  *
- *			(Windows) <http://www.baxterai.com/utils/misc/libjpeg/JPEG source - with visual studio 6 Sept 11aSMALL.zip> 
- * 			Alternatively, the raw source may be downloaded from http://www.ijg.org/files/jpegsr7.zip
+ *			(Windows XP/7/8): <http://www.baxterai.com/utils/misc/libjpeg/JPEG source - with visual studio 6 Sept 11aSMALL.zip>
+ * 				Alternatively, the raw source may be downloaded from http://www.ijg.org/files/jpegsr7.zip (release 7 / 27-Jun-2009)
+ *			(Windows 10): https://sourceforge.net/projects/libjpeg-turbo/files/1.2.90 (1.3beta1)/libjpeg-turbo-1.2.90-vc.exe
  *
  *	Compile/Link External Package 5 -  Install MySQL Development Libraries
  *
@@ -628,6 +739,10 @@
  *		(Linux EL6 Only)
  *		yum install mysql-devel OR;
  *		rpm -i mysql-devel-5.1.52-1.el6_0.1.i686.rpm
+ *
+ *		(Linux EL7 Only)
+ *		yum install mysql-devel OR;
+ *		rpm -i mysql-community-devel-5.6.29-2.el7.x86_64.rpm
  *
  *		(Windows XP Only)
  *		copy C:\Program Files\MySQL\MySQL Server 5.1\lib\libmysql.lib and libmysql.dll to C:\Program Files\Microsoft Visual Studio 9.0\VC\Lib\
@@ -647,8 +762,8 @@
  *
  * 			(Windows) download mysql-5.1.41-win32.msi from http://dev.mysql.com/downloads/
  *
- *	OpenOR Compilation 
- *		
+ *	OpenOR Compilation
+ *
  *		Compile OpenOR.exe
  *
  *		(Linux Only)
@@ -706,7 +821,7 @@
  *
  * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -cleartrain -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
  * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -view 1 -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
- * 
+ *
  * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
  * ./OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
  *
@@ -720,7 +835,7 @@
  *
  * OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -cleartrain -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
  * OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -view 1 -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
- * 
+ *
  * OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
  * OpenOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
  *
@@ -1620,9 +1735,9 @@ extern double OR_RULES_XML_SPARE_PARAMETER_2;	//this needs to be made dynamic in
 
 
 	/**********
-	OR COMPARISON DEBUG VARS 
+	OR COMPARISON DEBUG VARS
 	***********/
-	
+
 //#define OR_DEBUG_COMPARISON
 
 

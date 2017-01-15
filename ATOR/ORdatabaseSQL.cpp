@@ -26,7 +26,7 @@
  * File Name: ORdatabaseSQL.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3h15a 29-February-2016
+ * Project Version: 3h15b 29-February-2016
  *
  *******************************************************************************/
 
@@ -1900,7 +1900,7 @@ void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, str
 									#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 									string OTpointIndexString = convertIntToString(currentFeature->OTpointIndex);
 									#endif
-									
+
 									string transformedpositionCoordinatesString = convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->pointTransformed));
 									#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
 									string positionCoordinatesString = convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->point));
@@ -1979,7 +1979,7 @@ void insertTransformedFeatureListIntoDatabase(ORfeature* firstFeatureInList, str
 									#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 									string OTpointIndexString = convertIntToString(currentFeature->OTpointIndex);
 									#endif
-									
+
 									string transformedpositionCoordinatesString = convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->pointTransformed));
 									#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
 									string positionCoordinatesString = convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->point));

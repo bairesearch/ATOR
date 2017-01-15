@@ -15,11 +15,11 @@
 
 
 		<miscellaneousItem name="OR_SNAPSHOT_WINDOW_POSITION_X" stringValue="" fractionalValue="0" />
-		<miscellaneousItem name="OR_SNAPSHOT_WINDOW_POSITION_Y" stringValue="" fractionalValue="800" />
+		<miscellaneousItem name="OR_SNAPSHOT_WINDOW_POSITION_Y" stringValue="" fractionalValue="500" />
 		
 
 	
-		<miscellaneousItem name="WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE" stringValue="" fractionalValue="116" />
+		<miscellaneousItem name="WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE" stringValue="" fractionalValue="120" />
 
 	
 		

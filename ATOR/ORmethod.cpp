@@ -26,7 +26,7 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3h15a 29-February-2016
+ * Project Version: 3h15b 29-February-2016
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -393,7 +393,7 @@ bool ORmethodExit()
 	#ifdef USE_OPENGL
 	exitOpenGL();
 	#endif
-	
+
 	return true;
 }
 
@@ -413,7 +413,7 @@ bool ORmethodCompareTestWithTrain(int dimension, int numberOfTrainObjects, strin
 		cout << "\t start: 5. normalised snapshot comparison" << endl;
 		time5NormalisedSnapshotComparisonStart = getTimeAsLong();
 	}
-	
+
 	double averageMatchErrorAcrossAllObjects;
 #ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 	averageMatchErrorAcrossAllObjects = compareNormalisedSnapshotExperienceListWithNeuralNetwork(firstExperienceInTestList, firstInputNeuronInNetwork, firstOutputNeuronInNetwork, numberOfInputNeurons, numberOfOutputNeurons, numberOfTrainPolys);

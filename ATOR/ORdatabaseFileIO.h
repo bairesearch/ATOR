@@ -26,7 +26,7 @@
  * File Name: ORdatabaseFileIO.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2015 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3h15a 29-February-2016
+ * Project Version: 3h15b 29-February-2016
  *
  *******************************************************************************/
 
