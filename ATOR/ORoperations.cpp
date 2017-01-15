@@ -26,7 +26,7 @@
  * File Name: ORoperations.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2016 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3i19d 15-December-2016
+ * Project Version: 3i19e 15-December-2016
  *
  *******************************************************************************/
 
@@ -922,6 +922,7 @@ bool generatePolygonListUsingFeatureList(int imageWidth, int imageHeight, ORfeat
 
 }
 
+/*
 void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int imageHeight, double* depthMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3])
 {
 	//Added by RBB - for polygon calculations [ONLY USE COMPLETE DATA FOR THESE CALCULATIONS];
@@ -1086,56 +1087,55 @@ void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int 
 
 
 
-	/*
 
-	for(int uvxIndex = 0; uvxIndex < 3; uvxIndex++)
-	{
-		for(int uvyIndex = 0; uvyIndex < 3; uvyIndex++)
-		{
-			for(int uvzIndex = 0; uvzIndex < 3; uvzIndex++)
-			{
-				vec corner;
-				corner.x = maxDotProductResultXposArrayComplete[uvxIndex][uvyIndex][uvzIndex];
-				corner.y = maxDotProductResultYposArrayComplete[uvxIndex][uvyIndex][uvzIndex];
-				corner.z = getLumOrContrastOrDepthMapValue(corner.x, corner.y, imageWidth, depthMap);
+//	for(int uvxIndex = 0; uvxIndex < 3; uvxIndex++)
+//	{
+//		for(int uvyIndex = 0; uvyIndex < 3; uvyIndex++)
+//		{
+//			for(int uvzIndex = 0; uvzIndex < 3; uvzIndex++)
+//			{
+//				vec corner;
+//				corner.x = maxDotProductResultXposArrayComplete[uvxIndex][uvyIndex][uvzIndex];
+//				corner.y = maxDotProductResultYposArrayComplete[uvxIndex][uvyIndex][uvzIndex];
+//				corner.z = getLumOrContrastOrDepthMapValue(corner.x, corner.y, imageWidth, depthMap);
+//
+//				//find closest point using with common unitX;
+//				int commonUnitVector;
+//				commonUnitVector = VECTOR_VAL_X;
+//
+//				for(int uvxIndex2 = 0; uvxIndex2 < 3; uvxIndex2++)
+//				{
+//					for(int uvyIndex2 = 0; uvyIndex2 < 3; uvyIndex2++)
+//					{
+//						for(int uvzIndex2 = 0; uvzIndex2 < 3; uvzIndex2++)
+//						{
+//							if((uvxIndex == uvxIndex2) && (uvyIndex == uvyIndex2) && (uvzIndex == uvzIndex2))
+//							{
+//
+//							}
+//							else
+//							{
+//								vec ambientPoint;
+//								ambientPoint.x = maxDotProductResultXposArrayComplete[uvxIndex2][uvyIndex2][uvzIndex2];
+//								ambientPoint.y = maxDotProductResultYposArrayComplete[uvxIndex2][uvyIndex2][uvzIndex2];
+//								ambientPoint.z = getLumOrContrastOrDepthMapValue(ambientPoint.x, ambientPoint.y, imageWidth, depthMap);
+//
+//								double distanceBetweenTwoPoints = calculateTheDistanceBetweenTwoPoints(&corner, &ambientPoint);
+//
+//								if(distanceBetweenTwoPoints> MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD)
+//								{
+//
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
 
-				//find closest point using with common unitX;
-				int commonUnitVector;
-				commonUnitVector = VECTOR_VAL_X;
-
-				for(int uvxIndex2 = 0; uvxIndex2 < 3; uvxIndex2++)
-				{
-					for(int uvyIndex2 = 0; uvyIndex2 < 3; uvyIndex2++)
-					{
-						for(int uvzIndex2 = 0; uvzIndex2 < 3; uvzIndex2++)
-						{
-							if((uvxIndex == uvxIndex2) && (uvyIndex == uvyIndex2) && (uvzIndex == uvzIndex2))
-							{
-
-							}
-							else
-							{
-								vec ambientPoint;
-								ambientPoint.x = maxDotProductResultXposArrayComplete[uvxIndex2][uvyIndex2][uvzIndex2];
-								ambientPoint.y = maxDotProductResultYposArrayComplete[uvxIndex2][uvyIndex2][uvzIndex2];
-								ambientPoint.z = getLumOrContrastOrDepthMapValue(ambientPoint.x, ambientPoint.y, imageWidth, depthMap);
-
-								double distanceBetweenTwoPoints = calculateTheDistanceBetweenTwoPoints(&corner, &ambientPoint);
-
-								if(distanceBetweenTwoPoints> MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD)
-								{
-
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	*/
 }
-
+*/
 
 
 void createInterpolatedPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointMapInterpolated)

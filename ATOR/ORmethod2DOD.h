@@ -26,7 +26,7 @@
  * File Name: ORmethod2DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2016 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3i19d 15-December-2016
+ * Project Version: 3i19e 15-December-2016
  *
  *******************************************************************************/
 
@@ -37,7 +37,7 @@
 #include "LDreferenceClass.h"
 #include "ORpolygonList.h"
 #include "ORglobalDefs.h"
-#include "ORfeature.h"
+#include "ORfeatureGeneration.h"
 
 #define OD2D_INTERPOLATED_MESH_PIXEL_WIDTH (1.0)
 #define OD2D_INTERPOLATED_MESH_PIXEL_HEIGHT (1.0)

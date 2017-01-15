@@ -23,10 +23,10 @@
 
 /*******************************************************************************
  *
- * File Name: ORfeature.cpp
+ * File Name: ORfeatureGeneration.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2016 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3i19d 15-December-2016
+ * Project Version: 3i19e 15-December-2016
  *
  * Assumes that depth information is less accurate than image information
  *
@@ -34,7 +34,7 @@
  *******************************************************************************/
 
 
-#include "ORfeature.h"
+#include "ORfeatureGeneration.h"
 #include "ORpixelMaps.h"
 #include "ORimagecomparison.h"
 #include "SHAREDvector.h"
@@ -2346,11 +2346,11 @@ bool defineRegionCheckNextPixelUsingMeshPointNonRecursive(ORpixelContiguous* fir
 					else
 					{
 						double contrastValUsedForComparison;
-						if(contrastValChosen = CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_LUMINOSITY_CONTRAST)
+						if(contrastValChosen == CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_LUMINOSITY_CONTRAST)
 						{
 							contrastValUsedForComparison = currentMeshPoint->adjacentMeshPoint[q]->luminosityContrast;
 						}
-						else if(contrastValChosen = CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_POINT_NORMAL_CONTRAST)
+						else if(contrastValChosen == CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_POINT_NORMAL_CONTRAST)
 						{
 							contrastValUsedForComparison = currentMeshPoint->adjacentMeshPoint[q]->meshPointNormalContrast;
 						}

@@ -26,7 +26,7 @@
  * File Name: ORmethod3DOD.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2016 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3i19d 15-December-2016
+ * Project Version: 3i19e 15-December-2016
  *
  *******************************************************************************/
 
@@ -38,7 +38,7 @@
 #include "RTviewinfo.h"
 #include "ORglobalDefs.h"
 #include "LDreferenceClass.h"
-#include "ORfeature.h"
+#include "ORfeatureGeneration.h"
 
 #define TRAIN_STRING ".train"
 #define TEST_STRING ".test"
@@ -61,6 +61,7 @@ void create3DmeshUsingPointMap3DOD(int imageWidth, int imageHeight, double* poin
 
 void createInterpolated3DmeshReferenceListUsingPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointMapInterpolated, unsigned char* rgbMap, LDreference* firstReferenceInInterpolated3Dmap);
 
+void create3DMeshReferenceListUsingPointMap(int imageWidth, int imageHeight, double* pointMap, unsigned char* rgbMap, ORmeshPoint* firstMeshPointInMeshList);
 
 #ifdef OR_METHOD_3DOD_USE_OLD_TESTED_BUT_BASIC_FEATURE_DETECTION
 bool generateFeatureList3DOD(RTviewInfo* vi, double* depthMap, double* pointMap, bool* depthContrastBooleanMap, bool* luminosityContrastBooleanMap, bool* luminosityContrastMapMinusDepthContrastMap, ORfeature* firstFeatureInList, int trainOrTest);
