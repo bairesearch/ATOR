@@ -3,7 +3,7 @@
  * File Name: ORcomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7b 09-June-2012
+ * Project Version: 3a7c 10-June-2012
  *
  *******************************************************************************/
 
@@ -305,13 +305,30 @@ double compareNormalisedSnapshots(int numberOfTrainPolys[], int numberOfTestPoly
 
 
 	ofstream writeFileObject(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_FNAME);
+	#ifdef DEBUG_OR_OUTPUT_DT_BIN_WRITE_TO_FILE
+	ofstream writeFileObjectDTbinDebug("DTbinDebug.txt");
+	#endif		
+	#ifdef DEBUG_OR_OUTPUT_DT_BIN_READ_FROM_FILE_AND_WORK_OUT_WHY_BIN_IS_NOT_BEING_DETECTED
+	ifstream parseFileObjectDTbinDebug("DTbinDebug.txt");	
+	string DTbinDebugArray[MAX_NUMBER_DT_BIN_RECORDS];
+	int numDTbinRecords = 0;
+	char DTbinRecordTemp[DT_BIN_RECORD_MAX_LENGTH];
+	while (parseFileObjectDTbinDebug.getline(DTbinRecordTemp, DT_BIN_RECORD_MAX_LENGTH))
+	{
+		DTbinDebugArray[numDTbinRecords] = DTbinRecordTemp;
+		numDTbinRecords++;	
+		//cout << "numDTbinRecords++" << endl;
+	}	
+	#endif
+
+	
 	if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML)
 	{
 
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Source Version 3a7a<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3a7c 10-June-2012<p>";
 		}
 		else
 		{
@@ -1004,6 +1021,22 @@ char * trainsnapshotMapsText;
 
 
 					int trainPolyIndexWithLowestErrorRecord[3][5];	//for each test side x3, 0=trainObjectIndex, 1=trainViewIndex, 2=trainViewIndex, 3=trainpolyindex, 4=trainsideIndex
+					
+					#ifndef OR_ASSERT_MATCHES_FOR_ALL_SIDES
+					bool foundMatchRecord[3];	//for each test side
+					for(int i=0; i<3; i++)
+					{
+						foundMatchRecord[i] = false;
+					}
+					#endif
+					
+					#ifdef DEBUG_OR_OUTPUT_DT_BIN
+					string DTbinWithLowestErrorRecord[3];	//for each test side
+					int geoxBinWithLowestErrorRecord[3][2];				//for each test side
+					int geoyBinWithLowestErrorRecord[3][2];				//for each test side
+					long geoxybinWithLowestErrorRecord[3];				//for each test side
+					#endif
+					
 					#ifdef OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML_PRINT_OBJECT_NAMES
 					string trainObjectNameWithLowestErrorRecord;
 					#endif
@@ -1424,12 +1457,16 @@ char * trainsnapshotMapsText;
 										}
 
 
-
+										#ifdef DEBUG_OR_OUTPUT_DT_BIN_READ_FROM_FILE_AND_WORK_OUT_WHY_BIN_IS_NOT_BEING_DETECTED
+										bool DTbinDebugMatchFound = false;
+										#endif
+					
 										//cout << "here1c" << endl;
 										
 										FeatureContainer * currentFeatureContainerInTestFeatureMatchingTrainBin;
 										FeatureContainer * firstFeatureContainerInTestFeatureMatchingTrainBin = new FeatureContainer();		
 
+										string DTbin = "";
 										if(OR_IMAGE_COMPARISON_DECISION_TREE)
 										{
 											#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_SLOW_BUT_USE_LESS_HD
@@ -1457,8 +1494,22 @@ char * trainsnapshotMapsText;
 
 												SnapshotIDReferenceList * firstReferenceInSnapshotIDReferenceList = new SnapshotIDReferenceList();
 												SnapshotIDReferenceList * currentReferenceInSnapshotIDReferenceList = firstReferenceInSnapshotIDReferenceList;
+												
+												
+												getSnapshotIDReferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTCheck(smallImageWidth, smallImageHeight, testrgbMapSmall, geoxybin, geoxBin, geoyBin, &normalisedAverageHueDeviationRequirement, testconcatonatedSignedDctCoeffArrayRequirement, firstReferenceInSnapshotIDReferenceList, trainOrTest, &DTbin);
+												
 
-												getSnapshotIDReferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTCheck(smallImageWidth, smallImageHeight, testrgbMapSmall, geoxybin, geoxBin, geoyBin, &normalisedAverageHueDeviationRequirement, testconcatonatedSignedDctCoeffArrayRequirement, firstReferenceInSnapshotIDReferenceList, trainOrTest);
+												#ifdef DEBUG_OR_OUTPUT_DT_BIN_READ_FROM_FILE_AND_WORK_OUT_WHY_BIN_IS_NOT_BEING_DETECTED
+												for(int i=0; i<numDTbinRecords; i++)
+												{
+													if(DTbinDebugArray[i] == DTbin)
+													{
+														DTbinDebugMatchFound = true;
+														cout << "match found: DTbin = " << DTbin << endl;
+													}
+												}													
+												#endif												
+												
 												//cout << "hasdf" << endl;
 												#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 												createAndOrParseIntoDirectory(&imageComparisonTreeBaseDirectory, NULL, false, false);	//reset current directory
@@ -1467,16 +1518,13 @@ char * trainsnapshotMapsText;
 												currentFeatureContainerInTestFeatureMatchingTrainBin = firstFeatureContainerInTestFeatureMatchingTrainBin;
 												//cout << "asd" << endl;
 
-												/*
-												bool chicken = false;
-												int chickencount = 0;
-												*/
-
+												
+												//bool chicken = false;
+												int refcount = 0;
+												
 												while(currentReferenceInSnapshotIDReferenceList->next != NULL)
 												{
-													//chickencount++;
-
-													//cout << "found c" << endl;
+													//cout << "found c: refcount" << refcount << endl;
 
 													int irrelevant = 0;
 													Feature * firstNewFeature = new Feature();
@@ -1487,11 +1535,13 @@ char * trainsnapshotMapsText;
 													currentFeatureContainerInTestFeatureMatchingTrainBin = currentFeatureContainerInTestFeatureMatchingTrainBin->next;
 
 													currentReferenceInSnapshotIDReferenceList = currentReferenceInSnapshotIDReferenceList->next;
+													
+													refcount++;
 												}
 
 
 												/*
-												if(chickencount > 3)
+												if(refcount > 3)
 												{
 												      chicken = true;
 												}
@@ -1875,19 +1925,20 @@ char * trainsnapshotMapsText;
 
 
 									#ifdef OR_METHOD_GEOMETRIC_COMPARISON
+											bool exactMatchFoundIrrelevant;
 											#ifdef OR_IMAGE_COMPARISON_NONSQL_GEOMETRIC_COMPARISON_OPTIMISED_TRAIN_FILE_IO
 												#ifndef OR_WINDOWS_COMPILER_LIMITATION_MUST_GET_TEST_DATA_FROM_SQL
 												#ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_BASIC_NO_SQL
-												bool passedGeometricCheck = compareFeaturesListForMatch((testfeatureGeoCompArray[testObjectIndex][testViewIndex][testZoomIndex][testPolyIndex][testSideIndex]).firstFeatureInFeatureList, currentFeatureContainerInList->firstFeatureInFeatureList, dimension);
+												bool passedGeometricCheck = compareFeaturesListForMatch((testfeatureGeoCompArray[testObjectIndex][testViewIndex][testZoomIndex][testPolyIndex][testSideIndex]).firstFeatureInFeatureList, currentFeatureContainerInList->firstFeatureInFeatureList, dimension, &exactMatchFoundIrrelevant);
 												#else
-												bool passedGeometricCheck = compareFeaturesListForMatch((testfeatureGeoCompArray[testObjectIndex][testViewIndex][testZoomIndex][testPolyIndex][testSideIndex]).firstFeatureInFeatureList, (trainfeatureGeoCompArray[trainObjectIndex][trainViewIndex][trainZoomIndex][trainPolyIndex][trainSideIndex]).firstFeatureInFeatureList, dimension);
+												bool passedGeometricCheck = compareFeaturesListForMatch((testfeatureGeoCompArray[testObjectIndex][testViewIndex][testZoomIndex][testPolyIndex][testSideIndex]).firstFeatureInFeatureList, (trainfeatureGeoCompArray[trainObjectIndex][trainViewIndex][trainZoomIndex][trainPolyIndex][trainSideIndex]).firstFeatureInFeatureList, dimension, &exactMatchFoundIrrelevant);
 												#endif
 												#endif
 											#else
 												string traininterpolatedNearestFeaturesMapFileName;
 												traininterpolatedNearestFeaturesMapFileName = traininterpolatedRGBMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + TRAIN_STRING + TFD_EXTENSION;
 												createFeaturesListUsingFeaturesFile(traininterpolatedNearestFeaturesMapFileName, trainfirstFeatureInNearestFeatureList, false, false, false);
-												bool passedGeometricCheck = compareFeaturesListForMatch(testfirstFeatureInNearestFeatureList, trainfirstFeatureInNearestFeatureList, dimension);
+												bool passedGeometricCheck = compareFeaturesListForMatch(testfirstFeatureInNearestFeatureList, trainfirstFeatureInNearestFeatureList, dimension, &exactMatchFoundIrrelevant);
 											#endif
 									#else
 										bool passedGeometricCheck = true;
@@ -2027,6 +2078,10 @@ char * trainsnapshotMapsText;
 											else
 											{
 											*/
+											
+											#ifdef DEBUG_OR_OUTPUT_DT_BIN_READ_FROM_FILE_AND_WORK_OUT_WHY_BIN_IS_NOT_BEING_DETECTED
+											bool localMatchFound = false;													
+											#endif												
 							
 							
 										#ifdef OR_METHOD_USE_SMALL_IMAGE_FIRST_COMPARISON
@@ -2124,6 +2179,27 @@ char * trainsnapshotMapsText;
 														trainPolyIndexWithLowestErrorRecord[testSideIndex][3] = trainPolyIndex;
 														trainPolyIndexWithLowestErrorRecord[testSideIndex][4] = trainSideIndex;
 														//trainPolyIndexWithLowestErrorRecordStringSide[testSideIndex] = trainrgbMapFacingPolyFileNameCPlusWithoutExt;
+														
+														#ifdef DEBUG_OR_OUTPUT_DT_BIN
+														DTbinWithLowestErrorRecord[testSideIndex] = DTbin;
+														geoxBinWithLowestErrorRecord[testSideIndex][0] = geoxBin[0];
+														geoxBinWithLowestErrorRecord[testSideIndex][1] = geoxBin[1];
+														geoyBinWithLowestErrorRecord[testSideIndex][0] = geoyBin[0];	
+														geoyBinWithLowestErrorRecord[testSideIndex][1] = geoyBin[1];
+														geoxybinWithLowestErrorRecord[testSideIndex] = geoxybin;														
+														#endif
+														
+														#ifndef OR_ASSERT_MATCHES_FOR_ALL_SIDES
+														foundMatchRecord[testSideIndex] = true;
+														#endif
+														
+														#ifdef DEBUG_OR_OUTPUT_DT_BIN_READ_FROM_FILE_AND_WORK_OUT_WHY_BIN_IS_NOT_BEING_DETECTED
+														localMatchFound = true;													
+														#endif
+														#ifdef DEBUG_OR_OUTPUT_DT_BIN_READ_FROM_FILE_AND_WORK_OUT_WHY_BIN_IS_NOT_BEING_DETECTED
+														cout << "localMatchFound" << endl;													
+														#endif															
+																										
 
 														
 
@@ -2131,11 +2207,31 @@ char * trainsnapshotMapsText;
 													}
 													#endif
 												}
+												else
+												{
+													#ifdef DEBUG_OR_OUTPUT_DT_BIN_READ_FROM_FILE_AND_WORK_OUT_WHY_BIN_IS_NOT_BEING_DETECTED
+													if(DTbinDebugMatchFound && !localMatchFound)
+													{
+														cout << "error: (2DTbinDebugMatchFound && !localMatchFound): DTbin = " << DTbin << endl;
+													}													
+													#endif													
+												}
 
 										#ifdef OR_METHOD_USE_SMALL_IMAGE_FIRST_COMPARISON
 											}
+											else
+											{
+												#ifdef DEBUG_OR_OUTPUT_DT_BIN_READ_FROM_FILE_AND_WORK_OUT_WHY_BIN_IS_NOT_BEING_DETECTED
+												if(DTbinDebugMatchFound && !localMatchFound)
+												{
+													cout << "error: (1DTbinDebugMatchFound && !localMatchFound): DTbin = " << DTbin << endl;
+												}													
+												#endif												
+											}
 										#endif
 
+
+												
 
 											if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 											{
@@ -2282,10 +2378,12 @@ char * trainsnapshotMapsText;
 						sprintf(averageMatchErrorAcrossSidesString, "%0.3f", averageMatchErrorAcrossSides);
 
 						//cout << "transformed RGB check passed 2" << endl;
-
+						
+						#ifdef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 						if(((trainPolyIndexWithLowestErrorRecord[0][2] == trainPolyIndexWithLowestErrorRecord[1][2]) && (trainPolyIndexWithLowestErrorRecord[0][2] == trainPolyIndexWithLowestErrorRecord[2][2])) && ((trainPolyIndexWithLowestErrorRecord[0][3] == trainPolyIndexWithLowestErrorRecord[1][3]) && (trainPolyIndexWithLowestErrorRecord[0][3] == trainPolyIndexWithLowestErrorRecord[2][3])))
 						{//all sides are referring to the same poly, and all sides are referring to the same zoom
-							
+						#endif
+						
 							#ifdef OR_DEBUG_COMPARISON_ALLOW_SAME_OBJECT_AND_SAME_VIEW_TO_BE_COMPARED
 							if(1)
 							#elif defined OR_DEBUG_COMPARISON_ALLOW_SAME_OBJECT_BUT_DIFFERENT_VIEWS_TO_BE_COMPARED
@@ -2347,11 +2445,16 @@ char * trainsnapshotMapsText;
 								//cout << "h0" << endl;
 								for(int s=0; s<OR_METHOD_POLYGON_NUMBER_OF_SIDES; s++)
 								{
+									#ifndef OR_ASSERT_MATCHES_FOR_ALL_SIDES
+									if(foundMatchRecord[s])
+									{
+									#endif
+									
 									if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML)
 									{
 
 										//cout << "h02" << endl;
-
+										
 
 										char trainviewIndexString[10];
 										char trainzoomIndexString[10];
@@ -2427,7 +2530,8 @@ char * trainsnapshotMapsText;
 
 											currentFeatureInList = currentFeatureInList->next;
 										}
-										bool passedGeometricCheck = compareFeaturesListForMatch(testfirstFeatureInNearestFeatureList, trainfirstFeatureInNearestFeatureList, dimension);
+										bool exactMatchFoundIrrelevant;
+										bool passedGeometricCheck = compareFeaturesListForMatch(testfirstFeatureInNearestFeatureList, trainfirstFeatureInNearestFeatureList, dimension, &exactMatchFoundIrrelevant);
 										cout << "passedGeometricCheck = " << passedGeometricCheck << endl;
 									#endif
 
@@ -2487,7 +2591,8 @@ char * trainsnapshotMapsText;
 										}
 										*/
 										
-
+										string DTbin = DTbinWithLowestErrorRecord[s];
+										
 										string trainImgSrcHtmlTags = "";
 										string testImgSrcHtmlTags = "";
 										char imageWidthFacingPolyString[10];
@@ -2560,12 +2665,12 @@ char * trainsnapshotMapsText;
 											string trainrgbMapSmallFacingPolyFileNamePPMCPlusTemp = traininterpolatedRGBMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + TRAIN_STRING + PPM_EXTENSION;
 											
 											//cout << "qt0" << endl;
-											string testDCTTableHTMLOutputString = "";
-											string trainDCTTableHTMLOutputString = "";	
-											string testDCTBinnedPrelimTableHTMLOutputString = "<BR /><TABLE><TR>";
-											string trainDCTBinnedPrelimTableHTMLOutputString = "<BR /><TABLE><TR>";											
-											string testDCTBinnedTableHTMLOutputString = "<BR /><TABLE><TR>";
-											string trainDCTBinnedTableHTMLOutputString = "<BR /><TABLE><TR>";												
+											string testDCTTableHTMLOutputString = "<P>DCT coefficients:<BR />";
+											string trainDCTTableHTMLOutputString = "<P>DCT coefficients:<BR />";	
+											string testDCTBinnedPrelimTableHTMLOutputString = "<TABLE><TR>";
+											string trainDCTBinnedPrelimTableHTMLOutputString = "<TABLE><TR>";											
+											string testDCTBinnedTableHTMLOutputString = "<TABLE><TR>";
+											string trainDCTBinnedTableHTMLOutputString = "<TABLE><TR>";												
 											signed char testconcatonatedSignedDctCoeffArrayRequirementTemp[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
 											signed char trainconcatonatedSignedDctCoeffArrayRequirementTemp[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
 											setpointerToDCTTableHTMLOutputString(&testDCTTableHTMLOutputString);
@@ -2609,8 +2714,8 @@ char * trainsnapshotMapsText;
 											trainImgSrcHtmlTags = trainImgSrcHtmlTags + trainDCTTableHTMLOutputString;
 											testImgSrcHtmlTags = testImgSrcHtmlTags + testDCTBinnedPrelimTableHTMLOutputString;
 											trainImgSrcHtmlTags = trainImgSrcHtmlTags + trainDCTBinnedPrelimTableHTMLOutputString;											
-											testImgSrcHtmlTags = testImgSrcHtmlTags + testDCTBinnedTableHTMLOutputString;
-											trainImgSrcHtmlTags = trainImgSrcHtmlTags + trainDCTBinnedTableHTMLOutputString;
+											testImgSrcHtmlTags = testImgSrcHtmlTags + testDCTBinnedTableHTMLOutputString + "</P>";
+											trainImgSrcHtmlTags = trainImgSrcHtmlTags + trainDCTBinnedTableHTMLOutputString + "</P>";
 											#endif	
 											
 											
@@ -2620,7 +2725,8 @@ char * trainsnapshotMapsText;
 											createFeaturesListUsingFeaturesFile(traininterpolatedNearestFeaturesMapFileName, trainfirstFeatureInNearestFeatureList, false, false, false);
 											string testinterpolatedNearestFeaturesMapFileName = testinterpolatedRGBMapFileNameForRayTracing + TRANSFORMED_FEATURES_NEARBY_EXTENSION_PART + TEST_STRING + TFD_EXTENSION;
 											createFeaturesListUsingFeaturesFile(testinterpolatedNearestFeaturesMapFileName, testfirstFeatureInNearestFeatureList, false, false, false);	
-											bool passedGeometricCheck = compareFeaturesListForMatch(testfirstFeatureInNearestFeatureList, trainfirstFeatureInNearestFeatureList, dimension);	//required to set matchFound								
+											bool exactMatchFound;
+											bool passedGeometricCheck = compareFeaturesListForMatch(testfirstFeatureInNearestFeatureList, trainfirstFeatureInNearestFeatureList, dimension, &exactMatchFound);	//required to set matchFound								
 											string trainGeoTableHTMLOutputString = "";
 											string testGeoTableHTMLOutputString = "";
 											string trainGeoBinnedTableHTMLOutputString = "";
@@ -2630,13 +2736,84 @@ char * trainsnapshotMapsText;
 											createGeoTableHTMLfromFeatureList(trainfirstFeatureInNearestFeatureList, true, &trainGeoBinnedTableHTMLOutputString);
 											createGeoTableHTMLfromFeatureList(testfirstFeatureInNearestFeatureList, true, &testGeoBinnedTableHTMLOutputString);
 											//cout << "endDEBUG_OR_OUTPUT_GEO_COORDINATES" << endl;
-											trainImgSrcHtmlTags = trainImgSrcHtmlTags + "<br />" + trainGeoTableHTMLOutputString;
-											testImgSrcHtmlTags = testImgSrcHtmlTags + "<br />" + testGeoTableHTMLOutputString;	
-											trainImgSrcHtmlTags = trainImgSrcHtmlTags + trainGeoBinnedTableHTMLOutputString;
-											testImgSrcHtmlTags = testImgSrcHtmlTags + testGeoBinnedTableHTMLOutputString;																						
+											trainImgSrcHtmlTags = trainImgSrcHtmlTags + "<P>Nearest Features (transformed):<BR />" + trainGeoTableHTMLOutputString;
+											testImgSrcHtmlTags = testImgSrcHtmlTags + "<P>Nearest Features (transformed):<BR />" + testGeoTableHTMLOutputString;	
+											trainImgSrcHtmlTags = trainImgSrcHtmlTags + trainGeoBinnedTableHTMLOutputString + "</P>";
+											testImgSrcHtmlTags = testImgSrcHtmlTags + testGeoBinnedTableHTMLOutputString + "</P>";																						
 											#endif	
-																		
-										
+											
+											#ifdef DEBUG_OR_OUTPUT_DT_BIN
+											int testgeoxBinTemp[2];
+											int testgeoyBinTemp[2];
+											long testgeoxybinTemp;
+											testgeoxBinTemp[0] = geoxBinWithLowestErrorRecord[s][0];
+											testgeoxBinTemp[1] = geoxBinWithLowestErrorRecord[s][1];
+											testgeoyBinTemp[0] = geoyBinWithLowestErrorRecord[s][0];	
+											testgeoyBinTemp[1] = geoyBinWithLowestErrorRecord[s][1];
+											testgeoxybinTemp = geoxybinWithLowestErrorRecord[s];		
+											/*
+											bool geoBinningIsSameAsOriginal = passedGeometricCheck; 	//no this does not identify exact matches only
+											*/
+											/*
+											bool geoBinningIsSameAsOriginal	= determineIfGeoBinningIdenticalMatchFound(trainfirstFeatureInNearestFeatureList, testgeoxBinTemp, testgeoyBinTemp);	
+												//NB this calculation gives apparent false positives: it will throw false if 2 matches is found with 2 nearest feature sets, and if these 2 matches do not correspond to the features binned in the test set decision tree [yet this is OK, as these features should be detected by another DTbinning)
+												//this is because when intelligent binning is enabled, there may be more than one matched trainset for every test set. [because there are multiple permutations of feature matches], yet only one of these will be recorded.
+											*/
+											bool geoBinningIsSameAsOriginal	= exactMatchFound;		//in general, at least one set of 2 matches is found (even if the DTbinned features from the test set do not have an exact match in the train set)	
+											
+											string origTrainDTBin;
+											if(geoBinningIsSameAsOriginal)
+											{
+												colour trainnormalisedAverageHueDeviationRequirementTemp;	//not currently set	
+																						
+												//extract from getSnapshotIDReferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTCheck
+												string currentDirectory = "";
+												char currentDirectoryCharStar[OR_IMAGE_COMPARISON_DECISION_TREE_BIN_MAX_LENGTH];
+												int currentDirectoryLength;
+												createSnapshotIDReferenceImageComparisonDecisionTreeString(smallImageWidth, smallImageHeight, trainrgbMapSmall, testgeoxybinTemp, testgeoxBinTemp, testgeoyBinTemp, &trainnormalisedAverageHueDeviationRequirementTemp, trainconcatonatedSignedDctCoeffArrayRequirementTemp, currentDirectoryCharStar, &currentDirectoryLength, &currentDirectory);
+												currentDirectoryCharStar[currentDirectoryLength] = '\0';
+												origTrainDTBin = currentDirectoryCharStar;												
+											}
+											else
+											{
+												origTrainDTBin = "unknowable (no exact geo matches)";	//(core geo bins differ from test)
+											}
+											bool DTbinEqualsOrigTrainDTbin;
+											string DTbinEqualsOrigTrainDTbinString = "";
+											if(origTrainDTBin == DTbin)
+											{
+												DTbinEqualsOrigTrainDTbin = true;
+												DTbinEqualsOrigTrainDTbinString = "<font color='green'>[same]</font>";
+											}
+											else
+											{
+												DTbinEqualsOrigTrainDTbin = false;
+												if(geoBinningIsSameAsOriginal)
+												{
+													DTbinEqualsOrigTrainDTbinString = "<font color='red'>[diff]</font>";
+												}
+												else
+												{
+													DTbinEqualsOrigTrainDTbinString = "<font color='orange'>[diff]</font>";
+												}
+											}	
+											trainImgSrcHtmlTags = trainImgSrcHtmlTags + "<P>DTBin = " + DTbin + "<BR />origTrainDTBin = " + origTrainDTBin + " " + DTbinEqualsOrigTrainDTbinString + "</P>";	//(rederivation of original train bin [ie, without intelligent pseudo randomised binning])
+											testImgSrcHtmlTags = testImgSrcHtmlTags + "<P>DTBin = " + DTbin + "</P>";												
+											
+												#ifdef DEBUG_OR_OUTPUT_DT_BIN_WRITE_TO_FILE
+												#ifdef DEBUG_OR_OUTPUT_DT_BIN_WRITE_TO_FILE_ONLY_WRITE_MATCHES_NOT_REQUIRING_INTELLIGENT_BINNING
+												if(DTbinEqualsOrigTrainDTbin)
+												{
+												#endif
+													writeStringToFileObject2(DTbin + "\n", &writeFileObjectDTbinDebug);
+												#ifdef DEBUG_OR_OUTPUT_DT_BIN_WRITE_TO_FILE_ONLY_WRITE_MATCHES_NOT_REQUIRING_INTELLIGENT_BINNING
+												}
+												#endif
+												#endif											
+											#endif
+											
+											
+	
 										}
 										else
 										{																																						    
@@ -2655,13 +2832,19 @@ char * trainsnapshotMapsText;
 
 										ICRmatchRow = ICRmatchRow + "<TD>" + averageMatchErrorAcrossSidesString + "</TD></TR>";
 										writeStringToFileObject2(ICRmatchRow, &writeFileObject);
+										
+
 
 									}
+									#ifndef OR_ASSERT_MATCHES_FOR_ALL_SIDES
+									}
+									#endif
 								}
 							}
 							//cout << "h3" << endl;
-
+						#ifdef OR_ASSERT_MATCHES_FOR_ALL_SIDES
 						}
+						#endif
 					}
 				#endif
 
@@ -2719,7 +2902,10 @@ char * trainsnapshotMapsText;
 		string ICRfooter  = "</BODY></HTML>";
 	}
 	writeFileObject.close();
-
+	#ifdef DEBUG_OR_OUTPUT_DT_BIN_WRITE_TO_FILE
+	writeFileObjectDTbinDebug.close();
+	#endif
+										
 	delete trainrgbMap;
 	delete testrgbMap;
 	//#ifdef OR_METHOD3DOD_IMAGE_COMPARISON_COMPARE_DEPTH_MAPS
@@ -2966,7 +3152,57 @@ void createGeoTableHTMLfromFeatureList(Feature * firstFeatureInNearestFeatureLis
 	*geoTableHTMLOutputString = *geoTableHTMLOutputString + "</TABLE>";
 }
 #endif
-										
+
+/*
+#ifdef DEBUG_OR_OUTPUT_DT_BIN
+bool determineIfGeoBinningIdenticalMatchFound(Feature * firstFeatureInNearestFeatureList, int pBinxRequirement[], int pBinyRequirement[])
+{
+	bool geoBinningIsSameAsOriginal = false;
+
+	Feature * currentFeatureInNearestFeatureList = firstFeatureInNearestFeatureList;
+	while((currentFeatureInNearestFeatureList->next != NULL) && !(currentFeatureInNearestFeatureList->lastFilledFeatureInList))
+	{
+		Feature * currentFeatureInNearestFeatureList2 = firstFeatureInNearestFeatureList;
+		while((currentFeatureInNearestFeatureList2->next != NULL) && !(currentFeatureInNearestFeatureList2->lastFilledFeatureInList))
+		{
+			bool passedAll = true;
+			int geoxBin[2];
+			int geoyBin[2];		
+			int xBin = determineGeoBinX(currentFeatureInNearestFeatureList->pointTransformed.x);
+			int yBin = determineGeoBinY(currentFeatureInNearestFeatureList->pointTransformed.y);
+			int x2Bin = determineGeoBinX(currentFeatureInNearestFeatureList2->pointTransformed.x);
+			int y2Bin = determineGeoBinY(currentFeatureInNearestFeatureList2->pointTransformed.y);	
+			geoxBin[0] = xBin;
+			geoyBin[0] = yBin;
+			geoxBin[1] = x2Bin;
+			geoyBin[1] = y2Bin;				
+			for(int x=0; x<2; x++)
+			{
+				if(geoxBin[x] != pBinxRequirement[x])
+				{
+					passedAll = false;
+				}
+			}
+			for(int y=0; y<2; y++)
+			{
+				if(geoyBin[y] != pBinyRequirement[y])
+				{
+					passedAll = false;
+				}
+			}
+			if(passedAll)
+			{
+				//cout << "geoBinningIsSameAsOriginal" << endl;
+				geoBinningIsSameAsOriginal = true;
+			}			
+			currentFeatureInNearestFeatureList2 = currentFeatureInNearestFeatureList2->next;	
+		}
+		currentFeatureInNearestFeatureList = currentFeatureInNearestFeatureList->next;
+	}	
+	return geoBinningIsSameAsOriginal;
+}
+#endif
+*/									
 										
 void readDCTCoeffIndividualArraysAndConvertToConcatonatedSignedDctCoeffArray(string * rgbMapSmallFacingPolyFileNamePPMCPlus, string * rgbMapSmallFacingPolyFileNameJPEGCPlus, signed char * concatonatedSignedDctCoeffArrayRequirement, bool printOutput)
 {

@@ -3,7 +3,7 @@
  * File Name: ORdatabaseDecisionTree.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7b 09-June-2012
+ * Project Version: 3a7c 10-June-2012
  *
  *******************************************************************************/
 
@@ -144,15 +144,15 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 						int geoxBin[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS];
 						int geoyBin[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS];
 						int geoxyBinTemp[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2];						
-						double geoBinDoubleTemp[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2];
-						geoBinDoubleTemp[0] = determineGeoBinX(currentFeatureInTempList->pointTransformed.x);
-						geoBinDoubleTemp[1] = determineGeoBinY(currentFeatureInTempList->pointTransformed.y);
-						geoBinDoubleTemp[2] = determineGeoBinX(currentFeatureInTempList2->pointTransformed.x);
-						geoBinDoubleTemp[3] = determineGeoBinY(currentFeatureInTempList2->pointTransformed.y);
-						geoxBin[0] = geoBinDoubleTemp[0]; 
-						geoyBin[0] = geoBinDoubleTemp[1];
-						geoxBin[1] = geoBinDoubleTemp[2];
-						geoyBin[1] = geoBinDoubleTemp[3];
+						double geoxyBinDoubleTemp[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2];
+						geoxyBinDoubleTemp[0] = determineGeoBinDoubleX(currentFeatureInTempList->pointTransformed.x);
+						geoxyBinDoubleTemp[1] = determineGeoBinDoubleY(currentFeatureInTempList->pointTransformed.y);
+						geoxyBinDoubleTemp[2] = determineGeoBinDoubleX(currentFeatureInTempList2->pointTransformed.x);
+						geoxyBinDoubleTemp[3] = determineGeoBinDoubleY(currentFeatureInTempList2->pointTransformed.y);
+						geoxBin[0] = geoxyBinDoubleTemp[0]; 
+						geoyBin[0] = geoxyBinDoubleTemp[1];
+						geoxBin[1] = geoxyBinDoubleTemp[2];
+						geoyBin[1] = geoxyBinDoubleTemp[3];
 						geoxyBinTemp[0] = geoxBin[0];
 						geoxyBinTemp[1] = geoyBin[0];
 						geoxyBinTemp[2] = geoxBin[1];
@@ -162,16 +162,16 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 						for(int i=0; i<OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2; i++)
 						{
 							/*
-							cout << "geoBinDoubleTemp[i] = " << geoBinDoubleTemp[i] << endl;
+							cout << "geoxyBinDoubleTemp[i] = " << geoxyBinDoubleTemp[i] << endl;
 							cout << "geoxyBinTemp[i] = " << geoxyBinTemp[i] << endl;
 							*/
-							if(geoBinDoubleTemp[i] >= double(geoxyBinTemp[i])+0.5-DOUBLE_MIN_PRECISION+OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD)
+							if(geoxyBinDoubleTemp[i] >= double(geoxyBinTemp[i])+0.5-DOUBLE_MIN_PRECISION+OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD)
 							{
 								geoxyBinBiasInt[i] = OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_POS;
 								//cout << "h2" << endl;
 								//exit(0);
 							}
-							else if(geoBinDoubleTemp[i] <= double(geoxyBinTemp[i])+0.5-DOUBLE_MIN_PRECISION-OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD)
+							else if(geoxyBinDoubleTemp[i] <= double(geoxyBinTemp[i])+0.5-DOUBLE_MIN_PRECISION-OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD)
 							{
 								geoxyBinBiasInt[i] = OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_NEG;
 								//cout << "h1" << endl;
@@ -336,7 +336,7 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 									}
 
 								}
-								if(numberOfBinsThatAreBiased <= double(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2)*OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_LIMIT_PERMUTATIONS_MAX_NUM_BIAS_BINS_RATIO)
+								if(numberOfBinsThatAreBiased <= double(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2)*OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_LIMIT_PERMUTATIONS_MAX_NUM_BIAS_BINS_RATIO)
 								{
 								#endif
 
@@ -488,8 +488,8 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopGeo(int imageWidth, 
 
 
 							int x = geoxBin[0];
-							int y = geoyBin[1];
-							int x2 = geoxBin[0];
+							int y = geoyBin[0];
+							int x2 = geoxBin[1];
 							int y2 = geoyBin[1];
 
 						#endif
@@ -741,14 +741,16 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 	string currentDirectory = *initialDirectory;
 	int currentDirectoryLengthInitial = *currentDirectoryLength;
 
-	#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
-			char dctCoeffArrayBinnedStringTemp[1000];
-			int DCTCoeff64BitValueStringLengthTemp = 0;	//not used
-			int concatonatedDctCoeffArrayBiasInt[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
-			convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(firstFeatureInList->dctCoeff, dctCoeffArrayBinnedStringTemp, &DCTCoeff64BitValueStringLengthTemp, concatonatedDctCoeffArrayBiasInt);		
-		#endif	
-	#endif
+	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+		char dctCoeffArrayBinnedStringTemp[1000];
+		int DCTCoeff64BitValueStringLengthTemp = 0;	//not used
+		int concatonatedDctCoeffArrayBiasInt[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
+		#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
+		convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(firstFeatureInList->dctCoeff, dctCoeffArrayBinnedStringTemp, &DCTCoeff64BitValueStringLengthTemp, concatonatedDctCoeffArrayBiasInt);		
+		#else
+		convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(firstFeatureInList->dctCoeff, concatonatedDctCoeffArrayBiasInt);		
+		#endif
+	#endif	
 		
 			
 #ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD
@@ -1055,34 +1057,46 @@ void addSnapshotIDReferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, 
 						convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(firstFeatureInList->dctCoeff, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED);					
 						#endif
 
-						#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
-						//cout << "dctCoeffArrayBinnedString = " <<  dctCoeffArrayBinnedString << endl;
-						currentDirectory = currentDirectory + dctCoeffArrayBinnedString;
-						for(int i=0; i<currentDirectory.length(); i++)
-						{
-							//cout << "currentDirectoryLength = " << *currentDirectoryLength << endl;
-							currentDirectoryCharStar[*currentDirectoryLength] = currentDirectory[i];
-							*currentDirectoryLength = *currentDirectoryLength + 1;
-						}	
-
-						//cout << "currentDirectoryLength = " << currentDirectoryLength << endl;															
-						//cout << "currentDirectory = " << currentDirectory << endl;	
-						//cout << "currentDirectoryCharStar = " << currentDirectoryCharStar << endl;
-						#else
+						/*OLD: before 10 June 2012 update
+						#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 						cout << "error; OR_IMAGE_COMPARISON_DECISION_TREE_SQL requires OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT to be on" << endl;
 						#endif
-										
+						*/			
 					#else
-						char dctCoeffArrayBinnedString[25];
-						sprintf(dctCoeffArrayBinnedString, "%ld", firstFeatureInList->dctCoeffArrayBinned);	
-						
-						#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
-						currentDirectory = currentDirectory + "/" + dctCoeffArrayBinnedString;
-						createAndOrParseIntoDirectory(&currentDirectory, &string(dctCoeffArrayBinnedString), true, true);															
+						#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+						int concatonatedSignedDctCoeffArrayBiasIntTemp[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
+						firstFeatureInList->dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(firstFeatureInList->dctCoeff, concatonatedSignedDctCoeffArrayBiasIntTemp);																			
 						#else
-						cout << "error; no OR_IMAGE_COMPARISON_DECISION_TREE_SQL requires OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT to be off" << endl;
+						firstFeatureInList->dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(firstFeatureInList->dctCoeff);					
 						#endif
+											
+						char dctCoeffArrayBinnedString[25];
+						sprintf(dctCoeffArrayBinnedString, "%ld", firstFeatureInList->dctCoeffArrayBinned);
+						
+						/*OLD: before 10 June 2012 update
+						#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL	
+						cout << "error; no OR_IMAGE_COMPARISON_DECISION_TREE_SQL requires OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT to be off" << endl;					
+						#endif
+						*/
 					#endif
+					
+					#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+					currentDirectory = currentDirectory + "/" + dctCoeffArrayBinnedString;
+					createAndOrParseIntoDirectory(currentDirectory, &string(dctCoeffArrayBinnedString), false, true);
+					#else
+					currentDirectory = currentDirectory + dctCoeffArrayBinnedString;
+					#endif
+
+					#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+					for(int i=0; i<currentDirectory.length(); i++)
+					{
+						currentDirectoryCharStar[*currentDirectoryLength] = (currentDirectory)[i];
+						*currentDirectoryLength = *currentDirectoryLength + 1;
+					}	
+					#endif	
+					//cout << "currentDirectoryLength = " << *currentDirectoryLength << endl;															
+					//cout << "currentDirectory = " << currentDirectory << endl;	
+					//cout << "currentDirectoryCharStar = " << currentDirectoryCharStar << endl;									
 					
 					
 
@@ -1308,7 +1322,7 @@ void createSnapshotIDReferenceImageComparisonDecisionTreeString(int imageWidth, 
 	*currentDirectoryLength = 0;
 	for(int i=0; i<currentDirectory->length(); i++)
 	{
-		currentDirectoryCharStar[*currentDirectoryLength+i] = (*currentDirectory)[i];
+		currentDirectoryCharStar[*currentDirectoryLength] = (*currentDirectory)[i];
 		*currentDirectoryLength = *currentDirectoryLength + 1;
 	}
 	
@@ -1321,7 +1335,6 @@ void createSnapshotIDReferenceImageComparisonDecisionTreeString(int imageWidth, 
 		//cout << "read OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING" << endl;
 
 		#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
-			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 			char dctCoeffArrayBinnedString[1000];
 			int DCTCoeff64BitValueStringLengthNOTUSED = 0;	//not used
 			/*
@@ -1330,28 +1343,25 @@ void createSnapshotIDReferenceImageComparisonDecisionTreeString(int imageWidth, 
 				cout << "2 concatonatedSignedDctCoeffArrayRequirement[z] = " << int(concatonatedSignedDctCoeffArrayRequirement[z]) << endl;
 			}			
 			*/
-			int concatonatedDctCoeffArrayBiasIntNOTUSED[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
+			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+			int concatonatedDctCoeffArrayBiasIntNOTUSED[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];			
 			convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(concatonatedSignedDctCoeffArrayRequirement, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED, concatonatedDctCoeffArrayBiasIntNOTUSED);		
-			/*
-			for(int q=0; q<DCTCoeff64BitValueStringLengthNOTUSED; q++)
-			{
-				cout << "dctCoeffArrayBinnedString[q] = " << int(dctCoeffArrayBinnedString[q]) << endl;
-			} 
-			*/
-						
 			#else
-			char dctCoeffArrayBinnedString[1000];
-			int DCTCoeff64BitValueStringLengthNOTUSED = 0;	//not used, as dctCoeffArrayBinnedString is formated as a string
 			convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(concatonatedSignedDctCoeffArrayRequirement, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED);
+			#endif
 			/*
 			for(int q=0; q<DCTCoeff64BitValueStringLengthNOTUSED; q++)
 			{
 				cout << "dctCoeffArrayBinnedString[q] = " << int(dctCoeffArrayBinnedString[q]) << endl;
 			} 
 			*/
-			#endif
 		#else
-			unsigned long dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(concatonatedSignedDctCoeffArrayRequirement);
+			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+			int concatonatedDctCoeffArrayBiasIntNOTUSED[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];			
+			unsigned long dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(concatonatedSignedDctCoeffArrayRequirement, concatonatedDctCoeffArrayBiasIntNOTUSED);
+			#else
+			unsigned long dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(concatonatedSignedDctCoeffArrayRequirement);			
+			#endif
 			//cout << "generated dctCoeffArrayBinned = " << dctCoeffArrayBinned << endl;
 			char dctCoeffArrayBinnedString[25];
 			sprintf(dctCoeffArrayBinnedString, "%ld", dctCoeffArrayBinned);		
@@ -1374,7 +1384,10 @@ void createSnapshotIDReferenceImageComparisonDecisionTreeString(int imageWidth, 
 		#endif		
 	}
 
-
+	//added 10 June 2012 for debugging...
+	currentDirectoryCharStar[*currentDirectoryLength] = '\0';
+	//cout << "1currentDirectory = " << *currentDirectory << endl;
+	//cout << "1currentDirectoryCharStar = " << currentDirectoryCharStar << endl;
 	
 	if(OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
 	{
@@ -1420,7 +1433,11 @@ void createSnapshotIDReferenceImageComparisonDecisionTreeString(int imageWidth, 
 
 		//cout << "currentDirectory 3 = " << *currentDirectory << endl;
 	}
-												
+
+	//added 10 June 2012 for debugging...
+	currentDirectoryCharStar[*currentDirectoryLength] = '\0';
+	//cout << "2currentDirectory = " << *currentDirectory << endl;
+	//cout << "2currentDirectoryCharStar = " << currentDirectoryCharStar << endl;												
 							
 	if(OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
 	{
@@ -1476,19 +1493,25 @@ void createFeatureContainerListUsingUsingGetSnapshotIDReferenceToImageComparison
 }
 
 
-void getSnapshotIDReferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTCheck(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour * normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], SnapshotIDReferenceList * firstReferenceInSnapshotIDReferenceList, int trainOrTest)
+void getSnapshotIDReferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTCheck(int imageWidth, int imageHeight, unsigned char * rgbMapSmall, long pBinxyValueRequirement, int pBinxRequirement[], int pBinyRequirement[], colour * normalisedAverageHueDeviationRequirement, signed char concatonatedSignedDctCoeffArrayRequirement[], SnapshotIDReferenceList * firstReferenceInSnapshotIDReferenceList, int trainOrTest, string * DTbin)
 {
 	string currentDirectory = "";
 	char currentDirectoryCharStar[OR_IMAGE_COMPARISON_DECISION_TREE_BIN_MAX_LENGTH];
 	int currentDirectoryLength;
 	
 	createSnapshotIDReferenceImageComparisonDecisionTreeString(imageWidth, imageHeight, rgbMapSmall, pBinxyValueRequirement, pBinxRequirement, pBinyRequirement, normalisedAverageHueDeviationRequirement, concatonatedSignedDctCoeffArrayRequirement, currentDirectoryCharStar, &currentDirectoryLength, &currentDirectory);
-
+		
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 		createSnapshotIDReferenceListUsingSQLDatabaseDecisionTreeTableQuery(firstReferenceInSnapshotIDReferenceList, OR_MYSQL_TABLE_NAME_DECISIONTREE, currentDirectoryCharStar, currentDirectoryLength, trainOrTest);
 	#else
 		getSnapshotIDReferencesInImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, firstReferenceInSnapshotIDReferenceList, &currentDirectory);
 	#endif
+
+	//added 10 June 2012 for debugging...
+	currentDirectoryCharStar[currentDirectoryLength] = '\0';
+	*DTbin = currentDirectoryCharStar;
+	//cout << "4currentDirectory = " << currentDirectory << endl;
+	//cout << "4currentDirectoryCharStar = " << currentDirectoryCharStar << endl;
 												
 }
 

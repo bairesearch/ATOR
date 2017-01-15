@@ -3,7 +3,7 @@
  * File Name: ORdatabaseSQL.h
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7b 09-June-2012
+ * Project Version: 3a7c 10-June-2012
  *
  *******************************************************************************/
 
@@ -68,7 +68,7 @@ void createFeatureListUsingDatabaseQuery(Feature * firstFeatureInList, bool crea
 //#endif
 
 
-long powInt(long val, int degree);
+long powLong(long val, int degree);
 	#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 	void convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(signed char concatonatedSignedDctCoeffArray[], char * DCTCoeff64BitValueString, int * DCTCoeff64BitValueStringLength, int concatonatedDctCoeffArrayBiasInt[]);
@@ -76,7 +76,11 @@ long powInt(long val, int degree);
 	void convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(signed char concatonatedSignedDctCoeffArray[], char * DCTCoeff64BitValueString, int * DCTCoeff64BitValueStringLength);
 	#endif
 	#else
+	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+	unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(signed char concatonatedSignedDctCoeffArray[], int concatonatedDctCoeffArrayBiasInt[]);
+	#else
 	unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(signed char concatonatedSignedDctCoeffArray[]);
+	#endif
 	#endif
 
 
@@ -86,6 +90,9 @@ void convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(signed char
 
 int determineGeoBinX(double featurePointTransformedXpos);
 int determineGeoBinY(double featurePointTransformedYpos);
+double determineGeoBinDoubleX(double featurePointTransformedXpos);
+double determineGeoBinDoubleY(double featurePointTransformedYpos);
+
 unsigned int determineDCTBinUnsigned(int arrayValueSigned, double * arrayValueUnsignedDouble);
 double determineDCTBinUnsignedDouble(int arrayValueSigned);
 

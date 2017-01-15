@@ -3,11 +3,12 @@
  * File Name: ORdatabaseFileIO.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7b 09-June-2012
+ * Project Version: 3a7c 10-June-2012
  *
  *******************************************************************************/
 
 #include "ORdatabaseFileIO.h"
+#include "ORdatabaseSQL.h"	//required for determineGeoBinX()/determineGeoBinY() only ... - these functions and/or compareFeaturesListForMatch() should probably be moved elsewhere instead, say to "ORdatabaseOperations.cpp"
 #include "SHAREDvector.h"
 #include "LDreferenceManipulation.h"
 
@@ -28,11 +29,12 @@ using namespace std;
 
 
 #ifdef OR_METHOD_GEOMETRIC_COMPARISON
-bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList, Feature * trainfirstFeatureInNearestFeatureList, int dimension)
+bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList, Feature * trainfirstFeatureInNearestFeatureList, int dimension, bool * exactMatchFound)
 {
 	int numberOfFeatureGeoMatches = 0;
+	int numberOfFeatureGeoBinnedExactMatches = 0;
 	bool passedGeometricCheck = false;
-
+	//cout << "\n" << endl;
 	Feature * testcurrentFeatureInNearestFeatureList = testfirstFeatureInNearestFeatureList;
 	while((testcurrentFeatureInNearestFeatureList->next != NULL) && !(testcurrentFeatureInNearestFeatureList->lastFilledFeatureInList))
 	{
@@ -92,6 +94,21 @@ bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList,
 						traincurrentFeatureInNearestFeatureList->matchFound = true;
 						#endif
 					}
+					
+					int trainxBin = determineGeoBinX(traincurrentFeatureInNearestFeatureList->pointTransformed.x);
+					int trainyBin = determineGeoBinY(traincurrentFeatureInNearestFeatureList->pointTransformed.y);
+					int testxBin = determineGeoBinX(testcurrentFeatureInNearestFeatureList->pointTransformed.x);
+					int testyBin = determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);	
+					//cout << "\ntrainxBin = " << trainxBin << endl;
+					//cout << "trainyBin = " << trainyBin << endl;
+					//cout << "testxBin = " << testxBin << endl;
+					//cout << "testyBin = " << testyBin << endl;
+					//cout << testxBin << "\t" << testyBin << "\t" << trainxBin << "\t" << trainyBin << endl;
+					if((trainxBin == testxBin) && (trainyBin == testyBin))	
+					{
+						numberOfFeatureGeoBinnedExactMatches++;
+						//cout << "\tnumberOfFeatureGeoBinnedExactMatches = " << numberOfFeatureGeoBinnedExactMatches << endl;						
+					}		
 
 				}
 				traincurrentFeatureInNearestFeatureList = traincurrentFeatureInNearestFeatureList->next;
@@ -105,6 +122,10 @@ bool compareFeaturesListForMatch(Feature * testfirstFeatureInNearestFeatureList,
 	{
 		passedGeometricCheck = true;
 	}
+	if(numberOfFeatureGeoBinnedExactMatches >= OR_GEOMETRIC_CHECK_MIN_NUMBER_PASSES)
+	{
+		*exactMatchFound = true;
+	}	
 	return passedGeometricCheck;
 
 }

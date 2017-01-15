@@ -3,7 +3,7 @@
  * File Name: ORdatabaseSQL.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7b 09-June-2012
+ * Project Version: 3a7c 10-June-2012
  *
  *******************************************************************************/
 
@@ -1375,9 +1375,14 @@ void createFeaturesListUsingDatabaseQueryGeoXYbinRequirement(FeatureContainer * 
 			convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(firstFeatureInList->dctCoeff, dctCoeffNumValString, &DCTCoeff64BitValueStringLengthNOTUSED);
 			#endif
 		#else
-		unsigned long dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(concatonatedSignedDctCoeffArrayRequirement);
-		char dctCoeffNumValString[25];
-		sprintf(dctCoeffNumValString, "%ld", dctCoeffArrayBinned);
+			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+			int concatonatedDctCoeffArrayBiasIntNOTUSED[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS];		
+			unsigned long dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(concatonatedSignedDctCoeffArrayRequirement, concatonatedDctCoeffArrayBiasIntNOTUSED);
+			#else
+			unsigned long dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(concatonatedSignedDctCoeffArrayRequirement);
+			#endif
+			char dctCoeffNumValString[25];
+			sprintf(dctCoeffNumValString, "%ld", dctCoeffArrayBinned);
 		#endif
 
 		sqlSelectCommandP10 = sqlSelectCommandP10 + " AND " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL + " = " + dctCoeffNumValString;		//only query train objects
@@ -2470,10 +2475,10 @@ void insertTransformedFeatureListIntoDatabase(Feature * firstFeatureInList, stri
 
 
 
-long powInt(long val, int degree)
+long powLong(long val, int degree)
 {
-	long result = val;
-	for(int i=0; i<degree; i++)
+	long result = 1;
+	for(int i=1; i<degree; i++)
 	{
 		result = result*val;
 	}
@@ -2488,7 +2493,11 @@ void convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(signed char c
 void convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(signed char concatonatedSignedDctCoeffArray[], char * DCTCoeff64BitValueString, int * DCTCoeff64BitValueStringLength)
 #endif
 #else
+#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(signed char concatonatedSignedDctCoeffArray[], int concatonatedDctCoeffArrayBiasInt[])
+#else
 unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(signed char concatonatedSignedDctCoeffArray[])
+#endif
 #endif
 {
 	#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
@@ -2572,7 +2581,7 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 		//cout << "arrayValueSigned = " << arrayValueSigned << endl;
 		
 		double arrayValueUnsignedDouble;
-		int arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);	//should be unsigned int
+		unsigned int arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);	//used to be int
 		
 		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 		int numDistintValsPerColumn = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
@@ -2616,7 +2625,7 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 			}
 			
 			bool bitValue = false;
-			int arrayValueUnsignedAfterBitShift = arrayValueUnsigned >> q;
+			int arrayValueUnsignedAfterBitShift = int(arrayValueUnsigned) >> q;
 			//cout << "arrayValueUnsignedAfterBitShift = " << arrayValueUnsignedAfterBitShift << endl;
 			if(arrayValueUnsignedAfterBitShift%2 == 0)
 			{//LSb == 0 ; therefore an even number
@@ -2624,7 +2633,7 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 				//cout << "false" << endl;
 			}
 			else
-			{//LSb == 0 ; therefore an odd number
+			{//LSb == 1 ; therefore an odd number
 				bitValue =  true;
 				//cout << "true" << endl;
 			}
@@ -2642,9 +2651,10 @@ unsigned long convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(sign
 		}
 
 	#else
-		
-		dctCoeffArrayBinned = dctCoeffArrayBinned + arrayValueUnsigned*powInt(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS, OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS-i);
-		//cout << "dctCoeffArrayBinned = " << dctCoeffArrayBinned << endl;
+		int power = ((OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS-i-1)*2)+1; 	//13,11,9,7,5,3,1
+		//cout << "power = " << power << endl;
+		dctCoeffArrayBinned = dctCoeffArrayBinned + long(arrayValueUnsigned)*powLong(10, power);
+		//cout << i << ": arrayValueUnsigned = " << arrayValueUnsigned << ", dctCoeffArrayBinned = " << dctCoeffArrayBinned << endl;
 	#endif
 		
 		
@@ -2715,7 +2725,7 @@ void convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(signed char
 		//cout << "concatonatedSignedDctCoeffArray[i] = " << concatonatedSignedDctCoeffArray[i] << endl;
 
 		double arrayValueUnsignedDouble;
-		int arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);		//should be unsigned int
+		unsigned int arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);		//used to be int
 			
 		linearCombinationArray[index] = arrayValueUnsigned;
 		//cout << "linearCombinationArray[index] = " << linearCombinationArray[index] << endl;
@@ -2768,6 +2778,19 @@ int determineGeoBinY(double featurePointTransformedYpos)
 	int geoBinY = (featurePointTransformedYpos / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_Y_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS/2);
 	return geoBinY;
 }
+
+double determineGeoBinDoubleX(double featurePointTransformedXpos)
+{
+	double geoBinX = (featurePointTransformedXpos / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_X_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS/2);
+	return geoBinX;
+}
+
+double determineGeoBinDoubleY(double featurePointTransformedYpos)
+{
+	double geoBinY = (featurePointTransformedYpos / OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_Y_BIN_SEPARATION) + (OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS/2);
+	return geoBinY;
+}
+
 
 unsigned int determineDCTBinUnsigned(int arrayValueSigned, double * arrayValueUnsignedDouble)
 {

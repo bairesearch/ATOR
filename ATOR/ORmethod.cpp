@@ -3,7 +3,7 @@
  * File Name: ORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2012 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3a7b 09-June-2012
+ * Project Version: 3a7c 10-June-2012
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -4299,7 +4299,12 @@ bool generateNormalisedSnapshotsUsingPolyList(Reference * firstReferenceInInterp
 								
 										
 										#ifndef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
-										currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff);
+											#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+											int concatonatedDctCoeffArrayBiasIntNOTUSED[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
+											currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff, concatonatedDctCoeffArrayBiasIntNOTUSED);											
+											#else
+											currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned = convertDCTCoeffConcatonatedArrayToBinnedAllDCTCoeff64BitValue(currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff);
+											#endif
 										#endif
 										//cout << "currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned = " << currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned << endl;
 
