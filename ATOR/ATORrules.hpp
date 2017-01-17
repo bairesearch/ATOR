@@ -23,20 +23,27 @@
 
 /*******************************************************************************
  *
- * File Name: ATORTHmain.h
+ * File Name: ATORrules.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
- * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project: Generic Construct Functions
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
 
-#ifndef HEADER_TH_OR_MAIN
-#define HEADER_TH_OR_MAIN
+#ifndef HEADER_OR_RULES
+#define HEADER_OR_RULES
 
-#define OR_METHOD2DOD_DIMENSIONS (2)
-#define OR_METHOD3DOD_DIMENSIONS (3)
+#include "ATORglobalDefs.hpp"
+#include "XMLrulesClass.hpp"
+#include "RTglobalDefs.hpp"
+#include "SHAREDvars.hpp"
 
-int main();
+class ORrulesClass
+{
+	private: SHAREDvarsClass SHAREDvars;
+	public: void fillInORrulesExternVariables();
+	private: void printORrulesExternVariables();
+};
 
 #endif

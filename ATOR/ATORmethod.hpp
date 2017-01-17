@@ -23,10 +23,10 @@
 
 /*******************************************************************************
  *
- * File Name: ATORmethod.h
+ * File Name: ATORmethod.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -34,35 +34,35 @@
 #ifndef HEADER_OR_METHOD
 #define HEADER_OR_METHOD
 
-#include "LDreferenceClass.h"
-#include "ATORpolygonList.h"
-#include "RTviewinfo.h"
-#include "ATORglobalDefs.h"
-#include "ATORmethod3DOD.h"
-#include "ATORmethod2DOD.h"
-#include "ATORpixelMaps.h"
-#include "ATORoperations.h"
-#include "ATORfeatureGeneration.h"
-#include "ATORquadraticFit.h"
-#include "RTscene.h"
-#include "LDparser.h"
-#include "LDreferenceManipulation.h"
-#include "RTreferenceManipulation.h"
-#include "SHAREDvector.h"
-#include "ATORcomparison.h"
-#include "ATORimagecomparison.h"
-#include "ATORdatabaseFileIO.h"
-#include "LDmysql.h";
-#include "LDjpeg.h";
-#include "ATORdatabaseSQL.h"
-#include "ATORdatabaseDecisionTree.h"
-	#include "LDopengl.h"
+#include "LDreferenceClass.hpp"
+#include "ATORpolygonList.hpp"
+#include "RTviewinfo.hpp"
+#include "ATORglobalDefs.hpp"
+#include "ATORmethod3DOD.hpp"
+#include "ATORmethod2DOD.hpp"
+#include "ATORpixelMaps.hpp"
+#include "ATORoperations.hpp"
+#include "ATORfeatureGeneration.hpp"
+#include "ATORquadraticFit.hpp"
+#include "RTscene.hpp"
+#include "LDparser.hpp"
+#include "LDreferenceManipulation.hpp"
+#include "RTreferenceManipulation.hpp"
+#include "SHAREDvector.hpp"
+#include "ATORcomparison.hpp"
+#include "ATORimagecomparison.hpp"
+#include "ATORdatabaseFileIO.hpp"
+#include "LDmysql.hpp";
+#include "LDjpeg.hpp";
+#include "ATORdatabaseSQL.hpp"
+#include "ATORdatabaseDecisionTree.hpp"
+	#include "LDopengl.hpp"
 
 
 /*
 #ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
-	#include "ANNexperienceClass.h"
-	#include "ANNneuronClass.h"
+	#include "ANNexperienceClass.hpp"
+	#include "ANNneuronClass.hpp"
 #endif
 */
 

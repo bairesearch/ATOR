@@ -23,10 +23,10 @@
 
 /*******************************************************************************
  *
- * File Name: ATORdatabaseSQL.h
+ * File Name: ATORdatabaseSQL.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -34,13 +34,13 @@
 #ifndef HEADER_OR_DATABASE_SQL
 #define HEADER_OR_DATABASE_SQL
 
-#include "ATORglobalDefs.h"
-#include "SHAREDvars.h"
-#include "ATORpolygonList.h"
+#include "ATORglobalDefs.hpp"
+#include "SHAREDvars.hpp"
+#include "ATORpolygonList.hpp"
 #ifdef OR_IMAGE_COMPARISON_SQL
-#include "LDmysql.h"
-#include "LDreferenceManipulation.h"
-#include "RTpixelMaps.h"
+#include "LDmysql.hpp"
+#include "LDreferenceManipulation.hpp"
+#include "RTpixelMaps.hpp"
 #endif
 
 #ifdef OR_IMAGE_COMPARISON_SQL

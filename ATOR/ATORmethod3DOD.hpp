@@ -23,10 +23,10 @@
 
 /*******************************************************************************
  *
- * File Name: ATORmethod3DOD.h
+ * File Name: ATORmethod3DOD.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -34,15 +34,15 @@
 #ifndef HEADER_OR_METHOD_3DOD
 #define HEADER_OR_METHOD_3DOD
 
-#include "ATORpolygonList.h"
-#include "RTviewinfo.h"
-#include "ATORglobalDefs.h"
-#include "LDreferenceClass.h"
-#include "ATORfeatureGeneration.h"
-#include "SHAREDvector.h"
-#include "ATORoperations.h"
-#include "LDopengl.h"
-#include "ATORoperations.h"
+#include "ATORpolygonList.hpp"
+#include "RTviewinfo.hpp"
+#include "ATORglobalDefs.hpp"
+#include "LDreferenceClass.hpp"
+#include "ATORfeatureGeneration.hpp"
+#include "SHAREDvector.hpp"
+#include "ATORoperations.hpp"
+#include "LDopengl.hpp"
+#include "ATORoperations.hpp"
 
 #define TRAIN_STRING ".train"
 #define TEST_STRING ".test"

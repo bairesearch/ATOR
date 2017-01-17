@@ -26,7 +26,7 @@
  * File Name: ATORfeatureGeneration.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  * Assumes that depth information is less accurate than image information
  *
@@ -34,7 +34,7 @@
  *******************************************************************************/
 
 
-#include "ATORfeatureGeneration.h"
+#include "ATORfeatureGeneration.hpp"
 
 #define MASK_3X3_PIXEL_1 (1)	//row 1, col 1
 #define MASK_3X3_PIXEL_1_X_REL (-1)

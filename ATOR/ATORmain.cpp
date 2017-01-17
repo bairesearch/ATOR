@@ -26,14 +26,14 @@
  * File Name: ATORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
 
 #define TM_STRUCT_YEAR_OFFSET 1900
 
-#include "ATORmain.h"
+#include "ATORmain.hpp"
 #ifdef OR_USE_DATABASE
 #endif
 
@@ -325,7 +325,7 @@ int main(const int argc,const char* *argv)
 
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-version"))
 	{
-		cout << "ATOR.exe - Project Version: 3j1c 14-January-2017" << endl;
+		cout << "ATOR.exe - Project Version: 3j2a 17-January-2017" << endl;
 		exit(1);
 	}
 

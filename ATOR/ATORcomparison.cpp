@@ -26,12 +26,12 @@
  * File Name: ATORcomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
 
-#include "ATORcomparison.h"
+#include "ATORcomparison.hpp"
 #ifdef OR_IMAGE_COMPARISON_SQL
 #endif
 
@@ -324,7 +324,7 @@ double ORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPolys
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3j1c 14-January-2017<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3j2a 17-January-2017<p>";
 		}
 		else
 		{

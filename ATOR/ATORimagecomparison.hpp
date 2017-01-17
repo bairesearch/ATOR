@@ -23,10 +23,10 @@
 
 /*******************************************************************************
  *
- * File Name: ATORimagecomparison.h
+ * File Name: ATORimagecomparison.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -34,10 +34,10 @@
 #ifndef HEADER_OR_IMAGE_COMPARISON
 #define HEADER_OR_IMAGE_COMPARISON
 
-#include "ATORglobalDefs.h"
-#include "SHAREDvars.h"
-#include "ATORpixelMaps.h"
-#include "ATORoperations.h"
+#include "ATORglobalDefs.hpp"
+#include "SHAREDvars.hpp"
+#include "ATORpixelMaps.hpp"
+#include "ATORoperations.hpp"
 
 #define SMALL_MAP_EXTENSION_PART ".small"
 #define TRAIN_STRING ".train"

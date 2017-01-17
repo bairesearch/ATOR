@@ -23,10 +23,10 @@
 
 /*******************************************************************************
  *
- * File Name: ATORmethod2DOD.h
+ * File Name: ATORmethod2DOD.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -34,14 +34,14 @@
 #ifndef HEADER_OR_METHOD_2DOD
 #define HEADER_OR_METHOD_2DOD
 
-#include "LDreferenceClass.h"
-#include "ATORpolygonList.h"
-#include "ATORglobalDefs.h"
-#include "ATORfeatureGeneration.h"
-#include "SHAREDvector.h"
-#include "ATORpixelMaps.h"
-#include "ATORoperations.h"
-	#include "LDopengl.h"
+#include "LDreferenceClass.hpp"
+#include "ATORpolygonList.hpp"
+#include "ATORglobalDefs.hpp"
+#include "ATORfeatureGeneration.hpp"
+#include "SHAREDvector.hpp"
+#include "ATORpixelMaps.hpp"
+#include "ATORoperations.hpp"
+	#include "LDopengl.hpp"
 
 #define OD2D_INTERPOLATED_MESH_PIXEL_WIDTH (1.0)
 #define OD2D_INTERPOLATED_MESH_PIXEL_HEIGHT (1.0)

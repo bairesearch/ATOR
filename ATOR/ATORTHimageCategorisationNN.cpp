@@ -26,7 +26,7 @@
  * File Name: ATORTHimageCategorisationNN.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  * Test Harness for OR Image Categorisation NN method (not yet implemented)
  *******************************************************************************/
 
@@ -66,27 +66,27 @@ unique combinations)
 */
 
 
-#include "ATORTHimageCategorisationNN.h"
+#include "ATORTHimageCategorisationNN.hpp"
 
-#include "ATORglobalDefs.h"
-#include "XMLrulesClass.h"
+#include "ATORglobalDefs.hpp"
+#include "XMLrulesClass.hpp"
 
-#include "ATORrules.h"
-#include "ATORimagecomparison.h"
-#include "ATORcomparison.h"
+#include "ATORrules.hpp"
+#include "ATORimagecomparison.hpp"
+#include "ATORcomparison.hpp"
 
-#include "RTppm.h"
-#include "RTpixelMaps.h"
+#include "RTppm.hpp"
+#include "RTpixelMaps.hpp"
 
-#include "LDjpeg.h"
+#include "LDjpeg.hpp"
 
-#include "ANNneuronClass.h"
-#include "ANNFormation.h"
-#include "ANNTraining.h"
-#include "ANNXMLconversion.h"
-#include "ANNsprite.h"
-#include "ANNUpdateAlgorithm.h"
-#include "ANNdisplay.h"
+#include "ANNneuronClass.hpp"
+#include "ANNFormation.hpp"
+#include "ANNTraining.hpp"
+#include "ANNXMLconversion.hpp"
+#include "ANNsprite.hpp"
+#include "ANNUpdateAlgorithm.hpp"
+#include "ANNdisplay.hpp"
 
 ORfileNameMatch::ORfileNameMatch(void)
 {

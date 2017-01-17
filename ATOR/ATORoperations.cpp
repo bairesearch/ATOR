@@ -26,11 +26,11 @@
  * File Name: ATORoperations.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
-#include "ATORoperations.h"
+#include "ATORoperations.hpp"
 
 /*
 #define MIN_OBJECT_DEPTH_AS_DETERMINED_BY_CURRENT_FOCUS (5)

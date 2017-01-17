@@ -23,10 +23,10 @@
 
 /*******************************************************************************
  *
- * File Name: ATORquadraticFit.h (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
+ * File Name: ATORquadraticFit.hpp (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -34,12 +34,12 @@
 #ifndef HEADER_OR_QUADRATIC_FIT
 #define HEADER_OR_QUADRATIC_FIT
 
-#include "ATORglobalDefs.h"
-#include "SHAREDvars.h"
-#include "SHAREDvector.h"
-#include "RTpixelMaps.h"
-#include "ATORpixelMaps.h"
-#include "RTscene.h"
+#include "ATORglobalDefs.hpp"
+#include "SHAREDvars.hpp"
+#include "SHAREDvector.hpp"
+#include "RTpixelMaps.hpp"
+#include "ATORpixelMaps.hpp"
+#include "RTscene.hpp"
 #include "float.h"
 
 	//For a quadratic fit there are 7 coefficients; a[0]..a[6]. but a[5] = a[6])

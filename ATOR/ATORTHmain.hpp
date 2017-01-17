@@ -23,29 +23,20 @@
 
 /*******************************************************************************
  *
- * File Name: ATORmain.h
+ * File Name: ATORTHmain.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
 
-#ifndef HEADER_OR_MAIN
-#define HEADER_OR_MAIN
+#ifndef HEADER_TH_OR_MAIN
+#define HEADER_TH_OR_MAIN
 
+#define OR_METHOD2DOD_DIMENSIONS (2)
+#define OR_METHOD3DOD_DIMENSIONS (3)
 
-#include "ATORmethod.h"
-#include "ATORglobalDefs.h"
-#include "XMLrulesClass.h"
-#include "ATORrules.h"
-#include "ATORdatabaseFileIO.h"
-
-int main(const int argc,const char* *argv);
-
-class ORmainClass
-{
-	public: void printORcommandLineErrorMessage();
-};
+int main();
 
 #endif

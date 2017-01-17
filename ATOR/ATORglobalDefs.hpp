@@ -23,10 +23,10 @@
 
 /*******************************************************************************
  *
- * File Name: ATORglobalDefs.h
+ * File Name: ATORglobalDefs.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
@@ -826,7 +826,7 @@
  * - [2a10x] minor patches
  * - [2b] Decision Tree realtime software comparator
  * - [2c] pixmaps (Alltext) stored in MySQL database
- * - [2d] integrate ORrules.xml paramters file
+ * - [2d] integrate ATORrules.xml paramters file
  * - [2e] outputs best match object results
  * - [2f] [Re] compile and test in Windows using MS Visual Studio (make installation procedure compatible with both GNU and commercial licenses)
  * - [2g] Preparation for PHP GUI; multiview support, workingfolder, etc
@@ -874,7 +874,7 @@
 #ifndef HEADER_OR_GLOBAL_DEFS
 #define HEADER_OR_GLOBAL_DEFS
 
-#include "SHAREDglobalDefs.h"
+#include "SHAREDglobalDefs.hpp"
 
 #define OR_USE_DATABASE	//this needs to be debugged (not yet tested)
 
@@ -1027,7 +1027,7 @@ OR_METHOD_3DOD_IGNORE_OT_FEATURES_DURING_GEO_COMPARISON
 
 
 	/**********
-	OR HIGH LEVEL OPTIMISATION VARIABLES AVAILABLE IN ORrules.xml;
+	OR HIGH LEVEL OPTIMISATION VARIABLES AVAILABLE IN ATORrules.xml;
 	***********/
 
 //OR_IMAGE_COMPARISON_DECISION_TREE...

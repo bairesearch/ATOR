@@ -23,10 +23,10 @@
 
 /*******************************************************************************
  *
- * File Name: ATORTHimageCategorisationNN.h
+ * File Name: ATORTHimageCategorisationNN.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  * Test Harness for OR Image Categorisation NN method (not yet implemented)
  *******************************************************************************/
 
@@ -69,8 +69,8 @@ unique combinations)
 #ifndef HEADER_OR_TH_IMAGE_CATEGORISATION_NN
 #define HEADER_OR_TH_IMAGE_CATEGORISATION_NN
 
-#include "ANNexperienceClass.h"
-#include "ANNneuronClass.h"
+#include "ANNexperienceClass.hpp"
+#include "ANNneuronClass.hpp"
 
 //#define OR_IMAGE_CATEGORISTION_NN_USE_SMALL_NUMBER_LAYERS
 

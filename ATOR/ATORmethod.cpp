@@ -26,12 +26,12 @@
  * File Name: ATORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
 
-#include "ATORmethod.h"
+#include "ATORmethod.hpp"
 
 #ifdef OR_IMAGE_COMPARISON_SQL
 #endif
@@ -39,10 +39,10 @@
 /*
 #ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 		//for neural network;
-	#include "ANNFormation.h"
-	#include "ANNTraining.h"
-	#include "ANNUpdateAlgorithm.h"
-	#include "ANNdisplay.h"
+	#include "ANNFormation.hpp"
+	#include "ANNTraining.hpp"
+	#include "ANNUpdateAlgorithm.hpp"
+	#include "ANNdisplay.hpp"
 #endif
 */
 #ifdef USE_OPENGL

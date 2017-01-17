@@ -23,10 +23,10 @@
 
 /*******************************************************************************
  *
- * File Name: ATORfeatureGeneration.h
+ * File Name: ATORfeatureGeneration.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -34,13 +34,13 @@
 #ifndef HEADER_OR_FEATURE
 #define HEADER_OR_FEATURE
 
-#include "ATORglobalDefs.h"
-#include "ATORpolygonList.h"
-#include "ATORoperations.h"
-#include "ATORquadraticFit.h"
-#include "ATORpixelMaps.h"
-#include "ATORimagecomparison.h"
-#include "SHAREDvector.h"
+#include "ATORglobalDefs.hpp"
+#include "ATORpolygonList.hpp"
+#include "ATORoperations.hpp"
+#include "ATORquadraticFit.hpp"
+#include "ATORpixelMaps.hpp"
+#include "ATORimagecomparison.hpp"
+#include "SHAREDvector.hpp"
 
 #define CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_LUMINOSITY_CONTRAST (1)
 #define CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_POINT_NORMAL_CONTRAST (2)

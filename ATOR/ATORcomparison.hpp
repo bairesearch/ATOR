@@ -23,10 +23,10 @@
 
 /*******************************************************************************
  *
- * File Name: ATORcomparison.h
+ * File Name: ATORcomparison.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -34,17 +34,17 @@
 #ifndef HEADER_OR_COMPARISON
 #define HEADER_OR_COMPARISON
 
-#include "ATORglobalDefs.h"
-#include "SHAREDvars.h"
-#include "ATORpolygonList.h"
-#include "ATORimagecomparison.h"
-#include "ATORdatabaseSQL.h"
-#include "ATORdatabaseDecisionTree.h"
-#include "ATORdatabaseFileIO.h"
-#include "ATORpixelMaps.h"
-#include "ATORoperations.h"
-#include "LDreferenceManipulation.h"
-#include "LDjpeg.h"
+#include "ATORglobalDefs.hpp"
+#include "SHAREDvars.hpp"
+#include "ATORpolygonList.hpp"
+#include "ATORimagecomparison.hpp"
+#include "ATORdatabaseSQL.hpp"
+#include "ATORdatabaseDecisionTree.hpp"
+#include "ATORdatabaseFileIO.hpp"
+#include "ATORpixelMaps.hpp"
+#include "ATORoperations.hpp"
+#include "LDreferenceManipulation.hpp"
+#include "LDjpeg.hpp"
 
 //#ifdef OR_PRINT_ALGORITHM_AND_TIME_DETAILS
 extern long time5aNormalisedSnapshotComparisonLoadComparisonDataTotal;

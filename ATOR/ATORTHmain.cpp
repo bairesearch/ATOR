@@ -26,24 +26,24 @@
  * File Name: ATORTHmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
 
-#include "ATORTHmain.h"
-#include "ATORmethod.h"
-#include "ATORglobalDefs.h"
-#include "XMLrulesClass.h"
-#include "ATORrules.h"
+#include "ATORTHmain.hpp"
+#include "ATORmethod.hpp"
+#include "ATORglobalDefs.hpp"
+#include "XMLrulesClass.hpp"
+#include "ATORrules.hpp"
 
 //#define TEMPTESTEDGEFIT
 /*
 #ifdef TEMPTESTEDGEFIT
-#include "ATORfeatureGeneration.h"
-#include "RTppm.h"
-#include "RTviewinfo.h"
-#include "RTpixelMaps.h"
+#include "ATORfeatureGeneration.hpp"
+#include "RTppm.hpp"
+#include "RTviewinfo.hpp"
+#include "RTpixelMaps.hpp"
 int main
 {
 	int imageWidth = 768;

@@ -23,10 +23,10 @@
 
 /*******************************************************************************
  *
- * File Name: ATORdatabaseFileIO.h
+ * File Name: ATORdatabaseFileIO.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j1c 14-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -34,12 +34,12 @@
 #ifndef HEADER_OR_DATABASE_FILEIO
 #define HEADER_OR_DATABASE_FILEIO
 
-#include "ATORglobalDefs.h"
-#include "SHAREDvars.h"
-#include "ATORpolygonList.h"
-#include "ATORdatabaseSQL.h"	//required for determineGeoBinX()/determineGeoBinY() only ... - these functions and/or compareFeaturesListForMatch() should probably be moved elsewhere instead, say to "ORdatabaseOperations.cpp"
-#include "SHAREDvector.h"
-#include "LDreferenceManipulation.h"
+#include "ATORglobalDefs.hpp"
+#include "SHAREDvars.hpp"
+#include "ATORpolygonList.hpp"
+#include "ATORdatabaseSQL.hpp"	//required for determineGeoBinX()/determineGeoBinY() only ... - these functions and/or compareFeaturesListForMatch() should probably be moved elsewhere instead, say to "ORdatabaseOperations.cpp"
+#include "SHAREDvector.hpp"
+#include "LDreferenceManipulation.hpp"
 
 #define OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME ((string)"ORdatabase/")
 #define OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME "/home/systemusername/source/"
