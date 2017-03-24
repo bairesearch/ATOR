@@ -25,7 +25,7 @@
  * File Name: ATORpixelMaps.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3k2b 21-March-2017
+ * Project Version: 3k2c 21-March-2017
  *
  *******************************************************************************/
 
@@ -971,12 +971,6 @@ double getContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixe
 								}
 								#endif
 							}
-
-							#ifdef OR_DEBUG
-							//cout << "x = " << x << endl;
-							//cout << "y = " << y << endl;
-							//cout << "contrastLevel = " << contrastLevel << endl;
-							#endif
 						}
 					}
 				}
@@ -997,10 +991,6 @@ double getContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixe
 
 				for(int y = pixelY; y<= pixelY+1; y++)
 				{
-					#ifdef OR_DEBUG
-					//cout << "y = " << y << endl;
-					#endif
-
 					double pixelDepthMeasurement = getLumOrContrastOrDepthMapValue(pixelX, y, imageWidth, depthMap);
 
 					#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
@@ -1042,10 +1032,6 @@ double getContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixe
 
 				for(int x = pixelX; x<= pixelX+1; x++)
 				{
-					#ifdef OR_DEBUG
-					//cout << "x = " << x << endl;
-					#endif
-
 					double pixelDepthMeasurement = getLumOrContrastOrDepthMapValue(x, pixelY, imageWidth, depthMap);
 
 
@@ -1148,11 +1134,6 @@ double calculateContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, in
 						{
 							contrastLevel = maxDouble(contrastLevel, currentContrastLevel);
 						}
-						#ifdef OR_DEBUG
-						//cout << "x = " << x << endl;
-						//cout << "y = " << y << endl;
-						//cout << "contrastLevel = " << contrastLevel << endl;
-						#endif
 					}
 				}
 			}

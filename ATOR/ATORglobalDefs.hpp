@@ -25,7 +25,7 @@
  * File Name: ATORglobalDefs.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3k2b 21-March-2017
+ * Project Version: 3k2c 21-March-2017
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
@@ -877,8 +877,6 @@
 
 #define OR_USE_DATABASE
 
-#define OR_DEBUG
-
 //#define OR_ASSERT_MATCHES_FOR_ALL_SIDES		//removed 10 June 2012
 
 /*NB for safe/original/high-redundancy execution, the following pre-processor definitions should be re-activated (uncommented);
@@ -897,23 +895,10 @@ OR_METHOD_3DOD_IGNORE_OT_FEATURES_DURING_GEO_COMPARISON
 	#define OR_DATABASE_VERBOSE_FILESYSTEM_IO
 #endif
 
-#ifndef OR_USE_DATABASE
-	#define DEBUG_OR_OUTPUT_DT_BIN
-#endif
-
-	/**********
-	OR DECISION TREE RGB DEV MAP COMPARISON DEBUG VARS - COMMENT THESE OUT FOR for proper/formal/release software build;
-	***********/
-
-#ifndef OR_USE_DATABASE
-	#define DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD	//displays contrast thresholded RGB maps
-#endif
-//#define DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON_THRESHOLD
-//#define DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON
 
 
 	/**********
-	OR FOURIER DEBUG VARS - COMMENT THESE OUT FOR for proper/formal/release software build;
+	OR FOURIER DEBUG VARS - COMMENT THESE OUT FOR for release software build;
 	***********/
 
 #define VERBOSE_OR_OUTPUT_DCT_TABLES
@@ -921,11 +906,10 @@ OR_METHOD_3DOD_IGNORE_OT_FEATURES_DURING_GEO_COMPARISON
 	#define VERBOSE_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_COMPARISON_DCT_TABLES_TO_HTML		//displays DCT tables of arbitrary quality for all matches in HTML results file
 	//#define OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_TEMP_STRING "-quality 50%"		//does not take value from xml file as we are debugging dct coefficients resolution here
 #endif
-//#define DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING		//displays all DCT table creations
 
 
 	/**********
-	OR GEO DEBUG VARS - COMMENT THESE OUT FOR for proper/formal/release software build;
+	OR GEO DEBUG VARS - COMMENT THESE OUT FOR for release software build;
 	***********/
 
 #define VERBOSE_OR_OUTPUT_GEO_COORDINATES		//THIS CAUSES CRASH FOR SOME REASON (CURRENTLY UNDER INVESTIGATION...)
@@ -943,7 +927,6 @@ OR_METHOD_3DOD_IGNORE_OT_FEATURES_DURING_GEO_COMPARISON
 	***********/
 
 
-//#define DEBUG_TH_ANN_USE_ORIGINAL_RANDOMISATION	NB there appears to be a bug in the original bias/weight randomisation process
 #ifdef COMPILE_TH_OR_IMAGE_CATEGORISTION_NN
 
 	//#define COMPILE_TH_OR_IMAGE_CATEGORISTION_NN_USE_MULTI_BIT_OUTPUT_PER_NET
@@ -955,31 +938,18 @@ OR_METHOD_3DOD_IGNORE_OT_FEATURES_DURING_GEO_COMPARISON
 		#define COMPILE_TH_OR_IMAGE_CATEGORISTION_NN_USE_MULTI_BIT_OUTPUT_PER_NET_NUM_BITS (1)
 	#endif
 
-	/*
-	DEBUG_TH_OR_IMAGE_CATEGORISTION_NN debug;
-	*/
-	#define DEBUG_TH_OR_IMAGE_CATEGORISTION_NN		//temp - reduces number of neural nets used
-	//#define DEBUG_TH_OR_IMAGE_CATEGORISTION_NN_3
-	//#define DEBUG_TH_OR_IMAGE_CATEGORISTION_NN_2
-	//#define DEBUG_TH_OR_IMAGE_CATEGORISTION_NN_4
 	//#define OR_IMAGE_CATEGORISTION_NN_USE_SMALL_IMAGES
 
 
-	//#define DEBUG_TH_OR_IMAGE_CATEGORISTION_NN_USE_LINEAR_COMBINATION_NETWORK	//use very simple neuron function (not exponential)
-	#ifndef DEBUG_TH_OR_IMAGE_CATEGORISTION_NN_USE_LINEAR_COMBINATION_NETWORK
-		//#define TH_OR_IMAGE_CATEGORISTION_NN_USE_HEAVY_RANDOMISATION_OF_BIASES_AND_WEIGHTS
-		#ifdef TH_OR_IMAGE_CATEGORISTION_NN_USE_HEAVY_RANDOMISATION_OF_BIASES_AND_WEIGHTS
-			//#define TH_OR_IMAGE_CATEGORISTION_NN_USE_HEAVY_RANDOMISATION_OF_BIASES_AND_WEIGHTS_DEMONSTRATION
-			#ifdef TH_OR_IMAGE_CATEGORISTION_NN_USE_HEAVY_RANDOMISATION_OF_BIASES_AND_WEIGHTS_DEMONSTRATION
-				//#define OR_IMAGE_CATEGORISTION_NN_USE_SMALL_IMAGES	//used to demostrate heavy randomisation actually working
-				#define DEBUG_TH_ANN_USE_ORIGINAL_RANDOMISATION		//used to demostrate heavy randomisation actually working
-			#endif
-			#define TH_OR_IMAGE_CATEGORISTION_NN_USE_HEAVY_RANDOMISATION_OF_BIASES_AND_WEIGHTS_BIAS_MULT (2.0)	//-2.0 -> +2.0
-			#define TH_OR_IMAGE_CATEGORISTION_NN_USE_HEAVY_RANDOMISATION_OF_BIASES_AND_WEIGHTS_WEIGHT_MULT (4.0)	//-2.0 -> +2.0
-				//temp;
-			//#define DEBUG_TH_OR_IMAGE_CATEGORISTION_NN_DO_NOT_RANDOMISE_BIASES
-			//#define DEBUG_TH_OR_IMAGE_CATEGORISTION_NN_DO_NOT_RANDOMISE_WEIGHTS
+	//#define TH_OR_IMAGE_CATEGORISTION_NN_USE_HEAVY_RANDOMISATION_OF_BIASES_AND_WEIGHTS
+	#ifdef TH_OR_IMAGE_CATEGORISTION_NN_USE_HEAVY_RANDOMISATION_OF_BIASES_AND_WEIGHTS
+		//#define TH_OR_IMAGE_CATEGORISTION_NN_USE_HEAVY_RANDOMISATION_OF_BIASES_AND_WEIGHTS_DEMONSTRATION
+		#ifdef TH_OR_IMAGE_CATEGORISTION_NN_USE_HEAVY_RANDOMISATION_OF_BIASES_AND_WEIGHTS_DEMONSTRATION
+			//#define OR_IMAGE_CATEGORISTION_NN_USE_SMALL_IMAGES	//used to demostrate heavy randomisation actually working
 		#endif
+		#define TH_OR_IMAGE_CATEGORISTION_NN_USE_HEAVY_RANDOMISATION_OF_BIASES_AND_WEIGHTS_BIAS_MULT (2.0)	//-2.0 -> +2.0
+		#define TH_OR_IMAGE_CATEGORISTION_NN_USE_HEAVY_RANDOMISATION_OF_BIASES_AND_WEIGHTS_WEIGHT_MULT (4.0)	//-2.0 -> +2.0
+			//temp;
 	#endif
 
 	/*
@@ -992,13 +962,11 @@ OR_METHOD_3DOD_IGNORE_OT_FEATURES_DURING_GEO_COMPARISON
 #define OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK_MAX_DIFF "10000000000000.0"	//100000
 #define OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK_DOUBLE_TO_U_LONG_CONVERSION (1e6)
 
-//#define DEBUG_OR_PRINT_OR_RULES_EXTERN_VARS
 
 #define USE_OLD_ESTIMATE_MAX_DEPTH_GRADIENT_CONTRAST
 
 //#define OR_METHOD3DOD_IF_NOT_USING_MESH_LISTS_USE_CENTRED_FEATURE_DETECTION_DURING_ZOOM		//not yet tested
 //#define OR_METHOD2DOD_IF_NOT_USING_MESH_LISTS_USE_CENTRED_FEATURE_DETECTION_DURING_ZOOM		//this seems to lower performance
-//#define OR_DEBUG_METHOD_ASSUME_TRAIN_AND_TEST_WITH_SINGLE_VIEWPOINT		//currently being retested with/without
 
 //#define OR_VERBOSE_COMPARISON_ALLOW_SAME_OBJECT_AND_SAME_VIEW_TO_BE_COMPARED
 #define OR_VERBOSE_COMPARISON_ALLOW_SAME_OBJECT_BUT_DIFFERENT_VIEWS_TO_BE_COMPARED
@@ -1737,14 +1705,6 @@ extern double OR_RULES_XML_SPARE_PARAMETER_2;	//this needs to be made dynamic in
 
 
 
-
-	/**********
-	OR COMPARISON DEBUG VARS
-	***********/
-
-//#define OR_DEBUG_COMPARISON
-
-
 	/**********
 	OR FEATURE DEBUG VARS - COMMENT THESE OUT FOR for proper/formal/release software build;
 	***********/
@@ -1752,59 +1712,29 @@ extern double OR_RULES_XML_SPARE_PARAMETER_2;	//this needs to be made dynamic in
 #define OR_QUADRATIC_FIT_VERBOSE		//creates images of quadtratic fit detection process
 #define OR_CONTIGUOUS_REGION_VERBOSE	//creates images of feature detection process
 #ifdef OR_CONTIGUOUS_REGION_VERBOSE
-	//#define OR_CONTIGUOUS_REGION_DEBUG_PRINT
-	//#define OR_CONTIGUOUS_REGION_DEBUG2
 	#define OR_CONTIGUOUS_REGION_VERBOSE3
-	//#define OR_CONTIGUOUS_REGION_DEBUG_PRINT_BOUNDARY_TRACE
-	//#define OR_CONTIGUOUS_REGION_DEBUG_BOUNDARY_TRACE
 #endif
 
-
-
-	/**********
-	OR SQL DEBUG VARS - displays all SQL commands - COMMENT THESE OUT FOR for proper/formal/release software build;
-	***********/
-
-//#define OR_SQL_DATABASE_DEBUG		//maybe should not be used when DECISION_TREE is enabled (creates junk text to the display which might trigger off gterm). definately should not be used when OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE is enabled with gterm (creates alot of junk text to the display which might trigger off gterm)
 
 
 	/**********
 	OR DEBUG 3D MESH GENERATION VARS - COMMENT THESE OUT FOR for proper/formal/release software build;
 	***********/
 
-//#define OR_DEBUG_RAYTRACE_INTERPOLATED_3D_MAP_WITH_ORIGINAL_VIEW
 #define OR_VERBOSE_SAVE_REFERENCE_LIST_TO_FILE
 
-
-	/**********
-	OR DEBUG 3DOD VARS - COMMENT THESE OUT FOR for proper/formal/release software build;
-	***********/
-
-//#define OR_DEBUG_METHOD3DOD_POV
-//#define OR_DEBUG_3DOD_POV
 
 	/**********
 	OR DEBUG VARS OLD - COMMENT THESE OUT FOR for proper/formal/release software build;
 	***********/
 
-//#define DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DO_NOT_USE_REAL_SQL_QUERY
 //#define TEST_GEO		//temp (reduces number of objects and view points for software testing)
 //#define OR_LOW_RAM		//only effects OR Test Harness
 //#define DO_NOT_NORMALISE_POINT_NORMAL_MAP
 //#define OR_DO_NOT_CHECK_FOR_ZERO_DIVISION_DURING_POINT_NORMAL_CALC
 
-/*very old;
-//#define OR_DEBUG_WORRY_ABOUT_DISPLAYING_2D_NET_PROPERLY
-//#define OR_DEBUG_TRAIN_USING_FAR_INSUFFICIENT_NUMBER_EPOCHS
-//#define OR_DEBUG_RT_LIGHTING_OR_SURFACE_COLOUR_REPEATABILITY
-//#define OR_DEBUG_UNTHRESHOLDED_NN_FEED
-//#define OR_DEBUG_RAYTRACE_INTERPOLATED_3D_MAP_WITH_ORIGINAL_VIEW
-//#define OR_DEBUG_OLD_FEATURE_GENERATION_METHOD	//Old method is not working properly; need to translate corner coordinates into interpolated map coordiantes system
-*/
 /* extremely old;
 //#define TEMP_TEST_HEITGER_FEATURE_THRESHOLD_IMAGE_SIZE_DEPENDENCE	//doesnt help
-//#define TEMP_DEBUG_CONVERT
-//#define TEMP_DEBUG_CONVERT2
 //#define TEST_TIMES
 //#define TEST_FEATURE_DETECTION_THRESHOLD_ON_A_NEW_OBJECT
 #ifdef TEST_FEATURE_DETECTION_THRESHOLD_ON_A_NEW_OBJECT
@@ -1997,7 +1927,6 @@ OR METHOD 3DOD VARIABLES;
 //#define OR_METHOD_3DOD_IGNORE_OT_FEATURES_DURING_GEO_COMPARISON		//NB transformed 3DOD OT features only differ from each other in terms of they scaling, where as transformed 2DOD OT features do not differ at all. All other 3DOD/2DOD transformed features differ.
 
 #define OR_METHOD_3DOD_USE_FORMAL_TRANSFORMATION_METHOD		//when all issues related to this are resolved and this becomes the default, an inverse definition name should be implemented for clarity
-//#define OR_DEBUG_METHOD_3DOD
 
 
 /**********
@@ -2451,9 +2380,6 @@ OR SQL VARIABLES;
 	OR OPTIMISATION VARIABLES2;
 	***********/
 
-//8. optimisation:  temp debug;
-//#define DEBUG_ONLY_GENERATE_FEATURE_LISTS_NOTHING_ELSE
-
 //9. optimisation: general;
 #define OR_IMAGE_COMPARISON_USE_NEW_COMPARITOR	//test step 3
 #ifdef OR_IMAGE_COMPARISON_USE_NEW_COMPARITOR
@@ -2519,10 +2445,7 @@ OR SQL VARIABLES;
 #endif
 */
 
-//#define OR_DEBUG_METHOD_2DOD
 
-
-//#define OR_DEBUG_RAYTRACE_INTERPOLATED_3D_MAP_WITH_ORIGINAL_VIEW
 #define OR_METHOD3DOD_GENERATE_IMAGE_DATA
 #define OR_METHOD3DOD_USE_SINGLE_OBJECT
 //untested;

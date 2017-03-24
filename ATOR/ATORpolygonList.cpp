@@ -25,7 +25,7 @@
  * File Name: ATORpolygonList.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3k2b 21-March-2017
+ * Project Version: 3k2c 21-March-2017
  *
  *******************************************************************************/
 
@@ -774,9 +774,6 @@ void calculateMeshPointInterpixelDepthWithForegroundDepthCheckOLD(ORmeshPoint* m
 
 	for(int y=0; y<=1; y++)
 	{
-		#ifdef OR_DEBUG
-		//cout << "y = " << y << endl;
-		#endif
 		int q;
 		q = qMapping[0][y];
 		double interpixelDepthValue = meshPoint->adjacentMeshPoint[q]->depth;
@@ -810,9 +807,6 @@ void calculateMeshPointInterpixelDepthWithForegroundDepthCheckOLD(ORmeshPoint* m
 
 	for(int x=0; x<=1; x++)
 	{
-		#ifdef OR_DEBUG
-		//cout << "x = " << x << endl;
-		#endif
 		int q;
 		q = qMapping[x][0];
 		double interpixelDepthValue = meshPoint->adjacentMeshPoint[q]->depth;

@@ -25,7 +25,7 @@
  * File Name: ATORmethod3DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3k2b 21-March-2017
+ * Project Version: 3k2c 21-March-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -1154,14 +1154,14 @@ bool ORmethod3DODClass::generateFeatureList3DOD(RTviewInfo* vi, const double* de
 	this->generateFeatureListUsingFeatureArraysUsingDepthMap(imageWidth, imageHeight, depthMap, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, firstFeatureInList, vi);
 	#endif
 
-	//#ifdef OR_DEBUG
+	/*
 	ORfeature* currentFeatureInList = firstFeatureInList;
 	while(currentFeatureInList->next != NULL)
 	{
 		cout << "currentFeatureInList++" << endl;
 		currentFeatureInList=currentFeatureInList->next;
 	}
-	//#endif
+	*/
 
 	ORoperations.generateBooleanMapFromFeatureList(imageWidth, imageHeight, firstFeatureInList, featuresMapCompleteOfficial, vi, 1);
 	//this->reconcileFeaturesMap(imageWidth, imageHeight, featuresMapCompleteOfficial);	//featuresMapCompleteOfficial shouldnt need reconciliation as features have already been checked to not reside close to each other! - fix this!

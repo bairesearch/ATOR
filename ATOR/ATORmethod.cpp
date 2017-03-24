@@ -25,7 +25,7 @@
  * File Name: ATORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3k2b 21-March-2017
+ * Project Version: 3k2c 21-March-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -340,10 +340,6 @@ bool ORmethodClass::ORmethodInitialise(const int imageWidthFacingPoly, const int
 	{
 		databaseTableSizeTrain = LDmysql.performSQLgetNumRowsQuery(OR_MYSQL_TABLE_NAME_TRAIN);
 		databaseTableSizeDecisionTree = LDmysql.performSQLgetNumRowsQuery(OR_MYSQL_TABLE_NAME_DECISIONTREE);
-		//#ifdef OR_DEBUG
-		cout << "databaseTableSizeTrain = " << databaseTableSizeTrain << endl;
-		cout << "databaseTableSizeDecisionTree = " << databaseTableSizeDecisionTree << endl;
-		//#endif
 		databaseTableSizeTrainInitial = databaseTableSizeTrain;
 		databaseTableSizeDecisionTreeInitial = databaseTableSizeDecisionTree;
 	}
