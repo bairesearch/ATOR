@@ -25,7 +25,7 @@
  * File Name: ATORoperations.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j2a 17-January-2017
+ * Project Version: 3k2a 21-March-2017
  *
  *******************************************************************************/
 
@@ -155,9 +155,6 @@ bool ORoperationsClass::addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec*
 
 			if(distanceBetweenTwoPoints < maxFeatureDistanceError)
 			{
-				#ifdef OR_DEBUG
-				//cout << "found a fail" << endl;
-				#endif
 				int currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature = currentFeatureInList->numberOfFeaturePixelsUsedToGenerateFeature;
 				double newx = (currentFeatureInList->point.x + proposedFeature->x/currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature)/(currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature+1)*currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature;
 				double newy = (currentFeatureInList->point.y + proposedFeature->y/currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature)/(currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature+1)*currentNumberOfFeaturePixelsUsedToGenerateConflictingFeature;
@@ -240,9 +237,6 @@ bool ORoperationsClass::checkFeatureListForCommonFeature(const vec* corner, cons
 
 			if(distanceBetweenTwoPoints < maxFeatureDistanceError)
 			{
-				#ifdef OR_DEBUG
-				//cout << "found a fail" << endl;
-				#endif
 				foundCommonFeature = true;
 			}
 
@@ -273,14 +267,6 @@ void ORoperationsClass::generateBooleanMapFromFeatureList(const int imageWidth, 
 	const ORfeature* currentFeatureInList = firstFeatureInList;
 	while(currentFeatureInList->next != NULL)
 	{
-		#ifdef OR_DEBUG
-		/*
-		cout << "currentFeatureInList->point.x = " << currentFeatureInList->point.x << endl;
-		cout << "currentFeatureInList->point.y = " << currentFeatureInList->point.y << endl;
-		cout << "x = " << currentFeatureInList->xViewport << endl;
-		cout << "y = " << currentFeatureInList->yViewport << endl;
-		*/
-		#endif
 
 		/*
 		double xWorld = currentFeatureInList->point.x;
@@ -408,9 +394,6 @@ bool ORoperationsClass::checkPolygonListForCommonPolygon(const ORpolygon* polygo
 	else
 	{
 		//allow first polygon to be added without precondition
-		#ifdef OR_DEBUG
-		//cout << "(currentPolygonInList->next == NULL)" << endl;
-		#endif
 	}
 
 	return foundCommonPolygon;
@@ -476,14 +459,6 @@ ORpolygon* ORoperationsClass::addPolysToListForGivenFeatureAndNearestFeatureList
 
 						bool minAngleTest = true;
 
-						#ifdef OR_DEBUG
-						/*
-						cout << "areaOfT = " << areaOfT << endl;
-						cout << "internalAngle1 = " << internalAngle1 << endl;
-						cout << "internalAngle2 = " << internalAngle2 << endl;
-						cout << "internalAngle3 = " << internalAngle3 << endl;
-						*/
-						#endif
 
 						double minAngleAllowedRadians = (POLYGON_MIN_ANGLE_DEGREES / 180.0)* PI;
 						if((SHAREDvars.absDouble(internalAngle1) < minAngleAllowedRadians) || (SHAREDvars.absDouble(internalAngle2) < minAngleAllowedRadians) || (SHAREDvars.absDouble(internalAngle3) < minAngleAllowedRadians))
@@ -570,20 +545,6 @@ ORpolygon* ORoperationsClass::addPolysToListForGivenFeatureAndNearestFeatureList
 					{
 						if(count < numberOfPolygonsPerFeature)
 						{
-							#ifdef OR_DEBUG
-							/*
-							cout << "\nnew poly added: " << endl;
-							cout << "currentFeatureInNearestFeatureListz->point.x = " << currentFeature->point.x << endl;
-							cout << "currentFeatureInNearestFeatureListz->point.y = " << currentFeature->point.y << endl;
-							cout << "currentFeatureInNearestFeatureListz->point.z = " << currentFeature->point.z << endl;
-							cout << "currentFeatureInNearestFeatureList1->point.x = " << currentFeatureInNearestFeatureList->point.x << endl;
-							cout << "currentFeatureInNearestFeatureList1->point.y = " << currentFeatureInNearestFeatureList->point.y << endl;
-							cout << "currentFeatureInNearestFeatureList1->point.z = " << currentFeatureInNearestFeatureList->point.z << endl;
-							cout << "currentFeatureInNearestFeatureList2->point.x = " << currentFeatureInNearestFeatureList2->point.x << endl;
-							cout << "currentFeatureInNearestFeatureList2->point.y = " << currentFeatureInNearestFeatureList2->point.y << endl;
-							cout << "currentFeatureInNearestFeatureList2->point.z = " << currentFeatureInNearestFeatureList2->point.z << endl;
-							*/
-							#endif
 
 							SHAREDvector.copyVectorRT(&(currentPolygonInList->point1), &(currentFeature->point));
 							SHAREDvector.copyVectorRT(&(currentPolygonInList->point2), &(currentFeatureInNearestFeatureList->point));
@@ -664,13 +625,6 @@ bool ORoperationsClass::generatePolygonListUsingFeatureListLocalised(const int i
 		{
 			int numberOfNearestFeatures = this->calculateNumberOfNearestFeatures(NUMBER_OF_POLYGONS_PER_FEATURE, OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM);
 
-			#ifdef OR_DEBUG
-			/*
-			cout << "numberOfPolygonsPerFeature = " << NUMBER_OF_POLYGONS_PER_FEATURE << endl;
-			cout << "numberOfAdditionalFeatures = " << OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM << endl;
-			cout << "numberOfNearestFeatures = " << numberOfNearestFeatures << endl;
-			*/
-			#endif
 
 			ORfeature* firstFeatureInNearestFeatureList = new ORfeature();
 			//generateNearestFeaturesList(firstFeatureInNearestFeatureList, numberOfNearestFeatures);
@@ -711,17 +665,6 @@ bool ORoperationsClass::generatePolygonListUsingFeatureListLocalised(const int i
 								SHAREDvector.copyVectors(&(currentFeatureInNearestFeatureList->pointNonWorldCoord), &(currentFeatureInList2->pointNonWorldCoord));
 								foundASpot = true;
 
-								#ifdef OR_DEBUG
-								/*
-								cout << "ADDING NEAREST FEATURE:" << endl;
-								cout << "currentFeatureInNearestFeatureList->point.x = " << currentFeatureInNearestFeatureList->point.x << endl;
-								cout << "currentFeatureInNearestFeatureList->point.y = " << currentFeatureInNearestFeatureList->point.y << endl;
-								cout << "currentFeatureInNearestFeatureList->point.z = " << currentFeatureInNearestFeatureList->point.z << endl;
-								cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.x = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.x << endl;
-								cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.y = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.y << endl;
-								cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.z = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.z << endl;
-								*/
-								#endif
 							}
 						}
 					}
@@ -735,9 +678,6 @@ bool ORoperationsClass::generatePolygonListUsingFeatureListLocalised(const int i
 				if(!foundASpot)
 				{
 					stillFindingNearestFeatures = false;
-					#ifdef OR_DEBUG
-					//cout << "!foundASpot" << endl;
-					#endif
 				}
 				else
 				{
@@ -748,30 +688,6 @@ bool ORoperationsClass::generatePolygonListUsingFeatureListLocalised(const int i
 				}
 			}
 
-			#ifdef OR_DEBUG
-			/*
-			cout << "DEBUG_NEAREST_FEATURE_FIND:" << endl;
-			cout << "currentFeatureInList1->point.x = " << currentFeatureInList1->point.x << endl;
-			cout << "currentFeatureInList1->point.y = " << currentFeatureInList1->point.y << endl;
-			cout << "currentFeatureInList1->point.z = " << currentFeatureInList1->point.z << endl;
-			cout << "currentFeatureInList1->pointNonWorldCoord.x = " << currentFeatureInList1->pointNonWorldCoord.x << endl;
-			cout << "currentFeatureInList1->pointNonWorldCoord.y = " << currentFeatureInList1->pointNonWorldCoord.y << endl;
-			cout << "currentFeatureInList1->pointNonWorldCoord.z = " << currentFeatureInList1->pointNonWorldCoord.z << endl;
-			currentFeatureInNearestFeatureList = firstFeatureInNearestFeatureList;
-			while(currentFeatureInNearestFeatureList->next != NULL)
-			{
-				cout << "a nearest corner;" << endl;
-				cout << "currentFeatureInNearestFeatureList->point.x = " << currentFeatureInNearestFeatureList->point.x << endl;
-				cout << "currentFeatureInNearestFeatureList->point.y = " << currentFeatureInNearestFeatureList->point.y << endl;
-				cout << "currentFeatureInNearestFeatureList->point.z = " << currentFeatureInNearestFeatureList->point.z << endl;
-				cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.x = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.x << endl;
-				cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.y = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.y << endl;
-				cout << "currentFeatureInNearestFeatureList->pointNonWorldCoord.z = " << currentFeatureInNearestFeatureList->pointNonWorldCoord.z << endl;
-
-				currentFeatureInNearestFeatureList=currentFeatureInNearestFeatureList->next;
-			}
-			*/
-			#endif
 
 			//#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES
 			ORpolygon* backupOfOldCurrentPolygon = currentPolygonInList;
@@ -798,31 +714,6 @@ bool ORoperationsClass::generatePolygonListUsingFeatureListLocalised(const int i
 			cornerIndexList1++;
 		}
 
-		#ifdef OR_DEBUG
-		/*
-		cout << "DEBUG_POLYGON_GENERATION:" << endl;
-		int numSidesPerPolygon = 3;
-		int numberOfPolygons = 0;
-		currentPolygonInList = &(firstPolygonInList[trainZoomIndex]);
-		while(currentPolygonInList->next != NULL)
-		{
-			numberOfPolygons++;
-			cout << "polygon = " << numberOfPolygons << endl;
-			cout << "currentPolygonInList->point1.x = " << currentPolygonInList->point1.x << endl;
-			cout << "currentPolygonInList->point1.y = " << currentPolygonInList->point1.y << endl;
-			cout << "currentPolygonInList->point1.z = " << currentPolygonInList->point1.z << endl;
-			cout << "currentPolygonInList->point2.x = " << currentPolygonInList->point2.x << endl;
-			cout << "currentPolygonInList->point2.y = " << currentPolygonInList->point2.y << endl;
-			cout << "currentPolygonInList->point2.z = " << currentPolygonInList->point2.z << endl;
-			cout << "currentPolygonInList->point3.x = " << currentPolygonInList->point3.x << endl;
-			cout << "currentPolygonInList->point3.y = " << currentPolygonInList->point3.y << endl;
-			cout << "currentPolygonInList->point3.z = " << currentPolygonInList->point3.z << endl;
-
-			currentPolygonInList=currentPolygonInList->next;
-		}
-		cout << "numberOfPolygons = " << numberOfPolygons << endl;
-		*/
-		#endif
 	}
 
 	return result;
@@ -863,20 +754,6 @@ bool ORoperationsClass::generatePolygonListUsingFeatureList(const int imageWidth
 						SHAREDvector.copyVectorRT(&(tempPolygon.point3), &(currentFeatureInList3->point));
 						if(!this->checkPolygonListForCommonPolygon(&tempPolygon, firstPolygonInList))
 						{
-							#ifdef OR_DEBUG
-							/*
-							cout << "new poly added: " << endl;
-							cout << "currentFeatureInList1->point.x = " <<  currentFeatureInList1->point.x << endl;
-							cout << "currentFeatureInList1->point.y = " <<  currentFeatureInList1->point.y << endl;
-							cout << "currentFeatureInList1->point.z = " <<  currentFeatureInList1->point.z << endl;
-							cout << "currentFeatureInList2->point.x = " <<  currentFeatureInList2->point.x << endl;
-							cout << "currentFeatureInList2->point.y = " <<  currentFeatureInList2->point.y << endl;
-							cout << "currentFeatureInList2->point.z = " <<  currentFeatureInList2->point.z << endl;
-							cout << "currentFeatureInList3->point.x = " <<  currentFeatureInList3->point.x << endl;
-							cout << "currentFeatureInList3->point.y = " <<  currentFeatureInList3->point.y << endl;
-							cout << "currentFeatureInList3->point.z = " <<  currentFeatureInList3->point.z << endl;
-							*/
-							#endif
 
 							SHAREDvector.copyVectorRT(&(currentPolygonInList->point1), &(currentFeatureInList1->point));
 							SHAREDvector.copyVectorRT(&(currentPolygonInList->point2), &(currentFeatureInList2->point));
@@ -899,19 +776,6 @@ bool ORoperationsClass::generatePolygonListUsingFeatureList(const int imageWidth
 			cornerIndexList1++;
 		}
 
-		#ifdef OR_DEBUG
-		/*
-		int numSidesPerPolygon = 3;
-		int numberOfPolygons = 0;
-		currentPolygonInList = &(firstPolygonInList[trainZoomIndex]);
-		while(currentPolygonInList->next != NULL)
-		{
-			numberOfPolygons++;
-			currentPolygonInList=currentPolygonInList->next;
-		}
-		cout << "numberOfPolygons = " << numberOfPolygons << endl;
-		*/
-		#endif
 	}
 
 	return result;

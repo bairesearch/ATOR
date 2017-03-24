@@ -25,7 +25,7 @@
  * File Name: ATORTHimageCategorisationNN.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j2a 17-January-2017
+ * Project Version: 3k2a 21-March-2017
  * Test Harness for OR Image Categorisation NN method (not yet implemented)
  *******************************************************************************/
 
@@ -217,9 +217,6 @@ int ORTHimageCategorisationNN()
 				imageFileName = currentMatchInList->fileName2;
 			}
 
-			#ifdef OR_DEBUG
-			//cout << "\timageFileName = " << imageFileName << endl;
-			#endif
 
 			#ifdef OR_IMAGE_CATEGORISTION_NN_USE_SMALL_IMAGES
 			string imageFileNameSmall = imageFileName + ".small.ppm";
@@ -229,9 +226,6 @@ int ORTHimageCategorisationNN()
 			int resizePercentage = 100/smallImageRatio;
 			char resizePercentageString[10];
 			resizePercentageString = convertIntToString(resizePercentage);
-			#ifdef OR_DEBUG
-			//cout << "resizePercentageString = " << resizePercentageString << endl;
-			#endif
 
 			convertImageToSmallImageCommand = convertImageToSmallImageCommand + "convert " + "-depth 8 -resize '" + resizePercentageString + "%' " + imageFileName + " " + imageFileNameSmall;
 			system(convertImageToSmallImageCommand.c_str());
@@ -275,32 +269,7 @@ int ORTHimageCategorisationNN()
 
 			for(int nn=0; nn<OR_IMAGE_CATEGORISTION_NN_NUMBER_NEURAL_NETWORKS; nn++)
 			{
-				#ifdef OR_DEBUG
-				/*
-				if(nn == 0)
-				{
-					cout << "\t\tnn == 0 experience is as follows;" << endl;
-					ANNexperienceInput* currentExperienceInputInExperience = currentExperience->firstExperienceInput;
-					for(long i = 0; i < numberOfInputNeurons; i++)
-					{
-						cout << "currentExperienceInputInExperience->inputValue = " << currentExperienceInputInExperience->inputValue << endl;
-						currentExperienceInputInExperience = currentExperienceInputInExperience->next;
-					}
-				}
-				*/
-				#endif
 
-				#ifdef DEBUG_TH_OR_IMAGE_CATEGORISTION_NN_4
-				if(nn == 0)
-				{
-					cout << "\t\tnn == 0 experience is as follows;" << endl;
-					debugPrintNNOutputs = true;
-				}
-				else
-				{
-					debugPrintNNOutputs = false;
-				}
-				#endif
 
 				currentExperience->classTargetValue = OR_IMAGE_CATEGORISTION_NN_OBJECT_DECISION;
 
@@ -342,18 +311,12 @@ int ORTHimageCategorisationNN()
 						bitArrayIndex++;
 					}
 				}
-				#ifdef OR_DEBUG
-				//cout << "bitArrayIndex = " << bitArrayIndex << endl;
-				#endif
 
 				for(int i=0; i<COMPILE_TH_OR_IMAGE_CATEGORISTION_NN_USE_MULTI_BIT_OUTPUT_PER_NET_NUM_BITS; i++)
 				{
 					bool bitValue = bitArray[i];
 					if(indexChar == 8)
 					{
-						#ifdef OR_DEBUG
-						//cout << "binaryConvertedToChar = " << binaryConvertedToChar << endl;
-						#endif
 						indexChar = 0;
 						categorisationValueAsString[categorisationValueAsStringIndex] = binaryConvertedToChar;
 						categorisationValueAsStringIndex++;
@@ -379,54 +342,24 @@ int ORTHimageCategorisationNN()
 							// orig version;
 							double experienceBackPropagationPassError = calculateExperienceErrorForHypotheticalDecision(firstInputNeuronInNetwork[nn], firstOutputNeuronInNetwork[nn], numberOfInputNeurons, numberOfOutputNeurons, currentExperience);
 
-							#ifdef DEBUG_TH_OR_IMAGE_CATEGORISTION_NN_4
-							if(nn == 0)
-							{
-								debugPrintNNOutputs = false;
-							}
-							#endif
-							#ifdef OR_DEBUG
-							//cout << "experienceBackPropagationPassError = " << experienceBackPropagationPassError << endl;
-							#endif
 							currentExperience->classTargetValue = OR_IMAGE_CATEGORISTION_NN_OBJECT_DECISION_ALTERNATE;
 
 
 							double experienceBackPropagationPassErrorAlternateDecision = calculateExperienceErrorForHypotheticalDecision(firstInputNeuronInNetwork[nn], firstOutputNeuronInNetwork[nn], numberOfInputNeurons, numberOfOutputNeurons, currentExperience);
 
-							#ifdef OR_DEBUG
-							//cout << "experienceBackPropagationPassErrorAlternateDecision = " << experienceBackPropagationPassErrorAlternateDecision << endl;
-							/*
-							if(nn == 0)
-							{
-								cout << "\t\tnn == 0 errors are as follows;" << endl;
-								ANNexperienceInput* currentExperienceInputInExperience = currentExperience->firstExperienceInput;
-								cout << "experienceBackPropagationPassError1 = " << experienceBackPropagationPassError << endl;
-								cout << "experienceBackPropagationPassError2 = " << experienceBackPropagationPassErrorAlternateDecision << endl;
-							}
-							*/
-							#endif
 
 							bool bitValue;
 							if(experienceBackPropagationPassError < experienceBackPropagationPassErrorAlternateDecision)
 							{
-								#ifdef OR_DEBUG
-								//cout << "bit = 1, nn = " << nn << endl;
-								#endif
 								bitValue = 1;
 							}
 							else
 							{
-								#ifdef OR_DEBUG
-								//cout << "bit = 0, nn = " << nn << endl;
-								#endif
 								bitValue = 0;
 							}
 
 							if(indexChar == 8)
 							{
-								#ifdef OR_DEBUG
-								//cout << "binaryConvertedToChar = " << binaryConvertedToChar << endl;
-								#endif
 								indexChar = 0;
 								categorisationValueAsString[categorisationValueAsStringIndex] = binaryConvertedToChar;
 								categorisationValueAsStringIndex++;
@@ -451,9 +384,6 @@ int ORTHimageCategorisationNN()
 
 			}
 
-			#ifdef OR_DEBUG
-			//cout << "categorisationValue = " << categorisationValue << endl;
-			#endif
 
 			if(m == 0)
 			{
@@ -629,9 +559,6 @@ bool generatePixelMapExperienceFromImage(string imageFileName, ANNexperience* cu
 
 	//3. load pixmap into RAM objectImage from generated pixmap
 	pixmap* objectImage;
-	#ifdef DEBUG_TH_OR_IMAGE_CATEGORISTION_NN_3
-	cout << "image file being loaded = " << charstarrayImageFileName << endl;
-	#endif
 	objectImage = loadPPM(imageFileName);
 
 	//4. produce contrast map from pixmap image
@@ -670,21 +597,6 @@ bool generatePixelMapExperienceFromImage(string imageFileName, ANNexperience* cu
 	#endif
 
 	//#define DEBUG_ANN_OBJECT_RECOGNITION_EXPERIENCES_OUTPUT_ALL_MAPS
-	#ifdef DEBUG_ANN_OBJECT_RECOGNITION_EXPERIENCES_OUTPUT_ALL_MAPS
-	string imageFileNameStart = "";
-	imageFileNameStart = charstarrayImageFileName;
-	string PPMFileNameLuminosity = (imageFileNameStart) + LUMINOSITY_MAP_PPM_EXTENSION;
-	generatePixmapFromLuminosityMap(PPMFileNameLuminosity, objectImage->wide, objectImage->high, luminosityMap);
-
-	string PPMFileNameContrast = (imageFileNameStart) + LUMINOSITY_CONTRAST_MAP_PPM_EXTENSION;
-	generatePixmapFromLuminosityContrastMap(PPMFileNameContrast, objectImage->wide, objectImage->high, luminosityContrastMap);
-
-	string PPMFileNameLuminosityBoolean = (imageFileNameStart) + LUMINOSITY_BOOLEAN_MAP_PPM_EXTENSION;
-	generatePixmapFromBooleanMap(PPMFileNameLuminosityBoolean, objectImage->wide, objectImage->high, luminosityBooleanMap);
-
-	string PPMFileNameContrastBoolean = (imageFileNameStart) + LUMINOSITY_CONTRAST_BOOLEAN_MAP_PPM_EXTENSION;
-	generatePixmapFromBooleanMap(PPMFileNameContrastBoolean, objectImage->wide, objectImage->high, luminosityContrastBooleanMap);
-	#endif
 
 	//memory clean up
 
@@ -759,10 +671,6 @@ void createImageFileNameMatchListFromMatchFile(string fileName, ORfileNameMatch*
 				currentMatchInList->fileName1 = objectName1String;
 				currentMatchInList->fileName2 = objectName2String;
 
-				#ifdef OR_DEBUG
-				//cout << "objectName1String = " << objectName1String << endl;
-				//cout << "objectName2String = " << objectName2String << endl;
-				#endif
 
 				ORfileNameMatch* newMatch = new ORfileNameMatch();
 				currentMatchInList->next = newMatch;

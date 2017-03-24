@@ -25,7 +25,7 @@
  * File Name: ATORTHimageCategorisationNN.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j2a 17-January-2017
+ * Project Version: 3k2a 21-March-2017
  * Test Harness for OR Image Categorisation NN method (not yet implemented)
  *******************************************************************************/
 
@@ -107,9 +107,7 @@ unique combinations)
 #define OR_IMAGE_CATEGORISTION_NN_USE_DCT_EXPERIENCE (2)
 #define OR_IMAGE_CATEGORISTION_NN_USE_PIXMAP_EXPERIENCE (3)
 
-#ifdef DEBUG_TH_OR_IMAGE_CATEGORISTION_NN
-	#define OR_IMAGE_CATEGORISTION_NN_NUMBER_NEURAL_NETWORKS (32)
-#else
+#ifndef DEBUG_TH_OR_IMAGE_CATEGORISTION_NN
 	#define OR_IMAGE_CATEGORISTION_NN_NUMBER_NEURAL_NETWORKS (64)
 #endif
 

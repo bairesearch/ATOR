@@ -25,7 +25,7 @@
  * File Name: ATORpolygonList.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j2a 17-January-2017
+ * Project Version: 3k2a 21-March-2017
  *
  *******************************************************************************/
 
@@ -144,7 +144,7 @@ ORfeature::ORfeature(void)
 	pointTransformed.y = 0.0;
 	pointTransformed.z = 0.0;
 
-	#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
+	#ifdef VERBOSE_OR_OUTPUT_GEO_COORDINATES
 	matchFound = false;
 	#endif
 
@@ -610,9 +610,6 @@ void ORpolygonListClass::calculateMeshPointInterpixelNormalContrast(ORmeshPoint*
 
 	for(int y=0; y<=1; y++)
 	{
-		#ifdef OR_DEBUG
-		//cout << "y = " << y << endl;
-		#endif
 		int q;
 		q = qMapping[0][y];
 		vec* interpixelNormalValue = &(meshPoint->adjacentMeshPoint[q]->interpixelMeshPoint->point);
@@ -628,9 +625,6 @@ void ORpolygonListClass::calculateMeshPointInterpixelNormalContrast(ORmeshPoint*
 
 	for(int x=0; x<=1; x++)
 	{
-		#ifdef OR_DEBUG
-		//cout << "x = " << x << endl;
-		#endif
 		int q;
 		q = qMapping[x][0];
 		vec* interpixelNormalValue = &(meshPoint->adjacentMeshPoint[q]->interpixelMeshPoint->point);
@@ -674,9 +668,6 @@ void ORpolygonListClass::calculateMeshPointInterpixelLuminosityContrast(ORmeshPo
 
 	for(int y=0; y<=1; y++)
 	{
-		#ifdef OR_DEBUG
-		//cout << "y = " << y << endl;
-		#endif
 		int q;
 		q = qMapping[0][y];
 		double pixelLuminosityMeasurement = meshPoint->adjacentMeshPoint[q]->luminosity;
@@ -690,9 +681,6 @@ void ORpolygonListClass::calculateMeshPointInterpixelLuminosityContrast(ORmeshPo
 
 	for(int x=0; x<=1; x++)
 	{
-		#ifdef OR_DEBUG
-		//cout << "x = " << x << endl;
-		#endif
 		int q;
 		q = qMapping[x][0];
 		double pixelLuminosityMeasurement = meshPoint->adjacentMeshPoint[q]->luminosity;
@@ -941,15 +929,8 @@ void ORpolygonListClass::calculateMeshPointLuminosityContrast(ORmeshPoint* meshP
 		double currentContrastLevel = SHAREDvars.absDouble(centrePixelPositionInLummapLuminosity - kernelCurrentPixelPositionInLummapLuminosity);
 		contrastLevel = SHAREDvars.maxDouble(contrastLevel, currentContrastLevel);
 
-		#ifdef OR_DEBUG
-		//cout << "contrastLevel = " << contrastLevel << endl;
-		//cout << "currentContrastLevel = " << currentContrastLevel << endl;
-		#endif
 	}
 	meshPoint->luminosityContrast = contrastLevel;
-	#ifdef OR_DEBUG
-	//cout << "meshPoint->luminosityContrast = " << meshPoint->luminosityContrast << endl;
-	#endif
 }
 
 

@@ -25,7 +25,7 @@
  * File Name: ATORdatabaseFileIO.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j2a 17-January-2017
+ * Project Version: 3k2a 21-March-2017
  *
  *******************************************************************************/
 
@@ -53,9 +53,6 @@ bool ORdatabaseFileIOClass::DBdirectoryExists(string* folderName)
 	bool folderExists = SHAREDvars.directoryExists(folderName);
 	if(folderExists)
 	{
-		#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
-		cout << "\tdirectoryExists: folderName = " <<* folderName << endl;
-		#endif
 	}
 
 	return folderExists;
@@ -63,9 +60,6 @@ bool ORdatabaseFileIOClass::DBdirectoryExists(string* folderName)
 
 bool ORdatabaseFileIOClass::DBcreateDirectory(string* folderName)
 {
-	#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
-	cout << "\tDBcreateDirectory: folderName = " <<* folderName << endl;
-	#endif
 	bool result = true;
 
 	SHAREDvars.createDirectory(folderName);
@@ -84,9 +78,6 @@ bool ORdatabaseFileIOClass::DBcreateDirectory(string* folderName)
 bool ORdatabaseFileIOClass::DBsetCurrentDirectory(string* folderName)
 {
 	bool result = true;
-	#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
-	cout << "\tDBsetCurrentDirectory: folderName = " <<* folderName << endl;
-	#endif
 	SHAREDvars.setCurrentDirectory(folderName);
 	/*removed debug support for Windows;
 	#ifndef LINUX
@@ -102,9 +93,6 @@ bool ORdatabaseFileIOClass::DBsetCurrentDirectory(string* folderName)
 bool ORdatabaseFileIOClass::checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string* folderName)
 {
 	bool result = true;
-	#ifdef GIA_DATABASE_DEBUG_FILESYSTEM_IO
-	cout << "checkIfFolderExistsAndIfNotMakeAndSetAsCurrent: folderName = " <<* folderName << endl;
-	#endif
 	if(!this->DBdirectoryExists(folderName))
 	{
 		this->DBcreateDirectory(folderName);
@@ -123,7 +111,7 @@ string ORdatabaseFileIOClass::DBgenerateServerDatabaseName(const string* objectN
 	}
 	else
 	{
-		#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
+		#ifdef OR_DATABASE_VERBOSE_FILESYSTEM_IO
 		//cout << "entityName = " <<* entityName << endl;
 		#endif
 
@@ -137,7 +125,7 @@ string ORdatabaseFileIOClass::DBgenerateServerDatabaseName(const string* objectN
 		}
 
 		int entityFirstCharacterIndex = entityFirstCharacter - ASCII_TABLE_INDEX_OF_a;
-		#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
+		#ifdef OR_DATABASE_VERBOSE_FILESYSTEM_IO
 		//cout << "entityFirstCharacterIndex = " << entityFirstCharacterIndex << endl;
 		#endif
 		string serverName = serverNameArray[entityFirstCharacterIndex]; 	//this could be a more complex algorithm; eg serverName = (string)"/mnt/" + serverNameArray[entityFirstCharacterIndex]
@@ -146,7 +134,7 @@ string ORdatabaseFileIOClass::DBgenerateServerDatabaseName(const string* objectN
 		databaseName = databaseFolderName;
 		#endif
 	}
-	#ifdef OR_DATABASE_DEBUG
+	#ifdef OR_DATABASE_VERBOSE
 	cout << "databaseName = " << databaseName << endl;
 	#endif
 
@@ -161,7 +149,7 @@ string ORdatabaseFileIOClass::DBgenerateFolderName(string* objectName, const boo
 	string databaseName = this->DBgenerateServerDatabaseName(objectName, trainOrTest);
 	string fileName = databaseName;
 
-	#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
+	#ifdef OR_DATABASE_VERBOSE_FILESYSTEM_IO
 	cout << "1fileName = " << fileName << endl;
 	#endif
 	this->DBsetCurrentDirectory(&fileName);
@@ -174,7 +162,7 @@ string ORdatabaseFileIOClass::DBgenerateFolderName(string* objectName, const boo
 	}
 	else
 	{
-		#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
+		#ifdef OR_DATABASE_VERBOSE_FILESYSTEM_IO
 		cout << "*objectName = " <<* objectName << endl;
 		#endif
 
@@ -201,12 +189,12 @@ string ORdatabaseFileIOClass::DBgenerateFolderName(string* objectName, const boo
 		fileName = fileName +* objectName + "/";
 		this->checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(objectName);
 
-		#ifdef OR_DATABASE_DEBUG_FILESYSTEM_IO
+		#ifdef OR_DATABASE_VERBOSE_FILESYSTEM_IO
 		cout << "2fileName = " << fileName << endl;
 		#endif
 	}
 
-	#ifdef OR_DATABASE_DEBUG
+	#ifdef OR_DATABASE_VERBOSE
 	cout << "fileName = " << fileName << endl;
 	#endif
 
@@ -260,7 +248,7 @@ bool ORdatabaseFileIOClass::compareFeaturesListForMatch(ORfeature* testFirstFeat
 					if(SHAREDvector.compareVectorsArbitraryError(&(testcurrentFeatureInNearestFeatureList->pointTransformed), &(traincurrentFeatureInNearestFeatureList->pointTransformed), requiredMaxError))
 					{
 						numberOfFeatureGeoMatches++;
-						#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
+						#ifdef VERBOSE_OR_OUTPUT_GEO_COORDINATES
 						testcurrentFeatureInNearestFeatureList->matchFound = true;
 						traincurrentFeatureInNearestFeatureList->matchFound = true;
 						#endif
@@ -270,19 +258,9 @@ bool ORdatabaseFileIOClass::compareFeaturesListForMatch(ORfeature* testFirstFeat
 					int trainyBin = ORdatabaseSQL.determineGeoBinY(traincurrentFeatureInNearestFeatureList->pointTransformed.y);
 					int testxBin = ORdatabaseSQL.determineGeoBinX(testcurrentFeatureInNearestFeatureList->pointTransformed.x);
 					int testyBin = ORdatabaseSQL.determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);
-					#ifdef OR_DEBUG
-					//cout << "\ntrainxBin = " << trainxBin << endl;
-					//cout << "trainyBin = " << trainyBin << endl;
-					//cout << "testxBin = " << testxBin << endl;
-					//cout << "testyBin = " << testyBin << endl;
-					//cout << testxBin << "\t" << testyBin << "\t" << trainxBin << "\t" << trainyBin << endl;
-					#endif
 					if((trainxBin == testxBin) && (trainyBin == testyBin))
 					{
 						numberOfFeatureGeoBinnedExactMatches++;
-						#ifdef OR_DEBUG
-						//cout << "\tnumberOfFeatureGeoBinnedExactMatches = " << numberOfFeatureGeoBinnedExactMatches << endl;
-						#endif
 					}
 				}
 
@@ -369,7 +347,7 @@ void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fil
 		bool readingtransformedPointX = false;
 		bool readingtransformedPointY = false;
 		bool readingtransformedPointZ = false;
-		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 		bool readingPointX = false;
 		bool readingPointY = false;
 		bool readingPointZ = false;
@@ -390,7 +368,7 @@ void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fil
 		string transformedPointXString = "";
 		string transformedPointYString = "";
 		string transformedPointZString = "";
-		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 		string PointXString = "";
 		string PointYString = "";
 		string PointZString = "";
@@ -512,7 +490,7 @@ void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fil
 			{
 				transformedPointYString = transformedPointYString + c;
 			}
-		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 			else if((readingtransformedPointZ) && (c == CHAR_SPACE))
 			{
 				readingtransformedPointZ = false;
@@ -541,41 +519,15 @@ void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fil
 					currentFeatureInList->pointTransformed.x = (SHAREDvars.convertStringToDouble(transformedPointXString));
 					currentFeatureInList->pointTransformed.y = (SHAREDvars.convertStringToDouble(transformedPointYString));
 					currentFeatureInList->pointTransformed.z = (SHAREDvars.convertStringToDouble(transformedPointZString));
-					#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+					#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 					currentFeatureInList->point.x = (SHAREDvars.convertStringToDouble(PointXString));
 					currentFeatureInList->point.y = (SHAREDvars.convertStringToDouble(PointYString));
 					currentFeatureInList->point.z = (SHAREDvars.convertStringToDouble(PointZString));
 					#endif
 
 
-					#ifdef OR_DEBUG
-					/*
-					cout << "\tfeature added to list;" << endl;
-					cout << "objectNameString = " << objectNameString << endl;
-					cout << "trainOrTestString = " << trainOrTestString << endl;
-					cout << "viewIndexString = " << viewIndexString << endl;
-					cout << "zoomIndexString = " << zoomIndexString << endl;
-					cout << "polyIndexString = " << polyIndexString << endl;
-					cout << "sideIndexString = " << sideIndexString << endl;
-					cout << "OTpointIndexString = " << OTpointIndexString << endl;
-					cout << "transformedPointXString = " << transformedPointXString << endl;
-					cout << "transformedPointYString = " << transformedPointYString << endl;
-					cout << "transformedPointZString = " << transformedPointZString << endl;
-					cout << "currentFeatureInList->objectName = " << currentFeatureInList->objectName << endl;
-					cout << "currentFeatureInList->trainOrTest = " << currentFeatureInList->trainOrTest << endl;
-					cout << "currentFeatureInList->viewIndex = " << currentFeatureInList->viewIndex << endl;
-					cout << "currentFeatureInList->polyIndex = " << currentFeatureInList->polyIndex << endl;
-					cout << "currentFeatureInList->sideIndex = " << currentFeatureInList->sideIndex << endl;
-					cout << "currentFeatureInList->pointTransformed.x = " << currentFeatureInList->pointTransformed.x << endl;
-					cout << "currentFeatureInList->pointTransformed.y = " << currentFeatureInList->pointTransformed.y << endl;
-					cout << "currentFeatureInList->pointTransformed.z = " << currentFeatureInList->pointTransformed.z << endl;
-					#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-					cout << "currentFeatureInList->OTpointIndex = " << currentFeatureInList->OTpointIndex << endl;
-					#endif
-					*/
-					#endif
 
-					#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
+					#ifdef VERBOSE_OR_OUTPUT_GEO_COORDINATES
 					currentFeatureInList->matchFound = false;
 					#endif
 
@@ -605,14 +557,14 @@ void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fil
 				transformedPointXString = "";
 				transformedPointYString = "";
 				transformedPointZString = "";
-				#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+				#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 				PointXString = "";
 				PointYString = "";
 				PointZString = "";
 				#endif
 
 				lineCount++;
-				#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+				#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 				readingPointZ = false;
 				#else
 				readingtransformedPointZ = false;
@@ -623,7 +575,7 @@ void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fil
 			{
 				transformedPointZString = transformedPointZString + c;
 			}
-		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 			else if((readingPointX) && (c == CHAR_SPACE))
 			{
 				readingPointX = false;
@@ -683,7 +635,7 @@ void ORdatabaseFileIOClass::createTransformedFeaturesFile(const ORfeature* first
 		#endif
 		string trainOrTestString = SHAREDvars.convertIntToString(((int)trainOrTest));
 		string transformedpositionCoordinatesString = LDreferenceManipulation.convertPositionCoordinatesToString(&(currentFeature->pointTransformed));
-		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 		string positionCoordinatesString = LDreferenceManipulation.convertPositionCoordinatesToString(&(currentFeature->point));
 		#endif
 
@@ -697,7 +649,7 @@ void ORdatabaseFileIOClass::createTransformedFeaturesFile(const ORfeature* first
 		string lineText = objectName + " " + trainOrTestString + " " + viewIndexString + " " + zoomIndexString + " " + polygonIndexString + " " + sideIndexString + " " + transformedpositionCoordinatesString;
 		#endif
 
-		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 		lineText = lineText + positionCoordinatesString;
 		#endif
 

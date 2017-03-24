@@ -25,7 +25,7 @@
  * File Name: ATORpixelMaps.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j2a 17-January-2017
+ * Project Version: 3k2a 21-March-2017
  *
  *******************************************************************************/
 
@@ -180,13 +180,6 @@ void ORpixelMapsClass::createPointNormalMapFromPointMap(int imageWidth, const in
 
 			RTpixelMaps.setVectorMapValue(x, y, imageWidth, &meshPointNormal, pointNormalMap);
 
-			#ifdef OR_DEBUG
-			/*
-			cout << "meshPointNormal.x = " << meshPointNormal.x << endl;
-			cout << "meshPointNormal.y = " << meshPointNormal.y << endl;
-			cout << "meshPointNormal.z = " << meshPointNormal.z << endl;
-			*/
-			#endif
 		}
 	}
 }
@@ -680,17 +673,6 @@ double ORpixelMapsClass::calculateContrastLevelWithinKernelWithForegroundDepthCh
 			centrePixelNoHit = true;
 		}
 		#endif
-		#ifdef OR_DEBUG
-		/*
-		cout <<"..." <<endl;
-		cout << "pixelX = " << pixelX << endl;
-		cout << "pixelY = " << pixelY << endl;
-		cout << "pixelX-(kernelWidth/2) = " << pixelX-(kernelWidth/2) << endl;
-		cout << "pixelX+(kernelWidth/2) = " << pixelX+(kernelWidth/2) << endl;
-		cout << "pixelY+(kernelHeight/2) = " << pixelY+(kernelHeight/2) << endl;
-		cout << "pixelY-(kernelHeight/2) = " << pixelY-(kernelHeight/2) << endl;
-		*/
-		#endif
 
 		for(int y = pixelY-(kernelHeight/2); y <= pixelY+(kernelHeight/2); y++)
 		{
@@ -746,11 +728,6 @@ double ORpixelMapsClass::calculateContrastLevelWithinKernelWithForegroundDepthCh
 								#endif
 							}
 
-							#ifdef OR_DEBUG
-							//cout << "kx = " << x-pixelX << endl;
-							//cout << "ky = " << y-pixelY << endl;
-							//cout << "contrastLevel = " << contrastLevel << endl;
-							#endif
 						}
 					}
 				}
@@ -1553,10 +1530,6 @@ double ORpixelMapsClass::calculateDepthGradientContrastValueWithinKernelWRONG(co
 
 					bool foundAMatch = false;
 
-					#ifdef OR_DEBUG
-					//cout << "yDiff  = " << yDiff << endl;
-					//cout << "xDiff  = " << xDiff << endl;
-					#endif
 
 					if(depthGradientSimilarityArray[yDiff*DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_WIDTH_NUMBER_SAMPLES+xDiff] == DEPTH_GRADIENT_SIMILARITY_INDICATOR_UNDEFINED)
 					{
@@ -1579,10 +1552,6 @@ double ORpixelMapsClass::calculateDepthGradientContrastValueWithinKernelWRONG(co
 										int yDiff2 = y2-pixelY+(kernelHeight/(DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_HEIGHT_NUMBER_SAMPLES-1));
 										int xDiff2 = x2-pixelX+(kernelWidth/(DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_WIDTH_NUMBER_SAMPLES-1));
 
-										#ifdef OR_DEBUG
-										//cout << "xDiff2  = " << xDiff2 << endl;
-										//cout << "yDiff2  = " << yDiff2 << endl;
-										#endif
 
 										if(depthGradientSimilarityArray[yDiff2*DEPTH_GRADIENT_CONTRAST_MAP_KERNEL_WIDTH_NUMBER_SAMPLES+xDiff2] == DEPTH_GRADIENT_SIMILARITY_INDICATOR_UNDEFINED)
 										{
@@ -1802,12 +1771,6 @@ void ORpixelMapsClass::createPointNormalContrastBooleanMap(const int imageWidth,
 			double pointNormalContrastVal = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, pointNormalContrastMap);
 			bool pointNormalContrastValPassedThreshold = false;
 
-			#ifdef OR_DEBUG
-			/*
-			cout << "pointNormalContrastVal = " << pointNormalContrastVal << endl;
-			cout << "EDGE_NORMAL_CONTRAST_THRESHOLD = " << EDGE_NORMAL_CONTRAST_THRESHOLD << endl;
-			*/
-			#endif
 
 			if(pointNormalContrastVal > EDGE_NORMAL_CONTRAST_THRESHOLD)
 			{
@@ -1841,10 +1804,6 @@ void ORpixelMapsClass::generateRGBmapFromPointNormalContrastMap(const int imageW
 			col.r = pointNormalContrastValNormalised;
 			col.g = pointNormalContrastValNormalised;
 			col.b = pointNormalContrastValNormalised;
-			#ifdef OR_DEBUG
-			//cout << "pointNormalContrastVal = " << pointNormalContrastVal << endl;
-			//cout << "pointNormalContrastVal col.r = " << (int)(col.r) << endl;
-			#endif
 
 			RTpixelMaps.setRGBMapValues(x, y, imageWidth, &col, rgbMap);
 		}

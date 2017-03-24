@@ -25,7 +25,7 @@
  * File Name: ATORdatabaseSQL.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j2a 17-January-2017
+ * Project Version: 3k2a 21-March-2017
  *
  *******************************************************************************/
 
@@ -277,9 +277,6 @@ void ORdatabaseSQLClass::createFeatureListUsingDatabaseQuery(ORfeature* firstFea
 	}
 	else
 	{
-		#ifdef OR_DEBUG
-		//cout << "sqlDatabaseTestTableName = " << sqlDatabaseTestTableName << endl;
-		#endif
 		sqlSelectCommandP7 = sqlSelectCommandP7 + " WHERE (" + OR_MYSQL_FIELD_NAME_OBJECTNAME + " = '" + testObjectName + "'";	//only query train objects
 		sqlSelectCommandP8 = sqlSelectCommandP8 + " AND " + OR_MYSQL_FIELD_NAME_TRAINORTESTNUM + " = " + OR_MYSQL_FIELD_NAME_TRAINORTESTNUM_TEST;
 		sqlSelectCommandP9 = sqlSelectCommandP9 + " AND " + OR_MYSQL_FIELD_NAME_VIEWNUM + " = " + testviewIndexString;
@@ -292,15 +289,9 @@ void ORdatabaseSQLClass::createFeatureListUsingDatabaseQuery(ORfeature* firstFea
 	sqlSelectCommandP2 = this->createSQLSelectRowCommand(numFeatures);
 
 	sqlSelectCommand = sqlSelectCommandP1 + sqlSelectCommandP2 + sqlSelectCommandP3 + sqlSelectCommandP4 + sqlSelectCommandP5 + sqlSelectCommandP6 + sqlSelectCommandP7 + sqlSelectCommandP8 + sqlSelectCommandP9 + sqlSelectCommandP10 + sqlSelectCommandP11 + sqlSelectCommandP12;
-	#ifdef OR_SQL_DATABASE_DEBUG
-	cout << "sqlSelectCommand = " << sqlSelectCommand << endl;
-	#endif
 	char* sqlSelectCommandCharStar = const_cast<char*>(sqlSelectCommand.c_str());
 
 	query_state = mysql_query(connection, sqlSelectCommandCharStar);
-	#ifdef OR_DEBUG
-	//cout << "select qeuery performed" << endl;
-	#endif
 	if (query_state !=0)
 	{
 		cout << mysql_error(connection) << endl;
@@ -316,16 +307,6 @@ void ORdatabaseSQLClass::createFeatureListUsingDatabaseQuery(ORfeature* firstFea
 			if(tableIndex > 1)
 			{
 				cout << "error: multiple identical test snapshots detected" << endl;
-				#ifdef OR_DEBUG
-				/*
-				cout << "testObjectName = " << testObjectName << endl;
-				cout << "OR_MYSQL_FIELD_NAME_TRAINORTESTNUM_TEST = " << OR_MYSQL_FIELD_NAME_TRAINORTESTNUM_TEST << endl;
-				cout << "testviewIndexString = " << testviewIndexString << endl;
-				cout << "testzoomIndexString = " << testzoomIndexString << endl;
-				cout << "testpolygonIndexString = " << testpolygonIndexString << endl;
-				cout << "testsideIndexString = " << testsideIndexString << endl;
-				*/
-				#endif
 				exit(EXIT_ERROR);
 
 			}
@@ -412,27 +393,11 @@ void ORdatabaseSQLClass::createFeatureContainerListUsingSQLDatabaseDecisionTreeT
 	}
 #endif
 
-	#ifdef OR_DEBUG
-	/*
-	for(int q=0;q<sqlSelectCommandCharStarIndex;q++)
-	{
-		cout << sqlSelectCommandCharStar[q] << endl;
-	}
-	*/
-	#endif
 
-	#ifdef OR_SQL_DATABASE_DEBUG
-	cout << "sqlSelectCommandCharStar = " << sqlSelectCommandCharStar << endl;
-	#else
-	#ifdef OR_SQL_DATABASE_DEBUG_COMPARISON_ONLY
-	cout << "sqlSelectCommandCharStar = " << sqlSelectCommandCharStar << endl;
-	#endif
+	#ifndef OR_SQL_DATABASE_DEBUG
 	#endif
 
 	query_state = mysql_real_query(connection, sqlSelectCommandCharStar, sqlSelectCommandCharStarIndex);
-	#ifdef OR_DEBUG
-	//cout << "select qeuery performed" << endl;
-	#endif
 	if (query_state !=0)
 	{
 		cout << mysql_error(connection) << endl;
@@ -492,16 +457,7 @@ void ORdatabaseSQLClass::insertSnapshotIDreferenceIntoSQLdatabaseDecisionTree(co
 
 	//must be done this way as decisionTreeBinText may contain null characters
 
-	#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DO_NOT_USE_REAL_SQL_QUERY
-	//cout << "decisionTreeBinTextLength = " << decisionTreeBinTextLength << endl;
-	for(int q=0; q <decisionTreeBinTextLength; q++)
-	{
-		//cout << "i = " << i << endl;
-	 	//cout << "sqlInsertCommandCharStar[i] = " << sqlInsertCommandCharStar[i] << endl;
-		sqlInsertCommandCharStar[i] = decisionTreeBinText[q];
-		i++;
-	}
-	#else
+	#ifndef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DO_NOT_USE_REAL_SQL_QUERY
 	sqlInsertCommandCharStar[i] = '\'';
 	i++;
 	i = i + mysql_real_escape_string(&mysql, &(sqlInsertCommandCharStar[i]), decisionTreeBinText, decisionTreeBinTextLength);
@@ -513,19 +469,7 @@ void ORdatabaseSQLClass::insertSnapshotIDreferenceIntoSQLdatabaseDecisionTree(co
 	sqlInsertCommandCharStar[i] = ';';
 	i++;
 
-	#ifdef OR_DEBUG
-	/*
-	for(int q=0;q<i;q++)
-	{
-		cout << "c = " << sqlInsertCommandCharStar[q] << endl;
-	}
-	*/
-	#endif
 
-	#ifdef OR_SQL_DATABASE_DEBUG
-	cout << "sqlInsertCommandCharStar = " << sqlInsertCommandCharStar << endl;
-	//exit(EXIT_ERROR);
-	#endif
 	LDmysql.performSQLrealInsertQuery(sqlInsertCommandCharStar, i);
 	*databaseTableSize = *databaseTableSize + 1;
 }
@@ -554,10 +498,6 @@ void ORdatabaseSQLClass::insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTre
 		*decisionTreeSQLmultipleRowInsertQueryLength = *decisionTreeSQLmultipleRowInsertQueryLength + 1;
 	}
 
-	#ifdef OR_SQL_DATABASE_DEBUG
-	//cout << "insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart{}" << endl;
-	//cout << "sqlInsertCommand = " << sqlInsertCommand << endl;
-	#endif
 
 }
 
@@ -582,14 +522,7 @@ void ORdatabaseSQLClass::insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIte
 
 	//must be done this way as decisionTreeBinText may contain null characters
 
-	#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DO_NOT_USE_REAL_SQL_QUERY
-	//cout << "decisionTreeBinTextLength = " << decisionTreeBinTextLength << endl;
-	for(int q=0; q <decisionTreeBinTextLength; q++)
-	{
-		sqlInsertCommandCharStar[i] = decisionTreeBinText[q];
-		i++;
-	}
-	#else
+	#ifndef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DO_NOT_USE_REAL_SQL_QUERY
 	sqlInsertCommandCharStar[i] = '\'';
 	i++;
 	i = i + mysql_real_escape_string(&mysql, &(sqlInsertCommandCharStar[i]), decisionTreeBinText, decisionTreeBinTextLength);
@@ -606,10 +539,6 @@ void ORdatabaseSQLClass::insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIte
 		decisionTreeMultipleRowInsertQueryTextCharStar[*decisionTreeSQLmultipleRowInsertQueryLength] = sqlInsertCommandCharStar[j];
 		*decisionTreeSQLmultipleRowInsertQueryLength = *decisionTreeSQLmultipleRowInsertQueryLength + 1;
 	}
-	#ifdef OR_SQL_DATABASE_DEBUG
-	//cout << "insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration{}" << endl;
-	//cout << "decisionTreeMultipleRowInsertQueryTextCharStar = " << decisionTreeMultipleRowInsertQueryTextCharStar << endl;
-	#endif
 
 	*databaseTableSize = *databaseTableSize + 1;
 }
@@ -757,14 +686,7 @@ void ORdatabaseSQLClass::createSnapshotIDreferenceListUsingSQLdatabaseDecisionTr
 
 	//must be done this way as decisionTreeBinText may contain null characters
 
-	#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DO_NOT_USE_REAL_SQL_QUERY
-	//cout << "decisionTreeBinTextLength = " << decisionTreeBinTextLength << endl;
-	for(int q=0; q<decisionTreeBinTextLength; q++)
-	{
-	 	sqlSelectCommandCharStar[i] = decisionTreeBinText[q];
-		i++;
-	}
-	#else
+	#ifndef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DO_NOT_USE_REAL_SQL_QUERY
 	sqlSelectCommandCharStar[i] = '\'';
 	i++;
 	i = i + mysql_real_escape_string(&mysql, &(sqlSelectCommandCharStar[i]), decisionTreeBinText, decisionTreeBinTextLength);
@@ -776,29 +698,11 @@ void ORdatabaseSQLClass::createSnapshotIDreferenceListUsingSQLdatabaseDecisionTr
 	sqlSelectCommandCharStar[i] = ';';
 	i++;
 
-	#ifdef OR_DEBUG
-	/*
-	for(int q=0;q<i;q++)
-	{
-		cout << sqlSelectCommandCharStar[q];
-	}
-	cout << "" << endl;
-	*/
-	#endif
 
-	#ifdef OR_SQL_DATABASE_DEBUG
-	cout << "sqlSelectCommandCharStar = " << sqlSelectCommandCharStar << endl;
-	//exit(EXIT_ERROR);
-	#else
-		#ifdef OR_SQL_DATABASE_DEBUG_COMPARISON_ONLY
-		cout << "sqlSelectCommandCharStar = " << sqlSelectCommandCharStar << endl;
-		#endif
+	#ifndef OR_SQL_DATABASE_DEBUG
 	#endif
 
 	query_state = mysql_real_query(connection, sqlSelectCommandCharStar, i);
-	#ifdef OR_DEBUG
-	//cout << "select qeuery performed" << endl;
-	#endif
 	if (query_state !=0)
 	{
 		cout << mysql_error(connection) << endl;
@@ -836,9 +740,6 @@ void ORdatabaseSQLClass::createSnapshotIDreferenceListUsingSQLdatabaseDecisionTr
 			{
 			#endif
 				currentReferenceInSnapshotIDReferenceList->referenceID = tableID;
-				#ifdef OR_DEBUG
-				//cout << "tableID = " << tableID << endl;
-				#endif
 
 				ORsnapshotIDreferenceList* newReferenceInSnapshotIDReferenceList = new ORsnapshotIDreferenceList();
 				currentReferenceInSnapshotIDReferenceList->next = newReferenceInSnapshotIDReferenceList;
@@ -914,10 +815,6 @@ void ORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequirement
 	unsigned long linearCombination = 0;
 	this->convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(concatonatedSignedDctCoeffArrayRequirement, pBinxRequirement, pBinyRequirement, &linearCombination);
 	string linearCombinationString = SHAREDvars.convertLongToString(linearCombination);
-	#ifdef OR_DEBUG
-	//cout << "linearCombination = " << linearCombination << endl;
-	//cout << "linearCombinationString = " << linearCombinationString << endl;
-	#endif
 	sqlSelectCommandP8 = sqlSelectCommandP8 + " AND " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL + " >= (" + linearCombinationString + " - " + OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK_MAX_DIFF + ")" " AND " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL + " <= (" + linearCombinationString + " + " + OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK_MAX_DIFF + ")";
 	cout << "sqlSelectCommandP8 = " << sqlSelectCommandP8 << endl;
 #else
@@ -950,15 +847,6 @@ void ORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequirement
 		int xBinIndex = 0;
 		sqlSelectCommandP8 = sqlSelectCommandP8 + " AND (";
 		int count = 0;
-		#ifdef OR_DEBUG
-		/*
-		cout << "pBinxRequirement[0] = " << pBinxRequirement[0] << endl;
-		cout << "pBinyRequirement[0] = " << pBinyRequirement[0] << endl;
-		cout << "pBinxRequirement[1] = " << pBinxRequirement[1] << endl;
-		cout << "pBinyRequirement[1] = " << pBinyRequirement[1] << endl;
-		cout << "OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X = " << OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X << endl;
-		*/
-		#endif
 
 		for(int x = pBinxRequirement[0]-(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X/2); x<=pBinxRequirement[0]+(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X/2); x++)
 		{
@@ -1081,16 +969,6 @@ void ORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequirement
 		int gBinMid = (int)normalisedAverageHueDeviationRequirement->g;
 		int bBinMid = (int)normalisedAverageHueDeviationRequirement->b;
 
-		#ifdef OR_DEBUG
-		/*
-		cout << "normalisedAverageHueDeviationRequirement->r = " << (int)normalisedAverageHueDeviationRequirement->r << endl;
-		cout << "normalisedAverageHueDeviationRequirement->g = " << (int)normalisedAverageHueDeviationRequirement->g << endl;
-		cout << "normalisedAverageHueDeviationRequirement->b = " << (int)normalisedAverageHueDeviationRequirement->b << endl;
-		cout << "rBinMid = " << rBinMid << endl;
-		cout << "gBinMid = " << gBinMid << endl;
-		cout << "bBinMid = " << bBinMid << endl;
-		*/
-		#endif
 
 		int rBinMin = rBinMid-1;
 		int rBinMax = rBinMid+1;
@@ -1181,9 +1059,6 @@ void ORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequirement
 			dctCoeffNumNameString = SHAREDvars.convertIntToString(dctCoeffNum);
 
 			int dctCoeffNumVal = int(concatonatedSignedDctCoeffArrayRequirement[dctCoeffNum]);
-			#ifdef OR_DEBUG
-			//cout << "dctCoeffNumVal = " << dctCoeffNumVal << endl;
-			#endif
 			char dctCoeffNumValString[10];
 			dctCoeffNumValString = SHAREDvars.convertIntToString(dctCoeffNumVal);
 
@@ -1193,17 +1068,10 @@ void ORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequirement
 			sqlSelectCommandDCTqueryV3 = sqlSelectCommandDCTqueryV3 + "SELECT " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BINS + dctCoeffNumNameString + ", COUNT(*) FROM " + trainTableName + " WHERE " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BINS + dctCoeffNumNameString + " = " + dctCoeffNumValString;
 
 
-			#ifdef OR_SQL_DATABASE_DEBUG
-			cout << "sqlSelectCommandDCTqueryV3 = " << sqlSelectCommandDCTqueryV3 << endl;
-			//exit(EXIT_ERROR);
-			#endif
 			char* sqlSelectCommandDCTqueryV3CharStar = const_cast<char*>(sqlSelectCommandDCTqueryV3.c_str());
 			long numberOfDCTcomparisons;
 
 			query_state = mysql_query(connection, sqlSelectCommandDCTqueryV3CharStar);
-			#ifdef OR_DEBUG
-			//cout << "select query performed" << endl;
-			#endif
 			if (query_state !=0)
 			{
 				cout << mysql_error(connection) << endl;
@@ -1357,16 +1225,10 @@ void ORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequirement
 					string cellName = normalisedHueDevName + "y" + rgbyNameRequirementString + "x" + rgbxNameRequirementString;
 					string sqlSelectCommandSmallImageComparisonqueryV3 = sqlSelectCommandSmallImageComparisonqueryV3 + "SELECT " cellName + ", COUNT(*) FROM " + OR_MYSQL_TABLE_NAME + " WHERE " + cellName + " = " + rgbValueRequirementString;
 
-					#ifdef OR_SQL_DATABASE_DEBUG
-					cout << "sqlSelectCommandDCTqueryV3 = " << sqlSelectCommandDCTqueryV3 << endl;
-					#endif
 					char* sqlSelectCommandSmallImageComparisonqueryV3CharStar = const_cast<char*>(sqlSelectCommandSmallImageComparisonqueryV3.c_str());
 					long numberOfSmallImagecomparisons;
 
 					query_state = mysql_query(connection, sqlSelectCommandSmallImageComparisonqueryV3CharStar);
-					#ifdef OR_DEBUG
-					//cout << "select qeuery performed" << endl;
-					#endif
 					if (query_state !=0)
 					{
 						cout << mysql_error(connection) << endl;
@@ -1415,16 +1277,10 @@ void ORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequirement
 	//do not extract snapshot images (small or large) from DB at this stage of development
 
 	sqlSelectCommand = sqlSelectCommandP1 + sqlSelectCommandP2 + sqlSelectCommandP3 + sqlSelectCommandP4 + sqlSelectCommandP5 + sqlSelectCommandP6 + sqlSelectCommandP7 + sqlSelectCommandP8 + sqlSelectCommandP9 + sqlSelectCommandP10 + sqlSelectCommandP11 + sqlSelectCommandP12;
-	#ifdef OR_SQL_DATABASE_DEBUG_COMPARISON_ONLY
-	cout << "sqlSelectCommand = " << sqlSelectCommand << endl;
-	#endif
 	char* sqlSelectCommandCharStar = const_cast<char*>(sqlSelectCommand.c_str());
 
 
 	query_state = mysql_query(connection, sqlSelectCommandCharStar);
-	#ifdef OR_DEBUG
-	//cout << "select qeuery performed" << endl;
-	#endif
 	if (query_state !=0)
 	{
 		cout << mysql_error(connection) << endl;
@@ -1486,7 +1342,7 @@ void ORdatabaseSQLClass::addSQLRowDataToFeatureList(const MYSQL_ROW row, ORfeatu
 	char* pointTransformedxCharStar;
 	char* pointTransformedyCharStar;
 	char* pointTransformedzCharStar;
-	#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+	#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 	char* pointxCharStar;
 	char* pointyCharStar;
 	char* pointzCharStar;
@@ -1525,7 +1381,7 @@ void ORdatabaseSQLClass::addSQLRowDataToFeatureList(const MYSQL_ROW row, ORfeatu
 	long pBinxy;
 	//#endif
 	vec pointTransformed[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE_MAX];
-	#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+	#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 	vec point[OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE_MAX];
 	#endif
 	//#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
@@ -1544,17 +1400,6 @@ void ORdatabaseSQLClass::addSQLRowDataToFeatureList(const MYSQL_ROW row, ORfeatu
 	polyIndexStringCharStar = row[fieldIndex++];
 	sideIndexStringCharStar = row[fieldIndex++];
 
-	#ifdef OR_DEBUG
-	/*
-	cout << "tableIDCharStar = " << tableIDCharStar << endl;
-	cout << "trainOrTestStringCharStar = " << trainOrTestStringCharStar << endl;
-	cout << "objectNameCharStar = " << objectNameCharStar << endl;
-	cout << "viewIndexStringCharStar = " << viewIndexStringCharStar << endl;
-	cout << "zoomIndexStringCharStar = " << zoomIndexStringCharStar << endl;
-	cout << "polyIndexStringCharStar = " << polyIndexStringCharStar << endl;
-	cout << "sideIndexStringCharStar = " << sideIndexStringCharStar << endl;
-	*/
-	#endif
 
 	tableID = (long)(atof(tableIDCharStar));
 	objectName = objectNameCharStar;
@@ -1570,9 +1415,6 @@ void ORdatabaseSQLClass::addSQLRowDataToFeatureList(const MYSQL_ROW row, ORfeatu
 	lengths = mysql_fetch_lengths(result);
 	for(int featureNum=0; featureNum<numFeatures; featureNum++)
 	{
-		#ifdef OR_DEBUG
-		//cout << "lengths[fieldIndex]  = " << lengths[fieldIndex+1]  << endl;
-		#endif
 		if(lengths[fieldIndex+1] == 0)	//index of pointTransformedxCharStar [as if this is empty, then the entire feature entry is empty]
 		{
 			stillFindingFeatures = false;
@@ -1584,7 +1426,7 @@ void ORdatabaseSQLClass::addSQLRowDataToFeatureList(const MYSQL_ROW row, ORfeatu
 		pointTransformedxCharStar = row[fieldIndex++];
 		pointTransformedyCharStar = row[fieldIndex++];
 		pointTransformedzCharStar = row[fieldIndex++];;
-		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 		pointxCharStar = row[fieldIndex++];
 		pointyCharStar = row[fieldIndex++];
 		pointzCharStar = row[fieldIndex++];
@@ -1598,7 +1440,7 @@ void ORdatabaseSQLClass::addSQLRowDataToFeatureList(const MYSQL_ROW row, ORfeatu
 			pointTransformed[featureNum].x = atof(pointTransformedxCharStar);
 			pointTransformed[featureNum].y = atof(pointTransformedyCharStar);
 			pointTransformed[featureNum].z = atof(pointTransformedzCharStar);
-			#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+			#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 			point[featureNum].x = atof(pointxCharStar);
 			point[featureNum].y = atof(pointyCharStar);
 			point[featureNum].z = atof(pointzCharStar);
@@ -1628,9 +1470,6 @@ void ORdatabaseSQLClass::addSQLRowDataToFeatureList(const MYSQL_ROW row, ORfeatu
 
 			dctCoeffNumStringCharStar = row[fieldIndex++];
 			dctCoefficients[dctCoeffNum] = (signed char)(atof(dctCoeffNumStringCharStar));
-			#ifdef OR_DEBUG
-			//cout << "dctCoefficients[dctCoeffNum]  = " << int(dctCoefficients[dctCoeffNum]) << endl;
-			#endif
 		}
 		dctCoeffArrayBinnedCharStar = row[fieldIndex++];
 		dctCoeffArrayBinned = (unsigned long)(atol(dctCoeffArrayBinnedCharStar));
@@ -1656,15 +1495,8 @@ void ORdatabaseSQLClass::addSQLRowDataToFeatureList(const MYSQL_ROW row, ORfeatu
 		{
 			firstFeatureInList->snapshotMapsText[i] = allTextCharStar[i];
 		}
-		#ifdef OR_DEBUG
-		//cout << "firstFeatureInList->snapshotMapsText = " << endl;
-		//cout << firstFeatureInList->snapshotMapsText << endl;
-		#endif
 	}
 
-	#ifdef OR_DEBUG
-	//cout << "\n\nadding features to list\n\n" << endl;
-	#endif
 
 	for(int featureNum=0; featureNum<numFoundFeatures; featureNum++)
 	{
@@ -1683,7 +1515,7 @@ void ORdatabaseSQLClass::addSQLRowDataToFeatureList(const MYSQL_ROW row, ORfeatu
 			currentFeatureInList->pointTransformed.x = pointTransformed[featureNum].x;
 			currentFeatureInList->pointTransformed.y = pointTransformed[featureNum].y;
 			currentFeatureInList->pointTransformed.z = pointTransformed[featureNum].z;
-			#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+			#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 			currentFeatureInList->point.x = point[featureNum].x;
 			currentFeatureInList->point.y = point[featureNum].y;
 			currentFeatureInList->point.z = point[featureNum].z;
@@ -1705,43 +1537,6 @@ void ORdatabaseSQLClass::addSQLRowDataToFeatureList(const MYSQL_ROW row, ORfeatu
 				currentFeatureInList->dctCoeffArrayBinned = dctCoeffArrayBinned;
 			}
 
-			#ifdef OR_DEBUG
-			/*
-			cout << "\n\tfeature added to list;" << endl;
-			cout << "objectName = " << objectName << endl;
-			cout << "trainOrTest = " << trainOrTest << endl;
-			cout << "viewIndex = " << viewIndex << endl;
-			cout << "zoomIndex = " << zoomIndex << endl;
-			cout << "polyIndex = " << polyIndex << endl;
-			cout << "sideIndex = " << sideIndex << endl;
-			#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-			cout << "OTpointIndex[featureNum] = " << OTpointIndex[featureNum] << endl;
-			#endif
-			cout << "pointTransformed[featureNum].x = " << pointTransformed[featureNum].x << endl;
-			cout << "pointTransformed[featureNum].y = " << pointTransformed[featureNum].y << endl;
-			cout << "pointTransformed[featureNum].z = " << pointTransformed[featureNum].z << endl;
-			#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
-			cout << "point[featureNum].x = " << point[featureNum].x << endl;
-			cout << "point[featureNum].y = " << point[featureNum].y << endl;
-			cout << "point[featureNum].z = " << point[featureNum].z << endl;
-			#endif
-			if(OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING)
-			{
-				cout << "currentFeatureInList->avgCol.r = " << int(currentFeatureInList->avgCol.r) << endl;
-				cout << "currentFeatureInList->avgCol.g = " << int(currentFeatureInList->avgCol.g) << endl;
-				cout << "currentFeatureInList->avgCol.b = " << int(currentFeatureInList->avgCol.b) << endl;
-			}
-			if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
-			{
-				for(int dctCoeffNum = 0; dctCoeffNum <OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; dctCoeffNum++)
-				{
-					cout << "currentFeatureInList->dctCoeff[dctCoeffNum] = " << int(currentFeatureInList->dctCoeff[dctCoeffNum]) << endl;
-				}
-				cout << "currentFeatureInList->dctCoeffArrayBinned = " << currentFeatureInList->dctCoeffArrayBinned << endl;
-			}
-			cout << "\n" << endl;
-			*/
-			#endif
 
 			if(createFeatureObjects)
 			{
@@ -1768,7 +1563,7 @@ string ORdatabaseSQLClass::createSQLSelectRowCommand(const int numFeatures)
 		sqlSelectCommand = sqlSelectCommand + ", " + OR_MYSQL_FIELD_NAME_OTNUM + featureNumString;
 		#endif
 		sqlSelectCommand = sqlSelectCommand + ", " + OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDX + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDY + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDZ + featureNumString;
-		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 		sqlSelectCommand = sqlSelectCommand + ", " + OR_MYSQL_FIELD_NAME_POINTX + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTY + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTZ + featureNumString;
 		#endif
 	}
@@ -1901,7 +1696,7 @@ void ORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ORfeature* fir
 									#endif
 
 									string transformedpositionCoordinatesString = LDreferenceManipulation.convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->pointTransformed));
-									#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+									#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 									string positionCoordinatesString = LDreferenceManipulation.convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->point));
 									#endif
 
@@ -1911,7 +1706,7 @@ void ORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ORfeature* fir
 									#endif
 									sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDX + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDY + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDZ + featureNumString;
 									sqlInsertCommandP6 = sqlInsertCommandP6 + transformedpositionCoordinatesString;
-									#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+									#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 									sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + OR_MYSQL_FIELD_NAME_POINTX + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTY + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTZ + featureNumString;
 									sqlInsertCommandP6 = sqlInsertCommandP6 + positionCoordinatesString;
 									#endif
@@ -1925,10 +1720,6 @@ void ORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ORfeature* fir
 									{
 										string geobinDimensionString = SHAREDvars.convertIntToString(geobinDimension+1);
 
-										#ifdef OR_DEBUG
-										//cout << "geoxBin[" << geobinDimension << "] = " << geoxBin[geobinDimension] << endl;
-										//cout << "geoyBin[" << geobinDimension << "] = " << geoyBin[geobinDimension] << endl;
-										#endif
 
 										string geobinxString = SHAREDvars.convertIntToString(geoxBin[geobinDimension]);
 										string geobinyString = SHAREDvars.convertIntToString(geoyBin[geobinDimension]);
@@ -1980,7 +1771,7 @@ void ORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ORfeature* fir
 									#endif
 
 									string transformedpositionCoordinatesString = LDreferenceManipulation.convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->pointTransformed));
-									#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+									#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 									string positionCoordinatesString = LDreferenceManipulation.convertPositionCoordinatesToStringWithCommaDelimiterPreceeding(&(currentFeature->point));
 									#endif
 
@@ -1990,7 +1781,7 @@ void ORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ORfeature* fir
 									#endif
 									sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDX + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDY + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTTRANSFORMEDZ + featureNumString;
 									sqlInsertCommandP6 = sqlInsertCommandP6 + transformedpositionCoordinatesString;
-									#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_DEBUG
+									#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 									sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + OR_MYSQL_FIELD_NAME_POINTX + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTY + featureNumString + ", " + OR_MYSQL_FIELD_NAME_POINTZ + featureNumString;
 									sqlInsertCommandP6 = sqlInsertCommandP6 + positionCoordinatesString;
 									#endif
@@ -2023,10 +1814,6 @@ void ORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ORfeature* fir
 										geoxBin[geobinDimension] = this->determineGeoBinX(currentFeature->pointTransformed.x);
 										geoyBin[geobinDimension] = this->determineGeoBinY(currentFeature->pointTransformed.y);
 
-										#ifdef OR_DEBUG
-										//cout << "geoxBin[" << geobinDimension << "] = " << geoxBin[geobinDimension] << endl;
-										//cout << "geoyBin[" << geobinDimension << "] = " << geoyBin[geobinDimension] << endl;
-										#endif
 
 										string geobinxString = SHAREDvars.convertIntToString(geoxBin[geobinDimension]);
 										string geobinyString = SHAREDvars.convertIntToString(geoyBin[geobinDimension]);
@@ -2056,9 +1843,6 @@ void ORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ORfeature* fir
 								sqlInsertCommandP6 = sqlInsertCommandP6 + ", " + geobinxyString;
 							}
 
-							#ifdef OR_DEBUG
-							//cout << "geoxyBin = " << geoxyBin << endl;
-							#endif
 
 							if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
 							{
@@ -2077,15 +1861,9 @@ void ORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ORfeature* fir
 								unsigned long linearCombination = 0;
 								this->convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(currentFeature->dctCoeff, geoxBin, geoyBin, &linearCombination);
 								string dctCoeffArrayBinnedString = SHAREDvars.convertLongToString(linearCombination);
-								#ifdef OR_DEBUG
-								//cout << "linearCombination = " << linearCombination << endl;
-								#endif
 								sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL;
 								sqlInsertCommandP6 = sqlInsertCommandP6 + ", " + dctCoeffArrayBinnedString;
 								#else
-								#ifdef OR_DEBUG
-								//cout << "currentFeature->dctCoeffArrayBinned = " << currentFeature->dctCoeffArrayBinned << endl;
-								#endif
 								string dctCoeffArrayBinnedString = SHAREDvars.convertLongToString(currentFeature->dctCoeffArrayBinned);
 								sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL;
 								sqlInsertCommandP6 = sqlInsertCommandP6 + ", " + dctCoeffArrayBinnedString;
@@ -2155,10 +1933,6 @@ void ORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ORfeature* fir
 
 
 								sqlInsertCommand = sqlInsertCommandP1 + sqlInsertCommandP2 + sqlInsertCommandP3 + sqlInsertCommandP4 + sqlInsertCommandP5 + sqlInsertCommandP6 + sqlInsertCommandP7;
-								#ifdef OR_SQL_DATABASE_DEBUG
-								cout << "sqlInsertCommand = " << sqlInsertCommand << endl;
-								//exit(EXIT_ERROR);
-								#endif
 								char* sqlInsertCommandCharStar = const_cast<char*>(sqlInsertCommand.c_str());
 								LDmysql.performSQLinsertQuery(sqlInsertCommandCharStar);
 								*databaseTableSize = *databaseTableSize + 1;
@@ -2179,10 +1953,6 @@ void ORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ORfeature* fir
 
 								//must be done this way as decisionTreeBinText may contain null characters
 
-								#ifdef OR_DEBUG
-								//cout << "OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_MAX_DATA_LENGTH = " << OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_MAX_DATA_LENGTH << endl;
-								//cout << "OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_DATA_LENGTH = " << OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_DATA_LENGTH << endl;
-								#endif
 
 								sqlInsertCommandCharStar[i] = '\'';
 								i++;
@@ -2196,9 +1966,6 @@ void ORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ORfeature* fir
 								sqlInsertCommandCharStar[i] = ';';
 								i++;
 
-								#ifdef OR_SQL_DATABASE_DEBUG
-								cout << "sqlInsertCommand = " << sqlInsertCommandCharStar << endl;
-								#endif
 								LDmysql.performSQLrealInsertQuery(sqlInsertCommandCharStar, i);
 
 								*databaseTableSize = *databaseTableSize + 1;
@@ -2257,9 +2024,6 @@ unsigned long ORdatabaseSQLClass::convertDCTcoeffConcatonatedArrayToBinnedAllDCT
 	for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; i++)
 	{
 		int arrayValueSigned = concatonatedSignedDctCoeffArray[i];
-		#ifdef OR_DEBUG
-		//cout << " concatonatedSignedDctCoeffArray[i] = " << int(concatonatedSignedDctCoeffArray[i]) << endl;
-		#endif
 
 		/*
 		//OLD; perform interpolation before signed to unsigned conversion
@@ -2326,9 +2090,6 @@ unsigned long ORdatabaseSQLClass::convertDCTcoeffConcatonatedArrayToBinnedAllDCT
 		int arrayValueUnsigned = arrayValueSigned + OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET;	//convert to unsigned
 		*/
 
-		#ifdef OR_DEBUG
-		//cout << "arrayValueSigned = " << arrayValueSigned << endl;
-		#endif
 
 		double arrayValueUnsignedDouble;
 		unsigned int arrayValueUnsigned = this->determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);	//used to be int
@@ -2337,10 +2098,6 @@ unsigned long ORdatabaseSQLClass::convertDCTcoeffConcatonatedArrayToBinnedAllDCT
 		int numDistintValsPerColumn = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
 		if(numDistintValsPerColumn != 1)
 		{
-			#ifdef OR_DEBUG
-			//cout << "arrayValueUnsignedDouble = " << arrayValueUnsignedDouble << endl;
-			//cout << "arrayValueUnsigned = " << arrayValueUnsigned << endl;
-			#endif
 
 			if(arrayValueUnsignedDouble >= (double(arrayValueUnsigned)+0.5-DOUBLE_MIN_PRECISION+OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD))
 			{
@@ -2358,9 +2115,6 @@ unsigned long ORdatabaseSQLClass::convertDCTcoeffConcatonatedArrayToBinnedAllDCT
 		}
 		#endif
 
-		#ifdef OR_DEBUG
-		//cout << "arrayValueUnsigned = " << arrayValueUnsigned << endl;
-		#endif
 
 	#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
 		//cout << "arrayValueUnsigned = " << arrayValueUnsigned << endl;
@@ -2368,10 +2122,6 @@ unsigned long ORdatabaseSQLClass::convertDCTcoeffConcatonatedArrayToBinnedAllDCT
 		{
 			if(index == 8)
 			{
-				#ifdef OR_DEBUG
-				//cout << "binaryConvertedToChar = " << binaryConvertedToChar << endl;
-				//cout << "int(binaryConvertedToChar) = " << int(binaryConvertedToChar) << endl;
-				#endif
 				index = 0;
 				DCTcoeff64bitValueString[*DCTcoeff64bitValueStringLength] = binaryConvertedToChar;
 				*DCTcoeff64bitValueStringLength = *DCTcoeff64bitValueStringLength + 1;
@@ -2384,16 +2134,10 @@ unsigned long ORdatabaseSQLClass::convertDCTcoeffConcatonatedArrayToBinnedAllDCT
 			if(arrayValueUnsignedAfterBitShift%2 == 0)
 			{//LSb == 0 ; therefore an even number
 				bitValue = false;
-				#ifdef OR_DEBUG
-				//cout << "false" << endl;
-				#endif
 			}
 			else
 			{//LSb == 1 ; therefore an odd number
 				bitValue =  true;
-				#ifdef OR_DEBUG
-				//cout << "true" << endl;
-				#endif
 			}
 
 			if(bitValue)
@@ -2411,10 +2155,6 @@ unsigned long ORdatabaseSQLClass::convertDCTcoeffConcatonatedArrayToBinnedAllDCT
 	#else
 		int power = ((OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS-i-1)*2)+1; 	//13,11,9,7,5,3,1
 		dctCoeffArrayBinned = dctCoeffArrayBinned + long(arrayValueUnsigned)*this->powLong(10, power);
-		#ifdef OR_DEBUG
-		//cout << "power = " << power << endl;
-		//cout << i << ": arrayValueUnsigned = " << arrayValueUnsigned << ", dctCoeffArrayBinned = " << dctCoeffArrayBinned << endl;
-		#endif
 	#endif
 	}
 
@@ -2422,10 +2162,6 @@ unsigned long ORdatabaseSQLClass::convertDCTcoeffConcatonatedArrayToBinnedAllDCT
 	//add final character to currentDirectoryCharStar string if necessary
 	if(index > 0)
 	{
-		#ifdef OR_DEBUG
-		//cout << "binaryConvertedToChar = " << binaryConvertedToChar << endl;
-		//cout << "int(binaryConvertedToChar) = " << int(binaryConvertedToChar) << endl;
-		#endif
 		DCTcoeff64bitValueString[*DCTcoeff64bitValueStringLength] = binaryConvertedToChar;
 		*DCTcoeff64bitValueStringLength = *DCTcoeff64bitValueStringLength + 1;
 	}
@@ -2434,9 +2170,6 @@ unsigned long ORdatabaseSQLClass::convertDCTcoeffConcatonatedArrayToBinnedAllDCT
 	DCTcoeff64bitValueString[*DCTcoeff64bitValueStringLength] = '\0';
 	*DCTcoeff64bitValueStringLength = *DCTcoeff64bitValueStringLength + 1;
 	#else
-	#ifdef OR_DEBUG
-	//cout << "finished: dctCoeffArrayBinned = " << dctCoeffArrayBinned << endl;
-	#endif
 	return dctCoeffArrayBinned;
 	#endif
 }
@@ -2450,12 +2183,6 @@ long ORdatabaseSQLClass::calculateGeoxyBinMultiDimensional(const int geoxBin[], 
 	long geoxyBin;
 	if(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS == 2)
 	{
-		#ifdef OR_DEBUG
-		//cout << "geoxBin[0] = " << geoxBin[0] << endl;
-		//cout << "geoxBin[1] = " << geoxBin[1] << endl;
-		//cout << "geoyBin[0] = " << geoyBin[0] << endl;
-		//cout << "geoyBin[1] = " << geoyBin[1] << endl;
-		#endif
 
 		geoxyBin =
 			 ((long(geoyBin[0])* OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS* OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS* OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS)
@@ -2463,9 +2190,6 @@ long ORdatabaseSQLClass::calculateGeoxyBinMultiDimensional(const int geoxBin[], 
 			+ (long(geoyBin[1])* OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS)
 			+ (long(geoxBin[1])));
 
-		#ifdef OR_DEBUG
-		//cout << "geoxyBin = " << geoxyBin << endl;
-		#endif
 	}
 	else
 	{
@@ -2490,10 +2214,6 @@ void ORdatabaseSQLClass::convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCom
 		unsigned int arrayValueUnsigned = this->determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);		//used to be int
 
 		linearCombinationArray[index] = arrayValueUnsigned;
-		#ifdef OR_DEBUG
-		//cout << "concatonatedSignedDctCoeffArray[i] = " << concatonatedSignedDctCoeffArray[i] << endl;
-		//cout << "linearCombinationArray[index] = " << linearCombinationArray[index] << endl;
-		#endif
 		index++;
 	}
 	for(int i=0; i<OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS; i++)
@@ -2516,16 +2236,8 @@ void ORdatabaseSQLClass::convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCom
 		}
 		linearCombinationDouble = linearCombinationDouble* subsetDouble;
 
-		#ifdef OR_DEBUG
-		//cout << "linearCombinationArray[i] = " << int(linearCombinationArray[i]) << endl;
-		//cout << "\tlinearCombination = " <<* linearCombination << endl;
-		//cout << "\tlinearCombinationDouble = " << linearCombinationDouble << endl;
-		#endif
 	}
 	*linearCombination = (unsigned long)(linearCombinationDouble/OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK_DOUBLE_TO_U_LONG_CONVERSION);
-	#ifdef OR_DEBUG
-	//cout << "linearCombination = " <<* linearCombination << endl;
-	#endif
 }
 
 

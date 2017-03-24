@@ -25,7 +25,7 @@
  * File Name: ATORmethod.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j2a 17-January-2017
+ * Project Version: 3k2a 21-March-2017
  *
  *******************************************************************************/
 
@@ -275,9 +275,7 @@
 
 #define OR_NUMBER_OF_NN_LAYERS (7)		//NB I am using the THANNwithOpenLRRC.exe object experience number of layers ...
 //#define OR_MAX_NUMBER_OF_EPOCHS 1000		//not used - NB 2D NNs do not use folds during training as each (image) experience has a different class target
-#ifdef OR_DEBUG_TRAIN_USING_FAR_INSUFFICIENT_NUMBER_EPOCHS
-	#define	OR_SIMPLE_TRAIN_DEFAULT_NUM_OF_TRAINING_EPOCHS 10
-#else
+#ifndef OR_DEBUG_TRAIN_USING_FAR_INSUFFICIENT_NUMBER_EPOCHS
 	#ifdef OR_TEST_ORI_AND_POS_NOISE_DURING_TRANING_AND_TESTING
 		#define	OR_SIMPLE_TRAIN_DEFAULT_NUM_OF_TRAINING_EPOCHS 10
 	#else

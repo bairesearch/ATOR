@@ -25,7 +25,7 @@
  * File Name: ATORquadraticFit.cpp (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3j2a 17-January-2017
+ * Project Version: 3k2a 21-March-2017
  *
  * Assumes that depth information is less accurate than image information
  *******************************************************************************/
@@ -34,7 +34,7 @@
 #include "ATORquadraticFit.hpp"
 
 
-#ifdef OR_QUADRATIC_FIT_DEBUG
+#ifdef OR_QUADRATIC_FIT_VERBOSE
 #endif
 
 #ifndef LINUX
@@ -101,7 +101,7 @@ void ORquadraticFitClass::generateZeroCrossingList(const double* luminosityContr
 	globalImageWidth = imageWidth;
 
 	bool createEnhancedImageDisplayingQuadraticFitInfo;
-	#ifdef OR_QUADRATIC_FIT_DEBUG
+	#ifdef OR_QUADRATIC_FIT_VERBOSE
 	createEnhancedImageDisplayingQuadraticFitInfo = true;
 	#else
 	createEnhancedImageDisplayingQuadraticFitInfo = false;
@@ -529,7 +529,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 	}
 
 
-	#ifdef OR_QUADRATIC_FIT_DEBUG
+	#ifdef OR_QUADRATIC_FIT_VERBOSE
 
 	#define ENHANCEMENT_FACTOR (5)	//must be odd number
 	int enhancementFactor = ENHANCEMENT_FACTOR;
@@ -710,7 +710,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 
 						if(passZeroCrossingTest)
 						{
-							#ifdef OR_QUADRATIC_FIT_DEBUG
+							#ifdef OR_QUADRATIC_FIT_VERBOSE
 							if(createEnhancedImageDisplayingQuadraticFitInfo)
 							{
 
@@ -736,10 +736,6 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 								{
 									double edgeValueX = (double(e)/double(enhancementFactor)) - HALF_PIXEL_WIDTH;
 									double edgeValueY = edgeValueX*tan(currentZeroCrossingInList->alpha) + currentZeroCrossingInList->zeroCrossingValueY;
-									#ifdef OR_DEBUG
-									//cout << "edgeValueX = " << edgeValueX << endl;
-									//cout << "edgeValueY = " << edgeValueY << endl;
-									#endif
 
 									if((edgeValueY >= -HALF_PIXEL_WIDTH) && (edgeValueY <= HALF_PIXEL_WIDTH))
 									{
@@ -755,10 +751,6 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 									if(tan(currentZeroCrossingInList->alpha) != 0)
 									{
 										double edgeValueX = (edgeValueY - currentZeroCrossingInList->zeroCrossingValueY) / tan(currentZeroCrossingInList->alpha);
-										#ifdef OR_DEBUG
-										//cout << "edgeValueX = " << edgeValueX << endl;
-										//cout << "edgeValueY = " << edgeValueY << endl;
-										#endif
 
 										if((edgeValueX >= -HALF_PIXEL_WIDTH) && (edgeValueX <= HALF_PIXEL_WIDTH))
 										{
@@ -810,15 +802,6 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 
 								if(onObject)
 								{
-									#ifdef OR_DEBUG
-									/*
-									cout << "feature on object" << endl;
-									cout << "xyzWorld.x = " << xyzWorld.x << endl;
-									cout << "xyzWorld.y = " << xyzWorld.y << endl;
-									cout << "xyzWorld.z = " << xyzWorld.z << endl;
-									cout << "depthVal = " << depthVal << endl;
-									*/
-									#endif
 
 									currentZeroCrossingInList->depth = depthVal;
 									#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
@@ -864,20 +847,10 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 					//optimisation;
 					if(this->checkTotalNegativeCurvatureAbovePointThreshold(coefficient[3], coefficient[4]))
 					{
-						#ifdef OR_DEBUG
-						/*
-						//cout << "coefficient[0] = " << coefficient[0] << endl;
-						//cout << "coefficient[1] = " << coefficient[1] << endl;
-						//cout << "coefficient[2] = " << coefficient[2] << endl;
-						cout << "coefficient[3] = " << coefficient[3] << endl;
-						cout << "coefficient[4] = " << coefficient[4] << endl;
-						//cout << "coefficient[5] = " << coefficient[5] << endl;
-						*/
-						#endif
 
 						if(this->calculateZeroCrossingAndOrientation((x+(QUADRATIC_FIT_KERNEL_SIZE/2)), (y+(QUADRATIC_FIT_KERNEL_SIZE/2)), coefficient, edgeDetect, createEnhancedImageDisplayingQuadraticFitInfo, currentZeroCrossingInList))
 						{
-							#ifdef OR_QUADRATIC_FIT_DEBUG
+							#ifdef OR_QUADRATIC_FIT_VERBOSE
 							if(createEnhancedImageDisplayingQuadraticFitInfo)
 							{
 								/*
@@ -917,15 +890,6 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 
 								if(onObject)
 								{
-									#ifdef OR_DEBUG
-									/*
-									cout << "feature on object" << endl;
-									cout << "xyzWorld.x = " << xyzWorld.x << endl;
-									cout << "xyzWorld.y = " << xyzWorld.y << endl;
-									cout << "xyzWorld.z = " << xyzWorld.z << endl;
-									cout << "depthVal = " << depthVal << endl;
-									*/
-									#endif
 
 									currentZeroCrossingInList->depth = depthVal;
 									#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
@@ -935,16 +899,6 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 								}
 								else
 								{
-									#ifdef OR_DEBUG
-									/*
-									cout << "feature off object" << endl;
-									cout << "xyzNearbyPointOnObject.x = " << xyzNearbyPointOnObject.x << endl;
-									cout << "xyzNearbyPointOnObject.y = " << xyzNearbyPointOnObject.y << endl;
-									cout << "xyzNearbyPointOnObject.z = " << xyzNearbyPointOnObject.z << endl;
-									cout << "depthVal = " << depthVal << endl;
-									cout << "minDepthForNearbyPoints = " << minDepthForNearbyPoints << endl;
-									*/
-									#endif
 
 									currentZeroCrossingInList->depth = minDepthForNearbyPoints;
 									#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
@@ -967,7 +921,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 		}
 	}
 
-	#ifdef OR_QUADRATIC_FIT_DEBUG
+	#ifdef OR_QUADRATIC_FIT_VERBOSE
 	if(createEnhancedImageDisplayingQuadraticFitInfo)
 	{
 		if(edgeDetect)

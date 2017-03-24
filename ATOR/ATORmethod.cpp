@@ -25,7 +25,7 @@
  * File Name: ATORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j2a 17-January-2017
+ * Project Version: 3k2a 21-March-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -173,9 +173,6 @@ bool ORmethodClass::ORTHmethod(int dimension, const int numberOfTrainObjects, st
 					ANNneuronContainer* firstOutputNeuronInNetwork;
 					int numberOfInputNeurons;
 					int numberOfOutputNeurons = numberOfTrainPolys*OR_METHOD_POLYGON_NUMBER_OF_SIDES;
-				#ifdef OR_DEBUG_WORRY_ABOUT_DISPLAYING_2D_NET_PROPERLY
-					numberOfOutputNeurons =	(int)pow(((int)sqrt(numberOfOutputNeurons)+1), 2.0);	//this is used for 2D visualisation purposes only									//required for 2D visualisation
-				#endif
 					firstOutputNeuronInNetwork = this->initialiseNormalisedSnapshotNeuralNetwork(firstInputNeuronInNetwork, &numberOfInputNeurons, numberOfOutputNeurons, imageWidthFacingPoly, imageHeightFacingPoly);
 
 					cout << "numberOfInputNeurons = " << numberOfInputNeurons << endl;
@@ -343,10 +340,10 @@ bool ORmethodClass::ORmethodInitialise(const int imageWidthFacingPoly, const int
 	{
 		databaseTableSizeTrain = LDmysql.performSQLgetNumRowsQuery(OR_MYSQL_TABLE_NAME_TRAIN);
 		databaseTableSizeDecisionTree = LDmysql.performSQLgetNumRowsQuery(OR_MYSQL_TABLE_NAME_DECISIONTREE);
-		#ifdef OR_DEBUG
+		//#ifdef OR_DEBUG
 		cout << "databaseTableSizeTrain = " << databaseTableSizeTrain << endl;
 		cout << "databaseTableSizeDecisionTree = " << databaseTableSizeDecisionTree << endl;
-		#endif
+		//#endif
 		databaseTableSizeTrainInitial = databaseTableSizeTrain;
 		databaseTableSizeDecisionTreeInitial = databaseTableSizeDecisionTree;
 	}
@@ -701,7 +698,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 		}
 
 		#ifdef OR_USE_DATABASE
-		#ifdef OR_DATABASE_DEBUG
+		#ifdef OR_DATABASE_VERBOSE
 		cout << "DBgenerateFolderName: objectNameArray[o] = " << objectNameArray[o] << endl;
 		#endif
 		ORdatabaseFileIO.DBgenerateFolderName(&(objectNameArray[o]), trainOrTest);
@@ -1036,9 +1033,6 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 			#endif
 
 			//delete firstReferenceInInterpolatedMesh;	//this cannot be deleted because it is still used by glutDisplayFunc
-			#ifdef OR_DEBUG
-			//cout << "deleted firstReferenceInInterpolatedMesh" << endl;
-			#endif
 
 			/*
 			//NEED TO FIX THIS - MEM ISSUE
@@ -1303,20 +1297,6 @@ bool ORmethodClass::createOrAddToInterpolatedMeshAndFeaturesList(LDreference* in
 
 	ORmeshPoint* currentMeshPointInMeshList = firstMeshPointInMeshList;
 
-	#ifdef OR_DEBUG
-	/*
-	for(int y = 0; y < imageHeight; y++)
-	{
-		for(int x = 0; x < imageWidth; x++)
-		{
-			double depth = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
-
-			cout << depth << " ";
-		}
-		cout << "\n" << endl;
-	}
-	*/
-	#endif
 
 	if(!this->createOrAddPointsToFeaturesList(pointMap, rgbMap, depthMap, firstFeatureInList, vi, trainOrTest, viewIndex, objectName, dimension, numberOfZoomIndicies, firstMeshPointUsedToCalculateCentredFeatures, meshPointArray, useEdgeZeroCrossingMap))
 	{
@@ -1408,9 +1388,6 @@ bool ORmethodClass::createRGBandPointMap(LDreference* initialReferenceInSceneFil
 		string preexistingImageFileName = objectName + "_r" + rotationviewIndexString + PNG_EXTENSION;
 	#endif
 
-		#ifdef OR_DEBUG
-		//cout << "preexistingImageFileName = " << preexistingImageFileName << endl;
-		#endif
 
 		string rgbMapFileName = mapFileName + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 
@@ -1563,11 +1540,6 @@ bool ORmethodClass::createRGBandPointMap(LDreference* initialReferenceInSceneFil
 
 			ORoperations.createPointMapFromDepthMap(imageWidth, imageHeight, depthMap, pointMap, vi);
 
-			#ifdef OR_DEBUG_3DOD_POV
-			ORoperations.printPointMap(imageWidth, imageHeight, pointMap);
-			ORoperations.printDepthMap(imageWidth, imageHeight, depthMap);
-			ORoperations.printvi(vi);
-			#endif
 
 
 		}
@@ -1704,11 +1676,6 @@ bool ORmethodClass::createRGBandPointMap(LDreference* initialReferenceInSceneFil
 			{
 				vi->depthScale = OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE;
 				RTpixelMaps.generatePixmapFromDepthMap24Bit(depthMap24BitFileName, imageWidth, imageHeight, depthMap, vi->depthScale, 0.0);
-				#ifdef OR_DEBUG_3DOD_POV
-				ORoperations.printPointMap(imageWidth, imageHeight, pointMap);
-				ORoperations.printDepthMap(imageWidth, imageHeight, depthMap);
-				ORoperations.printvi(vi);
-				#endif
 
 			}
 			RTpixelMaps.generatePixmapFromDepthMapOrDepthContrastMap(depthContrastMapFileName, imageWidth, imageHeight, depthContrastMap);
@@ -1744,9 +1711,6 @@ bool ORmethodClass::createRGBandPointMap(LDreference* initialReferenceInSceneFil
 		}
 	}
 
-	#ifdef OR_DEBUG
-	//TEMPprintReferenceListVertexPositions2DOD(firstReferenceInInterpolatedMesh);
-	#endif
 
 	delete normalMap;
 	delete luminosityMap;
@@ -1798,9 +1762,6 @@ bool ORmethodClass::createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMa
 	LDreference* currentReferenceInList = firstReferenceInInterpolatedMesh;
 	while(currentReferenceInList->next != NULL)
 	{
-		#ifdef OR_DEBUG
-		//cout << "currentReferenceInList->name = " << currentReferenceInList->name << endl;
-		#endif
 		currentReferenceInList = currentReferenceInList->next;
 	}
 	LDreference* firstNewReferenceInList = currentReferenceInList;
@@ -1856,9 +1817,6 @@ bool ORmethodClass::createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMa
 	#endif
 
 
-#ifdef OR_DEBUG_RAYTRACE_INTERPOLATED_3D_MAP_WITH_ORIGINAL_VIEW
-	this->printInterpolatedMeshReferenceList(firstReferenceInInterpolatedMesh, vi, objectName, trainOrTest, dimension, viewIndex);
-#endif
 
 	delete pointMapInterpolated;
 
@@ -1949,27 +1907,6 @@ LDreference* ORmethodClass::convertMeshPointToReferences3DOD(ORmeshPoint* curren
 				currentReferenceInInterpolatedMesh->colour = colByte1 | colByte2 | colByte3 | colByte4;
 				currentReferenceInInterpolatedMesh->absoluteColour = colByte1 | colByte2 | colByte3 | colByte4;
 
-				#ifdef OR_DEBUG
-				/*
-				cout << "col.r  = " << col.r  << endl;
-				cout << "col.g  = " << col.g  << endl;
-				cout << "col.b  = " << col.b  << endl;
-				cout << "colByte1 = " << colByte1 << endl;
-				cout << "colByte2 = " << colByte2 << endl;
-				cout << "colByte3 = " << colByte3 << endl;
-				cout << "colByte4 = " << colByte4 << endl;
-				cout << "colByte1 | colByte2 | colByte3 | colByte4 = " << (colByte1 | colByte2 | colByte3 | colByte4) << endl;
-				cout << "currentReferenceInInterpolatedMesh->vertex1relativePosition.x = " << currentReferenceInInterpolatedMesh->vertex1relativePosition.x << endl;
-				cout << "currentReferenceInInterpolatedMesh->vertex1relativePosition.y = " << currentReferenceInInterpolatedMesh->vertex1relativePosition.y << endl;
-				cout << "currentReferenceInInterpolatedMesh->vertex1relativePosition.z = " << currentReferenceInInterpolatedMesh->vertex1relativePosition.z << endl;
-				cout << "currentReferenceInInterpolatedMesh->vertex2relativePosition.x = " << currentReferenceInInterpolatedMesh->vertex2relativePosition.x << endl;
-				cout << "currentReferenceInInterpolatedMesh->vertex2relativePosition.y = " << currentReferenceInInterpolatedMesh->vertex2relativePosition.y << endl;
-				cout << "currentReferenceInInterpolatedMesh->vertex2relativePosition.z = " << currentReferenceInInterpolatedMesh->vertex2relativePosition.z << endl;
-				cout << "currentReferenceInInterpolatedMesh->vertex3relativePosition.x = " << currentReferenceInInterpolatedMesh->vertex3relativePosition.x << endl;
-				cout << "currentReferenceInInterpolatedMesh->vertex3relativePosition.y = " << currentReferenceInInterpolatedMesh->vertex3relativePosition.y << endl;
-				cout << "currentReferenceInInterpolatedMesh->vertex3relativePosition.z = " << currentReferenceInInterpolatedMesh->vertex3relativePosition.z << endl;
-				*/
-				#endif
 
 				LDreference* newReference = new LDreference();
 				currentReferenceInInterpolatedMesh->next = newReference;
@@ -2034,27 +1971,6 @@ LDreference* ORmethodClass::convertMeshPointToReferences2DOD(const ORmeshPoint* 
 	currentReferenceInInterpolatedMesh->colour = colByte1 | colByte2 | colByte3 | colByte4;
 	currentReferenceInInterpolatedMesh->absoluteColour = colByte1 | colByte2 | colByte3 | colByte4;
 
-	#ifdef OR_DEBUG
-	/*
-	cout << "col.r  = " << col.r  << endl;
-	cout << "col.g  = " << col.g  << endl;
-	cout << "col.b  = " << col.b  << endl;
-	cout << "colByte1 = " << colByte1 << endl;
-	cout << "colByte2 = " << colByte2 << endl;
-	cout << "colByte3 = " << colByte3 << endl;
-	cout << "colByte4 = " << colByte4 << endl;
-	cout << "colByte1 | colByte2 | colByte3 | colByte4 = " << (colByte1 | colByte2 | colByte3 | colByte4) << endl;
-	cout << "currentReferenceInInterpolatedMesh->vertex1relativePosition.x = " << currentReferenceInInterpolatedMesh->vertex1relativePosition.x << endl;
-	cout << "currentReferenceInInterpolatedMesh->vertex1relativePosition.y = " << currentReferenceInInterpolatedMesh->vertex1relativePosition.y << endl;
-	cout << "currentReferenceInInterpolatedMesh->vertex1relativePosition.z = " << currentReferenceInInterpolatedMesh->vertex1relativePosition.z << endl;
-	cout << "currentReferenceInInterpolatedMesh->vertex2relativePosition.x = " << currentReferenceInInterpolatedMesh->vertex2relativePosition.x << endl;
-	cout << "currentReferenceInInterpolatedMesh->vertex2relativePosition.y = " << currentReferenceInInterpolatedMesh->vertex2relativePosition.y << endl;
-	cout << "currentReferenceInInterpolatedMesh->vertex2relativePosition.z = " << currentReferenceInInterpolatedMesh->vertex2relativePosition.z << endl;
-	cout << "currentReferenceInInterpolatedMesh->vertex3relativePosition.x = " << currentReferenceInInterpolatedMesh->vertex3relativePosition.x << endl;
-	cout << "currentReferenceInInterpolatedMesh->vertex3relativePosition.y = " << currentReferenceInInterpolatedMesh->vertex3relativePosition.y << endl;
-	cout << "currentReferenceInInterpolatedMesh->vertex3relativePosition.z = " << currentReferenceInInterpolatedMesh->vertex3relativePosition.z << endl;
-	*/
-	#endif
 
 	LDreference* newReference = new LDreference();
 	currentReferenceInInterpolatedMesh->next = newReference;
@@ -2166,9 +2082,6 @@ bool ORmethodClass::createInterpolatedMeshReferenceListUsingMeshList(ORmeshPoint
 	#endif
 
 
-#ifdef OR_DEBUG_RAYTRACE_INTERPOLATED_3D_MAP_WITH_ORIGINAL_VIEW
-	this->printInterpolatedMeshReferenceList(firstReferenceInInterpolatedMesh, vi, objectName, trainOrTest, dimension, 0);
-#endif
 
 	return result;
 }
@@ -2253,10 +2166,6 @@ void ORmethodClass::printInterpolatedMeshReferenceList(LDreference* firstReferen
 
 	//raytrace Tal file;
 	RTscene.setLightingMode(LIGHTING_MODE_BASIC);
-	#ifdef OR_DEBUG
-	//cout << "TEMPinterpolatedRGBMapFileNameForRayTracingPPMRGB = " << TEMPinterpolatedRGBMapFileNameForRayTracingPPMRGB << endl;
-	//cout << "TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMRGB = " << TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMRGB << endl;
-	#endif
 
 #ifndef DO_NOT_DEMONSTRATE_CPP_STRING_TO_CSTRING_CAST_CORRUPTION
 	RTscene.rayTraceScene(TEMPcharstarinterpolatedMapFileNameForRayTracingTAL, TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMRGB, true, false, NULL, NULL, NULL, NULL);
@@ -2268,20 +2177,6 @@ void ORmethodClass::printInterpolatedMeshReferenceList(LDreference* firstReferen
 
 #endif
 
-	#ifdef OR_DEBUG
-	/*
-	//generate additional pixmaps
-	createLuminosityMapFromRGBMap(imageWidth, imageHeight, rgbMap, luminosityMap);
-	createContrastMapFromMap(imageWidth, imageHeight, luminosityMap, luminosityContrastMap);
-
-	generatePixmapFromRGBmap(TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMRGBRGB, imageWidth, imageHeight, rgbMap);
-	generatePixmapFromLuminosityMap(TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMLuminosity, imageWidth, imageHeight, luminosityMap);
-	generatePixmapFromLuminosityContrastMap(TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMContrast, imageWidth, imageHeight, luminosityContrastMap);
-
-	cout << "TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMLuminosity = " << TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMLuminosity << endl;
-	cout << "TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMContrast = " << TEMPcharstarinterpolatedRGBMapFileNameForRayTracingPPMContrast << endl;
-	*/
-	#endif
 }
 
 
@@ -2315,15 +2210,6 @@ bool ORmethodClass::createOrAddPointsToFeaturesList(double* pointMap, unsigned c
 	{
 		string zoomIndexString = SHAREDvars.convertIntToString(zoomIndex);
 
-		#ifdef OR_DEBUG
-		/*
-		cout << "objectName = " << objectName << endl;
-		cout << "viewIndexString = " << viewIndexString << endl;
-		cout << "zoomIndexString = " << zoomIndexString << endl;
-		cout << "viewIndex = " << viewIndex << endl;
-		cout << "zoomIndex = " << zoomIndex << endl;
-		*/
-		#endif
 
 		string mapFileNameWithZoom = "" + objectName + "initialViewMap" + "ViewIndex" + viewIndexString + "ZoomIndex" + zoomIndexString;
 
@@ -2420,18 +2306,6 @@ bool ORmethodClass::createOrAddPointsToFeaturesList(double* pointMap, unsigned c
 							createContrastMapFromMapWithForegroundDepthCheck(imageWidth, imageHeight, luminosityMap, depthMap, luminosityContrastMap, luminosityContrastBooleanMap, foregroundDepthCheckLuminosityhContrastBooleanMap, EDGE_LUMINOSITY_CONTRAST_THRESHOLD);
 						#else
 							RTpixelMaps.createContrastMapFromMap(imageWidth, imageHeight, luminosityMap, luminosityContrastMap);
-							#ifdef OR_DEBUG
-							/*
-							for(int y = 0; y < imageHeight; y++)
-							{
-  								for(int x = 0; x < imageWidth; x++)
-								{
-									cout << "luminosityMap[y*imageWidth + x] = " << luminosityMap[y*imageWidth + x] << endl;
-									cout << "luminosityContrastMap[y*imageWidth + x] = " << luminosityContrastMap[y*imageWidth + x] << endl;
-								}
-							}
-							*/
-							#endif
 						#endif
 					}
 				}
@@ -2889,9 +2763,6 @@ bool ORmethodClass::createOrAddPointsToFeaturesList(double* pointMap, unsigned c
 			while(currentFeatureInList->next != NULL)
 			{
 				numberOfFeatures++;
-				#ifdef OR_DEBUG
-				//cout << "currentFeatureInList++" << endl;
-				#endif
 				currentFeatureInList=currentFeatureInList->next;
 			}
 			cout << "numberOfFeatures at zoom " << zoom << " = " << numberOfFeatures << endl;
@@ -3451,9 +3322,6 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 								viewIndexString = SHAREDvars.convertIntToString(viewIndex);
 								zoomIndexString = SHAREDvars.convertIntToString(zoomIndex);
 
-								#ifdef OR_DEBUG
-								//cout << "zoomIndex = " << zoomIndex << ", numberOfTrainOrTestPolys[zoomIndex] = " << numberOfTrainOrTestPolys[zoomIndex] << ", side = " << side << endl;
-								#endif
 
 								#ifdef OR_TEST_ORI_AND_POS_NOISE_DURING_TRANING_AND_TESTING
 								//cout << "\t featurePosNoise1 = " << featurePosNoise1 << ", featurePosNoise2 = " << featurePosNoise2 << ", featurePosNoise3 = " << featurePosNoise3 << endl;
@@ -3483,9 +3351,6 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 
 								#ifdef OR_METHOD_USE_SMALL_IMAGE_FIRST_COMPARISON
  								string rgbMapFacingPolySmallFileName = interpolatedMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-								#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
- 								string booleanContrastRgbMapFacingPolySmallFileName = interpolatedMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + RGB_BOOLEAN_CONTRAST_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
-								#endif
 								#ifdef OR_METHOD_3DOD_USE_SNAPSHOT_DEPTH_MAPS
  								string depthMapFacingPolySmallFileName = interpolatedMapFileNameForRayTracing + SMALL_MAP_EXTENSION_PART + DEPTHMAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 								#endif
@@ -4023,9 +3888,6 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 										if(generatePixmapFiles)
 										{
 											RTpixelMaps.generatePixmapFromRGBmap(rgbMapFacingPolySmallFileName, smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly);
-											#ifdef DEBUG_OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
-											RTpixelMaps.generateBooleanContrastPixmapFromRGBMap(booleanContrastRgbMapFacingPolySmallFileName, smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly);
-											#endif
 										}
 
 										double smallTempnormalisedAverageRHueContrast;
@@ -4072,14 +3934,6 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 										currentPolygonInList->firstFeatureInNearestFeatureList->avgCol.g = cullednormalisedAverageHueContrast.g;
 										currentPolygonInList->firstFeatureInNearestFeatureList->avgCol.b = cullednormalisedAverageHueContrast.b;
 
-										#ifdef OR_DEBUG
-										//cout << "normalisedAverageHueContrast.x = " << normalisedAverageHueContrast.x << endl;
-										//cout << "normalisedAverageHueContrast.y = " << normalisedAverageHueContrast.y << endl;
-										//cout << "normalisedAverageHueContrast.z = " << normalisedAverageHueContrast.z << endl;
-										//cout << "cullednormalisedAverageHueContrast.r = " << int(cullednormalisedAverageHueContrast.r) << endl;
-										//cout << "cullednormalisedAverageHueContrast.g = " << int(cullednormalisedAverageHueContrast.g) << endl;
-										//cout << "cullednormalisedAverageHueContrast.b = " << int(cullednormalisedAverageHueContrast.b) << endl;
-										#endif
 
 										/*
 										//non rgb dev;
@@ -4113,9 +3967,6 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 										currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned = ORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff);
 										#endif
 									#endif
-										#ifdef OR_DEBUG
-										//cout << "currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned = " << currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned << endl;
-										#endif
 
 										if(!generatePixmapFiles)
 										{
@@ -4199,9 +4050,6 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 										if(OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE)
 										{
 											ORdatabaseSQL.convertSnapshotMapsToStringForSQLdatabaseEntry(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapFacingPoly, rgbDevIEnormalisedHueContrastMapFacingPoly, depthMapFacingPoly, smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly, depthMapSmallFacingPoly, rgbDevIEnormalisedHueContrastMapSmallFacingPoly, dimension, currentPolygonInList->firstFeatureInNearestFeatureList->snapshotMapsText, OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE, OR_IMAGE_COMPARISON_COMPARE_RGB_DEV_MAPS_NOT_RGB_MAPS, &(currentPolygonInList->firstFeatureInNearestFeatureList->snapshotMapsTextLength));
-											#ifdef OR_DEBUG
-											//cout << "(currentPolygonInList->firstFeatureInNearestFeatureList->snapshotMapsTextLength) = " << (currentPolygonInList->firstFeatureInNearestFeatureList->snapshotMapsTextLength) << endl;
-											#endif
 										}
 
 									}
@@ -4299,14 +4147,6 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 												#endif
 											}
 
-											#ifdef OR_DEBUG
-											/*
-											for(int i=0; i < OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; i++)
-											{
-												cout << "i = " << i << ", coeff=" << int(currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff[i]) << endl;
-											}
-											*/
-											#endif
 
 											//f. input snapshot data into image comparison decision tree
 											//addSnapshotIDReferenceToImageComparisonDecisionTree(smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly);
@@ -4435,22 +4275,6 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 			currentPolygonInList=currentPolygonInList->next;
 		}
 
-		#ifdef OR_DEBUG
-		/*
-		currentExperience = firstExperienceInList;
-		while(currentExperience->next != NULL)
-		{
-			cout << "currentExperience->classTargetValue = " << currentExperience->classTargetValue << endl;
-			ANNexperienceInput* currentExperienceInput = currentExperience->firstExperienceInput;
-			while(currentExperienceInput->next != NULL)
-			{
-				cout << "currentExperienceInput->inputValue = " << currentExperienceInput->inputValue << endl;
-				currentExperienceInput = currentExperienceInput->next;
-			}
-			currentExperience = currentExperience->next;
-		}
-		*/
-		#endif
 	}
 
 
@@ -4559,9 +4383,6 @@ double ORmethodClass::compareNormalisedSnapshotExperienceListWithNeuralNetwork(A
 		{
 			currentExperience->classTargetValue = trainedSnapshotIndex;		//replace test experience class target with a given training outcome - test experience classtargets are not used.
 			double experienceBackPropagationPassError = calculateExperienceErrorForHypotheticalDecision(firstInputNeuronInNetwork, firstOutputNeuronInNetwork, numberOfInputNeurons, numberOfOutputNeurons, currentExperience);
-			#ifdef OR_DEBUG
-			//cout << "\t\t experienceBackPropagationPassError = " << experienceBackPropagationPassError << endl;
-			#endif
 
 			if(experienceBackPropagationPassError < minExperienceBackPropagationPassErrorForAllTrainedOutcomes)
 			{

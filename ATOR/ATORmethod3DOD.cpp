@@ -25,7 +25,7 @@
  * File Name: ATORmethod3DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j2a 17-January-2017
+ * Project Version: 3k2a 21-March-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -55,22 +55,6 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 	transformedObjectTriangle->point3.y = currentPolygonInList->point3.y;
 	transformedObjectTriangle->point3.z = currentPolygonInList->point3.z;
 
-	#ifdef OR_DEBUG_METHOD_3DOD
-	cout << "\n \t starting to tranform object triangle " << endl;
-	cout << "0. currentPolygonInList without transformation " << endl;
-	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
-	cout << "transformedObjectTriangle->point1.y = " << transformedObjectTriangle->point1.y << endl;
-	cout << "transformedObjectTriangle->point1.z = " << transformedObjectTriangle->point1.z << endl;
-	cout << "transformedObjectTriangle->point2.x = " << transformedObjectTriangle->point2.x << endl;
-	cout << "transformedObjectTriangle->point2.y = " << transformedObjectTriangle->point2.y << endl;
-	cout << "transformedObjectTriangle->point2.z = " << transformedObjectTriangle->point2.z << endl;
-	cout << "transformedObjectTriangle->point3.x = " << transformedObjectTriangle->point3.x << endl;
-	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
-	cout << "transformedObjectTriangle->point3.z = " << transformedObjectTriangle->point3.z << endl;
-	cout << transformedObjectTriangle->point1.x << " " << transformedObjectTriangle->point1.y << " " << transformedObjectTriangle->point1.z << endl;
-	cout << transformedObjectTriangle->point2.x << " " << transformedObjectTriangle->point2.y << " " << transformedObjectTriangle->point2.z << endl;
-	cout << transformedObjectTriangle->point3.x << " " << transformedObjectTriangle->point3.y << " " << transformedObjectTriangle->point3.z << endl;
-	#endif
 
 	//1. Perform All Rotations (X, Y, Z, such that object triangle side is parallel with x axis, and object triangle normal is parallel with z axis)
 
@@ -126,27 +110,6 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 	//ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap, &scaleMatrix1a);
 	#endif
 
-	#ifdef OR_DEBUG_METHOD_3DOD
-	cout << "1.+2. Rotate object data on XYZ axis such that the object triangle side face normal is parallel with Z axis" << endl;
-	cout << "normalBeforeRotation.x = " << normalBeforeRotation.x << endl;
-	cout << "normalBeforeRotation.y = " << normalBeforeRotation.y << endl;
-	cout << "normalBeforeRotation.z = " << normalBeforeRotation.z << endl;
-	cout << "normalBeforeRotationNormalised.x = " << normalBeforeRotationNormalised.x << endl;
-	cout << "normalBeforeRotationNormalised.y = " << normalBeforeRotationNormalised.y << endl;
-	cout << "normalBeforeRotationNormalised.z = " << normalBeforeRotationNormalised.z << endl;
-	//cout << "xRotationFactor1a = " << xRotationFactor1a << endl;
-	//cout << "yRotationFactor1b = " << yRotationFactor1b << endl;
-	//cout << "zRotationFactor2a = " << zRotationFactor2a << endl;
-	cout << "xyzRotationMatrix12.a.x = " << xyzRotationMatrix12.a.x << endl;
-	cout << "xyzRotationMatrix12.a.y = " << xyzRotationMatrix12.a.y << endl;
-	cout << "xyzRotationMatrix12.a.z = " << xyzRotationMatrix12.a.z << endl;
-	cout << "xyzRotationMatrix12.b.x = " << xyzRotationMatrix12.b.x << endl;
-	cout << "xyzRotationMatrix12.b.y = " << xyzRotationMatrix12.b.y << endl;
-	cout << "xyzRotationMatrix12.b.z = " << xyzRotationMatrix12.b.z << endl;
-	cout << "xyzRotationMatrix12.c.x = " << xyzRotationMatrix12.c.x << endl;
-	cout << "xyzRotationMatrix12.c.y = " << xyzRotationMatrix12.c.y << endl;
-	cout << "xyzRotationMatrix12.c.z = " << xyzRotationMatrix12.c.z << endl;
-	#endif
 
 	//1b. tranform object triangle;
 	vec vecNew;
@@ -157,20 +120,6 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point3), &xyzRotationMatrix12);
 	SHAREDvector.copyVectors(&(transformedObjectTriangle->point3), &vecNew);
 
-	#ifdef OR_DEBUG_METHOD_3DOD
-	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
-	cout << "transformedObjectTriangle->point1.y = " << transformedObjectTriangle->point1.y << endl;
-	cout << "transformedObjectTriangle->point1.z = " << transformedObjectTriangle->point1.z << endl;
-	cout << "transformedObjectTriangle->point2.x = " << transformedObjectTriangle->point2.x << endl;
-	cout << "transformedObjectTriangle->point2.y = " << transformedObjectTriangle->point2.y << endl;
-	cout << "transformedObjectTriangle->point2.z = " << transformedObjectTriangle->point2.z << endl;
-	cout << "transformedObjectTriangle->point3.x = " << transformedObjectTriangle->point3.x << endl;
-	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
-	cout << "transformedObjectTriangle->point3.z = " << transformedObjectTriangle->point3.z << endl;
-	cout << transformedObjectTriangle->point1.x << " " << transformedObjectTriangle->point1.y << " " << transformedObjectTriangle->point1.z << endl;
-	cout << transformedObjectTriangle->point2.x << " " << transformedObjectTriangle->point2.y << " " << transformedObjectTriangle->point2.z << endl;
-	cout << transformedObjectTriangle->point3.x << " " << transformedObjectTriangle->point3.y << " " << transformedObjectTriangle->point3.z << endl;
-	#endif
 
 	//1c. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
@@ -315,12 +264,6 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 #endif
 
 
-	#ifdef OR_DEBUG_METHOD_3DOD
-	cout << "3a. Translate the object data on all axes such that the mid point of the object triangle side passes through the Z axis coordinate 0." << endl;
-	cout << "translationVector.x = " << translationVector.x << endl;
-	cout << "translationVector.y = " << translationVector.y << endl;
-	cout << "translationVector.z = " << translationVector.z << endl;
-	#endif
 
 	//3a. transform object triangle
 	transformedObjectTriangle->point1.x = transformedObjectTriangle->point1.x - translationVector.x;
@@ -334,20 +277,6 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 	transformedObjectTriangle->point3.z = transformedObjectTriangle->point3.z - translationVector.z;
 
 
-	#ifdef OR_DEBUG_METHOD_3DOD
-	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
-	cout << "transformedObjectTriangle->point1.y = " << transformedObjectTriangle->point1.y << endl;
-	cout << "transformedObjectTriangle->point1.z = " << transformedObjectTriangle->point1.z << endl;
-	cout << "transformedObjectTriangle->point2.x = " << transformedObjectTriangle->point2.x << endl;
-	cout << "transformedObjectTriangle->point2.y = " << transformedObjectTriangle->point2.y << endl;
-	cout << "transformedObjectTriangle->point2.z = " << transformedObjectTriangle->point2.z << endl;
-	cout << "transformedObjectTriangle->point3.x = " << transformedObjectTriangle->point3.x << endl;
-	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
-	cout << "transformedObjectTriangle->point3.z = " << transformedObjectTriangle->point3.z << endl;
-	cout << transformedObjectTriangle->point1.x << " " << transformedObjectTriangle->point1.y << " " << transformedObjectTriangle->point1.z << endl;
-	cout << transformedObjectTriangle->point2.x << " " << transformedObjectTriangle->point2.y << " " << transformedObjectTriangle->point2.z << endl;
-	cout << transformedObjectTriangle->point3.x << " " << transformedObjectTriangle->point3.y << " " << transformedObjectTriangle->point3.z << endl;
-	#endif
 
 	//5c. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
@@ -358,13 +287,6 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 			currentFeature->pointTransformed.x = currentFeature->pointTransformed.x + translationVector.x;
 			currentFeature->pointTransformed.y = currentFeature->pointTransformed.y + translationVector.y;
 			currentFeature->pointTransformed.z = currentFeature->pointTransformed.z + translationVector.z;
-			#ifdef OR_DEBUG
-			/*
-			cout << "currentFeature->pointTransformed.x = " << currentFeature->pointTransformed.x << endl;
-			cout << "currentFeature->pointTransformed.y = " << currentFeature->pointTransformed.y << endl;
-			cout << "currentFeature->pointTransformed.z = " << currentFeature->pointTransformed.z << endl;
-			*/
-			#endif
 			currentFeature = currentFeature->next;
 		}
 	}
@@ -484,41 +406,6 @@ void ORmethod3DODClass::calculateEyePositionAndOrientation3DOD(vec* eyeFacingPol
 	SHAREDvector.subtractVectorsRT(&pt3, &midPointBetweenPt1AndPt2, &pt3MinusMidpoint);
 	viewPortWidthHeightDepth->y = SHAREDvector.findMagnitudeOfVector(&pt3MinusMidpoint);
 
-	#ifdef OR_DEBUG_METHOD3DOD_POV
-	cout << "pt1.x = " << pt1.x << endl;
-	cout << "pt1.y = " << pt1.y << endl;
-	cout << "pt1.z = " << pt1.z << endl;
-	cout << "pt2.x = " << pt2.x << endl;
-	cout << "pt2.y = " << pt2.y << endl;
-	cout << "pt2.z = " << pt2.z << endl;
-	cout << "pt3.x = " << pt3.x << endl;
-	cout << "pt3.y = " << pt3.y << endl;
-	cout << "pt3.z = " << pt3.z << endl;
-	cout << "midPointBetweenPt1AndPt2.x = " << midPointBetweenPt1AndPt2.x << endl;
-	cout << "midPointBetweenPt1AndPt2.y = " << midPointBetweenPt1AndPt2.y << endl;
-	cout << "midPointBetweenPt1AndPt2.z = " << midPointBetweenPt1AndPt2.z << endl;
-	cout << "normalAtPt1.x = " << normalAtPt1.x << endl;
-	cout << "normalAtPt1.y = " << normalAtPt1.y << endl;
-	cout << "normalAtPt1.z = " << normalAtPt1.z << endl;
-	cout << "normalAtPt1Normalised.x = " << normalAtPt1Normalised.x << endl;
-	cout << "normalAtPt1Normalised.y = " << normalAtPt1Normalised.y << endl;
-	cout << "normalAtPt1Normalised.z = " << normalAtPt1Normalised.z << endl;
-	cout << "normalAtPt1WithDistanceU.x = " << normalAtPt1WithDistanceU.x << endl;
-	cout << "normalAtPt1WithDistanceU.y = " << normalAtPt1WithDistanceU.y << endl;
-	cout << "normalAtPt1WithDistanceU.z = " << normalAtPt1WithDistanceU.z << endl;
-	cout << "eyeFacingPoly->x = " << eyeFacingPoly->x << endl;
-	cout << "eyeFacingPoly->y = " << eyeFacingPoly->y << endl;
-	cout << "eyeFacingPoly->z = " << eyeFacingPoly->z << endl;
-	cout << "viewAtFacingPoly->x = " << viewAtFacingPoly->x << endl;
-	cout << "viewAtFacingPoly->y = " << viewAtFacingPoly->y << endl;
-	cout << "viewAtFacingPoly->z = " << viewAtFacingPoly->z << endl;
-	cout << "viewupFacingPolygonUnnormalised.x = " << viewupFacingPolygonUnnormalised.x << endl;
-	cout << "viewupFacingPolygonUnnormalised.y = " << viewupFacingPolygonUnnormalised.y << endl;
-	cout << "viewupFacingPolygonUnnormalised.z = " << viewupFacingPolygonUnnormalised.z << endl;
-	cout << "viewUpFacingPoly->x = " << viewUpFacingPoly->x << endl;
-	cout << "viewUpFacingPoly->y = " << viewUpFacingPoly->y << endl;
-	cout << "viewUpFacingPoly->z = " << viewUpFacingPoly->z << endl;
-	#endif
 }
 
 
@@ -550,25 +437,6 @@ void ORmethod3DODClass::createInterpolated3DmeshReferenceListUsingPointMap(int i
 			nullPointVector.z = 0.0;
 			if(!SHAREDvector.compareVectors(&centreVec, &nullPointVector))
 			{
-				#ifdef OR_DEBUG
-				/*
-				cout << "centreVec.x = " << centreVec.x << endl;
-				cout << "centreVec.y = " << centreVec.y << endl;
-				cout << "centreVec.z = " << centreVec.z << endl;
-				cout << "v1.x = " << v1.x << endl;
-				cout << "v1.y = " << v1.y << endl;
-				cout << "v1.z = " << v1.z << endl;
-				cout << "v2.x = " << v2.x << endl;
-				cout << "v2.y = " << v2.y << endl;
-				cout << "v2.z = " << v2.z << endl;
-				cout << "v3.x = " << v3.x << endl;
-				cout << "v3.y = " << v3.y << endl;
-				cout << "v3.z = " << v3.z << endl;
-				cout << "v4.x = " << v4.x << endl;
-				cout << "v4.y = " << v4.y << endl;
-				cout << "v4.z = " << v4.z << endl;
-				*/
-				#endif
 
 				SHAREDvector.multiplyVectorByScalarRT(&centreVec, OR_SNAPSHOT_SCALE_FACTOR, &centreVec);
 				SHAREDvector.multiplyVectorByScalarRT(&v1, OR_SNAPSHOT_SCALE_FACTOR, &v1);
@@ -613,18 +481,6 @@ void ORmethod3DODClass::createInterpolated3DmeshReferenceListUsingPointMap(int i
 					currentReferenceInInterpolated3DMap->colour = colByte1 | colByte2 | colByte3 | colByte4;
 					currentReferenceInInterpolated3DMap->absoluteColour = colByte1 | colByte2 | colByte3 | colByte4;
 
-					#ifdef OR_DEBUG
-					/*
-					cout << "colByte1 = " << colByte1 << endl;
-					cout << "colByte2 = " << colByte2 << endl;
-					cout << "colByte3 = " << colByte3 << endl;
-					cout << "colByte4 = " << colByte4 << endl;
-					cout << "colByte1 | colByte2 | colByte3 | colByte4 = " << (colByte1 | colByte2 | colByte3 | colByte4) << endl;
-					cout << "currentReferenceInInterpolated3DMap->vertex1relativePosition.x = " << currentReferenceInInterpolated3DMap->vertex1relativePosition.x << endl;
-					cout << "currentReferenceInInterpolated3DMap->vertex1relativePosition.y = " << currentReferenceInInterpolated3DMap->vertex1relativePosition.y << endl;
-					cout << "currentReferenceInInterpolated3DMap->vertex1relativePosition.z = " << currentReferenceInInterpolated3DMap->vertex1relativePosition.z << endl;
-					*/
-					#endif
 
 					LDreference* newReference = new LDreference();
 					currentReferenceInInterpolated3DMap->next = newReference;
@@ -785,20 +641,6 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 				}
 			}
 
-			#ifdef OR_DEBUG
-			/*
-			cout << "currentMeshPointInMesh->col.r = " << currentMeshPointInMesh->col.r << endl;
-			cout << "currentMeshPointInMesh->col.g = " << currentMeshPointInMesh->col.g << endl;
-			cout << "currentMeshPointInMesh->col.b = " << currentMeshPointInMesh->col.b << endl;
-			cout << "currentMeshPointInMesh->xInt = " << currentMeshPointInMesh->xInt << endl;
-			cout << "currentMeshPointInMesh->yInt = " << currentMeshPointInMesh->yInt << endl;
-			cout << "currentMeshPointInMesh->luminosity = " << currentMeshPointInMesh->luminosity << endl;
-			cout << "currentMeshPointInMesh->depth = " << currentMeshPointInMesh->depth << endl;
-			cout << "currentMeshPointInMesh->point.x = " << currentMeshPointInMesh->point.x << endl;
-			cout << "currentMeshPointInMesh->point.y = " << currentMeshPointInMesh->point.y << endl;
-			cout << "currentMeshPointInMesh->point.z = " << currentMeshPointInMesh->point.z << endl;
-			*/
-			#endif
 
 			meshPointArray[y*imageWidth + x] = currentMeshPointInMesh;	//required for speed
 
@@ -986,14 +828,6 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 					(meshPointInterpixelArray[y*imageWidth + x])->meshPointNormalFilled = true;
 				}
 
-				#ifdef OR_DEBUG
-				/*
-				cout << "meshPointInterpixelArray[y*imageWidth + x]->luminosityContrast = " << meshPointInterpixelArray[y*imageWidth + x]->luminosityContrast << endl;
-				cout << "meshPointInterpixelArray[y*imageWidth + x]->meshPointNormal.x = " << meshPointInterpixelArray[y*imageWidth + x]->meshPointNormal.x << endl;
-				cout << "meshPointInterpixelArray[y*imageWidth + x]->meshPointNormal.y = " << meshPointInterpixelArray[y*imageWidth + x]->meshPointNormal.y << endl;
-				cout << "meshPointInterpixelArray[y*imageWidth + x]->meshPointNormal.z = " << meshPointInterpixelArray[y*imageWidth + x]->meshPointNormal.z << endl;
-				*/
-				#endif
 			}
 		}
 	}
@@ -1015,17 +849,6 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 					(meshPointArray[y*imageWidth + x])->meshPointNormalFilled = true;
 				}
 
-				#ifdef OR_DEBUG
-				/*
-				cout << "meshPointArray[y*imageWidth + x]->luminosityContrast = " << meshPointArray[y*imageWidth + x]->luminosityContrast << endl;
-				cout << "meshPointArray[y*imageWidth + x]->meshPointNormal.x = " << meshPointArray[y*imageWidth + x]->meshPointNormal.x << endl;
-				cout << "meshPointArray[y*imageWidth + x]->meshPointNormal.y = " << meshPointArray[y*imageWidth + x]->meshPointNormal.y << endl;
-				cout << "meshPointArray[y*imageWidth + x]->meshPointNormal.z = " << meshPointArray[y*imageWidth + x]->meshPointNormal.z << endl;
-				cout << "meshPointArray[y*imageWidth + x]->point.x = " << meshPointArray[y*imageWidth + x]->point.x << endl;
-				cout << "meshPointArray[y*imageWidth + x]->point.y = " << meshPointArray[y*imageWidth + x]->point.y << endl;
-				cout << "meshPointArray[y*imageWidth + x]->point.z = " << meshPointArray[y*imageWidth + x]->point.z << endl;
-				*/
-				#endif
 			}
 		}
 	}
@@ -1399,13 +1222,6 @@ void ORmethod3DODClass::reconcileFeaturesMap(const int imageWidth, const int ima
 								bool booleanValInKernel = RTpixelMaps.getBooleanMapValue(kx, ky, imageWidth, featuresBooleanMap);
 								if(booleanValInKernel)
 								{
-									#ifdef OR_DEBUG
-									/*
-									cout << "hit found;" << endl;
-									cout << "x = " << x << endl;
-									cout << "y = " << y << endl;
-									*/
-									#endif
 
 									numberOfHitsFound++;
 								}
@@ -1416,13 +1232,6 @@ void ORmethod3DODClass::reconcileFeaturesMap(const int imageWidth, const int ima
 
 				if(numberOfHitsFound >= 2)
 				{
-					#ifdef OR_DEBUG
-					/*
-					cout << "numberOfHitsFound >= 2" << endl;
-					cout << "x = " << x << endl;
-					cout << "y = " << y << endl;
-					*/
-					#endif
 
 					for(int ky = y-(FEATURES_BOOLEAN_MAP_RECONCILIATION_HEIGHT/2); ky <= y+(FEATURES_BOOLEAN_MAP_RECONCILIATION_HEIGHT/2); ky++)
 					{
@@ -1438,9 +1247,6 @@ void ORmethod3DODClass::reconcileFeaturesMap(const int imageWidth, const int ima
 									}
 									else
 									{
-										#ifdef OR_DEBUG
-										//cout << "\treconciling" << endl;
-										#endif
 										RTpixelMaps.setBooleanMapValue(kx, ky, imageWidth, false, featuresBooleanMap);
 									}
 								}
@@ -1653,20 +1459,6 @@ void ORmethod3DODClass::createFeaturesUsingBooleanMap(const int imageWidth, cons
 					{
 						if((maxDotProductResultXposArrayComplete[uvxIndex][uvyIndex][uvzIndex] == x) && (maxDotProductResultYposArrayComplete[uvxIndex][uvyIndex][uvzIndex] == y))
 						{
-							#ifdef OR_DEBUG
-							/*
-							double depth = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
-							vec xyzWorld;
-							getPointMapValue(x, y, imageWidth, pointMap, &xyzWorld);
-							cout << "\n createFeaturesUsingBooleanMapUsingDepthMap() FOUND FEATURE;" << endl;
-							cout << "x = " << x << endl;
-							cout << "y = " << y << endl;
-							cout << "depth = " << depth << endl;
-							cout << "xyzWorld.x = " << xyzWorld.x << endl;
-							cout << "xyzWorld.y = " << xyzWorld.y << endl;
-							cout << "xyzWorld.z = " << xyzWorld.z << endl;
-							*/
-							#endif
 
 							RTpixelMaps.setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMapComplete);
 						}
@@ -1884,20 +1676,6 @@ void ORmethod3DODClass::createFeaturesUsingBooleanMapUsingDepthMap(const int ima
 					{
 						if((maxDotProductResultXposArrayComplete[uvxIndex][uvyIndex][uvzIndex] == x) && (maxDotProductResultYposArrayComplete[uvxIndex][uvyIndex][uvzIndex] == y))
 						{
-							#ifdef OR_DEBUG
-							/*
-							double depth = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
-							vec xyzWorld;
-							getPointMapValue(x, y, imageWidth, pointMap, &xyzWorld);
-							cout << "\n createFeaturesUsingBooleanMapUsingDepthMap() FOUND FEATURE;" << endl;
-							cout << "x = " << x << endl;
-							cout << "y = " << y << endl;
-							cout << "depth = " << depth << endl;
-							cout << "xyzWorld.x = " << xyzWorld.x << endl;
-							cout << "xyzWorld.y = " << xyzWorld.y << endl;
-							cout << "xyzWorld.z = " << xyzWorld.z << endl;
-							*/
-							#endif
 
 							RTpixelMaps.setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMapComplete);
 						}
@@ -2067,13 +1845,6 @@ void ORmethod3DODClass::createFeaturesUsingBooleanMapUsingPointMap(int imageWidt
 								double bias = SHAREDvector.dotProduct(&pixelVector, &unitVector);
 								if(bias > maxDotProductResultArrayComplete[uvxIndex+1][uvyIndex+1][uvzIndex+1])
 								{
-									#ifdef OR_DEBUG
-									/*
-									cout << "found a corner" << endl;
-									cout << "x = " << x << endl;
-									cout << "y = " << y << endl;
-									*/
-									#endif
 
 									maxDotProductResultArrayComplete[uvxIndex+1][uvyIndex+1][uvzIndex+1] = bias;
 									maxDotProductResultXposArrayComplete[uvxIndex+1][uvyIndex+1][uvzIndex+1] = x;
@@ -2124,13 +1895,6 @@ void ORmethod3DODClass::createFeaturesUsingBooleanMapUsingPointMap(int imageWidt
 					{
 						if((maxDotProductResultXposArrayComplete[uvxIndex][uvyIndex][uvzIndex] == x) && (maxDotProductResultYposArrayComplete[uvxIndex][uvyIndex][uvzIndex] == y))
 						{
-							#ifdef OR_DEBUG
-							/*
-							cout << "placing corner;" << endl;
-							cout << "x = " << x << endl;
-							cout << "y = " << y << endl;
-							*/
-							#endif
 							RTpixelMaps.setBooleanMapValue(x, y, imageWidth, true, featuresUsingContrastMapComplete);
 						}
 					}
@@ -2171,14 +1935,6 @@ void ORmethod3DODClass::generateFeatureListUsingFeatureArrays(const int imageWid
 				if(!ORoperations.checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD, false))
 				{//add corner to list
 
-					#ifdef OR_DEBUG
-					/*
-					cout << "added corner" << endl;
-					cout << "\t crn; x= " << corner.x << endl;
-					cout << "\t crn; y= " << corner.y << endl;
-					cout << "\t crn; z= " << corner.z << endl;
-					*/
-					#endif
 
 					//fix;
 					bool zerozeroanomolyfound = false;
@@ -2197,14 +1953,6 @@ void ORmethod3DODClass::generateFeatureListUsingFeatureArrays(const int imageWid
 
 					if(!zerozeroanomolyfound && !backgroundcornerfound)
 					{
-						#ifdef OR_DEBUG
-						/*
-						cout << "found and adding corner;" << endl;
-						cout << "corner x = " << corner.x << endl;
-						cout << "corner y = " << corner.y << endl;
-						cout << "corner z = " << corner.z << endl;
-						*/
-						#endif
 
 						currentFeatureInList->xViewport = x;
 						currentFeatureInList->yViewport = y;
@@ -2266,14 +2014,6 @@ void ORmethod3DODClass::generateFeatureListUsingFeatureArraysUsingDepthMap(const
 				if(!ORoperations.checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD, false))
 				{//add corner to list
 
-					#ifdef OR_DEBUG
-					/*
-					cout << "added corner" << endl;
-					cout << "\t crn; x= " << corner.x << endl;
-					cout << "\t crn; y= " << corner.y << endl;
-					cout << "\t crn; z= " << corner.z << endl;
-					*/
-					#endif
 
 					//fix;
 					bool zerozeroanomolyfound = false;
@@ -2292,14 +2032,6 @@ void ORmethod3DODClass::generateFeatureListUsingFeatureArraysUsingDepthMap(const
 
 					if(!zerozeroanomolyfound && !backgroundcornerfound)
 					{
-						#ifdef OR_DEBUG
-						/*
-						cout << "found and adding corner;" << endl;
-						cout << "corner x = " << corner.x << endl;
-						cout << "corner y = " << corner.y << endl;
-						cout << "corner z = " << corner.z << endl;
-						*/
-						#endif
 
 						currentFeatureInList->xViewport = x;
 						currentFeatureInList->yViewport = y;
@@ -2354,14 +2086,6 @@ void ORmethod3DODClass::generateFeatureListUsingFeatureArraysUsingPointMap(int i
 				if(!ORoperations.checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_POINT_MAP_METHOD, true))
 				{//add corner to list
 
-					#ifdef OR_DEBUG
-					/*
-					cout << "added corner" << endl;
-					cout << "\t crn; x= " << corner.x << endl;
-					cout << "\t crn; y= " << corner.y << endl;
-					cout << "\t crn; z= " << corner.z << endl;
-					*/
-					#endif
 
 					//fix;
 					bool zerozeroanomolyfound = false;
@@ -2380,14 +2104,6 @@ void ORmethod3DODClass::generateFeatureListUsingFeatureArraysUsingPointMap(int i
 
 					if(!zerozeroanomolyfound && !backgroundcornerfound)
 					{
-						#ifdef OR_DEBUG
-						/*
-						cout << "found and adding unique corner;" << endl;
-						cout << "corner x = " << corner.x << endl;
-						cout << "corner y = " << corner.y << endl;
-						cout << "corner z = " << corner.z << endl;
-						*/
-						#endif
 
 						currentFeatureInList->xViewport = x;
 						currentFeatureInList->yViewport = y;

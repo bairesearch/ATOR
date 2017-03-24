@@ -25,7 +25,7 @@
  * File Name: ATORfeatureGeneration.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j2a 17-January-2017
+ * Project Version: 3k2a 21-March-2017
  *
  * Assumes that depth information is less accurate than image information
  *
@@ -97,7 +97,7 @@
 
 
 
-#ifdef OR_CONTIGUOUS_REGION_DEBUG
+#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 unsigned char* contiguousRegionDebugrgbMap;
 int contiguousRegionNumber = 0;
 int tempimageWidth;
@@ -194,18 +194,6 @@ void ORfeatureGenerationClass::generateFeatureListFromHeitgerFeatureRGBmapWithQu
 					currentFeatureInList->point.y = xyzWorld.y;
 					currentFeatureInList->point.z = xyzWorld.z;
 
-					#ifdef OR_DEBUG
-					/*
-					cout << "xPos = " << xPos << endl;
-					cout << "yPos = " << yPos << endl;
-					cout << "currentFeatureInList->pointNonWorldCoord.x = " << currentFeatureInList->pointNonWorldCoord.x << endl;
-					cout << "currentFeatureInList->pointNonWorldCoord.y = " << currentFeatureInList->pointNonWorldCoord.y << endl;
-					cout << "currentFeatureInList->pointNonWorldCoord.z = " << currentFeatureInList->pointNonWorldCoord.z << endl;
-					cout << "currentFeatureInList->point.x = " << currentFeatureInList->point.x << endl;
-					cout << "currentFeatureInList->point.y = " << currentFeatureInList->point.y << endl;
-					cout << "currentFeatureInList->point.z = " << currentFeatureInList->point.z << endl;
-					*/
-					#endif
 
 				#endif
 			}
@@ -382,13 +370,6 @@ ORfeature* ORfeatureGenerationClass::traceEdgeAndAddMinimaAndMaximaFeatures(ORfe
 		centroidposForTest.x = centroidPos->x;
 		centroidposForTest.y = centroidPos->y;
 		centroidposForTest.z = centroidPos->z;
-		#ifdef OR_DEBUG
-		/*
-		cout << "centroidposForTest.x = " << centroidposForTest.x;
-		cout << "centroidposForTest.y = " << centroidposForTest.y;
-		cout << "centroidposForTest.z = " << centroidposForTest.z;
-		*/
-		#endif
 	}
 	else
 	{
@@ -415,14 +396,14 @@ ORfeature* ORfeatureGenerationClass::traceEdgeAndAddMinimaAndMaximaFeatures(ORfe
 	bool stillTracingPath2 = true;
 	bool foundATracePath2 = false;
 
-	#ifdef OR_CONTIGUOUS_REGION_DEBUG
+	#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 	bool discontinuousTemp = false;
 	#endif
 
 	while(stillTracingPath2)
 	{
 
-		#ifdef OR_CONTIGUOUS_REGION_DEBUG
+		#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 		//mark boundary point
 		int nonworldx = currentInPixelContiguousBoundaryStack->pointNonWorldCoord.x;
 		int nonworldy = currentInPixelContiguousBoundaryStack->pointNonWorldCoord.y;
@@ -435,13 +416,10 @@ ORfeature* ORfeatureGenerationClass::traceEdgeAndAddMinimaAndMaximaFeatures(ORfe
 			currentPointForTest.y = currentInPixelContiguousBoundaryStack->point.y;
 			currentPointForTest.z = currentInPixelContiguousBoundaryStack->point.z;
 
-			#ifdef OR_DEBUG
-			//cout << " " << currentPointForTest.x << " " << currentPointForTest.y << " " << currentPointForTest.z << endl;
-			#endif
 
 			if(SHAREDvector.calculateTheDistanceBetweenTwoPoints(&previousPointForTest, &currentPointForTest) > OR_METHOD_3DOD_CONTINUOUS_EDGE_MAX_POINT_MOVEMENT)
 			{
-				#ifdef OR_CONTIGUOUS_REGION_DEBUG
+				#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 				discontinuousTemp = true;
 				//mark boundary point
 				contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 0] = 255;
@@ -468,23 +446,16 @@ ORfeature* ORfeatureGenerationClass::traceEdgeAndAddMinimaAndMaximaFeatures(ORfe
 			currentPointForTest.z = 0.0;
 		}
 
-		#ifdef OR_CONTIGUOUS_REGION_DEBUG
+		#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 		//mark boundary point
 		contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 0] = 0;
 		contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 1] = 255;
 		contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 2] = 255;
 		//generatePixmapFromRGBmap("debugContiguousRegionDetectionRGB.ppm", tempimageWidth, tempimageHeight, contiguousRegionDebugrgbMap);
-		#ifdef OR_CONTIGUOUS_REGION_DEBUG_PRINT_BOUNDARY_TRACE
-		cout << "nonworldx = " << nonworldx << endl;
-		cout << "nonworldy " << nonworldy << endl;
-		#endif
 		#endif
 
 		currentDistanceToCenteroid = SHAREDvector.calculateTheDistanceBetweenTwoPoints(&currentPointForTest, &centroidposForTest);
 
-		#ifdef OR_DEBUG
-		//cout << "currentDistanceToCenteroid = " << currentDistanceToCenteroid << endl;
-		#endif
 
 		if((numberOfBoundaryOrFakeBoundaryPixelsTraced > (MINIMUM_NUMBER_OF_PIXELS_IN_A_BOUNDARY)) && (SHAREDvector.compareVectors(&currentPointForTest, &initialPointOnBoundary)))
 		{
@@ -495,12 +466,12 @@ ORfeature* ORfeatureGenerationClass::traceEdgeAndAddMinimaAndMaximaFeatures(ORfe
 		{
 			if(distanceToCenteroidType == DISTANCE_TO_CENTEROID_DECREASING)
 			{
-				#ifdef OR_CONTIGUOUS_REGION_DEBUG
+				#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 				//cout << "DISTANCE_TO_CENTEROID_DECREASING" << endl;
 				#endif
 				if(currentDistanceToCenteroid > (previousRelativeMinimaDistanceToCenteroid+maxNoise))
 				{
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG
+					#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 					//cout << "1" << endl;
 					//cout << "Trace Minima Found" << endl;
 					//mark boundary point
@@ -560,34 +531,10 @@ ORfeature* ORfeatureGenerationClass::traceEdgeAndAddMinimaAndMaximaFeatures(ORfe
 				}
 				else if(currentDistanceToCenteroid >= previousRelativeMinimaDistanceToCenteroid)
 				{
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG_BOUNDARY_TRACE
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG
-					//cout << "2" << endl;
-					//mark boundary point
-					if(!discontinuousTemp)
-					{
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 0] = 0;
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 1] = 255;
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 2] = 150;
-					}
-					#endif
-					#endif
 				}
 				else
 				{//currentDistanceToPoint < previousRelativeMinimaDistanceToCenteroid
 
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG_BOUNDARY_TRACE
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG
-					//cout << "3" << endl;
-					//mark boundary point
-					if(!discontinuousTemp)
-					{
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 0] = 0;
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 1] = 255;
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 2] = 200;
-					}
-					#endif
-					#endif
 
 					previousRelativeMinimaDistanceToCenteroid = currentDistanceToCenteroid;
 					pointAtpreviousRelativeMinimaDistanceToCenteroid.x = currentPointForTest.x;
@@ -605,13 +552,13 @@ ORfeature* ORfeatureGenerationClass::traceEdgeAndAddMinimaAndMaximaFeatures(ORfe
 			}
 			else if(distanceToCenteroidType == DISTANCE_TO_CENTEROID_INCREASING)
 			{
-				#ifdef OR_CONTIGUOUS_REGION_DEBUG
+				#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 				//cout << "DISTANCE_TO_CENTEROID_INCREASING" << endl;
 				#endif
 
 				if(currentDistanceToCenteroid < (previousRelativeMaximaDistanceToCenteroid-maxNoise))
 				{
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG
+					#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 					//cout << "4" << endl;
 					//cout << "Trace Maxima Found" << endl;
 					//mark boundary point
@@ -670,34 +617,10 @@ ORfeature* ORfeatureGenerationClass::traceEdgeAndAddMinimaAndMaximaFeatures(ORfe
 				}
 				else if(currentDistanceToCenteroid <= previousRelativeMaximaDistanceToCenteroid)
 				{
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG_BOUNDARY_TRACE
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG
-					//cout << "5" << endl;
-					//mark boundary point
-					if(!discontinuousTemp)
-					{
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 0] = 150;
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 1] = 0;
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 2] = 255;
-					}
-					#endif
-					#endif
 				}
 				else
 				{//currentDistanceToPoint > previousRelativeMaximaDistanceToCenteroid
 
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG_BOUNDARY_TRACE
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG
-					//cout << "6" << endl;
-					//mark boundary point
-					if(!discontinuousTemp)
-					{
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 0] = 200;
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 1] = 0;
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 2] = 255;
-					}
-					#endif
-					#endif
 
 					previousRelativeMaximaDistanceToCenteroid = currentDistanceToCenteroid;
 					pointAtpreviousRelativeMaximaDistanceToCenteroid.x = currentPointForTest.x;
@@ -715,7 +638,7 @@ ORfeature* ORfeatureGenerationClass::traceEdgeAndAddMinimaAndMaximaFeatures(ORfe
 			}
 			else if(distanceToCenteroidType == DISTANCE_TO_CENTEROID_UNCHANGING)
 			{
-				#ifdef OR_CONTIGUOUS_REGION_DEBUG
+				#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 				//cout << "DISTANCE_TO_CENTEROID_UNCHANGING" << endl;
 				/*
 				cout << "currentDistanceToCenteroid = " << currentDistanceToCenteroid << endl;
@@ -726,18 +649,6 @@ ORfeature* ORfeatureGenerationClass::traceEdgeAndAddMinimaAndMaximaFeatures(ORfe
 
 				if(currentDistanceToCenteroid < (previousUnchangingDistanceToCenteroid-maxNoise2))
 				{
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG_BOUNDARY_TRACE
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG
-					//cout << "7" << endl;
-					//mark boundary point
-					if(!discontinuousTemp)
-					{
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 0] = 0;
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 1] = 100;
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 2] = 255;
-					}
-					#endif
-					#endif
 
 					distanceToCenteroidType = DISTANCE_TO_CENTEROID_DECREASING;
 
@@ -756,18 +667,6 @@ ORfeature* ORfeatureGenerationClass::traceEdgeAndAddMinimaAndMaximaFeatures(ORfe
 				}
 				else if(currentDistanceToCenteroid > (previousUnchangingDistanceToCenteroid+maxNoise2))
 				{
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG_BOUNDARY_TRACE
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG
-					//cout << "8" << endl;
-					//mark boundary point
-					if(!discontinuousTemp)
-					{
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 0] = 0;
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 1] = 150;
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 2] = 255;
-					}
-					#endif
-					#endif
 
 					distanceToCenteroidType = DISTANCE_TO_CENTEROID_INCREASING;
 
@@ -786,18 +685,6 @@ ORfeature* ORfeatureGenerationClass::traceEdgeAndAddMinimaAndMaximaFeatures(ORfe
 				}
 				else
 				{
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG_BOUNDARY_TRACE
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG
-					//cout << "9" << endl;
-					//mark boundary point
-					if(!discontinuousTemp)
-					{
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 0] = 0;
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 1] = 200;
-						contiguousRegionDebugrgbMap[nonworldy*tempimageWidth*RGB_NUM + nonworldx*RGB_NUM + 2] = 255;
-					}
-					#endif
-					#endif
 				}
 			}
 			else
@@ -806,7 +693,7 @@ ORfeature* ORfeatureGenerationClass::traceEdgeAndAddMinimaAndMaximaFeatures(ORfe
 				exit(EXIT_ERROR);
 			}
 
-			#ifdef OR_CONTIGUOUS_REGION_DEBUG
+			#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 			//remark boundary point
 			if(numberOfBoundaryOrFakeBoundaryPixelsTraced == 0)
 			{
@@ -839,17 +726,6 @@ ORfeature* ORfeatureGenerationClass::traceEdgeAndAddMinimaAndMaximaFeatures(ORfe
 							possiblePointOnBoundary.z = 0.0;
 						}
 
-						#ifdef OR_CONTIGUOUS_REGION_DEBUG_PRINT_BOUNDARY_TRACE
-						//mark boundary point
-						cout << "q = " << q << endl;
-						cout << "currentInPixelContiguousBoundaryStack->next[q]->pointNonWorldCoord.x = " << currentInPixelContiguousBoundaryStack->next[q]->pointNonWorldCoord.x << endl;
-						cout << "currentInPixelContiguousBoundaryStack->next[q]->pointNonWorldCoord.y = " << currentInPixelContiguousBoundaryStack->next[q]->pointNonWorldCoord.y << endl;
-						cout << "currentInPixelContiguousBoundaryStack->next[q]->pathAlreadyCrawled = " << currentInPixelContiguousBoundaryStack->next[q]->pathAlreadyCrawled << endl;
-						cout << "currentInPixelContiguousBoundaryStack->next[q]->finalPathAlreadyCrawled = " << currentInPixelContiguousBoundaryStack->next[q]->finalPathAlreadyCrawled  << endl;
-						cout << "possiblePointOnBoundary.x = " << possiblePointOnBoundary.x << endl;
-						cout << "possiblePointOnBoundary.y = " << possiblePointOnBoundary.y << endl;
-						cout << "possiblePointOnBoundary.z = " << possiblePointOnBoundary.z << endl;
-						#endif
 
 						if((numberOfBoundaryOrFakeBoundaryPixelsTraced > (MINIMUM_NUMBER_OF_PIXELS_IN_A_BOUNDARY)) && (SHAREDvector.compareVectors(&(possiblePointOnBoundary), &initialPointOnBoundary)))
 						{
@@ -859,7 +735,7 @@ ORfeature* ORfeatureGenerationClass::traceEdgeAndAddMinimaAndMaximaFeatures(ORfe
 						#ifdef NEWCHECKTHIS
 						else if(SHAREDvector.compareVectors(&(possiblePointOnBoundary), &initialPointOnBoundary))
 						{
-							#ifdef OR_CONTIGUOUS_REGION_DEBUG
+							#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 							//cout << "orig" << endl;
 							#endif
 
@@ -1012,23 +888,11 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 			cout << "error: illegal dimension" << endl;
 			exit(EXIT_ERROR);
 		}
-		#ifdef OR_DEBUG
-		/*
-		for(int y = 0; y < imageHeight; y++)
-		{
-  			for(int x = 0; x < imageWidth; x++)
-			{
-				cout << "edgeBoolMap[y*imageWidth + x] = " << edgeBoolMap[y*imageWidth + x] << endl;
-				cout << "contrastMap[y*imageWidth + x] = " << contrastMap[y*imageWidth + x] << endl;
-			}
-		}
-		*/
-		#endif
 
 		//generate edge map by creating a boolean map from the contrast map.
 	}
 
-	#ifdef OR_CONTIGUOUS_REGION_DEBUG
+	#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 
 	contiguousRegionDebugrgbMap = new unsigned char[imageWidth*imageHeight*RGB_NUM];
 	tempimageWidth = imageWidth;
@@ -1111,12 +975,8 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 					ORpixelContiguous* firstInPixelContiguousStack = new ORpixelContiguous();
 					contiguousRegionFound = this->defineRegionCheckNextPixelNonRecursive(firstInPixelContiguousStack, x, y, edgeBoolMap, edgeZeroCrossingMap, alreadyProcessed, imageWidth, imageHeight, &regionSize, &regionsumx, &regionsumy, &regionsumpos, dimension, pointMap, depthMap, zoom, useEdgeZeroCrossingMap, vi, &maxXx, &maxXy, interpixelContrastMapType);
 
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG_PRINT
-					cout << "regionSize = " << regionSize << endl;
-					cout << "contiguousRegionFound = " << contiguousRegionFound << endl;
-					#endif
 
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG
+					#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 					//temp; generate the display of the unbounded contiguous area;
 					if(contiguousRegionNumber == 1)
 					{
@@ -1127,11 +987,11 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 
 					if(contiguousRegionFound && (regionSize > (MIN_REGION_SIZE_TO_CALCULATE_CENTRED_FEATURE/zoom)))
 					{
-						#ifdef OR_CONTIGUOUS_REGION_DEBUG
+						#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 						contiguousRegionNumber++;
 						#endif
 
-						#ifdef OR_CONTIGUOUS_REGION_DEBUG
+						#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 						RTpixelMaps.generatePixmapFromRGBmap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
 						#endif
 
@@ -1142,26 +1002,11 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 						regionsumpos.y = regionsumpos.y / double(regionSize);
 						regionsumpos.z = regionsumpos.z / double(regionSize);
 
-						#ifdef OR_CONTIGUOUS_REGION_DEBUG_PRINT
-						cout << "contiguousRegionFound = " << contiguousRegionFound << endl;
-
-						cout << "regionaveragex = " << regionaveragex << endl;
-						cout << "regionaveragey = " << regionaveragey << endl;
-						cout << "regionsumpos.x = " << regionsumpos.x << endl;
-						cout << "regionsumpos.y = " << regionsumpos.y << endl;
-						cout << "regionsumpos.z = " << regionsumpos.z << endl;
-
-						cout << "regionSize = " << regionSize << endl;
-						#endif
 
 
 						if(OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES)
 						{
 
-							#ifdef OR_CONTIGUOUS_REGION_DEBUG_PRINT
-							cout << "maxXx = " << maxXx << endl;
-							cout << "maxXy = " << maxXy << endl;
-							#endif
 
 							//now execute shortcut place aMeshPointOnTheBoundary on the actual boundary (edge) of the contiguous region
 							int edgeXDev;
@@ -1185,7 +1030,7 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 							maxXx = maxXx + edgeXDev;
 							maxXy = maxXy + edgeYDev;
 
-							#ifdef OR_CONTIGUOUS_REGION_DEBUG
+							#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 							//mark boundary point
 							contiguousRegionDebugrgbMap[maxXy*imageWidth*RGB_NUM + maxXx*RGB_NUM + 0] = 128;
 							contiguousRegionDebugrgbMap[maxXy*imageWidth*RGB_NUM + maxXx*RGB_NUM + 1] = 128;
@@ -1246,10 +1091,6 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 
 							double minCircumferenceOfRegion = sqrt(regionSize)*3.069980124*(1.0/sqrt(2.0));
 
-							#ifdef OR_CONTIGUOUS_REGION_DEBUG_PRINT
-							cout << "regionSize = " << regionSize << endl;
-							cout << "minCircumferenceOfRegion = " << minCircumferenceOfRegion << endl;
-							#endif
 
 							//2+3. find boundary region and trace line of contrast until return to start position [if not repeat for a different edge start pos], then calculate the average x and y values to find the centre feature
 
@@ -1282,7 +1123,7 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 
 							traceSuccessful = this->traceEdgeCheckNextPixelNonRecursive(maxXx, maxXy, alreadyProcessed, edgeZeroCrossingMap, useEdgeZeroCrossingMap, imageWidth, imageHeight, &boundarysumx, &boundarysumy, &boundarysumpos, &circumferenceForRegion, minCircumferenceOfRegion, dimension, pointMap, depthMap, zoom, firstInPixelContiguousBoundaryStack, vi, interpixelContrastMapType);
 
-							#ifdef OR_CONTIGUOUS_REGION_DEBUG
+							#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 							RTpixelMaps.generatePixmapFromRGBmap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
 							#endif
 
@@ -1303,21 +1144,8 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 								boundarysumpos.y = boundarysumpos.y / double(circumferenceForRegion);
 								boundarysumpos.z = boundarysumpos.z / double(circumferenceForRegion);
 
-								#ifdef OR_CONTIGUOUS_REGION_DEBUG_PRINT
-								cout << "contiguous region boundary traceSuccessful = " << traceSuccessful << endl;
 
-								cout << "regionSize = " << regionSize << endl;
-								cout << "minCircumferenceOfRegion = " << minCircumferenceOfRegion << endl;
-								cout << "circumferenceForRegion = " << circumferenceForRegion << endl;
-
-								cout << "boundaryaveragex = " << boundaryaveragex << endl;
-								cout << "boundaryaveragey = " << boundaryaveragey << endl;
-								cout << "boundarysumpos.x = " << boundarysumpos.x << endl;
-								cout << "boundarysumpos.y = " << boundarysumpos.y << endl;
-								cout << "boundarysumpos.z = " << boundarysumpos.z << endl;
-								#endif
-
-								#ifdef OR_CONTIGUOUS_REGION_DEBUG
+								#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 								//mark central point [orange]
 								contiguousRegionDebugrgbMap[int(boundaryaveragey)*imageWidth*RGB_NUM + int(boundaryaveragex)*RGB_NUM + 0] = 255;
 								contiguousRegionDebugrgbMap[int(boundaryaveragey)*imageWidth*RGB_NUM + int(boundaryaveragex)*RGB_NUM + 1] = 128;
@@ -1373,7 +1201,7 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 									currentFeatureInList = this->traceEdgeAndAddMinimaAndMaximaFeatures(currentFeatureInList, boundaryaveragex, boundaryaveragey, &boundarysumpos, firstInPixelContiguousBoundaryStack, dimension, zoom, circumferenceForRegion);
 								}
 
-								#ifdef OR_CONTIGUOUS_REGION_DEBUG
+								#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 								RTpixelMaps.generatePixmapFromRGBmap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
 								#endif
 							}
@@ -1389,13 +1217,6 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 							currentFeatureInList->xViewport = regionaveragex*zoom;
 							currentFeatureInList->yViewport = regionaveragey*zoom;
 
-							#ifdef OR_DEBUG
-							/*
-							cout << "regionaveragex= " << regionaveragex << endl;
-							cout << "regionaveragey " << regionaveragey << endl;
-							cout << "zoom = " << zoom << endl;
-							*/
-							#endif
 							if(dimension == OR_METHOD3DOD_DIMENSIONS)
 							{
 								currentFeatureInList->point.x = regionsumpos.x;
@@ -1423,20 +1244,6 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 					{
 						this->deleteContiguousStackAndResetEdgesNonRecursive(firstInPixelContiguousStack, alreadyProcessed, imageWidth, imageHeight);
 
-						#ifdef OR_DEBUG
-						/*
-						for(int x = 0; x < imageWidth; x++);
-						{
-							for(int y = 0; y < imageHeight; y++);
-							{
-								if(alreadyProcessed[y*imageWidth + x] == EDGE_FOUND)
-								{
-									cout << "ERROR" << endl;
-								}
-							}
-						}
-						*/
-						#endif
 					}
 					delete firstInPixelContiguousStack;
 				}
@@ -1444,7 +1251,7 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 		}
 	}
 
-	#ifdef OR_CONTIGUOUS_REGION_DEBUG
+	#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 	delete contiguousRegionDebugrgbMap;
 	#endif
 
@@ -1532,18 +1339,6 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingMeshList(ORfe
 					regionsumpos.y = regionsumpos.y / double(regionSize);
 					regionsumpos.z = regionsumpos.z / double(regionSize);
 
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG_PRINT
-					cout << "contiguousRegionFound = " << contiguousRegionFound << endl;
-
-					cout << "regionaveragex = " << regionaveragex << endl;
-					cout << "regionaveragey = " << regionaveragey << endl;
-					cout << "regionsumpos.x = " << regionsumpos.x << endl;
-					cout << "regionsumpos.y = " << regionsumpos.y << endl;
-					cout << "regionsumpos.z = " << regionsumpos.z << endl;
-
-					cout << "regionSize = " << regionSize << endl;
-
-					#endif
 
 					if(OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES)
 					{
@@ -1651,19 +1446,6 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingMeshList(ORfe
 							boundarysumpos.y = boundarysumpos.y / double(circumferenceForRegion);
 							boundarysumpos.z = boundarysumpos.z / double(circumferenceForRegion);
 
-							#ifdef OR_CONTIGUOUS_REGION_DEBUG_PRINT
-							cout << "contiguous region boundary traceSuccessful = " << traceSuccessful << endl;
-
-							cout << "minCircumferenceOfRegion = " << minCircumferenceOfRegion << endl;
-							cout << "circumferenceForRegion = " << circumferenceForRegion << endl;
-
-							cout << "boundaryaveragex = " << boundaryaveragex << endl;
-							cout << "boundaryaveragey = " << boundaryaveragey << endl;
-							cout << "boundarysumpos.x = " << boundarysumpos.x << endl;
-							cout << "boundarysumpos.y = " << boundarysumpos.y << endl;
-							cout << "boundarysumpos.z = " << boundarysumpos.z << endl;
-
-							#endif
 
 							#ifdef OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY_EXTRA_NOT_NECESSARY_AND_BUGGY_2
 								currentFeatureInList->xViewport = boundaryaveragex;
@@ -1848,10 +1630,6 @@ bool ORfeatureGenerationClass::defineRegionCheckNextPixelNonRecursive(ORpixelCon
 			if((x >= xBoundaryMin) && (x <= xBoundaryMax) && (y >= yBoundaryMin) && (y <= yBoundaryMax))
 			{//map boundary check
 
-				#ifdef OR_DEBUG
-				//cout << "xDev = " << xDev << endl;
-				//cout << "yDev = " << yDev << endl;
-				#endif
 
 				int pixelStatus = alreadyProcessed[(y*imageWidth) + x];
 				if(pixelStatus == NOT_PROCESSED)
@@ -1860,9 +1638,9 @@ bool ORfeatureGenerationClass::defineRegionCheckNextPixelNonRecursive(ORpixelCon
 					{
 						alreadyProcessed[y*imageWidth + x] = EDGE_FOUND;
 
-						#ifdef OR_CONTIGUOUS_REGION_DEBUG
+						#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 
-						#ifndef OR_CONTIGUOUS_REGION_DEBUG3
+						#ifndef OR_CONTIGUOUS_REGION_VERBOSE3
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 0] = 255;
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 1] = 0;
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 2] = 255;
@@ -1941,8 +1719,8 @@ bool ORfeatureGenerationClass::defineRegionCheckNextPixelNonRecursive(ORpixelCon
 								if((alreadyProcessed[(yAdjacentPixel1*imageWidth) + xAdjacentPixel1] == NOT_PROCESSED) && (edgeBoolMap[yAdjacentPixel1*imageWidth + xAdjacentPixel1] == true))
 								{
 									alreadyProcessed[(yAdjacentPixel1*imageWidth) + xAdjacentPixel1] = EDGE_FOUND;
-									#ifdef OR_CONTIGUOUS_REGION_DEBUG
-									#ifndef OR_CONTIGUOUS_REGION_DEBUG3
+									#ifdef OR_CONTIGUOUS_REGION_VERBOSE
+									#ifndef OR_CONTIGUOUS_REGION_VERBOSE3
 									contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 0] = 255;
 									contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 1] = 0;
 									contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 2] = 255;
@@ -1961,8 +1739,8 @@ bool ORfeatureGenerationClass::defineRegionCheckNextPixelNonRecursive(ORpixelCon
 								if((alreadyProcessed[(yAdjacentPixel2*imageWidth) + xAdjacentPixel2] == NOT_PROCESSED) && (edgeBoolMap[yAdjacentPixel2*imageWidth + xAdjacentPixel2] == true))
 								{
 									alreadyProcessed[(yAdjacentPixel2*imageWidth) + xAdjacentPixel2] = EDGE_FOUND;
-									#ifdef OR_CONTIGUOUS_REGION_DEBUG
-									#ifndef OR_CONTIGUOUS_REGION_DEBUG3
+									#ifdef OR_CONTIGUOUS_REGION_VERBOSE
+									#ifndef OR_CONTIGUOUS_REGION_VERBOSE3
 									contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 0] = 255;
 									contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 1] = 0;
 									contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 2] = 255;
@@ -1982,15 +1760,12 @@ bool ORfeatureGenerationClass::defineRegionCheckNextPixelNonRecursive(ORpixelCon
 					else
 					{
 						ORpixelContiguous* newPixel = new ORpixelContiguous(x, y, currentInPixelContiguousStack);
-						#ifdef OR_DEBUG
-						//cout << "q2 = " << q2 << endl;
-						#endif
 						currentInPixelContiguousStack->next[q2] = newPixel;
 						*regionSize = *regionSize + 1;
 						alreadyProcessed[y*imageWidth + x] = NO_EDGE_FOUND;
 						numberOfNewBranchesFromThisPixel++;
 
-						#ifdef OR_CONTIGUOUS_REGION_DEBUG
+						#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 0] = ((contiguousRegionNumber/1)%10* 25);
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 1] = ((contiguousRegionNumber/10)%10* 25);
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 2] = ((contiguousRegionNumber/100)%10* 25);
@@ -2155,13 +1930,6 @@ void ORfeatureGenerationClass::deleteContiguousStackAndResetEdgesNonRecursive(OR
 								if(alreadyProcessed[y*imageWidth + x] == EDGE_FOUND)
 								{
 									alreadyProcessed[y*imageWidth + x] = NOT_PROCESSED;
-									#ifdef OR_CONTIGUOUS_REGION_DEBUG2	//reset contiguous map
-									#ifndef OR_CONTIGUOUS_REGION_DEBUG3
-									contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 0] = 0;
-									contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 1] = 0;
-									contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 2] = 0;
-									#endif
-									#endif
 								}
 							}
 						}
@@ -2359,9 +2127,6 @@ bool ORfeatureGenerationClass::defineRegionCheckNextPixelUsingMeshPointNonRecurs
 
 					if(passCondition)
 					{
-						#ifdef OR_DEBUG
-						//cout << "edge found" << endl;
-						#endif
 						currentMeshPoint->adjacentMeshPoint[q]->alreadyProcessed = EDGE_FOUND;
 
 						if(OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
@@ -2446,9 +2211,6 @@ bool ORfeatureGenerationClass::defineRegionCheckNextPixelUsingMeshPointNonRecurs
 					}
 					else
 					{
-						#ifdef OR_DEBUG
-						//cout << "no edge found" << endl;
-						#endif
 						ORpixelContiguous* newPixel = new ORpixelContiguous(currentMeshPoint->adjacentMeshPoint[q], currentInPixelContiguousStack);
 						currentInPixelContiguousStack->next[q2] = newPixel;
 						*regionSize = *regionSize + 1;
@@ -2630,17 +2392,6 @@ bool ORfeatureGenerationClass::traceEdgeCheckNextPixelNonRecursive(int xInitialO
 				xyzWorld.x = edgeZeroCrossingMap[firstInPixelContiguousBoundaryStack->yInt*imageWidth + firstInPixelContiguousBoundaryStack->xInt]->point.x;
 				xyzWorld.y = edgeZeroCrossingMap[firstInPixelContiguousBoundaryStack->yInt*imageWidth + firstInPixelContiguousBoundaryStack->xInt]->point.y;
 				xyzWorld.z = edgeZeroCrossingMap[firstInPixelContiguousBoundaryStack->yInt*imageWidth + firstInPixelContiguousBoundaryStack->xInt]->point.z;
-				#ifdef OR_DEBUG
-				/*
-				cout << "xyzWorld.x = " << xyzWorld.x;
-				cout << "xyzWorld.y = " << xyzWorld.y;
-				cout << "xyzWorld.z = " << xyzWorld.z;
-				cout << "x = " << edgeZeroCrossingMap[firstInPixelContiguousBoundaryStack->yInt*imageWidth + firstInPixelContiguousBoundaryStack->xInt]->zeroCrossingValueX;
-				cout << "y = " << edgeZeroCrossingMap[firstInPixelContiguousBoundaryStack->yInt*imageWidth + firstInPixelContiguousBoundaryStack->xInt]->zeroCrossingValueY;
-				cout << "x = " << edgeZeroCrossingMap[firstInPixelContiguousBoundaryStack->yInt*imageWidth + firstInPixelContiguousBoundaryStack->xInt]->x;
-				cout << "y = " << edgeZeroCrossingMap[firstInPixelContiguousBoundaryStack->yInt*imageWidth + firstInPixelContiguousBoundaryStack->xInt]->y;
-				*/
-				#endif
 			}
 			else
 			{
@@ -2685,7 +2436,7 @@ bool ORfeatureGenerationClass::traceEdgeCheckNextPixelNonRecursive(int xInitialO
 		currentInPixelContiguousStack->pathAlreadyCrawled = true;
 		alreadyProcessed[yCurrent*imageWidth + xCurrent] = NOT_PROCESSED;
 
-		#ifdef OR_CONTIGUOUS_REGION_DEBUG
+		#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 		if(numberOfBoundaryOrFakeBoundaryPixelsTraced != 0)
 		{
 			contiguousRegionDebugrgbMap[yCurrent*imageWidth*RGB_NUM + xCurrent*RGB_NUM + 0] = 0;
@@ -2771,7 +2522,7 @@ bool ORfeatureGenerationClass::traceEdgeCheckNextPixelNonRecursive(int xInitialO
 					currentPointAdjacentPoint.z = 0.0;
 
 					/*
-					#ifdef OR_CONTIGUOUS_REGION_DEBUG
+					#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 					contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 0] = 255;
 					contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 1] = 0;
 					contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 2] = 255;
@@ -2807,21 +2558,10 @@ bool ORfeatureGenerationClass::traceEdgeCheckNextPixelNonRecursive(int xInitialO
 
 					}
 
-					#ifdef OR_DEBUG
-					/*
-					cout << "\t tracing edge... " << endl;
-					cout << "\t xCurrent = " << xCurrent << endl;
-					cout << "\t yCurrent = " << yCurrent << endl;
-					cout << "\t alreadyProcessed[y*imageWidth + x] = " << alreadyProcessed[y*imageWidth + x] << endl;
-					cout << "\t x = " << x << endl;
-					cout << "\t y = " << y << endl;
-					cout << "\t q = " << q << endl;
-					*/
-					#endif
 
 					if(((alreadyProcessed[y*imageWidth + x] == EDGE_FOUND) && nextIsNotPrevious && nextHasNotAlreadyBeenCrawled) || nextIsInitial)	//add 2 initial points to the list
 					{
-						#ifdef OR_CONTIGUOUS_REGION_DEBUG
+						#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 						//cout << "q = " << q << endl;
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 0] = 255;
 						contiguousRegionDebugrgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + 1] = 0;
@@ -2977,11 +2717,6 @@ bool ORfeatureGenerationClass::traceEdgeCheckNextPixelNonRecursive(int xInitialO
 
 				if(passCondition)
 				{
-					#ifdef OR_DEBUG
-					//cout << "minRegionCircumferenceForRegion = " << minRegionCircumferenceForRegion << endl;
-					//cout << "currentInPixelContiguousStack->xInt = " << currentInPixelContiguousStack->xInt << endl;
-					//cout << "currentInPixelContiguousStack->yInt = " << currentInPixelContiguousStack->yInt << endl;
-					#endif
 
 					if(currentInPixelContiguousStack->next[q] != NULL)
 					{
@@ -3018,14 +2753,6 @@ bool ORfeatureGenerationClass::traceEdgeCheckNextPixelNonRecursive(int xInitialO
 										foundAReferenceToCrawlTo = true;
 										currentInPixelContiguousStack = currentInPixelContiguousStack->next[q];
 
-										#ifdef OR_DEBUG
-										//cout << "currentInPixelContiguousStack->xInt = " << currentInPixelContiguousStack->xInt << endl;
-										//cout << "currentInPixelContiguousStack->yInt = " << currentInPixelContiguousStack->yInt << endl;
-										//cout << "foundAReferenceToCrawlTo" << endl;
-										//cout << "q = " << q << endl;
-										//cout << "currentInPixelContiguousStack->next[q]->xInt = " << currentInPixelContiguousStack->xInt << endl;
-										//cout << "currentInPixelContiguousStack->next[q]->yInt = " << currentInPixelContiguousStack->yInt << endl;
-										#endif
 									}
 								}
 							}
@@ -3052,7 +2779,7 @@ bool ORfeatureGenerationClass::traceEdgeCheckNextPixelNonRecursive(int xInitialO
 			if(!foundAReferenceToCrawlTo)
 			{
 
-				#ifdef OR_CONTIGUOUS_REGION_DEBUG
+				#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 				//cout << "retracing step; "<< endl;
 				contiguousRegionDebugrgbMap[currentInPixelContiguousStack->yInt*imageWidth*RGB_NUM + currentInPixelContiguousStack->xInt*RGB_NUM + 0] = 200;
 				contiguousRegionDebugrgbMap[currentInPixelContiguousStack->yInt*imageWidth*RGB_NUM + currentInPixelContiguousStack->xInt*RGB_NUM + 1] = 200;
@@ -3082,9 +2809,6 @@ bool ORfeatureGenerationClass::traceEdgeCheckNextPixelNonRecursive(int xInitialO
 
 	}
 
-	#ifdef OR_DEBUG
-	//cout << "\t\t numberOfBoundaryOrFakeBoundaryPixelsTraced = " << numberOfBoundaryOrFakeBoundaryPixelsTraced << endl;
-	#endif
 
 	*numberOfCounts = numberOfBoundaryOrFakeBoundaryPixelsTraced;
 
@@ -3446,10 +3170,6 @@ void ORfeatureGenerationClass::generateFeatureListFromHeitgerFeatureRGBMap(ORfea
 			if(featureProbabilityLevelCentrePixel >= HEITGER_FEATURE_RGB_MAP_CENTRE_THRESHOLD*sensitivity)
 			{//centre pixel feature detection threshold passed, now calculate surrounding/kernel feature detection threshold level
 
-				#ifdef OR_DEBUG
-				//cout << "(featureProbabilityLevelCentrePixel >= HEITGER_FEATURE_RGB_MAP_CENTRE_THRESHOLD*sensitivity)" << endl;
-				//cout << "featureProbabilityLevelCentrePixel = " << featureProbabilityLevelCentrePixel*sensitivity << endl;
-				#endif
 
 				double featureProbabilityLevelKernelPixels = 0.0;
 				bool centreFeatureFound = true;
@@ -3518,9 +3238,6 @@ void ORfeatureGenerationClass::generateFeatureListFromHeitgerFeatureRGBMap(ORfea
 						#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
 							if(SHAREDvars.compareDoubles(depthVal, RT_RAYTRACE_NO_HIT_DEPTH_T))	//NEW official [2 june 09] {ensures the pixel is not a background pixel}
 							{//off object
-								#ifdef OR_DEBUG
-								//cout << "feature off object" << endl;
-								#endif
 
 								if(nearbyPointOnObjectFound)
 								{
@@ -3545,15 +3262,6 @@ void ORfeatureGenerationClass::generateFeatureListFromHeitgerFeatureRGBMap(ORfea
 									currentFeatureInList->point.y = xyzWorld.y;
 									currentFeatureInList->point.z = xyzWorld.z;
 
-									#ifdef OR_DEBUG
-									/*
-									cout << "feature off object" << endl;
-									cout << "xyzNearbyPointOnObject.x = " << xyzNearbyPointOnObject.x << endl;
-									cout << "xyzNearbyPointOnObject.y = " << xyzNearbyPointOnObject.y << endl;
-									cout << "xyzNearbyPointOnObject.z = " << xyzNearbyPointOnObject.z << endl;
-									cout << "depthVal = " << depthVal << endl;
-									*/
-									#endif
 
 									ORfeature* newFeature = new ORfeature();
 									currentFeatureInList->next = newFeature;
@@ -3569,15 +3277,6 @@ void ORfeatureGenerationClass::generateFeatureListFromHeitgerFeatureRGBMap(ORfea
 						#endif
 							else
 							{
-								#ifdef OR_DEBUG
-								/*
-								cout << "feature on object" << endl;
-								cout << "xyz.x = " << xyz.x << endl;
-								cout << "xyz.y = " << xyz.y << endl;
-								cout << "xyz.z = " << xyz.z << endl;
-								cout << "depthVal = " << depthVal << endl;
-								*/
-								#endif
 
 								currentFeatureInList->xViewport = x*zoom;
 								currentFeatureInList->yViewport = y*zoom;
@@ -3601,23 +3300,10 @@ void ORfeatureGenerationClass::generateFeatureListFromHeitgerFeatureRGBMap(ORfea
 								currentFeatureInList->next = newFeature;
 								currentFeatureInList = currentFeatureInList->next;
 
-								#ifdef OR_DEBUG
-								//cout << "(featureProbabilityLevelKernelPixels >= HEITGER_FEATURE_RGB_MAP_TOTAL_KERNEL_THRESHOLD*sensitivity)" << endl;
-								//cout << "featureProbabilityLevelKernelPixels = " << featureProbabilityLevelKernelPixels*sensitivity << endl;
-								#endif
 							}
 						}
 						else
 						{
-							#ifdef OR_DEBUG
-							/*
-							cout << "feature on object" << endl;
-							cout << "xyz.x = " << xyz.x << endl;
-							cout << "xyz.y = " << xyz.y << endl;
-							cout << "xyz.z = " << xyz.z << endl;
-							cout << "depthVal = " << depthVal << endl;
-							*/
-							#endif
 
 							currentFeatureInList->xViewport = x*zoom;
 							currentFeatureInList->yViewport = y*zoom;
@@ -3629,10 +3315,6 @@ void ORfeatureGenerationClass::generateFeatureListFromHeitgerFeatureRGBMap(ORfea
 							currentFeatureInList->next = newFeature;
 							currentFeatureInList = currentFeatureInList->next;
 
-							#ifdef OR_DEBUG
-							//cout << "(featureProbabilityLevelKernelPixels >= HEITGER_FEATURE_RGB_MAP_TOTAL_KERNEL_THRESHOLD*sensitivity)" << endl;
-							//cout << "featureProbabilityLevelKernelPixels = " << featureProbabilityLevelKernelPixels*sensitivity << endl;
-							#endif
 						}
 					}
 				}
@@ -3702,14 +3384,6 @@ void ORfeatureGenerationClass::generateFeatureListFromHeitgerFeatureAsciiMap(ORf
 				currentFeatureInList->xViewport = currentFeatureInList->point.x;
 				currentFeatureInList->yViewport = currentFeatureInList->point.y;
 
-				#ifdef OR_DEBUG
-				/*
-				cout << "feature added to list;" << endl;
-				cout << "currentFeatureInList->point.x = " << currentFeatureInList->point.x << endl;
-				cout << "currentFeatureInList->point.y = " << currentFeatureInList->point.y << endl;
-				cout << "currentFeatureInList->magnitude = " << currentFeatureInList->magnitude << endl;
-				*/
-				#endif
 
 				ORfeature* newFeature = new ORfeature();
 				currentFeatureInList->next = newFeature;
@@ -3765,9 +3439,6 @@ void ORfeatureGenerationClass::generateFeatureListFromRGBMap(ORfeature* firstFea
   		for(int x = 0; x < imageWidth; x++)
 		{
 			kernelOrientationHighContrastFoundMap[y*imageWidth + x] = 0;
-			#ifdef OR_DEBUG
-			//cout << "kernelOrientationHighContrastFoundMap[y*imageWidth + x] = " << kernelOrientationHighContrastFoundMap[y*imageWidth + x] <<	 endl;
-			#endif
 		}
 	}
 
@@ -3853,21 +3524,6 @@ void ORfeatureGenerationClass::generateFeatureListFromRGBMap(ORfeature* firstFea
 					if(haveAFullStack)
 					{
 
-						#ifdef OR_DEBUG
-						/*
-						cout << "stackIndex = " << stackIndex << endl;
-						cout << "abs(stackIndex-(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_CONTRAST_STACK_SIZE-1)) = " << abs(stackIndex-(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_CONTRAST_STACK_SIZE-1)) << endl;
-						cout << "abs(stackIndex-(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_CONTRAST_STACK_SIZE/2)) = " << abs(stackIndex-(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_CONTRAST_STACK_SIZE/2)) << endl;
-						cout << "abs(stackIndex-((OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_CONTRAST_STACK_SIZE/2)-1)) = " << abs(stackIndex-((OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_CONTRAST_STACK_SIZE/2)-1)) << endl;
-						*/
-						/*
-						cout << "stackIndex = " << stackIndex << endl;
-						cout << "(stackIndex+1)%4  = " << (stackIndex+1)%4 << endl;
-						cout << "(stackIndex+2)%4  = " << (stackIndex+2)%4 << endl;
-						cout << "(stackIndex+3)%4  = " << (stackIndex+3)%4 << endl;
-						*/
-						//cout << "contrastStack[stackIndex] = " << contrastStack[stackIndex] << endl;
-						#endif
 
 						if((contrastStack[stackIndex] < OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_NO_CONTRAST_MAX_THRESHOLD) &&
 						(contrastStack[(stackIndex+1)%4] < OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_NO_CONTRAST_MAX_THRESHOLD) &&
@@ -3877,21 +3533,6 @@ void ORfeatureGenerationClass::generateFeatureListFromRGBMap(ORfeature* firstFea
 
 							kernelOrientationHighContrastFoundMap[(y-(yIncrement*(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_LENGTH/2)))*imageWidth + (x-(xIncrement*(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_LENGTH/2)))] = kernelOrientationHighContrastFoundMap[(y-(yIncrement*(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_LENGTH/2)))*imageWidth + (x-(xIncrement*(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_LENGTH/2)))] + 1;
 
-							#ifdef OR_DEBUG
-							//cout << "(yIncrement*(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_LENGTH/2)) = " << (yIncrement*(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_LENGTH/2)) << endl;
-							//cout << "(xIncrement*(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_LENGTH/2))) = " << (xIncrement*(OR_FEATURE_DETECTION_SCAN_LINE_KERNEL_LENGTH/2)) << endl;
-							/*
-							cout << "kernelOrientation = " << kernelOrientation << endl;
-							cout << "scanLine = " << scanLine << endl;
-							cout << "contrastStack[stackIndex] = " << contrastStack[stackIndex] << endl;
-							cout << "contrastStack[(stackIndex+1)%4] = " << contrastStack[(stackIndex+1)%4] << endl;
-							cout << "contrastStack[(stackIndex+2)%4] = " << contrastStack[(stackIndex+2)%4] << endl;
-							cout << "contrastStack[(stackIndex+3)%4] = " << contrastStack[(stackIndex+3)%4] << endl;
-							cout << "kernelOrientationHighContrastFoundMap[y*resampledWidth + x] = " << kernelOrientationHighContrastFoundMap[y*resampledWidth + x] << endl;
-							cout << "x = " << x << endl;
-							cout << "y = " << y << endl;
-							*/
-							#endif
 						}
 					}
 

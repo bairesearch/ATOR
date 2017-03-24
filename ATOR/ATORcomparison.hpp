@@ -25,7 +25,7 @@
  * File Name: ATORcomparison.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j2a 17-January-2017
+ * Project Version: 3k2a 21-March-2017
  *
  *******************************************************************************/
 
@@ -83,7 +83,7 @@ class ORcomparisonClass
 	//#endif
 
 	private: void convertImageFileType(const string* imageBaseFileName, const string* imageBaseFileNameConverted, const string imageExtension, const string imageExtensionConverted);
-	#ifdef DEBUG_OR_OUTPUT_GEO_COORDINATES
+	#ifdef VERBOSE_OR_OUTPUT_GEO_COORDINATES
 	private: void createGeoTableHTMLfromFeatureList(const ORfeature* firstFeatureInNearestFeatureList, const bool applyBinning, string* geoTableHTMLoutputString);
 	#endif
 	/*

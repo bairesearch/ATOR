@@ -25,7 +25,7 @@
  * File Name: ATORmethod2DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j2a 17-January-2017
+ * Project Version: 3k2a 21-March-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -234,16 +234,6 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	ptp5.y = sqrt(pow(1.0,2) - pow(0.5, 2));
 	*/
 
-	#ifdef OR_DEBUG_METHOD_2DOD
-	cout << "\n \t starting to tranform object triangle, predefinedTriangle->point3.y = " << predefinedTriangle->point3.y << endl;
-	cout << "0. currentPolygonInList without transformation " << endl;
-	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
-	cout << "transformedObjectTriangle->point1.y = " << transformedObjectTriangle->point1.y << endl;
-	cout << "transformedObjectTriangle->point2.x = " << transformedObjectTriangle->point2.x << endl;
-	cout << "transformedObjectTriangle->point2.y = " << transformedObjectTriangle->point2.y << endl;
-	cout << "transformedObjectTriangle->point3.x = " << transformedObjectTriangle->point3.x << endl;
-	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
-	#endif
 
 	double orientationOfObjectTriangleSide = this->calculateXYorientationOfSide(currentPolygonInList, side);
 	double lengthOfObjectTriangleSide = this->calculateXYlengthOfSide(currentPolygonInList, side);
@@ -273,18 +263,6 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	//ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &scaleMatrix1a);
 	#endif
 
-	#ifdef OR_DEBUG_METHOD_2DOD
-	cout << "1. Scale object data such that the object triangle side is of same length as a predefined side of a predefined triangle" << endl;
-	cout << "scaleMatrix1a.a.x = " << scaleMatrix1a.a.x << endl;
-	cout << "scaleMatrix1a.a.y = " << scaleMatrix1a.a.y << endl;
-	cout << "scaleMatrix1a.a.z = " << scaleMatrix1a.a.z << endl;
-	cout << "scaleMatrix1a.b.x = " << scaleMatrix1a.b.x << endl;
-	cout << "scaleMatrix1a.b.y = " << scaleMatrix1a.b.y << endl;
-	cout << "scaleMatrix1a.b.z = " << scaleMatrix1a.b.z << endl;
-	cout << "scaleMatrix1a.c.x = " << scaleMatrix1a.c.x << endl;
-	cout << "scaleMatrix1a.c.y = " << scaleMatrix1a.c.y << endl;
-	cout << "scaleMatrix1a.c.z = " << scaleMatrix1a.c.z << endl;
-	#endif
 
 	//1b. tranform object triangle; Scale object triangle such that the object triangle side is of same length as a predefined side of a predefined triangle
 	vec vecNew;
@@ -302,14 +280,6 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	SHAREDvector.copyVectors(&(point5), &vecNew);
 	*/
 
-	#ifdef OR_DEBUG_METHOD_2DOD
-	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
-	cout << "transformedObjectTriangle->point1.y = " << transformedObjectTriangle->point1.y << endl;
-	cout << "transformedObjectTriangle->point2.x = " << transformedObjectTriangle->point2.x << endl;
-	cout << "transformedObjectTriangle->point2.y = " << transformedObjectTriangle->point2.y << endl;
-	cout << "transformedObjectTriangle->point3.x = " << transformedObjectTriangle->point3.x << endl;
-	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
-	#endif
 
 	//1c. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
@@ -340,9 +310,6 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &(currentFeature->point));		//startup
 			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &scaleMatrix1a);
 			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &vecNew);
-			#ifdef OR_DEBUG_METHOD_2DOD
-			cout << "nearest currentFeature->pointTransformed: x = " << currentFeature->pointTransformed.x << ", y = " << currentFeature->pointTransformed.y << ", z = " << currentFeature->pointTransformed.z << endl;
-			#endif
 			currentFeature = currentFeature->next;
 		}
 	}
@@ -390,18 +357,6 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	#else
 	//ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &rotateMatrix2i);
 	#endif
-	#ifdef OR_DEBUG_METHOD_2DOD
-	cout << "2. rotate object data such that the object triangle side is parallel with X axis" << endl;
-	cout << "rotateMatrix2i.a.x = " << rotateMatrix2i.a.x << endl;
-	cout << "rotateMatrix2i.a.y = " << rotateMatrix2i.a.y << endl;
-	cout << "rotateMatrix2i.a.z = " << rotateMatrix2i.a.z << endl;
-	cout << "rotateMatrix2i.b.x = " << rotateMatrix2i.b.x << endl;
-	cout << "rotateMatrix2i.b.y = " << rotateMatrix2i.b.y << endl;
-	cout << "rotateMatrix2i.b.z = " << rotateMatrix2i.b.z << endl;
-	cout << "rotateMatrix2i.c.x = " << rotateMatrix2i.c.x << endl;
-	cout << "rotateMatrix2i.c.y = " << rotateMatrix2i.c.y << endl;
-	cout << "rotateMatrix2i.c.z = " << rotateMatrix2i.c.z << endl;
-	#endif
 
 	//2ib. tranform object triangle;  rotate object triangle such that the object triangle side is parallel with X axis
 	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &rotateMatrix2i);
@@ -426,9 +381,6 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 		{
 			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2i);
 			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &vecNew);
-			#ifdef OR_DEBUG_METHOD_2DOD
-			cout << "nearest currentFeature->pointTransformed: x = " << currentFeature->pointTransformed.x << ", y = " << currentFeature->pointTransformed.y << ", z = " << currentFeature->pointTransformed.z << endl;
-			#endif
 			currentFeature = currentFeature->next;
 		}
 	}
@@ -520,9 +472,6 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 		{
 			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2ii);
 			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &vecNew);
-			#ifdef OR_DEBUG_METHOD_2DOD
-			cout << "nearest currentFeature->pointTransformed: x = " << currentFeature->pointTransformed.x << ", y = " << currentFeature->pointTransformed.y << ", z = " << currentFeature->pointTransformed.z << endl;
-			#endif
 			currentFeature = currentFeature->next;
 		}
 	}
@@ -540,14 +489,6 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 
 
 
-	#ifdef OR_DEBUG_METHOD_2DOD
-	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
-	cout << "transformedObjectTriangle->point1.y = " << transformedObjectTriangle->point1.y << endl;
-	cout << "transformedObjectTriangle->point2.x = " << transformedObjectTriangle->point2.x << endl;
-	cout << "transformedObjectTriangle->point2.y = " << transformedObjectTriangle->point2.y << endl;
-	cout << "transformedObjectTriangle->point3.x = " << transformedObjectTriangle->point3.x << endl;
-	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
-	#endif
 
 
 	double perpendicularDistanceBetweenThirdApexOfPredefinedTriangleAndSide = predefinedTriangle->point3.y;
@@ -568,18 +509,6 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	//ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &scaleMatrix3a);
 	#endif
 
-	#ifdef OR_DEBUG_METHOD_2DOD
-	cout << "3. Scale object data on Y axis such that the third apex is the same perpendicular distance away from the side as is the case for the predefined triangle." << endl;
-	cout << "scaleMatrix3a.a.x = " << scaleMatrix3a.a.x << endl;
-	cout << "scaleMatrix3a.a.y = " << scaleMatrix3a.a.y << endl;
-	cout << "scaleMatrix3a.a.z = " << scaleMatrix3a.a.z << endl;
-	cout << "scaleMatrix3a.b.x = " << scaleMatrix3a.b.x << endl;
-	cout << "scaleMatrix3a.b.y = " << scaleMatrix3a.b.y << endl;
-	cout << "scaleMatrix3a.b.z = " << scaleMatrix3a.b.z << endl;
-	cout << "scaleMatrix3a.c.x = " << scaleMatrix3a.c.x << endl;
-	cout << "scaleMatrix3a.c.y = " << scaleMatrix3a.c.y << endl;
-	cout << "scaleMatrix3a.c.z = " << scaleMatrix3a.c.z << endl;
-	#endif
 
 	//3b. tranform object triangle; Scale object triangle on Y axis such that the third apex is the same perpendicular distance away from the side as is the case for the predefined triangle.
 	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &scaleMatrix3a);
@@ -596,14 +525,6 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	SHAREDvector.copyVectors(&(point5), &vecNew);
 	*/
 
-	#ifdef OR_DEBUG_METHOD_2DOD
-	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
-	cout << "transformedObjectTriangle->point1.y = " << transformedObjectTriangle->point1.y << endl;
-	cout << "transformedObjectTriangle->point2.x = " << transformedObjectTriangle->point2.x << endl;
-	cout << "transformedObjectTriangle->point2.y = " << transformedObjectTriangle->point2.y << endl;
-	cout << "transformedObjectTriangle->point3.x = " << transformedObjectTriangle->point3.x << endl;
-	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
-	#endif
 
 	//3c. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
@@ -613,9 +534,6 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 		{
 			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &scaleMatrix3a);
 			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &vecNew);
-			#ifdef OR_DEBUG_METHOD_2DOD
-			cout << "nearest currentFeature->pointTransformed: x = " << currentFeature->pointTransformed.x << ", y = " << currentFeature->pointTransformed.y << ", z = " << currentFeature->pointTransformed.z << endl;
-			#endif
 			currentFeature = currentFeature->next;
 		}
 	}
@@ -646,18 +564,6 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	//ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &shearMatrix4a);
 	#endif
 
-	#ifdef OR_DEBUG_METHOD_2DOD
-	cout << "4. shear object data along X axis such that object triangle apexes are coincident with predefined triangle apexes." << endl;
-	cout << "shearMatrix4a.a.x = " << shearMatrix4a.a.x << endl;
-	cout << "shearMatrix4a.a.y = " << shearMatrix4a.a.y << endl;
-	cout << "shearMatrix4a.a.z = " << shearMatrix4a.a.z << endl;
-	cout << "shearMatrix4a.b.x = " << shearMatrix4a.b.x << endl;
-	cout << "shearMatrix4a.b.y = " << shearMatrix4a.b.y << endl;
-	cout << "shearMatrix4a.b.z = " << shearMatrix4a.b.z << endl;
-	cout << "shearMatrix4a.c.x = " << shearMatrix4a.c.x << endl;
-	cout << "shearMatrix4a.c.y = " << shearMatrix4a.c.y << endl;
-	cout << "shearMatrix4a.c.z = " << shearMatrix4a.c.z << endl;
-	#endif
 
 	//4b. tranform object triangle; shear object trianlge along X axis such that object triangle apexes are coincident with predefined triangle apexes
 	SHAREDvector.multiplyVectorByMatrix(&vecNew, &(transformedObjectTriangle->point1), &shearMatrix4a);
@@ -674,14 +580,6 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	SHAREDvector.copyVectors(&(point5), &vecNew);
 	*/
 
-	#ifdef OR_DEBUG_METHOD_2DOD
-	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
-	cout << "transformedObjectTriangle->point1.y = " << transformedObjectTriangle->point1.y << endl;
-	cout << "transformedObjectTriangle->point2.x = " << transformedObjectTriangle->point2.x << endl;
-	cout << "transformedObjectTriangle->point2.y = " << transformedObjectTriangle->point2.y << endl;
-	cout << "transformedObjectTriangle->point3.x = " << transformedObjectTriangle->point3.x << endl;
-	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
-	#endif
 
 	//4c. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
@@ -691,9 +589,6 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 		{
 			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &shearMatrix4a);
 			SHAREDvector.copyVectors(&(currentFeature->pointTransformed), &vecNew);
-			#ifdef OR_DEBUG_METHOD_2DOD
-			cout << "nearest currentFeature->pointTransformed: x = " << currentFeature->pointTransformed.x << ", y = " << currentFeature->pointTransformed.y << ", z = " << currentFeature->pointTransformed.z << endl;
-			#endif
 			currentFeature = currentFeature->next;
 		}
 	}
@@ -849,13 +744,6 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	ORoperations.applyTranslationToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &translationVector);
 #endif
 
-	#ifdef OR_DEBUG_METHOD_2DOD
-	//cout << "perpendicularDistanceBetweenThirdApexOfPredefinedTriangleAndSide = " << perpendicularDistanceBetweenThirdApexOfPredefinedTriangleAndSide << endl;
-	cout << "5. translate object data on X and Y axis such that the object triangle is centred at 0,0" << endl;
-	cout << "translationVector.x = " << translationVector.x << endl;
-	cout << "translationVector.y = " << translationVector.y << endl;
-	cout << "translationVector.z = " << translationVector.z << endl;
-	#endif
 
 	//5b. tranform object triangle; translate the object triangle on X and Y axis such that the object triangle is centred at 0,0
 	transformedObjectTriangle->point1.x = transformedObjectTriangle->point1.x + translationVector.x;
@@ -866,14 +754,6 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	transformedObjectTriangle->point3.y = transformedObjectTriangle->point3.y + translationVector.y;
 
 
-	#ifdef OR_DEBUG_METHOD_2DOD
-	cout << "transformedObjectTriangle->point1.x = " << transformedObjectTriangle->point1.x << endl;
-	cout << "transformedObjectTriangle->point1.y = " << transformedObjectTriangle->point1.y << endl;
-	cout << "transformedObjectTriangle->point2.x = " << transformedObjectTriangle->point2.x << endl;
-	cout << "transformedObjectTriangle->point2.y = " << transformedObjectTriangle->point2.y << endl;
-	cout << "transformedObjectTriangle->point3.x = " << transformedObjectTriangle->point3.x << endl;
-	cout << "transformedObjectTriangle->point3.y = " << transformedObjectTriangle->point3.y << endl;
-	#endif
 
 	//5c. tranform nearest features
 	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
@@ -883,9 +763,6 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 		{
 			currentFeature->pointTransformed.x = currentFeature->pointTransformed.x + translationVector.x;
 			currentFeature->pointTransformed.y = currentFeature->pointTransformed.y + translationVector.y;
-			#ifdef OR_DEBUG_METHOD_2DOD
-			cout << "nearest currentFeature->pointTransformed: x = " << currentFeature->pointTransformed.x << ", y = " << currentFeature->pointTransformed.y << ", z = " << currentFeature->pointTransformed.z << endl;
-			#endif
 			currentFeature = currentFeature->next;
 		}
 	}
@@ -1122,47 +999,6 @@ void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectSquare2DO
 	D.y = p3minusparallelVectorToTriangleBase.y;
 	D.z = 0.0;
 
-	#ifdef OR_DEBUG
-	//cout << "shearFactor = " << shearFactor << endl;
-	/*
-	cout << "currentPolygonInList->point1.x = " << currentPolygonInList->point1.x << endl;
-	cout << "currentPolygonInList->point1.y = " << currentPolygonInList->point1.y << endl;
-	cout << "currentPolygonInList->point2.x = " << currentPolygonInList->point2.x << endl;
-	cout << "currentPolygonInList->point2.y = " << currentPolygonInList->point2.y << endl;
-	cout << "currentPolygonInList->point3.x = " << currentPolygonInList->point3.x << endl;
-	cout << "currentPolygonInList->point3.y = " << currentPolygonInList->point3.y << endl;
-
-	cout << "p3plusparallelVectorToTriangleBase.x = " << p3plusparallelVectorToTriangleBase.x << endl;
-	cout << "p3plusparallelVectorToTriangleBase.y = " << p3plusparallelVectorToTriangleBase.y << endl;
-	cout << "p3minusparallelVectorToTriangleBase.x = " << p3minusparallelVectorToTriangleBase.x << endl;
-	cout << "p3minusparallelVectorToTriangleBase.y = " << p3minusparallelVectorToTriangleBase.y << endl;
-
-	cout << "A.x = " << A.x << endl;
-	cout << "A.y = " << A.y << endl;
-	cout << "B.x = " << B.x << endl;
-	cout << "B.y = " << B.y << endl;
-	cout << "C.x = " << C.x << endl;
-	cout << "C.y = " << C.y << endl;
-	cout << "D.x = " << D.x << endl;
-	cout << "D.y = " << D.y << endl;
-	cout << " " << endl;
-	cout << currentPolygonInList->point1.x << "\t" << currentPolygonInList->point1.y << endl;
-	cout << currentPolygonInList->point2.x << "\t" << currentPolygonInList->point2.y << endl;
-	cout << currentPolygonInList->point3.x << "\t" << currentPolygonInList->point3.y << endl;
-	cout << " " << endl;
-	cout << p3minusparallelVectorToTriangleBase.x << "\t" << p3minusparallelVectorToTriangleBase.y << endl;
-	cout << p3plusparallelVectorToTriangleBase.x << "\t" << p3plusparallelVectorToTriangleBase.y << endl;
-
-	cout << " " << endl;
-	cout << A.x << "\t" << A.y << endl;
-	cout << B.x << "\t" << B.y << endl;
-	cout << C.x << "\t" << C.y << endl;
-	cout << D.x << "\t" << D.y << endl;
-	cout << " " << endl;
-	cout << " " << endl;
-	cout << " " << endl;
-	*/
-	#endif
 
 		//calculate size of bounding box (for triangle cull optimisation)
 	double maxxOrig = maxDoubles(maxDoubles(maxDoubles(A.x, B.x), C.x), D.x);
@@ -1224,9 +1060,6 @@ void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectSquare2DO
 		if(currentReferenceLiesInsideObjectSquare)
 		{
 			currentReference->referenceEnabledMethod2DOD = true;
-			#ifdef OR_DEBUG
-			//cout << "currentReference->referenceEnabledMethod2DOD = true" << endl;
-			#endif
 		}
 		else
 		{
@@ -1525,9 +1358,6 @@ void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectTriangle2
 		if(currentReferenceLiesInsideObjectTriangle)
 		{
 			currentReference->referenceEnabledMethod2DOD = true;
-			#ifdef OR_DEBUG
-			//cout << "currentReference->referenceEnabledMethod2DOD = true" << endl;
-			#endif
 		}
 		else
 		{
@@ -1938,18 +1768,6 @@ void ORmethod2DODClass::createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int
 			currentReferenceInInterpolated2DMap->colour = colByte1 | colByte2 | colByte3 | colByte4;
 			currentReferenceInInterpolated2DMap->absoluteColour = colByte1 | colByte2 | colByte3 | colByte4;
 
-			#ifdef OR_DEBUG
-			/*
-			cout << "colByte1 = " << colByte1 << endl;
-			cout << "colByte2 = " << colByte2 << endl;
-			cout << "colByte3 = " << colByte3 << endl;
-			cout << "colByte4 = " << colByte4 << endl;
-			cout << "colByte1 | colByte2 | colByte3 | colByte4 = " << (colByte1 | colByte2 | colByte3 | colByte4) << endl;
-			cout << "currentReferenceInInterpolated2DMap->vertex1relativePosition.x = " << currentReferenceInInterpolated2DMap->vertex1relativePosition.x << endl;
-			cout << "currentReferenceInInterpolated2DMap->vertex1relativePosition.y = " << currentReferenceInInterpolated2DMap->vertex1relativePosition.y << endl;
-			cout << "currentReferenceInInterpolated2DMap->vertex1relativePosition.z = " << currentReferenceInInterpolated2DMap->vertex1relativePosition.z << endl;
-			*/
-			#endif
 
 			LDreference* newReference = new LDreference();
 			currentReferenceInInterpolated2DMap->next = newReference;
