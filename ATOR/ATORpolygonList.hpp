@@ -25,7 +25,7 @@
  * File Name: ATORpolygonList.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j3e 17-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -87,7 +87,7 @@ public:
 	vec point;
 	vec pointNonWorldCoord;
 
-#ifdef OR_METHOD_GEOMETRIC_COMPARISON
+	#ifdef OR_METHOD_GEOMETRIC_COMPARISON
 	string objectName;
 	int trainOrTest;
 	int viewIndex;
@@ -106,16 +106,16 @@ public:
 	bool matchFound;	//added 8 June 2012 for debugging
 	#endif
 
-#endif
+	#endif
 
-//#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
+	//#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
 	signed char dctCoeff[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
 	unsigned long dctCoeffArrayBinned;
-//#endif
+	//#endif
 
-//#ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING
+	//#ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING
 	colour avgCol;
-//#endif
+	//#endif
 
 	char snapshotMapsText[OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_MAX_DATA_LENGTH];
 	int snapshotMapsTextLength;
@@ -140,15 +140,15 @@ public:
 	vec point3;
 	ORpolygon* next;
 
-#ifdef OR_METHOD_GEOMETRIC_COMPARISON
+	#ifdef OR_METHOD_GEOMETRIC_COMPARISON
 	ORfeature* firstFeatureInNearestFeatureList;
-#endif
+	#endif
 
-//#ifdef OR_METHOD_TRANSFORM_KEY_OT_FEATURES
+	//#ifdef OR_METHOD_TRANSFORM_KEY_OT_FEATURES
 	vec point1Transformed;
 	vec point2Transformed;
 	vec point3Transformed;
-//#endif
+	//#endif
 
 };
 
@@ -238,17 +238,17 @@ class ORpolygonListClass
 	public: ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const vec* point, bool* hasFoundMeshPoint, const int meshZoneLimit);
 	public: ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const int position);
 
-//#ifdef OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST
+	//#ifdef OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST
 	public: void calculateMeshPointNormal(ORmeshPoint* meshPoint);
 	public: void calculateMeshPointNormalContrast(ORmeshPoint* meshPoint);
-//#ifdef OR_USE_CONTRAST_CALC_METHOD_C
+	//#ifdef OR_USE_CONTRAST_CALC_METHOD_C
 	public: void calculateMeshPointInterpixelNormal(ORmeshPoint* meshPoint);
 	public: void calculateMeshPointInterpixelNormalContrast(ORmeshPoint* meshPoint);
 	public: void calculateMeshPointInterpixelLuminosityContrast(ORmeshPoint* meshPoint);
 	public: void calculateMeshPointInterpixelDepth(ORmeshPoint* meshPoint);
 	public: void calculateMeshPointInterpixelDepthWithForegroundDepthCheck(ORmeshPoint* meshPoint);
-//#endif
-//#endif
+	//#endif
+	//#endif
 	public: void calculateMeshPointLuminosityContrast(ORmeshPoint* meshPoint);
 };
 

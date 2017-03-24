@@ -25,7 +25,7 @@
  * File Name: ATORcomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j3e 17-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -69,7 +69,7 @@ void ORcomparisonClass::fillDCTcoeffSelectionArrays()
 {
 	#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ABS_LUM_INFORMATION
 	cout << "error: OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ABS_LUM_INFORMATION has not been programmed" << endl;
-	exit(0);
+	exit(EXIT_ERROR);
 	#endif
 
 	dctCoeffSelectionArrayY[0][0] = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_0_X;
@@ -246,7 +246,7 @@ double ORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPolys
 	{
 		#ifdef OR_WINDOWS_COMPILER_LIMITATION_MUST_GET_TEST_DATA_FROM_SQL
 		cout << "Linux must be used or OR_IMAGE_COMPARISON_SQL_GET_TEST_DATA_FROM_SQL" << endl;
-		exit(0);
+		exit(EXIT_ERROR);
 		#endif
 		if(OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE)
 		{
@@ -296,7 +296,7 @@ double ORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPolys
 	else
 	{
 		cout << "error: illegal dimension" << endl;
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 
 
@@ -323,7 +323,7 @@ double ORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPolys
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3j3e 17-January-2017<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3j2a 17-January-2017<p>";
 		}
 		else
 		{

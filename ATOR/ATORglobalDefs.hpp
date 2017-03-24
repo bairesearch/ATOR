@@ -25,7 +25,7 @@
  * File Name: ATORglobalDefs.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3j3e 17-January-2017
+ * Project Version: 3j2a 17-January-2017
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
@@ -41,13 +41,13 @@
  *			e) change of binary name from SE to FD.exe};
  *
  *		(Linux Ubuntu 14.04/16.04 Only)
- *		copy (Linux Ubuntu x86_64 compiled) FD.exe to ATOR.exe working folder
+ *		copy (Linux Ubuntu x86_64 compiled) FD.exe to ATOR.exe input folder
  *
  *		(Linux EL5/6/7 Only)
- *		copy (Linux EL5/6/7 x86_64 compiled) FD.exe to ATOR.exe working folder
+ *		copy (Linux EL5/6/7 x86_64 compiled) FD.exe to ATOR.exe input folder
  *
  *		(Windows XP/7/8/10 Only)
- *		copy (Windows XP/7/8/10 i386 compiled) FD.exe to ATOR.exe working folder
+ *		copy (Windows XP/7/8/10 i386 compiled) FD.exe to ATOR.exe input folder
  *
  *		This version of Heitger FD may be downloaded via;
  *
@@ -276,7 +276,7 @@
  *			Click Execute
  *			Click Finish
  *		the MySQL server should be initiated during installation, and a root password should be assigned
- *		Copy C:\Program Files\MySQL\MySQL Server 5.1\lib\libmysql.dll to working folder (location of ATOR.exe)
+ *		Copy C:\Program Files\MySQL\MySQL Server 5.1\lib\libmysql.dll to input folder (location of ATOR.exe)
  *			[NB on Windows XP, may need to place MySQL libraries in ... otherwise follow development installation instructions]
  *
  *		(Windows 7/8 x86_64 Only) On the MySQL Server perform the following actions to initiate the server;
@@ -301,7 +301,7 @@
  *			Click Execute
  *			Click Finish
  *		the MySQL server should be initiated during installation, and a root password should be assigned
- *		Copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.dll to working folder (location of ATOR.exe)
+ *		Copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.dll to input folder (location of ATOR.exe)
  *
  *		(Windows 10 x86_64 Only) On the MySQL Server perform the following actions to initiate the server;
  *		For example. install mysql-installer-community-5.6.28.0.msi (MySQL can be downloaded from http://dev.mysql.com/downloads/windows/installer/5.6.html)
@@ -320,7 +320,7 @@
  *			Execute
  *			Rightclick on Startmenu - Control Panel - System and Security - System - Advanced System Settings - environment variables - system variables - Path - edit - New
  *				add "C:\Program Files (x86)\MySQL\MySQL Server 5.6\bin"
- *			Copy C:\Program Files (x86)\MySQL\MySQL Server 5.6\lib\libmysql.dll to working folder (location of ATOR.exe)
+ *			Copy C:\Program Files (x86)\MySQL\MySQL Server 5.6\lib\libmysql.dll to input folder (location of ATOR.exe)
  *			Create folder C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\mysql
  *			Copy all files in C:\Program Files (x86)\MySQL\MySQL Server 5.6\Include to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\mysql
  *			Copy all files in C:\Program Files (x86)\MySQL\MySQL Server 5.6\lib to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib
@@ -772,14 +772,14 @@
  *		create folder C:\Program Files\Microsoft Visual Studio 9.0\VC\Include\mysql\
  *		copy all files in C:\Program Files\MySQL\MySQL Server 5.1\include\ folder to C:\Program Files\Microsoft Visual Studio 9.0\VC\Include\mysql\
  *		ensure libmysql.lib is added to MS Visual Studio OR project - Linker - additional dependencies
- *		Copy C:\Program Files\MySQL\MySQL Server 5.1\lib\libmysql.dll to working folder (location of ATOR.exe)
+ *		Copy C:\Program Files\MySQL\MySQL Server 5.1\lib\libmysql.dll to input folder (location of ATOR.exe)
  *
  *		(Windows 7/8/10 x86_64 Only)
  *		copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.lib and libmysql.dll to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\
  *		create folder C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\mysql\
  *		copy all files in C:\Program Files (x86)\MySQL\MySQL Server 5.5\include\ folder to C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\mysql\
  *		ensure libmysql.lib is added to MS Visual Studio OR project - Linker - additional dependencies
- *		Copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.dll to working folder (location of ATOR.exe)
+ *		Copy C:\Program Files (x86)\MySQL\MySQL Server 5.5\lib\libmysql.dll to input folder (location of ATOR.exe)
  *
  * 		MySQL Server+Client may be downloaded via;
  *
@@ -828,7 +828,7 @@
  * - [2d] integrate ATORrules.xml paramters file
  * - [2e] outputs best match object results
  * - [2f] [Re] compile and test in Windows using MS Visual Studio (make installation procedure compatible with both GNU and commercial licenses)
- * - [2g] Preparation for PHP GUI; multiview support, workingfolder, etc
+ * - [2g] Preparation for PHP GUI; multiview support, inputfolder, etc
  * - [FAILED2h] SQL comparison Linear Combination Network (instead of DCT tree)
  * - [3a+] Fixed optimisation implementation
  *
@@ -836,31 +836,31 @@
  *
  * Linux:
  *
- * ./ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
- * ./ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object unknown2DOD1 -imageext .png -width 768 -height 576 -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
- * ./ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
+ * ./ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -outputfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -inputfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
+ * ./ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object unknown2DOD1 -imageext .png -width 768 -height 576 -outputfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -inputfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
+ * ./ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -outputfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -inputfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
  *
- * ./ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -od3 -cleartrain -multview multViewList3DOD.txt -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
+ * ./ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -od3 -cleartrain -multview multViewList3DOD.txt -outputfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -inputfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
  *
- * ./ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -cleartrain -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
- * ./ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -view 1 -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
+ * ./ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -cleartrain -outputfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -inputfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
+ * ./ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -view 1 -outputfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -inputfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
  *
- * ./ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
- * ./ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -workingfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
+ * ./ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -outputfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -inputfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
+ * ./ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -outputfolder "/home/systemusername/source/source" -exefolder "/home/systemusername/source/source" -inputfolder "/home/systemusername/source/source" -dbfolder "/home/systemusername/source/ORfsdatabase"
  *
  * Windows:
  *
- * ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
- * ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object unknown2DOD1 -imageext .png -width 768 -height 576 -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
- * ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
+ * ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -outputfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -inputfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
+ * ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object unknown2DOD1 -imageext .png -width 768 -height 576 -outputfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -inputfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
+ * ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -outputfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -inputfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
  *
- * ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -od3 -cleartrain -multview multViewList3DOD.txt -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
+ * ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -od3 -cleartrain -multview multViewList3DOD.txt -outputfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -inputfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
  *
- * ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -cleartrain -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
- * ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -view 1 -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
+ * ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -cleartrain -outputfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -inputfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
+ * ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house3DOD -imageext .png -width 400 -height 400 -od3 -depthext .depth.png -view 1 -outputfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -inputfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
  *
- * ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
- * ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -tempfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -workingfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
+ * ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 1 -object house2DOD -imageext .png -width 768 -height 576 -cleartrain -outputfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -inputfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
+ * ATOR.exe -sqlipaddress localhost -sqlusername MYSQLUSERNAME -sqlpassword MYSQLPASSWORD -trainortest 0 -object house2DOD -imageext .png -width 768 -height 576 -view 1 -outputfolder "C:/Files/source/sourcevs/source/working" -exefolder "C:/Files/source/sourcevs/source/working" -inputfolder "C:/Files/source/sourcevs/source/working" -dbfolder "C:/Files/source/sourcevs/source/working/ORfsdatabase"
  *
  * Future Developments;
  *	- since in snapshots, num polygons approaches and even exceeds num pixels - we should consider a raytracer instead of using opengl

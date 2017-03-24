@@ -25,7 +25,7 @@
  * File Name: ATORTHmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j3e 17-January-2017
+ * Project Version: 3j2a 17-January-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -71,7 +71,7 @@ int main()
 	if(!parseORrulesXMLfile())
 	{
 		cout << "error: no rules file detected" << endl;
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 	fillInORrulesExternVariables();
 
@@ -262,7 +262,7 @@ int main()
 		ORTHmethod(dimension, numberOfTrainObjects, trainObjectNameArray, numberOfTestObjects, testObjectNameArray, numberOfTrainPolys, numberOfTestPolys, objectDataSource, &viTrain, &viTest, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTrain, maxNumberOfPolygonsTest, numberOfTrainViewIndiciesPerObject, numberOfTestViewIndiciesPerObject, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTrainZoomIndicies, numberOfTestZoomIndicies);
 	#else
 		cout << "error: COMPILE_TH_OR_METHOD_3DOD or COMPILE_TH_OR_METHOD_2DOD must be defined for TH OR" << endl;
-		exit(0);
+		exit(EXIT_ERROR);
 	#endif
 
 }

@@ -25,7 +25,7 @@
  * File Name: ATORTHimageCategorisationNN.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j3e 17-January-2017
+ * Project Version: 3j2a 17-January-2017
  * Test Harness for OR Image Categorisation NN method (not yet implemented)
  *******************************************************************************/
 
@@ -130,7 +130,7 @@ int ORTHimageCategorisationNN()
 	if(!parseORrulesXMLfile())
 	{
 		cout << "error: no rules file detected" << endl;
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 	fillInORrulesExternVariables();
 
@@ -270,7 +270,7 @@ int ORTHimageCategorisationNN()
 			else
 			{
 				cout << "error: initialiseImageNeuralNetwork{}: illegal NNtypeBeingTested" << endl;
-				exit(0);
+				exit(EXIT_ERROR);
 			}
 
 			for(int nn=0; nn<OR_IMAGE_CATEGORISTION_NN_NUMBER_NEURAL_NETWORKS; nn++)
@@ -531,7 +531,7 @@ ANNneuronContainer* initialiseImageNeuralNetwork(int NNtypeBeingTested, ANNneuro
 	else
 	{
 		cout << "error: initialiseImageNeuralNetwork{}: illegal NNtypeBeingTested" << endl;
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 
 	*numberOfInputNeurons = countNumberOfExperienceInputs(tempExperience);
@@ -666,7 +666,7 @@ bool generatePixelMapExperienceFromImage(string imageFileName, ANNexperience* cu
 	generateExperienceWith2DMap(luminosityContrastMap, objectImage->wide, objectImage->high, CONTRAST_MAP_MAX_CONTRAST_VALUE, currentExperience, objectDecision);
 	#else
 	cout << "Error: no feed defined" << endl;
-	exit(0);
+	exit(EXIT_ERROR);
 	#endif
 
 	//#define DEBUG_ANN_OBJECT_RECOGNITION_EXPERIENCES_OUTPUT_ALL_MAPS

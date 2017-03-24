@@ -25,7 +25,7 @@
  * File Name: ATORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j3e 17-January-2017
+ * Project Version: 3j2a 17-January-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -575,7 +575,7 @@ bool ORmethodClass::ORmethodCompareTestWithTrain(const int dimension, const int 
 	}
 
 //exitOpenGL();
-//exit(0);
+//exit(EXIT_ERROR);
 
 	timeTotalTrain = time1aALTERNATEODgenerationParseVectorGraphicsFileTotal+time1ODgenerationTotalTrain+time2ObjectTriangleGenerationPolygonListTotalTrain+time3NormalisedSnapshotGenerationTotalTrain;
 	timeTotalTest = time1aALTERNATEODgenerationParseVectorGraphicsFileTotal+time1ODgenerationTotalTest+time2ObjectTriangleGenerationPolygonListTotalTest+time3NormalisedSnapshotGenerationTotalTest;
@@ -790,7 +790,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 					//overwrite view info with multiview reference;
 					viMultiView = new RTviewInfo();
 					string multViewListFileNameWithFullPath = "";
-					multViewListFileNameWithFullPath = multViewListFileNameWithFullPath + workingFolder + "/" + multViewListFileName;
+					multViewListFileNameWithFullPath = multViewListFileNameWithFullPath + inputFolder + "/" + multViewListFileName;
 					this->createViFromMultiViewList(viMultiView, multViewListFileNameWithFullPath, multiViewViewIndex, dimension);
 					objectDataSourceForThisView = OR_OBJECT_DATA_SOURCE_USER_FILE;
 				}
@@ -816,7 +816,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 				else
 				{
 					cout << "Error: illegal number of dimensions" << endl;
-					exit(0);
+					exit(EXIT_ERROR);
 				}
 				if(!this->createOrAddToInterpolatedMeshAndFeaturesList(initialReferenceInSceneFile, viMultiView, firstReferenceInInterpolatedMesh, firstMeshPointInMeshList, firstFeatureInList, trainOrTest, viewIndex, objectNameArray[o], dimension, objectDataSourceForThisView, numberOfZoomIndicies, useQuadraticFitEdgeZeroCrossingMap))
 				{
@@ -1091,7 +1091,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 			else
 			{
 				cout << "Error: illegal number of dimensions" << endl;
-				exit(0);
+				exit(EXIT_ERROR);
 			}
 			if(!this->createOrAddToInterpolatedMeshAndFeaturesList(initialReferenceInSceneFile, vi, firstReferenceInInterpolatedMesh, firstMeshPointInMeshList, firstFeatureInList, trainOrTest, viewIndex, objectNameArray[o], dimension, objectDataSource, numberOfZoomIndicies, useQuadraticFitEdgeZeroCrossingMap))
 			{
@@ -1415,7 +1415,7 @@ bool ORmethodClass::createRGBandPointMap(LDreference* initialReferenceInSceneFil
 		string rgbMapFileName = mapFileName + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 
 		string convertPNGtoPPMCommand = "";
-		convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolder + "/" + preexistingImageFileName + " " + rgbMapFileName;
+		convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + inputFolder + "/" + preexistingImageFileName + " " + rgbMapFileName;
 		cout << "system{" << convertPNGtoPPMCommand << "};" << endl;
 		system(convertPNGtoPPMCommand.c_str());
 
@@ -1491,7 +1491,7 @@ bool ORmethodClass::createRGBandPointMap(LDreference* initialReferenceInSceneFil
 		string rgbMapFileName = mapFileName + RGB_MAP_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 
 		string convertPNGtoPPMCommand = "";
-		convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolder + "/" + objectImageName + " " + rgbMapFileName;
+		convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + inputFolder + "/" + objectImageName + " " + rgbMapFileName;
 		if(OR_PRINT_ALGORITHM_PROGRESS)
 		{
 			cout << "system{" << convertPNGtoPPMCommand << "};" << endl;
@@ -1531,7 +1531,7 @@ bool ORmethodClass::createRGBandPointMap(LDreference* initialReferenceInSceneFil
 			string depthMap24BitFileName = mapFileName + DEPTHMAP24BIT_PPM_EXTENSION_PART + trainOrTestString + PPM_EXTENSION;
 
 			string convertPNGtoPPMCommand = "";
-			convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + workingFolder + "/" + objectDepthName + " " + depthMap24BitFileName;
+			convertPNGtoPPMCommand = convertPNGtoPPMCommand + "convert " + inputFolder + "/" + objectDepthName + " " + depthMap24BitFileName;
 			if(OR_PRINT_ALGORITHM_PROGRESS)
 			{
 				cout << "system{" << convertPNGtoPPMCommand << "};" << endl;
@@ -1647,7 +1647,7 @@ bool ORmethodClass::createRGBandPointMap(LDreference* initialReferenceInSceneFil
 		else
 		{
 			cout << "Error: illegal number of dimensions" << endl;
-			exit(0);
+			exit(EXIT_ERROR);
 		}
 
 		if(dimension == OR_METHOD3DOD_DIMENSIONS)
@@ -1819,7 +1819,7 @@ bool ORmethodClass::createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMa
 	else
 	{
 		cout << "Error: illegal number of dimensions" << endl;
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
@@ -2248,7 +2248,7 @@ void ORmethodClass::printInterpolatedMeshReferenceList(LDreference* firstReferen
 	else
 	{
 		cout << "Error: illegal number of dimensions" << endl;
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 
 	//raytrace Tal file;
@@ -2879,7 +2879,7 @@ bool ORmethodClass::createOrAddPointsToFeaturesList(double* pointMap, unsigned c
 		else
 		{
 			cout << "Error: illegal number of dimensions" << endl;
-			exit(0);
+			exit(EXIT_ERROR);
 		}
 
 		if(OR_PRINT_ALGORITHM_PROGRESS)
@@ -3047,9 +3047,9 @@ bool ORmethodClass::addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, un
 
 	string convertRGBRAStoFeatureRASCommand = "";
 #ifdef LINUX
-	convertRGBRAStoFeatureRASCommand = convertRGBRAStoFeatureRASCommand + exeFolder + "/FD.exe" + " -workingfolder " + currentTempFolder + " -i " + rgbMapFileNameRas + " -o " + baseName + " -keypoints -quality -sigma 2.25 -raster";
+	convertRGBRAStoFeatureRASCommand = convertRGBRAStoFeatureRASCommand + exeFolder + "/FD.exe" + " -inputfolder " + currentTempFolder + " -i " + rgbMapFileNameRas + " -o " + baseName + " -keypoints -quality -sigma 2.25 -raster";
 #else
-	convertRGBRAStoFeatureRASCommand = convertRGBRAStoFeatureRASCommand + exeFolder + "/FD.exe" + " -workingfolder " + currentTempFolder + " -i " + rgbMapFileNameRas + " -o " + baseName + " -keypoints -quality -sigma 2.25 -raster";
+	convertRGBRAStoFeatureRASCommand = convertRGBRAStoFeatureRASCommand + exeFolder + "/FD.exe" + " -inputfolder " + currentTempFolder + " -i " + rgbMapFileNameRas + " -o " + baseName + " -keypoints -quality -sigma 2.25 -raster";
 #endif
 	string convertFeatureRAStoFeaturePPMCommand = "convert -depth 8 " + featureMapFileNameRas + " " + featureMapFileName;
 
@@ -3134,7 +3134,7 @@ bool ORmethodClass::addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, un
 			ORfeatureGeneration.generateFeatureListFromHeitgerFeatureRGBMap(firstNewFeatureInList, featureRgbMap, imageWidth, imageHeight, rgbMap, sensitivity, dimension, pointMap, depthMap, zoom, vi);
 		#else
 			cout << "error: some form of keypoint generation must be defined" << end;
-			exit(0);
+			exit(EXIT_ERROR);
 		#endif
 	#endif
 #else
@@ -3196,7 +3196,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 	else
 	{
 		cout << "error: illegal dimension" << endl;
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 
 
@@ -3276,12 +3276,12 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 	if(WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE < OR_METHOD_2DOD_NORM_SNAPSHOT_X)
 	{
 		cout << "error: WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE < OR_METHOD_2DOD_NORM_S.._X, please redefine WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE" << endl;
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 	if(WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE < OR_METHOD_3DOD_NORM_SNAPSHOT_X)
 	{
 		cout << "error: WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE < OR_METHOD_3DOD_NORM_S.._X, please redefine WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE" << endl;
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 
 	#ifdef USE_OPENGL
@@ -3739,7 +3739,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 								else
 								{
 									cout << "Error: Invalid Dimension" << endl;
-									exit(0);
+									exit(EXIT_ERROR);
 								}
 
 
@@ -3773,7 +3773,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 															else
 															{
 																cout << "Error: Invalid Dimension" << endl;
-																exit(0);
+																exit(EXIT_ERROR);
 															}
 														#endif
 
@@ -3831,7 +3831,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 								else
 								{
 									cout << "Error: Invalid Dimension" << endl;
-									exit(0);
+									exit(EXIT_ERROR);
 								}
 
 								#else
@@ -4404,7 +4404,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 								generateExperienceWith2DBooleanMap(depthGradientContrastBooleanMap, imageWidthFacingPoly, imageHeightFacingPoly, currentExperience, objectDecision);
 							#else
 								cout << "Error: no feed defined" << endl;
-								exit(0);
+								exit(EXIT_ERROR);
 							#endif
 
 								//add experience to experience list
@@ -4533,7 +4533,7 @@ ANNneuronContainer* ORmethodClass::initialiseNormalisedSnapshotNeuralNetwork(con
 	*numberOfInputNeurons = imageWidth* imageHeight;
 #else
 	cout << "Error: no feed defined" << endl;
-	exit(0);
+	exit(EXIT_ERROR);
 #endif
 
 	firstOutputNeuronInNetwork = formNeuralNet(firstInputNeuronInNetwork,* numberOfInputNeurons, numberOfOutputNeurons, numberOfLayers, layerDivergenceType, meanLayerDivergenceFactor, probabilityANNneuronConnectionWithPreviousLayerNeuron, probabilityANNneuronConnectionWithAllPreviousLayersNeurons);
@@ -4799,7 +4799,7 @@ int ORmethodClass::createViFromMultiViewList(RTviewInfo* vi, const string fileNa
 				else
 				{
 					cout << "illegal dimension" << endl;
-					exit(0);
+					exit(EXIT_ERROR);
 				}
 			}
 			else if(readingimageHeight)
@@ -4963,7 +4963,7 @@ int ORmethodClass::createViFromMultiViewList(RTviewInfo* vi, const string fileNa
 			else
 			{
 				//cout << "file i/o error" << endl;
-				//exit(0);
+				//exit(EXIT_ERROR);
 			}
 
 			if(finalise)
@@ -5001,7 +5001,7 @@ int ORmethodClass::createViFromMultiViewList(RTviewInfo* vi, const string fileNa
 					else
 					{
 						cout << "illegal dimension" << endl;
-						exit(0);
+						exit(EXIT_ERROR);
 					}
 
 					cout << "finalise:" << endl;

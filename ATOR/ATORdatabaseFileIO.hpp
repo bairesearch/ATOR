@@ -25,7 +25,7 @@
  * File Name: ATORdatabaseFileIO.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j3e 17-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -51,13 +51,13 @@
 #define OR_DATABASE_TEST_FOLDER_NAME "test"
 #define OR_DATABASE_TRAIN_FOLDER_NAME "train"
 
-#ifdef OR_USE_DATABASE
 class ORdatabaseFileIOClass
 {
 	private: SHAREDvarsClass SHAREDvars;
 	private: SHAREDvectorClass SHAREDvector;
 	private: ORdatabaseSQLClass ORdatabaseSQL;
 	private: LDreferenceManipulationClass LDreferenceManipulation;
+	#ifdef OR_USE_DATABASE
 	public: void initialiseDatabase(const string newDatabaseFolderName);
 	private: bool DBdirectoryExists(string* folderName);
 	private: bool DBcreateDirectory(string* folderName);
@@ -65,14 +65,14 @@ class ORdatabaseFileIOClass
 	private: bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string* folderName);
 	private: string DBgenerateServerDatabaseName(const string* objectName, const bool trainOrTest);
 	public: string DBgenerateFolderName(string* objectName, const bool trainOrTest);
-#endif
+	#endif
 
-#ifdef OR_METHOD_GEOMETRIC_COMPARISON
+	#ifdef OR_METHOD_GEOMETRIC_COMPARISON
 		public: bool compareFeaturesListForMatch(ORfeature* testFirstFeatureInNearestFeatureList, ORfeature* trainFirstFeatureInNearestFeatureList, const int dimension, bool* exactMatchFound);
 		private: void addFeatureToEndOfFeatureList(ORfeature* firstFeatureInList, ORfeature* featureToAdd);
 		public: void createTransformedFeaturesFile(const ORfeature* firstFeatureInList, const string fileName, const string objectName, const int viewIndex, const int zoomIndex, const int polyIndex, const int sideIndex, const int trainOrTest);
 		public: void createFeaturesListUsingFeaturesFile(const string fileName, ORfeature* firstFeatureInList, const bool createFeatureObjects, const bool appendToList, const bool ignoreOTfeatures);
-#endif
+	#endif
 
 };
 

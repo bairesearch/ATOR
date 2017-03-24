@@ -25,7 +25,7 @@
  * File Name: ATORdatabaseSQL.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j3e 17-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -326,7 +326,7 @@ void ORdatabaseSQLClass::createFeatureListUsingDatabaseQuery(ORfeature* firstFea
 				cout << "testsideIndexString = " << testsideIndexString << endl;
 				*/
 				#endif
-				exit(0);
+				exit(EXIT_ERROR);
 
 			}
 			this->addSQLRowDataToFeatureList(row, firstFeatureInList, createFeatureObjects, ignoreOTfeatures, numFeatures);
@@ -352,7 +352,7 @@ void ORdatabaseSQLClass::createFeatureContainerListUsingSQLDatabaseDecisionTreeT
 
 #ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL_DIRECT_ACCESS_USE_JOIN_OPT
 	cout << "SQL join optimisation not yet coded" << endl;
-	exit(0);
+	exit(EXIT_ERROR);
 #else
 	string sqlSelectCommandFrom = "";
 	string sqlSelectCommandWhereOpen = "";
@@ -524,7 +524,7 @@ void ORdatabaseSQLClass::insertSnapshotIDreferenceIntoSQLdatabaseDecisionTree(co
 
 	#ifdef OR_SQL_DATABASE_DEBUG
 	cout << "sqlInsertCommandCharStar = " << sqlInsertCommandCharStar << endl;
-	//exit(0);
+	//exit(EXIT_ERROR);
 	#endif
 	LDmysql.performSQLrealInsertQuery(sqlInsertCommandCharStar, i);
 	*databaseTableSize = *databaseTableSize + 1;
@@ -788,7 +788,7 @@ void ORdatabaseSQLClass::createSnapshotIDreferenceListUsingSQLdatabaseDecisionTr
 
 	#ifdef OR_SQL_DATABASE_DEBUG
 	cout << "sqlSelectCommandCharStar = " << sqlSelectCommandCharStar << endl;
-	//exit(0);
+	//exit(EXIT_ERROR);
 	#else
 		#ifdef OR_SQL_DATABASE_DEBUG_COMPARISON_ONLY
 		cout << "sqlSelectCommandCharStar = " << sqlSelectCommandCharStar << endl;
@@ -874,7 +874,7 @@ void ORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequirement
 	if(!createFeatureObjects)
 	{
 		cout << "error; createFeaturesListUsingDatabaseQueryGeoXYbinRequirement requires createFeatureObjects" << endl;
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 
 	MYSQL_ROW row;
@@ -906,7 +906,7 @@ void ORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequirement
 	else
 	{
 		cout << "illegal trainOrTest value" << endl;
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 
 
@@ -1195,7 +1195,7 @@ void ORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequirement
 
 			#ifdef OR_SQL_DATABASE_DEBUG
 			cout << "sqlSelectCommandDCTqueryV3 = " << sqlSelectCommandDCTqueryV3 << endl;
-			//exit(0);
+			//exit(EXIT_ERROR);
 			#endif
 			char* sqlSelectCommandDCTqueryV3CharStar = const_cast<char*>(sqlSelectCommandDCTqueryV3.c_str());
 			long numberOfDCTcomparisons;
@@ -1466,7 +1466,7 @@ void ORdatabaseSQLClass::addSQLRowDataToFeatureList(const MYSQL_ROW row, ORfeatu
 	if(!createFeatureObjects)
 	{
 		cout << "error; createFeaturesListUsingDatabaseQueryGeoXYbinRequirement requires createFeatureObjects" << endl;
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 
 	ORfeature* currentFeatureInList = firstFeatureInList;
@@ -2157,7 +2157,7 @@ void ORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ORfeature* fir
 								sqlInsertCommand = sqlInsertCommandP1 + sqlInsertCommandP2 + sqlInsertCommandP3 + sqlInsertCommandP4 + sqlInsertCommandP5 + sqlInsertCommandP6 + sqlInsertCommandP7;
 								#ifdef OR_SQL_DATABASE_DEBUG
 								cout << "sqlInsertCommand = " << sqlInsertCommand << endl;
-								//exit(0);
+								//exit(EXIT_ERROR);
 								#endif
 								char* sqlInsertCommandCharStar = const_cast<char*>(sqlInsertCommand.c_str());
 								LDmysql.performSQLinsertQuery(sqlInsertCommandCharStar);

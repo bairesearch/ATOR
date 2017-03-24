@@ -25,7 +25,7 @@
  * File Name: ATORimagecomparison.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j3e 17-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -132,13 +132,13 @@ class ORimagecomparisonClass
 
 	public: double compareImagesRGBsmallNoKernel(int imageWidth, const int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain);
 
-#ifndef OR_IMAGE_COMPARISON_USE_NEW_COMPARITOR
+	#ifndef OR_IMAGE_COMPARISON_USE_NEW_COMPARITOR
 	private: double compareImagesRGBwithPosDevAndLocalStarkCont(int imageWidth, const int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain);
 	public: double compareImagesRGBwithPosDev(int imageWidth, const int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain);				//OLD
-#endif
-#ifndef OR_METHOD_CHECK_SNAPSHOT_CONTRAST_BEFORE_SAVING_SNAPSHOT
+	#endif
+	#ifndef OR_METHOD_CHECK_SNAPSHOT_CONTRAST_BEFORE_SAVING_SNAPSHOT
 	public: bool checkImageHasContrast(int imageWidth, const int imageHeight, unsigned char* rgbMap);
-#endif
+	#endif
 	public: double compareImagesRGBwithPosDevAndLocalStarkContAndHueDev(int imageWidth, const int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain);
 		private: double compareImagesRGBwithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly(int imageWidth, const int imageHeight, unsigned char* rgbMapTest, unsigned char* rgbMapTrain, double* averageHueDeviationR, double* averageHueDeviationG, double* averageHueDeviationB, double* averageXkernelRelativePositionForLowestErrorMatch, double* averageYkernelRelativePositionForLowestErrorMatch);
 
@@ -149,16 +149,16 @@ class ORimagecomparisonClass
 		private: double calculateColourHueRadialSumContrastWithinKernelNOTUSED(const int pixelX, const int pixelY, unsigned char* rgbMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight);
 
 
-#ifndef OR_USE_HEITGER_OBJECT_FEATURE_CALCULATION_CODE
+	#ifndef OR_USE_HEITGER_OBJECT_FEATURE_CALCULATION_CODE
 	private: double compareRGBpixelsForMatchHueOnly(colour* testImagePixelColour, colour* trainImagePixelColour);
 	public: double compareRGBpixelsForMatchLumContrastOnly(colour* testImagePixelColour, colour* trainImagePixelColour);
 		private: void calculateHueError(colour* testImagePixelColour, colour* trainImagePixelColour, double* hueError, double* nonHueError);
-#endif
+	#endif
 
-#ifdef OR_IMAGE_COMPARISON_USE_BAD_CODE
+	#ifdef OR_IMAGE_COMPARISON_USE_BAD_CODE
 	private: double compareRGBpixelsForMatchBAD(const colour* testImagePixelColour, const colour* trainImagePixelColour);
 		private: double calculateHueErrorNormalisedBAD(const colour* testImagePixelColour, const colour* trainImagePixelColour, double* hueError, double* nonHueErrorNormalised);
-#endif
+	#endif
 
 };
 

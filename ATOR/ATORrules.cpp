@@ -25,7 +25,7 @@
  * File Name: ATORrules.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3j3e 17-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -885,7 +885,7 @@ void ORrulesClass::fillInORrulesExternVariables()
 		if(OR_USE_CONTRAST_CALC_METHOD_C)
 		{
 			cout << "error - cannot define two contrast calculation methods in OR rules xml file" << endl;
-			exit(0);
+			exit(EXIT_ERROR);
 		}
 	}
 	MAX_LUMINOSITY_CONTRAST = 0;
@@ -1794,7 +1794,7 @@ void ORrulesClass::fillInORrulesExternVariables()
 		if(OR_METHOD_2DOD_NORM_SNAPSHOT_X/OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO > OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_BLOCK_SIZE)
 		{
 			cout << "error; OR rules XML: OR_METHOD_2DOD_NORM_SNAPSHOT_X/OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO > OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_BLOCK_SIZE" << endl;
-			exit(0);
+			exit(EXIT_ERROR);
 		}
 	}
 
@@ -1807,7 +1807,7 @@ void ORrulesClass::fillInORrulesExternVariables()
 		if(OR_METHOD_3DOD_NORM_SNAPSHOT_X/OR_METHOD_3DOD_USE_SMALL_IMAGE_RATIO > OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_BLOCK_SIZE)
 		{
 			cout << "error; OR rules XML: OR_METHOD_3DOD_NORM_SNAPSHOT_X/OR_METHOD_3DOD_USE_SMALL_IMAGE_RATIO > OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_BLOCK_SIZE" << endl;
-			exit(0);
+			exit(EXIT_ERROR);
 		}
 	}
 

@@ -25,7 +25,7 @@
  * File Name: ATORoperations.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j3e 17-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -626,7 +626,7 @@ int ORoperationsClass::calculateNumberOfNearestFeatures(const int numberOfPolygo
 	else
 	{
 		cout << "error numberOfPolygonsPerFeature must be <= 4" << endl;
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 
 	return numberOfNearestFeatures;

@@ -25,7 +25,7 @@
  * File Name: ATORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j3e 17-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -47,9 +47,9 @@ static char errmessage[] = "Usage:  ATOR.exe [options]\n\n\twhere options are an
 "\n\t-sqlusername [string]  : username of MySQL Server BAI database"
 "\n\t-sqlpassword [string]  : password of MySQL Server BAI database"
 "\n\t-cleartrain            : clear train database"
-"\n\t-workingfolder [string]: working directory name for input files (def: same as exe)"
+"\n\t-inputfolder [string]: input directory name for input files (def: same as exe)"
 "\n\t-exefolder [string]    : exe directory name for executables; ATOR.exe and FD.exe (def: same as exe)"
-"\n\t-tempfolder [string]    : temp directory name for temporary and output files (def: same as exe)"
+"\n\t-outputfolder [string]    : output directory name for temporary and output files (def: same as exe)"
 "\n\n single view options only \n"
 "\n\t-view [int]            : input object view number (def: 0) [if > 0, must append \".viewX\" to file name]"
 "\n\n single view 3DOD options only \n"
@@ -94,13 +94,13 @@ int main(const int argc,const char* *argv)
 	string databaseFolderName =  OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME + OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME;
 	#endif
 
-	if(SHAREDvarsClass().argumentExists(argc, argv, "-workingfolder"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-inputfolder"))
 	{
-		workingFolder = SHAREDvarsClass().getStringArgument(argc, argv, "-workingfolder");
+		inputFolder = SHAREDvarsClass().getStringArgument(argc, argv, "-inputfolder");
 	}
 	else
 	{
-		workingFolder = currentFolder;
+		inputFolder = currentFolder;
 	}
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-exefolder"))
 	{
@@ -110,25 +110,25 @@ int main(const int argc,const char* *argv)
 	{
 		exeFolder = currentFolder;
 	}
-	if(SHAREDvarsClass().argumentExists(argc, argv, "-tempfolder"))
+	if(SHAREDvarsClass().argumentExists(argc, argv, "-outputfolder"))
 	{
-		tempFolder = SHAREDvarsClass().getStringArgument(argc, argv, "-tempfolder");
+		outputFolder = SHAREDvarsClass().getStringArgument(argc, argv, "-outputfolder");
 	}
 	else
 	{
-		tempFolder = currentFolder;
+		outputFolder = currentFolder;
 	}
 
-	SHAREDvarsClass().setCurrentDirectory(workingFolder);
+	SHAREDvarsClass().setCurrentDirectory(inputFolder);
 
 	if(!XMLrulesClassClass().parseORrulesXMLfile())
 	{
 		cout << "error: no rules file detected" << endl;
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 	ORrulesClass().fillInORrulesExternVariables();
 
-	SHAREDvarsClass().setCurrentDirectory(tempFolder);
+	SHAREDvarsClass().setCurrentDirectory(outputFolder);
 
 	int dimension;
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-od3"))
@@ -159,14 +159,14 @@ int main(const int argc,const char* *argv)
 		{
 			cout << "error: trainortest value is illegal" << endl;
 			ORmainClass().printORcommandLineErrorMessage();
-			exit(0);
+			exit(EXIT_ERROR);
 		}
 	}
 	else
 	{
 		cout << "error: trainortest is not defined" << endl;
 		ORmainClass().printORcommandLineErrorMessage();
-		exit(0);
+		exit(EXIT_ERROR);
 
 	}
 
@@ -182,7 +182,7 @@ int main(const int argc,const char* *argv)
 	{
 		cout << "error: sqlipaddress is not defined" << endl;
 		ORmainClass().printORcommandLineErrorMessage();
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-sqlusername"))
 	{
@@ -192,7 +192,7 @@ int main(const int argc,const char* *argv)
 	{
 		cout << "error: sqlusername is not defined" << endl;
 		ORmainClass().printORcommandLineErrorMessage();
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-sqlpassword"))
@@ -203,7 +203,7 @@ int main(const int argc,const char* *argv)
 	{
 		cout << "error: sqlpassword is not defined" << endl;
 		ORmainClass().printORcommandLineErrorMessage();
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 	#endif
 
@@ -284,7 +284,7 @@ int main(const int argc,const char* *argv)
 	{
 		cout << "illegal number of dimension" << endl;
 		ORmainClass().printORcommandLineErrorMessage();
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 
 	string multViewList = "";
@@ -297,7 +297,7 @@ int main(const int argc,const char* *argv)
 
 		RTviewInfo tempViewInfo;
 		string multViewListFileNameWithFullPath = "";
-		multViewListFileNameWithFullPath = multViewListFileNameWithFullPath + workingFolder + "/" + multViewListFileName;
+		multViewListFileNameWithFullPath = multViewListFileNameWithFullPath + inputFolder + "/" + multViewListFileName;
 		numberOfViewIndiciesPerObject = ORmethodClass().createViFromMultiViewList(&tempViewInfo, multViewListFileNameWithFullPath, 0, dimension);
 		cout << "countNumViFromMultiViewList numberOfViewIndiciesPerObject = " << numberOfViewIndiciesPerObject << endl;
 
@@ -319,13 +319,13 @@ int main(const int argc,const char* *argv)
 	{
 		cout << "error: must specify input object name" << endl;
 		ORmainClass().printORcommandLineErrorMessage();
-		exit(0);
+		exit(EXIT_ERROR);
 	}
 
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-version"))
 	{
-		cout << "ATOR.exe - Project Version: 3j3e 17-January-2017" << endl;
-		exit(1);
+		cout << "ATOR.exe - Project Version: 3j2a 17-January-2017" << endl;
+		exit(EXIT_OK);
 	}
 
 	string imageExtensionName = "";
@@ -340,7 +340,7 @@ int main(const int argc,const char* *argv)
 		{
 			cout << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
 			ORmainClass().printORcommandLineErrorMessage();
-			exit(0);
+			exit(EXIT_ERROR);
 		}
 	}
 
@@ -354,7 +354,7 @@ int main(const int argc,const char* *argv)
 		{
 			cout << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
 			ORmainClass().printORcommandLineErrorMessage();
-			exit(0);
+			exit(EXIT_ERROR);
 		}
 	}
 
@@ -368,7 +368,7 @@ int main(const int argc,const char* *argv)
 		{
 			cout << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
 			ORmainClass().printORcommandLineErrorMessage();
-			exit(0);
+			exit(EXIT_ERROR);
 		}
 	}
 
@@ -512,7 +512,7 @@ int main(const int argc,const char* *argv)
 		if(useMultViewList)
 		{
 			cout << "error: cannot specify both a multview list and a single view view number" << endl;
-			exit(0);
+			exit(EXIT_ERROR);
 		}
 	}
 
@@ -529,7 +529,7 @@ int main(const int argc,const char* *argv)
 	{
 		cout << "error: must either specify an input depth map extension and POV parameters (if not wanting defaults), or a mult (object/) view list for 3DOD" << endl;
 		ORmainClass().printORcommandLineErrorMessage();
-		//exit(0);
+		//exit(EXIT_ERROR);
 	}
 
 

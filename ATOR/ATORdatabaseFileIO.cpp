@@ -25,7 +25,7 @@
  * File Name: ATORdatabaseFileIO.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3j3e 17-January-2017
+ * Project Version: 3j2a 17-January-2017
  *
  *******************************************************************************/
 
@@ -133,7 +133,7 @@ string ORdatabaseFileIOClass::DBgenerateServerDatabaseName(const string* objectN
 		{
 			cout << "determineServerName error: (entityFirstCharacter < ASCII_TABLE_INDEX_OF_a) || (entityFirstCharacter > ASCII_TABLE_INDEX_OF_z)" << endl;
 			cout << "entityName = " <<* entityName << endl;
-			exit(0);
+			exit(EXIT_ERROR);
 		}
 
 		int entityFirstCharacterIndex = entityFirstCharacter - ASCII_TABLE_INDEX_OF_a;
