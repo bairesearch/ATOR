@@ -25,7 +25,7 @@
  * File Name: ATORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3k2c 21-March-2017
+ * Project Version: 3k3a 19-May-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -2914,9 +2914,9 @@ bool ORmethodClass::addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, un
 
 	string convertRGBRAStoFeatureRASCommand = "";
 #ifdef LINUX
-	convertRGBRAStoFeatureRASCommand = convertRGBRAStoFeatureRASCommand + exeFolder + "/FD.exe" + " -inputfolder " + currentTempFolder + " -i " + rgbMapFileNameRas + " -o " + baseName + " -keypoints -quality -sigma 2.25 -raster";
+	convertRGBRAStoFeatureRASCommand = convertRGBRAStoFeatureRASCommand + exeFolder + "/FD.exe" + " -workingfolder " + currentTempFolder + " -i " + rgbMapFileNameRas + " -o " + baseName + " -keypoints -quality -sigma 2.25 -raster";
 #else
-	convertRGBRAStoFeatureRASCommand = convertRGBRAStoFeatureRASCommand + exeFolder + "/FD.exe" + " -inputfolder " + currentTempFolder + " -i " + rgbMapFileNameRas + " -o " + baseName + " -keypoints -quality -sigma 2.25 -raster";
+	convertRGBRAStoFeatureRASCommand = convertRGBRAStoFeatureRASCommand + exeFolder + "/FD.exe" + " -workingfolder " + currentTempFolder + " -i " + rgbMapFileNameRas + " -o " + baseName + " -keypoints -quality -sigma 2.25 -raster";
 #endif
 	string convertFeatureRAStoFeaturePPMCommand = "convert -depth 8 " + featureMapFileNameRas + " " + featureMapFileName;
 
