@@ -25,7 +25,7 @@
  * File Name: ATORdatabaseSQL.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3l1b 02-June-2017
+ * Project Version: 3l1c 01-June-2017
  *
  *******************************************************************************/
 
@@ -306,7 +306,7 @@ void ORdatabaseSQLClass::createFeatureListUsingDatabaseQuery(ORfeature* firstFea
 
 			if(tableIndex > 1)
 			{
-				cout << "error: multiple identical test snapshots detected" << endl;
+				cerr << "error: multiple identical test snapshots detected" << endl;
 				exit(EXIT_ERROR);
 
 			}
@@ -332,7 +332,7 @@ void ORdatabaseSQLClass::createFeatureContainerListUsingSQLDatabaseDecisionTreeT
 	string sqlSelectCommandSelectContents = "";
 
 #ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL_DIRECT_ACCESS_USE_JOIN_OPT
-	cout << "SQL join optimisation not yet coded" << endl;
+	cerr << "SQL join optimisation not yet coded" << endl;
 	exit(EXIT_ERROR);
 #else
 	string sqlSelectCommandFrom = "";
@@ -774,7 +774,7 @@ void ORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequirement
 {
 	if(!createFeatureObjects)
 	{
-		cout << "error; createFeaturesListUsingDatabaseQueryGeoXYbinRequirement requires createFeatureObjects" << endl;
+		cerr << "error; createFeaturesListUsingDatabaseQueryGeoXYbinRequirement requires createFeatureObjects" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -806,7 +806,7 @@ void ORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequirement
 	}
 	else
 	{
-		cout << "illegal trainOrTest value" << endl;
+		cerr << "illegal trainOrTest value" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -1321,7 +1321,7 @@ void ORdatabaseSQLClass::addSQLRowDataToFeatureList(const MYSQL_ROW row, ORfeatu
 {
 	if(!createFeatureObjects)
 	{
-		cout << "error; createFeaturesListUsingDatabaseQueryGeoXYbinRequirement requires createFeatureObjects" << endl;
+		cerr << "error; createFeaturesListUsingDatabaseQueryGeoXYbinRequirement requires createFeatureObjects" << endl;
 		exit(EXIT_ERROR);
 	}
 

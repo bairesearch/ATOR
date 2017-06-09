@@ -25,7 +25,7 @@
  * File Name: ATORdatabaseDecisionTree.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3l1b 02-June-2017
+ * Project Version: 3l1c 01-June-2017
  *
  *******************************************************************************/
 
@@ -339,7 +339,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 										}
 										else
 										}
-											cout << "invalid OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS, must be < 100" << endl;
+											cerr << "invalid OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS, must be < 100" << endl;
 											exit(EXIT_ERROR);
 										}
 										#endif
@@ -794,7 +794,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 				}
 				else
 				{
-					cout << "invalid OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS, must be < 100" << endl;
+					cerr << "invalid OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS, must be < 100" << endl;
 					exit(EXIT_ERROR);
 				}
 				#endif
@@ -1111,7 +1111,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 	}
 	else
 	{
-		cout << "error - no DT conditions defined" << endl;
+		cerr << "error - no DT conditions defined" << endl;
 		exit(EXIT_ERROR);
 	}
 

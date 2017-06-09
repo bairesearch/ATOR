@@ -25,7 +25,7 @@
  * File Name: ATORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3l1b 02-June-2017
+ * Project Version: 3l1c 01-June-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -567,9 +567,6 @@ bool ORmethodClass::ORmethodCompareTestWithTrain(const int dimension, const int 
 		time5bNormalisedSnapshotComparisonCompareSnapshotDataAverage = time5bNormalisedSnapshotComparisonCompareSnapshotDataTotal / time5bNormalisedSnapshotComparisonCompareSnapshotDataIndex;
 	}
 
-//exitOpenGL();
-//exit(EXIT_ERROR);
-
 	timeTotalTrain = time1aALTERNATEODgenerationParseVectorGraphicsFileTotal+time1ODgenerationTotalTrain+time2ObjectTriangleGenerationPolygonListTotalTrain+time3NormalisedSnapshotGenerationTotalTrain;
 	timeTotalTest = time1aALTERNATEODgenerationParseVectorGraphicsFileTotal+time1ODgenerationTotalTest+time2ObjectTriangleGenerationPolygonListTotalTest+time3NormalisedSnapshotGenerationTotalTest;
 	timeTotalCompare = time5NormalisedSnapshotComparisonTotal;
@@ -808,7 +805,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 				}
 				else
 				{
-					cout << "Error: illegal number of dimensions" << endl;
+					cerr << "Error: illegal number of dimensions" << endl;
 					exit(EXIT_ERROR);
 				}
 				if(!this->createOrAddToInterpolatedMeshAndFeaturesList(initialReferenceInSceneFile, viMultiView, firstReferenceInInterpolatedMesh, firstMeshPointInMeshList, firstFeatureInList, trainOrTest, viewIndex, objectNameArray[o], dimension, objectDataSourceForThisView, numberOfZoomIndicies, useQuadraticFitEdgeZeroCrossingMap))
@@ -1080,7 +1077,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 			}
 			else
 			{
-				cout << "Error: illegal number of dimensions" << endl;
+				cerr << "Error: illegal number of dimensions" << endl;
 				exit(EXIT_ERROR);
 			}
 			if(!this->createOrAddToInterpolatedMeshAndFeaturesList(initialReferenceInSceneFile, vi, firstReferenceInInterpolatedMesh, firstMeshPointInMeshList, firstFeatureInList, trainOrTest, viewIndex, objectNameArray[o], dimension, objectDataSource, numberOfZoomIndicies, useQuadraticFitEdgeZeroCrossingMap))
@@ -1614,7 +1611,7 @@ bool ORmethodClass::createRGBandPointMap(LDreference* initialReferenceInSceneFil
 		}
 		else
 		{
-			cout << "Error: illegal number of dimensions" << endl;
+			cerr << "Error: illegal number of dimensions" << endl;
 			exit(EXIT_ERROR);
 		}
 
@@ -1775,7 +1772,7 @@ bool ORmethodClass::createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMa
 	}
 	else
 	{
-		cout << "Error: illegal number of dimensions" << endl;
+		cerr << "Error: illegal number of dimensions" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -2156,7 +2153,7 @@ void ORmethodClass::printInterpolatedMeshReferenceList(LDreference* firstReferen
 	}
 	else
 	{
-		cout << "Error: illegal number of dimensions" << endl;
+		cerr << "Error: illegal number of dimensions" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -2748,7 +2745,7 @@ bool ORmethodClass::createOrAddPointsToFeaturesList(double* pointMap, unsigned c
 		}
 		else
 		{
-			cout << "Error: illegal number of dimensions" << endl;
+			cerr << "Error: illegal number of dimensions" << endl;
 			exit(EXIT_ERROR);
 		}
 
@@ -3000,7 +2997,7 @@ bool ORmethodClass::addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, un
 			}
 			ORfeatureGeneration.generateFeatureListFromHeitgerFeatureRGBMap(firstNewFeatureInList, featureRgbMap, imageWidth, imageHeight, rgbMap, sensitivity, dimension, pointMap, depthMap, zoom, vi);
 		#else
-			cout << "error: some form of keypoint generation must be defined" << end;
+			cerr << "error: some form of keypoint generation must be defined" << end;
 			exit(EXIT_ERROR);
 		#endif
 	#endif
@@ -3062,7 +3059,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 	}
 	else
 	{
-		cout << "error: illegal dimension" << endl;
+		cerr << "error: illegal dimension" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -3142,12 +3139,12 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 
 	if(WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE < OR_METHOD_2DOD_NORM_SNAPSHOT_X)
 	{
-		cout << "error: WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE < OR_METHOD_2DOD_NORM_S.._X, please redefine WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE" << endl;
+		cerr << "error: WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE < OR_METHOD_2DOD_NORM_S.._X, please redefine WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE" << endl;
 		exit(EXIT_ERROR);
 	}
 	if(WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE < OR_METHOD_3DOD_NORM_SNAPSHOT_X)
 	{
-		cout << "error: WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE < OR_METHOD_3DOD_NORM_S.._X, please redefine WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE" << endl;
+		cerr << "error: WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE < OR_METHOD_3DOD_NORM_S.._X, please redefine WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -3599,7 +3596,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 								}
 								else
 								{
-									cout << "Error: Invalid Dimension" << endl;
+									cerr << "Error: Invalid Dimension" << endl;
 									exit(EXIT_ERROR);
 								}
 
@@ -3633,7 +3630,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 															}
 															else
 															{
-																cout << "Error: Invalid Dimension" << endl;
+																cerr << "Error: Invalid Dimension" << endl;
 																exit(EXIT_ERROR);
 															}
 														#endif
@@ -3691,7 +3688,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 								}
 								else
 								{
-									cout << "Error: Invalid Dimension" << endl;
+									cerr << "Error: Invalid Dimension" << endl;
 									exit(EXIT_ERROR);
 								}
 
@@ -4239,7 +4236,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 							#elif defined OR_FEED_DEPTH_GRADIENT_CONTRAST_BOOLEAN_MAP_3DONLY
 								generateExperienceWith2DBooleanMap(depthGradientContrastBooleanMap, imageWidthFacingPoly, imageHeightFacingPoly, currentExperience, objectDecision);
 							#else
-								cout << "Error: no feed defined" << endl;
+								cerr << "Error: no feed defined" << endl;
 								exit(EXIT_ERROR);
 							#endif
 
@@ -4352,7 +4349,7 @@ ANNneuronContainer* ORmethodClass::initialiseNormalisedSnapshotNeuralNetwork(con
 #elif defined OR_FEED_DEPTH_GRADIENT_CONTRAST_BOOLEAN_MAP
 	*numberOfInputNeurons = imageWidth* imageHeight;
 #else
-	cout << "Error: no feed defined" << endl;
+	cerr << "Error: no feed defined" << endl;
 	exit(EXIT_ERROR);
 #endif
 
@@ -4615,7 +4612,7 @@ int ORmethodClass::createViFromMultiViewList(RTviewInfo* vi, const string fileNa
 				}
 				else
 				{
-					cout << "illegal dimension" << endl;
+					cerr << "illegal dimension" << endl;
 					exit(EXIT_ERROR);
 				}
 			}
@@ -4779,7 +4776,7 @@ int ORmethodClass::createViFromMultiViewList(RTviewInfo* vi, const string fileNa
 
 			else
 			{
-				//cout << "file i/o error" << endl;
+				//cerr << "file i/o error" << endl;
 				//exit(EXIT_ERROR);
 			}
 
@@ -4817,7 +4814,7 @@ int ORmethodClass::createViFromMultiViewList(RTviewInfo* vi, const string fileNa
 					}
 					else
 					{
-						cout << "illegal dimension" << endl;
+						cerr << "illegal dimension" << endl;
 						exit(EXIT_ERROR);
 					}
 

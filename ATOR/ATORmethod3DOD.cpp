@@ -25,7 +25,7 @@
  * File Name: ATORmethod3DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3l1b 02-June-2017
+ * Project Version: 3l1c 01-June-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -87,7 +87,7 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 	}
 	else
 	{
-		cout << "error: illegal side" << endl;
+		cerr << "error: illegal side" << endl;
 		exit(EXIT_ERROR);
 	}
 	SHAREDvector.generateLookAtRotationMatrix(&at, &eye, &up, &xyzRotationMatrix12);
@@ -203,7 +203,7 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 	}
 	else
 	{
-		cout << "error misdefined side" << endl;
+		cerr << "error misdefined side" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -359,7 +359,7 @@ void ORmethod3DODClass::calculateEyePositionAndOrientation3DOD(vec* eyeFacingPol
 	}
 	else
 	{
-		cout << "error: illegal side" << endl;
+		cerr << "error: illegal side" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -545,7 +545,7 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 			}
 			else
 			{
-				cout << "invalid contrastValChosen" << endl;
+				cerr << "invalid contrastValChosen" << endl;
 				exit(EXIT_ERROR);
 			}
 		}
@@ -900,7 +900,7 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 						nearestMeshpointInExistingMesh = ORpolygonList.findMeshPointIntInMesh(firstMeshPointInMeshList, &borderPoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
 						if(hasFoundMeshPoint == false)
 						{
-							cout << "error: cannot find adjacent meshpoint" << endl;
+							cerr << "error: cannot find adjacent meshpoint" << endl;
 							exit(EXIT_ERROR);
 						}
 
@@ -912,7 +912,7 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 						meshpointInAdditionalMesh = ORpolygonList.findMeshPointIntInMesh(firstNewMeshPointInMesh, x, y, &hasFoundMeshPoint);
 						if(hasFoundMeshPoint == false)
 						{
-							cout << "error: cannot find adjacent meshpoint" << endl;
+							cerr << "error: cannot find adjacent meshpoint" << endl;
 							exit(EXIT_ERROR);
 						}
 						*/
@@ -974,7 +974,7 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 						nearestMeshpointInExistingMesh = ORpolygonList.findMeshPointIntInMesh(firstMeshPointInMeshList, &depthContrastEdgePoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
 						if(hasFoundMeshPoint == false)
 						{
-							cout << "error: cannot find adjacent meshpoint" << endl;
+							cerr << "error: cannot find adjacent meshpoint" << endl;
 							exit(EXIT_ERROR);
 						}
 
@@ -1075,7 +1075,7 @@ void ORmethod3DODClass::create3DMeshReferenceListUsingPointMap(int imageWidth, i
 					currentMeshPointInMesh->adjacentMeshPoint[q] = ORpolygonList.findMeshPointIntInMesh(firstMeshPointInMeshList, kx, ky, &hasFoundMeshPoint);
 					if(hasFoundMeshPoint == false)
 					{
-						cout << "error: cannot find adjacent meshpoint" << endl;
+						cerr << "error: cannot find adjacent meshpoint" << endl;
 						exit(EXIT_ERROR);
 					}
 				}

@@ -25,7 +25,7 @@
  * File Name: ATORfeatureGeneration.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3l1b 02-June-2017
+ * Project Version: 3l1c 01-June-2017
  *
  * Assumes that depth information is less accurate than image information
  *
@@ -689,7 +689,7 @@ ORfeature* ORfeatureGenerationClass::traceEdgeAndAddMinimaAndMaximaFeatures(ORfe
 			}
 			else
 			{
-				cout << "trace error" << endl;
+				cerr << "trace error" << endl;
 				exit(EXIT_ERROR);
 			}
 
@@ -762,16 +762,16 @@ ORfeature* ORfeatureGenerationClass::traceEdgeAndAddMinimaAndMaximaFeatures(ORfe
 			{
 				if(numberOfPossibleCrawlPaths == 0)
 				{
-					cout << "circumferenceForRegion = " << circumferenceForRegion << endl;
-					cout << "numberOfBoundaryOrFakeBoundaryPixelsTraced = " << numberOfBoundaryOrFakeBoundaryPixelsTraced << endl;
-					cout << "error; numberOfPossibleCrawlPaths == 0" << endl;
+					cerr << "circumferenceForRegion = " << circumferenceForRegion << endl;
+					cerr << "numberOfBoundaryOrFakeBoundaryPixelsTraced = " << numberOfBoundaryOrFakeBoundaryPixelsTraced << endl;
+					cerr << "error; numberOfPossibleCrawlPaths == 0" << endl;
 					exit(EXIT_ERROR);
 				}
 				else if(numberOfPossibleCrawlPaths > 1)
 				{
-					cout << "circumferenceForRegion = " << circumferenceForRegion << endl;
-					cout << "numberOfBoundaryOrFakeBoundaryPixelsTraced = " << numberOfBoundaryOrFakeBoundaryPixelsTraced << endl;
-					cout << "error; numberOfPossibleCrawlPaths > 1" << endl;
+					cerr << "circumferenceForRegion = " << circumferenceForRegion << endl;
+					cerr << "numberOfBoundaryOrFakeBoundaryPixelsTraced = " << numberOfBoundaryOrFakeBoundaryPixelsTraced << endl;
+					cerr << "error; numberOfPossibleCrawlPaths > 1" << endl;
 					exit(EXIT_ERROR);
 				}
 				else
@@ -885,7 +885,7 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 		}
 		else
 		{
-			cout << "error: illegal dimension" << endl;
+			cerr << "error: illegal dimension" << endl;
 			exit(EXIT_ERROR);
 		}
 
@@ -1046,9 +1046,9 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 							{
 								if(alreadyProcessed[maxXy*imageWidth + maxXx] != EDGE_FOUND)
 								{
-									cout << "maxXx = " << maxXx << endl;
-									cout << "maxXy = " << maxXy << endl;
-									cout << "error - boundary edge false identification" << endl;
+									cerr << "maxXx = " << maxXx << endl;
+									cerr << "maxXy = " << maxXy << endl;
+									cerr << "error - boundary edge false identification" << endl;
 									exit(EXIT_ERROR);
 								}
 							}
@@ -1056,17 +1056,17 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 							{
 								if(alreadyProcessed[maxXy*imageWidth + maxXx] != EDGE_FOUND)
 								{
-									cout << "maxXx = " << maxXx << endl;
-									cout << "maxXy = " << maxXy << endl;
-									cout << "error - boundary edge false identification" << endl;
+									cerr << "maxXx = " << maxXx << endl;
+									cerr << "maxXy = " << maxXy << endl;
+									cerr << "error - boundary edge false identification" << endl;
 									exit(EXIT_ERROR);
 								}
 								/*
 								if(edgeBoolMap[maxXy*imageWidth + maxXx] != true)
 								{
-									cout << "maxXx = " << maxXx << endl;
-									cout << "maxXy = " << maxXy << endl;
-									cout << "error - boundary edge false identification" << endl;
+									cerr << "maxXx = " << maxXx << endl;
+									cerr << "maxXy = " << maxXy << endl;
+									cerr << "error - boundary edge false identification" << endl;
 									exit(EXIT_ERROR);
 								}
 								*/
@@ -1369,13 +1369,13 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingMeshList(ORfe
 						/*
 						if(aMeshPointOnTheBoundary->edge != true)
 						{
-							cout << "error - boundary edge false identification" << endl;
+							cerr << "error - boundary edge false identification" << endl;
 							exit(EXIT_ERROR);
 						}
 						*/
 						if(aMeshPointOnTheBoundary->alreadyProcessed != EDGE_FOUND)
 						{
-							cout << "error - boundary edge false identification" << endl;
+							cerr << "error - boundary edge false identification" << endl;
 							exit(EXIT_ERROR);
 						}
 
@@ -2638,7 +2638,7 @@ bool ORfeatureGenerationClass::traceEdgeCheckNextPixelNonRecursive(int xInitialO
 						}
 						else
 						{
-							cout << "error - boundary found in trace" << endl;
+							cerr << "error - boundary found in trace" << endl;
 							exit(EXIT_ERROR);
 
 							//?:
@@ -2798,9 +2798,9 @@ bool ORfeatureGenerationClass::traceEdgeCheckNextPixelNonRecursive(int xInitialO
 				}
 				else
 				{
-					cout << "1. error - returned to beginning without tracing a boundary" << endl;
-					cout << "currentInPixelContiguousStack->xInt = " << currentInPixelContiguousStack->xInt << endl;
-					cout << "currentInPixelContiguousStack->yInt = " << currentInPixelContiguousStack->yInt << endl;
+					cerr << "1. error - returned to beginning without tracing a boundary" << endl;
+					cerr << "currentInPixelContiguousStack->xInt = " << currentInPixelContiguousStack->xInt << endl;
+					cerr << "currentInPixelContiguousStack->yInt = " << currentInPixelContiguousStack->yInt << endl;
 					exit(EXIT_ERROR);
 					stillTracingPath1 = false;
 				}
@@ -3138,7 +3138,7 @@ bool ORfeatureGenerationClass::traceEdgeCheckNextPixelUsingMeshPointNonRecursive
 				}
 				else
 				{
-					cout << "1. error - returned to beginning without tracing a boundary" << endl;
+					cerr << "1. error - returned to beginning without tracing a boundary" << endl;
 					exit(EXIT_ERROR);
 					stillTracingPath1 = false;
 				}
@@ -3270,7 +3270,7 @@ void ORfeatureGenerationClass::generateFeatureListFromHeitgerFeatureRGBMap(ORfea
 						#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
 								else
 								{
-									cout << "error: feature not on object, and no nearby features on object" << endl;
+									cerr << "error: feature not on object, and no nearby features on object" << endl;
 									exit(EXIT_ERROR);
 								}
 							}
@@ -3403,7 +3403,7 @@ void ORfeatureGenerationClass::generateFeatureListFromHeitgerFeatureAsciiMap(ORf
 			}
 			else
 			{
-				//cout << "file i/o error" << endl;
+				//cerr << "file i/o error" << endl;
 				//exit(EXIT_ERROR);
 			}
 
@@ -3472,7 +3472,7 @@ void ORfeatureGenerationClass::generateFeatureListFromRGBMap(ORfeature* firstFea
 		}
 		else
 		{
-			cout << "invalid kernelOrientation" << endl;
+			cerr << "invalid kernelOrientation" << endl;
 			exit(EXIT_ERROR);
 		}
 
@@ -3745,7 +3745,7 @@ void traceEdgeCheckNextPixelRecursive(int xCurrent, int yCurrent, int alreadyPro
 	{
 		if(*foundStartAgain)
 		{
-			cout << "found start multiple times - going around in loops" << endl;
+			cerr << "found start multiple times - going around in loops" << endl;
 			exit(EXIT_ERROR);
 		}
 		*foundStartAgain = true;
@@ -3923,7 +3923,7 @@ void traceEdgeCheckNextPixelUsingMeshPointRecursive(ORmeshPoint* currentMeshPoin
 	{
 		if(*foundStartAgain)
 		{
-			cout << "found start multiple times - going around in loops" << endl;
+			cerr << "found start multiple times - going around in loops" << endl;
 			exit(EXIT_ERROR);
 		}
 		*foundStartAgain = true;

@@ -25,7 +25,7 @@
  * File Name: ATORTHimageCategorisationNN.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3l1b 02-June-2017
+ * Project Version: 3l1c 01-June-2017
  * Test Harness for OR Image Categorisation NN method (not yet implemented)
  *******************************************************************************/
 
@@ -129,7 +129,7 @@ int ORTHimageCategorisationNN()
 
 	if(!parseORrulesXMLfile())
 	{
-		cout << "error: no rules file detected" << endl;
+		cerr << "error: no rules file detected" << endl;
 		exit(EXIT_ERROR);
 	}
 	fillInORrulesExternVariables();
@@ -263,7 +263,7 @@ int ORTHimageCategorisationNN()
 			}
 			else
 			{
-				cout << "error: initialiseImageNeuralNetwork{}: illegal NNtypeBeingTested" << endl;
+				cerr << "error: initialiseImageNeuralNetwork{}: illegal NNtypeBeingTested" << endl;
 				exit(EXIT_ERROR);
 			}
 
@@ -460,7 +460,7 @@ ANNneuronContainer* initialiseImageNeuralNetwork(int NNtypeBeingTested, ANNneuro
 	}
 	else
 	{
-		cout << "error: initialiseImageNeuralNetwork{}: illegal NNtypeBeingTested" << endl;
+		cerr << "error: initialiseImageNeuralNetwork{}: illegal NNtypeBeingTested" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -592,7 +592,7 @@ bool generatePixelMapExperienceFromImage(string imageFileName, ANNexperience* cu
 	#elif defined OR_IMAGE_COMPARISON_NN_PIXMAP_EXPERIENCE_LUMINOSITY_CONTRAST_MAP
 	generateExperienceWith2DMap(luminosityContrastMap, objectImage->wide, objectImage->high, CONTRAST_MAP_MAX_CONTRAST_VALUE, currentExperience, objectDecision);
 	#else
-	cout << "Error: no feed defined" << endl;
+	cerr << "Error: no feed defined" << endl;
 	exit(EXIT_ERROR);
 	#endif
 

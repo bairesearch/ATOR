@@ -25,7 +25,7 @@
  * File Name: ATORpixelMaps.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3l1b 02-June-2017
+ * Project Version: 3l1c 01-June-2017
  *
  *******************************************************************************/
 
@@ -158,7 +158,7 @@ void ORpixelMapsClass::calculateMeshPointNormalsUsingPointMap(int x, int y, cons
 	}
 	else
 	{
-		cout << "error: invalid contrast map generation kernel width and/or height" << endl;
+		cerr << "error: invalid contrast map generation kernel width and/or height" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -292,7 +292,7 @@ double ORpixelMapsClass::calculatePointNormalContrastLevelWithinKernel(int pixel
 	}
 	else
 	{
-		cout << "error: invalid contrast map generation kernel width and/or height" << endl;
+		cerr << "error: invalid contrast map generation kernel width and/or height" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -841,7 +841,7 @@ double ORpixelMapsClass::calculateContrastLevelWithinKernelWithForegroundDepthCh
 	}
 	else
 	{
-		cout << "error: invalid contrast map generation kernel width and/or height" << endl;
+		cerr << "error: invalid contrast map generation kernel width and/or height" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -1080,7 +1080,7 @@ double getContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixe
 	}
 	else
 	{
-		cout << "error: invalid contrast map generation kernel width and/or height" << endl;
+		cerr << "error: invalid contrast map generation kernel width and/or height" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -1253,7 +1253,7 @@ double ORpixelMapsClass::calculateDepthGradientValueWithinKernel(const int pixel
 	}
 	else
 	{
-		cout << "error: invalid contrast map generation kernel width and/or height" << endl;
+		cerr << "error: invalid contrast map generation kernel width and/or height" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -1470,7 +1470,7 @@ double ORpixelMapsClass::calculateDepthGradientContrastValueWithinKernel(int pix
 	}
 	else
 	{
-		cout << "error: invalid contrast map generation kernel width and/or height" << endl;
+		cerr << "error: invalid contrast map generation kernel width and/or height" << endl;
 		exit(EXIT_ERROR);
 	}
 

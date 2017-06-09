@@ -25,7 +25,7 @@
  * File Name: ATORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3l1b 02-June-2017
+ * Project Version: 3l1c 01-June-2017
  *
  *******************************************************************************/
 
@@ -123,7 +123,7 @@ int main(const int argc,const char* *argv)
 
 	if(!XMLrulesClassClass().parseORrulesXMLfile())
 	{
-		cout << "error: no rules file detected" << endl;
+		cerr << "error: no rules file detected" << endl;
 		exit(EXIT_ERROR);
 	}
 	ORrulesClass().fillInORrulesExternVariables();
@@ -157,14 +157,14 @@ int main(const int argc,const char* *argv)
 
 		if(!((trainOrTest == TEST) || (trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST)))
 		{
-			cout << "error: trainortest value is illegal" << endl;
+			cerr << "error: trainortest value is illegal" << endl;
 			ORmainClass().printORcommandLineErrorMessage();
 			exit(EXIT_ERROR);
 		}
 	}
 	else
 	{
-		cout << "error: trainortest is not defined" << endl;
+		cerr << "error: trainortest is not defined" << endl;
 		ORmainClass().printORcommandLineErrorMessage();
 		exit(EXIT_ERROR);
 
@@ -180,7 +180,7 @@ int main(const int argc,const char* *argv)
 	}
 	else
 	{
-		cout << "error: sqlipaddress is not defined" << endl;
+		cerr << "error: sqlipaddress is not defined" << endl;
 		ORmainClass().printORcommandLineErrorMessage();
 		exit(EXIT_ERROR);
 	}
@@ -190,7 +190,7 @@ int main(const int argc,const char* *argv)
 	}
 	else
 	{
-		cout << "error: sqlusername is not defined" << endl;
+		cerr << "error: sqlusername is not defined" << endl;
 		ORmainClass().printORcommandLineErrorMessage();
 		exit(EXIT_ERROR);
 	}
@@ -201,7 +201,7 @@ int main(const int argc,const char* *argv)
 	}
 	else
 	{
-		cout << "error: sqlpassword is not defined" << endl;
+		cerr << "error: sqlpassword is not defined" << endl;
 		ORmainClass().printORcommandLineErrorMessage();
 		exit(EXIT_ERROR);
 	}
@@ -282,7 +282,7 @@ int main(const int argc,const char* *argv)
 	}
 	else
 	{
-		cout << "illegal number of dimension" << endl;
+		cerr << "illegal number of dimension" << endl;
 		ORmainClass().printORcommandLineErrorMessage();
 		exit(EXIT_ERROR);
 	}
@@ -317,14 +317,14 @@ int main(const int argc,const char* *argv)
 	}
 	else
 	{
-		cout << "error: must specify input object name" << endl;
+		cerr << "error: must specify input object name" << endl;
 		ORmainClass().printORcommandLineErrorMessage();
 		exit(EXIT_ERROR);
 	}
 
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-version"))
 	{
-		cout << "ATOR.exe - Project Version: 3l1b 02-June-2017" << endl;
+		cerr << "ATOR.exe - Project Version: 3l1c 01-June-2017" << endl;
 		exit(EXIT_OK);
 	}
 
@@ -338,7 +338,7 @@ int main(const int argc,const char* *argv)
 	{
 		if(!useMultViewList)
 		{
-			cout << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
+			cerr << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
 			ORmainClass().printORcommandLineErrorMessage();
 			exit(EXIT_ERROR);
 		}
@@ -352,7 +352,7 @@ int main(const int argc,const char* *argv)
 	{
 		if(!useMultViewList)
 		{
-			cout << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
+			cerr << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
 			ORmainClass().printORcommandLineErrorMessage();
 			exit(EXIT_ERROR);
 		}
@@ -366,7 +366,7 @@ int main(const int argc,const char* *argv)
 	{
 		if(!useMultViewList)
 		{
-			cout << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
+			cerr << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
 			ORmainClass().printORcommandLineErrorMessage();
 			exit(EXIT_ERROR);
 		}
@@ -511,7 +511,7 @@ int main(const int argc,const char* *argv)
 
 		if(useMultViewList)
 		{
-			cout << "error: cannot specify both a multview list and a single view view number" << endl;
+			cerr << "error: cannot specify both a multview list and a single view view number" << endl;
 			exit(EXIT_ERROR);
 		}
 	}
@@ -527,7 +527,7 @@ int main(const int argc,const char* *argv)
 
 	if(missingDepthMapExtensionDescriptor && !useMultViewList && (dimension == OR_METHOD3DOD_DIMENSIONS))
 	{
-		cout << "error: must either specify an input depth map extension and POV parameters (if not wanting defaults), or a mult (object/) view list for 3DOD" << endl;
+		cerr << "error: must either specify an input depth map extension and POV parameters (if not wanting defaults), or a mult (object/) view list for 3DOD" << endl;
 		ORmainClass().printORcommandLineErrorMessage();
 		//exit(EXIT_ERROR);
 	}

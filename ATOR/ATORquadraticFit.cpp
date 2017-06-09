@@ -25,7 +25,7 @@
  * File Name: ATORquadraticFit.cpp (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3l1b 02-June-2017
+ * Project Version: 3l1c 01-June-2017
  *
  * Assumes that depth information is less accurate than image information
  *******************************************************************************/
@@ -233,7 +233,7 @@ double ORquadraticFitClass::calculateAreaOfOneSideOfEdgeInPixel(const int xDevPo
 	}
 	if(numberEdgeIntersectBoundariesFound != 2)
 	{
-		cout << "error: numberEdgeIntersectBoundariesFound != 2" << endl;
+		cerr << "error: numberEdgeIntersectBoundariesFound != 2" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -299,7 +299,7 @@ double ORquadraticFitClass::calculateAreaOfOneSideOfEdgeInPixel(const int xDevPo
 		}
 		else
 		{
-			cout << "error: invalid testpoint" << endl;
+			cerr << "error: invalid testpoint" << endl;
 			exit(EXIT_ERROR);
 		}
 
@@ -370,7 +370,7 @@ double ORquadraticFitClass::calculateAreaOfOneSideOfEdgeInPixel(const int xDevPo
 		}
 		else
 		{
-			cout << "error: invalid testpoint" << endl;
+			cerr << "error: invalid testpoint" << endl;
 			exit(EXIT_ERROR);
 		}
 		if(scenarioChosen == 0)
@@ -418,7 +418,7 @@ double ORquadraticFitClass::calculateAreaOfOneSideOfEdgeInPixel(const int xDevPo
 		}
 		else
 		{
-			cout << "error: areaIsJustTriangle and no edgeIntersectBoundary @ x = +/-HALF_PIXEL_WIDTH" << endl;
+			cerr << "error: areaIsJustTriangle and no edgeIntersectBoundary @ x = +/-HALF_PIXEL_WIDTH" << endl;
 			exit(EXIT_ERROR);
 		}
 		if(edgeIntersectBoundary[sidex2].x == HALF_PIXEL_WIDTH)
@@ -433,7 +433,7 @@ double ORquadraticFitClass::calculateAreaOfOneSideOfEdgeInPixel(const int xDevPo
 		}
 		else
 		{
-			cout << "error: areaIsJustTriangle and x mismatch " << sidex1 << endl;
+			cerr << "error: areaIsJustTriangle and x mismatch " << sidex1 << endl;
 			exit(EXIT_ERROR);
 		}
 
@@ -452,7 +452,7 @@ double ORquadraticFitClass::calculateAreaOfOneSideOfEdgeInPixel(const int xDevPo
 		}
 		else
 		{
-			cout << "error: areaIsJustTriangle and no edgeIntersectBoundary @ y = +/-HALF_PIXEL_WIDTH" << endl;
+			cerr << "error: areaIsJustTriangle and no edgeIntersectBoundary @ y = +/-HALF_PIXEL_WIDTH" << endl;
 			exit(EXIT_ERROR);
 		}
 		if(edgeIntersectBoundary[sidey2].y == HALF_PIXEL_WIDTH)
@@ -467,7 +467,7 @@ double ORquadraticFitClass::calculateAreaOfOneSideOfEdgeInPixel(const int xDevPo
 		}
 		else
 		{
-			cout << "error: areaIsJustTriangle and y mismatch " << sidey1 << endl;
+			cerr << "error: areaIsJustTriangle and y mismatch " << sidey1 << endl;
 			exit(EXIT_ERROR);
 		}
 
@@ -1055,7 +1055,7 @@ void ORquadraticFitClass::calculateQuadraticFitCoefficients(const int x, const i
 	}
 	else
 	{
-		cout << "invalid quadratic fit kernel size, QUADRATIC_FIT_KERNEL_SIZE = " << QUADRATIC_FIT_KERNEL_SIZE << endl;
+		cerr << "invalid quadratic fit kernel size, QUADRATIC_FIT_KERNEL_SIZE = " << QUADRATIC_FIT_KERNEL_SIZE << endl;
 		exit(EXIT_ERROR);
 	}
 }

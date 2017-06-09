@@ -25,7 +25,7 @@
  * File Name: ATORmethod2DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3l1b 02-June-2017
+ * Project Version: 3l1c 01-June-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -52,7 +52,7 @@ double ORmethod2DODClass::calculateXYorientationOfSide(const ORpolygon* currentP
 	}
 	else
 	{
-		cout << "error misdefined side" << endl;
+		cerr << "error misdefined side" << endl;
 		exit(EXIT_ERROR);
 	}
 	return orientationOfSide;
@@ -76,7 +76,7 @@ double ORmethod2DODClass::calculateXYlengthOfSide(const ORpolygon* currentPolygo
 	}
 	else
 	{
-		cout << "error misdefined side" << endl;
+		cerr << "error misdefined side" << endl;
 		exit(EXIT_ERROR);
 	}
 	return lengthOfSide;
@@ -100,7 +100,7 @@ double ORmethod2DODClass::calculatePerpendicularDistanceBetweenThirdApexOfObject
 	}
 	else
 	{
-		cout << "error misdefined side" << endl;
+		cerr << "error misdefined side" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -154,7 +154,7 @@ double ORmethod2DODClass::calculateXaxisDistanceBetweenThirdApexOfObjectTriangle
 	}
 	else
 	{
-		cout << "error misdefined side" << endl;
+		cerr << "error misdefined side" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -423,7 +423,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	}
 	else
 	{
-		cout << "error: illegal side" << endl;
+		cerr << "error: illegal side" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -970,7 +970,7 @@ void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectSquare2DO
 	}
 	else
 	{
-		cout << "error misdefined side" << endl;
+		cerr << "error misdefined side" << endl;
 		exit(EXIT_ERROR);
 	}
 
@@ -1959,7 +1959,7 @@ void ORmethod2DODClass::create2DmeshUsingRGBmap2DOD(int imageWidth, const int im
 						nearestMeshpointInExistingMesh = ORpolygonList.findMeshPointIntInMesh(firstMeshPointInMeshList, &borderPoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
 						if(hasFoundMeshPoint == false)
 						{
-							cout << "error: cannot find adjacent meshpoint" << endl;
+							cerr << "error: cannot find adjacent meshpoint" << endl;
 							exit(EXIT_ERROR);
 						}
 
@@ -1971,7 +1971,7 @@ void ORmethod2DODClass::create2DmeshUsingRGBmap2DOD(int imageWidth, const int im
 						meshpointInAdditionalMesh = ORpolygonList.findMeshPointIntInMesh(firstNewMeshPointInMesh, x, y, &hasFoundMeshPoint);
 						if(hasFoundMeshPoint == false)
 						{
-							cout << "error: cannot find adjacent meshpoint" << endl;
+							cerr << "error: cannot find adjacent meshpoint" << endl;
 							exit(EXIT_ERROR);
 						}
 						*/
