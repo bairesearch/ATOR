@@ -25,7 +25,7 @@
  * File Name: ATORglobalDefs.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3l1a 02-June-2017
+ * Project Version: 3l1b 02-June-2017
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  *
  * 1. Object Recognition Software Installation Instructions;
