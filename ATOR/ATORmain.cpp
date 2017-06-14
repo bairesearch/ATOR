@@ -25,7 +25,7 @@
  * File Name: ATORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3l1f 01-June-2017
+ * Project Version: 3l2a 12-June-2017
  *
  *******************************************************************************/
 
@@ -68,9 +68,9 @@ static char errmessage[] = "Usage:  ATOR.exe [options]\n\n\twhere options are an
 "\n\t-viewsizeh [float]: viewport height (def: 3)"
 "\n\t-scale [float]    : mapping between depthmap bits and pov (defines resolution and maximum depth range/coverage of depth map)"
 "\n\n multi view options only \n"
-"\n\t-multview [string]     : use multiview list [NEEDS WORK] (def: multViewList.txt) {3DOD every row; ObjectViewFileNameWithNoExtension|imageext|imageWidth|imageHeight|depthext|vieweyex|vieweyey|vieweyez|viewatx|viewaty|viewatz|viewupx|viewupy|viewupz|viewfocal|viewsizew|viewsizeh|scale. 2DOD every row; ObjectViewFileNameWithNoExtension|imageext|imageWidth|imageHeight|xOffset|yOffset}"
+"\n\t-multview [string]     : use multiview list [EXPERIMENTAL] (def: multViewList.txt) {3DOD every row; ObjectViewFileNameWithNoExtension|imageext|imageWidth|imageHeight|depthext|vieweyex|vieweyey|vieweyez|viewatx|viewaty|viewatz|viewupx|viewupy|viewupz|viewfocal|viewsizew|viewsizeh|scale. 2DOD every row; ObjectViewFileNameWithNoExtension|imageext|imageWidth|imageHeight|xOffset|yOffset}"
 #ifdef OR_USE_DATABASE
-"\n\t-dbfolder          : file system database base folder path (def: /home/systemusername/source/ORfsdatabase)"
+"\n\t-dbfolder [string]     : file system database base folder path (def: /home/systemusername/source/ORfsdatabase)"
 #endif
 "\n\n\t-version        : print version"
 "\n\n\tThis program either adds an object (imaged from a particular viewpoint) to a BAI OR database, or finds the closest matching object already existent in the BAI OR database.\n\n";
@@ -324,7 +324,7 @@ int main(const int argc,const char* *argv)
 
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-version"))
 	{
-		cerr << "ATOR.exe - Project Version: 3l1f 01-June-2017" << endl;
+		cerr << "ATOR.exe - Project Version: 3l2a 12-June-2017" << endl;
 		exit(EXIT_OK);
 	}
 
