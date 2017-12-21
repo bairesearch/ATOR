@@ -25,7 +25,7 @@
  * File Name: ATORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m7a 13-December-2017
+ * Project Version: 3m8a 14-December-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -37,13 +37,14 @@
 
 /*
 #ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
-		//for neural network;
+	#include "ANNglobalDefs.hpp"
 	#include "ANNFormation.hpp"
 	#include "ANNTraining.hpp"
 	#include "ANNUpdateAlgorithm.hpp"
 	#include "ANNdisplay.hpp"
 #endif
 */
+
 #ifdef USE_OPENGL
 #endif
 
@@ -142,23 +143,23 @@ bool ORmethodClass::ORTHmethod(int dimension, const int numberOfTrainObjects, st
 	}
 
 
-			#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
-			if(dimension == OR_METHOD2DOD_DIMENSIONS)
-			{
-				this->setNoiseArraysMethod2DOD();		//Advded 5 Nov 08
-			}
-			else if(dimension == OR_METHOD3DOD_DIMENSIONS)
-			{
-				setNoiseArraysMethodA();		//Advded 5 Nov 08
-			}
-			#endif
+	#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+	if(dimension == OR_METHOD2DOD_DIMENSIONS)
+	{
+		this->setNoiseArraysMethod2DOD();		//Advded 5 Nov 08
+	}
+	else if(dimension == OR_METHOD3DOD_DIMENSIONS)
+	{
+		setNoiseArraysMethodA();		//Advded 5 Nov 08
+	}
+	#endif
 
 	string testUI2;
 
-#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+	#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 	ANNexperience* firstExperienceInTrainList = new ANNexperience();
 	ANNexperience* firstExperienceInTestList = new ANNexperience();
-#endif
+	#endif
 
 	//train
 	if(!this->ORmethodTrainOrTest(dimension, numberOfTrainObjects, trainObjectNameArray, objectDataSource, viTrain, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTrain, numberOfTrainViewIndiciesPerObject, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTrainPolys, true, numberOfTrainZoomIndicies, firstViewNumberNotUsed, multiViewListStringNotUsed))
@@ -166,35 +167,34 @@ bool ORmethodClass::ORTHmethod(int dimension, const int numberOfTrainObjects, st
 		result = false;
 	}
 
-				#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+	#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+	//int numSidesPerPolygon = OR_METHOD_POLYGON_NUMBER_OF_SIDES;
+	ANNneuronContainer* firstInputNeuronInNetwork = new ANNneuronContainer();
+	ANNneuronContainer* firstOutputNeuronInNetwork;
+	int numberOfInputNeurons;
+	int numberOfOutputNeurons = numberOfTrainPolys*OR_METHOD_POLYGON_NUMBER_OF_SIDES;
+	firstOutputNeuronInNetwork = this->initialiseNormalisedSnapshotNeuralNetwork(firstInputNeuronInNetwork, &numberOfInputNeurons, numberOfOutputNeurons, imageWidthFacingPoly, imageHeightFacingPoly);
 
-					//int numSidesPerPolygon = OR_METHOD_POLYGON_NUMBER_OF_SIDES;
-					ANNneuronContainer* firstInputNeuronInNetwork = new ANNneuronContainer();
-					ANNneuronContainer* firstOutputNeuronInNetwork;
-					int numberOfInputNeurons;
-					int numberOfOutputNeurons = numberOfTrainPolys*OR_METHOD_POLYGON_NUMBER_OF_SIDES;
-					firstOutputNeuronInNetwork = this->initialiseNormalisedSnapshotNeuralNetwork(firstInputNeuronInNetwork, &numberOfInputNeurons, numberOfOutputNeurons, imageWidthFacingPoly, imageHeightFacingPoly);
+	cout << "numberOfInputNeurons = " << numberOfInputNeurons << endl;
+	cout << "numberOfOutputNeurons = " << numberOfOutputNeurons << endl;
 
-					cout << "numberOfInputNeurons = " << numberOfInputNeurons << endl;
-					cout << "numberOfOutputNeurons = " << numberOfOutputNeurons << endl;
+	bool addSprites = false;
+	bool allowRaytrace = false;
+	string XMLNNSceneFileName = "ORNN.xml";
+	char* charstarvectorGraphicsLDRNNSceneFileName = "ORNN.ldr";
+	char* charstarvectorGraphicsLDRNNSceneFileNameWithSprites = "ORNNwithSprites.ldr";
+	char* charstarvectorGraphicsTALNNSceneFileName = "ORNN.tal";
+	char* charstarraytracedImagePPMNNSceneFileName = "ORNN.ppm";
+	char* charstarexperienceNNSceneFileName = "ORNN.data";
+	bool useFoldsDuringTraining;
+	int maxOrSetNumEpochs;
+	useFoldsDuringTraining = false;
+	maxOrSetNumEpochs = OR_SIMPLE_TRAIN_DEFAULT_NUM_OF_TRAINING_EPOCHS;
+	trainAndOutputNeuralNetworkWithFileNames(firstInputNeuronInNetwork, firstOutputNeuronInNetwork, numberOfInputNeurons, numberOfOutputNeurons, firstExperienceInTrainList, addSprites, allowRaytrace, &XMLNNSceneFileName, charstarvectorGraphicsLDRNNSceneFileName, charstarvectorGraphicsLDRNNSceneFileNameWithSprites, charstarvectorGraphicsTALNNSceneFileName, charstarraytracedImagePPMNNSceneFileName, charstarexperienceNNSceneFileName, useFoldsDuringTraining, maxOrSetNumEpochs);
 
-					bool addSprites = false;
-					bool allowRaytrace = false;
-					string XMLNNSceneFileName = "ORNN.xml";
-					char* charstarvectorGraphicsLDRNNSceneFileName = "ORNN.ldr";
-					char* charstarvectorGraphicsLDRNNSceneFileNameWithSprites = "ORNNwithSprites.ldr";
-					char* charstarvectorGraphicsTALNNSceneFileName = "ORNN.tal";
-					char* charstarraytracedImagePPMNNSceneFileName = "ORNN.ppm";
-					char* charstarexperienceNNSceneFileName = "ORNN.data";
-					bool useFoldsDuringTraining;
-					int maxOrSetNumEpochs;
-					useFoldsDuringTraining = false;
-					maxOrSetNumEpochs = OR_SIMPLE_TRAIN_DEFAULT_NUM_OF_TRAINING_EPOCHS;
-					trainAndOutputNeuralNetworkWithFileNames(firstInputNeuronInNetwork, firstOutputNeuronInNetwork, numberOfInputNeurons, numberOfOutputNeurons, firstExperienceInTrainList, addSprites, allowRaytrace, &XMLNNSceneFileName, charstarvectorGraphicsLDRNNSceneFileName, charstarvectorGraphicsLDRNNSceneFileNameWithSprites, charstarvectorGraphicsTALNNSceneFileName, charstarraytracedImagePPMNNSceneFileName, charstarexperienceNNSceneFileName, useFoldsDuringTraining, maxOrSetNumEpochs);
-
-					cout << "copy NN results to clipboard and ENTER SOME TEXT TO CONTINUE" << endl;
-					cin >> testUI2;
-				#endif
+	cout << "copy NN results to clipboard and ENTER SOME TEXT TO CONTINUE" << endl;
+	cin >> testUI2;
+	#endif
 
 	//test
 	if(!this->ORmethodTrainOrTest(dimension, numberOfTestObjects, testObjectNameArray, objectDataSource, viTest, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTest, numberOfTestViewIndiciesPerObject, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestPolys, false, numberOfTestZoomIndicies, firstViewNumberNotUsed, multiViewListStringNotUsed))
@@ -3238,9 +3238,9 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 
 
 
-#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+	#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 	ANNexperience* currentExperience = firstExperienceInList;
-#endif
+	#endif
 
 	#ifdef OR_TEST_ORI_AND_POS_NOISE_DURING_TRANING_AND_TESTING
 	int numFeaturePos1Values;
