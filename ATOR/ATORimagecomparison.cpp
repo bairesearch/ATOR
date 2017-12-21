@@ -25,7 +25,7 @@
  * File Name: ATORimagecomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m9a 16-December-2017
+ * Project Version: 3m10a 16-December-2017
  *
  *******************************************************************************/
 
@@ -73,9 +73,9 @@ void ORimagecomparisonClass::disablePixelsThatAreNotContainedInTheObjectTriangle
 
 void ORimagecomparisonClass::applyGaussianKernelToRGBmap(int imageWidth, const int imageHeight, const double sigma, const unsigned char* rgbMap, unsigned char* rgbMapWithGaussianApplied)
 {
-	this->applyGaussianKernelToLuminosityMapOrRGBmapComponent(imageWidth, imageHeight, sigma, NULL, NULL, rgbMap, rgbMapWithGaussianApplied, true, RGB_RED);
-	this->applyGaussianKernelToLuminosityMapOrRGBmapComponent(imageWidth, imageHeight, sigma, NULL, NULL, rgbMap, rgbMapWithGaussianApplied, true, RGB_GREEN);
-	this->applyGaussianKernelToLuminosityMapOrRGBmapComponent(imageWidth, imageHeight, sigma, NULL, NULL, rgbMap, rgbMapWithGaussianApplied, true, RGB_BLUE);
+	applyGaussianKernelToLuminosityMapOrRGBmapComponent(imageWidth, imageHeight, sigma, NULL, NULL, rgbMap, rgbMapWithGaussianApplied, true, RGB_RED);
+	applyGaussianKernelToLuminosityMapOrRGBmapComponent(imageWidth, imageHeight, sigma, NULL, NULL, rgbMap, rgbMapWithGaussianApplied, true, RGB_GREEN);
+	applyGaussianKernelToLuminosityMapOrRGBmapComponent(imageWidth, imageHeight, sigma, NULL, NULL, rgbMap, rgbMapWithGaussianApplied, true, RGB_BLUE);
 }
 
 void ORimagecomparisonClass::applyGaussianKernelToLuminosityMapOrRGBmapComponent(int imageWidth, const int imageHeight, const double sigma, const double* luminosityMap, double* luminosityMapWithGaussianApplied, const unsigned char* rgbMap, unsigned char* rgbMapWithGaussianApplied, const bool useRGBmapComponent, const int rgbMapComponentNumber)
@@ -544,7 +544,7 @@ double ORimagecomparisonClass::compareImagesRGBwithPosDevAndLocalStarkContAndHue
 								RTpixelMaps.getRGBMapValues(kx, ky, imageWidth, rgbMapTrain, &trainImagePixelColour);
 
 							#ifdef OR_IMAGE_COMPARITOR_USE_NORMALISED_HUE_ERROR_COMPARISON
-								double pixelError = this->compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
+								double pixelError = compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
 							#else
 								//double pixelError = compareRGBpixelsForMatchHueOnly(&testImagePixelColour, &trainImagePixelColour);
 
@@ -673,7 +673,7 @@ double ORimagecomparisonClass::compareImagesRGBwithPosDevAndLocalStarkContAndHue
 	int hueDeviationIndex = 0;
 
 
-	this->compareImagesRGBwithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly(imageWidth, imageHeight, rgbMapTest, rgbMapTrain, &averageHueDeviationR, &averageHueDeviationG, &averageHueDeviationB, &averageXkernelRelativePositionForLowestErrorMatch, &averageYkernelRelativePositionForLowestErrorMatch);
+	compareImagesRGBwithPosDevAndLocalStarkContAndHueDevCalculateAveragesOnly(imageWidth, imageHeight, rgbMapTest, rgbMapTrain, &averageHueDeviationR, &averageHueDeviationG, &averageHueDeviationB, &averageXkernelRelativePositionForLowestErrorMatch, &averageYkernelRelativePositionForLowestErrorMatch);
 
 	averageLumDeviation = averageHueDeviationR + averageHueDeviationG + averageHueDeviationB;
 
@@ -717,7 +717,7 @@ double ORimagecomparisonClass::compareImagesRGBwithPosDevAndLocalStarkContAndHue
 								RTpixelMaps.getRGBMapValues(kx, ky, imageWidth, rgbMapTrain, &trainImagePixelColour);
 
 							#ifdef OR_IMAGE_COMPARITOR_USE_NORMALISED_HUE_ERROR_COMPARISON
-								double pixelError = this->compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
+								double pixelError = compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
 							#else
 								//double pixelError = compareRGBpixelsForMatchHueOnly(&testImagePixelColour, &trainImagePixelColour);
 
@@ -878,7 +878,7 @@ double ORimagecomparisonClass::compareImagesRGBsmallNoKernel(int imageWidth, con
 			{
 		#endif
 			#ifdef OR_IMAGE_COMPARITOR_USE_NORMALISED_HUE_ERROR_COMPARISON
-				double pixelError = this->compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColourCentre);
+				double pixelError = compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColourCentre);
 			#else
 				int redError = testImagePixelColour.r - trainImagePixelColourCentre.r;
 				int greenError = testImagePixelColour.g - trainImagePixelColourCentre.g;
@@ -957,9 +957,9 @@ double ORimagecomparisonClass::compareImagesRGBwithPosDevAndLocalStarkCont(int i
 								RTpixelMaps.getRGBMapValues(kx, ky, imageWidth, rgbMapTrain, &trainImagePixelColour);
 
 								#ifdef OR_IMAGE_COMPARITOR_USE_NORMALISED_HUE_ERROR_COMPARISON
-								double pixelError = this->compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
+								double pixelError = compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
 								#else
-								double pixelError = this->compareRGBpixelsForMatchHueOnly(&testImagePixelColour, &trainImagePixelColour);
+								double pixelError = compareRGBpixelsForMatchHueOnly(&testImagePixelColour, &trainImagePixelColour);
 								#endif
 
 								if(pixelError < lowestMatchErrorAcrossKernel)
@@ -1095,9 +1095,9 @@ double ORimagecomparisonClass::compareImagesRGBwithPosDev(int imageWidth, const 
 								RTpixelMaps.getRGBMapValues(kx, ky, imageWidth, rgbMapTrain, &trainImagePixelColour);
 
 								#ifdef OR_IMAGE_COMPARITOR_USE_NORMALISED_HUE_ERROR_COMPARISON
-								double pixelError = this->compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
+								double pixelError = compareRGBpixelsForMatchBAD(&testImagePixelColour, &trainImagePixelColour);
 								#else
-								double pixelError = this->compareRGBpixelsForMatchHueOnly(&testImagePixelColour, &trainImagePixelColour);
+								double pixelError = compareRGBpixelsForMatchHueOnly(&testImagePixelColour, &trainImagePixelColour);
 								#endif
 
 								if(pixelError < lowestMatchErrorAcrossKernel)
@@ -1421,7 +1421,7 @@ double ORimagecomparisonClass::compareRGBpixelsForMatchBAD(const colour* testIma
 	double hueError;
 	double nonHueErrorNormalised;
 
-	this->calculateHueErrorNormalisedBAD(testImagePixelColour, trainImagePixelColour, &hueError, &nonHueErrorNormalised);
+	calculateHueErrorNormalisedBAD(testImagePixelColour, trainImagePixelColour, &hueError, &nonHueErrorNormalised);
 
 	double pixelError =  (nonHueErrorNormalised) + (hueError/IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR);
 
@@ -1436,7 +1436,7 @@ double ORimagecomparisonClass::compareRGBpixelsForMatchHueOnly(colour* testImage
 	double hueError;
 	double nonHueError;
 
-	this->calculateHueError(testImagePixelColour, trainImagePixelColour, &hueError, &nonHueError);
+	calculateHueError(testImagePixelColour, trainImagePixelColour, &hueError, &nonHueError);
 
 	double pixelError =  (hueError/IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR)*IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_WEIGHTING;
 
@@ -1449,7 +1449,7 @@ double ORimagecomparisonClass::compareRGBpixelsForMatchLumContrastOnly(colour* t
 	double hueError;
 	double nonHueError;
 
-	this->calculateHueError(testImagePixelColour, trainImagePixelColour, &hueError, &nonHueError);
+	calculateHueError(testImagePixelColour, trainImagePixelColour, &hueError, &nonHueError);
 
 	double pixelError =  (nonHueError/IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_NON_HUE_ERROR);
 
@@ -1491,7 +1491,7 @@ void ORimagecomparisonClass::createColourHueContrastVecMapFromRGBMapNOTUSED(int 
 		{
 			vec colourHueContrastVecVal;
 			int colourHueContrastCategoryIntVal;
-			this->calculateColourHueContrastVecLevelWithinKernelNOTUSED(x, y, rgbMap, HUE_CONTRAST_VECTOR_MAP_GENERATION_KERNEL_WIDTH, HUE_CONTRAST_VECTOR_MAP_GENERATION_KERNEL_HEIGHT, imageWidth, imageHeight, &colourHueContrastVecVal, &colourHueContrastCategoryIntVal);
+			calculateColourHueContrastVecLevelWithinKernelNOTUSED(x, y, rgbMap, HUE_CONTRAST_VECTOR_MAP_GENERATION_KERNEL_WIDTH, HUE_CONTRAST_VECTOR_MAP_GENERATION_KERNEL_HEIGHT, imageWidth, imageHeight, &colourHueContrastVecVal, &colourHueContrastCategoryIntVal);
 			ORpixelMaps.setXYvectorMapValue(x, y, (imageWidth-1), &colourHueContrastVecVal, colourHueContrastVectorMap);
 			RTpixelMaps.setIntMapValue(x, y, (imageWidth-1), colourHueContrastCategoryIntVal, colourHueContrastCategoryIntMap);
 		}
@@ -1542,13 +1542,13 @@ void ORimagecomparisonClass::calculateColourHueContrastVecLevelWithinKernelNOTUS
 
 
 	//x
-	double xTop = this->compareRGBpixelsForMatchHueOnly(&topLeftPixelPositionInRGBColour, &topRightPixelPositionInRGBColour);
+	double xTop = compareRGBpixelsForMatchHueOnly(&topLeftPixelPositionInRGBColour, &topRightPixelPositionInRGBColour);
 	bool xTopThreshold = false;
 	if(xTop > COLOUR_HUE_CONTRAST_THRESHOLD)
 	{
 		xTopThreshold = true;
 	}
-	double xBottom = this->compareRGBpixelsForMatchHueOnly(&bottomLeftPixelPositionInRGBColour, &bottomRightPixelPositionInRGBColour);
+	double xBottom = compareRGBpixelsForMatchHueOnly(&bottomLeftPixelPositionInRGBColour, &bottomRightPixelPositionInRGBColour);
 	bool xBottomThreshold = false;
 	if(xBottom > COLOUR_HUE_CONTRAST_THRESHOLD)
 	{
@@ -1556,14 +1556,14 @@ void ORimagecomparisonClass::calculateColourHueContrastVecLevelWithinKernelNOTUS
 	}
 
 	//y
-	double yLeft = this->compareRGBpixelsForMatchHueOnly(&topLeftPixelPositionInRGBColour, &bottomLeftPixelPositionInRGBColour);
+	double yLeft = compareRGBpixelsForMatchHueOnly(&topLeftPixelPositionInRGBColour, &bottomLeftPixelPositionInRGBColour);
 	bool yLeftThreshold = false;
 	if(yLeft > COLOUR_HUE_CONTRAST_THRESHOLD)
 	{
 		yLeftThreshold = true;
 	}
 
-	double yRight = this->compareRGBpixelsForMatchHueOnly(&topRightPixelPositionInRGBColour, &bottomRightPixelPositionInRGBColour);
+	double yRight = compareRGBpixelsForMatchHueOnly(&topRightPixelPositionInRGBColour, &bottomRightPixelPositionInRGBColour);
 	bool yRightThreshold = false;
 	if(yRight > COLOUR_HUE_CONTRAST_THRESHOLD)
 	{
@@ -1571,14 +1571,14 @@ void ORimagecomparisonClass::calculateColourHueContrastVecLevelWithinKernelNOTUS
 	}
 
 	//diagonal
-	double diagonalTopLeftToBottomRight = this->compareRGBpixelsForMatchHueOnly(&topLeftPixelPositionInRGBColour, &bottomRightPixelPositionInRGBColour);
+	double diagonalTopLeftToBottomRight = compareRGBpixelsForMatchHueOnly(&topLeftPixelPositionInRGBColour, &bottomRightPixelPositionInRGBColour);
 	bool diagonalTopLeftToBottomRightThreshold = false;
 	if(diagonalTopLeftToBottomRight > COLOUR_HUE_CONTRAST_THRESHOLD)
 	{
 		diagonalTopLeftToBottomRightThreshold = true;
 	}
 
-	double diagonalTopRightToBottomLeft = this->compareRGBpixelsForMatchHueOnly(&topRightPixelPositionInRGBColour, &bottomLeftPixelPositionInRGBColour);
+	double diagonalTopRightToBottomLeft = compareRGBpixelsForMatchHueOnly(&topRightPixelPositionInRGBColour, &bottomLeftPixelPositionInRGBColour);
 	bool diagonalTopRightToBottomLeftThreshold = false;
 	if(diagonalTopRightToBottomLeft > COLOUR_HUE_CONTRAST_THRESHOLD)
 	{
@@ -1796,7 +1796,7 @@ double ORimagecomparisonClass::calculateColourHueSumContrastWithinKernelNOTUSED(
 						colour kernelCurrentPixelPositionInRGBColour;
 						RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMap, &kernelCurrentPixelPositionInRGBColour);
 
-						sumContrast = sumContrast + this->compareRGBpixelsForMatchHueOnly(&centrePixelPositionInRGBColour, &kernelCurrentPixelPositionInRGBColour);
+						sumContrast = sumContrast + compareRGBpixelsForMatchHueOnly(&centrePixelPositionInRGBColour, &kernelCurrentPixelPositionInRGBColour);
 					}
 			/*
 				}
@@ -1857,7 +1857,7 @@ double ORimagecomparisonClass::calculateColourHueRadialSumContrastWithinKernelNO
 											colour subKernelCurrentPixelPositionInRGBColour;
 											RTpixelMaps.getRGBMapValues(sx, sy, imageWidth, rgbMap, &subKernelCurrentPixelPositionInRGBColour);
 
-											sumContrast = sumContrast + this->compareRGBpixelsForMatchHueOnly(&subKernelCurrentPixelPositionInRGBColour, &kernelCurrentPixelPositionInRGBColour);
+											sumContrast = sumContrast + compareRGBpixelsForMatchHueOnly(&subKernelCurrentPixelPositionInRGBColour, &kernelCurrentPixelPositionInRGBColour);
 										}
 
 									}

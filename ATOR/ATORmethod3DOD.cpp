@@ -25,7 +25,7 @@
  * File Name: ATORmethod3DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m9a 16-December-2017
+ * Project Version: 3m10a 16-December-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -1129,29 +1129,29 @@ bool ORmethod3DODClass::generateFeatureList3DOD(RTviewInfo* vi, const double* de
 	int maxDotProductResultXposArrayCompleteMap1[3][3][3];
 	int maxDotProductResultYposArrayCompleteMap1[3][3][3];
 
-	this->createFeaturesUsingBooleanMapUsingDepthMap(imageWidth, imageHeight, depthContrastBooleanMap, depthMap, featuresUsingDepthContrastMap, featuresUsingDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, vi, pointMap);
+	createFeaturesUsingBooleanMapUsingDepthMap(imageWidth, imageHeight, depthContrastBooleanMap, depthMap, featuresUsingDepthContrastMap, featuresUsingDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, vi, pointMap);
 	//THIS ALTERNATE METHOD DOESNT WORK WHY NOT?; createFeaturesUsingBooleanMapUsingPointMap(imageWidth, imageHeight, depthContrastBooleanMap, pointMap, featuresUsingDepthContrastMap, featuresUsingDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1);
 
 	int maxDotProductResultXposArrayCompleteMap2[3][3][3];
 	int maxDotProductResultYposArrayCompleteMap2[3][3][3];
 
-	this->createFeaturesUsingBooleanMapUsingDepthMap(imageWidth, imageHeight, luminosityContrastMapMinusDepthContrastMap, depthMap, featuresUsingLuminosityContrastMapMinusDepthContrastMap, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, vi, pointMap);
+	createFeaturesUsingBooleanMapUsingDepthMap(imageWidth, imageHeight, luminosityContrastMapMinusDepthContrastMap, depthMap, featuresUsingLuminosityContrastMapMinusDepthContrastMap, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, vi, pointMap);
 	//THIS ALTERNATE METHOD DOESNT WORK WHY NOT?; createFeaturesUsingBooleanMapUsingPointMap(imageWidth, imageHeight, luminosityContrastMapMinusDepthContrastMap, pointMap, featuresUsingLuminosityContrastMapMinusDepthContrastMap, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2);
 
 	ORpixelMaps.addBooleanMaps(imageWidth, imageHeight, featuresUsingDepthContrastMapComplete, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete, featuresMapComplete);
-	this->reconcileFeaturesMap(imageWidth, imageHeight, featuresMapComplete);	//may no longer be required
+	reconcileFeaturesMap(imageWidth, imageHeight, featuresMapComplete);	//may no longer be required
 		//required after joining boolean corner maps
 
 	//now define polygons for which transformations will occur for nn experience feeding features
 
 	#ifndef OR_DEBUG_OLD_FEATURE_GENERATION_METHOD
 	//NEW METHOD;
-	this->generateFeatureListUsingFeatureArraysUsingPointMap(imageWidth, imageHeight, pointMap, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, firstFeatureInList);
-	this->generateFeatureListUsingFeatureArraysUsingPointMap(imageWidth, imageHeight, pointMap, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, firstFeatureInList);
+	generateFeatureListUsingFeatureArraysUsingPointMap(imageWidth, imageHeight, pointMap, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, firstFeatureInList);
+	generateFeatureListUsingFeatureArraysUsingPointMap(imageWidth, imageHeight, pointMap, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, firstFeatureInList);
 	#else
 	//OLD METHOD;
-	this->generateFeatureListUsingFeatureArraysUsingDepthMap(imageWidth, imageHeight, depthMap, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, firstFeatureInList, vi);
-	this->generateFeatureListUsingFeatureArraysUsingDepthMap(imageWidth, imageHeight, depthMap, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, firstFeatureInList, vi);
+	generateFeatureListUsingFeatureArraysUsingDepthMap(imageWidth, imageHeight, depthMap, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, firstFeatureInList, vi);
+	generateFeatureListUsingFeatureArraysUsingDepthMap(imageWidth, imageHeight, depthMap, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, firstFeatureInList, vi);
 	#endif
 
 	/*
@@ -1164,7 +1164,7 @@ bool ORmethod3DODClass::generateFeatureList3DOD(RTviewInfo* vi, const double* de
 	*/
 
 	ORoperations.generateBooleanMapFromFeatureList(imageWidth, imageHeight, firstFeatureInList, featuresMapCompleteOfficial, vi, 1);
-	//this->reconcileFeaturesMap(imageWidth, imageHeight, featuresMapCompleteOfficial);	//featuresMapCompleteOfficial shouldnt need reconciliation as features have already been checked to not reside close to each other! - fix this!
+	//reconcileFeaturesMap(imageWidth, imageHeight, featuresMapCompleteOfficial);	//featuresMapCompleteOfficial shouldnt need reconciliation as features have already been checked to not reside close to each other! - fix this!
 
 	string featuresMapCompleteFileNameCPlus =  "featuresMapComplete" + trainOrTestString + PPM_EXTENSION;
 	string featuresMapCompleteOfficialFileNameCPlus = "featuresMapCompleteOfficial" + trainOrTestString + PPM_EXTENSION;

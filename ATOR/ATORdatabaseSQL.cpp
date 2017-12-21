@@ -25,7 +25,7 @@
  * File Name: ATORdatabaseSQL.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m9a 16-December-2017
+ * Project Version: 3m10a 16-December-2017
  *
  *******************************************************************************/
 
@@ -286,7 +286,7 @@ void ORdatabaseSQLClass::createFeatureListUsingDatabaseQuery(ORfeature* firstFea
 	}
 
 	int numFeatures = OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE;	//this value is already dependent upon whether ignoreOTfeatures is true of false
-	sqlSelectCommandP2 = this->createSQLSelectRowCommand(numFeatures);
+	sqlSelectCommandP2 = createSQLSelectRowCommand(numFeatures);
 
 	sqlSelectCommand = sqlSelectCommandP1 + sqlSelectCommandP2 + sqlSelectCommandP3 + sqlSelectCommandP4 + sqlSelectCommandP5 + sqlSelectCommandP6 + sqlSelectCommandP7 + sqlSelectCommandP8 + sqlSelectCommandP9 + sqlSelectCommandP10 + sqlSelectCommandP11 + sqlSelectCommandP12;
 	char* sqlSelectCommandCharStar = const_cast<char*>(sqlSelectCommand.c_str());
@@ -310,7 +310,7 @@ void ORdatabaseSQLClass::createFeatureListUsingDatabaseQuery(ORfeature* firstFea
 				exit(EXIT_ERROR);
 
 			}
-			this->addSQLRowDataToFeatureList(row, firstFeatureInList, createFeatureObjects, ignoreOTfeatures, numFeatures);
+			addSQLRowDataToFeatureList(row, firstFeatureInList, createFeatureObjects, ignoreOTfeatures, numFeatures);
 			tableIndex++;
 		}
 
@@ -343,7 +343,7 @@ void ORdatabaseSQLClass::createFeatureContainerListUsingSQLDatabaseDecisionTreeT
 	sqlSelectCommandWhereOpen = sqlSelectCommandWhereOpen + " WHERE (" + OR_MYSQL_FIELD_NAME_ID + " IN (";	//only query train objects
 
 	int numFeatures = OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE;	//this value is already dependent upon whether ignoreOTfeatures is true of false
-	sqlSelectCommandSelectContents = this->createSQLSelectRowCommand(numFeatures);
+	sqlSelectCommandSelectContents = createSQLSelectRowCommand(numFeatures);
 
 	string sqlSelectCommandWhereContentsSelect = "SELECT ";
 	string sqlSelectCommandWhereContentsSelectContents = OR_MYSQL_FIELD_NAME_DECISIONTREE_SNAPSHOT_REF_ID;
@@ -414,7 +414,7 @@ void ORdatabaseSQLClass::createFeatureContainerListUsingSQLDatabaseDecisionTreeT
 
 			ORfeature* firstNewFeature = new ORfeature();
 			currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList = firstNewFeature;
-			this->addSQLRowDataToFeatureList(row, firstNewFeature, true, ignoreOTfeatures, numFeatures);
+			addSQLRowDataToFeatureList(row, firstNewFeature, true, ignoreOTfeatures, numFeatures);
 			ORfeatureContainer* newFeatureContainer = new ORfeatureContainer();
 			currentFeatureContainerInTestFeatureMatchingTrainBin->next = newFeatureContainer;
 			currentFeatureContainerInTestFeatureMatchingTrainBin = currentFeatureContainerInTestFeatureMatchingTrainBin->next;
@@ -813,7 +813,7 @@ void ORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequirement
 
 #ifdef OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK
 	unsigned long linearCombination = 0;
-	this->convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(concatonatedSignedDctCoeffArrayRequirement, pBinxRequirement, pBinyRequirement, &linearCombination);
+	convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(concatonatedSignedDctCoeffArrayRequirement, pBinxRequirement, pBinyRequirement, &linearCombination);
 	string linearCombinationString = SHAREDvars.convertLongToString(linearCombination);
 	sqlSelectCommandP8 = sqlSelectCommandP8 + " AND " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL + " >= (" + linearCombinationString + " - " + OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK_MAX_DIFF + ")" " AND " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL + " <= (" + linearCombinationString + " + " + OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK_MAX_DIFF + ")";
 	cout << "sqlSelectCommandP8 = " << sqlSelectCommandP8 << endl;
@@ -869,7 +869,7 @@ void ORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequirement
 						geoxBin[1] = x2;
 						geoyBin[1] = y2;
 
-						geoxybin = this->calculateGeoxyBinMultiDimensional(geoxBin, geoyBin);
+						geoxybin = calculateGeoxyBinMultiDimensional(geoxBin, geoyBin);
 
 						char pBinxyValueRequirementString[25];
 						pBinxyValueRequirementString = SHAREDvars.convertIntToString(geoxybin);
@@ -1104,18 +1104,18 @@ void ORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequirement
 			char dctCoeffArrayBinnedString[1000];
 			int DCTCoeff64BitValueStringLengthNOTUSED = 0;	//not used
 			int concatonatedDctCoeffArrayBiasIntNOTUSED[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS];
-			//this->convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffNumValString, &DCTCoeff64BitValueStringLengthNOTUSED, concatonatedDctCoeffArrayBiasIntNOTUSED);
+			//convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffNumValString, &DCTCoeff64BitValueStringLengthNOTUSED, concatonatedDctCoeffArrayBiasIntNOTUSED);
 			#else
 			char dctCoeffNumValString[1000];
 			int DCTCoeff64BitValueStringLengthNOTUSED = 0;	//not used
-			//this->convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffNumValString, &DCTCoeff64BitValueStringLengthNOTUSED);
+			//convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffNumValString, &DCTCoeff64BitValueStringLengthNOTUSED);
 			#endif
 		#else
 			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 			int concatonatedDctCoeffArrayBiasIntNOTUSED[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS];
-			//unsigned long dctCoeffArrayBinned = this->convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement, concatonatedDctCoeffArrayBiasIntNOTUSED);
+			//unsigned long dctCoeffArrayBinned = convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement, concatonatedDctCoeffArrayBiasIntNOTUSED);
 			#else
-			unsigned long dctCoeffArrayBinned = this->convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement);
+			unsigned long dctCoeffArrayBinned = convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement);
 			#endif
 			char dctCoeffNumValString[25];
 			sprintf(dctCoeffNumValString, "%ld", dctCoeffArrayBinned);
@@ -1272,7 +1272,7 @@ void ORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequirement
 		numFeatures = OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS;
 	}
 
-	sqlSelectCommandP2 = this->createSQLSelectRowCommand(numFeatures);
+	sqlSelectCommandP2 = createSQLSelectRowCommand(numFeatures);
 
 	//do not extract snapshot images (small or large) from DB at this stage of development
 
@@ -1297,7 +1297,7 @@ void ORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequirement
 			currentFeatureContainerInList->firstFeatureInFeatureList = firstNewFeature;
 			ORfeature* currentFeatureInList = currentFeatureContainerInList->firstFeatureInFeatureList;
 
-			this->addSQLRowDataToFeatureList(row, firstNewFeature, createFeatureObjects, ignoreOTfeatures, numFeatures);
+			addSQLRowDataToFeatureList(row, firstNewFeature, createFeatureObjects, ignoreOTfeatures, numFeatures);
 
 			tableIndex++;
 
@@ -1654,10 +1654,10 @@ void ORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ORfeature* fir
 
 						int geoxBin[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS];
 						int geoyBin[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS];
-						geoxBin[0] = this->determineGeoBinX(currentFeatureInTempList->pointTransformed.x);
-						geoyBin[0] = this->determineGeoBinY(currentFeatureInTempList->pointTransformed.y);
-						geoxBin[1] = this->determineGeoBinX(currentFeatureInTempList2->pointTransformed.x);
-						geoyBin[1] = this->determineGeoBinY(currentFeatureInTempList2->pointTransformed.y);
+						geoxBin[0] = determineGeoBinX(currentFeatureInTempList->pointTransformed.x);
+						geoyBin[0] = determineGeoBinY(currentFeatureInTempList->pointTransformed.y);
+						geoxBin[1] = determineGeoBinX(currentFeatureInTempList2->pointTransformed.x);
+						geoyBin[1] = determineGeoBinY(currentFeatureInTempList2->pointTransformed.y);
 
 						if(addPermutationsOfTrainFeaturesForGeoBinning)
 						{
@@ -1811,8 +1811,8 @@ void ORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ORfeature* fir
 
 										string geobinDimensionString = SHAREDvars.convertIntToString(geobinDimension+1);
 
-										geoxBin[geobinDimension] = this->determineGeoBinX(currentFeature->pointTransformed.x);
-										geoyBin[geobinDimension] = this->determineGeoBinY(currentFeature->pointTransformed.y);
+										geoxBin[geobinDimension] = determineGeoBinX(currentFeature->pointTransformed.x);
+										geoyBin[geobinDimension] = determineGeoBinY(currentFeature->pointTransformed.y);
 
 
 										string geobinxString = SHAREDvars.convertIntToString(geoxBin[geobinDimension]);
@@ -1835,7 +1835,7 @@ void ORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ORfeature* fir
 						{
 							if(OR_IMAGE_COMPARISON_GEOMETRIC_COMPARISON_BINNING)
 							{
-								long geoxyBin = this->calculateGeoxyBinMultiDimensional(geoxBin, geoyBin);
+								long geoxyBin = calculateGeoxyBinMultiDimensional(geoxBin, geoyBin);
 
 								string geobinxyString = SHAREDvars.convertIntToString(geoxyBin);
 
@@ -1859,7 +1859,7 @@ void ORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ORfeature* fir
 
 								#ifdef OR_IMAGE_COMPARISON_SQL_LINEAR_COMBINATION_NETWORK
 								unsigned long linearCombination = 0;
-								this->convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(currentFeature->dctCoeff, geoxBin, geoyBin, &linearCombination);
+								convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(currentFeature->dctCoeff, geoxBin, geoyBin, &linearCombination);
 								string dctCoeffArrayBinnedString = SHAREDvars.convertLongToString(linearCombination);
 								sqlInsertCommandP4 = sqlInsertCommandP4 + ", " + OR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL;
 								sqlInsertCommandP6 = sqlInsertCommandP6 + ", " + dctCoeffArrayBinnedString;
@@ -2092,7 +2092,7 @@ unsigned long ORdatabaseSQLClass::convertDCTcoeffConcatonatedArrayToBinnedAllDCT
 
 
 		double arrayValueUnsignedDouble;
-		unsigned int arrayValueUnsigned = this->determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);	//used to be int
+		unsigned int arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);	//used to be int
 
 		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 		int numDistintValsPerColumn = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
@@ -2154,7 +2154,7 @@ unsigned long ORdatabaseSQLClass::convertDCTcoeffConcatonatedArrayToBinnedAllDCT
 
 	#else
 		int power = ((OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS-i-1)*2)+1; 	//13,11,9,7,5,3,1
-		dctCoeffArrayBinned = dctCoeffArrayBinned + long(arrayValueUnsigned)*this->powLong(10, power);
+		dctCoeffArrayBinned = dctCoeffArrayBinned + long(arrayValueUnsigned)*powLong(10, power);
 	#endif
 	}
 
@@ -2211,7 +2211,7 @@ void ORdatabaseSQLClass::convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCom
 		int arrayValueSigned = concatonatedSignedDctCoeffArray[i];
 
 		double arrayValueUnsignedDouble;
-		unsigned int arrayValueUnsigned = this->determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);		//used to be int
+		unsigned int arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);		//used to be int
 
 		linearCombinationArray[index] = arrayValueUnsigned;
 		index++;
@@ -2281,7 +2281,7 @@ unsigned int ORdatabaseSQLClass::determineDCTBinUnsigned(int arrayValueSigned, d
 	int numDistintValsPerColumn = OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
 	if(numDistintValsPerColumn != 1)
 	{
-		*arrayValueUnsignedDouble = this->determineDCTBinUnsignedDouble(arrayValueSigned);
+		*arrayValueUnsignedDouble = determineDCTBinUnsignedDouble(arrayValueSigned);
 		arrayValueUnsigned = (unsigned int)(*arrayValueUnsignedDouble);
 	}
 	else

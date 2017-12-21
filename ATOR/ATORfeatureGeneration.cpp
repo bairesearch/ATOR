@@ -25,7 +25,7 @@
  * File Name: ATORfeatureGeneration.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m9a 16-December-2017
+ * Project Version: 3m10a 16-December-2017
  *
  * Assumes that depth information is less accurate than image information
  *
@@ -225,7 +225,7 @@ void ORfeatureGenerationClass::generateEdgeListFromRGBmapWithQuadraticFit(unsign
 	RTpixelMaps.createLuminosityMapFromRGBMap(imageWidth, imageHeight, rgbMap, luminosityMap);
 	RTpixelMaps.createContrastMapFromMap(imageWidth, imageHeight, luminosityMap, luminosityContrastMap);
 
-	this->generateEdgeListFromContrastMapWithQuadraticFit(luminosityContrastMap, edgeBoolMap, edgeZeroCrossingMap, imageWidth, imageHeight, sensitivity, dimension, pointMap, depthMap, zoom, vi, interpixelContrastMapType);
+	generateEdgeListFromContrastMapWithQuadraticFit(luminosityContrastMap, edgeBoolMap, edgeZeroCrossingMap, imageWidth, imageHeight, sensitivity, dimension, pointMap, depthMap, zoom, vi, interpixelContrastMapType);
 
 	delete luminosityMap;
 	delete luminosityContrastMap;
@@ -871,7 +871,7 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 		{
 			edgeZeroCrossingMap[i] = NULL;
 		}
-		this->generateEdgeListFromContrastMapWithQuadraticFit(contrastMap, edgeBoolMap, edgeZeroCrossingMap, imageWidth, imageHeight, sensitivity, dimension, pointMap, depthMap, zoom, vi, interpixelContrastMapType);
+		generateEdgeListFromContrastMapWithQuadraticFit(contrastMap, edgeBoolMap, edgeZeroCrossingMap, imageWidth, imageHeight, sensitivity, dimension, pointMap, depthMap, zoom, vi, interpixelContrastMapType);
 	}
 	else
 	{
@@ -973,7 +973,7 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 					int maxXy;
 					bool contiguousRegionFound;
 					ORpixelContiguous* firstInPixelContiguousStack = new ORpixelContiguous();
-					contiguousRegionFound = this->defineRegionCheckNextPixelNonRecursive(firstInPixelContiguousStack, x, y, edgeBoolMap, edgeZeroCrossingMap, alreadyProcessed, imageWidth, imageHeight, &regionSize, &regionsumx, &regionsumy, &regionsumpos, dimension, pointMap, depthMap, zoom, useEdgeZeroCrossingMap, vi, &maxXx, &maxXy, interpixelContrastMapType);
+					contiguousRegionFound = defineRegionCheckNextPixelNonRecursive(firstInPixelContiguousStack, x, y, edgeBoolMap, edgeZeroCrossingMap, alreadyProcessed, imageWidth, imageHeight, &regionSize, &regionsumx, &regionsumy, &regionsumpos, dimension, pointMap, depthMap, zoom, useEdgeZeroCrossingMap, vi, &maxXx, &maxXy, interpixelContrastMapType);
 
 
 					#ifdef OR_CONTIGUOUS_REGION_VERBOSE
@@ -1121,7 +1121,7 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 							ORpixelContiguous* firstInPixelContiguousBoundaryStack = new ORpixelContiguous();
 							bool traceSuccessful = false;
 
-							traceSuccessful = this->traceEdgeCheckNextPixelNonRecursive(maxXx, maxXy, alreadyProcessed, edgeZeroCrossingMap, useEdgeZeroCrossingMap, imageWidth, imageHeight, &boundarysumx, &boundarysumy, &boundarysumpos, &circumferenceForRegion, minCircumferenceOfRegion, dimension, pointMap, depthMap, zoom, firstInPixelContiguousBoundaryStack, vi, interpixelContrastMapType);
+							traceSuccessful = traceEdgeCheckNextPixelNonRecursive(maxXx, maxXy, alreadyProcessed, edgeZeroCrossingMap, useEdgeZeroCrossingMap, imageWidth, imageHeight, &boundarysumx, &boundarysumy, &boundarysumpos, &circumferenceForRegion, minCircumferenceOfRegion, dimension, pointMap, depthMap, zoom, firstInPixelContiguousBoundaryStack, vi, interpixelContrastMapType);
 
 							#ifdef OR_CONTIGUOUS_REGION_VERBOSE
 							RTpixelMaps.generatePixmapFromRGBmap("debugContiguousRegionDetectionRGB.ppm", imageWidth, imageHeight, contiguousRegionDebugrgbMap);
@@ -1160,7 +1160,7 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 									{
 										currentFeatureInList->pointNonWorldCoord.x = (boundaryaveragex)*zoom;
 										currentFeatureInList->pointNonWorldCoord.y = (boundaryaveragey)*zoom;
-										currentFeatureInList->pointNonWorldCoord.z = this->getDepthValueWithOrWithoutForegroundCheck(currentFeatureInList->pointNonWorldCoord.x, currentFeatureInList->pointNonWorldCoord.y, imageWidth, imageHeight, kernelWidthForegroundCheck, kernelHeightForegroundCheck, depthMap, zoom);
+										currentFeatureInList->pointNonWorldCoord.z = getDepthValueWithOrWithoutForegroundCheck(currentFeatureInList->pointNonWorldCoord.x, currentFeatureInList->pointNonWorldCoord.y, imageWidth, imageHeight, kernelWidthForegroundCheck, kernelHeightForegroundCheck, depthMap, zoom);
 
 										currentFeatureInList->point.x = boundarysumpos.x;
 										currentFeatureInList->point.y = boundarysumpos.y;
@@ -1179,7 +1179,7 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 									{
 										currentFeatureInList->pointNonWorldCoord.x = (regionaveragex)*zoom;
 										currentFeatureInList->pointNonWorldCoord.y = (regionaveragey)*zoom;
-										currentFeatureInList->pointNonWorldCoord.z = this->getDepthValueWithOrWithoutForegroundCheck(currentFeatureInList->pointNonWorldCoord.x, currentFeatureInList->pointNonWorldCoord.y, imageWidth, imageHeight, kernelWidthForegroundCheck, kernelHeightForegroundCheck, depthMap, zoom);
+										currentFeatureInList->pointNonWorldCoord.z = getDepthValueWithOrWithoutForegroundCheck(currentFeatureInList->pointNonWorldCoord.x, currentFeatureInList->pointNonWorldCoord.y, imageWidth, imageHeight, kernelWidthForegroundCheck, kernelHeightForegroundCheck, depthMap, zoom);
 
 										currentFeatureInList->point.x = regionsumpos.x;
 										currentFeatureInList->point.y = regionsumpos.y;
@@ -1198,7 +1198,7 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 
 								if(OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES_TRACE_MIN_MAX_NOT_TESTED_YET)
 								{
-									currentFeatureInList = this->traceEdgeAndAddMinimaAndMaximaFeatures(currentFeatureInList, boundaryaveragex, boundaryaveragey, &boundarysumpos, firstInPixelContiguousBoundaryStack, dimension, zoom, circumferenceForRegion);
+									currentFeatureInList = traceEdgeAndAddMinimaAndMaximaFeatures(currentFeatureInList, boundaryaveragex, boundaryaveragey, &boundarysumpos, firstInPixelContiguousBoundaryStack, dimension, zoom, circumferenceForRegion);
 								}
 
 								#ifdef OR_CONTIGUOUS_REGION_VERBOSE
@@ -1208,7 +1208,7 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 
 							if(OR_TRACE_CONTIGUOUS_REGION_BOUNDARY_RESET_EDGES_DYNAMICALLY_OPT)
 							{
-								this->deleteContiguousStackAndResetEdgesNonRecursive(firstInPixelContiguousBoundaryStack, alreadyProcessed, imageWidth, imageHeight);
+								deleteContiguousStackAndResetEdgesNonRecursive(firstInPixelContiguousBoundaryStack, alreadyProcessed, imageWidth, imageHeight);
 							}
 							delete firstInPixelContiguousBoundaryStack;
 						}
@@ -1225,7 +1225,7 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 
 								currentFeatureInList->pointNonWorldCoord.x = (regionaveragex)*zoom;
 								currentFeatureInList->pointNonWorldCoord.y = (regionaveragey)*zoom;
-								currentFeatureInList->pointNonWorldCoord.z = this->getDepthValueWithOrWithoutForegroundCheck(currentFeatureInList->pointNonWorldCoord.x, currentFeatureInList->pointNonWorldCoord.y, imageWidth, imageHeight, kernelWidthForegroundCheck, kernelHeightForegroundCheck, depthMap, zoom);
+								currentFeatureInList->pointNonWorldCoord.z = getDepthValueWithOrWithoutForegroundCheck(currentFeatureInList->pointNonWorldCoord.x, currentFeatureInList->pointNonWorldCoord.y, imageWidth, imageHeight, kernelWidthForegroundCheck, kernelHeightForegroundCheck, depthMap, zoom);
 							}
 							else
 							{
@@ -1242,7 +1242,7 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingContrastMap(O
 					}
 					if(OR_TRACE_CONTIGUOUS_REGION_BOUNDARY_RESET_EDGES_DYNAMICALLY_OPT)
 					{
-						this->deleteContiguousStackAndResetEdgesNonRecursive(firstInPixelContiguousStack, alreadyProcessed, imageWidth, imageHeight);
+						deleteContiguousStackAndResetEdgesNonRecursive(firstInPixelContiguousStack, alreadyProcessed, imageWidth, imageHeight);
 
 					}
 					delete firstInPixelContiguousStack;
@@ -1328,7 +1328,7 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingMeshList(ORfe
 				ORmeshPoint* aMeshPointOnTheBoundary;
 				bool contiguousRegionFound;
 				ORpixelContiguous* firstInPixelContiguousStack = new ORpixelContiguous();
-				contiguousRegionFound = this->defineRegionCheckNextPixelUsingMeshPointNonRecursive(firstInPixelContiguousStack, currentMeshPointInMesh, &regionSize, contrastValChosen, &regionsumx, &regionsumy, &regionsumpos, useEdgeZeroCrossingMap, aMeshPointOnTheBoundary, sensitivity);
+				contiguousRegionFound = defineRegionCheckNextPixelUsingMeshPointNonRecursive(firstInPixelContiguousStack, currentMeshPointInMesh, &regionSize, contrastValChosen, &regionsumx, &regionsumy, &regionsumpos, useEdgeZeroCrossingMap, aMeshPointOnTheBoundary, sensitivity);
 
 				if(contiguousRegionFound && (regionSize > (MIN_REGION_SIZE_TO_CALCULATE_CENTRED_FEATURE)))
 				{
@@ -1431,7 +1431,7 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingMeshList(ORfe
 						ORpixelContiguous* firstInPixelContiguousBoundaryStack = new ORpixelContiguous();
 						bool traceSuccessful = false;
 
-						traceSuccessful = this->traceEdgeCheckNextPixelUsingMeshPointNonRecursive(aMeshPointOnTheBoundary, &boundarysumx, &boundarysumy, &boundarysumpos, &circumferenceForRegion, minCircumferenceOfRegion, firstInPixelContiguousBoundaryStack, useEdgeZeroCrossingMap);
+						traceSuccessful = traceEdgeCheckNextPixelUsingMeshPointNonRecursive(aMeshPointOnTheBoundary, &boundarysumx, &boundarysumy, &boundarysumpos, &circumferenceForRegion, minCircumferenceOfRegion, firstInPixelContiguousBoundaryStack, useEdgeZeroCrossingMap);
 
 
 						if(traceSuccessful)
@@ -1491,13 +1491,13 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingMeshList(ORfe
 
 							if(OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES_TRACE_MIN_MAX_NOT_TESTED_YET)
 							{
-								currentFeatureInList = this->traceEdgeAndAddMinimaAndMaximaFeatures(currentFeatureInList, boundaryaveragex, boundaryaveragey, &boundarysumpos, firstInPixelContiguousBoundaryStack, dimension, 1.0, circumferenceForRegion);
+								currentFeatureInList = traceEdgeAndAddMinimaAndMaximaFeatures(currentFeatureInList, boundaryaveragex, boundaryaveragey, &boundarysumpos, firstInPixelContiguousBoundaryStack, dimension, 1.0, circumferenceForRegion);
 							}
 						}
 
 						if(OR_TRACE_CONTIGUOUS_REGION_BOUNDARY_RESET_EDGES_DYNAMICALLY_OPT)
 						{
-							this->deleteContiguousStackAndResetEdgesNonRecursive(firstInPixelContiguousBoundaryStack);
+							deleteContiguousStackAndResetEdgesNonRecursive(firstInPixelContiguousBoundaryStack);
 						}
 						delete firstInPixelContiguousBoundaryStack;
 					}
@@ -1532,7 +1532,7 @@ bool ORfeatureGenerationClass::addCentredFeaturesToFeatureListUsingMeshList(ORfe
 				}
 				if(OR_TRACE_CONTIGUOUS_REGION_BOUNDARY_RESET_EDGES_DYNAMICALLY_OPT)
 				{
-					this->deleteContiguousStackAndResetEdgesNonRecursive(firstInPixelContiguousStack);
+					deleteContiguousStackAndResetEdgesNonRecursive(firstInPixelContiguousStack);
 				}
 				delete firstInPixelContiguousStack;
 

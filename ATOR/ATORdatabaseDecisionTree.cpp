@@ -25,7 +25,7 @@
  * File Name: ATORdatabaseDecisionTree.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m9a 16-December-2017
+ * Project Version: 3m10a 16-December-2017
  *
  *******************************************************************************/
 
@@ -422,7 +422,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 						#endif
 											#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 											currentDirectory = initialDirectory;
-											this->createAndOrParseIntoDirectory(&currentDirectory, &currentDirectory, false, false);
+											createAndOrParseIntoDirectory(&currentDirectory, &currentDirectory, false, false);
 											#endif
 
 											#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
@@ -435,7 +435,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 											sprintf(geobinxString, "%2d", x);
 											#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 											currentDirectory = currentDirectory + "/" + geobinxString;
-											this->createAndOrParseIntoDirectory(&currentDirectory, &string(geobinxString), true, true);
+											createAndOrParseIntoDirectory(&currentDirectory, &string(geobinxString), true, true);
 											#else
 											currentDirectory = currentDirectory + geobinxString;
 											#endif
@@ -444,7 +444,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 											sprintf(geobinyString, "%2d", y);
 											#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 											currentDirectory = currentDirectory + "/" + geobinyString;
-											this->createAndOrParseIntoDirectory(&currentDirectory, &string(geobinyString), true, true);
+											createAndOrParseIntoDirectory(&currentDirectory, &string(geobinyString), true, true);
 											#else
 											currentDirectory = currentDirectory + geobinyString;
 											#endif
@@ -453,7 +453,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 											sprintf(geobinx2String, "%2d", x2);
 											#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 											currentDirectory = currentDirectory + "/" + geobinx2String;
-											this->createAndOrParseIntoDirectory(&currentDirectory, &string(geobinx2String), true, true);
+											createAndOrParseIntoDirectory(&currentDirectory, &string(geobinx2String), true, true);
 											#else
 											currentDirectory = currentDirectory + geobinx2String;
 											#endif
@@ -462,7 +462,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 											sprintf(geobiny2String, "%2d", y2);
 											#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 											currentDirectory = currentDirectory + "/" + geobiny2String;
-											this->createAndOrParseIntoDirectory(&currentDirectory, &string(geobiny2String), true, true);
+											createAndOrParseIntoDirectory(&currentDirectory, &string(geobiny2String), true, true);
 											#else
 											currentDirectory = currentDirectory + geobiny2String;
 											#endif
@@ -477,11 +477,11 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 
 											if(OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
 											{
-												this->addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
+												addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 											}
 											else
 											{
-												this->addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
+												addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 											}
 
 							#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_HIGH_REDUNDANCY_DETERMINISTIC_BY_ITERATING_OVER_ALL_ADJACENT_BINS_FAST_RECOG_BUT_USE_MORE_HD
@@ -601,7 +601,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 
 				#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 				currentDirectory = initialDirectory;
-				this->createAndOrParseIntoDirectory(&currentDirectory, &currentDirectory, false, false);
+				createAndOrParseIntoDirectory(&currentDirectory, &currentDirectory, false, false);
 				#endif
 
 				#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
@@ -611,11 +611,11 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 				*currentDirectoryLength = currentDirectoryLengthInitial;
 				#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 				currentDirectory = currentDirectory + "/" + currentrBinString;
-				this->createAndOrParseIntoDirectory(&currentDirectory, &string(currentrBinString), true, true);
+				createAndOrParseIntoDirectory(&currentDirectory, &string(currentrBinString), true, true);
 				currentDirectory = currentDirectory + "/" + currentgBinString;
-				this->createAndOrParseIntoDirectory(&currentDirectory, &string(currentgBinString), true, true);
+				createAndOrParseIntoDirectory(&currentDirectory, &string(currentgBinString), true, true);
 				currentDirectory = currentDirectory + "/" + currentbBinString;
-				this->createAndOrParseIntoDirectory(&currentDirectory, &string(currentbBinString), true, true);
+				createAndOrParseIntoDirectory(&currentDirectory, &string(currentbBinString), true, true);
 				#else
 				currentDirectory = currentDirectory + currentrBinString;
 				currentDirectory = currentDirectory + currentgBinString;
@@ -630,7 +630,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 				}
 				#endif
 
-				this->addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
+				addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 			}
 		}
 	}
@@ -880,7 +880,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 
 					#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 					currentDirectory = initialDirectory;
-					this->createAndOrParseIntoDirectory(&currentDirectory, &currentDirectory, false, false);
+					createAndOrParseIntoDirectory(&currentDirectory, &currentDirectory, false, false);
 					#endif
 
 					#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
@@ -913,7 +913,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 
 					#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 					currentDirectory = currentDirectory + "/" + dctCoeffArrayBinnedString;
-					this->createAndOrParseIntoDirectory(currentDirectory, &string(dctCoeffArrayBinnedString), false, true);
+					createAndOrParseIntoDirectory(currentDirectory, &string(dctCoeffArrayBinnedString), false, true);
 					#else
 					currentDirectory = currentDirectory + dctCoeffArrayBinnedString;
 					#endif
@@ -929,19 +929,19 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 
 					if(OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
 					{
-						this->addSnapshotIDreferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
+						addSnapshotIDreferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 					}
 					else if(OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 					{
-						this->addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
+						addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 					}
 					else if(OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
 					{
-						this->addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
+						addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 					}
 					else
 					{
-						this->addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
+						addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 					}
 
 
@@ -1000,22 +1000,22 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 	string currentDirectory = *initialDirectory;
 
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
-	this->createOrParseSnapshotIDreferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, false, &currentDirectory, currentDirectoryCharStar, currentDirectoryLength);
+	createOrParseSnapshotIDreferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, false, &currentDirectory, currentDirectoryCharStar, currentDirectoryLength);
 	#else
-	this->createOrParseSnapshotIDreferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, true, &currentDirectory, NULL, NULL);
+	createOrParseSnapshotIDreferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, true, &currentDirectory, NULL, NULL);
 	#endif
 
 	if(OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 	{
-		this->addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
+		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 	}
 	else if(OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
 	{
-		this->addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
+		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 	}
 	else
 	{
-		this->addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
+		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 	}
 }
 
@@ -1035,7 +1035,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 	string snapshotIDReferenceListFileName = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_DEFAULT_LIST_FILE_NAME;
 	*currentDirectory = *currentDirectory + "/" + snapshotIDReferenceListFileName;
 
-	this->addSnapshotIDReferenceToList(currentDirectory, snapshotReferenceID);
+	addSnapshotIDReferenceToList(currentDirectory, snapshotReferenceID);
 
 	addSnapshotIDReferenceToImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, &currentDirectory, snapshotReferenceID);
 #endif
@@ -1057,7 +1057,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 		int currentDirectoryLength = 0;
 	#else
 		string initialDirectory = imageComparisonTreeBaseDirectory + imageComparisonTreeName;
-		this->createAndOrParseIntoDirectory(&initialDirectory, &initialDirectory, true, false);
+		createAndOrParseIntoDirectory(&initialDirectory, &initialDirectory, true, false);
 		initialDirectory = initialDirectory + "/"
 	#endif
 	string* currentDirectory = &initialDirectory;
@@ -1075,7 +1075,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 			//cannot initiate at this stage if DCT enabled, or else too many rows in SQL insert statement
 		}
 		#endif
-		this->addSnapshotIDreferenceToImageComparisonDecisionTreeLoopDCT(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
+		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopDCT(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 
 		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
 		if(!OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
@@ -1086,7 +1086,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 	}
 	else if(OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
 	{
-		this->addSnapshotIDreferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
+		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 	}
 	else if(OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 	{
@@ -1097,7 +1097,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 			ORdatabaseSQL.insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart(OR_MYSQL_TABLE_NAME_DECISIONTREE, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 		}
 		#endif
-		this->addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
+		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
 		if(!OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
 		{
@@ -1107,7 +1107,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 	}
 	else if(OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
 	{
-		this->addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
+		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 	}
 	else
 	{
@@ -1128,7 +1128,7 @@ void ORdatabaseDecisionTreeClass::createSnapshotIDreferenceImageComparisonDecisi
 	*currentDirectory = "";
 	#else
 	*currentDirectory = imageComparisonTreeBaseDirectory + imageComparisonTreeName;
-	this->createAndOrParseIntoDirectory(currentDirectory, currentDirectory, false, false);
+	createAndOrParseIntoDirectory(currentDirectory, currentDirectory, false, false);
 	#endif
 
 	*currentDirectoryLength = 0;
@@ -1167,7 +1167,7 @@ void ORdatabaseDecisionTreeClass::createSnapshotIDreferenceImageComparisonDecisi
 
 		#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 		*currentDirectory = *currentDirectory + "/" + dctCoeffArrayBinnedString;
-		this->createAndOrParseIntoDirectory(currentDirectory, &string(dctCoeffArrayBinnedString), false, true);
+		createAndOrParseIntoDirectory(currentDirectory, &string(dctCoeffArrayBinnedString), false, true);
 		#else
 		*currentDirectory = *currentDirectory + dctCoeffArrayBinnedString;
 		#endif
@@ -1185,7 +1185,7 @@ void ORdatabaseDecisionTreeClass::createSnapshotIDreferenceImageComparisonDecisi
 
 	if(OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
 	{
-		this->createOrParseSnapshotIDreferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, false, currentDirectory, currentDirectoryCharStar, currentDirectoryLength);
+		createOrParseSnapshotIDreferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, false, currentDirectory, currentDirectoryCharStar, currentDirectoryLength);
 	}
 
 	if(OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
@@ -1200,7 +1200,7 @@ void ORdatabaseDecisionTreeClass::createSnapshotIDreferenceImageComparisonDecisi
 			sprintf(geobinxString, "%2d", pBinxRequirement[featureNum]);
 			#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 			*currentDirectory = *currentDirectory + "/" + geobinxString;
-			this->createAndOrParseIntoDirectory(currentDirectory, &string(geobinxString), false, true);
+			createAndOrParseIntoDirectory(currentDirectory, &string(geobinxString), false, true);
 			#else
 			*currentDirectory = *currentDirectory + geobinxString;
 			#endif
@@ -1209,7 +1209,7 @@ void ORdatabaseDecisionTreeClass::createSnapshotIDreferenceImageComparisonDecisi
 			sprintf(geobinyString, "%2d", pBinyRequirement[featureNum]);
 			#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 			*currentDirectory = *currentDirectory + "/" + geobinyString;
-			this->createAndOrParseIntoDirectory(currentDirectory, &string(geobinyString), false, true);
+			createAndOrParseIntoDirectory(currentDirectory, &string(geobinyString), false, true);
 			#else
 			*currentDirectory = *currentDirectory + geobinyString;
 			#endif
@@ -1240,11 +1240,11 @@ void ORdatabaseDecisionTreeClass::createSnapshotIDreferenceImageComparisonDecisi
 		string currentbBinString = SHAREDvars.convertIntToString(bBinMid);
 		#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 		*currentDirectory = *currentDirectory + "/" + currentrBinString;
-		this->createAndOrParseIntoDirectory(currentDirectory, &string(currentrBinString), false, true);
+		createAndOrParseIntoDirectory(currentDirectory, &string(currentrBinString), false, true);
 		*currentDirectory = *currentDirectory + "/" + currentgBinString;
-		this->createAndOrParseIntoDirectory(currentDirectory, &string(currentgBinString), false, true);
+		createAndOrParseIntoDirectory(currentDirectory, &string(currentgBinString), false, true);
 		*currentDirectory = *currentDirectory + "/" + currentbBinString;
-		this->createAndOrParseIntoDirectory(currentDirectory, &string(currentbBinString), false, true);
+		createAndOrParseIntoDirectory(currentDirectory, &string(currentbBinString), false, true);
 		#else
 		*currentDirectory = *currentDirectory + currentrBinString;
 		*currentDirectory = *currentDirectory + currentgBinString;
@@ -1267,7 +1267,7 @@ void ORdatabaseDecisionTreeClass::createFeatureContainerListUsingUsingGetSnapsho
 	char currentDirectoryCharStar[OR_IMAGE_COMPARISON_DECISION_TREE_BIN_MAX_LENGTH];
 	int currentDirectoryLength;
 
-	this->createSnapshotIDreferenceImageComparisonDecisionTreeString(imageWidth, imageHeight, rgbMapSmall, pBinxyValueRequirement, pBinxRequirement, pBinyRequirement, normalisedAverageHueDeviationRequirement, concatonatedSignedDctCoeffArrayRequirement, currentDirectoryCharStar, &currentDirectoryLength, &currentDirectory);
+	createSnapshotIDreferenceImageComparisonDecisionTreeString(imageWidth, imageHeight, rgbMapSmall, pBinxyValueRequirement, pBinxRequirement, pBinyRequirement, normalisedAverageHueDeviationRequirement, concatonatedSignedDctCoeffArrayRequirement, currentDirectoryCharStar, &currentDirectoryLength, &currentDirectory);
 
 	ORdatabaseSQL.createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(firstFeatureContainerInTestFeatureMatchingTrainBin, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, trainOrTest);
 }
@@ -1279,12 +1279,12 @@ void ORdatabaseDecisionTreeClass::getSnapshotIDreferenceToImageComparisonDecisio
 	char currentDirectoryCharStar[OR_IMAGE_COMPARISON_DECISION_TREE_BIN_MAX_LENGTH];
 	int currentDirectoryLength;
 
-	this->createSnapshotIDreferenceImageComparisonDecisionTreeString(imageWidth, imageHeight, rgbMapSmall, pBinxyValueRequirement, pBinxRequirement, pBinyRequirement, normalisedAverageHueDeviationRequirement, concatonatedSignedDctCoeffArrayRequirement, currentDirectoryCharStar, &currentDirectoryLength, &currentDirectory);
+	createSnapshotIDreferenceImageComparisonDecisionTreeString(imageWidth, imageHeight, rgbMapSmall, pBinxyValueRequirement, pBinxRequirement, pBinyRequirement, normalisedAverageHueDeviationRequirement, concatonatedSignedDctCoeffArrayRequirement, currentDirectoryCharStar, &currentDirectoryLength, &currentDirectory);
 
 	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 		ORdatabaseSQL.createSnapshotIDreferenceListUsingSQLdatabaseDecisionTreeTableQuery(firstReferenceInSnapshotIDreferenceList, OR_MYSQL_TABLE_NAME_DECISIONTREE, currentDirectoryCharStar, currentDirectoryLength, trainOrTest);
 	#else
-		this->getSnapshotIDreferencesInImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, firstReferenceInSnapshotIDreferenceList, &currentDirectory);
+		getSnapshotIDreferencesInImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, firstReferenceInSnapshotIDreferenceList, &currentDirectory);
 	#endif
 
 	currentDirectoryCharStar[currentDirectoryLength] = '\0';
@@ -1302,7 +1302,7 @@ void ORdatabaseDecisionTreeClass::getSnapshotIDreferencesInImageComparisonDecisi
 {
 	if(OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
 	{
-		this->createOrParseSnapshotIDreferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, false, currentDirectory, NULL, NULL);
+		createOrParseSnapshotIDreferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, false, currentDirectory, NULL, NULL);
 	}
 
 	bool parseSuccessful = false;
@@ -1325,7 +1325,7 @@ void ORdatabaseDecisionTreeClass::getSnapshotIDreferencesInImageComparisonDecisi
 		string snapshotIDReferenceListFileName = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_DEFAULT_LIST_FILE_NAME;
 		*currentDirectory = *currentDirectory + "/" + snapshotIDReferenceListFileName;
 
-		this->parseSnapshotIDreferenceList(currentDirectory, firstReferenceInSnapshotIDreferenceList);
+		parseSnapshotIDreferenceList(currentDirectory, firstReferenceInSnapshotIDreferenceList);
 	}
 }
 #endif
@@ -1398,7 +1398,7 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 		#else
 			#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 			*currentDirectory = *currentDirectory + "/" + nextDirectory;
-			this->createAndOrParseIntoDirectory(currentDirectory, &nextDirectory, createOrParse, true);
+			createAndOrParseIntoDirectory(currentDirectory, &nextDirectory, createOrParse, true);
 			#else
 			*currentDirectory = *currentDirectory + nextDirectory;
 			#endif

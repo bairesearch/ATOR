@@ -25,7 +25,7 @@
  * File Name: ATORoperations.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m9a 16-December-2017
+ * Project Version: 3m10a 16-December-2017
  *
  *******************************************************************************/
 
@@ -541,7 +541,7 @@ ORpolygon* ORoperationsClass::addPolysToListForGivenFeatureAndNearestFeatureList
 					SHAREDvector.copyVectorRT(&(tempPolygon.point1), &(currentFeature->point));
 					SHAREDvector.copyVectorRT(&(tempPolygon.point2), &(currentFeatureInNearestFeatureList->point));
 					SHAREDvector.copyVectorRT(&(tempPolygon.point3), &(currentFeatureInNearestFeatureList2->point));
-					if(!this->checkPolygonListForCommonPolygon(&tempPolygon, firstPolygonInList))
+					if(!checkPolygonListForCommonPolygon(&tempPolygon, firstPolygonInList))
 					{
 						if(count < numberOfPolygonsPerFeature)
 						{
@@ -623,7 +623,7 @@ bool ORoperationsClass::generatePolygonListUsingFeatureListLocalised(const int i
 		int cornerIndexList1 = 0;
 		while(currentFeatureInList1->next != NULL)
 		{
-			int numberOfNearestFeatures = this->calculateNumberOfNearestFeatures(NUMBER_OF_POLYGONS_PER_FEATURE, OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM);
+			int numberOfNearestFeatures = calculateNumberOfNearestFeatures(NUMBER_OF_POLYGONS_PER_FEATURE, OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM);
 
 
 			ORfeature* firstFeatureInNearestFeatureList = new ORfeature();
@@ -656,7 +656,7 @@ bool ORoperationsClass::generatePolygonListUsingFeatureListLocalised(const int i
 					if((SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(currentFeatureInList2->point), &(currentFeatureInList1->point)) < distanceToNearestFeatureFromFeatureList2)
 					&& (SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(currentFeatureInList2->point), &(currentFeatureInList1->point)) > previousDistanceToNearestFeatureFromFeatureList2))
 					{
-						if(!this->checkFeatureListForCommonFeatureBasic(currentFeatureInList2, firstFeatureInNearestFeatureList))
+						if(!checkFeatureListForCommonFeatureBasic(currentFeatureInList2, firstFeatureInNearestFeatureList))
 						{//should not be necessary
 							if(!SHAREDvector.compareVectors(&(currentFeatureInList2->point), &(currentFeatureInList1->point)))
 							{
@@ -693,7 +693,7 @@ bool ORoperationsClass::generatePolygonListUsingFeatureListLocalised(const int i
 			ORpolygon* backupOfOldCurrentPolygon = currentPolygonInList;
 			//#endif
 
-			currentPolygonInList = this->addPolysToListForGivenFeatureAndNearestFeatureList(currentPolygonInList, firstPolygonInList, firstFeatureInNearestFeatureList, NUMBER_OF_POLYGONS_PER_FEATURE, dimension);
+			currentPolygonInList = addPolysToListForGivenFeatureAndNearestFeatureList(currentPolygonInList, firstPolygonInList, firstFeatureInNearestFeatureList, NUMBER_OF_POLYGONS_PER_FEATURE, dimension);
 
 			if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
 			{
@@ -752,7 +752,7 @@ bool ORoperationsClass::generatePolygonListUsingFeatureList(const int imageWidth
 						SHAREDvector.copyVectorRT(&(tempPolygon.point1), &(currentFeatureInList1->point));
 						SHAREDvector.copyVectorRT(&(tempPolygon.point2), &(currentFeatureInList2->point));
 						SHAREDvector.copyVectorRT(&(tempPolygon.point3), &(currentFeatureInList3->point));
-						if(!this->checkPolygonListForCommonPolygon(&tempPolygon, firstPolygonInList))
+						if(!checkPolygonListForCommonPolygon(&tempPolygon, firstPolygonInList))
 						{
 
 							SHAREDvector.copyVectorRT(&(currentPolygonInList->point1), &(currentFeatureInList1->point));

@@ -25,7 +25,7 @@
  * File Name: ATORmethod2DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m9a 16-December-2017
+ * Project Version: 3m10a 16-December-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -235,8 +235,8 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	*/
 
 
-	double orientationOfObjectTriangleSide = this->calculateXYorientationOfSide(currentPolygonInList, side);
-	double lengthOfObjectTriangleSide = this->calculateXYlengthOfSide(currentPolygonInList, side);
+	double orientationOfObjectTriangleSide = calculateXYorientationOfSide(currentPolygonInList, side);
+	double lengthOfObjectTriangleSide = calculateXYlengthOfSide(currentPolygonInList, side);
 	double lengthOfPredefinedTriangleSide = SHAREDvector.calculateTheDistanceBetweenTwoPointsXYOnly(&(predefinedTriangle->point1), &(predefinedTriangle->point2));	//=1 for equilateral triangle
 
 
@@ -495,7 +495,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 #ifndef OR_METHOD_2DOD_ASSUME_NO_3D_ROTATION
 
 	//3a. Scale object data on Y axis such that the third apex is the same perpendicular distance away from the side as is the case for the predefined triangle.
-	double perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide = this->calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(transformedObjectTriangle, side);
+	double perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide = calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(transformedObjectTriangle, side);
 
 	mat scaleMatrix3a;
 	double scaleFactor3a = perpendicularDistanceBetweenThirdApexOfPredefinedTriangleAndSide/perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide;
@@ -550,7 +550,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 
 
 	//4a. shear object data along X axis such that object triangle apexes are coincident with predefined triangle apexes
-	double xAxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex = this->calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(transformedObjectTriangle, side);
+	double xAxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex = calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(transformedObjectTriangle, side);
 		//double shearRequired = (xAxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex - (lengthOfPredefinedTriangleSide/2))/lengthOfPredefinedTriangleSide;	OLD
 	double shearRequired4a = (xAxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex - (lengthOfPredefinedTriangleSide/2))/perpendicularDistanceBetweenThirdApexOfPredefinedTriangleAndSide;
 
@@ -820,13 +820,13 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 				padBoundary = true;
 				#endif
 				//disableReferencesThatAreNotContainedInTheObjectSquare2DOD(firstReferenceInInterpolated2DrgbMap, currentPolygonInList, padBoundary);
-				this->disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(firstReferenceInInterpolated2DrgbMap, currentPolygonInList, padBoundary, side, shearRequired4a);
+				disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(firstReferenceInInterpolated2DrgbMap, currentPolygonInList, padBoundary, side, shearRequired4a);
 				//disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced2(firstReferenceInInterpolated2DrgbMap, currentPolygonInList, &point4, &point5, padBoundary);
 
 			}
 			else
 			{
-				this->disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(firstReferenceInInterpolated2DrgbMap, currentPolygonInList);
+				disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(firstReferenceInInterpolated2DrgbMap, currentPolygonInList);
 			}
 		}
 	}

@@ -25,7 +25,7 @@
  * File Name: ATORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m9a 16-December-2017
+ * Project Version: 3m10a 16-December-2017
  * NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  *******************************************************************************/
 
@@ -137,7 +137,7 @@ bool ORmethodClass::ORTHmethod(int dimension, const int numberOfTrainObjects, st
 	#define OR_MYSQL_USER_NAME_DEFAULT_NULL "null"
 	#define OR_MYSQL_USER_PASSWORD_DEFAULT_NULL "null"
 
-	if(!this->ORmethodInitialise(imageWidthFacingPoly, imageHeightFacingPoly, true, true, true, dimension, OR_MYSQL_IP_ADDRESS_DEFAULT_NULL, OR_MYSQL_USER_NAME_DEFAULT_NULL, OR_MYSQL_USER_PASSWORD_DEFAULT_NULL))
+	if(!ORmethodInitialise(imageWidthFacingPoly, imageHeightFacingPoly, true, true, true, dimension, OR_MYSQL_IP_ADDRESS_DEFAULT_NULL, OR_MYSQL_USER_NAME_DEFAULT_NULL, OR_MYSQL_USER_PASSWORD_DEFAULT_NULL))
 	{
 		result = false;
 	}
@@ -146,7 +146,7 @@ bool ORmethodClass::ORTHmethod(int dimension, const int numberOfTrainObjects, st
 	#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 	if(dimension == OR_METHOD2DOD_DIMENSIONS)
 	{
-		this->setNoiseArraysMethod2DOD();		//Advded 5 Nov 08
+		setNoiseArraysMethod2DOD();		//Advded 5 Nov 08
 	}
 	else if(dimension == OR_METHOD3DOD_DIMENSIONS)
 	{
@@ -162,7 +162,7 @@ bool ORmethodClass::ORTHmethod(int dimension, const int numberOfTrainObjects, st
 	#endif
 
 	//train
-	if(!this->ORmethodTrainOrTest(dimension, numberOfTrainObjects, trainObjectNameArray, objectDataSource, viTrain, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTrain, numberOfTrainViewIndiciesPerObject, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTrainPolys, true, numberOfTrainZoomIndicies, firstViewNumberNotUsed, multiViewListStringNotUsed))
+	if(!ORmethodTrainOrTest(dimension, numberOfTrainObjects, trainObjectNameArray, objectDataSource, viTrain, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTrain, numberOfTrainViewIndiciesPerObject, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTrainPolys, true, numberOfTrainZoomIndicies, firstViewNumberNotUsed, multiViewListStringNotUsed))
 	{
 		result = false;
 	}
@@ -173,7 +173,7 @@ bool ORmethodClass::ORTHmethod(int dimension, const int numberOfTrainObjects, st
 	ANNneuronContainer* firstOutputNeuronInNetwork;
 	int numberOfInputNeurons;
 	int numberOfOutputNeurons = numberOfTrainPolys*OR_METHOD_POLYGON_NUMBER_OF_SIDES;
-	firstOutputNeuronInNetwork = this->initialiseNormalisedSnapshotNeuralNetwork(firstInputNeuronInNetwork, &numberOfInputNeurons, numberOfOutputNeurons, imageWidthFacingPoly, imageHeightFacingPoly);
+	firstOutputNeuronInNetwork = initialiseNormalisedSnapshotNeuralNetwork(firstInputNeuronInNetwork, &numberOfInputNeurons, numberOfOutputNeurons, imageWidthFacingPoly, imageHeightFacingPoly);
 
 	cout << "numberOfInputNeurons = " << numberOfInputNeurons << endl;
 	cout << "numberOfOutputNeurons = " << numberOfOutputNeurons << endl;
@@ -197,21 +197,21 @@ bool ORmethodClass::ORTHmethod(int dimension, const int numberOfTrainObjects, st
 	#endif
 
 	//test
-	if(!this->ORmethodTrainOrTest(dimension, numberOfTestObjects, testObjectNameArray, objectDataSource, viTest, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTest, numberOfTestViewIndiciesPerObject, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestPolys, false, numberOfTestZoomIndicies, firstViewNumberNotUsed, multiViewListStringNotUsed))
+	if(!ORmethodTrainOrTest(dimension, numberOfTestObjects, testObjectNameArray, objectDataSource, viTest, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTest, numberOfTestViewIndiciesPerObject, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestPolys, false, numberOfTestZoomIndicies, firstViewNumberNotUsed, multiViewListStringNotUsed))
 	{
 		result = false;
 	}
 
 	#ifdef OR_IMAGE_COMPARISON_SQL
-	if(!this->ORmethodCompareTestWithTrain(dimension, numberOfTestObjects, testObjectNameArray, imageWidthFacingPoly, imageHeightFacingPoly, numberOfTestPolys, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestZoomIndicies, TEST, 0))
+	if(!ORmethodCompareTestWithTrain(dimension, numberOfTestObjects, testObjectNameArray, imageWidthFacingPoly, imageHeightFacingPoly, numberOfTestPolys, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestZoomIndicies, TEST, 0))
 	#else
-	if(!this->ORmethodCompareTestWithTrain(dimension, numberOfTrainObjects, trainObjectNameArray, numberOfTestObjects, testObjectNameArray, imageWidthFacingPoly, imageHeightFacingPoly, numberOfTrainPolys, numberOfTestPolys, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTrainZoomIndicies, numberOfTestZoomIndicies, 0))
+	if(!ORmethodCompareTestWithTrain(dimension, numberOfTrainObjects, trainObjectNameArray, numberOfTestObjects, testObjectNameArray, imageWidthFacingPoly, imageHeightFacingPoly, numberOfTrainPolys, numberOfTestPolys, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTrainZoomIndicies, numberOfTestZoomIndicies, 0))
 	#endif
 	{
 		result = false;
 	}
 
-	if(!this->ORmethodExit())
+	if(!ORmethodExit())
 	{
 		result = false;
 	}
@@ -226,19 +226,19 @@ bool ORmethodClass::ORmethodTrain(int dimension, const int numberOfTrainObjects,
 {
 	bool result = true;
 
-	if(!this->ORmethodInitialise(imageWidthFacingPoly, imageHeightFacingPoly, true, true, clearTrainTable, dimension, sqlIPaddress, sqlUsername, sqlPassword))
+	if(!ORmethodInitialise(imageWidthFacingPoly, imageHeightFacingPoly, true, true, clearTrainTable, dimension, sqlIPaddress, sqlUsername, sqlPassword))
 	{
 		result = false;
 	}
 
 	//train
-	if(!this->ORmethodTrainOrTest(dimension, numberOfTrainObjects, trainObjectNameArray, objectDataSource, viTrain, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTrain, numberOfTrainViewIndiciesPerObject, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTrainPolys, trainOrTest, numberOfTrainZoomIndicies, viewNumber, multViewListFileName))
+	if(!ORmethodTrainOrTest(dimension, numberOfTrainObjects, trainObjectNameArray, objectDataSource, viTrain, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTrain, numberOfTrainViewIndiciesPerObject, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTrainPolys, trainOrTest, numberOfTrainZoomIndicies, viewNumber, multViewListFileName))
 	{
 		result = false;
 	}
 
 
-	if(!this->ORmethodExit())
+	if(!ORmethodExit())
 	{
 		result = false;
 	}
@@ -250,24 +250,24 @@ bool ORmethodClass::ORmethodTest(int dimension, const int numberOfTestObjects, s
 {
 	bool result = true;
 
-	if(!this->ORmethodInitialise(imageWidthFacingPoly, imageHeightFacingPoly, true, true, false, dimension, sqlIPaddress, sqlUsername, sqlPassword))
+	if(!ORmethodInitialise(imageWidthFacingPoly, imageHeightFacingPoly, true, true, false, dimension, sqlIPaddress, sqlUsername, sqlPassword))
 	{
 		result = false;
 	}
 
 	//test
-	if(!this->ORmethodTrainOrTest(dimension, numberOfTestObjects, testObjectNameArray, objectDataSource, viTest, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTest, numberOfTestViewIndiciesPerObject, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestPolys, trainOrTest, numberOfTestZoomIndicies, viewNumber, multViewListFileName))
+	if(!ORmethodTrainOrTest(dimension, numberOfTestObjects, testObjectNameArray, objectDataSource, viTest, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygonsTest, numberOfTestViewIndiciesPerObject, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestPolys, trainOrTest, numberOfTestZoomIndicies, viewNumber, multViewListFileName))
 	{
 		result = false;
 	}
 	cout << "ORmethodTrainOrTest complete" << endl;
 
-	if(!this->ORmethodCompareTestWithTrain(dimension, numberOfTestObjects, testObjectNameArray, imageWidthFacingPoly, imageHeightFacingPoly, numberOfTestPolys, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestZoomIndicies, trainOrTest, viewNumber))
+	if(!ORmethodCompareTestWithTrain(dimension, numberOfTestObjects, testObjectNameArray, imageWidthFacingPoly, imageHeightFacingPoly, numberOfTestPolys, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestZoomIndicies, trainOrTest, viewNumber))
 	{
 		result = false;
 	}
 
-	if(!this->ORmethodExit())
+	if(!ORmethodExit())
 	{
 		result = false;
 	}
@@ -392,7 +392,7 @@ bool ORmethodClass::ORmethodCompareTestWithTrain(const int dimension, const int 
 
 	double averageMatchErrorAcrossAllObjects;
 #ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
-	averageMatchErrorAcrossAllObjects = this->compareNormalisedSnapshotExperienceListWithNeuralNetwork(firstExperienceInTestList, firstInputNeuronInNetwork, firstOutputNeuronInNetwork, numberOfInputNeurons, numberOfOutputNeurons, numberOfTrainPolys);
+	averageMatchErrorAcrossAllObjects = compareNormalisedSnapshotExperienceListWithNeuralNetwork(firstExperienceInTestList, firstInputNeuronInNetwork, firstOutputNeuronInNetwork, numberOfInputNeurons, numberOfOutputNeurons, numberOfTrainPolys);
 #else
 	#ifdef OR_IMAGE_COMPARISON_SQL
 	averageMatchErrorAcrossAllObjects = ORcomparison.compareNormalisedSnapshots(numberOfTestPolys, numberOfTestViewIndiciesPerObjectWithUniquePolygons, imageWidthFacingPoly, imageHeightFacingPoly, testObjectNameArray, numberOfTestObjects, dimension, numberOfTestZoomIndicies, trainOrTest, testViewNumber);
@@ -781,7 +781,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 					viMultiView = new RTviewInfo();
 					string multViewListFileNameWithFullPath = "";
 					multViewListFileNameWithFullPath = multViewListFileNameWithFullPath + inputFolder + "/" + multViewListFileName;
-					this->createViFromMultiViewList(viMultiView, multViewListFileNameWithFullPath, multiViewViewIndex, dimension);
+					createViFromMultiViewList(viMultiView, multViewListFileNameWithFullPath, multiViewViewIndex, dimension);
 					objectDataSourceForThisView = OR_OBJECT_DATA_SOURCE_USER_FILE;
 				}
 				else if(objectDataSource == OR_OBJECT_DATA_SOURCE_USER_FILE)
@@ -808,7 +808,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 					cerr << "Error: illegal number of dimensions" << endl;
 					exit(EXIT_ERROR);
 				}
-				if(!this->createOrAddToInterpolatedMeshAndFeaturesList(initialReferenceInSceneFile, viMultiView, firstReferenceInInterpolatedMesh, firstMeshPointInMeshList, firstFeatureInList, trainOrTest, viewIndex, objectNameArray[o], dimension, objectDataSourceForThisView, numberOfZoomIndicies, useQuadraticFitEdgeZeroCrossingMap))
+				if(!createOrAddToInterpolatedMeshAndFeaturesList(initialReferenceInSceneFile, viMultiView, firstReferenceInInterpolatedMesh, firstMeshPointInMeshList, firstFeatureInList, trainOrTest, viewIndex, objectNameArray[o], dimension, objectDataSourceForThisView, numberOfZoomIndicies, useQuadraticFitEdgeZeroCrossingMap))
 				{
 					result = false;
 				}
@@ -817,7 +817,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 
 			if(OR_CREATE_INTERPOLATED_MESH_REFERENCE_LIST_USING_MESH_LIST)
 			{
-				if(!this->createInterpolatedMeshReferenceListUsingMeshList(firstMeshPointInMeshList, firstReferenceInInterpolatedMesh, vi, objectNameArray[o], trainOrTest, dimension))
+				if(!createInterpolatedMeshReferenceListUsingMeshList(firstMeshPointInMeshList, firstReferenceInInterpolatedMesh, vi, objectNameArray[o], trainOrTest, dimension))
 				{
 					result = false;
 				}
@@ -996,7 +996,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 			#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 			if(!generateNormalisedSnapshotsExperienceListUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, firstExperienceInList, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+0*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList))
 			#else
-			if(!this->generateNormalisedSnapshotsUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+0*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList, numberOfZoomIndicies))
+			if(!generateNormalisedSnapshotsUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+0*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList, numberOfZoomIndicies))
 			#endif
 			{
 				result = false;
@@ -1080,14 +1080,14 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 				cerr << "Error: illegal number of dimensions" << endl;
 				exit(EXIT_ERROR);
 			}
-			if(!this->createOrAddToInterpolatedMeshAndFeaturesList(initialReferenceInSceneFile, vi, firstReferenceInInterpolatedMesh, firstMeshPointInMeshList, firstFeatureInList, trainOrTest, viewIndex, objectNameArray[o], dimension, objectDataSource, numberOfZoomIndicies, useQuadraticFitEdgeZeroCrossingMap))
+			if(!createOrAddToInterpolatedMeshAndFeaturesList(initialReferenceInSceneFile, vi, firstReferenceInInterpolatedMesh, firstMeshPointInMeshList, firstFeatureInList, trainOrTest, viewIndex, objectNameArray[o], dimension, objectDataSource, numberOfZoomIndicies, useQuadraticFitEdgeZeroCrossingMap))
 			{
 				result = false;
 			}
 
 			if(OR_CREATE_INTERPOLATED_MESH_REFERENCE_LIST_USING_MESH_LIST)
 			{
-				if(!this->createInterpolatedMeshReferenceListUsingMeshList(firstMeshPointInMeshList, firstReferenceInInterpolatedMesh, vi, objectNameArray[o], trainOrTest, dimension))
+				if(!createInterpolatedMeshReferenceListUsingMeshList(firstMeshPointInMeshList, firstReferenceInInterpolatedMesh, vi, objectNameArray[o], trainOrTest, dimension))
 				{
 					result = false;
 				}
@@ -1163,7 +1163,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 			#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 			if(!generateNormalisedSnapshotsExperienceListUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, firstExperienceInList, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+viewIndex*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList))
 			#else
-			if(!this->generateNormalisedSnapshotsUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+viewIndex*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList, numberOfZoomIndicies))
+			if(!generateNormalisedSnapshotsUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+viewIndex*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList, numberOfZoomIndicies))
 			#endif
 			{
 				result = false;
@@ -1233,14 +1233,14 @@ bool ORmethodClass::createOrAddToInterpolatedMeshAndFeaturesList(LDreference* in
 
 	ORmeshPoint* firstMeshPointUsedToCalculateCentredFeatures = NULL;
 
-	if(!this->createRGBandPointMap(initialReferenceInSceneFile, pointMap, rgbMap, depthMap, vi, trainOrTest, viewIndex, objectName, dimension, objectDataSource))
+	if(!createRGBandPointMap(initialReferenceInSceneFile, pointMap, rgbMap, depthMap, vi, trainOrTest, viewIndex, objectName, dimension, objectDataSource))
 	{
 		result = false;
 	}
 
 	if(!OR_CREATE_INTERPOLATED_MESH_REFERENCE_LIST_USING_MESH_LIST)
 	{
-		if(!this->createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMap(pointMap, rgbMap, firstReferenceInInterpolatedMesh, vi, objectName, trainOrTest, dimension, viewIndex))
+		if(!createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMap(pointMap, rgbMap, firstReferenceInInterpolatedMesh, vi, objectName, trainOrTest, dimension, viewIndex))
 		{
 			result = false;
 		}
@@ -1291,7 +1291,7 @@ bool ORmethodClass::createOrAddToInterpolatedMeshAndFeaturesList(LDreference* in
 	ORmeshPoint* currentMeshPointInMeshList = firstMeshPointInMeshList;
 
 
-	if(!this->createOrAddPointsToFeaturesList(pointMap, rgbMap, depthMap, firstFeatureInList, vi, trainOrTest, viewIndex, objectName, dimension, numberOfZoomIndicies, firstMeshPointUsedToCalculateCentredFeatures, meshPointArray, useEdgeZeroCrossingMap))
+	if(!createOrAddPointsToFeaturesList(pointMap, rgbMap, depthMap, firstFeatureInList, vi, trainOrTest, viewIndex, objectName, dimension, numberOfZoomIndicies, firstMeshPointUsedToCalculateCentredFeatures, meshPointArray, useEdgeZeroCrossingMap))
 	{
 		result = false;
 	}
@@ -2033,11 +2033,11 @@ bool ORmethodClass::createInterpolatedMeshReferenceListUsingMeshList(ORmeshPoint
 	{
 		if(dimension == OR_METHOD3DOD_DIMENSIONS)
 		{
-			currentReferenceInInterpolatedMesh = this->convertMeshPointToReferences3DOD(currentMeshPointInMeshList, currentReferenceInInterpolatedMesh);
+			currentReferenceInInterpolatedMesh = convertMeshPointToReferences3DOD(currentMeshPointInMeshList, currentReferenceInInterpolatedMesh);
 		}
 		else
 		{
-			currentReferenceInInterpolatedMesh = this->convertMeshPointToReferences2DOD(currentMeshPointInMeshList, currentReferenceInInterpolatedMesh);
+			currentReferenceInInterpolatedMesh = convertMeshPointToReferences2DOD(currentMeshPointInMeshList, currentReferenceInInterpolatedMesh);
 		}
 		currentMeshPointInMeshList = currentMeshPointInMeshList->next;
 	}
@@ -2314,18 +2314,18 @@ bool ORmethodClass::createOrAddPointsToFeaturesList(double* pointMap, unsigned c
 					{
 						if(OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST)
 						{
-							if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, pointNormalContrastMapConvertedToRgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST))
+							if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, pointNormalContrastMapConvertedToRgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST))
 							{
 								result = false;
 							}
 						}
 						else
 						{
-							if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, depthMapConvertedToRgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
+							if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, depthMapConvertedToRgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
 							{
 								result = false;
 							}
-							if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, depthGradientMapConvertedToRgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
+							if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, depthGradientMapConvertedToRgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
 							{
 								result = false;
 							}
@@ -2334,7 +2334,7 @@ bool ORmethodClass::createOrAddPointsToFeaturesList(double* pointMap, unsigned c
 					else
 					{
 						sensitivity = 1.0;
-						if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, rgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
+						if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, rgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
 						{
 							result = false;
 						}
@@ -2505,7 +2505,7 @@ bool ORmethodClass::createOrAddPointsToFeaturesList(double* pointMap, unsigned c
 					{
 						if(OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST)
 						{
-							if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, pointNormalContrastMapConvertedToRgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST))
+							if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, pointNormalContrastMapConvertedToRgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST))
 							{
 								result = false;
 							}
@@ -2513,12 +2513,12 @@ bool ORmethodClass::createOrAddPointsToFeaturesList(double* pointMap, unsigned c
 						else
 						{
 							/*
-							if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, depthMapConvertedToRgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
+							if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, depthMapConvertedToRgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
 							{
 								result = false;
 							}
 							*/
-							if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, depthGradientMapConvertedToRgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
+							if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, depthGradientMapConvertedToRgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST))
 							{
 								result = false;
 							}
@@ -2527,7 +2527,7 @@ bool ORmethodClass::createOrAddPointsToFeaturesList(double* pointMap, unsigned c
 					else
 					{
 						sensitivity = 1.0;
-						if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, rgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
+						if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, rgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
 						{
 							result = false;
 						}
@@ -2660,7 +2660,7 @@ bool ORmethodClass::createOrAddPointsToFeaturesList(double* pointMap, unsigned c
 
 				if(OR_USE_FIND_CORNER_FEATURES)
 				{
-					if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, rgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
+					if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, rgbMap, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
 					{
 						result = false;
 					}
@@ -2712,7 +2712,7 @@ bool ORmethodClass::createOrAddPointsToFeaturesList(double* pointMap, unsigned c
 				double sensitivity = 1.0;
 				if(OR_USE_FIND_CORNER_FEATURES)
 				{
-					if(!this->addCornerFeaturesToFeatureListUsingRGBmap(vi, rgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
+					if(!addCornerFeaturesToFeatureListUsingRGBmap(vi, rgbMapResampled, &(firstFeatureInList[zoomIndex]), trainOrTest, mapFileNameWithZoom, sensitivity, dimension, pointMap, depthMap, zoom, INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT))
 					{
 						result = false;
 					}
@@ -3248,14 +3248,14 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 	int numFeaturePos3Values;
 	if(dimension == OR_METHOD2DOD_DIMENSIONS)
 	{
-		this->setNoiseArraysMethod2DOD();
+		setNoiseArraysMethod2DOD();
 		numFeaturePos1Values = OR_METHOD3DOD_NUM_ORI_NOISE_VALUES;
 		numFeaturePos2Values = OR_METHOD3DOD_NUM_POS_NOISE_VALUES;
 		numFeaturePos3Values = 0;
 	}
 	else if(dimension == OR_METHOD3DOD_DIMENSIONS)
 	{
-		this->setNoiseArraysMethod3DOD();
+		setNoiseArraysMethod3DOD();
 		numFeaturePos1Values = OR_METHOD2DOD_NUM_FEAT_POS_NOISE_VALUES;
 		numFeaturePos2Values = OR_METHOD2DOD_NUM_FEAT_POS_NOISE_VALUES;
 		numFeaturePos3Values = OR_METHOD2DOD_NUM_FEAT_POS_NOISE_VALUES;

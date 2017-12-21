@@ -25,7 +25,7 @@
  * File Name: ATORdatabaseFileIO.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m9a 16-December-2017
+ * Project Version: 3m10a 16-December-2017
  *
  *******************************************************************************/
 
@@ -93,11 +93,11 @@ bool ORdatabaseFileIOClass::DBsetCurrentDirectory(string* folderName)
 bool ORdatabaseFileIOClass::checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string* folderName)
 {
 	bool result = true;
-	if(!this->DBdirectoryExists(folderName))
+	if(!DBdirectoryExists(folderName))
 	{
-		this->DBcreateDirectory(folderName);
+		DBcreateDirectory(folderName);
 	}
-	this->DBsetCurrentDirectory(folderName);
+	DBsetCurrentDirectory(folderName);
 
 	return result;
 }
@@ -146,19 +146,19 @@ string ORdatabaseFileIOClass::DBgenerateFolderName(string* objectName, const boo
 {
 	//eg network/server/ORdatabase/e/x/a/example/...
 
-	string databaseName = this->DBgenerateServerDatabaseName(objectName, trainOrTest);
+	string databaseName = DBgenerateServerDatabaseName(objectName, trainOrTest);
 	string fileName = databaseName;
 
 	#ifdef OR_DATABASE_VERBOSE_FILESYSTEM_IO
 	cout << "1fileName = " << fileName << endl;
 	#endif
-	this->DBsetCurrentDirectory(&fileName);
+	DBsetCurrentDirectory(&fileName);
 
 	if(!trainOrTest)
 	{
 		fileName = fileName + OR_DATABASE_TEST_FOLDER_NAME + "/";
 		string testFolderName = OR_DATABASE_TEST_FOLDER_NAME;
-		this->checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&testFolderName);
+		checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&testFolderName);
 	}
 	else
 	{
@@ -168,7 +168,7 @@ string ORdatabaseFileIOClass::DBgenerateFolderName(string* objectName, const boo
 
 		fileName = fileName + OR_DATABASE_TRAIN_FOLDER_NAME + "/";
 		string trainFolderName = OR_DATABASE_TRAIN_FOLDER_NAME;
-		this->checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&trainFolderName);
+		checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&trainFolderName);
 
 		int numberOfEntityNameLevels;
 		if(objectName->length() < OR_DATABASE_CONCEPT_NAME_SUBDIRECTORY_INDEX_NUMBER_OF_LEVELS)
@@ -184,10 +184,10 @@ string ORdatabaseFileIOClass::DBgenerateFolderName(string* objectName, const boo
 			string folderName = "";
 			folderName = folderName + objectName->at(level);
 			fileName = fileName + folderName + "/";
-			this->checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&folderName);
+			checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&folderName);
 		}
 		fileName = fileName +* objectName + "/";
-		this->checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(objectName);
+		checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(objectName);
 
 		#ifdef OR_DATABASE_VERBOSE_FILESYSTEM_IO
 		cout << "2fileName = " << fileName << endl;

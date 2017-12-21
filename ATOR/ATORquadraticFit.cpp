@@ -25,7 +25,7 @@
  * File Name: ATORquadraticFit.cpp (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2017 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3m9a 16-December-2017
+ * Project Version: 3m10a 16-December-2017
  *
  * Assumes that depth information is less accurate than image information
  *******************************************************************************/
@@ -107,7 +107,7 @@ void ORquadraticFitClass::generateZeroCrossingList(const double* luminosityContr
 	createEnhancedImageDisplayingQuadraticFitInfo = false;
 	#endif
 
-	this->edgiseData(edgeDetect, createEnhancedImageDisplayingQuadraticFitInfo, firstZeroCrossingInList, imageWidth, imageHeight, luminosityContrastMap, sensitivity, dimension, pointMap, depthMap, zoom, interpixelMapType);
+	edgiseData(edgeDetect, createEnhancedImageDisplayingQuadraticFitInfo, firstZeroCrossingInList, imageWidth, imageHeight, luminosityContrastMap, sensitivity, dimension, pointMap, depthMap, zoom, interpixelMapType);
 
 }
 
@@ -576,7 +576,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 	{
 		for(x=0; x < robotTerritoryWidth; x++)	//Eg x:0->126
 		{
-			float featureProbabilityLevelCentrePixel = this->getPixelFloat(x+(QUADRATIC_FIT_KERNEL_SIZE/2), y+(QUADRATIC_FIT_KERNEL_SIZE/2), luminosityContrastMap);
+			float featureProbabilityLevelCentrePixel = getPixelFloat(x+(QUADRATIC_FIT_KERNEL_SIZE/2), y+(QUADRATIC_FIT_KERNEL_SIZE/2), luminosityContrastMap);
 
 			bool centreContrastThreshold;
 			if(edgeDetect == POINT_DETECT)
@@ -616,7 +616,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 						if(edgeDetect == POINT_DETECT)
 						{
 
-							double currentFeatureProbabilityLevelKernelPixel = this->getPixelFloat(kx, ky, luminosityContrastMap);
+							double currentFeatureProbabilityLevelKernelPixel = getPixelFloat(kx, ky, luminosityContrastMap);
 							featureProbabilityLevelKernelPixels = featureProbabilityLevelKernelPixels + currentFeatureProbabilityLevelKernelPixel;
 
 							if(currentFeatureProbabilityLevelKernelPixel > featureProbabilityLevelCentrePixel)
@@ -667,18 +667,18 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 			{//pixel is above ZC contrast threshold
 
 
-				this->calculateQuadraticFitCoefficients((x+(QUADRATIC_FIT_KERNEL_SIZE/2)), (y+(QUADRATIC_FIT_KERNEL_SIZE/2)), coefficient, luminosityContrastMap);	//+1!
+				calculateQuadraticFitCoefficients((x+(QUADRATIC_FIT_KERNEL_SIZE/2)), (y+(QUADRATIC_FIT_KERNEL_SIZE/2)), coefficient, luminosityContrastMap);	//+1!
 						//determines Coefficients for rasterArray1 from pixels 1->127
 
 				if(edgeDetect)
 				{
 					#ifndef OR_QUADRATIC_FIT_EDGE_RELAXED_REQ
-					if(!this->checkForTotalPositiveCurvature(coefficient[3], coefficient[4]))
+					if(!checkForTotalPositiveCurvature(coefficient[3], coefficient[4]))
 					{
 					#endif
 
 						bool passZeroCrossingTest = false;
-						if(this->calculateZeroCrossingAndOrientation((x+(QUADRATIC_FIT_KERNEL_SIZE/2)), (y+(QUADRATIC_FIT_KERNEL_SIZE/2)), coefficient, edgeDetect, createEnhancedImageDisplayingQuadraticFitInfo, currentZeroCrossingInList))
+						if(calculateZeroCrossingAndOrientation((x+(QUADRATIC_FIT_KERNEL_SIZE/2)), (y+(QUADRATIC_FIT_KERNEL_SIZE/2)), coefficient, edgeDetect, createEnhancedImageDisplayingQuadraticFitInfo, currentZeroCrossingInList))
 						{
 							passZeroCrossingTest = true;
 						}
@@ -845,10 +845,10 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 					{
 					*/
 					//optimisation;
-					if(this->checkTotalNegativeCurvatureAbovePointThreshold(coefficient[3], coefficient[4]))
+					if(checkTotalNegativeCurvatureAbovePointThreshold(coefficient[3], coefficient[4]))
 					{
 
-						if(this->calculateZeroCrossingAndOrientation((x+(QUADRATIC_FIT_KERNEL_SIZE/2)), (y+(QUADRATIC_FIT_KERNEL_SIZE/2)), coefficient, edgeDetect, createEnhancedImageDisplayingQuadraticFitInfo, currentZeroCrossingInList))
+						if(calculateZeroCrossingAndOrientation((x+(QUADRATIC_FIT_KERNEL_SIZE/2)), (y+(QUADRATIC_FIT_KERNEL_SIZE/2)), coefficient, edgeDetect, createEnhancedImageDisplayingQuadraticFitInfo, currentZeroCrossingInList))
 						{
 							#ifdef OR_QUADRATIC_FIT_VERBOSE
 							if(createEnhancedImageDisplayingQuadraticFitInfo)
@@ -959,12 +959,12 @@ bool ORquadraticFitClass::calculateZeroCrossingAndOrientation(int x, int y, floa
 
 	float* eigenValues = new float[2];
 
-	this->calculateEigenValues(coefficient, eigenValues);
+	calculateEigenValues(coefficient, eigenValues);
 
-	float minEigenValue = this->getSmallestEigenValue(eigenValues);
+	float minEigenValue = getSmallestEigenValue(eigenValues);
 
 	float* eigenVector = new float[2];
-	this->calculateEigenVector(coefficient, minEigenValue, eigenVector);
+	calculateEigenVector(coefficient, minEigenValue, eigenVector);
 
 	float alpha = (float)atan2(eigenVector[1], eigenVector[0]);	//tan(^-1)(y/x)
 
@@ -973,11 +973,11 @@ bool ORquadraticFitClass::calculateZeroCrossingAndOrientation(int x, int y, floa
 	float* zeroCrossing = new float[2];
 	if(edgeDetect)
 	{
-		this->calculateEdgeZeroCrossing(coefficient, beta, zeroCrossing);
+		calculateEdgeZeroCrossing(coefficient, beta, zeroCrossing);
 	}
 	else
 	{
-		this->calculatePointZeroCrossing(coefficient, zeroCrossing);
+		calculatePointZeroCrossing(coefficient, zeroCrossing);
 	}
 
 	float zeroCrossingValueX = zeroCrossing[0];
@@ -999,12 +999,12 @@ bool ORquadraticFitClass::calculateZeroCrossingAndOrientation(int x, int y, floa
 	//Passes ZeroCrossing zc so it can be filled with all available data
 	if(edgeDetect)
 	{
-		passedThreshold = this->checkEdgeZeroCrossingObjectPassesThreshold(currentZeroCrossingInList);
+		passedThreshold = checkEdgeZeroCrossingObjectPassesThreshold(currentZeroCrossingInList);
 		//passedThreshold = checkEdgeZeroCrossingFloatPassesThreshold(x, y, zeroCrossingValueX, zeroCrossingValueY, coefficient, alpha)
 	}
 	else
 	{//point
-		passedThreshold = this->checkPointZeroCrossingObjectPassesThreshold(currentZeroCrossingInList);
+		passedThreshold = checkPointZeroCrossingObjectPassesThreshold(currentZeroCrossingInList);
 		//passedThreshold = checkPointZeroCrossingFloatPassesThreshold(x, y, zeroCrossingValueX, zeroCrossingValueY, coefficient, alpha)
 
 	}
@@ -1047,11 +1047,11 @@ void ORquadraticFitClass::calculateQuadraticFitCoefficients(const int x, const i
 {
 	if(QUADRATIC_FIT_KERNEL_SIZE == QUADRATIC_FIT_KERNEL_SIZE_3X3)
 	{
-		this->calculateQuadraticFitCoefficients3x3(x, y, coefficient, luminosityContrastMap);
+		calculateQuadraticFitCoefficients3x3(x, y, coefficient, luminosityContrastMap);
 	}
 	else if(QUADRATIC_FIT_KERNEL_SIZE == QUADRATIC_FIT_KERNEL_SIZE_5X5)
 	{//5x5 kernel
-		this->calculateQuadraticFitCoefficients5x5(x, y, coefficient, luminosityContrastMap);
+		calculateQuadraticFitCoefficients5x5(x, y, coefficient, luminosityContrastMap);
 	}
 	else
 	{
@@ -1084,15 +1084,15 @@ void ORquadraticFitClass::calculateQuadraticFitCoefficients3x3(const int x, cons
 	float sxp, sxn, syp, syn, stot;
 	float zeroPointFive = 0.5555555555F;
 
-	sxp = 	this->getPixelFloat((x+1),(y),luminosityContrastMap) 	+ this->getPixelFloat((x+1),(y+1),luminosityContrastMap)+ this->getPixelFloat((x+1),(y-1),luminosityContrastMap);
+	sxp = 	getPixelFloat((x+1),(y),luminosityContrastMap) 	+ getPixelFloat((x+1),(y+1),luminosityContrastMap)+ getPixelFloat((x+1),(y-1),luminosityContrastMap);
 			//1,2,8
-	sxn = 	this->getPixelFloat((x-1),(y+1),luminosityContrastMap) 	+ this->getPixelFloat((x-1),(y),luminosityContrastMap) 	+ this->getPixelFloat((x-1),(y-1),luminosityContrastMap);
+	sxn = 	getPixelFloat((x-1),(y+1),luminosityContrastMap) 	+ getPixelFloat((x-1),(y),luminosityContrastMap) 	+ getPixelFloat((x-1),(y-1),luminosityContrastMap);
 			//4,5,6
-	syp = 	this->getPixelFloat((x+1),(y+1),luminosityContrastMap) 	+ this->getPixelFloat((x),(y+1),luminosityContrastMap) 	+ this->getPixelFloat((x-1),(y+1),luminosityContrastMap);
+	syp = 	getPixelFloat((x+1),(y+1),luminosityContrastMap) 	+ getPixelFloat((x),(y+1),luminosityContrastMap) 	+ getPixelFloat((x-1),(y+1),luminosityContrastMap);
 			//2,3,4
-	syn = 	this->getPixelFloat((x-1),(y-1),luminosityContrastMap) 	+ this->getPixelFloat((x),(y-1),luminosityContrastMap) 	+ this->getPixelFloat((x+1),(y-1),luminosityContrastMap);
+	syn = 	getPixelFloat((x-1),(y-1),luminosityContrastMap) 	+ getPixelFloat((x),(y-1),luminosityContrastMap) 	+ getPixelFloat((x+1),(y-1),luminosityContrastMap);
 			//6,7,8
-	stot = 	this->getPixelFloat((x),(y),luminosityContrastMap) 		+ this->getPixelFloat((x),(y+1),luminosityContrastMap) 	+ this->getPixelFloat((x),(y-1),luminosityContrastMap)
+	stot = 	getPixelFloat((x),(y),luminosityContrastMap) 		+ getPixelFloat((x),(y+1),luminosityContrastMap) 	+ getPixelFloat((x),(y-1),luminosityContrastMap)
 			+ sxp + sxn;
 			//0,3,7
 
@@ -1101,8 +1101,8 @@ void ORquadraticFitClass::calculateQuadraticFitCoefficients3x3(const int x, cons
 	coefficient[2] = (syp - syn)/6.0;
 	coefficient[3] = (sxp + sxn)/2.0 - stot/3.0;
 	coefficient[4] = (syp + syn)/2.0 - stot/3.0;
-	coefficient[5] = (	this->getPixelFloat((x+1),	(y+1),luminosityContrastMap) + this->getPixelFloat((x-1),	(y-1),luminosityContrastMap)			//2,6
-					-	this->getPixelFloat((x-1),	(y+1),luminosityContrastMap) - this->getPixelFloat((x+1),	(y-1),luminosityContrastMap))/4.0;		//4,8
+	coefficient[5] = (	getPixelFloat((x+1),	(y+1),luminosityContrastMap) + getPixelFloat((x-1),	(y-1),luminosityContrastMap)			//2,6
+					-	getPixelFloat((x-1),	(y+1),luminosityContrastMap) - getPixelFloat((x+1),	(y-1),luminosityContrastMap))/4.0;		//4,8
 
 }
 
@@ -1139,26 +1139,26 @@ void ORquadraticFitClass::calculateQuadraticFitCoefficients5x5(const int x, cons
 	float sx0, sxp1, sxn1, syp1, syn1,  sxp2, sxn2, syp2, syn2, stot;
 
 
-	sx0  = this->getPixelFloat(x   ,  y   ,luminosityContrastMap)	+this->getPixelFloat(x   , (y+1),luminosityContrastMap)+this->getPixelFloat(x   , (y-1),luminosityContrastMap) + /* 0,3,7  */
-					this->getPixelFloat(x   , (y+2),luminosityContrastMap)+this->getPixelFloat(x   , (y-2),luminosityContrastMap);                    /* 13,21  */
+	sx0  = getPixelFloat(x   ,  y   ,luminosityContrastMap)	+getPixelFloat(x   , (y+1),luminosityContrastMap)+getPixelFloat(x   , (y-1),luminosityContrastMap) + /* 0,3,7  */
+					getPixelFloat(x   , (y+2),luminosityContrastMap)+getPixelFloat(x   , (y-2),luminosityContrastMap);                    /* 13,21  */
 
-	sxp1 = this->getPixelFloat(x+1 ,  y   ,luminosityContrastMap)+this->getPixelFloat(x+1 , (y+1),luminosityContrastMap)+this->getPixelFloat(x+1 , (y-1),luminosityContrastMap) + /* 1,2,8  */
-					this->getPixelFloat(x+1 , (y+2),luminosityContrastMap)+this->getPixelFloat(x+1 , (y-2), luminosityContrastMap);                    /* 12,22  */
-	sxn1 = this->getPixelFloat(x-1 , (y+1),luminosityContrastMap)+this->getPixelFloat(x-1 ,  y   ,luminosityContrastMap)+this->getPixelFloat(x-1 , (y-1),luminosityContrastMap) + /* 4,5,6  */
-					this->getPixelFloat(x-1 , (y+2),luminosityContrastMap)+this->getPixelFloat(x-1 , (y-2),luminosityContrastMap);                    /* 14,20  */
-	sxp2 = this->getPixelFloat(x+2 , (y+2),luminosityContrastMap)+this->getPixelFloat(x+2 , (y+1),luminosityContrastMap)+this->getPixelFloat(x+2 ,  y   ,luminosityContrastMap) + /* 11,10,9*/
-			 		this->getPixelFloat(x+2 , (y-1),luminosityContrastMap)+this->getPixelFloat(x+2 , (y-2),luminosityContrastMap);                    /* 24,23  */
-	sxn2 = this->getPixelFloat(x-2 , (y+2),luminosityContrastMap)+this->getPixelFloat(x-2 , (y+1),luminosityContrastMap)+this->getPixelFloat(x-2 ,  y   ,luminosityContrastMap) + /* 15,16,17*/
-			 		this->getPixelFloat(x-2 , (y-1),luminosityContrastMap)+this->getPixelFloat(x-2 , (y-2),luminosityContrastMap);                    /* 18,19  */
+	sxp1 = getPixelFloat(x+1 ,  y   ,luminosityContrastMap)+getPixelFloat(x+1 , (y+1),luminosityContrastMap)+getPixelFloat(x+1 , (y-1),luminosityContrastMap) + /* 1,2,8  */
+					getPixelFloat(x+1 , (y+2),luminosityContrastMap)+getPixelFloat(x+1 , (y-2), luminosityContrastMap);                    /* 12,22  */
+	sxn1 = getPixelFloat(x-1 , (y+1),luminosityContrastMap)+getPixelFloat(x-1 ,  y   ,luminosityContrastMap)+getPixelFloat(x-1 , (y-1),luminosityContrastMap) + /* 4,5,6  */
+					getPixelFloat(x-1 , (y+2),luminosityContrastMap)+getPixelFloat(x-1 , (y-2),luminosityContrastMap);                    /* 14,20  */
+	sxp2 = getPixelFloat(x+2 , (y+2),luminosityContrastMap)+getPixelFloat(x+2 , (y+1),luminosityContrastMap)+getPixelFloat(x+2 ,  y   ,luminosityContrastMap) + /* 11,10,9*/
+			 		getPixelFloat(x+2 , (y-1),luminosityContrastMap)+getPixelFloat(x+2 , (y-2),luminosityContrastMap);                    /* 24,23  */
+	sxn2 = getPixelFloat(x-2 , (y+2),luminosityContrastMap)+getPixelFloat(x-2 , (y+1),luminosityContrastMap)+getPixelFloat(x-2 ,  y   ,luminosityContrastMap) + /* 15,16,17*/
+			 		getPixelFloat(x-2 , (y-1),luminosityContrastMap)+getPixelFloat(x-2 , (y-2),luminosityContrastMap);                    /* 18,19  */
 
-	syp1 = this->getPixelFloat(x-1 , (y+1),luminosityContrastMap)+this->getPixelFloat(x   , (y+1),luminosityContrastMap)+this->getPixelFloat(x+1 , (y+1),luminosityContrastMap) + /* 4,3,2  */
-			 		this->getPixelFloat(x-2 , (y+1),luminosityContrastMap)+this->getPixelFloat(x+2 , (y+1),luminosityContrastMap);                    /* 16,10  */
-	syn1 = this->getPixelFloat(x-1 , (y-1),luminosityContrastMap)+this->getPixelFloat(x   , (y-1),luminosityContrastMap)+this->getPixelFloat(x+1 , (y-1),luminosityContrastMap) + /* 6,7,8  */
-			 		this->getPixelFloat(x-2 , (y-1),luminosityContrastMap)+this->getPixelFloat(x+2 , (y-1),luminosityContrastMap);                    /* 18,24  */
-	syp2 = this->getPixelFloat(x-2 , (y+2),luminosityContrastMap)+this->getPixelFloat(x-1 , (y+2),luminosityContrastMap)+this->getPixelFloat(x   , (y+2),luminosityContrastMap) + /* 15,14,13*/
-			 		this->getPixelFloat(x+1 , (y+2),luminosityContrastMap)+this->getPixelFloat(x+2 , (y+2),luminosityContrastMap);                    /* 12,11  */
-	syn2 = this->getPixelFloat(x-2 , (y-2),luminosityContrastMap)+this->getPixelFloat(x-1 , (y-2),luminosityContrastMap)+this->getPixelFloat(x   , (y-2),luminosityContrastMap) + /* 19,20,21*/
-			 		this->getPixelFloat(x+1 , (y-2),luminosityContrastMap)+this->getPixelFloat(x+2 , (y-2),luminosityContrastMap);                    /* 22,23  */
+	syp1 = getPixelFloat(x-1 , (y+1),luminosityContrastMap)+getPixelFloat(x   , (y+1),luminosityContrastMap)+getPixelFloat(x+1 , (y+1),luminosityContrastMap) + /* 4,3,2  */
+			 		getPixelFloat(x-2 , (y+1),luminosityContrastMap)+getPixelFloat(x+2 , (y+1),luminosityContrastMap);                    /* 16,10  */
+	syn1 = getPixelFloat(x-1 , (y-1),luminosityContrastMap)+getPixelFloat(x   , (y-1),luminosityContrastMap)+getPixelFloat(x+1 , (y-1),luminosityContrastMap) + /* 6,7,8  */
+			 		getPixelFloat(x-2 , (y-1),luminosityContrastMap)+getPixelFloat(x+2 , (y-1),luminosityContrastMap);                    /* 18,24  */
+	syp2 = getPixelFloat(x-2 , (y+2),luminosityContrastMap)+getPixelFloat(x-1 , (y+2),luminosityContrastMap)+getPixelFloat(x   , (y+2),luminosityContrastMap) + /* 15,14,13*/
+			 		getPixelFloat(x+1 , (y+2),luminosityContrastMap)+getPixelFloat(x+2 , (y+2),luminosityContrastMap);                    /* 12,11  */
+	syn2 = getPixelFloat(x-2 , (y-2),luminosityContrastMap)+getPixelFloat(x-1 , (y-2),luminosityContrastMap)+getPixelFloat(x   , (y-2),luminosityContrastMap) + /* 19,20,21*/
+			 		getPixelFloat(x+1 , (y-2),luminosityContrastMap)+getPixelFloat(x+2 , (y-2),luminosityContrastMap);                    /* 22,23  */
 
 	stot = sx0 + sxp1 + sxp2 + sxn1 + sxn2;
 
@@ -1167,14 +1167,14 @@ void ORquadraticFitClass::calculateQuadraticFitCoefficients5x5(const int x, cons
 	coefficient[2] =  0.02* (syp1 - syn1 + 2.0*(syp2 - syn2));
 	coefficient[3] =  0.0142857143* (sxp1 + sxn1 + 4.0*(sxp2 + sxn2)) - 0.0285714286* stot;
 	coefficient[4] =  0.0142857143* (syp1 + syn1 + 4.0*(syp2 + syn2)) - 0.0285714286* stot;
-	coefficient[5] = 0.01* (4.0* (this->getPixelFloat(x-2 , (y-2),luminosityContrastMap) + this->getPixelFloat(x+2 , (y+2),luminosityContrastMap) - 		/* 19,11*/
-						this->getPixelFloat(x-2 , (y+2),luminosityContrastMap) - this->getPixelFloat(x+2 , (y-2),luminosityContrastMap)) + 			/* 15,23*/
-						2.0* (this->getPixelFloat(x-2 , (y-1),luminosityContrastMap) + this->getPixelFloat(x-1 , (y-2),luminosityContrastMap) + 	/* 18,20*/
-						this->getPixelFloat(x+1 , (y+2),luminosityContrastMap) + this->getPixelFloat(x+2 , (y+1),luminosityContrastMap) -  			/* 12,10*/
-						this->getPixelFloat(x-1 , (y+2),luminosityContrastMap) - this->getPixelFloat(x-2 , (y+1),luminosityContrastMap) -  			/* 14,16*/
-						this->getPixelFloat(x+1 , (y-2),luminosityContrastMap) - this->getPixelFloat(x+2 , (y-1),luminosityContrastMap)) + 			/* 22,24*/
-						this->getPixelFloat(x+1 , (y+1),luminosityContrastMap) + this->getPixelFloat(x-1 , (y-1),luminosityContrastMap) -  			/* 2,6*/
-						this->getPixelFloat(x-1 , (y+1),luminosityContrastMap) - this->getPixelFloat(x+1 , (y-1),luminosityContrastMap));  			/* 4,8*/
+	coefficient[5] = 0.01* (4.0* (getPixelFloat(x-2 , (y-2),luminosityContrastMap) + getPixelFloat(x+2 , (y+2),luminosityContrastMap) - 		/* 19,11*/
+						getPixelFloat(x-2 , (y+2),luminosityContrastMap) - getPixelFloat(x+2 , (y-2),luminosityContrastMap)) + 			/* 15,23*/
+						2.0* (getPixelFloat(x-2 , (y-1),luminosityContrastMap) + getPixelFloat(x-1 , (y-2),luminosityContrastMap) + 	/* 18,20*/
+						getPixelFloat(x+1 , (y+2),luminosityContrastMap) + getPixelFloat(x+2 , (y+1),luminosityContrastMap) -  			/* 12,10*/
+						getPixelFloat(x-1 , (y+2),luminosityContrastMap) - getPixelFloat(x-2 , (y+1),luminosityContrastMap) -  			/* 14,16*/
+						getPixelFloat(x+1 , (y-2),luminosityContrastMap) - getPixelFloat(x+2 , (y-1),luminosityContrastMap)) + 			/* 22,24*/
+						getPixelFloat(x+1 , (y+1),luminosityContrastMap) + getPixelFloat(x-1 , (y-1),luminosityContrastMap) -  			/* 2,6*/
+						getPixelFloat(x-1 , (y+1),luminosityContrastMap) - getPixelFloat(x+1 , (y-1),luminosityContrastMap));  			/* 4,8*/
 
 }
 
@@ -1282,7 +1282,7 @@ bool ORquadraticFitClass::checkPointZeroCrossingObjectPassesThreshold(const ORQF
 		*/
 		{
 
-			if(this->checkTotalNegativeCurvatureAbovePointThreshold(zc->coefficient[3], zc->coefficient[4]))
+			if(checkTotalNegativeCurvatureAbovePointThreshold(zc->coefficient[3], zc->coefficient[4]))
 			{
 
 				passedThreshold = true;
@@ -1344,7 +1344,7 @@ bool ORquadraticFitClass::checkEdgeZeroCrossingObjectPassesThreshold(ORQFzeroCro
 			//check orientation and magnitude of gradient of contrast
 
 			#ifndef OR_QUADRATIC_FIT_EDGE_RELAXED_REQ
-			if(this->checkEdgeZeroCrossingObjectContrastGradients(zc))
+			if(checkEdgeZeroCrossingObjectContrastGradients(zc))
 			{
 			#endif
 
