@@ -26,7 +26,7 @@
  * File Name: ATORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2018 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m13a 22-February-2018
+ * Project Version: 3m13b 22-February-2018
  * /
  *******************************************************************************/
 
@@ -80,14 +80,7 @@ int main(const int argc,const char* *argv)
 {
 	bool result = true;
 
-	//print execution time
-	struct tm* current;
-	time_t now;
-	time(&now);
-	current = localtime(&now);
-	char timeAndDateString[100];
-	sprintf(timeAndDateString, "%i:%i:%i %i/%.2i/%i", current->tm_hour, current->tm_min, current->tm_sec, current->tm_mday, (current->tm_mon+1), (current->tm_year + TM_STRUCT_YEAR_OFFSET));
-	cout << "OR execution time: " << timeAndDateString << " (start)" << endl;
+	SHAREDvarsClass().printTime("ATOR execution time: ", " (start)");
 
 	string currentFolder = SHAREDvarsClass().getCurrentDirectory();
 
@@ -325,7 +318,7 @@ int main(const int argc,const char* *argv)
 
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-version"))
 	{
-		cerr << "ATOR.exe - Project Version: 3m13a 22-February-2018" << endl;
+		cerr << "ATOR.exe - Project Version: 3m13b 22-February-2018" << endl;
 		exit(EXIT_OK);
 	}
 
@@ -560,11 +553,7 @@ int main(const int argc,const char* *argv)
 		}
 	}
 
-	//print execution time (end)
-	time(&now);
-	current = localtime(&now);
-	sprintf(timeAndDateString, "%i:%i:%i %i/%.2i/%i", current->tm_hour, current->tm_min, current->tm_sec, current->tm_mday, (current->tm_mon+1), (current->tm_year + TM_STRUCT_YEAR_OFFSET));
-	cout << "OR execution time: " << timeAndDateString << " (finish)" << endl;
+	SHAREDvarsClass().printTime("ATOR execution time: ", " (finish)");
 }
 
 void ORmainClass::printORcommandLineErrorMessage()
