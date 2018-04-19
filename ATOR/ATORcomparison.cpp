@@ -26,7 +26,7 @@
  * File Name: ATORcomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2018 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m13c 22-February-2018
+ * Project Version: 3m13d 22-February-2018
  * /
  *******************************************************************************/
 
@@ -310,7 +310,7 @@ double ORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPolys
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3m13c 22-February-2018<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3m13d 22-February-2018<p>";
 		}
 		else
 		{

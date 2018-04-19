@@ -26,7 +26,7 @@
  * File Name: ATORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2018 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m13c 22-February-2018
+ * Project Version: 3m13d 22-February-2018
  * /
  *******************************************************************************/
 
@@ -80,8 +80,10 @@ int main(const int argc,const char* *argv)
 {
 	bool result = true;
 
+	#ifdef ATOR_PRINT_EXECUTION_TIME
 	SHAREDvarsClass().printTime("ATOR execution time: ", " (start)");
-
+	#endif
+	
 	string currentFolder = SHAREDvarsClass().getCurrentDirectory();
 
 	#ifdef OR_USE_DATABASE
@@ -318,7 +320,7 @@ int main(const int argc,const char* *argv)
 
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-version"))
 	{
-		cerr << "ATOR.exe - Project Version: 3m13c 22-February-2018" << endl;
+		cerr << "ATOR.exe - Project Version: 3m13d 22-February-2018" << endl;
 		exit(EXIT_OK);
 	}
 
@@ -553,7 +555,9 @@ int main(const int argc,const char* *argv)
 		}
 	}
 
+	#ifdef ATOR_PRINT_EXECUTION_TIME
 	SHAREDvarsClass().printTime("ATOR execution time: ", " (finish)");
+	#endif
 }
 
 void ORmainClass::printORcommandLineErrorMessage()
