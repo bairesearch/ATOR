@@ -26,7 +26,7 @@
  * File Name: ATORTHimageCategorisationNN.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2018 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m13e 22-February-2018
+ * Project Version: 3m14a 20-April-2018
  * Description: Test Harness for OR Image Categorisation NN method (not yet implemented)
  * /
  *******************************************************************************/
@@ -149,8 +149,8 @@ int ORTHimageCategorisationNN()
 
 	ANNneuronContainer* firstInputNeuronInNetwork[numberOfNeuralNetworks];
 	ANNneuronContainer* firstOutputNeuronInNetwork[numberOfNeuralNetworks];
-	long numberOfInputNeurons = 0;	//dynamically generated based upon experience creation
-	long numberOfOutputNeurons = OR_IMAGE_CATEGORISTION_NN_NUMBER_OUTPUT_NEURONS;
+	int64_t numberOfInputNeurons = 0;	//dynamically generated based upon experience creation
+	int64_t numberOfOutputNeurons = OR_IMAGE_CATEGORISTION_NN_NUMBER_OUTPUT_NEURONS;
 
 	/*
 	OR_IMAGE_CATEGORISTION_NN_USE_GEO_EXPERIENCE	//not yet coded [will have to emulate close geo values, or extract them from ORcomparison.cpp into results.html]
@@ -204,9 +204,9 @@ int ORTHimageCategorisationNN()
 	{
 		//for every image match, calculate the categorisationDatasetBinaryString value for each component, and verify that they are equal (exactly)
 
-		long objectDecision = OR_IMAGE_CATEGORISTION_NN_OBJECT_DECISION;
+		int64_t objectDecision = OR_IMAGE_CATEGORISTION_NN_OBJECT_DECISION;
 
-		long previousCategorisationValue = 0;
+		int64_t previousCategorisationValue = 0;
 
 		for(int m=0; m<2; m++)
 		{
@@ -237,7 +237,7 @@ int ORTHimageCategorisationNN()
 			#endif
 
 			//used for numerical representation of categorisationValue ("binary string")
-			long categorisationValue = 0; 	//64bit int	[type must be of length >= OR_IMAGE_CATEGORISTION_NN_NUMBER_NEURAL_NETWORKS]
+			int64_t categorisationValue = 0; 	//64bit int	[type must be of length >= OR_IMAGE_CATEGORISTION_NN_NUMBER_NEURAL_NETWORKS]
 			int index = 0;
 
 			//used for ascii representation of categorisationValue ("binary string")
@@ -437,13 +437,13 @@ void deriveDCTcoefficients(string exampleImageFileName, signed char dctCoeff[])
 }
 
 
-ANNneuronContainer* initialiseImageNeuralNetwork(int NNtypeBeingTested, ANNneuronContainer* firstInputNeuronInNetwork, long* numberOfInputNeurons, long numberOfOutputNeurons, string exampleImageFileName)
+ANNneuronContainer* initialiseImageNeuralNetwork(int NNtypeBeingTested, ANNneuronContainer* firstInputNeuronInNetwork, int64_t* numberOfInputNeurons, int64_t numberOfOutputNeurons, string exampleImageFileName)
 {
 	ANNneuronContainer* firstOutputNeuronInNetwork;
 
-	long numberOfLayers;
+	int64_t numberOfLayers;
 
-	long tempObjectDecision = IRRELEVANT;
+	int64_t tempObjectDecision = IRRELEVANT;
 	ANNexperience* tempExperience = new ANNexperience;
 
 	/*

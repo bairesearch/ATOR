@@ -26,7 +26,7 @@
  * File Name: ATORTHimageCategorisationNN.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2018 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m13e 22-February-2018
+ * Project Version: 3m14a 20-April-2018
  * Description: Test Harness for OR Image Categorisation NN method (not yet implemented)
  * /
  *******************************************************************************/
@@ -140,7 +140,7 @@ public:
 
 int main();
 void deriveDCTcoefficients(string exampleImageFileName, signed char dctCoeff[]);
-ANNneuronContainer* initialiseImageNeuralNetwork(int NNtypeBeingTested, ANNneuronContainer* firstInputNeuronInNetwork, long* numberOfInputNeurons, long numberOfOutputNeurons, string exampleImageFileName);
+ANNneuronContainer* initialiseImageNeuralNetwork(int NNtypeBeingTested, ANNneuronContainer* firstInputNeuronInNetwork, int64_t* numberOfInputNeurons, int64_t numberOfOutputNeurons, string exampleImageFileName);
 bool generateDCTarrayExperienceFromImage(string imageFileName, ANNexperience* currentExperience, int objectDecision);
 bool generatePixelMapExperienceFromImage(string imageFileName, ANNexperience* currentExperience, int objectDecision);
 void generateExperienceFromOneArray(double* array, int arrayLength, double maxInputValueForNormalisation, ANNexperience* tempExperience, int objectDecision);

@@ -26,7 +26,7 @@
  * File Name: ATORcomparison.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2018 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m13e 22-February-2018
+ * Project Version: 3m14a 20-April-2018
  * /
  *******************************************************************************/
 
@@ -47,11 +47,11 @@
 #include "LDjpeg.hpp"
 
 //#ifdef OR_PRINT_ALGORITHM_AND_TIME_DETAILS
-extern long time5aNormalisedSnapshotComparisonLoadComparisonDataTotal;
-extern long time5aNormalisedSnapshotComparisonLoadComparisonDataIndex;
+extern int64_t time5aNormalisedSnapshotComparisonLoadComparisonDataTotal;
+extern int64_t time5aNormalisedSnapshotComparisonLoadComparisonDataIndex;
 
-extern long time5bNormalisedSnapshotComparisonCompareSnapshotDataTotal;
-extern long time5bNormalisedSnapshotComparisonCompareSnapshotDataIndex;
+extern int64_t time5bNormalisedSnapshotComparisonCompareSnapshotDataTotal;
+extern int64_t time5bNormalisedSnapshotComparisonCompareSnapshotDataIndex;
 //#endif
 
 //#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING

@@ -26,7 +26,7 @@
  * File Name: ATORpolygonList.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2018 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m13e 22-February-2018
+ * Project Version: 3m14a 20-April-2018
  * /
  *******************************************************************************/
 
@@ -47,7 +47,7 @@ public:
 	ORobjectReferenceList(void); // constructor declaration
 	~ORobjectReferenceList();	//  and destructor.
 
-	long objectNumber;
+	int64_t objectNumber;
 	string objectName;
 	int numMatchingSnapshots;
 
@@ -64,7 +64,7 @@ public:
 	ORsnapshotIDreferenceList(void); // constructor declaration
 	~ORsnapshotIDreferenceList();	//  and destructor.
 
-	long referenceID;
+	int64_t referenceID;
 
 	ORsnapshotIDreferenceList* next;
 	ORsnapshotIDreferenceList* previous;	//only used for ORdatabaseDecisionTree.cpp
@@ -111,7 +111,7 @@ public:
 
 	//#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
 	signed char dctCoeff[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
-	unsigned long dctCoeffArrayBinned;
+	uint64_t dctCoeffArrayBinned;
 	//#endif
 
 	//#ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING

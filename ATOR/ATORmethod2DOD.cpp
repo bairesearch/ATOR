@@ -26,7 +26,7 @@
  * File Name: ATORmethod2DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2018 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m13e 22-February-2018
+ * Project Version: 3m14a 20-April-2018
  * Notes: NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  * /
  *******************************************************************************/
@@ -196,7 +196,7 @@ void ORmethod2DODClass::TEMPprintReferenceListVertexPositions2DOD(const LDrefere
 
 void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ORpolygon* currentPolygonInList, const int side, const bool first, ORfeature* firstFeatureInList)
 {
-	long time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart;
+	int64_t time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart;
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
@@ -786,7 +786,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 		{
 			cout << "\t\t\t\t end: 3ai. 2DOD normalised snapshot generation - transform data wrt polygon - matrix calc" << endl;
 		}
-		long time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd;
+		int64_t time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd;
 		time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd = SHAREDvars.getTimeAsLong();
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
 		{
@@ -794,7 +794,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 		}
 	}
 
-	long time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart;
+	int64_t time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart;
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
@@ -883,7 +883,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 		{
 			cout << "\t\t\t\t end: 3aii. 2DOD normalised snapshot generation - transform data wrt polygon - cull" << endl;
 		}
-		long time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd;
+		int64_t time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd;
 		time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd = SHAREDvars.getTimeAsLong();
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
 		{

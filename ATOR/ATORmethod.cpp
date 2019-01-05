@@ -26,7 +26,7 @@
  * File Name: ATORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2018 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m13e 22-February-2018
+ * Project Version: 3m14a 20-April-2018
  * Notes: NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  * /
  *******************************************************************************/
@@ -62,63 +62,63 @@ static double featurePosNoise3Array[OR_METHOD2DOD_NUM_FEAT_POS_NOISE_VALUES_PER_
 
 
 //#ifdef OR_PRINT_ALGORITHM_AND_TIME_DETAILS
-long time1aALTERNATEODgenerationParseVectorGraphicsFileTotal = 0.0;
-long time1aALTERNATEODgenerationParseVectorGraphicsFileIndex = 0.0;
+int64_t time1aALTERNATEODgenerationParseVectorGraphicsFileTotal = 0.0;
+int64_t time1aALTERNATEODgenerationParseVectorGraphicsFileIndex = 0.0;
 
-long time1ODgenerationTotalTrain = 0.0;
-long time1ODgenerationIndexTrain = 0.0;
-long time1ODgenerationTotalTest = 0.0;
-long time1ODgenerationIndexTest = 0.0;
+int64_t time1ODgenerationTotalTrain = 0.0;
+int64_t time1ODgenerationIndexTrain = 0.0;
+int64_t time1ODgenerationTotalTest = 0.0;
+int64_t time1ODgenerationIndexTest = 0.0;
 
-long time1aODgenerationLoadImageFileTotalTrain = 0.0;
-long time1aODgenerationLoadImageFileIndexTrain = 0.0;
-long time1aODgenerationLoadImageFileTotalTest = 0.0;
-long time1aODgenerationLoadImageFileIndexTest = 0.0;
-
-
-long time1aALTERNATEODgenerationRaytraceVectorGraphicsFileTotalTrain = 0.0;
-long time1aALTERNATEODgenerationRaytraceVectorGraphicsFileIndexTrain = 0.0;
-long time1aALTERNATEODgenerationRaytraceVectorGraphicsFileTotalTest = 0.0;
-long time1aALTERNATEODgenerationRaytraceVectorGraphicsFileIndexTest = 0.0;
-
-long time1bODgenerationCreateInterpolatedMeshTotalTrain = 0.0;
-long time1bODgenerationCreateInterpolatedMeshIndexTrain = 0.0;
-long time1bODgenerationCreateInterpolatedMeshTotalTest = 0.0;
-long time1bODgenerationCreateInterpolatedMeshIndexTest = 0.0;
-
-long time1cODgenerationFeatureListCreationTotalTrain = 0.0;
-long time1cODgenerationFeatureListCreationIndexTrain = 0.0;
-long time1cODgenerationFeatureListCreationTotalTest = 0.0;
-long time1cODgenerationFeatureListCreationIndexTest = 0.0;
-
-long time2ObjectTriangleGenerationPolygonListTotalTrain = 0.0;
-long time2ObjectTriangleGenerationPolygonListIndexTrain = 0.0;
-long time2ObjectTriangleGenerationPolygonListTotalTest = 0.0;
-long time2ObjectTriangleGenerationPolygonListIndexTest = 0.0;
-
-long time3NormalisedSnapshotGenerationTotalTrain = 0.0;
-long time3NormalisedSnapshotGenerationIndexTrain = 0.0;
-long time3NormalisedSnapshotGenerationTotalTest = 0.0;
-long time3NormalisedSnapshotGenerationIndexTest = 0.0;
+int64_t time1aODgenerationLoadImageFileTotalTrain = 0.0;
+int64_t time1aODgenerationLoadImageFileIndexTrain = 0.0;
+int64_t time1aODgenerationLoadImageFileTotalTest = 0.0;
+int64_t time1aODgenerationLoadImageFileIndexTest = 0.0;
 
 
-long time3aNormalisedSnapshotGeneration3DODCalculateSnapshotViewWRTPolygonTotalTrain = 0.0;
-long time3aNormalisedSnapshotGeneration3DODCalculateSnapshotViewWRTPolygonIndexTrain = 0.0;
-long time3aNormalisedSnapshotGeneration3DODCalculateSnapshotViewWRTPolygonTotalTest = 0.0;
-long time3aNormalisedSnapshotGeneration3DODCalculateSnapshotViewWRTPolygonIndexTest = 0.0;
+int64_t time1aALTERNATEODgenerationRaytraceVectorGraphicsFileTotalTrain = 0.0;
+int64_t time1aALTERNATEODgenerationRaytraceVectorGraphicsFileIndexTrain = 0.0;
+int64_t time1aALTERNATEODgenerationRaytraceVectorGraphicsFileTotalTest = 0.0;
+int64_t time1aALTERNATEODgenerationRaytraceVectorGraphicsFileIndexTest = 0.0;
 
-long time3aNormalisedSnapshotGenerationTransformDataWRTPolygonTotalTrain = 0.0;
-long time3aNormalisedSnapshotGeneration2DODTransformDataWRTPolygonIndexTrain = 0.0;
-long time3aNormalisedSnapshotGeneration2DODTransformDataWRTPolygonTotalTest = 0.0;
-long time3aNormalisedSnapshotGeneration2DODTransformDataWRTPolygonIndexTest = 0.0;
+int64_t time1bODgenerationCreateInterpolatedMeshTotalTrain = 0.0;
+int64_t time1bODgenerationCreateInterpolatedMeshIndexTrain = 0.0;
+int64_t time1bODgenerationCreateInterpolatedMeshTotalTest = 0.0;
+int64_t time1bODgenerationCreateInterpolatedMeshIndexTest = 0.0;
 
-long time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotTotalTrain = 0.0;
-long time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotIndexTrain = 0.0;
-long time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotTotalTest = 0.0;
-long time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotIndexTest = 0.0;
+int64_t time1cODgenerationFeatureListCreationTotalTrain = 0.0;
+int64_t time1cODgenerationFeatureListCreationIndexTrain = 0.0;
+int64_t time1cODgenerationFeatureListCreationTotalTest = 0.0;
+int64_t time1cODgenerationFeatureListCreationIndexTest = 0.0;
 
-long time5NormalisedSnapshotComparisonTotal = 0.0;
-long time5NormalisedSnapshotComparisonIndex = 0.0;
+int64_t time2ObjectTriangleGenerationPolygonListTotalTrain = 0.0;
+int64_t time2ObjectTriangleGenerationPolygonListIndexTrain = 0.0;
+int64_t time2ObjectTriangleGenerationPolygonListTotalTest = 0.0;
+int64_t time2ObjectTriangleGenerationPolygonListIndexTest = 0.0;
+
+int64_t time3NormalisedSnapshotGenerationTotalTrain = 0.0;
+int64_t time3NormalisedSnapshotGenerationIndexTrain = 0.0;
+int64_t time3NormalisedSnapshotGenerationTotalTest = 0.0;
+int64_t time3NormalisedSnapshotGenerationIndexTest = 0.0;
+
+
+int64_t time3aNormalisedSnapshotGeneration3DODCalculateSnapshotViewWRTPolygonTotalTrain = 0.0;
+int64_t time3aNormalisedSnapshotGeneration3DODCalculateSnapshotViewWRTPolygonIndexTrain = 0.0;
+int64_t time3aNormalisedSnapshotGeneration3DODCalculateSnapshotViewWRTPolygonTotalTest = 0.0;
+int64_t time3aNormalisedSnapshotGeneration3DODCalculateSnapshotViewWRTPolygonIndexTest = 0.0;
+
+int64_t time3aNormalisedSnapshotGenerationTransformDataWRTPolygonTotalTrain = 0.0;
+int64_t time3aNormalisedSnapshotGeneration2DODTransformDataWRTPolygonIndexTrain = 0.0;
+int64_t time3aNormalisedSnapshotGeneration2DODTransformDataWRTPolygonTotalTest = 0.0;
+int64_t time3aNormalisedSnapshotGeneration2DODTransformDataWRTPolygonIndexTest = 0.0;
+
+int64_t time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotTotalTrain = 0.0;
+int64_t time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotIndexTrain = 0.0;
+int64_t time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotTotalTest = 0.0;
+int64_t time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotIndexTest = 0.0;
+
+int64_t time5NormalisedSnapshotComparisonTotal = 0.0;
+int64_t time5NormalisedSnapshotComparisonIndex = 0.0;
 
 
 //#endif
@@ -385,7 +385,7 @@ bool ORmethodClass::ORmethodCompareTestWithTrain(const int dimension, const int 
 {
 	bool result = true;
 
-	long time5NormalisedSnapshotComparisonStart;
+	int64_t time5NormalisedSnapshotComparisonStart;
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
 		cout << "\t start: 5. normalised snapshot comparison" << endl;
@@ -412,7 +412,7 @@ bool ORmethodClass::ORmethodCompareTestWithTrain(const int dimension, const int 
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
 		cout << "\t end: 5. normalised snapshot comparison" << endl;
-		long time5NormalisedSnapshotComparisonEnd;
+		int64_t time5NormalisedSnapshotComparisonEnd;
 		time5NormalisedSnapshotComparisonEnd = SHAREDvars.getTimeAsLong();
 		time5NormalisedSnapshotComparisonTotal = time5NormalisedSnapshotComparisonTotal + time5NormalisedSnapshotComparisonEnd-time5NormalisedSnapshotComparisonStart;
 		time5NormalisedSnapshotComparisonIndex++;
@@ -420,46 +420,46 @@ bool ORmethodClass::ORmethodCompareTestWithTrain(const int dimension, const int 
 	}
 
 
-	long time1aALTERNATEODgenerationParseVectorGraphicsFileAverage = 0;
+	int64_t time1aALTERNATEODgenerationParseVectorGraphicsFileAverage = 0;
 
-	long time1ODgenerationAverageTrain = 0;
-	long time1ODgenerationAverageTest = 0;
+	int64_t time1ODgenerationAverageTrain = 0;
+	int64_t time1ODgenerationAverageTest = 0;
 
-	long time1aODgenerationLoadImageFileAverageTrain = 0;
-	long time1aODgenerationLoadImageFileAverageTest = 0;
+	int64_t time1aODgenerationLoadImageFileAverageTrain = 0;
+	int64_t time1aODgenerationLoadImageFileAverageTest = 0;
 
-	long time1aALTERNATEODgenerationRaytraceVectorGraphicsFileAverageTrain = 0;
-	long time1aALTERNATEODgenerationRaytraceVectorGraphicsFileAverageTest = 0;
+	int64_t time1aALTERNATEODgenerationRaytraceVectorGraphicsFileAverageTrain = 0;
+	int64_t time1aALTERNATEODgenerationRaytraceVectorGraphicsFileAverageTest = 0;
 
-	long time1bODgenerationCreateInterpolatedMeshAverageTrain = 0;
-	long time1bODgenerationCreateInterpolatedMeshAverageTest = 0;
+	int64_t time1bODgenerationCreateInterpolatedMeshAverageTrain = 0;
+	int64_t time1bODgenerationCreateInterpolatedMeshAverageTest = 0;
 
-	long time1cODgenerationFeatureListCreationAverageTrain = 0;
-	long time1cODgenerationFeatureListCreationAverageTest = 0;
+	int64_t time1cODgenerationFeatureListCreationAverageTrain = 0;
+	int64_t time1cODgenerationFeatureListCreationAverageTest = 0;
 
-	long time2ObjectTriangleGenerationPolygonListAverageTrain = 0;
-	long time2ObjectTriangleGenerationPolygonListAverageTest = 0;
+	int64_t time2ObjectTriangleGenerationPolygonListAverageTrain = 0;
+	int64_t time2ObjectTriangleGenerationPolygonListAverageTest = 0;
 
-	long time3NormalisedSnapshotGenerationAverageTrain = 0;
-	long time3NormalisedSnapshotGenerationAverageTest = 0;
+	int64_t time3NormalisedSnapshotGenerationAverageTrain = 0;
+	int64_t time3NormalisedSnapshotGenerationAverageTest = 0;
 
-	long time3aNormalisedSnapshotGeneration3DODCalculateSnapshotViewWRTPolygonAverageTrain = 0;
-	long time3aNormalisedSnapshotGeneration3DODCalculateSnapshotViewWRTPolygonAverageTest = 0;
+	int64_t time3aNormalisedSnapshotGeneration3DODCalculateSnapshotViewWRTPolygonAverageTrain = 0;
+	int64_t time3aNormalisedSnapshotGeneration3DODCalculateSnapshotViewWRTPolygonAverageTest = 0;
 
-	long time3aNormalisedSnapshotGeneration2DODTransformDataWRTPolygonAverageTrain = 0;
-	long time3aNormalisedSnapshotGeneration2DODTransformDataWRTPolygonAverageTest = 0;
+	int64_t time3aNormalisedSnapshotGeneration2DODTransformDataWRTPolygonAverageTrain = 0;
+	int64_t time3aNormalisedSnapshotGeneration2DODTransformDataWRTPolygonAverageTest = 0;
 
-	long time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotAverageTrain = 0;
-	long time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotAverageTest = 0;
+	int64_t time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotAverageTrain = 0;
+	int64_t time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotAverageTest = 0;
 
-	long time5NormalisedSnapshotComparisonAverage = 0;
+	int64_t time5NormalisedSnapshotComparisonAverage = 0;
 
-	long time5aNormalisedSnapshotComparisonLoadComparisonDataAverage = 0;
-	long time5bNormalisedSnapshotComparisonCompareSnapshotDataAverage = 0;
+	int64_t time5aNormalisedSnapshotComparisonLoadComparisonDataAverage = 0;
+	int64_t time5bNormalisedSnapshotComparisonCompareSnapshotDataAverage = 0;
 
-	long timeTotalTrain = 0;
-	long timeTotalTest = 0;
-	long timeTotalCompare = 0;
+	int64_t timeTotalTrain = 0;
+	int64_t timeTotalTest = 0;
+	int64_t timeTotalCompare = 0;
 
 	if(time1aALTERNATEODgenerationParseVectorGraphicsFileIndex > 0)
 	{
@@ -706,7 +706,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 		LDreference* topLevelReferenceInSceneFile = new LDreference(topLevelSceneFileName, 1, true);	//The information in this object is not required or meaningful, but needs to be passed into the parseFile/parseReferenceList recursive function
 		if(objectDataSource == OR_OBJECT_DATA_SOURCE_GENERATE_DATA)
 		{
-			long time1aALTERNATEODgenerationParseVectorGraphicsFileStart;
+			int64_t time1aALTERNATEODgenerationParseVectorGraphicsFileStart;
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "start: 1a. object data generation (ALTERNATE METHOD - part i) - parse vector graphics file" << endl;
@@ -722,7 +722,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "end: 1a. object data generation (ALTERNATE METHOD - part i) - parse vector graphics file" << endl;
-				long time1aALTERNATEODgenerationParseVectorGraphicsFileEnd;
+				int64_t time1aALTERNATEODgenerationParseVectorGraphicsFileEnd;
 				time1aALTERNATEODgenerationParseVectorGraphicsFileEnd = SHAREDvars.getTimeAsLong();
 				time1aALTERNATEODgenerationParseVectorGraphicsFileTotal = time1aALTERNATEODgenerationParseVectorGraphicsFileTotal + time1aALTERNATEODgenerationParseVectorGraphicsFileEnd-time1aALTERNATEODgenerationParseVectorGraphicsFileStart;
 				time1aALTERNATEODgenerationParseVectorGraphicsFileIndex++;
@@ -740,7 +740,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 
 		for(int viewIndex = viewNumber; viewIndex < viewNumber+numberOfViewIndiciesPerObjectWithUniquePolygons; viewIndex++)	//only used for test harness
 		{
-			long time1ODgenerationStart;
+			int64_t time1ODgenerationStart;
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "\t start: 1. object data generation" << endl;
@@ -937,7 +937,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "\t\t end: 1. object data generation" << endl;
-				long time1ODgenerationEnd;
+				int64_t time1ODgenerationEnd;
 				time1ODgenerationEnd = SHAREDvars.getTimeAsLong();
 
 				if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
@@ -958,7 +958,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 
 			#ifndef DEBUG_ONLY_GENERATE_FEATURE_LISTS_NOTHING_ELSE
 
-			long time2ObjectTriangleGenerationPolygonListStart;
+			int64_t time2ObjectTriangleGenerationPolygonListStart;
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "\t start: 2. object triangle generation - polygon list creation" << endl;
@@ -971,11 +971,11 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 				result = false;
 			}
 
-			long time3NormalisedSnapshotGenerationStart;
+			int64_t time3NormalisedSnapshotGenerationStart;
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "\t end: 2. object triangle generation - polygon list creation" << endl;
-				long time2ObjectTriangleGenerationPolygonListEnd;
+				int64_t time2ObjectTriangleGenerationPolygonListEnd;
 				time2ObjectTriangleGenerationPolygonListEnd = SHAREDvars.getTimeAsLong();
 
 				if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
@@ -1008,7 +1008,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "\t end: 3. normalised snapshot generation" << endl;
-				long time3NormalisedSnapshotGenerationEnd;
+				int64_t time3NormalisedSnapshotGenerationEnd;
 				time3NormalisedSnapshotGenerationEnd = SHAREDvars.getTimeAsLong();
 
 				if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
@@ -1053,7 +1053,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 				cout << "\t\t  viewIndex = " << viewIndex << endl;
 			}
 
-			long time1ODgenerationStart;
+			int64_t time1ODgenerationStart;
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "\t\t start: 1. object data generation" << endl;
@@ -1105,7 +1105,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "\t\t end: 1. object data generation" << endl;
-				long time1ODgenerationEnd;
+				int64_t time1ODgenerationEnd;
 				time1ODgenerationEnd = SHAREDvars.getTimeAsLong();
 
 				if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
@@ -1124,7 +1124,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 
 		#ifndef DEBUG_ONLY_GENERATE_FEATURE_LISTS_NOTHING_ELSE
 
-			long time2ObjectTriangleGenerationPolygonListStart;
+			int64_t time2ObjectTriangleGenerationPolygonListStart;
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "\t\t start: 2. object triangle generation - polygon list creation" << endl;
@@ -1136,11 +1136,11 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 				result = false;
 			}
 
-			long time3NormalisedSnapshotGenerationStart;
+			int64_t time3NormalisedSnapshotGenerationStart;
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "\t\t end: 2. object triangle generation - polygon list creation" << endl;
-				long time2ObjectTriangleGenerationPolygonListEnd;
+				int64_t time2ObjectTriangleGenerationPolygonListEnd;
 				time2ObjectTriangleGenerationPolygonListEnd = SHAREDvars.getTimeAsLong();
 
 				if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
@@ -1174,7 +1174,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 			if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 			{
 				cout << "\t\t end: 3. normalised snapshot generation" << endl;
-				long time3NormalisedSnapshotGenerationEnd;
+				int64_t time3NormalisedSnapshotGenerationEnd;
 				time3NormalisedSnapshotGenerationEnd = SHAREDvars.getTimeAsLong();
 
 				if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
@@ -1353,7 +1353,7 @@ bool ORmethodClass::createRGBandPointMap(LDreference* initialReferenceInSceneFil
 
 	if(objectDataSource == OR_OBJECT_DATA_SOURCE_PREEXISTING_DATA)
 	{
-		long time1aODgenerationLoadImageFileStart;
+		int64_t time1aODgenerationLoadImageFileStart;
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 		{
 			cout << "\t\t\t start: 1a. object data generation - load image file" << endl;
@@ -1415,7 +1415,7 @@ bool ORmethodClass::createRGBandPointMap(LDreference* initialReferenceInSceneFil
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 		{
 			cout << "\t\t\t end: 1a. object data generation - load image file" << endl;
-			long time1aODgenerationLoadImageFileEnd;
+			int64_t time1aODgenerationLoadImageFileEnd;
 			time1aODgenerationLoadImageFileEnd = SHAREDvars.getTimeAsLong();
 			if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 			{
@@ -1433,7 +1433,7 @@ bool ORmethodClass::createRGBandPointMap(LDreference* initialReferenceInSceneFil
 	}
 	else if(objectDataSource == OR_OBJECT_DATA_SOURCE_USER_FILE)
 	{
-		long time1aODgenerationLoadImageFileStart;
+		int64_t time1aODgenerationLoadImageFileStart;
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 		{
 			cout << "\t\t\t start: 1a. object data generation - load image file" << endl;
@@ -1544,7 +1544,7 @@ bool ORmethodClass::createRGBandPointMap(LDreference* initialReferenceInSceneFil
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 		{
 			cout << "\t\t\t end: 1a. object data generation - load image file" << endl;
-			long time1aODgenerationLoadImageFileEnd;
+			int64_t time1aODgenerationLoadImageFileEnd;
 			time1aODgenerationLoadImageFileEnd = SHAREDvars.getTimeAsLong();
 			if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 			{
@@ -1561,7 +1561,7 @@ bool ORmethodClass::createRGBandPointMap(LDreference* initialReferenceInSceneFil
 	}
 	else if(objectDataSource == OR_OBJECT_DATA_SOURCE_GENERATE_DATA)
 	{
-		long time1aALTERNATEODgenerationRaytraceVectorGraphicsFileStart;
+		int64_t time1aALTERNATEODgenerationRaytraceVectorGraphicsFileStart;
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 		{
 			cout << "\t\t\t start: 1a. object data generation (ALTERNATE METHOD - part ii) - raytrace vector graphics file" << endl;
@@ -1690,7 +1690,7 @@ bool ORmethodClass::createRGBandPointMap(LDreference* initialReferenceInSceneFil
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 		{
 			cout << "\t\t\t end: 1a. object data generation (ALTERNATE METHOD - part ii) - raytrace vector graphics file" << endl;
-			long time1aALTERNATEODgenerationRaytraceVectorGraphicsFileEnd;
+			int64_t time1aALTERNATEODgenerationRaytraceVectorGraphicsFileEnd;
 			time1aALTERNATEODgenerationRaytraceVectorGraphicsFileEnd = SHAREDvars.getTimeAsLong();
 			if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 			{
@@ -1730,7 +1730,7 @@ bool ORmethodClass::createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMa
 {
 	bool result = true;
 
-	long time1bODgenerationCreateInterpolatedMeshStart;
+	int64_t time1bODgenerationCreateInterpolatedMeshStart;
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
 		cout << "\t\t\t start: 1b. object data generation - create interpolated mesh" << endl;
@@ -1781,7 +1781,7 @@ bool ORmethodClass::createOrAddToInterpolatedMeshReferenceListUsingPointAndRGBMa
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
 		cout << "\t\t\t end: 1b. object data generation - create interpolated mesh" << endl;
-		long time1bODgenerationCreateInterpolatedMeshEnd;
+		int64_t time1bODgenerationCreateInterpolatedMeshEnd;
 		time1bODgenerationCreateInterpolatedMeshEnd = SHAREDvars.getTimeAsLong();
 		if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 		{
@@ -2008,7 +2008,7 @@ bool ORmethodClass::createInterpolatedMeshReferenceListUsingMeshList(ORmeshPoint
 	interpolatedMeshPointUsageSelection[3][0] = 2;
 	interpolatedMeshPointUsageSelection[3][1] = 3;
 
-	long time1bODgenerationCreateInterpolatedMeshStart;
+	int64_t time1bODgenerationCreateInterpolatedMeshStart;
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
 		cout << "\t\t\t start: 1b. object data generation - create interpolated mesh" << endl;
@@ -2047,7 +2047,7 @@ bool ORmethodClass::createInterpolatedMeshReferenceListUsingMeshList(ORmeshPoint
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
 		cout << "\t\t\t end: 1b. object data generation - create interpolated mesh" << endl;
-		long time1bODgenerationCreateInterpolatedMeshEnd;
+		int64_t time1bODgenerationCreateInterpolatedMeshEnd;
 		time1bODgenerationCreateInterpolatedMeshEnd = SHAREDvars.getTimeAsLong();
 		if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 		{
@@ -2179,7 +2179,7 @@ bool ORmethodClass::createOrAddPointsToFeaturesList(double* pointMap, unsigned c
 {
 	bool result = true;
 
-	long time1cODgenerationFeatureListCreationStart;
+	int64_t time1cODgenerationFeatureListCreationStart;
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
 		cout << "\t\t\t start: 1c. object data generation - feature list creation" << endl;
@@ -2773,7 +2773,7 @@ bool ORmethodClass::createOrAddPointsToFeaturesList(double* pointMap, unsigned c
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
 		cout << "\t\t\t end: 1c. object data generation - feature list creation" << endl;
-		long time1cODgenerationFeatureListCreationEnd;
+		int64_t time1cODgenerationFeatureListCreationEnd;
 		time1cODgenerationFeatureListCreationEnd = SHAREDvars.getTimeAsLong();
 		if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 		{
@@ -3487,7 +3487,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 														else if(dimension == OR_METHOD2DOD_DIMENSIONS)
 														{
 													#endif
-								long time3aNormalisedSnapshotGenerationTransformDataWRTPolygonStart;
+								int64_t time3aNormalisedSnapshotGenerationTransformDataWRTPolygonStart;
 								if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 								{
 									if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
@@ -3609,7 +3609,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 									{
 										cout << "\t\t\t end: 3a. normalised snapshot generation - transform data wrt polygon" << endl;
 									}
-									long time3aNormalisedSnapshotGenerationTransformDataWRTPolygonEnd;
+									int64_t time3aNormalisedSnapshotGenerationTransformDataWRTPolygonEnd;
 									time3aNormalisedSnapshotGenerationTransformDataWRTPolygonEnd = SHAREDvars.getTimeAsLong();
 									if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 									{
@@ -3638,7 +3638,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 														#endif
 
 
-								long time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotStart;
+								int64_t time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotStart;
 								if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 								{
 									if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
@@ -3716,7 +3716,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 									{
 										cout << "\t\t\t end: 3b. normalised snapshot generation - raytrace or opengl snapshot" << endl;
 									}
-									long time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotEnd;
+									int64_t time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotEnd;
 									time3bNormalisedSnapshotGenerationRaytraceOrOpenGLSnapshotEnd = SHAREDvars.getTimeAsLong();
 									if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
 									{
@@ -4067,7 +4067,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 										bool addPermutationsOfTrainFeaturesForGeoBinning;
 										int maxNumFeaturePermutations;
 										string tableName;
-										long databaseTableSize;
+										int64_t databaseTableSize;
 
 										if(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING)
 										{
@@ -4108,7 +4108,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 											bool addPermutationsOfTrainFeaturesForGeoBinning;
 											int maxNumFeaturePermutations;
 											string tableName;
-											long databaseTableSize;
+											int64_t databaseTableSize;
 
 											maxNumFeaturePermutations = 1;
 											addPermutationsOfTrainFeaturesForGeoBinning = false;
@@ -4145,7 +4145,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 
 											//f. input snapshot data into image comparison decision tree
 											//addSnapshotIDReferenceToImageComparisonDecisionTree(smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly);
-											long snapshotReferenceID = (databaseTableSizeTrain-1);
+											int64_t snapshotReferenceID = (databaseTableSizeTrain-1);
 											ORdatabaseDecisionTree.addSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcombinations(smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly, currentPolygonInList->firstFeatureInNearestFeatureList, snapshotReferenceID, ignoreOTfeatures);		//-1 is required because databaseTableSizeTrain has already been incremented
 											#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
 											ORdatabaseDecisionTree.createAndOrParseIntoDirectory(&imageComparisonTreeBaseDirectory, NULL, false, false);	//reset current directory
@@ -4215,7 +4215,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 
 								#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
 									//generate nn experience for snapshot
-								long objectDecision = polygonIndex*numSidesPerPolygon + side;
+								int64_t objectDecision = polygonIndex*numSidesPerPolygon + side;
 
 							#ifdef OR_FEED_RGB_MAP
 								generateExperienceWith2DRGBMap(rgbMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, currentExperience, objectDecision);
@@ -4323,7 +4323,7 @@ ANNneuronContainer* ORmethodClass::initialiseNormalisedSnapshotNeuralNetwork(con
 {
 	ANNneuronContainer* firstOutputNeuronInNetwork;
 
-	long numberOfLayers = OR_NUMBER_OF_NN_LAYERS;
+	int64_t numberOfLayers = OR_NUMBER_OF_NN_LAYERS;
 	int layerDivergenceType = LAYER_DIVERGENCE_TYPE_LINEAR_CONVERGING_SQUARE2D;
 	double meanLayerDivergenceFactor = 1.0;
 	double probabilityANNneuronConnectionWithPreviousLayerNeuron = 1.0;

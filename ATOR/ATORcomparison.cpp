@@ -26,7 +26,7 @@
  * File Name: ATORcomparison.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2018 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m13e 22-February-2018
+ * Project Version: 3m14a 20-April-2018
  * /
  *******************************************************************************/
 
@@ -53,11 +53,11 @@ static ORfeatureContainer trainfeatureImageAverageColourCompBinArray[OR_IMAGE_CO
 #endif
 
 //#ifdef OR_PRINT_ALGORITHM_AND_TIME_DETAILS
-long time5aNormalisedSnapshotComparisonLoadComparisonDataTotal = 0.0;
-long time5aNormalisedSnapshotComparisonLoadComparisonDataIndex = 0.0;
+int64_t time5aNormalisedSnapshotComparisonLoadComparisonDataTotal = 0.0;
+int64_t time5aNormalisedSnapshotComparisonLoadComparisonDataIndex = 0.0;
 
-long time5bNormalisedSnapshotComparisonCompareSnapshotDataTotal = 0.0;
-long time5bNormalisedSnapshotComparisonCompareSnapshotDataIndex = 0.0;
+int64_t time5bNormalisedSnapshotComparisonCompareSnapshotDataTotal = 0.0;
+int64_t time5bNormalisedSnapshotComparisonCompareSnapshotDataIndex = 0.0;
 //#endif
 
 
@@ -310,7 +310,7 @@ double ORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPolys
 		string ICRheader = "";
 		if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3m13e 22-February-2018<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3m14a 20-April-2018<p>";
 		}
 		else
 		{
@@ -818,7 +818,7 @@ double ORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPolys
 					cout << "\t\t\t  testZoomIndex = " << testZoomIndex << endl;
 				}
 
-				long time5zNormalisedSnapshotComparisonSingleViewTestStart;
+				int64_t time5zNormalisedSnapshotComparisonSingleViewTestStart;
 				if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 				{
 					#ifdef TEST_VIEWTIME_SPEED_Z_FOR_WEBSITE
@@ -974,7 +974,7 @@ double ORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPolys
 						if(OR_IMAGE_COMPARISON_SQL_GET_TEST_DATA_FROM_SQL)
 						{
 							currentTestFeature = new ORfeature();
-							long testID = 0;							//this will be used in the future to shortcut identify test snapshots for a particular object at a particular viewindex and zoom that have been recently added to database and require comparision against the entire database
+							int64_t testID = 0;							//this will be used in the future to shortcut identify test snapshots for a particular object at a particular viewindex and zoom that have been recently added to database and require comparision against the entire database
 							string sqlDatabaseTestTableName = OR_MYSQL_TABLE_NAME_TEST;			//this will be used in the future to shortcut identify test snapshots for a particular object at a particular viewindex and zoom that have been recently added to database and require comparision against the entire database
 							bool ignoreOTfeaturestest;
 							if(dimension == OR_METHOD2DOD_DIMENSIONS)
@@ -1206,7 +1206,7 @@ double ORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPolys
 
 										int geoxBin[2];
 										int geoyBin[2];
-										long geoxybin = 0.0;
+										int64_t geoxybin = 0.0;
 
 										geoxBin[0] = x;
 										geoyBin[0] = y;
@@ -1536,7 +1536,7 @@ double ORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPolys
 					#endif
 										#ifndef TEST_VIEWTIME_SPEED_Z_FOR_WEBSITE_OLD_ADDITIONAL
 
-											long time5aNormalisedSnapshotComparisonLoadComparisonDataStart;
+											int64_t time5aNormalisedSnapshotComparisonLoadComparisonDataStart;
 											if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 											{
 												if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
@@ -1616,7 +1616,7 @@ double ORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPolys
 												{
 													cout << "\t\t\t end: 5a. normalised snapshot comparison - load snapshot data for comparison" << endl;
 												}
-												long time5aNormalisedSnapshotComparisonLoadComparisonDataEnd;
+												int64_t time5aNormalisedSnapshotComparisonLoadComparisonDataEnd;
 												time5aNormalisedSnapshotComparisonLoadComparisonDataEnd = SHAREDvars.getTimeAsLong();
 												time5aNormalisedSnapshotComparisonLoadComparisonDataTotal = time5aNormalisedSnapshotComparisonLoadComparisonDataTotal + time5aNormalisedSnapshotComparisonLoadComparisonDataEnd-time5aNormalisedSnapshotComparisonLoadComparisonDataStart;
 												time5aNormalisedSnapshotComparisonLoadComparisonDataIndex ++;
@@ -1626,7 +1626,7 @@ double ORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPolys
 												}
 											}
 
-											long time5bNormalisedSnapshotComparisonCompareSnapshotDataStart;
+											int64_t time5bNormalisedSnapshotComparisonCompareSnapshotDataStart;
 											if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 											{
 												if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
@@ -1740,7 +1740,7 @@ double ORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPolys
 												{
 													cout << "\t\t\t end: 5b. normalised snapshot comparison - compare snapshot data" << endl;
 												}
-												long time5bNormalisedSnapshotComparisonCompareSnapshotDataEnd;
+												int64_t time5bNormalisedSnapshotComparisonCompareSnapshotDataEnd;
 												time5bNormalisedSnapshotComparisonCompareSnapshotDataEnd = SHAREDvars.getTimeAsLong();
 												time5bNormalisedSnapshotComparisonCompareSnapshotDataTotal = time5bNormalisedSnapshotComparisonCompareSnapshotDataTotal + time5bNormalisedSnapshotComparisonCompareSnapshotDataEnd-time5bNormalisedSnapshotComparisonCompareSnapshotDataStart;
 												time5bNormalisedSnapshotComparisonCompareSnapshotDataIndex++;
@@ -2174,9 +2174,9 @@ double ORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPolys
 					#ifdef TEST_VIEWTIME_SPEED_Z_FOR_WEBSITE
 					cout << "\t\t\t end: 5z. normalised snapshot comparison - single view speed test (for website)" << endl;
 					#endif
-					long time5zNormalisedSnapshotComparisonSingleViewTestEnd;
+					int64_t time5zNormalisedSnapshotComparisonSingleViewTestEnd;
 					time5zNormalisedSnapshotComparisonSingleViewTestEnd = SHAREDvars.getTimeAsLong();
-					long time5zNormalisedSnapshotComparisonSingleViewTestTotal = time5zNormalisedSnapshotComparisonSingleViewTestEnd-time5zNormalisedSnapshotComparisonSingleViewTestStart;
+					int64_t time5zNormalisedSnapshotComparisonSingleViewTestTotal = time5zNormalisedSnapshotComparisonSingleViewTestEnd-time5zNormalisedSnapshotComparisonSingleViewTestStart;
 					//time5bNormalisedSnapshotComparisonCompareSnapshotDataIndex++;
 					#ifdef TEST_VIEWTIME_SPEED_Z_FOR_WEBSITE
 					cout << "\t\t\t time5zNormalisedSnapshotComparisonSingleViewTest = " << (double)(time5zNormalisedSnapshotComparisonSingleViewTestEnd-time5zNormalisedSnapshotComparisonSingleViewTestStart)/CLOCKS_PER_SEC << endl;
@@ -2513,7 +2513,7 @@ void ORcomparisonClass::readDCTcoeffIndividualArraysAndConvertToConcatonatedSign
 		LDjpeg.readVerySmallHighlyCompressedJPEGfileAndStoreDCTcoefficients(*rgbMapSmallFacingPolyFileNameJPEG, dctCoeffArrayY, dctCoeffArrayYcr, dctCoeffArrayYcb, dctCoeffArrayHeight, dctCoeffArrayWidth, printOutput);
 	}
 
-	//long binnedAllDCTCoeff64BitValue = convertDCTCoeffIndividualArraysToBinnedAllDCTCoeff64BitValue(dctCoeffArrayY, dctCoeffArrayYcr, dctCoeffArrayYcb, concatonatedSignedDctCoeffArrayRequirement);	//may not be used here
+	//int64_t binnedAllDCTCoeff64BitValue = convertDCTCoeffIndividualArraysToBinnedAllDCTCoeff64BitValue(dctCoeffArrayY, dctCoeffArrayYcr, dctCoeffArrayYcb, concatonatedSignedDctCoeffArrayRequirement);	//may not be used here
 	convertDCTcoeffIndividualArraysToConcatonatedSignedDCTcoeffArray(dctCoeffArrayY, dctCoeffArrayYcr, dctCoeffArrayYcb, concatonatedSignedDctCoeffArrayRequirement);
 
 }

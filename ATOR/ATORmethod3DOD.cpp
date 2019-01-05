@@ -26,7 +26,7 @@
  * File Name: ATORmethod3DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2018 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m13e 22-February-2018
+ * Project Version: 3m14a 20-April-2018
  * Notes: NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  * /
  *******************************************************************************/
@@ -36,7 +36,7 @@
 
 void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, ORpolygon* currentPolygonInList, const int side, const bool first, ORfeature* firstFeatureInList)
 {
-	long time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonStart;
+	int64_t time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonStart;
 	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
@@ -324,7 +324,7 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 		{
 			cout << "\t\t\t\t end: 3ai. 3DOD normalised snapshot generation - transform data wrt polygon - matrix calc" << endl;
 		}
-		long time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonEnd;
+		int64_t time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonEnd;
 		time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonEnd = SHAREDvars.getTimeAsLong();
 		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
 		{
