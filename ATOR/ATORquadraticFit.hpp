@@ -26,7 +26,7 @@
  * File Name: ATORquadraticFit.hpp (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2019 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3m16b 24-April-2019
+ * Project Version: 3m16c 24-April-2019
  * /
  *******************************************************************************/
 

@@ -26,7 +26,7 @@
  * File Name: ATORdatabaseFileIO.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2019 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3m16b 24-April-2019
+ * Project Version: 3m16c 24-April-2019
  * /
  *******************************************************************************/
 
