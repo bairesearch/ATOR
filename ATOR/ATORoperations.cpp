@@ -26,7 +26,7 @@
  * File Name: ATORoperations.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3n2a 10-March-2020
+ * Project Version: 3n3a 28-May-2020
  * /
  *******************************************************************************/
 
