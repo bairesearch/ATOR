@@ -26,7 +26,7 @@
  * File Name: ATORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3n5a 23-July-2020
+ * Project Version: 3n6a 01-August-2020
  * /
  *******************************************************************************/
 
@@ -320,7 +320,7 @@ int main(const int argc,const char* *argv)
 
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-version"))
 	{
-		cerr << "ATOR.exe - Project Version: 3n5a 23-July-2020" << endl;
+		cerr << "ATOR.exe - Project Version: 3n6a 01-August-2020" << endl;
 		exit(EXIT_OK);
 	}
 
