@@ -26,7 +26,7 @@
  * File Name: ATORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3n7a 17-August-2020
+ * Project Version: 3n7b 17-August-2020
  * Notes: NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  * /
  *******************************************************************************/
@@ -4218,25 +4218,25 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 								int64_t objectDecision = polygonIndex*numSidesPerPolygon + side;
 
 							#ifdef OR_FEED_RGB_MAP
-								generateExperienceWith2DRGBMap(rgbMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, currentExperience, objectDecision);
+								generateExperienceWith2DrgbMap(rgbMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, currentExperience, objectDecision);
 							#elif defined OR_FEED_LUMINOSITY_MAP
-								generateExperienceWith2DMap(luminosityMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, LUMINOSITY_MAP_MAX_LUMINOSITY_VALUE, currentExperience, objectDecision);
+								generateExperienceWith2Dmap(luminosityMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, LUMINOSITY_MAP_MAX_LUMINOSITY_VALUE, currentExperience, objectDecision);
 							#elif defined OR_FEED_LUMINOSITY_BOOLEAN_MAP
-								generateExperienceWith2DBooleanMap(luminosityBooleanMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, currentExperience, objectDecision);
+								generateExperienceWith2DbooleanMap(luminosityBooleanMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, currentExperience, objectDecision);
 							#elif defined OR_FEED_LUMINOSITY_CONTRAST_MAP
-								generateExperienceWith2DMap(luminosityContrastMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, CONTRAST_MAP_MAX_CONTRAST_VALUE, currentExperience, objectDecision);
+								generateExperienceWith2Dmap(luminosityContrastMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, CONTRAST_MAP_MAX_CONTRAST_VALUE, currentExperience, objectDecision);
 							#elif defined OR_FEED_LUMINOSITY_CONTRAST_BOOLEAN_MAP
-								generateExperienceWith2DBooleanMap(luminosityContrastBooleanMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, currentExperience, objectDecision);
+								generateExperienceWith2DbooleanMap(luminosityContrastBooleanMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, currentExperience, objectDecision);
 							#elif defined OR_FEED_DEPTH_MAP_3DONLY
-								generateExperienceWith2DMap(depthMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, ESTIMATE_MAX_DEPTH_T_REAL, currentExperience, objectDecision);
+								generateExperienceWith2Dmap(depthMapFacingPoly, imageWidthFacingPoly, imageHeightFacingPoly, ESTIMATE_MAX_DEPTH_T_REAL, currentExperience, objectDecision);
 							#elif defined OR_FEED_DEPTH_CONTRAST_MAP_3DONLY
-								generateExperienceWith2DMap(depthContrastMap, imageWidthFacingPoly, imageHeightFacingPoly, (ESTIMATE_MAX_DEPTH_T_REAL*DEPTH_CONTRAST_FRACTION_THRESHOLD), currentExperience, objectDecision);
+								generateExperienceWith2Dmap(depthContrastMap, imageWidthFacingPoly, imageHeightFacingPoly, (ESTIMATE_MAX_DEPTH_T_REAL*DEPTH_CONTRAST_FRACTION_THRESHOLD), currentExperience, objectDecision);
 							#elif defined OR_FEED_DEPTH_CONTRAST_BOOLEAN_MAP_3DONLY
-								generateExperienceWith2DBooleanMap(depthContrastBooleanMap, imageWidthFacingPoly, imageHeightFacingPoly, currentExperience, objectDecision);
+								generateExperienceWith2DbooleanMap(depthContrastBooleanMap, imageWidthFacingPoly, imageHeightFacingPoly, currentExperience, objectDecision);
 							#elif defined OR_FEED_DEPTH_GRADIENT_CONTRAST_MAP_3DONLY
-								generateExperienceWith2DMap(depthGradientContrastMap, imageWidthFacingPoly, imageHeightFacingPoly, (ESTIMATE_MAX_DEPTH_GRADIENT_CONTRAST*DEPTH_GRADIENT_CONTRAST_FRACTION_THRESHOLD), currentExperience, objectDecision);
+								generateExperienceWith2Dmap(depthGradientContrastMap, imageWidthFacingPoly, imageHeightFacingPoly, (ESTIMATE_MAX_DEPTH_GRADIENT_CONTRAST*DEPTH_GRADIENT_CONTRAST_FRACTION_THRESHOLD), currentExperience, objectDecision);
 							#elif defined OR_FEED_DEPTH_GRADIENT_CONTRAST_BOOLEAN_MAP_3DONLY
-								generateExperienceWith2DBooleanMap(depthGradientContrastBooleanMap, imageWidthFacingPoly, imageHeightFacingPoly, currentExperience, objectDecision);
+								generateExperienceWith2DbooleanMap(depthGradientContrastBooleanMap, imageWidthFacingPoly, imageHeightFacingPoly, currentExperience, objectDecision);
 							#else
 								cerr << "Error: no feed defined" << endl;
 								exit(EXIT_ERROR);
