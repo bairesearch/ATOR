@@ -26,7 +26,7 @@
  * File Name: ATORglobalDefs.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3n8a 09-September-2020
+ * Project Version: 3n9a 11-September-2020
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  * /
  *
@@ -794,7 +794,7 @@
  *		(Linux Only)
  *		open SHAREDglobalDefs.h,
  *			ensure #define LINUX is added
- *			ensure only #define COMPILE_OR is uncommented
+ *			ensure only #define COMPILE_ATOR is uncommented
  *		cp makefile.OR makefile
  *		./clear.bat (rm* .o)
  *		make
@@ -802,7 +802,7 @@
  *		(Windows Only)
  *		open SHAREDglobalDefs.h
  *			ensure #define LINUX is commented out
- *			ensure only #define COMPILE_OR is uncommented
+ *			ensure only #define COMPILE_ATOR is uncommented
  *		Open OR.sln
  *		Build All
  *

@@ -26,7 +26,7 @@
  * File Name: ATORmethod.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3n8a 09-September-2020
+ * Project Version: 3n9a 11-September-2020
  * /
  *******************************************************************************/
 
@@ -60,7 +60,7 @@
 
 
 /*
-#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+#ifdef OR_USE_ATOR_NEURAL_NETWORK_COMPARITOR
 	#include "ANNexperienceClass.hpp"
 	#include "ANNneuronClass.hpp"
 #endif
@@ -593,7 +593,7 @@ class ORmethodClass
 		private: bool ORmethodExit();
 
 
-	#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+	#ifdef OR_USE_ATOR_NEURAL_NETWORK_COMPARITOR
 	//bool generateNormalisedSnapshotsExperienceListUsingPolyList(LDreference* firstReferenceInInterpolatedMesh, ORpolygon* firstPolygonInList, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrainOrTest, ANNexperience* firstExperienceInList, int* numberOfTrainOrTestPolys, const int trainOrTest, const int viewIndex, const string objectName, const int dimension, ORfeature* firstFeatureInList);
 		private: ANNneuronContainer* initialiseNormalisedSnapshotNeuralNetwork(const ANNneuronContainer* firstInputNeuronInNetwork, int* numberOfInputNeurons, const int numberOfOutputNeurons, int imageWidth, int imageHeight);
 		private: double compareNormalisedSnapshotExperienceListWithNeuralNetwork(ANNexperience* firstExperienceInTestList, const ANNneuronContainer* firstInputNeuronInNetwork, const ANNneuronContainer* firstOutputNeuronInNetwork, const int numberOfInputNeurons, const int numberOfOutputNeurons, const int numberOfTrainPolySides);

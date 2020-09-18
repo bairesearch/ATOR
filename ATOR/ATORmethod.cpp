@@ -26,7 +26,7 @@
  * File Name: ATORmethod.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3n8a 09-September-2020
+ * Project Version: 3n9a 11-September-2020
  * Notes: NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  * /
  *******************************************************************************/
@@ -38,7 +38,7 @@
 #endif
 
 /*
-#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+#ifdef OR_USE_ATOR_NEURAL_NETWORK_COMPARITOR
 	#include "ANNglobalDefs.hpp"
 	#include "ANNFormation.hpp"
 	#include "ANNTraining.hpp"
@@ -145,7 +145,7 @@ bool ORmethodClass::ORTHmethod(int dimension, const int numberOfTrainObjects, st
 	}
 
 
-	#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+	#ifdef OR_USE_ATOR_NEURAL_NETWORK_COMPARITOR
 	if(dimension == OR_METHOD2DOD_DIMENSIONS)
 	{
 		setNoiseArraysMethod2DOD();		//Advded 5 Nov 08
@@ -158,7 +158,7 @@ bool ORmethodClass::ORTHmethod(int dimension, const int numberOfTrainObjects, st
 
 	string testUI2;
 
-	#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+	#ifdef OR_USE_ATOR_NEURAL_NETWORK_COMPARITOR
 	ANNexperience* firstExperienceInTrainList = new ANNexperience();
 	ANNexperience* firstExperienceInTestList = new ANNexperience();
 	#endif
@@ -169,7 +169,7 @@ bool ORmethodClass::ORTHmethod(int dimension, const int numberOfTrainObjects, st
 		result = false;
 	}
 
-	#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+	#ifdef OR_USE_ATOR_NEURAL_NETWORK_COMPARITOR
 	//int numSidesPerPolygon = OR_METHOD_POLYGON_NUMBER_OF_SIDES;
 	ANNneuronContainer* firstInputNeuronInNetwork = new ANNneuronContainer();
 	ANNneuronContainer* firstOutputNeuronInNetwork;
@@ -393,7 +393,7 @@ bool ORmethodClass::ORmethodCompareTestWithTrain(const int dimension, const int 
 	}
 
 	double averageMatchErrorAcrossAllObjects;
-#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+#ifdef OR_USE_ATOR_NEURAL_NETWORK_COMPARITOR
 	averageMatchErrorAcrossAllObjects = compareNormalisedSnapshotExperienceListWithNeuralNetwork(firstExperienceInTestList, firstInputNeuronInNetwork, firstOutputNeuronInNetwork, numberOfInputNeurons, numberOfOutputNeurons, numberOfTrainPolys);
 #else
 	#ifdef OR_IMAGE_COMPARISON_SQL
@@ -995,7 +995,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 			}
 				//the following is required to be used instead for shapes with rounded edges [eg cylinders] - ie shapes with large numbers of polygons;
 				//void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int imageHeight, double* depthMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3])
-			#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+			#ifdef OR_USE_ATOR_NEURAL_NETWORK_COMPARITOR
 			if(!generateNormalisedSnapshotsExperienceListUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, firstExperienceInList, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+0*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList))
 			#else
 			if(!generateNormalisedSnapshotsUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+0*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList, numberOfZoomIndicies))
@@ -1162,7 +1162,7 @@ bool ORmethodClass::ORmethodTrainOrTest(int dimension, const int numberOfObjects
 
 				//the following is required to be used instead for shapes with rounded edges [eg cylinders] - ie shapes with large numbers of polygons;
 				//void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int imageHeight, double* depthMap, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3])
-			#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+			#ifdef OR_USE_ATOR_NEURAL_NETWORK_COMPARITOR
 			if(!generateNormalisedSnapshotsExperienceListUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, firstExperienceInList, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+viewIndex*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList))
 			#else
 			if(!generateNormalisedSnapshotsUsingPolyList(firstReferenceInInterpolatedMesh, firstPolygonInList, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, &(numberOfPolys[o*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies+viewIndex*numberOfZoomIndicies]), trainOrTest, viewIndex, objectNameArray[o], dimension, firstFeatureInList, numberOfZoomIndicies))
@@ -3019,7 +3019,7 @@ bool ORmethodClass::addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, un
 
 
 	//this code assumes Test Plan 1; a) no parallax processing and b) all virtual [no real life data]
-#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+#ifdef OR_USE_ATOR_NEURAL_NETWORK_COMPARITOR
 //bool generateNormalisedSnapshotsExperienceListUsingPolyList(LDreference* firstReferenceInInterpolatedMesh, ORpolygon* firstPolygonInList, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrainOrTest, ANNexperience* firstExperienceInList, int* numberOfTrainOrTestPolys, const int trainOrTest, const int viewIndex, const string objectName, const int dimension, ORfeature* firstFeatureInList)
 #else
 bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstReferenceInInterpolatedMesh, ORpolygon firstPolygonInList[], int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrainOrTest, int numberOfTrainOrTestPolys[], const int trainOrTest, const int viewIndex, const string objectName, const int dimension, ORfeature* firstFeatureInList, const int numberOfZoomIndicies)
@@ -3240,7 +3240,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 
 
 
-	#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+	#ifdef OR_USE_ATOR_NEURAL_NETWORK_COMPARITOR
 	ANNexperience* currentExperience = firstExperienceInList;
 	#endif
 
@@ -3735,7 +3735,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 								}
 
 
-							#ifndef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+							#ifndef OR_USE_ATOR_NEURAL_NETWORK_COMPARITOR
 
 								if(performCrop)
 								{
@@ -4213,7 +4213,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 								#endif
 							#endif
 
-								#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+								#ifdef OR_USE_ATOR_NEURAL_NETWORK_COMPARITOR
 									//generate nn experience for snapshot
 								int64_t objectDecision = polygonIndex*numSidesPerPolygon + side;
 
@@ -4317,7 +4317,7 @@ bool ORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firstR
 
 
 
-#ifdef OR_USE_OR_NEURAL_NETWORK_COMPARITOR
+#ifdef OR_USE_ATOR_NEURAL_NETWORK_COMPARITOR
 
 ANNneuronContainer* ORmethodClass::initialiseNormalisedSnapshotNeuralNetwork(const ANNneuronContainer* firstInputNeuronInNetwork, int* numberOfInputNeurons, const int numberOfOutputNeurons, int imageWidth, int imageHeight)
 {
