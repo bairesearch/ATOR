@@ -26,7 +26,7 @@
  * File Name: ATORpolygonList.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3o2a 08-November-2020
+ * Project Version: 3o3a 16-November-2020
  * /
  *******************************************************************************/
 
