@@ -26,7 +26,7 @@
  * File Name: ATORTHimageCategorisationNN.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3n10a 31-October-2020
+ * Project Version: 3o1a 05-November-2020
  * Description: Test Harness for OR Image Categorisation NN method (not yet implemented)
  * /
  *******************************************************************************/
