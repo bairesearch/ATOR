@@ -26,7 +26,7 @@
  * File Name: ATORquadraticFit.cpp (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3o1a 05-November-2020
+ * Project Version: 3o2a 08-November-2020
  * Requirements: Assumes that depth information is less accurate than image information
  * /
  *******************************************************************************/
@@ -35,7 +35,7 @@
 #include "ATORquadraticFit.hpp"
 
 
-#ifdef OR_QUADRATIC_FIT_VERBOSE
+#ifdef ATOR_QUADRATIC_FIT_VERBOSE
 #endif
 
 #ifndef LINUX
@@ -46,7 +46,7 @@ int isnan(double d)
 #endif
 
 
-ORQFzeroCrossing::ORQFzeroCrossing(void)
+ATORQFzeroCrossing::ATORQFzeroCrossing(void)
 {
 	x = 0;	//x pos pixel
 	y = 0;	//y pos pixel
@@ -66,11 +66,11 @@ ORQFzeroCrossing::ORQFzeroCrossing(void)
 
 
 	depth = 0.0;	//for 3DOD only
-	#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
+	#ifndef ATOR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
 	nearbyHitValueX = 0;
 	nearbyHitValueY = 0;
 	#endif
-	//#ifdef OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP
+	//#ifdef ATOR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP
 	point.x = 0.0;
 	point.y = 0.0;
 	point.z = 0.0;
@@ -80,7 +80,7 @@ ORQFzeroCrossing::ORQFzeroCrossing(void)
 	next = NULL;
 }
 
-ORQFzeroCrossing::~ORQFzeroCrossing()
+ATORQFzeroCrossing::~ATORQFzeroCrossing()
 {
 	if(next != NULL)
 	{
@@ -97,12 +97,12 @@ static int globalImageWidth;
 
 
 
-void ORquadraticFitClass::generateZeroCrossingList(const double* luminosityContrastMap, const int imageWidth, const int imageHeight, ORQFzeroCrossing* firstZeroCrossingInList, const bool edgeDetect, const double sensitivity, const int dimension, const double* pointMap, const double* depthMap, const int zoom, const int interpixelMapType)
+void ATORquadraticFitClass::generateZeroCrossingList(const double* luminosityContrastMap, const int imageWidth, const int imageHeight, ATORQFzeroCrossing* firstZeroCrossingInList, const bool edgeDetect, const double sensitivity, const int dimension, const double* pointMap, const double* depthMap, const int zoom, const int interpixelMapType)
 {
 	globalImageWidth = imageWidth;
 
 	bool createEnhancedImageDisplayingQuadraticFitInfo;
-	#ifdef OR_QUADRATIC_FIT_VERBOSE
+	#ifdef ATOR_QUADRATIC_FIT_VERBOSE
 	createEnhancedImageDisplayingQuadraticFitInfo = true;
 	#else
 	createEnhancedImageDisplayingQuadraticFitInfo = false;
@@ -112,7 +112,7 @@ void ORquadraticFitClass::generateZeroCrossingList(const double* luminosityContr
 
 }
 
-double ORquadraticFitClass::calculateAreaOfOneSideOfEdgeInPixel(const int xDevPointOnSide, const int yDevPointOnSide, const double zeroCrossingValueX, const double zeroCrossingValueY, const double alpha)
+double ATORquadraticFitClass::calculateAreaOfOneSideOfEdgeInPixel(const int xDevPointOnSide, const int yDevPointOnSide, const double zeroCrossingValueX, const double zeroCrossingValueY, const double alpha)
 {
 	bool areaIsJustTriangle = true;
 	//calculate area inside of triangle made up by edge (areaIsJustTriangle) [+ rect adjacent this if it exists (!areaIsJustTriangle)]
@@ -506,38 +506,38 @@ double ORquadraticFitClass::calculateAreaOfOneSideOfEdgeInPixel(const int xDevPo
  ****/
 
 //pointMap not currently used
-void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnhancedImageDisplayingQuadraticFitInfo, ORQFzeroCrossing* currentZeroCrossingInList, const int imageWidth, const int imageHeight, const double luminosityContrastMap[], const double sensitivity, const int dimension, const double* pointMap, const double* depthMap, const int zoom, const int interpixelMapType)
+void ATORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnhancedImageDisplayingQuadraticFitInfo, ATORQFzeroCrossing* currentZeroCrossingInList, const int imageWidth, const int imageHeight, const double luminosityContrastMap[], const double sensitivity, const int dimension, const double* pointMap, const double* depthMap, const int zoom, const int interpixelMapType)
 {
 	int kernelWidthForegroundCheck;
 	int kernelHeightForegroundCheck;
 	if(interpixelMapType == INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT)
 	{
-		//without OR_USE_CONTRAST_CALC_METHOD_C
+		//without ATOR_USE_CONTRAST_CALC_METHOD_C
 		kernelWidthForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_WIDTH_NO_INTERPIXEL;
 		kernelHeightForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_WIDTH_NO_INTERPIXEL;
 	}
 	else if(interpixelMapType == INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST)
 	{
-		//such as luminosityContrast map with OR_USE_CONTRAST_CALC_METHOD_C
+		//such as luminosityContrast map with ATOR_USE_CONTRAST_CALC_METHOD_C
 		kernelWidthForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_WIDTH_INTERPIXEL;
 		kernelHeightForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_HEIGHT_INTERPIXEL;
 	}
 	else if(interpixelMapType == INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST)
 	{
-		//such as gradientContrast or pointNormalContrast map with OR_USE_CONTRAST_CALC_METHOD_C
+		//such as gradientContrast or pointNormalContrast map with ATOR_USE_CONTRAST_CALC_METHOD_C
 		kernelWidthForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_WIDTH_NO_INTERPIXEL;
 		kernelHeightForegroundCheck = CONTRAST_MAP_GENERATION_KERNEL_HEIGHT_NO_INTERPIXEL;
 	}
 
 
-	#ifdef OR_QUADRATIC_FIT_VERBOSE
+	#ifdef ATOR_QUADRATIC_FIT_VERBOSE
 
 	#define ENHANCEMENT_FACTOR (5)	//must be odd number
 	int enhancementFactor = ENHANCEMENT_FACTOR;
 	int enhancedImageWidth = imageWidth*enhancementFactor;
 	int enhancedImageHeight = imageHeight*enhancementFactor;
 	int enhancedImageSize = enhancedImageWidth*enhancedImageHeight;
-	unsigned char* quadraticFitMapEnhancedRGB = new unsigned char[enhancedImageSize*RGB_NUM];
+	uchar* quadraticFitMapEnhancedRGB = new uchar[enhancedImageSize*RGB_NUM];
 
 	if(createEnhancedImageDisplayingQuadraticFitInfo)
 	{
@@ -630,7 +630,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 				}
 			}
 
-		#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS
+		#ifdef ATOR_USE_FOREGROUND_DEPTH_CHECKS
 			//3DOD only;
 			vec xyzNearbyPointOnObject;
 			xyzNearbyPointOnObject.x = 0.0;
@@ -638,9 +638,9 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 			xyzNearbyPointOnObject.z = 0.0;
 			double minDepthForNearbyPoints = REALLY_FAR_AWAY;
 
-			if((centreContrastThreshold == true) && (dimension == OR_METHOD3DOD_DIMENSIONS))
+			if((centreContrastThreshold == true) && (dimension == ATOR_METHOD3DOD_DIMENSIONS))
 			{
-				minDepthForNearbyPoints = ORpixelMaps.calculateForegroundMinimumDepthWithinKernel(x+(QUADRATIC_FIT_KERNEL_SIZE/2), y+(QUADRATIC_FIT_KERNEL_SIZE/2), imageWidth, imageHeight, kernelWidthForegroundCheck, kernelHeightForegroundCheck, depthMap, &xyzNearbyPointOnObject, zoom);
+				minDepthForNearbyPoints = ATORpixelMaps.calculateForegroundMinimumDepthWithinKernel(x+(QUADRATIC_FIT_KERNEL_SIZE/2), y+(QUADRATIC_FIT_KERNEL_SIZE/2), imageWidth, imageHeight, kernelWidthForegroundCheck, kernelHeightForegroundCheck, depthMap, &xyzNearbyPointOnObject, zoom);
 			}
 		#endif
 
@@ -673,7 +673,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 
 				if(edgeDetect)
 				{
-					#ifndef OR_QUADRATIC_FIT_EDGE_RELAXED_REQ
+					#ifndef ATOR_QUADRATIC_FIT_EDGE_RELAXED_REQ
 					if(!checkForTotalPositiveCurvature(coefficient[3], coefficient[4]))
 					{
 					#endif
@@ -684,7 +684,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 							passZeroCrossingTest = true;
 						}
 
-						#ifdef OR_QUADRATIC_FIT_EDGE_RELAXED_REQ_2
+						#ifdef ATOR_QUADRATIC_FIT_EDGE_RELAXED_REQ_2
 						bool zeroCrossingIllegal = false;
 						if(!passZeroCrossingTest)
 						{
@@ -711,7 +711,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 
 						if(passZeroCrossingTest)
 						{
-							#ifdef OR_QUADRATIC_FIT_VERBOSE
+							#ifdef ATOR_QUADRATIC_FIT_VERBOSE
 							if(createEnhancedImageDisplayingQuadraticFitInfo)
 							{
 
@@ -762,7 +762,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 									}
 								}
 
-								#ifdef OR_QUADRATIC_FIT_EDGE_RELAXED_REQ_2
+								#ifdef ATOR_QUADRATIC_FIT_EDGE_RELAXED_REQ_2
 								if(zeroCrossingIllegal)
 								{
 									quadraticFitMapEnhancedRGB[(((y+(QUADRATIC_FIT_KERNEL_SIZE/2))*enhancementFactor)+int(int(enhancementFactor/2) + int(currentZeroCrossingInList->zeroCrossingValueY*enhancementFactor)))*enhancedImageWidth*RGB_NUM + (((x+(QUADRATIC_FIT_KERNEL_SIZE/2))*enhancementFactor) + int(int(enhancementFactor/2) + int(currentZeroCrossingInList->zeroCrossingValueX*enhancementFactor)))*RGB_NUM + RGB_RED] = QUADRATIC_FIT_COLOUR_ZERO_CROSSING_ILLEGAL_R;
@@ -775,20 +775,20 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 									quadraticFitMapEnhancedRGB[(((y+(QUADRATIC_FIT_KERNEL_SIZE/2))*enhancementFactor)+int(int(enhancementFactor/2) + int(currentZeroCrossingInList->zeroCrossingValueY*enhancementFactor)))*enhancedImageWidth*RGB_NUM + (((x+(QUADRATIC_FIT_KERNEL_SIZE/2))*enhancementFactor) + int(int(enhancementFactor/2) + int(currentZeroCrossingInList->zeroCrossingValueX*enhancementFactor)))*RGB_NUM + RGB_RED] = QUADRATIC_FIT_COLOUR_ZERO_CROSSING_R;
 				 					quadraticFitMapEnhancedRGB[(((y+(QUADRATIC_FIT_KERNEL_SIZE/2))*enhancementFactor)+int(int(enhancementFactor/2) + int(currentZeroCrossingInList->zeroCrossingValueY*enhancementFactor)))*enhancedImageWidth*RGB_NUM + (((x+(QUADRATIC_FIT_KERNEL_SIZE/2))*enhancementFactor) + int(int(enhancementFactor/2) + int(currentZeroCrossingInList->zeroCrossingValueX*enhancementFactor)))*RGB_NUM + RGB_GREEN] = QUADRATIC_FIT_COLOUR_ZERO_CROSSING_G;
 									quadraticFitMapEnhancedRGB[(((y+(QUADRATIC_FIT_KERNEL_SIZE/2))*enhancementFactor)+int(int(enhancementFactor/2) + int(currentZeroCrossingInList->zeroCrossingValueY*enhancementFactor)))*enhancedImageWidth*RGB_NUM + (((x+(QUADRATIC_FIT_KERNEL_SIZE/2))*enhancementFactor) + int(int(enhancementFactor/2) + int(currentZeroCrossingInList->zeroCrossingValueX*enhancementFactor)))*RGB_NUM + RGB_BLUE] = QUADRATIC_FIT_COLOUR_ZERO_CROSSING_B;
-								#ifdef OR_QUADRATIC_FIT_EDGE_RELAXED_REQ_2
+								#ifdef ATOR_QUADRATIC_FIT_EDGE_RELAXED_REQ_2
 								}
 								#endif
 							}
 							#endif
 
 
-							#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS
-							if(dimension == OR_METHOD3DOD_DIMENSIONS)	//3DOD only;
+							#ifdef ATOR_USE_FOREGROUND_DEPTH_CHECKS
+							if(dimension == ATOR_METHOD3DOD_DIMENSIONS)	//3DOD only;
 							{
 								double depthVal = RTpixelMaps.getLumOrContrastOrDepthMapValue(x*zoom, y*zoom, imageWidth*zoom, depthMap);
 								bool onObject = false;
 
-								#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+								#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 								if(!SHAREDvars.compareDoubles(depthVal, RT_RAYTRACE_NO_HIT_DEPTH_T))	//NEW 18 Nov 09 {ensures the pixel is a foreground pixel}
 								{//off object
 								#endif
@@ -797,7 +797,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 										onObject = true;
 
 									}
-								#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+								#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 								}
 								#endif
 
@@ -805,7 +805,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 								{
 
 									currentZeroCrossingInList->depth = depthVal;
-									#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
+									#ifndef ATOR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
 									currentZeroCrossingInList->nearbyHitValueX = x;
 									currentZeroCrossingInList->nearbyHitValueY = y;
 									#endif
@@ -821,7 +821,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 									cout << "minDepthForNearbyPoints = " << minDepthForNearbyPoints << endl;
 									*/
 									currentZeroCrossingInList->depth = minDepthForNearbyPoints;
-									#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
+									#ifndef ATOR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
 									currentZeroCrossingInList->nearbyHitValueX = xyzNearbyPointOnObject.x;
 									currentZeroCrossingInList->nearbyHitValueY = xyzNearbyPointOnObject.y;
 									#endif
@@ -829,12 +829,12 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 							}
 							#endif
 
-							ORQFzeroCrossing* zc = new ORQFzeroCrossing();
+							ATORQFzeroCrossing* zc = new ATORQFzeroCrossing();
 							currentZeroCrossingInList->next = zc;
 							currentZeroCrossingInList = currentZeroCrossingInList->next;
 						}
 
-					#ifndef OR_QUADRATIC_FIT_EDGE_RELAXED_REQ
+					#ifndef ATOR_QUADRATIC_FIT_EDGE_RELAXED_REQ
 					}
 					#endif
 				}
@@ -851,7 +851,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 
 						if(calculateZeroCrossingAndOrientation((x+(QUADRATIC_FIT_KERNEL_SIZE/2)), (y+(QUADRATIC_FIT_KERNEL_SIZE/2)), coefficient, edgeDetect, createEnhancedImageDisplayingQuadraticFitInfo, currentZeroCrossingInList))
 						{
-							#ifdef OR_QUADRATIC_FIT_VERBOSE
+							#ifdef ATOR_QUADRATIC_FIT_VERBOSE
 							if(createEnhancedImageDisplayingQuadraticFitInfo)
 							{
 								/*
@@ -871,13 +871,13 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 							}
 							#endif
 
-							#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS
-							if(dimension == OR_METHOD3DOD_DIMENSIONS)	//3DOD only;
+							#ifdef ATOR_USE_FOREGROUND_DEPTH_CHECKS
+							if(dimension == ATOR_METHOD3DOD_DIMENSIONS)	//3DOD only;
 							{
 								double depthVal = RTpixelMaps.getLumOrContrastOrDepthMapValue(x*zoom, y*zoom, imageWidth*zoom, depthMap);
 								bool onObject = false;
 
-								#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+								#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 								if(!SHAREDvars.compareDoubles(depthVal, RT_RAYTRACE_NO_HIT_DEPTH_T))	//NEW 18 Nov 09 {ensures the pixel is a foreground pixel}
 								{//off object
 								#endif
@@ -885,7 +885,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 									{
 										onObject = true;
 									}
-								#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+								#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 								}
 								#endif
 
@@ -893,7 +893,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 								{
 
 									currentZeroCrossingInList->depth = depthVal;
-									#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
+									#ifndef ATOR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
 									currentZeroCrossingInList->nearbyHitValueX = x;
 									currentZeroCrossingInList->nearbyHitValueY = y;
 									#endif
@@ -902,7 +902,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 								{
 
 									currentZeroCrossingInList->depth = minDepthForNearbyPoints;
-									#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
+									#ifndef ATOR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
 									currentZeroCrossingInList->nearbyHitValueX = xyzNearbyPointOnObject.x;
 									currentZeroCrossingInList->nearbyHitValueY = xyzNearbyPointOnObject.y;
 									#endif
@@ -910,7 +910,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 							}
 							#endif
 
-							ORQFzeroCrossing* zc = new ORQFzeroCrossing();
+							ATORQFzeroCrossing* zc = new ATORQFzeroCrossing();
 							currentZeroCrossingInList->next = zc;
 							currentZeroCrossingInList = currentZeroCrossingInList->next;
 						}
@@ -922,7 +922,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 		}
 	}
 
-	#ifdef OR_QUADRATIC_FIT_VERBOSE
+	#ifdef ATOR_QUADRATIC_FIT_VERBOSE
 	if(createEnhancedImageDisplayingQuadraticFitInfo)
 	{
 		if(edgeDetect)
@@ -945,7 +945,7 @@ void ORquadraticFitClass::edgiseData(const bool edgeDetect, const bool createEnh
 
 
 	//x, y are redundant
-bool ORquadraticFitClass::calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], const bool edgeDetect, const bool createEnhancedImageDisplayingQuadraticFitInfo, ORQFzeroCrossing* currentZeroCrossingInList)
+bool ATORquadraticFitClass::calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], const bool edgeDetect, const bool createEnhancedImageDisplayingQuadraticFitInfo, ATORQFzeroCrossing* currentZeroCrossingInList)
 {
 	//Summary:
 	// calculates eigen values of the C coefficient in coefficients[], an eigen vector, alpha, beta,
@@ -1025,7 +1025,7 @@ bool ORquadraticFitClass::calculateZeroCrossingAndOrientation(int x, int y, floa
 
 
 //returns float value of byte at a particular index
-float ORquadraticFitClass::getPixelFloat(const int x, const int y, const double luminosityContrastMap[])
+float ATORquadraticFitClass::getPixelFloat(const int x, const int y, const double luminosityContrastMap[])
 {
 	#ifdef EMULATE_EDGISE
 	return float((float(luminosityContrastMap[y*globalImageWidth  + x])/float(MAX_LUMINOSITY_CONTRAST))*128.0);
@@ -1044,7 +1044,7 @@ float ORquadraticFitClass::getPixelFloat(const int x, const int y, const double 
 
 
 //determines coefficients of some x, y coordinates of a frame which is being fitted
-void ORquadraticFitClass::calculateQuadraticFitCoefficients(const int x, const int y, float coefficient[], const double luminosityContrastMap[])
+void ATORquadraticFitClass::calculateQuadraticFitCoefficients(const int x, const int y, float coefficient[], const double luminosityContrastMap[])
 {
 	if(QUADRATIC_FIT_KERNEL_SIZE == QUADRATIC_FIT_KERNEL_SIZE_3X3)
 	{
@@ -1063,7 +1063,7 @@ void ORquadraticFitClass::calculateQuadraticFitCoefficients(const int x, const i
 
 
 
-void ORquadraticFitClass::calculateQuadraticFitCoefficients3x3(const int x, const int y, float coefficient[], const double luminosityContrastMap[])
+void ATORquadraticFitClass::calculateQuadraticFitCoefficients3x3(const int x, const int y, float coefficient[], const double luminosityContrastMap[])
 {
 	/*
 	@author Dr Friedrich Heitger
@@ -1107,7 +1107,7 @@ void ORquadraticFitClass::calculateQuadraticFitCoefficients3x3(const int x, cons
 
 }
 
-void ORquadraticFitClass::calculateQuadraticFitCoefficients5x5(const int x, const int y, float coefficient[], const double luminosityContrastMap[])
+void ATORquadraticFitClass::calculateQuadraticFitCoefficients5x5(const int x, const int y, float coefficient[], const double luminosityContrastMap[])
 {
 	/*
 	@author Dr Friedrich Heitger
@@ -1192,7 +1192,7 @@ void ORquadraticFitClass::calculateQuadraticFitCoefficients5x5(const int x, cons
 
 
 
-bool ORquadraticFitClass::checkForTotalPositiveCurvature(const float a3, const float a4)
+bool ATORquadraticFitClass::checkForTotalPositiveCurvature(const float a3, const float a4)
 {
 	if((a3 > 0) && (a4 > 0))
 	{
@@ -1204,7 +1204,7 @@ bool ORquadraticFitClass::checkForTotalPositiveCurvature(const float a3, const f
 	}
 }
 
-bool ORquadraticFitClass::checkForTotalNegativeCurvature(const float a3, const float a4)
+bool ATORquadraticFitClass::checkForTotalNegativeCurvature(const float a3, const float a4)
 {
 	if((a3 < 0) && (a4 < 0))
 	{
@@ -1218,7 +1218,7 @@ bool ORquadraticFitClass::checkForTotalNegativeCurvature(const float a3, const f
 }
 
 
-bool ORquadraticFitClass::checkTotalNegativeCurvatureAbovePointThreshold(const float a3, const float a4)
+bool ATORquadraticFitClass::checkTotalNegativeCurvatureAbovePointThreshold(const float a3, const float a4)
 {
 	if((a3 < A3A4_COEFFICIENT_NEGATIVE_CURVATURE_POINT_THRESHOLD) && (a4 < A3A4_COEFFICIENT_NEGATIVE_CURVATURE_POINT_THRESHOLD))
 	{
@@ -1265,7 +1265,7 @@ bool ORquadraticFitClass::checkTotalNegativeCurvatureAbovePointThreshold(const f
 
 
 
-bool ORquadraticFitClass::checkPointZeroCrossingObjectPassesThreshold(const ORQFzeroCrossing* zc)
+bool ATORquadraticFitClass::checkPointZeroCrossingObjectPassesThreshold(const ATORQFzeroCrossing* zc)
 {
 	bool passedThreshold;
 
@@ -1324,10 +1324,10 @@ bool ORquadraticFitClass::checkPointZeroCrossingObjectPassesThreshold(const ORQF
 /***
  * FOR LOW EFFICIENCY ZEROCROSSING CALCULATIONS (with passing of zeroCrossing object)
  *
- * checkEdgeZeroCrossingObjectPassesThreshold(ORQFzeroCrossing* zc)
+ * checkEdgeZeroCrossingObjectPassesThreshold(ATORQFzeroCrossing* zc)
  */
 
-bool ORquadraticFitClass::checkEdgeZeroCrossingObjectPassesThreshold(ORQFzeroCrossing* zc)
+bool ATORquadraticFitClass::checkEdgeZeroCrossingObjectPassesThreshold(ATORQFzeroCrossing* zc)
 {
 	bool passedThreshold;
 
@@ -1336,7 +1336,7 @@ bool ORquadraticFitClass::checkEdgeZeroCrossingObjectPassesThreshold(ORQFzeroCro
 	if((SHAREDvars.absDouble(zc->zeroCrossingValueX) <= ZERO_CROSSING_POSITION_THRESHOLD)
 	&& (SHAREDvars.absDouble(zc->zeroCrossingValueY) <= ZERO_CROSSING_POSITION_THRESHOLD))
 	{
-		#ifndef OR_QUADRATIC_FIT_EDGE_RELAXED_REQ
+		#ifndef ATOR_QUADRATIC_FIT_EDGE_RELAXED_REQ
 		//check the zeroCrossing is not undefined (not a number / infinite)
 		if((SHAREDvars.absDouble(zc->zeroCrossingValueX) >= 0.0)
 		&& (SHAREDvars.absDouble(zc->zeroCrossingValueY) >= 0.0))
@@ -1344,14 +1344,14 @@ bool ORquadraticFitClass::checkEdgeZeroCrossingObjectPassesThreshold(ORQFzeroCro
 		#endif
 			//check orientation and magnitude of gradient of contrast
 
-			#ifndef OR_QUADRATIC_FIT_EDGE_RELAXED_REQ
+			#ifndef ATOR_QUADRATIC_FIT_EDGE_RELAXED_REQ
 			if(checkEdgeZeroCrossingObjectContrastGradients(zc))
 			{
 			#endif
 
 				passedThreshold = true;
 
-			#ifndef OR_QUADRATIC_FIT_EDGE_RELAXED_REQ
+			#ifndef ATOR_QUADRATIC_FIT_EDGE_RELAXED_REQ
 			}
 			else
 			{	//error which creates a zeroCrossing off the edge by a factor of 1 and
@@ -1362,7 +1362,7 @@ bool ORquadraticFitClass::checkEdgeZeroCrossingObjectPassesThreshold(ORQFzeroCro
 			}
 			#endif
 
-		#ifndef OR_QUADRATIC_FIT_EDGE_RELAXED_REQ
+		#ifndef ATOR_QUADRATIC_FIT_EDGE_RELAXED_REQ
 		}
 		else
 		{
@@ -1384,10 +1384,10 @@ bool ORquadraticFitClass::checkEdgeZeroCrossingObjectPassesThreshold(ORQFzeroCro
 /***
  * FOR LOW EFFICIENCY ZEROCROSSING CALCULATIONS (with passing of zeroCrossing object)
  *
- * checkEdgeZeroCrossingObjectContrastGradients(ORQFzeroCrossing* zc)
+ * checkEdgeZeroCrossingObjectContrastGradients(ATORQFzeroCrossing* zc)
  */
 
-bool ORquadraticFitClass::checkEdgeZeroCrossingObjectContrastGradients(ORQFzeroCrossing* zc)
+bool ATORquadraticFitClass::checkEdgeZeroCrossingObjectContrastGradients(ATORQFzeroCrossing* zc)
 {
 
 	/********************THEORY***********************************************************
@@ -1606,7 +1606,7 @@ bool ORquadraticFitClass::checkEdgeZeroCrossingObjectContrastGradients(ORQFzeroC
 /********************************** Matrix Manipulation methods* **********************************/
 
 
-float ORquadraticFitClass::getSmallestEigenValue(const float eigenValue[])
+float ATORquadraticFitClass::getSmallestEigenValue(const float eigenValue[])
 {
 	float minEigenValue;
 
@@ -1626,7 +1626,7 @@ float ORquadraticFitClass::getSmallestEigenValue(const float eigenValue[])
 
 //(this is the new method of discriminating data based on where the pixel
 //solution derivative with respect to it's orientation of curvature is zero)
-void ORquadraticFitClass::calculateEdgeZeroCrossing(const float coefficient[], const float beta, float zc[])
+void ATORquadraticFitClass::calculateEdgeZeroCrossing(const float coefficient[], const float beta, float zc[])
 {
 	/********************THEORY***********************************************************
 
@@ -1696,7 +1696,7 @@ void ORquadraticFitClass::calculateEdgeZeroCrossing(const float coefficient[], c
 
 
 
-void ORquadraticFitClass::calculatePointZeroCrossing(const float coefficient[], float zc[])
+void ATORquadraticFitClass::calculatePointZeroCrossing(const float coefficient[], float zc[])
 {
 	/********************THEORY***********************************************************
 
@@ -1743,7 +1743,7 @@ void ORquadraticFitClass::calculatePointZeroCrossing(const float coefficient[], 
 //This method is specifically for Edgise Calculations
 
 	//NB this method only calculates one eigenvector as it accepts only one eigenvalue
-void ORquadraticFitClass::calculateEigenVector(const float coefficient[], const float ev, float eigenVector[])
+void ATORquadraticFitClass::calculateEigenVector(const float coefficient[], const float ev, float eigenVector[])
 {
 	/*********************THEORY**********************************************************
 
@@ -1795,7 +1795,7 @@ void ORquadraticFitClass::calculateEigenVector(const float coefficient[], const 
 
 
 //This method is specifically for Edgise Calculations
-void ORquadraticFitClass::calculateEigenValues(const float coefficient[], float ev[])
+void ATORquadraticFitClass::calculateEigenValues(const float coefficient[], float ev[])
 {
 
 

@@ -26,7 +26,7 @@
  * File Name: ATORdatabaseFileIO.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3o1a 05-November-2020
+ * Project Version: 3o2a 08-November-2020
  * /
  *******************************************************************************/
 
@@ -40,16 +40,16 @@
 #include <windows.h>
 #endif
 
-#ifdef OR_USE_DATABASE
+#ifdef ATOR_USE_DATABASE
 
 static string databaseFolderName;
 
-void ORdatabaseFileIOClass::initialiseDatabase(const string newDatabaseFolderName)
+void ATORdatabaseFileIOClass::initialiseDatabase(const string newDatabaseFolderName)
 {
 	databaseFolderName = newDatabaseFolderName;
 }
 
-bool ORdatabaseFileIOClass::DBdirectoryExists(string* folderName)
+bool ATORdatabaseFileIOClass::DBdirectoryExists(string* folderName)
 {
 	bool folderExists = SHAREDvars.directoryExists(folderName);
 	if(folderExists)
@@ -59,7 +59,7 @@ bool ORdatabaseFileIOClass::DBdirectoryExists(string* folderName)
 	return folderExists;
 }
 
-bool ORdatabaseFileIOClass::DBcreateDirectory(string* folderName)
+bool ATORdatabaseFileIOClass::DBcreateDirectory(string* folderName)
 {
 	bool result = true;
 
@@ -76,7 +76,7 @@ bool ORdatabaseFileIOClass::DBcreateDirectory(string* folderName)
 	return result;
 }
 
-bool ORdatabaseFileIOClass::DBsetCurrentDirectory(string* folderName)
+bool ATORdatabaseFileIOClass::DBsetCurrentDirectory(string* folderName)
 {
 	bool result = true;
 	SHAREDvars.setCurrentDirectory(folderName);
@@ -91,7 +91,7 @@ bool ORdatabaseFileIOClass::DBsetCurrentDirectory(string* folderName)
 	return result;
 }
 
-bool ORdatabaseFileIOClass::checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string* folderName)
+bool ATORdatabaseFileIOClass::checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string* folderName)
 {
 	bool result = true;
 	if(!DBdirectoryExists(folderName))
@@ -103,7 +103,7 @@ bool ORdatabaseFileIOClass::checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(strin
 	return result;
 }
 
-string ORdatabaseFileIOClass::DBgenerateServerDatabaseName(const string* objectName, const bool trainOrTest)
+string ATORdatabaseFileIOClass::DBgenerateServerDatabaseName(const string* objectName, const bool trainOrTest)
 {
 	string databaseName;
 	if(!trainOrTest)
@@ -112,7 +112,7 @@ string ORdatabaseFileIOClass::DBgenerateServerDatabaseName(const string* objectN
 	}
 	else
 	{
-		#ifdef OR_DATABASE_VERBOSE_FILESYSTEM_IO
+		#ifdef ATOR_DATABASE_VERBOSE_FILESYSTEM_IO
 		//cout << "entityName = " <<* entityName << endl;
 		#endif
 
@@ -126,16 +126,16 @@ string ORdatabaseFileIOClass::DBgenerateServerDatabaseName(const string* objectN
 		}
 
 		int entityFirstCharacterIndex = entityFirstCharacter - ASCII_TABLE_INDEX_OF_a;
-		#ifdef OR_DATABASE_VERBOSE_FILESYSTEM_IO
+		#ifdef ATOR_DATABASE_VERBOSE_FILESYSTEM_IO
 		//cout << "entityFirstCharacterIndex = " << entityFirstCharacterIndex << endl;
 		#endif
 		string serverName = serverNameArray[entityFirstCharacterIndex]; 	//this could be a more complex algorithm; eg serverName = (string)"/mnt/" + serverNameArray[entityFirstCharacterIndex]
-		databaseName =  serverName + OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME;
+		databaseName =  serverName + ATOR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME;
 		#else
 		databaseName = databaseFolderName;
 		#endif
 	}
-	#ifdef OR_DATABASE_VERBOSE
+	#ifdef ATOR_DATABASE_VERBOSE
 	cout << "databaseName = " << databaseName << endl;
 	#endif
 
@@ -143,42 +143,42 @@ string ORdatabaseFileIOClass::DBgenerateServerDatabaseName(const string* objectN
 }
 
 
-string ORdatabaseFileIOClass::DBgenerateFolderName(string* objectName, const bool trainOrTest)
+string ATORdatabaseFileIOClass::DBgenerateFolderName(string* objectName, const bool trainOrTest)
 {
 	//eg network/server/ORdatabase/e/x/a/example/...
 
 	string databaseName = DBgenerateServerDatabaseName(objectName, trainOrTest);
 	string fileName = databaseName;
 
-	#ifdef OR_DATABASE_VERBOSE_FILESYSTEM_IO
+	#ifdef ATOR_DATABASE_VERBOSE_FILESYSTEM_IO
 	cout << "1fileName = " << fileName << endl;
 	#endif
 	DBsetCurrentDirectory(&fileName);
 
 	if(!trainOrTest)
 	{
-		fileName = fileName + OR_DATABASE_TEST_FOLDER_NAME + "/";
-		string testFolderName = OR_DATABASE_TEST_FOLDER_NAME;
+		fileName = fileName + ATOR_DATABASE_TEST_FOLDER_NAME + "/";
+		string testFolderName = ATOR_DATABASE_TEST_FOLDER_NAME;
 		checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&testFolderName);
 	}
 	else
 	{
-		#ifdef OR_DATABASE_VERBOSE_FILESYSTEM_IO
+		#ifdef ATOR_DATABASE_VERBOSE_FILESYSTEM_IO
 		cout << "*objectName = " <<* objectName << endl;
 		#endif
 
-		fileName = fileName + OR_DATABASE_TRAIN_FOLDER_NAME + "/";
-		string trainFolderName = OR_DATABASE_TRAIN_FOLDER_NAME;
+		fileName = fileName + ATOR_DATABASE_TRAIN_FOLDER_NAME + "/";
+		string trainFolderName = ATOR_DATABASE_TRAIN_FOLDER_NAME;
 		checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(&trainFolderName);
 
 		int numberOfEntityNameLevels;
-		if(objectName->length() < OR_DATABASE_CONCEPT_NAME_SUBDIRECTORY_INDEX_NUMBER_OF_LEVELS)
+		if(objectName->length() < ATOR_DATABASE_CONCEPT_NAME_SUBDIRECTORY_INDEX_NUMBER_OF_LEVELS)
 		{
 			numberOfEntityNameLevels = objectName->length();
 		}
 		else
 		{
-			numberOfEntityNameLevels = OR_DATABASE_CONCEPT_NAME_SUBDIRECTORY_INDEX_NUMBER_OF_LEVELS;
+			numberOfEntityNameLevels = ATOR_DATABASE_CONCEPT_NAME_SUBDIRECTORY_INDEX_NUMBER_OF_LEVELS;
 		}
 		for(int level=0; level<numberOfEntityNameLevels; level++)
 		{
@@ -190,12 +190,12 @@ string ORdatabaseFileIOClass::DBgenerateFolderName(string* objectName, const boo
 		fileName = fileName +* objectName + "/";
 		checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(objectName);
 
-		#ifdef OR_DATABASE_VERBOSE_FILESYSTEM_IO
+		#ifdef ATOR_DATABASE_VERBOSE_FILESYSTEM_IO
 		cout << "2fileName = " << fileName << endl;
 		#endif
 	}
 
-	#ifdef OR_DATABASE_VERBOSE
+	#ifdef ATOR_DATABASE_VERBOSE
 	cout << "fileName = " << fileName << endl;
 	#endif
 
@@ -205,18 +205,18 @@ string ORdatabaseFileIOClass::DBgenerateFolderName(string* objectName, const boo
 #endif
 
 
-#ifdef OR_METHOD_GEOMETRIC_COMPARISON
-bool ORdatabaseFileIOClass::compareFeaturesListForMatch(ORfeature* testFirstFeatureInNearestFeatureList, ORfeature* trainFirstFeatureInNearestFeatureList, const int dimension, bool* exactMatchFound)
+#ifdef ATOR_METHOD_GEOMETRIC_COMPARISON
+bool ATORdatabaseFileIOClass::compareFeaturesListForMatch(ATORfeature* testFirstFeatureInNearestFeatureList, ATORfeature* trainFirstFeatureInNearestFeatureList, const int dimension, bool* exactMatchFound)
 {
 	int numberOfFeatureGeoMatches = 0;
 	int numberOfFeatureGeoBinnedExactMatches = 0;
 	bool passedGeometricCheck = false;
-	ORfeature* testcurrentFeatureInNearestFeatureList = testFirstFeatureInNearestFeatureList;
+	ATORfeature* testcurrentFeatureInNearestFeatureList = testFirstFeatureInNearestFeatureList;
 	while((testcurrentFeatureInNearestFeatureList->next != NULL) && !(testcurrentFeatureInNearestFeatureList->lastFilledFeatureInList))
 	{
 		bool testpassedDimensionCheck = true;
-		if(dimension == OR_METHOD2DOD_DIMENSIONS)
-		{//NB do not compare transformed object triangle features if OR_METHOD2DOD_DIMENSIONS, as these will always be set to a predefined object triangle
+		if(dimension == ATOR_METHOD2DOD_DIMENSIONS)
+		{//NB do not compare transformed object triangle features if ATOR_METHOD2DOD_DIMENSIONS, as these will always be set to a predefined object triangle
 			if(testcurrentFeatureInNearestFeatureList->OTpointIndex != 0)
 			{
 				testpassedDimensionCheck = false;
@@ -225,12 +225,12 @@ bool ORdatabaseFileIOClass::compareFeaturesListForMatch(ORfeature* testFirstFeat
 
 		if(testpassedDimensionCheck)
 		{
-			ORfeature* traincurrentFeatureInNearestFeatureList = trainFirstFeatureInNearestFeatureList;
+			ATORfeature* traincurrentFeatureInNearestFeatureList = trainFirstFeatureInNearestFeatureList;
 			while((traincurrentFeatureInNearestFeatureList->next != NULL) && !(traincurrentFeatureInNearestFeatureList->lastFilledFeatureInList))
 			{
 				bool trainpassedDimensionCheck = true;
-				if(dimension == OR_METHOD2DOD_DIMENSIONS)
-				{//NB do not compare transformed object triangle features if OR_METHOD2DOD_DIMENSIONS, as these will always be set to a predefined object triangle
+				if(dimension == ATOR_METHOD2DOD_DIMENSIONS)
+				{//NB do not compare transformed object triangle features if ATOR_METHOD2DOD_DIMENSIONS, as these will always be set to a predefined object triangle
 					if(traincurrentFeatureInNearestFeatureList->OTpointIndex != 0)
 					{
 						trainpassedDimensionCheck = false;
@@ -239,26 +239,26 @@ bool ORdatabaseFileIOClass::compareFeaturesListForMatch(ORfeature* testFirstFeat
 				if(trainpassedDimensionCheck)
 				{
 					double requiredMaxError;
-					#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
+					#ifdef ATOR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
 						double minwidthheightOfOriginalTriangleTestAndTrain = SHAREDvars.minDouble(testcurrentFeatureInNearestFeatureList->minWidthAndHeightOfOrigOT, traincurrentFeatureInNearestFeatureList->minWidthAndHeightOfOrigOT);
-						requiredMaxError = (1.0/(SHAREDvars.maxDouble((minwidthheightOfOriginalTriangleTestAndTrain - OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT), OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT)/(double)OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT))* OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR;
+						requiredMaxError = (1.0/(SHAREDvars.maxDouble((minwidthheightOfOriginalTriangleTestAndTrain - ATOR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT), ATOR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT)/(double)ATOR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD_MIN_EXPECTED_ORIG_TRI_WIDTH_OR_HEIGHT))* ATOR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR;
 					#else
-						requiredMaxError = OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR;
+						requiredMaxError = ATOR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR;
 					#endif
 
 					if(SHAREDvector.compareVectorsArbitraryError(&(testcurrentFeatureInNearestFeatureList->pointTransformed), &(traincurrentFeatureInNearestFeatureList->pointTransformed), requiredMaxError))
 					{
 						numberOfFeatureGeoMatches++;
-						#ifdef VERBOSE_OR_OUTPUT_GEO_COORDINATES
+						#ifdef ATOR_VERBOSE_OUTPUT_GEO_COORDINATES
 						testcurrentFeatureInNearestFeatureList->matchFound = true;
 						traincurrentFeatureInNearestFeatureList->matchFound = true;
 						#endif
 					}
 
-					int trainxBin = ORdatabaseSQL.determineGeoBinX(traincurrentFeatureInNearestFeatureList->pointTransformed.x);
-					int trainyBin = ORdatabaseSQL.determineGeoBinY(traincurrentFeatureInNearestFeatureList->pointTransformed.y);
-					int testxBin = ORdatabaseSQL.determineGeoBinX(testcurrentFeatureInNearestFeatureList->pointTransformed.x);
-					int testyBin = ORdatabaseSQL.determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);
+					int trainxBin = ATORdatabaseSQL.determineGeoBinX(traincurrentFeatureInNearestFeatureList->pointTransformed.x);
+					int trainyBin = ATORdatabaseSQL.determineGeoBinY(traincurrentFeatureInNearestFeatureList->pointTransformed.y);
+					int testxBin = ATORdatabaseSQL.determineGeoBinX(testcurrentFeatureInNearestFeatureList->pointTransformed.x);
+					int testyBin = ATORdatabaseSQL.determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);
 					if((trainxBin == testxBin) && (trainyBin == testyBin))
 					{
 						numberOfFeatureGeoBinnedExactMatches++;
@@ -272,11 +272,11 @@ bool ORdatabaseFileIOClass::compareFeaturesListForMatch(ORfeature* testFirstFeat
 		testcurrentFeatureInNearestFeatureList = testcurrentFeatureInNearestFeatureList->next;
 	}
 
-	if(numberOfFeatureGeoMatches >= OR_GEOMETRIC_CHECK_MIN_NUMBER_PASSES)
+	if(numberOfFeatureGeoMatches >= ATOR_GEOMETRIC_CHECK_MIN_NUMBER_PASSES)
 	{
 		passedGeometricCheck = true;
 	}
-	if(numberOfFeatureGeoBinnedExactMatches >= OR_GEOMETRIC_CHECK_MIN_NUMBER_PASSES)
+	if(numberOfFeatureGeoBinnedExactMatches >= ATOR_GEOMETRIC_CHECK_MIN_NUMBER_PASSES)
 	{
 		*exactMatchFound = true;
 	}
@@ -285,9 +285,9 @@ bool ORdatabaseFileIOClass::compareFeaturesListForMatch(ORfeature* testFirstFeat
 }
 
 
-void ORdatabaseFileIOClass::addFeatureToEndOfFeatureList(ORfeature* firstFeatureInList, ORfeature* featureToAdd)
+void ATORdatabaseFileIOClass::addFeatureToEndOfFeatureList(ATORfeature* firstFeatureInList, ATORfeature* featureToAdd)
 {
-	ORfeature* currentFeatureInList = firstFeatureInList;
+	ATORfeature* currentFeatureInList = firstFeatureInList;
 
 	// go to last feature in list (ie append to list if list already has items)
 	while(currentFeatureInList->next != NULL)
@@ -300,12 +300,12 @@ void ORdatabaseFileIOClass::addFeatureToEndOfFeatureList(ORfeature* firstFeature
 	currentFeatureInList->zoomIndex = featureToAdd->zoomIndex;
 	currentFeatureInList->polyIndex = featureToAdd->polyIndex;
 	currentFeatureInList->sideIndex = featureToAdd->sideIndex;
-	#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
+	#ifdef ATOR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 	currentFeatureInList->OTpointIndex = featureToAdd->OTpointIndex;
 	#endif
 	SHAREDvector.copyVectors(&(currentFeatureInList->pointTransformed), &(featureToAdd->pointTransformed));
 
-	ORfeature* newFeature = new ORfeature();
+	ATORfeature* newFeature = new ATORfeature();
 	currentFeatureInList->next = newFeature;
 
 }
@@ -313,9 +313,9 @@ void ORdatabaseFileIOClass::addFeatureToEndOfFeatureList(ORfeature* firstFeature
 
 
 
-void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fileName, ORfeature* firstFeatureInList, const bool createFeatureObjects, const bool appendToList, const bool ignoreOTfeatures)
+void ATORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fileName, ATORfeature* firstFeatureInList, const bool createFeatureObjects, const bool appendToList, const bool ignoreOTfeatures)
 {
-	ORfeature* currentFeatureInList = firstFeatureInList;
+	ATORfeature* currentFeatureInList = firstFeatureInList;
 
 	if(appendToList)
 	{//if creatingFeatureObjects, go to last feature in list (ie append to list if list already has items)
@@ -339,16 +339,16 @@ void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fil
 		bool readingZoomIndex = false;
 		bool readingPolyIndex = false;
 		bool readingSideIndex = false;
-		#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
+		#ifdef ATOR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 		bool readingOTIndex = false;
 		#endif
-		#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
+		#ifdef ATOR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
 		bool readingminWidthAndHeightOfOrigOT = false;
 		#endif
 		bool readingtransformedPointX = false;
 		bool readingtransformedPointY = false;
 		bool readingtransformedPointZ = false;
-		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
+		#ifdef ATOR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 		bool readingPointX = false;
 		bool readingPointY = false;
 		bool readingPointZ = false;
@@ -360,16 +360,16 @@ void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fil
 		string zoomIndexString = "";
 		string polyIndexString = "";
 		string sideIndexString = "";
-		#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
+		#ifdef ATOR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 		string OTpointIndexString = "";
 		#endif
-		#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
+		#ifdef ATOR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
 		string minWidthAndHeightOfOrigOTString = "";
 		#endif
 		string transformedPointXString = "";
 		string transformedPointYString = "";
 		string transformedPointZString = "";
-		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
+		#ifdef ATOR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 		string PointXString = "";
 		string PointYString = "";
 		string PointZString = "";
@@ -437,7 +437,7 @@ void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fil
 			else if((readingSideIndex) && (c == CHAR_SPACE))
 			{
 				readingSideIndex = false;
-			#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
+			#ifdef ATOR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 				readingOTIndex = true;
 			#else
 				readingtransformedPointX = true;
@@ -447,11 +447,11 @@ void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fil
 			{
 				sideIndexString = sideIndexString + c;
 			}
-		#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
+		#ifdef ATOR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 			else if((readingOTIndex) && (c == CHAR_SPACE))
 			{
 				readingOTIndex = false;
-				#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
+				#ifdef ATOR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
 				readingminWidthAndHeightOfOrigOT = true;
 				#else
 				readingtransformedPointX = true;
@@ -462,7 +462,7 @@ void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fil
 				OTpointIndexString = OTpointIndexString + c;
 			}
 		#endif
-		#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
+		#ifdef ATOR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
 			else if((readingminWidthAndHeightOfOrigOT) && (c == CHAR_SPACE))
 			{
 				readingminWidthAndHeightOfOrigOT = false;
@@ -491,7 +491,7 @@ void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fil
 			{
 				transformedPointYString = transformedPointYString + c;
 			}
-		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
+		#ifdef ATOR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 			else if((readingtransformedPointZ) && (c == CHAR_SPACE))
 			{
 				readingtransformedPointZ = false;
@@ -511,16 +511,16 @@ void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fil
 					currentFeatureInList->zoomIndex = (int)(SHAREDvars.convertStringToDouble(zoomIndexString));
 					currentFeatureInList->polyIndex = (int)(SHAREDvars.convertStringToDouble(polyIndexString));
 					currentFeatureInList->sideIndex = (int)(SHAREDvars.convertStringToDouble(sideIndexString));
-					#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
+					#ifdef ATOR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 					currentFeatureInList->OTpointIndex = (int)(SHAREDvars.convertStringToDouble(OTpointIndexString));
 					#endif
-					#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
+					#ifdef ATOR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
 					currentFeatureInList->minWidthAndHeightOfOrigOT = (int)(SHAREDvars.convertStringToDouble(minWidthAndHeightOfOrigOTString));
 					#endif
 					currentFeatureInList->pointTransformed.x = (SHAREDvars.convertStringToDouble(transformedPointXString));
 					currentFeatureInList->pointTransformed.y = (SHAREDvars.convertStringToDouble(transformedPointYString));
 					currentFeatureInList->pointTransformed.z = (SHAREDvars.convertStringToDouble(transformedPointZString));
-					#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
+					#ifdef ATOR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 					currentFeatureInList->point.x = (SHAREDvars.convertStringToDouble(PointXString));
 					currentFeatureInList->point.y = (SHAREDvars.convertStringToDouble(PointYString));
 					currentFeatureInList->point.z = (SHAREDvars.convertStringToDouble(PointZString));
@@ -528,13 +528,13 @@ void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fil
 
 
 
-					#ifdef VERBOSE_OR_OUTPUT_GEO_COORDINATES
+					#ifdef ATOR_VERBOSE_OUTPUT_GEO_COORDINATES
 					currentFeatureInList->matchFound = false;
 					#endif
 
 					if(createFeatureObjects)
 					{
-						ORfeature* newFeature = new ORfeature();
+						ATORfeature* newFeature = new ATORfeature();
 						currentFeatureInList->next = newFeature;
 					}
 
@@ -549,23 +549,23 @@ void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fil
 				zoomIndexString = "";
 				polyIndexString = "";
 				sideIndexString = "";
-				#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
+				#ifdef ATOR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 				OTpointIndexString = "";
 				#endif
-				#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
+				#ifdef ATOR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
 				minWidthAndHeightOfOrigOTString = "";
 				#endif
 				transformedPointXString = "";
 				transformedPointYString = "";
 				transformedPointZString = "";
-				#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
+				#ifdef ATOR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 				PointXString = "";
 				PointYString = "";
 				PointZString = "";
 				#endif
 
 				lineCount++;
-				#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
+				#ifdef ATOR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 				readingPointZ = false;
 				#else
 				readingtransformedPointZ = false;
@@ -576,7 +576,7 @@ void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fil
 			{
 				transformedPointZString = transformedPointZString + c;
 			}
-		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
+		#ifdef ATOR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 			else if((readingPointX) && (c == CHAR_SPACE))
 			{
 				readingPointX = false;
@@ -617,31 +617,31 @@ void ORdatabaseFileIOClass::createFeaturesListUsingFeaturesFile(const string fil
 
 
 
-void ORdatabaseFileIOClass::createTransformedFeaturesFile(const ORfeature* firstFeatureInList, const string fileName, const string objectName, const int viewIndex, const int zoomIndex, const int polyIndex, const int sideIndex, const int trainOrTest)
+void ATORdatabaseFileIOClass::createTransformedFeaturesFile(const ATORfeature* firstFeatureInList, const string fileName, const string objectName, const int viewIndex, const int zoomIndex, const int polyIndex, const int sideIndex, const int trainOrTest)
 {
 	ofstream writeFileObject(fileName.c_str());
 
-	const ORfeature* currentFeature = firstFeatureInList;
+	const ATORfeature* currentFeature = firstFeatureInList;
 	while(currentFeature->next != NULL)
 	{
 		string polygonIndexString = SHAREDvars.convertIntToString(polyIndex);
 		string sideIndexString = SHAREDvars.convertIntToString(sideIndex);
 		string viewIndexString = SHAREDvars.convertIntToString(viewIndex);
 		string zoomIndexString = SHAREDvars.convertIntToString(zoomIndex);
-		#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
+		#ifdef ATOR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 		string OTpointIndexString = SHAREDvars.convertIntToString(currentFeature->OTpointIndex);
 		#endif
-		#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
+		#ifdef ATOR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
 		string minWidthAndHeightOfOrigOTString = SHAREDvars.convertIntToString(currentFeature->minWidthAndHeightOfOrigOT);
 		#endif
 		string trainOrTestString = SHAREDvars.convertIntToString(((int)trainOrTest));
 		string transformedpositionCoordinatesString = LDreferenceManipulation.convertPositionCoordinatesToString(&(currentFeature->pointTransformed));
-		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
+		#ifdef ATOR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 		string positionCoordinatesString = LDreferenceManipulation.convertPositionCoordinatesToString(&(currentFeature->point));
 		#endif
 
-		#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
-		#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
+		#ifdef ATOR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
+		#ifdef ATOR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
 		string lineText = objectName + " " + trainOrTestString + " " + viewIndexString + " " + zoomIndexString + " " + polygonIndexString + " " + sideIndexString + " " + OTpointIndexString + " " + minWidthAndHeightOfOrigOTString + " " + transformedpositionCoordinatesString;
 		#else
 		string lineText = objectName + " " + trainOrTestString + " " + viewIndexString + " " + zoomIndexString + " " + polygonIndexString + " " + sideIndexString + " " + OTpointIndexString + " " + transformedpositionCoordinatesString;
@@ -650,7 +650,7 @@ void ORdatabaseFileIOClass::createTransformedFeaturesFile(const ORfeature* first
 		string lineText = objectName + " " + trainOrTestString + " " + viewIndexString + " " + zoomIndexString + " " + polygonIndexString + " " + sideIndexString + " " + transformedpositionCoordinatesString;
 		#endif
 
-		#ifdef OR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
+		#ifdef ATOR_METHOD_GEO_COMPARISON_RECORD_ORIGINAL_T_FOR_VERBOSE
 		lineText = lineText + positionCoordinatesString;
 		#endif
 

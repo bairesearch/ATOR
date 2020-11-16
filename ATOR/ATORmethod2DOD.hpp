@@ -26,13 +26,13 @@
  * File Name: ATORmethod2DOD.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3o1a 05-November-2020
+ * Project Version: 3o2a 08-November-2020
  * /
  *******************************************************************************/
 
 
-#ifndef HEADER_OR_METHOD_2DOD
-#define HEADER_OR_METHOD_2DOD
+#ifndef HEADER_ATOR_METHOD_2DOD
+#define HEADER_ATOR_METHOD_2DOD
 
 #include "LDreferenceClass.hpp"
 #include "ATORpolygonList.hpp"
@@ -47,28 +47,28 @@
 #define OD2D_INTERPOLATED_MESH_PIXEL_HEIGHT (1.0)
 #define OD2D_INTERPOLATED_MESH_PIXEL_SIZE (OD2D_INTERPOLATED_MESH_PIXEL_WIDTH)
 
-class ORmethod2DODClass
+class ATORmethod2DODClass
 {
 	private: SHAREDvectorClass SHAREDvector;
 	private: RTpixelMapsClass RTpixelMaps;
-	private: ORpolygonListClass ORpolygonList;
-	private: ORfeatureGenerationClass ORfeatureGeneration;
+	private: ATORpolygonListClass ATORpolygonList;
+	private: ATORfeatureGenerationClass ATORfeatureGeneration;
 	private: SHAREDvarsClass SHAREDvars;
-	private: ORoperationsClass ORoperations;
+	private: ATORoperationsClass ATORoperations;
 	private: LDopenglClass LDopengl;
-	public: void createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, const int imageHeight, unsigned char* rgbMap, LDreference* firstReferenceInInterpolatedMap);
-	public: void create2DmeshUsingRGBmap2DOD(int imageWidth, const int imageHeight, double imageXOffset, double imageYOffset, unsigned char* rgbMap, ORmeshPoint* firstMeshPointInMeshList, ORmeshPoint* meshPointArray[], const bool useEdgeZeroCrossingMap);
+	public: void createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, const int imageHeight, uchar* rgbMap, LDreference* firstReferenceInInterpolatedMap);
+	public: void create2DmeshUsingRGBmap2DOD(int imageWidth, const int imageHeight, double imageXOffset, double imageYOffset, uchar* rgbMap, ATORmeshPoint* firstMeshPointInMeshList, ATORmeshPoint* meshPointArray[], const bool useEdgeZeroCrossingMap);
 
-	public: void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ORpolygon* currentPolygonInList, const int side, const bool first, ORfeature* firstFeatureInList);
-		private: double calculateXYorientationOfSide(const ORpolygon* currentPolygonInList, const int side);
-		private: double calculateXYlengthOfSide(const ORpolygon* currentPolygonInList, const int side);
-		private: double calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(const ORpolygon* transformedObjectTriangle, const int side);
-		private: double calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(const ORpolygon* transformedObjectTriangle, const int side);
+	public: void transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ATORpolygon* currentPolygonInList, const int side, const bool first, ATORfeature* firstFeatureInList);
+		private: double calculateXYorientationOfSide(const ATORpolygon* currentPolygonInList, const int side);
+		private: double calculateXYlengthOfSide(const ATORpolygon* currentPolygonInList, const int side);
+		private: double calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(const ATORpolygon* transformedObjectTriangle, const int side);
+		private: double calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(const ATORpolygon* transformedObjectTriangle, const int side);
 
-		private: void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList);
-	//void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ORpolygon* currentPolygonInList, bool padBoundary);
-	//void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced2(LDreference* firstReferenceInInterpolated2DrgbMap, ORpolygon* currentPolygonInList, vec* point4, vec* point5, bool padBoundary);
-		private: void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList, const bool padBoundary, const int side, const double shearFactor);
+		private: void disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ATORpolygon* currentPolygonInList);
+	//void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ATORpolygon* currentPolygonInList, bool padBoundary);
+	//void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced2(LDreference* firstReferenceInInterpolated2DrgbMap, ATORpolygon* currentPolygonInList, vec* point4, vec* point5, bool padBoundary);
+		private: void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(LDreference* firstReferenceInInterpolated2DrgbMap, const ATORpolygon* currentPolygonInList, const bool padBoundary, const int side, const double shearFactor);
 
 			private: void TEMPprintReferenceListVertexPositions2DOD(const LDreference* firstReferenceInInterpolated2DrgbMap);
 };

@@ -26,13 +26,13 @@
  * File Name: ATORquadraticFit.hpp (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3o1a 05-November-2020
+ * Project Version: 3o2a 08-November-2020
  * /
  *******************************************************************************/
 
 
-#ifndef HEADER_OR_QUADRATIC_FIT
-#define HEADER_OR_QUADRATIC_FIT
+#ifndef HEADER_ATOR_QUADRATIC_FIT
+#define HEADER_ATOR_QUADRATIC_FIT
 
 #include "ATORglobalDefs.hpp"
 #include "SHAREDvars.hpp"
@@ -59,15 +59,15 @@
 
 /*
 #define FIX_NEW_HEITGER_CONSTRAST_THRESHOLD_ISSUE_MAYBE_DUE_TO_DEPTH_MAP_CHECK
-#ifdef OR_USE_AMSTERDAM_TEST_IMAGE_DATA
+#ifdef ATOR_USE_AMSTERDAM_TEST_IMAGE_DATA
 	#define HEITGER_FEATURE_RGB_MAP_CENTRE_THRESHOLD (256*1.5)
 	#define HEITGER_FEATURE_RGB_MAP_KERNEL_THRESHOLD (HEITGER_FEATURE_RGB_MAP_CENTRE_THRESHOLD/4.0)
 	#define HEITGER_FEATURE_RGB_MAP_TOTAL_KERNEL_THRESHOLD (HEITGER_FEATURE_RGB_MAP_KERNEL_THRESHOLD*10.0)
-#elif defined OR_USE_GOOGLE_MAPS
+#elif defined ATOR_USE_GOOGLE_MAPS
 	#define HEITGER_FEATURE_RGB_MAP_CENTRE_THRESHOLD (100)	//50
 	#define HEITGER_FEATURE_RGB_MAP_KERNEL_THRESHOLD (HEITGER_FEATURE_RGB_MAP_CENTRE_THRESHOLD/2.0)
 	#define HEITGER_FEATURE_RGB_MAP_TOTAL_KERNEL_THRESHOLD (HEITGER_FEATURE_RGB_MAP_KERNEL_THRESHOLD*10.0)	//2.5
-#elif defined OR_USE_STAR_MAPS
+#elif defined ATOR_USE_STAR_MAPS
 	#define HEITGER_FEATURE_RGB_MAP_CENTRE_THRESHOLD (256*1)
 	#define HEITGER_FEATURE_RGB_MAP_KERNEL_THRESHOLD (HEITGER_FEATURE_RGB_MAP_CENTRE_THRESHOLD/4.0)
 	#define HEITGER_FEATURE_RGB_MAP_TOTAL_KERNEL_THRESHOLD (HEITGER_FEATURE_RGB_MAP_KERNEL_THRESHOLD*10.0)
@@ -92,14 +92,14 @@
 #define POINT_DETECT (false)
 
 
-class ORQFzeroCrossing{
+class ATORQFzeroCrossing{
 
 	private:
 		/*There are currently no attributes of this class*/
 	public:
 
-		ORQFzeroCrossing(void); // constructor declaration
-		~ORQFzeroCrossing();	//  and destructor.
+		ATORQFzeroCrossing(void); // constructor declaration
+		~ATORQFzeroCrossing();	//  and destructor.
 
 		int x;
 		int y;
@@ -108,7 +108,7 @@ class ORQFzeroCrossing{
 		float alpha;
 		float beta;
 		float coefficient[NUMBER_OF_COEFFICIENTS];
-		ORQFzeroCrossing* next;
+		ATORQFzeroCrossing* next;
 
 		float dzAlpha;
 		float dzBeta;
@@ -118,28 +118,28 @@ class ORQFzeroCrossing{
 
 
 		double depth;	//for 3DOD only
-		#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
+		#ifndef ATOR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
 		int nearbyHitValueX;
 		int nearbyHitValueY;
 		#endif
-		//#ifdef OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP
+		//#ifdef ATOR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP
 		vec point;
 		//#endif
 };
 
-class ORquadraticFitClass
+class ATORquadraticFitClass
 {
 	private: SHAREDvarsClass SHAREDvars;
 	private: SHAREDvectorClass SHAREDvector;
 	private: RTpixelMapsClass RTpixelMaps;
-	private: ORpixelMapsClass ORpixelMaps;
+	private: ATORpixelMapsClass ATORpixelMaps;
 	public: double calculateAreaOfOneSideOfEdgeInPixel(const int xDevPointOnSide, const int yDevPointOnSide, const double zeroCrossingValueX, const double zeroCrossingValueY, const double alpha);
 
 
 /*************************************** Edgise Frame High Level ('EdgiseFrameStandard') Methods* ***********************************/
-		public: void generateZeroCrossingList(const double* luminosityContrastMap, const int imageWidth, const int imageHeight, ORQFzeroCrossing* firstZeroCrossingInList, const bool edgeDetect, const double sensitivity, const int dimension, const double* pointMap, const double* depthMap, const int zoom, const int interpixelMapType);
-			private: void edgiseData(const bool edgeDetect, const bool createEnhancedImageDisplayingQuadraticFitInfo, ORQFzeroCrossing* currentZeroCrossingInList, const int imageWidth, const int imageHeight, const double luminosityContrastMap[], const double sensitivity, const int dimension, const double* pointMap, const double* depthMap, const int zoom, const int interpixelMapType);
-				private: bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], const bool edgeDetect, const bool createEnhancedImageDisplayingQuadraticFitInfo, ORQFzeroCrossing* currentZeroCrossingInList);
+		public: void generateZeroCrossingList(const double* luminosityContrastMap, const int imageWidth, const int imageHeight, ATORQFzeroCrossing* firstZeroCrossingInList, const bool edgeDetect, const double sensitivity, const int dimension, const double* pointMap, const double* depthMap, const int zoom, const int interpixelMapType);
+			private: void edgiseData(const bool edgeDetect, const bool createEnhancedImageDisplayingQuadraticFitInfo, ATORQFzeroCrossing* currentZeroCrossingInList, const int imageWidth, const int imageHeight, const double luminosityContrastMap[], const double sensitivity, const int dimension, const double* pointMap, const double* depthMap, const int zoom, const int interpixelMapType);
+				private: bool calculateZeroCrossingAndOrientation(int x, int y, float coefficient[], const bool edgeDetect, const bool createEnhancedImageDisplayingQuadraticFitInfo, ATORQFzeroCrossing* currentZeroCrossingInList);
 /************************************ End Edgise Frame High Level ('EdgiseFrameStandard') Methods* **********************************/
 
 
@@ -157,9 +157,9 @@ class ORquadraticFitClass
 /********************************** End Pixel Checking methods* ******************************/
 
 /********************************** Zero Crossing Checking methods* **********************************/
-	private: bool checkEdgeZeroCrossingObjectPassesThreshold(ORQFzeroCrossing* zc);
-		private: bool checkEdgeZeroCrossingObjectContrastGradients(ORQFzeroCrossing* zc);
-	private: bool checkPointZeroCrossingObjectPassesThreshold(const ORQFzeroCrossing* zc);
+	private: bool checkEdgeZeroCrossingObjectPassesThreshold(ATORQFzeroCrossing* zc);
+		private: bool checkEdgeZeroCrossingObjectContrastGradients(ATORQFzeroCrossing* zc);
+	private: bool checkPointZeroCrossingObjectPassesThreshold(const ATORQFzeroCrossing* zc);
 	//	private: bool checkTotalNegativeCurvatureAbovePointThreshold(const float a3, const float a4);
 
 /********************************** End Zero Crossing Checking methods* **********************************/

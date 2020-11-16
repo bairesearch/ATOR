@@ -26,7 +26,7 @@
  * File Name: ATORmain.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3o1a 05-November-2020
+ * Project Version: 3o2a 08-November-2020
  * /
  *******************************************************************************/
 
@@ -34,7 +34,7 @@
 #define TM_STRUCT_YEAR_OFFSET 1900
 
 #include "ATORmain.hpp"
-#ifdef OR_USE_DATABASE
+#ifdef ATOR_USE_DATABASE
 #endif
 
 static char errmessage[] = "Usage:  ATOR.exe [options]\n\n\twhere options are any of the following\n"
@@ -70,7 +70,7 @@ static char errmessage[] = "Usage:  ATOR.exe [options]\n\n\twhere options are an
 "\n\t-scale [float]    : mapping between depthmap bits and pov (defines resolution and maximum depth range/coverage of depth map)"
 "\n\n multi view options only \n"
 "\n\t-multview [string]     : use multiview list [EXPERIMENTAL] (def: multViewList.txt) {3DOD every row; ObjectViewFileNameWithNoExtension|imageext|imageWidth|imageHeight|depthext|vieweyex|vieweyey|vieweyez|viewatx|viewaty|viewatz|viewupx|viewupy|viewupz|viewfocal|viewsizew|viewsizeh|scale. 2DOD every row; ObjectViewFileNameWithNoExtension|imageext|imageWidth|imageHeight|xOffset|yOffset}"
-#ifdef OR_USE_DATABASE
+#ifdef ATOR_USE_DATABASE
 "\n\t-dbfolder [string]     : file system database base folder path (def: /home/systemusername/source/ORfsdatabase)"
 #endif
 "\n\n\t-version        : print version"
@@ -86,8 +86,8 @@ int main(const int argc,const char* *argv)
 	
 	string currentFolder = SHAREDvarsClass().getCurrentDirectory();
 
-	#ifdef OR_USE_DATABASE
-	string databaseFolderName =  OR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME + OR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME;
+	#ifdef ATOR_USE_DATABASE
+	string databaseFolderName =  ATOR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME + ATOR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME;
 	#endif
 
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-inputfolder"))
@@ -117,23 +117,23 @@ int main(const int argc,const char* *argv)
 
 	SHAREDvarsClass().setCurrentDirectory(inputFolder);
 
-	if(!XMLrulesClassClass().parseORrulesXMLfile())
+	if(!XMLrulesClassClass().parseATORrulesXMLfile())
 	{
 		cerr << "error: no rules file detected" << endl;
 		exit(EXIT_ERROR);
 	}
-	ORrulesClass().fillInORrulesExternVariables();
+	ATORrulesClass().fillInATORrulesExternVariables();
 
 	SHAREDvarsClass().setCurrentDirectory(outputFolder);
 
 	int dimension;
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-od3"))
 	{
-		dimension = OR_METHOD3DOD_DIMENSIONS;
+		dimension = ATOR_METHOD3DOD_DIMENSIONS;
 	}
 	else
 	{
-		dimension = OR_METHOD2DOD_DIMENSIONS;
+		dimension = ATOR_METHOD2DOD_DIMENSIONS;
 	}
 
 	bool clearTrainTable;
@@ -154,19 +154,19 @@ int main(const int argc,const char* *argv)
 		if(!((trainOrTest == TEST) || (trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST)))
 		{
 			cerr << "error: trainortest value is illegal" << endl;
-			ORmainClass().printORcommandLineErrorMessage();
+			ATORmainClass().printORcommandLineErrorMessage();
 			exit(EXIT_ERROR);
 		}
 	}
 	else
 	{
 		cerr << "error: trainortest is not defined" << endl;
-		ORmainClass().printORcommandLineErrorMessage();
+		ATORmainClass().printORcommandLineErrorMessage();
 		exit(EXIT_ERROR);
 
 	}
 
-	#ifndef OR_METHOD3DOD_TEST
+	#ifndef ATOR_METHOD3DOD_TEST
 	string sqlIPaddress = "";
 	string sqlUsername = "";
 	string sqlPassword = "";
@@ -177,7 +177,7 @@ int main(const int argc,const char* *argv)
 	else
 	{
 		cerr << "error: sqlipaddress is not defined" << endl;
-		ORmainClass().printORcommandLineErrorMessage();
+		ATORmainClass().printORcommandLineErrorMessage();
 		exit(EXIT_ERROR);
 	}
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-sqlusername"))
@@ -187,7 +187,7 @@ int main(const int argc,const char* *argv)
 	else
 	{
 		cerr << "error: sqlusername is not defined" << endl;
-		ORmainClass().printORcommandLineErrorMessage();
+		ATORmainClass().printORcommandLineErrorMessage();
 		exit(EXIT_ERROR);
 	}
 
@@ -198,7 +198,7 @@ int main(const int argc,const char* *argv)
 	else
 	{
 		cerr << "error: sqlpassword is not defined" << endl;
-		ORmainClass().printORcommandLineErrorMessage();
+		ATORmainClass().printORcommandLineErrorMessage();
 		exit(EXIT_ERROR);
 	}
 	#endif
@@ -216,70 +216,70 @@ int main(const int argc,const char* *argv)
 	int objectDataSource;
 
 	//set defaults before overwriting with user specific values;
-	if(dimension == OR_METHOD2DOD_DIMENSIONS)
+	if(dimension == ATOR_METHOD2DOD_DIMENSIONS)
 	{
 
-		vi.imageWidth = TH_OR_METHOD2DOD_DEFAULT_IMAGE_WIDTH;
-		vi.imageHeight = TH_OR_METHOD2DOD_DEFAULT_IMAGE_HEIGHT;
-		vi.viewWidth = TH_OR_METHOD2DOD_DEFAULT_VIEWSIZE_WIDTH;
-		vi.viewHeight = TH_OR_METHOD2DOD_DEFAULT_VIEWSIZE_HEIGHT;
-		vi.focalLength = TH_OR_METHOD2DOD_DEFAULT_FOCAL;
-		vi.eye.x = TH_OR_METHOD2DOD_DEFAULT_EYE_X;		//CHECK THIS; preferably the eye moves around the object
-		vi.eye.y = TH_OR_METHOD2DOD_DEFAULT_EYE_Y;
-		vi.eye.z = TH_OR_METHOD2DOD_DEFAULT_EYE_Z;
-		vi.viewAt.x = TH_OR_METHOD2DOD_DEFAULT_VIEWAT_X;
-		vi.viewAt.y = TH_OR_METHOD2DOD_DEFAULT_VIEWAT_Y;
-		vi.viewAt.z = TH_OR_METHOD2DOD_DEFAULT_VIEWAT_Z;
-		vi.viewUp.x = TH_OR_METHOD2DOD_DEFAULT_VIEWUP_X;
-		vi.viewUp.y = TH_OR_METHOD2DOD_DEFAULT_VIEWUP_Y;
-		vi.viewUp.z = TH_OR_METHOD2DOD_DEFAULT_VIEWUP_Z;
+		vi.imageWidth = TH_ATOR_METHOD2DOD_DEFAULT_IMAGE_WIDTH;
+		vi.imageHeight = TH_ATOR_METHOD2DOD_DEFAULT_IMAGE_HEIGHT;
+		vi.viewWidth = TH_ATOR_METHOD2DOD_DEFAULT_VIEWSIZE_WIDTH;
+		vi.viewHeight = TH_ATOR_METHOD2DOD_DEFAULT_VIEWSIZE_HEIGHT;
+		vi.focalLength = TH_ATOR_METHOD2DOD_DEFAULT_FOCAL;
+		vi.eye.x = TH_ATOR_METHOD2DOD_DEFAULT_EYE_X;		//CHECK THIS; preferably the eye moves around the object
+		vi.eye.y = TH_ATOR_METHOD2DOD_DEFAULT_EYE_Y;
+		vi.eye.z = TH_ATOR_METHOD2DOD_DEFAULT_EYE_Z;
+		vi.viewAt.x = TH_ATOR_METHOD2DOD_DEFAULT_VIEWAT_X;
+		vi.viewAt.y = TH_ATOR_METHOD2DOD_DEFAULT_VIEWAT_Y;
+		vi.viewAt.z = TH_ATOR_METHOD2DOD_DEFAULT_VIEWAT_Z;
+		vi.viewUp.x = TH_ATOR_METHOD2DOD_DEFAULT_VIEWUP_X;
+		vi.viewUp.y = TH_ATOR_METHOD2DOD_DEFAULT_VIEWUP_Y;
+		vi.viewUp.z = TH_ATOR_METHOD2DOD_DEFAULT_VIEWUP_Z;
 
-		ObjectNameArray[0] = OR_METHOD2DOD_OBJECT_0_NAME;
+		ObjectNameArray[0] = ATOR_METHOD2DOD_OBJECT_0_NAME;
 
 
-		imageWidthFacingPoly = TH_OR_METHOD2DOD_FACING_POLY_DEFAULT_IMAGE_WIDTH;
-		imageHeightFacingPoly = TH_OR_METHOD2DOD_FACING_POLY_DEFAULT_IMAGE_HEIGHT;
-		maxNumberOfPolygons = OR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TRAIN;
+		imageWidthFacingPoly = TH_ATOR_METHOD2DOD_FACING_POLY_DEFAULT_IMAGE_WIDTH;
+		imageHeightFacingPoly = TH_ATOR_METHOD2DOD_FACING_POLY_DEFAULT_IMAGE_HEIGHT;
+		maxNumberOfPolygons = ATOR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TRAIN;
 		numberOfViewIndiciesPerObject = 1;	//this will be changed based upon num references in multview list file
-		numberOfObjects = 1;		//ORmain feeds max 1 object at a time into database
-		numberOfZoomIndicies = OR_METHOD2DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS;
+		numberOfObjects = 1;		//ATORmain feeds max 1 object at a time into database
+		numberOfZoomIndicies = ATOR_METHOD2DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS;
 		numberOfViewIndiciesPerObjectWithUniquePolygons = 1;		//always 1;
 		numberOfPolys = new int[numberOfObjects*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies];
 
 	}
-	else if(dimension == OR_METHOD3DOD_DIMENSIONS)
+	else if(dimension == ATOR_METHOD3DOD_DIMENSIONS)
 	{
-		vi.imageWidth = TH_OR_METHOD3DOD_DEFAULT_IMAGE_WIDTH;
-		vi.imageHeight = TH_OR_METHOD3DOD_DEFAULT_IMAGE_HEIGHT;
-		vi.viewWidth = TH_OR_METHOD3DOD_DEFAULT_VIEWSIZE_WIDTH;
-		vi.viewHeight = TH_OR_METHOD3DOD_DEFAULT_VIEWSIZE_HEIGHT;
-		vi.focalLength = TH_OR_METHOD3DOD_DEFAULT_FOCAL;
-		vi.eye.x = TH_OR_METHOD3DOD_DEFAULT_EYE_X;		//CHECK THIS; preferably the eye moves around the object
-		vi.eye.y = TH_OR_METHOD3DOD_DEFAULT_EYE_Y;
-		vi.eye.z = TH_OR_METHOD3DOD_DEFAULT_EYE_Z;
-		vi.viewAt.x = TH_OR_METHOD3DOD_DEFAULT_VIEWAT_X;
-		vi.viewAt.y = TH_OR_METHOD3DOD_DEFAULT_VIEWAT_Y;
-		vi.viewAt.z = TH_OR_METHOD3DOD_DEFAULT_VIEWAT_Z;
-		vi.viewUp.x = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_X;
-		vi.viewUp.y = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_Y;
-		vi.viewUp.z = TH_OR_METHOD3DOD_DEFAULT_VIEWUP_Z;
-		vi.depthScale =  OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE;
+		vi.imageWidth = TH_ATOR_METHOD3DOD_DEFAULT_IMAGE_WIDTH;
+		vi.imageHeight = TH_ATOR_METHOD3DOD_DEFAULT_IMAGE_HEIGHT;
+		vi.viewWidth = TH_ATOR_METHOD3DOD_DEFAULT_VIEWSIZE_WIDTH;
+		vi.viewHeight = TH_ATOR_METHOD3DOD_DEFAULT_VIEWSIZE_HEIGHT;
+		vi.focalLength = TH_ATOR_METHOD3DOD_DEFAULT_FOCAL;
+		vi.eye.x = TH_ATOR_METHOD3DOD_DEFAULT_EYE_X;		//CHECK THIS; preferably the eye moves around the object
+		vi.eye.y = TH_ATOR_METHOD3DOD_DEFAULT_EYE_Y;
+		vi.eye.z = TH_ATOR_METHOD3DOD_DEFAULT_EYE_Z;
+		vi.viewAt.x = TH_ATOR_METHOD3DOD_DEFAULT_VIEWAT_X;
+		vi.viewAt.y = TH_ATOR_METHOD3DOD_DEFAULT_VIEWAT_Y;
+		vi.viewAt.z = TH_ATOR_METHOD3DOD_DEFAULT_VIEWAT_Z;
+		vi.viewUp.x = TH_ATOR_METHOD3DOD_DEFAULT_VIEWUP_X;
+		vi.viewUp.y = TH_ATOR_METHOD3DOD_DEFAULT_VIEWUP_Y;
+		vi.viewUp.z = TH_ATOR_METHOD3DOD_DEFAULT_VIEWUP_Z;
+		vi.depthScale =  ATOR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE;
 
-		ObjectNameArray[0] = OR_METHOD3DOD_OBJECT_0_NAME;
+		ObjectNameArray[0] = ATOR_METHOD3DOD_OBJECT_0_NAME;
 
-		imageWidthFacingPoly = TH_OR_METHOD3DOD_FACING_POLY_DEFAULT_IMAGE_WIDTH;
-		imageHeightFacingPoly = TH_OR_METHOD3DOD_FACING_POLY_DEFAULT_IMAGE_HEIGHT;
-		maxNumberOfPolygons = OR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TRAIN;
+		imageWidthFacingPoly = TH_ATOR_METHOD3DOD_FACING_POLY_DEFAULT_IMAGE_WIDTH;
+		imageHeightFacingPoly = TH_ATOR_METHOD3DOD_FACING_POLY_DEFAULT_IMAGE_HEIGHT;
+		maxNumberOfPolygons = ATOR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TRAIN;
 		numberOfViewIndiciesPerObject = 1;	//this will be changed based upon num references in multview list file
-		numberOfObjects = 1;		//ORmain feeds max 1 object at a time into database
-		numberOfZoomIndicies = OR_METHOD3DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS;
+		numberOfObjects = 1;		//ATORmain feeds max 1 object at a time into database
+		numberOfZoomIndicies = ATOR_METHOD3DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS;
 		numberOfViewIndiciesPerObjectWithUniquePolygons = 1;		//always 1
 		numberOfPolys = new int[numberOfObjects*numberOfViewIndiciesPerObjectWithUniquePolygons*numberOfZoomIndicies];
 	}
 	else
 	{
 		cerr << "illegal number of dimension" << endl;
-		ORmainClass().printORcommandLineErrorMessage();
+		ATORmainClass().printORcommandLineErrorMessage();
 		exit(EXIT_ERROR);
 	}
 
@@ -294,14 +294,14 @@ int main(const int argc,const char* *argv)
 		RTviewInfo tempViewInfo;
 		string multViewListFileNameWithFullPath = "";
 		multViewListFileNameWithFullPath = multViewListFileNameWithFullPath + inputFolder + "/" + multViewListFileName;
-		numberOfViewIndiciesPerObject = ORmethodClass().createViFromMultiViewList(&tempViewInfo, multViewListFileNameWithFullPath, 0, dimension);
+		numberOfViewIndiciesPerObject = ATORmethodClass().createViFromMultiViewList(&tempViewInfo, multViewListFileNameWithFullPath, 0, dimension);
 		cout << "countNumViFromMultiViewList numberOfViewIndiciesPerObject = " << numberOfViewIndiciesPerObject << endl;
 
-		objectDataSource = OR_OBJECT_DATA_SOURCE_USER_LIST;
+		objectDataSource = ATOR_OBJECT_DATA_SOURCE_USER_LIST;
 	}
 	else
 	{
-		objectDataSource = OR_OBJECT_DATA_SOURCE_USER_FILE;
+		objectDataSource = ATOR_OBJECT_DATA_SOURCE_USER_FILE;
 	}
 
 	string imageFileName = "";
@@ -314,13 +314,13 @@ int main(const int argc,const char* *argv)
 	else
 	{
 		cerr << "error: must specify input object name" << endl;
-		ORmainClass().printORcommandLineErrorMessage();
+		ATORmainClass().printORcommandLineErrorMessage();
 		exit(EXIT_ERROR);
 	}
 
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-version"))
 	{
-		cerr << "ATOR.exe - Project Version: 3o1a 05-November-2020" << endl;
+		cerr << "ATOR.exe - Project Version: 3o2a 08-November-2020" << endl;
 		exit(EXIT_OK);
 	}
 
@@ -335,7 +335,7 @@ int main(const int argc,const char* *argv)
 		if(!useMultViewList)
 		{
 			cerr << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
-			ORmainClass().printORcommandLineErrorMessage();
+			ATORmainClass().printORcommandLineErrorMessage();
 			exit(EXIT_ERROR);
 		}
 	}
@@ -349,7 +349,7 @@ int main(const int argc,const char* *argv)
 		if(!useMultViewList)
 		{
 			cerr << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
-			ORmainClass().printORcommandLineErrorMessage();
+			ATORmainClass().printORcommandLineErrorMessage();
 			exit(EXIT_ERROR);
 		}
 	}
@@ -363,7 +363,7 @@ int main(const int argc,const char* *argv)
 		if(!useMultViewList)
 		{
 			cerr << "error: must either specify image extension, and width/height or a mult (object/) view list" << endl;
-			ORmainClass().printORcommandLineErrorMessage();
+			ATORmainClass().printORcommandLineErrorMessage();
 			exit(EXIT_ERROR);
 		}
 	}
@@ -512,46 +512,46 @@ int main(const int argc,const char* *argv)
 		}
 	}
 
-	#ifdef OR_USE_DATABASE
+	#ifdef ATOR_USE_DATABASE
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-dbfolder"))
 	{
 		databaseFolderName = SHAREDvarsClass().getStringArgument(argc, argv, "-dbfolder");
 		databaseFolderName = databaseFolderName + '/';
 	}
-	ORdatabaseFileIOClass().initialiseDatabase(databaseFolderName);
+	ATORdatabaseFileIOClass().initialiseDatabase(databaseFolderName);
 	#endif
 
-	if(missingDepthMapExtensionDescriptor && !useMultViewList && (dimension == OR_METHOD3DOD_DIMENSIONS))
+	if(missingDepthMapExtensionDescriptor && !useMultViewList && (dimension == ATOR_METHOD3DOD_DIMENSIONS))
 	{
 		cerr << "error: must either specify an input depth map extension and POV parameters (if not wanting defaults), or a mult (object/) view list for 3DOD" << endl;
-		ORmainClass().printORcommandLineErrorMessage();
+		ATORmainClass().printORcommandLineErrorMessage();
 		//exit(EXIT_ERROR);
 	}
 
 
 	if(trainOrTest == TRAIN)
 	{
-		if(!ORmethodClass().ORmethodTrain(dimension, numberOfObjects, ObjectNameArray, numberOfPolys, objectDataSource, &vi, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, numberOfViewIndiciesPerObject, numberOfViewIndiciesPerObjectWithUniquePolygons, numberOfZoomIndicies, trainOrTest, sqlIPaddress, sqlUsername, sqlPassword, clearTrainTable, viewNumber, multViewListFileName))
+		if(!ATORmethodClass().ATORmethodTrain(dimension, numberOfObjects, ObjectNameArray, numberOfPolys, objectDataSource, &vi, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, numberOfViewIndiciesPerObject, numberOfViewIndiciesPerObjectWithUniquePolygons, numberOfZoomIndicies, trainOrTest, sqlIPaddress, sqlUsername, sqlPassword, clearTrainTable, viewNumber, multViewListFileName))
 		{
 			result = false;
-			cout << "ORmethodTrain reports failure" << endl;
+			cout << "ATORmethodTrain reports failure" << endl;
 		}
 		else
 		{
-			cout << "ORmethodTrain completed" << endl;
+			cout << "ATORmethodTrain completed" << endl;
 		}
 
 	}
 	else if((trainOrTest == TEST) || (trainOrTest == TRAIN_AND_TEST))
 	{
-		if(!ORmethodClass().ORmethodTest(dimension, numberOfObjects, ObjectNameArray, numberOfPolys, objectDataSource, &vi, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, numberOfViewIndiciesPerObject, numberOfViewIndiciesPerObjectWithUniquePolygons, numberOfZoomIndicies, trainOrTest, sqlIPaddress, sqlUsername, sqlPassword, clearTrainTable, viewNumber, multViewListFileName))
+		if(!ATORmethodClass().ATORmethodTest(dimension, numberOfObjects, ObjectNameArray, numberOfPolys, objectDataSource, &vi, imageWidthFacingPoly, imageHeightFacingPoly, maxNumberOfPolygons, numberOfViewIndiciesPerObject, numberOfViewIndiciesPerObjectWithUniquePolygons, numberOfZoomIndicies, trainOrTest, sqlIPaddress, sqlUsername, sqlPassword, clearTrainTable, viewNumber, multViewListFileName))
 		{
 			result = false;
-			cout << "ORmethodTest reports failure" << endl;
+			cout << "ATORmethodTest reports failure" << endl;
 		}
 		else
 		{
-			cout << "ORmethodTest completed" << endl;
+			cout << "ATORmethodTest completed" << endl;
 		}
 	}
 
@@ -560,9 +560,9 @@ int main(const int argc,const char* *argv)
 	#endif
 }
 
-void ORmainClass::printORcommandLineErrorMessage()
+void ATORmainClass::printORcommandLineErrorMessage()
 {
-	if(OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL)
+	if(ATOR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL)
 	{
 		cout << errmessage << endl;
 	}

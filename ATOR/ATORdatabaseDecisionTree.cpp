@@ -26,16 +26,16 @@
  * File Name: ATORdatabaseDecisionTree.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3o1a 05-November-2020
+ * Project Version: 3o2a 08-November-2020
  * /
  *******************************************************************************/
 
 
 #include "ATORdatabaseDecisionTree.hpp"
 
-//#ifdef OR_IMAGE_COMPARISON_DECISION_TREE
+//#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE
 
-#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 string imageComparisonTreeBaseDirectory;
 string imageComparisonTreeName;
 #endif
@@ -51,8 +51,8 @@ Might need ext4;
 */
 
 
-#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
-void ORdatabaseDecisionTreeClass::createAndOrParseIntoDirectory(string* folderNameFullPath, string* folderName, const bool create, const bool relativeOrAbsolute)
+#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
+void ATORdatabaseDecisionTreeClass::createAndOrParseIntoDirectory(string* folderNameFullPath, string* folderName, const bool create, const bool relativeOrAbsolute)
 {
 	if(create)
 	{
@@ -82,8 +82,8 @@ void ORdatabaseDecisionTreeClass::createAndOrParseIntoDirectory(string* folderNa
 }
 #endif
 
-//#define OR_IMAGE_COMPARISON_GEOMETRIC_COMPARISON_BINNING
-void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(const int imageWidth, const int imageHeight, const unsigned char* rgbMapSmall, const ORfeature* firstFeatureInList, const int64_t snapshotReferenceID, const bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, const string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, int64_t* decisionTreeSQLmultipleRowInsertQueryLength)
+//#define ATOR_IMAGE_COMPARISON_GEOMETRIC_COMPARISON_BINNING
+void ATORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(const int imageWidth, const int imageHeight, const uchar* rgbMapSmall, const ATORfeature* firstFeatureInList, const int64_t snapshotReferenceID, const bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, const string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, int64_t* decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string currentDirectory = *initialDirectory;
 	int currentDirectoryLengthInitial = *currentDirectoryLength;
@@ -91,14 +91,14 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 	bool addPermutationsOfTrainFeaturesForGeoBinning;
 	int maxNumFeaturePermutations;
 
-	const ORfeature* currentFeatureInTempList = firstFeatureInList;
+	const ATORfeature* currentFeatureInTempList = firstFeatureInList;
 
 	//now bin the features;
 	int findex1 = 0;
 
 	while(currentFeatureInTempList->next != NULL)
 	{
-		const ORfeature* currentFeatureInTempList2 = firstFeatureInList;
+		const ATORfeature* currentFeatureInTempList2 = firstFeatureInList;
 
 		if((!ignoreOTfeatures) || (currentFeatureInTempList->OTpointIndex == 0))
 		{//perform binning of nearby features only (not OT features)
@@ -111,16 +111,16 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 
 					if(findex1 != findex2)
 					{
-						int geoxyBinBiasInt[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2];
+						int geoxyBinBiasInt[ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2];
 						bool insideBin = false;
-						int geoxBin[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS];
-						int geoyBin[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS];
-						int geoxyBinTemp[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2];
-						double geoxyBinDoubleTemp[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2];
-						geoxyBinDoubleTemp[0] = ORdatabaseSQL.determineGeoBinDoubleX(currentFeatureInTempList->pointTransformed.x);
-						geoxyBinDoubleTemp[1] = ORdatabaseSQL.determineGeoBinDoubleY(currentFeatureInTempList->pointTransformed.y);
-						geoxyBinDoubleTemp[2] = ORdatabaseSQL.determineGeoBinDoubleX(currentFeatureInTempList2->pointTransformed.x);
-						geoxyBinDoubleTemp[3] = ORdatabaseSQL.determineGeoBinDoubleY(currentFeatureInTempList2->pointTransformed.y);
+						int geoxBin[ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS];
+						int geoyBin[ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS];
+						int geoxyBinTemp[ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2];
+						double geoxyBinDoubleTemp[ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2];
+						geoxyBinDoubleTemp[0] = ATORdatabaseSQL.determineGeoBinDoubleX(currentFeatureInTempList->pointTransformed.x);
+						geoxyBinDoubleTemp[1] = ATORdatabaseSQL.determineGeoBinDoubleY(currentFeatureInTempList->pointTransformed.y);
+						geoxyBinDoubleTemp[2] = ATORdatabaseSQL.determineGeoBinDoubleX(currentFeatureInTempList2->pointTransformed.x);
+						geoxyBinDoubleTemp[3] = ATORdatabaseSQL.determineGeoBinDoubleY(currentFeatureInTempList2->pointTransformed.y);
 						geoxBin[0] = geoxyBinDoubleTemp[0];
 						geoyBin[0] = geoxyBinDoubleTemp[1];
 						geoxBin[1] = geoxyBinDoubleTemp[2];
@@ -130,40 +130,40 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 						geoxyBinTemp[2] = geoxBin[1];
 						geoxyBinTemp[3] = geoyBin[1];
 
-						#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
-						for(int i=0; i<OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2; i++)
+						#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+						for(int i=0; i<ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2; i++)
 						{
 
-							if(geoxyBinDoubleTemp[i] >= double(geoxyBinTemp[i])+0.5-DOUBLE_MIN_PRECISION+OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD)
+							if(geoxyBinDoubleTemp[i] >= double(geoxyBinTemp[i])+0.5-DOUBLE_MIN_PRECISION+ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD)
 							{
-								geoxyBinBiasInt[i] = OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_POS;
+								geoxyBinBiasInt[i] = ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_POS;
 							}
-							else if(geoxyBinDoubleTemp[i] <= double(geoxyBinTemp[i])+0.5-DOUBLE_MIN_PRECISION-OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD)
+							else if(geoxyBinDoubleTemp[i] <= double(geoxyBinTemp[i])+0.5-DOUBLE_MIN_PRECISION-ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD)
 							{
-								geoxyBinBiasInt[i] = OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_NEG;
+								geoxyBinBiasInt[i] = ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_NEG;
 							}
 							else
 							{
-								geoxyBinBiasInt[i] = OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_SAME;
+								geoxyBinBiasInt[i] = ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_SAME;
 							}
 						}
 						#endif
 
 						if(geoxBin[0] > 0 )
 						{
-							if(geoxBin[0] < OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS-1)
+							if(geoxBin[0] < ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS-1)
 							{
 								if(geoyBin[0] > 0 )
 								{
-									if(geoyBin[0] < OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS-1)
+									if(geoyBin[0] < ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS-1)
 									{
 										if(geoxBin[1] > 0 )
 										{
-											if(geoxBin[1] < OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS-1)
+											if(geoxBin[1] < ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS-1)
 											{
 												if(geoyBin[1] > 0 )
 												{
-													if(geoyBin[1] < OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS-1)
+													if(geoyBin[1] < ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS-1)
 													{
 														insideBin = true;
 														//this passes; cout << "inside bin during array formation - good" << endl;
@@ -178,7 +178,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 
 						if(insideBin)
 						{
-						#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_HIGH_REDUNDANCY_DETERMINISTIC_BY_ITERATING_OVER_ALL_ADJACENT_BINS_FAST_RECOG_BUT_USE_MORE_HD
+						#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_HIGH_REDUNDANCY_DETERMINISTIC_BY_ITERATING_OVER_ALL_ADJACENT_BINS_FAST_RECOG_BUT_USE_MORE_HD
 
 							int xBin = geoxBin[0];
 							int x2Bin = geoxBin[1];
@@ -186,43 +186,43 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 							int y2Bin = geoyBin[1];
 
 							int xBinIndex = 0;
-							for(int x = xBin-(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X/2); x<=xBin+(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X/2); x++)
+							for(int x = xBin-(ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X/2); x<=xBin+(ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X/2); x++)
 							{
 								int yBinIndex =0;
-								for(int y = yBin-(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y/2); y<=yBin+(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y/2); y++)
+								for(int y = yBin-(ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y/2); y<=yBin+(ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y/2); y++)
 								{
 									//check current bin and nearest bins
 									int xBinIndex2 = 0;
-									for(int x2 = x2Bin-(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X/2); x2<=x2Bin+(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X/2); x2++)
+									for(int x2 = x2Bin-(ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X/2); x2<=x2Bin+(ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_X/2); x2++)
 									{
 										int y2BinIndex =0;
-										for(int y2 = y2Bin-(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y/2); y2<=y2Bin+(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y/2); y2++)
+										for(int y2 = y2Bin-(ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y/2); y2<=y2Bin+(ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_BINS_TO_COMPARE_Y/2); y2++)
 										{
 
-						#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD
+						#elif defined ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD
 
-							int geoxyBins[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2];
+							int geoxyBins[ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2];
 							geoxyBins[0] = geoxBin[0];
 							geoxyBins[1] = geoyBin[0];
 							geoxyBins[2] = geoxBin[1];
 							geoxyBins[3] = geoyBin[1];
 
-							for(int geoExceptionIndex1=0; geoExceptionIndex1<(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2)+1; geoExceptionIndex1++)
+							for(int geoExceptionIndex1=0; geoExceptionIndex1<(ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2)+1; geoExceptionIndex1++)
 							{
 								for(int geoExceptionModifier1=-1; geoExceptionModifier1<=1; geoExceptionModifier1=geoExceptionModifier1+2)
 								{
-									if(geoExceptionIndex1 != (OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2))
+									if(geoExceptionIndex1 != (ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2))
 									{
 										geoxyBins[geoExceptionIndex1] = geoxyBins[geoExceptionIndex1]+geoExceptionModifier1;
 									}
 
-									#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD_x2
+									#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD_x2
 
-									for(int geoExceptionIndex2=0; geoExceptionIndex2<(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2)+1; geoExceptionIndex2++)
+									for(int geoExceptionIndex2=0; geoExceptionIndex2<(ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2)+1; geoExceptionIndex2++)
 									{
 										for(int geoExceptionModifier2=-1; geoExceptionModifier2<=1; geoExceptionModifier2=geoExceptionModifier2+2)
 										{
-											if(geoExceptionIndex2 != (OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2))
+											if(geoExceptionIndex2 != (ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2))
 											{
 												geoxyBins[geoExceptionIndex2] = geoxyBins[geoExceptionIndex2]+geoExceptionModifier2;
 											}
@@ -234,28 +234,28 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 											int x2 = geoxyBins[2];
 											int y2 = geoxyBins[3];
 
-						#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+						#elif defined ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 
-							int geoxyBins[OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2];
+							int geoxyBins[ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2];
 							geoxyBins[0] = geoxBin[0];
 							geoxyBins[1] = geoyBin[0];
 							geoxyBins[2] = geoxBin[1];
 							geoxyBins[3] = geoyBin[1];
 
-							#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
-							ORsnapshotIDreferenceList* firstReferenceInDTBinListGeo = new ORsnapshotIDreferenceList();
-							ORsnapshotIDreferenceList* currentReferenceInDTBinListGeo = firstReferenceInDTBinListGeo;
+							#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
+							ATORsnapshotIDreferenceList* firstReferenceInDTBinListGeo = new ATORsnapshotIDreferenceList();
+							ATORsnapshotIDreferenceList* currentReferenceInDTBinListGeo = firstReferenceInDTBinListGeo;
 							#endif
 
-							//int numberOfIntelligentGeoBins = countIncrements(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2);  //2^(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2);
-							int numberOfIntelligentGeoBins = pow(2.0, (OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2));
+							//int numberOfIntelligentGeoBins = countIncrements(ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2);  //2^(ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2);
+							int numberOfIntelligentGeoBins = pow(2.0, (ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2));
 							for(int geoExceptionIndex1=0; geoExceptionIndex1<numberOfIntelligentGeoBins; geoExceptionIndex1++)
 							{
-								#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
+								#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
 								int64_t dtBinTemp = 0;
 								#endif
 
-								#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
+								#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
 								bool performAtLeastOneIntelligentGeoBinBias = false;
 								bool firstIntelligentBinPermutation = false;
 								if(geoExceptionIndex1 == 0)
@@ -264,9 +264,9 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 								}
 								#endif
 
-								#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_LIMIT_PERMUTATIONS
+								#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_LIMIT_PERMUTATIONS
 								int numberOfBinsThatAreBiased = 0;
-								for(int geoExceptionIndex2=0; geoExceptionIndex2<(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2); geoExceptionIndex2++)
+								for(int geoExceptionIndex2=0; geoExceptionIndex2<(ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2); geoExceptionIndex2++)
 								{
 									bool biasIsOnForThisBin = false;
 									if(((geoExceptionIndex1>>geoExceptionIndex2)%2) == 0)
@@ -283,10 +283,10 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 										numberOfBinsThatAreBiased++;
 									}
 								}
-								if(numberOfBinsThatAreBiased <= double(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2)*OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_LIMIT_PERMUTATIONS_MAX_NUM_BIAS_BINS_RATIO)
+								if(numberOfBinsThatAreBiased <= double(ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2)*ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_LIMIT_PERMUTATIONS_MAX_NUM_BIAS_BINS_RATIO)
 								{
 								#endif
-									for(int geoExceptionIndex2=0; geoExceptionIndex2<(OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2); geoExceptionIndex2++)
+									for(int geoExceptionIndex2=0; geoExceptionIndex2<(ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2); geoExceptionIndex2++)
 									{
 										bool biasIsOnForThisBin = false;
 
@@ -307,51 +307,51 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 										}
 										else
 										{//then assume biased bin if necessary, positive or negative
-											if(geoxyBinBiasInt[geoExceptionIndex2] == OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_NEG)
+											if(geoxyBinBiasInt[geoExceptionIndex2] == ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_NEG)
 											{
-												#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
+												#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
 												performAtLeastOneIntelligentGeoBinBias = true;
 												#endif
 												performIntelligentGeoBinBias = true;	//not used
 												bias = -1;
 												geoxyBins[geoExceptionIndex2] = geoxyBins[geoExceptionIndex2]+bias;
 											}
-											else if(geoxyBinBiasInt[geoExceptionIndex2] == OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_POS)
+											else if(geoxyBinBiasInt[geoExceptionIndex2] == ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_POS)
 											{
-												#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
+												#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
 												performAtLeastOneIntelligentGeoBinBias = true;
 												#endif
 												performIntelligentGeoBinBias = true;	//not used
 												bias = 1;
 												geoxyBins[geoExceptionIndex2] = geoxyBins[geoExceptionIndex2]+bias;
 											}
-											else if(geoxyBinBiasInt[geoExceptionIndex2] == OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_SAME)
+											else if(geoxyBinBiasInt[geoExceptionIndex2] == ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_SAME)
 											{
 												performIntelligentGeoBinBias = false;	//not used
 												//do not add
 											}
 										}
 
-										#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
-										if(OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS < 100)
+										#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
+										if(ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS < 100)
 										{
 											dtBinTemp = dtBinTemp + geoxyBins[geoExceptionIndex2]*(pow(100, geoExceptionIndex2));
 
 										}
 										else
 										}
-											cerr << "invalid OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS, must be < 100" << endl;
+											cerr << "invalid ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS, must be < 100" << endl;
 											exit(EXIT_ERROR);
 										}
 										#endif
 										//CHECK THIS; do: apply check; only insert new row into dt if it is unique to the given snapshot ID
 									}
 
-									#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
+									#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
 									bool placedNewDTBinReference = false;
 									bool dtBinAlreadyAddedToList = false;
 									currentReferenceInDTBinListGeo = firstReferenceInDTBinListGeo;
-									ORsnapshotIDreferenceList* previousReferenceInDTBinListGeo = firstReferenceInDTBinListGeo;
+									ATORsnapshotIDreferenceList* previousReferenceInDTBinListGeo = firstReferenceInDTBinListGeo;
 									bool DTBinListGeoIndex = 0;
 									int currentDTBinValue = currentReferenceInDTBinListGeo->referenceID;
 									while(!placedNewDTBinReference && !dtBinAlreadyAddedToList)
@@ -364,11 +364,11 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 										{
 											if(currentReferenceInDTBinListGeo->referenceID >= currentDTBinValue)
 											{
-												ORsnapshotIDreferenceList* newReferenceInDTBinListGeo = new ORsnapshotIDreferenceList();
+												ATORsnapshotIDreferenceList* newReferenceInDTBinListGeo = new ATORsnapshotIDreferenceList();
 												newReferenceInDTBinListGeo->referenceID = dtBinTemp;
 												if(DTBinListGeoIndex > 0)
 												{
-													ORsnapshotIDreferenceList* tempRef = previousReferenceInDTBinListGeo->next;
+													ATORsnapshotIDreferenceList* tempRef = previousReferenceInDTBinListGeo->next;
 													tempRef->previous = newReferenceInDTBinListGeo;
 													newReferenceInDTBinListGeo->next = tempRef;
 													newReferenceInDTBinListGeo->previous = previousReferenceInDTBinListGeo;
@@ -376,7 +376,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 												}
 												else
 												{
-													ORsnapshotIDreferenceList* tempRef = firstReferenceInDTBinListGeo;
+													ATORsnapshotIDreferenceList* tempRef = firstReferenceInDTBinListGeo;
 													tempRef->previous = newReferenceInDTBinListGeo;
 													newReferenceInDTBinListGeo->next = tempRef;
 													firstReferenceInDTBinListGeo = newReferenceInDTBinListGeo;
@@ -398,10 +398,10 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 									#endif
 
 
-									#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
+									#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
 									if(!dtBinAlreadyAddedToList)
 									{
-									#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
+									#elif defined ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
 									if(performAtLeastOneIntelligentGeoBinBias || firstIntelligentBinPermutation)
 									{
 									#endif
@@ -421,12 +421,12 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 							int y2 = geoyBin[1];
 
 						#endif
-											#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+											#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 											currentDirectory = initialDirectory;
 											createAndOrParseIntoDirectory(&currentDirectory, &currentDirectory, false, false);
 											#endif
 
-											#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+											#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 											currentDirectory = "";
 											#endif
 
@@ -434,7 +434,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 
 											char geobinxString[25];
 											sprintf(geobinxString, "%2d", x);
-											#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+											#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 											currentDirectory = currentDirectory + "/" + geobinxString;
 											createAndOrParseIntoDirectory(&currentDirectory, &string(geobinxString), true, true);
 											#else
@@ -443,7 +443,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 
 											char geobinyString[25];
 											sprintf(geobinyString, "%2d", y);
-											#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+											#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 											currentDirectory = currentDirectory + "/" + geobinyString;
 											createAndOrParseIntoDirectory(&currentDirectory, &string(geobinyString), true, true);
 											#else
@@ -452,7 +452,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 
 											char geobinx2String[25];
 											sprintf(geobinx2String, "%2d", x2);
-											#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+											#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 											currentDirectory = currentDirectory + "/" + geobinx2String;
 											createAndOrParseIntoDirectory(&currentDirectory, &string(geobinx2String), true, true);
 											#else
@@ -461,14 +461,14 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 
 											char geobiny2String[25];
 											sprintf(geobiny2String, "%2d", y2);
-											#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+											#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 											currentDirectory = currentDirectory + "/" + geobiny2String;
 											createAndOrParseIntoDirectory(&currentDirectory, &string(geobiny2String), true, true);
 											#else
 											currentDirectory = currentDirectory + geobiny2String;
 											#endif
 
-											#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+											#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 											for(int i=0; i<currentDirectory.length(); i++)
 											{
 												currentDirectoryCharStar[*currentDirectoryLength] = currentDirectory[i];
@@ -476,7 +476,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 											}
 											#endif
 
-											if(OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
+											if(ATOR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
 											{
 												addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 											}
@@ -485,17 +485,17 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 												addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 											}
 
-							#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_HIGH_REDUNDANCY_DETERMINISTIC_BY_ITERATING_OVER_ALL_ADJACENT_BINS_FAST_RECOG_BUT_USE_MORE_HD
+							#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_HIGH_REDUNDANCY_DETERMINISTIC_BY_ITERATING_OVER_ALL_ADJACENT_BINS_FAST_RECOG_BUT_USE_MORE_HD
 
 										}
 									}
 								}
 							}
-							#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD
+							#elif defined ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD
 
-									#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD_x2
+									#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD_x2
 
-											if(geoExceptionIndex2 != (OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2))
+											if(geoExceptionIndex2 != (ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2))
 											{
 												geoxyBins[geoExceptionIndex2] = geoxyBins[geoExceptionIndex2]-geoExceptionModifier2;
 											}
@@ -503,20 +503,20 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 									}
 									#endif
 
-									if(geoExceptionIndex1 != (OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2))
+									if(geoExceptionIndex1 != (ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2))
 									{
 										geoxyBins[geoExceptionIndex1] = geoxyBins[geoExceptionIndex1]-geoExceptionModifier1;
 									}
 								}
 							}
-							#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+							#elif defined ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 
-								#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
+								#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
 								}
-								#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
+								#elif defined ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
 								}
 								#endif
-								#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_LIMIT_PERMUTATIONS
+								#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_LIMIT_PERMUTATIONS
 								}
 								#endif
 
@@ -527,7 +527,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 
 
 							}
-							#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
+							#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
 							delete firstReferenceInDTBinListGeo;
 							#endif
 
@@ -546,8 +546,8 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 
 }
 
-//#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING
-void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(const int imageWidth, const int imageHeight, const unsigned char* rgbMapSmall, const ORfeature* firstFeatureInList, const int64_t snapshotReferenceID, const bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, int64_t* decisionTreeSQLmultipleRowInsertQueryLength)
+//#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING
+void ATORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(const int imageWidth, const int imageHeight, const uchar* rgbMapSmall, const ATORfeature* firstFeatureInList, const int64_t snapshotReferenceID, const bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, int64_t* decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string* currentDirectory = initialDirectory;
 	int currentDirectoryLengthInitial = *currentDirectoryLength;
@@ -568,25 +568,25 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 	{
 		rBinMin = 0;
 	}
-	if(rBinMax > (OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL-1))
+	if(rBinMax > (ATOR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL-1))
 	{
-		rBinMax = OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL-1;
+		rBinMax = ATOR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL-1;
 	}
 	if(gBinMin < 0)
 	{
 		gBinMin = 0;
 	}
-	if(gBinMax > (OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL-1))
+	if(gBinMax > (ATOR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL-1))
 	{
-		gBinMax = OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL-1;
+		gBinMax = ATOR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL-1;
 	}
 	if(bBinMin < 0)
 	{
 		bBinMin = 0;
 	}
-	if(bBinMax > (OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL-1))
+	if(bBinMax > (ATOR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL-1))
 	{
-		bBinMax = OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL-1;
+		bBinMax = ATOR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL-1;
 	}
 
 	for(int r = rBinMin; r <= rBinMax; r++)
@@ -600,17 +600,17 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 				string currentgBinString = SHAREDvars.convertIntToString(g);
 				string currentbBinString = SHAREDvars.convertIntToString(b);
 
-				#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+				#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 				currentDirectory = initialDirectory;
 				createAndOrParseIntoDirectory(&currentDirectory, &currentDirectory, false, false);
 				#endif
 
-				#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+				#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 				string currentDirectory = "";
 				#endif
 
 				*currentDirectoryLength = currentDirectoryLengthInitial;
-				#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+				#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 				currentDirectory = currentDirectory + "/" + currentrBinString;
 				createAndOrParseIntoDirectory(&currentDirectory, &string(currentrBinString), true, true);
 				currentDirectory = currentDirectory + "/" + currentgBinString;
@@ -623,7 +623,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 				currentDirectory = currentDirectory + currentbBinString;
 				#endif
 
-				#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+				#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 				for(int i=0; i<currentDirectory.length(); i++)
 				{
 					currentDirectoryCharStar[*currentDirectoryLength] = currentDirectory[i];
@@ -637,66 +637,66 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 	}
 }
 
-//#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
-void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, const int imageHeight, unsigned char* rgbMapSmall, ORfeature* firstFeatureInList, const int64_t snapshotReferenceID, const bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, const string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, int64_t* decisionTreeSQLmultipleRowInsertQueryLength)
+//#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
+void ATORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisionTreeLoopDCT(int imageWidth, const int imageHeight, uchar* rgbMapSmall, ATORfeature* firstFeatureInList, const int64_t snapshotReferenceID, const bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, const string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, int64_t* decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string currentDirectory = *initialDirectory;
 	int currentDirectoryLengthInitial = *currentDirectoryLength;
 
-	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 		char dctCoeffArrayBinnedStringTemp[1000];
 		int DCTCoeff64BitValueStringLengthTemp = 0;	//not used
-		int concatonatedDctCoeffArrayBiasInt[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
-		#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
-		//ORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffArrayBinnedStringTemp, &DCTCoeff64BitValueStringLengthTemp, concatonatedDctCoeffArrayBiasInt);
+		int concatonatedDctCoeffArrayBiasInt[ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
+		#ifdef ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
+		//ATORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffArrayBinnedStringTemp, &DCTCoeff64BitValueStringLengthTemp, concatonatedDctCoeffArrayBiasInt);
 		#else
-		//ORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, concatonatedDctCoeffArrayBiasInt);
+		//ATORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, concatonatedDctCoeffArrayBiasInt);
 		#endif
 	#endif
 
-#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD
-	for(int fourierExceptionIndex1=0; fourierExceptionIndex1<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS+1; fourierExceptionIndex1++)
+#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD
+	for(int fourierExceptionIndex1=0; fourierExceptionIndex1<ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS+1; fourierExceptionIndex1++)
 	{
 		for(int fourierExceptionModifier1=-1; fourierExceptionModifier1<=1; fourierExceptionModifier1=fourierExceptionModifier1+2)
 		{
-			if(fourierExceptionIndex1 != OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS)
+			if(fourierExceptionIndex1 != ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS)
 			{
 				firstFeatureInList->dctCoeff[fourierExceptionIndex1] = firstFeatureInList->dctCoeff[fourierExceptionIndex1]+fourierExceptionModifier1;
 			}
 
-			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD_x2
-			for(int fourierExceptionIndex2=0; fourierExceptionIndex2<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS+1; fourierExceptionIndex2++)
+			#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD_x2
+			for(int fourierExceptionIndex2=0; fourierExceptionIndex2<ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS+1; fourierExceptionIndex2++)
 			{
 				for(int fourierExceptionModifier2=-1; fourierExceptionModifier2<=1; fourierExceptionModifier2=fourierExceptionModifier2+2)
 				{
-					if(fourierExceptionIndex2 != OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS)
+					if(fourierExceptionIndex2 != ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS)
 					{
 						firstFeatureInList->dctCoeff[fourierExceptionIndex2] = firstFeatureInList->dctCoeff[fourierExceptionIndex2]+fourierExceptionModifier2;
 					}
 			#endif
-#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+#elif defined ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 
-	signed char dctCoeffOriginal[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
-	for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; i++)
+	schar dctCoeffOriginal[ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
+	for(int i=0; i<ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; i++)
 	{
 		dctCoeffOriginal[i] = firstFeatureInList->dctCoeff[i];
 	}
 
-	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
-	ORsnapshotIDreferenceList* firstReferenceInDTBinListFourier = new ORsnapshotIDreferenceList();
-	ORsnapshotIDreferenceList* currentReferenceInDTBinListFourier = firstReferenceInDTBinListFourier;
+	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
+	ATORsnapshotIDreferenceList* firstReferenceInDTBinListFourier = new ATORsnapshotIDreferenceList();
+	ATORsnapshotIDreferenceList* currentReferenceInDTBinListFourier = firstReferenceInDTBinListFourier;
 	#endif
-	int numberOfIntelligentFourierBins = pow(2.0, OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS);
+	int numberOfIntelligentFourierBins = pow(2.0, ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS);
 	for(int fourierExceptionIndex1=0; fourierExceptionIndex1<numberOfIntelligentFourierBins; fourierExceptionIndex1++)
 	{
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
 		bool performAtLeastOneIntelligentGeoBinBias = false;
 		bool firstIntelligentBinPermutation = false;
 		if(fourierExceptionIndex1 == 0)
 		{
 			firstIntelligentBinPermutation = true;
 		}
-		#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V3
+		#elif defined ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V3
 		bool firstIntelligentBinPermutation = false;
 		if(fourierExceptionIndex1 == 0)
 		{
@@ -704,14 +704,14 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 		}
 		#endif
 
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
 		int64_t dtBinTemp = 0;
 		#endif
 
 
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_LIMIT_PERMUTATIONS
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_LIMIT_PERMUTATIONS
 		int numberOfBinsThatAreBiased = 0;
-		for(int fourierExceptionIndex2=0; fourierExceptionIndex2<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; fourierExceptionIndex2++)
+		for(int fourierExceptionIndex2=0; fourierExceptionIndex2<ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; fourierExceptionIndex2++)
 		{
 			bool biasIsOnForThisBin = false;
 			if(((fourierExceptionIndex1>>fourierExceptionIndex2)%2) == 0)	//test 1/0 of bit x in fourierExceptionIndex1 (NB fourierExceptionIndex1 is 7 bit)
@@ -729,44 +729,44 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 			}
 
 		}
-		if(numberOfBinsThatAreBiased <= double(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS)*OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_LIMIT_PERMUTATIONS_MAX_NUM_BIAS_BINS_RATIO)
+		if(numberOfBinsThatAreBiased <= double(ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS)*ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_LIMIT_PERMUTATIONS_MAX_NUM_BIAS_BINS_RATIO)
 		{//ie, numberOfBinsThatAreBiased <= 3
 		#endif
 
 			int numberOfBinsThatNeedBiasesApplied = 0;
-			for(int fourierExceptionIndex2=0; fourierExceptionIndex2<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; fourierExceptionIndex2++)
+			for(int fourierExceptionIndex2=0; fourierExceptionIndex2<ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; fourierExceptionIndex2++)
 			{
 				bool biasIsOnForThisBin = false;
 				if(((fourierExceptionIndex1>>fourierExceptionIndex2)%2) == 0)	//test 1/0 of bit x in fourierExceptionIndex1 (NB fourierExceptionIndex1 is 7 bit)
 				{//bit is off
-					#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
+					#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
 					performAtLeastOneIntelligentGeoBinBias = true;
 					#endif
 					biasIsOnForThisBin = false;
 				}
 				else
 				{//bit is on
-					#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
+					#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
 					performAtLeastOneIntelligentGeoBinBias = true;
 					#endif
 					biasIsOnForThisBin = true;
 				}
 
 
-				//This section updated 9 June 2012 to support OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V3
+				//This section updated 9 June 2012 to support ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V3
 				int bias = 0;
 				bool performIntelligentFourierBinBias = false;
-				if(concatonatedDctCoeffArrayBiasInt[fourierExceptionIndex2] == OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_NEG)
+				if(concatonatedDctCoeffArrayBiasInt[fourierExceptionIndex2] == ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_NEG)
 				{
 					performIntelligentFourierBinBias = true;	//not used
-					bias = -1*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
+					bias = -1*ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
 				}
-				else if(concatonatedDctCoeffArrayBiasInt[fourierExceptionIndex2] == OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_POS)
+				else if(concatonatedDctCoeffArrayBiasInt[fourierExceptionIndex2] == ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_POS)
 				{
 					performIntelligentFourierBinBias = true;	//not used
-					bias = 1*OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
+					bias = 1*ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
 				}
-				else if(concatonatedDctCoeffArrayBiasInt[fourierExceptionIndex2] == OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_SAME)
+				else if(concatonatedDctCoeffArrayBiasInt[fourierExceptionIndex2] == ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_SAME)
 				{
 					performIntelligentFourierBinBias = false;	//not used
 					//do not add
@@ -784,28 +784,28 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 					}
 				}
 
-				#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
-				if(OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS < 100)
+				#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
+				if(ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS < 100)
 				{
 					int arrayValueSignedTemp = firstFeatureInList->dctCoeff[fourierExceptionIndex2];
 					double arrayValueUnsignedDouble;
-					unsigned int arrayValueUnsignedTemp = ORdatabaseSQL.determineDCTBinUnsigned(arrayValueSignedTemp, &arrayValueUnsignedDouble);
+					uint32_t arrayValueUnsignedTemp = ATORdatabaseSQL.determineDCTBinUnsigned(arrayValueSignedTemp, &arrayValueUnsignedDouble);
 
 					dtBinTemp = dtBinTemp + arrayValueUnsignedTemp*(pow(100, fourierExceptionIndex2));
 				}
 				else
 				{
-					cerr << "invalid OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS, must be < 100" << endl;
+					cerr << "invalid ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS, must be < 100" << endl;
 					exit(EXIT_ERROR);
 				}
 				#endif
 			}
 
-			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
+			#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
 			bool placedNewDTBinReference = false;
 			bool dtBinAlreadyAddedToList = false;
 			currentReferenceInDTBinListFourier = firstReferenceInDTBinListFourier;
-			ORsnapshotIDreferenceList* previousReferenceInDTBinListFourier = firstReferenceInDTBinListFourier;
+			ATORsnapshotIDreferenceList* previousReferenceInDTBinListFourier = firstReferenceInDTBinListFourier;
 			bool DTBinListFourierIndex = 0;
 			int currentDTBinValue = currentReferenceInDTBinListFourier->referenceID;
 			while(!placedNewDTBinReference && !dtBinAlreadyAddedToList)
@@ -818,11 +818,11 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 				{
 					if(currentReferenceInDTBinListFourier->referenceID >= currentDTBinValue)
 					{
-						ORsnapshotIDreferenceList* newReferenceInDTBinListFourier = new ORsnapshotIDreferenceList();
+						ATORsnapshotIDreferenceList* newReferenceInDTBinListFourier = new ATORsnapshotIDreferenceList();
 						newReferenceInDTBinListFourier->referenceID = dtBinTemp;
 						if(DTBinListFourierIndex > 0)
 						{
-							ORsnapshotIDreferenceList* tempRef = previousReferenceInDTBinListFourier->next;
+							ATORsnapshotIDreferenceList* tempRef = previousReferenceInDTBinListFourier->next;
 							tempRef->previous = newReferenceInDTBinListFourier;
 							newReferenceInDTBinListFourier->next = tempRef;
 							newReferenceInDTBinListFourier->previous = previousReferenceInDTBinListFourier;
@@ -830,7 +830,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 						}
 						else
 						{
-							ORsnapshotIDreferenceList* tempRef = firstReferenceInDTBinListFourier;
+							ATORsnapshotIDreferenceList* tempRef = firstReferenceInDTBinListFourier;
 							tempRef->previous = newReferenceInDTBinListFourier;
 							newReferenceInDTBinListFourier->next = tempRef;
 							firstReferenceInDTBinListFourier = newReferenceInDTBinListFourier;
@@ -851,7 +851,7 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 			}
 			#endif
 
-			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V3
+			#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V3
 			bool performUniqueIntelligentGeoBinBias = true;
 			if(numberOfBinsThatNeedBiasesApplied < numberOfBinsThatAreBiased)
 			{
@@ -859,67 +859,67 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 			}
 			#endif
 
-			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
+			#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
 			if(!dtBinAlreadyAddedToList)
 			{
-			#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
+			#elif defined ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
 			if(performAtLeastOneIntelligentGeoBinBias || firstIntelligentBinPermutation)
 			{
-			#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V3
+			#elif defined ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V3
 			if(performUniqueIntelligentGeoBinBias || firstIntelligentBinPermutation)
 			{
 			#endif
 #endif
-					#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
-					if(OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
+					#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
+					if(ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 					{
 						*decisionTreeSQLmultipleRowInsertQueryLength = 0;
-						ORdatabaseSQL.insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart(OR_MYSQL_TABLE_NAME_DECISIONTREE, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
+						ATORdatabaseSQL.insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart(ATOR_MYSQL_TABLE_NAME_DECISIONTREE, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 
 					}
 					#endif
 
-					#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+					#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 					currentDirectory = initialDirectory;
 					createAndOrParseIntoDirectory(&currentDirectory, &currentDirectory, false, false);
 					#endif
 
-					#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+					#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 					currentDirectory = "";
 					#endif
 					*currentDirectoryLength = currentDirectoryLengthInitial;
 
-					#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
-						#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+					#ifdef ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
+						#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 						char dctCoeffArrayBinnedString[1000];
 						int DCTCoeff64BitValueStringLengthNOTUSED = 0;	//not used
-						int concatonatedSignedDctCoeffArrayBiasIntTemp[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
-						//ORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED, concatonatedSignedDctCoeffArrayBiasIntTemp);
+						int concatonatedSignedDctCoeffArrayBiasIntTemp[ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
+						//ATORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED, concatonatedSignedDctCoeffArrayBiasIntTemp);
 						#else
 						char dctCoeffArrayBinnedString[1000];
 						int DCTCoeff64BitValueStringLengthNOTUSED = 0;	//not used
-						//ORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED);
+						//ATORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED);
 						#endif
 					#else
-						#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
-						int concatonatedSignedDctCoeffArrayBiasIntTemp[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
-						//firstFeatureInList->dctCoeffArrayBinned = ORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, concatonatedSignedDctCoeffArrayBiasIntTemp);
+						#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+						int concatonatedSignedDctCoeffArrayBiasIntTemp[ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
+						//firstFeatureInList->dctCoeffArrayBinned = ATORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, concatonatedSignedDctCoeffArrayBiasIntTemp);
 						#else
-						firstFeatureInList->dctCoeffArrayBinned = ORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff);
+						firstFeatureInList->dctCoeffArrayBinned = ATORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff);
 						#endif
 
 						char dctCoeffArrayBinnedString[25];
 						sprintf(dctCoeffArrayBinnedString, "%ld", firstFeatureInList->dctCoeffArrayBinned);
 					#endif
 
-					#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+					#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 					currentDirectory = currentDirectory + "/" + dctCoeffArrayBinnedString;
 					createAndOrParseIntoDirectory(currentDirectory, &string(dctCoeffArrayBinnedString), false, true);
 					#else
 					currentDirectory = currentDirectory + dctCoeffArrayBinnedString;
 					#endif
 
-					#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+					#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 					for(int i=0; i<currentDirectory.length(); i++)
 					{
 						currentDirectoryCharStar[*currentDirectoryLength] = (currentDirectory)[i];
@@ -928,15 +928,15 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 					#endif
 
 
-					if(OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
+					if(ATOR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
 					{
 						addSnapshotIDreferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 					}
-					else if(OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
+					else if(ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 					{
 						addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 					}
-					else if(OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
+					else if(ATOR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
 					{
 						addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 					}
@@ -946,17 +946,17 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 					}
 
 
-					#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
-					if(OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
+					#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
+					if(ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 					{
-						ORdatabaseSQL.insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeEnd(decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
+						ATORdatabaseSQL.insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeEnd(decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 					}
 					#endif
 
-#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD
+#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD
 
-			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD_x2
-					if(fourierExceptionIndex2 != OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS)
+			#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_ALLOWING_EXCEPTIONS_FAST_BUT_USE_MORE_HD_x2
+					if(fourierExceptionIndex2 != ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS)
 					{
 						firstFeatureInList->dctCoeff[fourierExceptionIndex2] = firstFeatureInList->dctCoeff[fourierExceptionIndex2]-fourierExceptionModifier2;
 					}
@@ -964,53 +964,53 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 			}
 			#endif
 
-			if(fourierExceptionIndex1 != OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS)
+			if(fourierExceptionIndex1 != ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS)
 			{
 				firstFeatureInList->dctCoeff[fourierExceptionIndex1] = firstFeatureInList->dctCoeff[fourierExceptionIndex1]-fourierExceptionModifier1;
 			}
 		}
 	}
-#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+#elif defined ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
 		}
-		#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
+		#elif defined ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V2
 		}
-		#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V3
+		#elif defined ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS_V3
 		}
 		#endif
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_LIMIT_PERMUTATIONS
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_LIMIT_PERMUTATIONS
 		}
 		#endif
 
-		for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; i++)
+		for(int i=0; i<ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; i++)
 		{
 			firstFeatureInList->dctCoeff[i] = dctCoeffOriginal[i];
 		}
 	}
 #endif
 
-	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
+	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_DO_NOT_ALLOW_REPEATS
 	delete firstReferenceInDTBinListFourier;
 	#endif
 }
 
-//#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON
-void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(int imageWidth, const int imageHeight, unsigned char* rgbMapSmall, const ORfeature* firstFeatureInList, const int64_t snapshotReferenceID, const bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, const string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, int64_t* decisionTreeSQLmultipleRowInsertQueryLength)
+//#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON
+void ATORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(int imageWidth, const int imageHeight, uchar* rgbMapSmall, const ATORfeature* firstFeatureInList, const int64_t snapshotReferenceID, const bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, const string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, int64_t* decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string currentDirectory = *initialDirectory;
 
-	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 	createOrParseSnapshotIDreferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, false, &currentDirectory, currentDirectoryCharStar, currentDirectoryLength);
 	#else
 	createOrParseSnapshotIDreferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, true, &currentDirectory, NULL, NULL);
 	#endif
 
-	if(OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
+	if(ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 	{
 		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 	}
-	else if(OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
+	else if(ATOR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
 	{
 		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, &currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 	}
@@ -1021,19 +1021,19 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 }
 
 
-void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(const int imageWidth, const int imageHeight, const unsigned char* rgbMapSmall, const ORfeature* firstFeatureInList, const int64_t snapshotReferenceID, const bool ignoreOTfeatures,  const char* currentDirectoryCharStar, const int* currentDirectoryLength, string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, int64_t* decisionTreeSQLmultipleRowInsertQueryLength)
+void ATORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(const int imageWidth, const int imageHeight, const uchar* rgbMapSmall, const ATORfeature* firstFeatureInList, const int64_t snapshotReferenceID, const bool ignoreOTfeatures,  const char* currentDirectoryCharStar, const int* currentDirectoryLength, string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, int64_t* decisionTreeSQLmultipleRowInsertQueryLength)
 {
 	string* currentDirectory = initialDirectory;
 
-#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
-	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
-	ORdatabaseSQL.insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration(currentDirectoryCharStar,* currentDirectoryLength, snapshotReferenceID, &databaseTableSizeDecisionTree, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
+#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
+	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
+	ATORdatabaseSQL.insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration(currentDirectoryCharStar,* currentDirectoryLength, snapshotReferenceID, &databaseTableSizeDecisionTree, decisionTreeMultipleRowInsertQueryTextCharStar, decisionTreeSQLmultipleRowInsertQueryLength);
 	#else
-	ORdatabaseSQL.insertSnapshotIDreferenceIntoSQLdatabaseDecisionTree(OR_MYSQL_TABLE_NAME_DECISIONTREE, currentDirectoryCharStar,* currentDirectoryLength, snapshotReferenceID, &databaseTableSizeDecisionTree);
+	ATORdatabaseSQL.insertSnapshotIDreferenceIntoSQLdatabaseDecisionTree(ATOR_MYSQL_TABLE_NAME_DECISIONTREE, currentDirectoryCharStar,* currentDirectoryLength, snapshotReferenceID, &databaseTableSizeDecisionTree);
 	#endif
 #else
 
-	string snapshotIDReferenceListFileName = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_DEFAULT_LIST_FILE_NAME;
+	string snapshotIDReferenceListFileName = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_DEFAULT_LIST_FILE_NAME;
 	*currentDirectory = *currentDirectory + "/" + snapshotIDReferenceListFileName;
 
 	addSnapshotIDReferenceToList(currentDirectory, snapshotReferenceID);
@@ -1043,18 +1043,18 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 }
 
 
-void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcombinations(int imageWidth, const int imageHeight, unsigned char* rgbMapSmall, ORfeature* firstFeatureInList, const int64_t snapshotReferenceID, const bool ignoreOTfeatures)
+void ATORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcombinations(int imageWidth, const int imageHeight, uchar* rgbMapSmall, ATORfeature* firstFeatureInList, const int64_t snapshotReferenceID, const bool ignoreOTfeatures)
 {
-	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
+	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
 	char* decisionTreeMultipleRowInsertQueryTextCharStar = new char[100000000];	//requires 100MB in ram, for ~ 1000,000 sql inserted rows, each <= 100 characters in length
 	#else
 	char* decisionTreeMultipleRowInsertQueryTextCharStar = NULL;	//not initiated yet
 	#endif
 	int64_t decisionTreeSQLmultipleRowInsertQueryLength = 0;
 
-	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 		string initialDirectory = "";	//not used
-		char currentDirectoryCharStar[OR_IMAGE_COMPARISON_DECISION_TREE_BIN_MAX_LENGTH];
+		char currentDirectoryCharStar[ATOR_IMAGE_COMPARISON_DECISION_TREE_BIN_MAX_LENGTH];
 		int currentDirectoryLength = 0;
 	#else
 		string initialDirectory = imageComparisonTreeBaseDirectory + imageComparisonTreeName;
@@ -1063,13 +1063,13 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 	#endif
 	string* currentDirectory = &initialDirectory;
 
-	if(OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
+	if(ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
 	{
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
-		if(!OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
+		if(!ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 		{
 			decisionTreeSQLmultipleRowInsertQueryLength = 0;	//requires 100MB in ram, for ~ 1000,000 sql inserted rows, each <= 100 characters in length
-			ORdatabaseSQL.insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart(OR_MYSQL_TABLE_NAME_DECISIONTREE, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
+			ATORdatabaseSQL.insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart(ATOR_MYSQL_TABLE_NAME_DECISIONTREE, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 		}
 		else
 		{
@@ -1078,35 +1078,35 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 		#endif
 		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopDCT(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
-		if(!OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
+		if(!ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 		{
-			ORdatabaseSQL.insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeEnd(decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
+			ATORdatabaseSQL.insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeEnd(decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 		}
 		#endif
 	}
-	else if(OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
+	else if(ATOR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
 	{
 		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopSmallHueDevMap(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 	}
-	else if(OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
+	else if(ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 	{
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
-		if(!OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
+		if(!ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
 		{
 			decisionTreeSQLmultipleRowInsertQueryLength = 0;	//requires 100MB in ram, for ~ 1000,000 sql inserted rows, each <= 100 characters in length
-			ORdatabaseSQL.insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart(OR_MYSQL_TABLE_NAME_DECISIONTREE, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
+			ATORdatabaseSQL.insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart(ATOR_MYSQL_TABLE_NAME_DECISIONTREE, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 		}
 		#endif
 		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopGeo(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
-		if(!OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
+		if(!ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
 		{
-			ORdatabaseSQL.insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeEnd(decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
+			ATORdatabaseSQL.insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeEnd(decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 		}
 		#endif
 	}
-	else if(OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
+	else if(ATOR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
 	{
 		addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(imageWidth, imageHeight, rgbMapSmall, firstFeatureInList, snapshotReferenceID, ignoreOTfeatures, currentDirectoryCharStar, &currentDirectoryLength, currentDirectory, decisionTreeMultipleRowInsertQueryTextCharStar, &decisionTreeSQLmultipleRowInsertQueryLength);
 	}
@@ -1116,16 +1116,16 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDreferenceToImageComparisonDecisio
 		exit(EXIT_ERROR);
 	}
 
-	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
+	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
 	delete decisionTreeMultipleRowInsertQueryTextCharStar;
 	#endif
 
 
 }
 
-void ORdatabaseDecisionTreeClass::createSnapshotIDreferenceImageComparisonDecisionTreeString(int imageWidth, const int imageHeight, unsigned char* rgbMapSmall, const int64_t pBinxyValueRequirement, const int pBinxRequirement[], const int pBinyRequirement[], const colour* normalisedAverageHueDeviationRequirement, const signed char concatonatedSignedDctCoeffArrayRequirement[], char* currentDirectoryCharStar, int* currentDirectoryLength, string* currentDirectory)
+void ATORdatabaseDecisionTreeClass::createSnapshotIDreferenceImageComparisonDecisionTreeString(int imageWidth, const int imageHeight, uchar* rgbMapSmall, const int64_t pBinxyValueRequirement, const int pBinxRequirement[], const int pBinyRequirement[], const colour* normalisedAverageHueDeviationRequirement, const schar concatonatedSignedDctCoeffArrayRequirement[], char* currentDirectoryCharStar, int* currentDirectoryLength, string* currentDirectory)
 {
-	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 	*currentDirectory = "";
 	#else
 	*currentDirectory = imageComparisonTreeBaseDirectory + imageComparisonTreeName;
@@ -1140,40 +1140,40 @@ void ORdatabaseDecisionTreeClass::createSnapshotIDreferenceImageComparisonDecisi
 	}
 
 
-	if(OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
+	if(ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING)
 	{
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 		*currentDirectory = "";
 		#endif
 
-	#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
+	#ifdef ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
 		char dctCoeffArrayBinnedString[1000];
 		int DCTCoeff64BitValueStringLengthNOTUSED = 0;	//not used
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
-		int concatonatedDctCoeffArrayBiasIntNOTUSED[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
-		//ORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED, concatonatedDctCoeffArrayBiasIntNOTUSED);
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+		int concatonatedDctCoeffArrayBiasIntNOTUSED[ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
+		//ATORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED, concatonatedDctCoeffArrayBiasIntNOTUSED);
 		#else
-		//ORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED);
+		//ATORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement, dctCoeffArrayBinnedString, &DCTCoeff64BitValueStringLengthNOTUSED);
 		#endif
 	#else
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
-		int concatonatedDctCoeffArrayBiasIntNOTUSED[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
-		//uint64_t dctCoeffArrayBinned = ORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement, concatonatedDctCoeffArrayBiasIntNOTUSED);
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
+		int concatonatedDctCoeffArrayBiasIntNOTUSED[ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
+		//uint64_t dctCoeffArrayBinned = ATORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement, concatonatedDctCoeffArrayBiasIntNOTUSED);
 		#else
-		uint64_t dctCoeffArrayBinned = ORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement);
+		uint64_t dctCoeffArrayBinned = ATORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement);
 		#endif
 		char dctCoeffArrayBinnedString[25];
 		sprintf(dctCoeffArrayBinnedString, "%ld", dctCoeffArrayBinned);
 	#endif
 
-		#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+		#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 		*currentDirectory = *currentDirectory + "/" + dctCoeffArrayBinnedString;
 		createAndOrParseIntoDirectory(currentDirectory, &string(dctCoeffArrayBinnedString), false, true);
 		#else
 		*currentDirectory = *currentDirectory + dctCoeffArrayBinnedString;
 		#endif
 
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 		for(int i=0; i<currentDirectory->length(); i++)
 		{
 			currentDirectoryCharStar[*currentDirectoryLength] = (*currentDirectory)[i];
@@ -1184,22 +1184,22 @@ void ORdatabaseDecisionTreeClass::createSnapshotIDreferenceImageComparisonDecisi
 
 	currentDirectoryCharStar[*currentDirectoryLength] = '\0';
 
-	if(OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
+	if(ATOR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
 	{
 		createOrParseSnapshotIDreferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, false, currentDirectory, currentDirectoryCharStar, currentDirectoryLength);
 	}
 
-	if(OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
+	if(ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING)
 	{
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 		*currentDirectory = "";
 		#endif
 
-		for(int featureNum=0; featureNum<OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS; featureNum++)
+		for(int featureNum=0; featureNum<ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS; featureNum++)
 		{
 			char geobinxString[25];
 			sprintf(geobinxString, "%2d", pBinxRequirement[featureNum]);
-			#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+			#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 			*currentDirectory = *currentDirectory + "/" + geobinxString;
 			createAndOrParseIntoDirectory(currentDirectory, &string(geobinxString), false, true);
 			#else
@@ -1208,7 +1208,7 @@ void ORdatabaseDecisionTreeClass::createSnapshotIDreferenceImageComparisonDecisi
 
 			char geobinyString[25];
 			sprintf(geobinyString, "%2d", pBinyRequirement[featureNum]);
-			#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+			#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 			*currentDirectory = *currentDirectory + "/" + geobinyString;
 			createAndOrParseIntoDirectory(currentDirectory, &string(geobinyString), false, true);
 			#else
@@ -1216,7 +1216,7 @@ void ORdatabaseDecisionTreeClass::createSnapshotIDreferenceImageComparisonDecisi
 			#endif
 		}
 
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 		for(int i=0; i<currentDirectory->length(); i++)
 		{
 			currentDirectoryCharStar[*currentDirectoryLength] = (*currentDirectory)[i];
@@ -1227,9 +1227,9 @@ void ORdatabaseDecisionTreeClass::createSnapshotIDreferenceImageComparisonDecisi
 
 	currentDirectoryCharStar[*currentDirectoryLength] = '\0';
 
-	if(OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
+	if(ATOR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING)
 	{
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 		*currentDirectory = "";
 		#endif
 
@@ -1239,7 +1239,7 @@ void ORdatabaseDecisionTreeClass::createSnapshotIDreferenceImageComparisonDecisi
 		string currentrBinString = SHAREDvars.convertIntToString(rBinMid);
 		string currentgBinString = SHAREDvars.convertIntToString(gBinMid);
 		string currentbBinString = SHAREDvars.convertIntToString(bBinMid);
-		#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+		#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 		*currentDirectory = *currentDirectory + "/" + currentrBinString;
 		createAndOrParseIntoDirectory(currentDirectory, &string(currentrBinString), false, true);
 		*currentDirectory = *currentDirectory + "/" + currentgBinString;
@@ -1252,7 +1252,7 @@ void ORdatabaseDecisionTreeClass::createSnapshotIDreferenceImageComparisonDecisi
 		*currentDirectory = *currentDirectory + currentbBinString;
 		#endif
 
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 		for(int i=0; i<currentDirectory->length(); i++)
 		{
 			currentDirectoryCharStar[*currentDirectoryLength] = (*currentDirectory)[i];
@@ -1262,28 +1262,28 @@ void ORdatabaseDecisionTreeClass::createSnapshotIDreferenceImageComparisonDecisi
 	}
 }
 
-void ORdatabaseDecisionTreeClass::createFeatureContainerListUsingUsingGetSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcheck(ORfeatureContainer* firstFeatureContainerInTestFeatureMatchingTrainBin, const bool ignoreOTfeatures, int imageWidth, const int imageHeight, unsigned char* rgbMapSmall, const int64_t pBinxyValueRequirement, const int pBinxRequirement[], const int pBinyRequirement[], const colour* normalisedAverageHueDeviationRequirement, const signed char concatonatedSignedDctCoeffArrayRequirement[], const int trainOrTest)
+void ATORdatabaseDecisionTreeClass::createFeatureContainerListUsingUsingGetSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcheck(ATORfeatureContainer* firstFeatureContainerInTestFeatureMatchingTrainBin, const bool ignoreOTfeatures, int imageWidth, const int imageHeight, uchar* rgbMapSmall, const int64_t pBinxyValueRequirement, const int pBinxRequirement[], const int pBinyRequirement[], const colour* normalisedAverageHueDeviationRequirement, const schar concatonatedSignedDctCoeffArrayRequirement[], const int trainOrTest)
 {
 	string currentDirectory = "";
-	char currentDirectoryCharStar[OR_IMAGE_COMPARISON_DECISION_TREE_BIN_MAX_LENGTH];
+	char currentDirectoryCharStar[ATOR_IMAGE_COMPARISON_DECISION_TREE_BIN_MAX_LENGTH];
 	int currentDirectoryLength;
 
 	createSnapshotIDreferenceImageComparisonDecisionTreeString(imageWidth, imageHeight, rgbMapSmall, pBinxyValueRequirement, pBinxRequirement, pBinyRequirement, normalisedAverageHueDeviationRequirement, concatonatedSignedDctCoeffArrayRequirement, currentDirectoryCharStar, &currentDirectoryLength, &currentDirectory);
 
-	ORdatabaseSQL.createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(firstFeatureContainerInTestFeatureMatchingTrainBin, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, trainOrTest);
+	ATORdatabaseSQL.createFeatureContainerListUsingSQLDatabaseDecisionTreeTableQuery(firstFeatureContainerInTestFeatureMatchingTrainBin, ignoreOTfeatures, currentDirectoryCharStar, currentDirectoryLength, trainOrTest);
 }
 
 
-void ORdatabaseDecisionTreeClass::getSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcheck(int imageWidth, const int imageHeight, unsigned char* rgbMapSmall, const int64_t pBinxyValueRequirement, const int pBinxRequirement[], const int pBinyRequirement[], const colour* normalisedAverageHueDeviationRequirement, const signed char concatonatedSignedDctCoeffArrayRequirement[], ORsnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList, const int trainOrTest, string* DTbin)
+void ATORdatabaseDecisionTreeClass::getSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcheck(int imageWidth, const int imageHeight, uchar* rgbMapSmall, const int64_t pBinxyValueRequirement, const int pBinxRequirement[], const int pBinyRequirement[], const colour* normalisedAverageHueDeviationRequirement, const schar concatonatedSignedDctCoeffArrayRequirement[], ATORsnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList, const int trainOrTest, string* DTbin)
 {
 	string currentDirectory = "";
-	char currentDirectoryCharStar[OR_IMAGE_COMPARISON_DECISION_TREE_BIN_MAX_LENGTH];
+	char currentDirectoryCharStar[ATOR_IMAGE_COMPARISON_DECISION_TREE_BIN_MAX_LENGTH];
 	int currentDirectoryLength;
 
 	createSnapshotIDreferenceImageComparisonDecisionTreeString(imageWidth, imageHeight, rgbMapSmall, pBinxyValueRequirement, pBinxRequirement, pBinyRequirement, normalisedAverageHueDeviationRequirement, concatonatedSignedDctCoeffArrayRequirement, currentDirectoryCharStar, &currentDirectoryLength, &currentDirectory);
 
-	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
-		ORdatabaseSQL.createSnapshotIDreferenceListUsingSQLdatabaseDecisionTreeTableQuery(firstReferenceInSnapshotIDreferenceList, OR_MYSQL_TABLE_NAME_DECISIONTREE, currentDirectoryCharStar, currentDirectoryLength, trainOrTest);
+	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
+		ATORdatabaseSQL.createSnapshotIDreferenceListUsingSQLdatabaseDecisionTreeTableQuery(firstReferenceInSnapshotIDreferenceList, ATOR_MYSQL_TABLE_NAME_DECISIONTREE, currentDirectoryCharStar, currentDirectoryLength, trainOrTest);
 	#else
 		getSnapshotIDreferencesInImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, firstReferenceInSnapshotIDreferenceList, &currentDirectory);
 	#endif
@@ -1298,10 +1298,10 @@ void ORdatabaseDecisionTreeClass::getSnapshotIDreferenceToImageComparisonDecisio
 
 
 
-#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
-void ORdatabaseDecisionTreeClass::getSnapshotIDreferencesInImageComparisonDecisionTree(int imageWidth, const int imageHeight, unsigned char* rgbMapSmall, ORsnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList, string* currentDirectory)
+#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
+void ATORdatabaseDecisionTreeClass::getSnapshotIDreferencesInImageComparisonDecisionTree(int imageWidth, const int imageHeight, uchar* rgbMapSmall, ATORsnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList, string* currentDirectory)
 {
-	if(OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
+	if(ATOR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON)
 	{
 		createOrParseSnapshotIDreferenceImageComparisonDecisionTree(imageWidth, imageHeight, rgbMapSmall, false, currentDirectory, NULL, NULL);
 	}
@@ -1323,7 +1323,7 @@ void ORdatabaseDecisionTreeClass::getSnapshotIDreferencesInImageComparisonDecisi
 
 	if(parseSuccessful)
 	{
-		string snapshotIDReferenceListFileName = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_DEFAULT_LIST_FILE_NAME;
+		string snapshotIDReferenceListFileName = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_DEFAULT_LIST_FILE_NAME;
 		*currentDirectory = *currentDirectory + "/" + snapshotIDReferenceListFileName;
 
 		parseSnapshotIDreferenceList(currentDirectory, firstReferenceInSnapshotIDreferenceList);
@@ -1332,16 +1332,16 @@ void ORdatabaseDecisionTreeClass::getSnapshotIDreferencesInImageComparisonDecisi
 #endif
 
 
-#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD_METHOD_3_LUMINOSITY_ONLY
-void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageComparisonDecisionTree(int imageWidth, const int imageHeight, unsigned char* rgbMapSmall, const bool createOrParse, string* currentDirectory, char* currentDirectoryCharStar, int* currDirIndex)
+#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD_METHOD_3_LUMINOSITY_ONLY
+void ATORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageComparisonDecisionTree(int imageWidth, const int imageHeight, uchar* rgbMapSmall, const bool createOrParse, string* currentDirectory, char* currentDirectoryCharStar, int* currDirIndex)
 {
-	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_BINARY_TO_CHAR_CONVERSION_OPT
+	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_BINARY_TO_CHAR_CONVERSION_OPT
 	int index = 0;		//used to convert binary to char
 	char binaryConvertedToChar = 0x00;
 	#endif
 
-	double* luminosityMap = new double[imageWidth*imageHeight];		//CHECK THIS; these maps need to be created inside ORmethod.cpp main loop for efficiency
-	double* luminosityContrastMap = new double[imageWidth*imageHeight];	//CHECK THIS; these maps need to be created inside ORmethod.cpp main loop for efficiency
+	double* luminosityMap = new double[imageWidth*imageHeight];		//CHECK THIS; these maps need to be created inside ATORmethod.cpp main loop for efficiency
+	double* luminosityContrastMap = new double[imageWidth*imageHeight];	//CHECK THIS; these maps need to be created inside ATORmethod.cpp main loop for efficiency
 	RTpixelMaps.createLuminosityMapFromRGBMap(imageWidth, imageHeight, rgbMapSmall, luminosityMap);
 	RTpixelMaps.createContrastMapFromMap(imageWidth, imageHeight, luminosityMap, luminosityContrastMap);
 
@@ -1357,25 +1357,25 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 			bool passContrastThreshold = false;
 			int contrastThreshold;
 
-			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
-			contrastThreshold = EDGE_LUMINOSITY_CONTRAST_THRESHOLD*OR_IMAGE_COMPARISON_DECISION_TREE_CONTRAST_THRESHOLD_FACTOR;	//needs to be dynamic based upon normalisation based upon average rgb values in image
+			#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
+			contrastThreshold = EDGE_LUMINOSITY_CONTRAST_THRESHOLD*ATOR_IMAGE_COMPARISON_DECISION_TREE_CONTRAST_THRESHOLD_FACTOR;	//needs to be dynamic based upon normalisation based upon average rgb values in image
 			#else
 			contrastThreshold = 0;
 			#endif
 
 			if(contrastVal > contrastThreshold)
 			{
-				nextDirectory = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_GT_NODE_NAME;
+				nextDirectory = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_GT_NODE_NAME;
 				passContrastThreshold = true;
 
 			}
 			else
 			{
-				nextDirectory = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_NC_NODE_NAME;
+				nextDirectory = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_NC_NODE_NAME;
 				passContrastThreshold = false;
 			}
 
-		#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_BINARY_TO_CHAR_CONVERSION_OPT
+		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_BINARY_TO_CHAR_CONVERSION_OPT
 			if(index == 8)
 			{
 				index = 0;
@@ -1384,7 +1384,7 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 				binaryConvertedToChar = 0x00;
 			}
 
-			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
+			#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
 			if(passContrastThreshold)
 			{
 				binaryConvertedToChar = binaryConvertedToChar | (0x01 << index);
@@ -1397,7 +1397,7 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 			#endif
 
 		#else
-			#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+			#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 			*currentDirectory = *currentDirectory + "/" + nextDirectory;
 			createAndOrParseIntoDirectory(currentDirectory, &nextDirectory, createOrParse, true);
 			#else
@@ -1413,11 +1413,11 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 
 }
 
-#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD_METHOD_2_ALL_RGB_COMPONENTS
-void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageComparisonDecisionTree(int imageWidth, const int imageHeight, unsigned char* rgbMapSmall, const bool createOrParse, string* currentDirectory, char* currentDirectoryCharStar, int* currDirIndex)
+#elif defined ATOR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD_METHOD_2_ALL_RGB_COMPONENTS
+void ATORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageComparisonDecisionTree(int imageWidth, const int imageHeight, uchar* rgbMapSmall, const bool createOrParse, string* currentDirectory, char* currentDirectoryCharStar, int* currDirIndex)
 {
 
-	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_BINARY_TO_CHAR_CONVERSION_OPT
+	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_BINARY_TO_CHAR_CONVERSION_OPT
 	int index = 0;		//used to convert binary to char
 	char binaryConvertedToChar = 0x00;
 	#endif
@@ -1435,8 +1435,8 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 				bool passContrastThreshold = false;
 				int contrastThreshold;
 
-				#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
-				contrastThreshold = (EDGE_LUMINOSITY_CONTRAST_THRESHOLD*OR_IMAGE_COMPARISON_DECISION_TREE_CONTRAST_THRESHOLD_FACTOR)/RGB_NUM;	//needs to be dynamic based upon normalisation based upon average rgb values in image
+				#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
+				contrastThreshold = (EDGE_LUMINOSITY_CONTRAST_THRESHOLD*ATOR_IMAGE_COMPARISON_DECISION_TREE_CONTRAST_THRESHOLD_FACTOR)/RGB_NUM;	//needs to be dynamic based upon normalisation based upon average rgb values in image
 				#else
 				contrastThreshold = 0;
 				#endif
@@ -1445,12 +1445,12 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 				{
 					if(contrastVal > contrastThreshold)
 					{
-						nextDirectory = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_RED_GT_NODE_NAME;
+						nextDirectory = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_RED_GT_NODE_NAME;
 						passContrastThreshold = true;
 					}
 					else
 					{
-						nextDirectory = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_RED_NC_NODE_NAME;
+						nextDirectory = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_RED_NC_NODE_NAME;
 						passContrastThreshold = false;
 					}
 
@@ -1459,12 +1459,12 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 				{
 					if(contrastVal > contrastThreshold)
 					{
-						nextDirectory = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_GREEN_GT_NODE_NAME;
+						nextDirectory = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_GREEN_GT_NODE_NAME;
 						passContrastThreshold = true;
 					}
 					else
 					{
-						nextDirectory = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_GREEN_NC_NODE_NAME;
+						nextDirectory = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_GREEN_NC_NODE_NAME;
 						passContrastThreshold = false;
 					}
 				}
@@ -1472,18 +1472,18 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 				{
 					if(contrastVal > contrastThreshold)
 					{
-						nextDirectory = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_BLUE_GT_NODE_NAME;
+						nextDirectory = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_BLUE_GT_NODE_NAME;
 						passContrastThreshold = true;
 
 					}
 					else
 					{
-						nextDirectory = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_BLUE_NC_NODE_NAME;
+						nextDirectory = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_BLUE_NC_NODE_NAME;
 						passContrastThreshold = false;
 					}
 				}
 
-			#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_BINARY_TO_CHAR_CONVERSION_OPT
+			#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_BINARY_TO_CHAR_CONVERSION_OPT
 				if(index == 8)
 				{
 					index = 0;
@@ -1492,7 +1492,7 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 					binaryConvertedToChar = 0x00;
 				}
 
-				#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
+				#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
 				if(passContrastThreshold)
 				{
 					binaryConvertedToChar = binaryConvertedToChar | (0x01 << index);
@@ -1505,7 +1505,7 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 				#endif
 
 			#else
-				#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+				#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 				*currentDirectory = *currentDirectory + "/" + nextDirectory;
 				createAndOrParseIntoDirectory(currentDirectory, &nextDirectory, createOrParse, true);
 				#else
@@ -1518,21 +1518,21 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 
 }
 
-#elif defined OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD_METHOD_1_ALL_RGB_COMPONENTS_WITH_DIRECTION
-void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageComparisonDecisionTree(int imageWidth, const int imageHeight, unsigned char* rgbMapSmall, const bool createOrParse, string* currentDirectory, char* currentDirectoryCharStar, int* currDirIndex)
+#elif defined ATOR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD_METHOD_1_ALL_RGB_COMPONENTS_WITH_DIRECTION
+void ATORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageComparisonDecisionTree(int imageWidth, const int imageHeight, uchar* rgbMapSmall, const bool createOrParse, string* currentDirectory, char* currentDirectoryCharStar, int* currDirIndex)
 {
-	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_NORMALISE_RGB_MAP
+	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_NORMALISE_RGB_MAP
 	double averageLuminosity = calculateAverageLuminosity(imageWidth, imageHeight, rgbMapSmall);
-	double averageNormalisedLuminosity = MAX_LUMINOSITY*OR_IMAGE_COMPARISON_DECISION_TREE_NORMALISE_RGB_MAP_AVERAGED_NORMALISED_LUMINOSITY_FRACTION;
+	double averageNormalisedLuminosity = MAX_LUMINOSITY*ATOR_IMAGE_COMPARISON_DECISION_TREE_NORMALISE_RGB_MAP_AVERAGED_NORMALISED_LUMINOSITY_FRACTION;
 	double contrastThresholdNormalisationFactor = averageLuminosity/averageNormalisedLuminosity;
 	/*
-	unsigned char* normalisedRgbMapSmall = new unsigned char[imageWidth*imageHeight*RGB_NUM];
+	uchar* normalisedRgbMapSmall = new uchar[imageWidth*imageHeight*RGB_NUM];
 	void normaliseRGBMapBasedOnAverageLuminosity(normalisedRgbMapSmall, imageWidth, imageHeight, rgbMapSmall)
 	rgbMapSmall = normalisedRgbMapSmall;
 	*/
 	#endif
 
-	#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_BINARY_TO_CHAR_CONVERSION_OPT
+	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_BINARY_TO_CHAR_CONVERSION_OPT
 	int index = 0;		//used to convert binary to char
 	char binaryConvertedToChar = 0x00;
 	#endif
@@ -1557,12 +1557,12 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 					bool passContrastThreshold = false;
 					int contrastThreshold;
 
-					#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
-					#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_NORMALISE_RGB_MAP
-					contrastThreshold = (OR_IMAGE_COMPARISON_DECISION_TREE_RGB_CONTRAST_THRESHOLD_FRACTION*MAX_RGB_VAL)*contrastThresholdNormalisationFactor;	//WRONG: normalisation should apply to entire image, not individual snapshots..
+					#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
+					#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_NORMALISE_RGB_MAP
+					contrastThreshold = (ATOR_IMAGE_COMPARISON_DECISION_TREE_RGB_CONTRAST_THRESHOLD_FRACTION*MAX_RGB_VAL)*contrastThresholdNormalisationFactor;	//WRONG: normalisation should apply to entire image, not individual snapshots..
 					#else
-					contrastThreshold = (OR_IMAGE_COMPARISON_DECISION_TREE_RGB_CONTRAST_THRESHOLD_FRACTION*MAX_RGB_VAL);
-					//contrastThreshold = (LUMINOSITY_CONTRAST_FRACTION_THRESHOLD*MAX_LUMINOSITY)*OR_IMAGE_COMPARISON_DECISION_TREE_CONTRAST_THRESHOLD_FACTOR;	//OLD
+					contrastThreshold = (ATOR_IMAGE_COMPARISON_DECISION_TREE_RGB_CONTRAST_THRESHOLD_FRACTION*MAX_RGB_VAL);
+					//contrastThreshold = (LUMINOSITY_CONTRAST_FRACTION_THRESHOLD*MAX_LUMINOSITY)*ATOR_IMAGE_COMPARISON_DECISION_TREE_CONTRAST_THRESHOLD_FACTOR;	//OLD
 					#endif
 					#else
 					contrastThreshold = 0;
@@ -1572,21 +1572,21 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 					{
 						if(colCurrent.r > (colNext[comparisonDirection].r + contrastThreshold))
 						{
-							nextDirectory = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_RED_GT_NODE_NAME;
+							nextDirectory = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_RED_GT_NODE_NAME;
 							forkDir = true;
 							passContrastThreshold = true;
 
 						}
 						else if(colCurrent.r <= (colNext[comparisonDirection].r - contrastThreshold))
 						{
-							nextDirectory = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_RED_LT_NODE_NAME;
+							nextDirectory = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_RED_LT_NODE_NAME;
 							forkDir = false;
 							passContrastThreshold = true;
 
 						}
 						else
 						{
-							nextDirectory = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_RED_NC_NODE_NAME;
+							nextDirectory = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_RED_NC_NODE_NAME;
 							forkDir = false;
 							passContrastThreshold = false;
 						}
@@ -1595,19 +1595,19 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 					{
 						if(colCurrent.g > (colNext[comparisonDirection].g + contrastThreshold))
 						{
-							nextDirectory = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_GREEN_GT_NODE_NAME;
+							nextDirectory = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_GREEN_GT_NODE_NAME;
 							forkDir = true;
 							passContrastThreshold = true;
 						}
 						else if(colCurrent.g <= (colNext[comparisonDirection].g - contrastThreshold))
 						{
-							nextDirectory = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_GREEN_LT_NODE_NAME;
+							nextDirectory = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_GREEN_LT_NODE_NAME;
 							forkDir = false;
 							passContrastThreshold = true;
 						}
 						else
 						{
-							nextDirectory = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_GREEN_NC_NODE_NAME;
+							nextDirectory = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_GREEN_NC_NODE_NAME;
 							forkDir = false;
 							passContrastThreshold = false;
 						}
@@ -1616,26 +1616,26 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 					{
 						if(colCurrent.b > (colNext[comparisonDirection].b + contrastThreshold))
 						{
-							nextDirectory = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_BLUE_GT_NODE_NAME;
+							nextDirectory = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_BLUE_GT_NODE_NAME;
 							forkDir = true;
 							passContrastThreshold = true;
 
 						}
 						else if(colCurrent.b <= (colNext[comparisonDirection].b - contrastThreshold))
 						{
-							nextDirectory = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_BLUE_LT_NODE_NAME;
+							nextDirectory = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_BLUE_LT_NODE_NAME;
 							forkDir = false;
 							passContrastThreshold = true;
 						}
 						else
 						{
-							nextDirectory = OR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_BLUE_NC_NODE_NAME;
+							nextDirectory = ATOR_IMAGE_COMPARISON_DECISION_TREE_REFERENCE_BLUE_NC_NODE_NAME;
 							forkDir = false;
 							passContrastThreshold = false;
 						}
 					}
 
-				#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_BINARY_TO_CHAR_CONVERSION_OPT
+				#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_BINARY_TO_CHAR_CONVERSION_OPT
 					if(index == 8)
 					{
 						index = 0;
@@ -1644,7 +1644,7 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 						binaryConvertedToChar = 0x00;
 					}
 
-					#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
+					#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_APPLY_CONTRAST_THRESHOLD
 					if(passContrastThreshold)
 					{
 						binaryConvertedToChar = binaryConvertedToChar | (0x01 << index);
@@ -1667,7 +1667,7 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 					index++;
 
 				#else
-					#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
+					#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 					*currentDirectory = *currentDirectory + "/" + nextDirectory;
 					createAndOrParseIntoDirectory(currentDirectory, &nextDirectory, createOrParse, true);
 					#else
@@ -1682,8 +1682,8 @@ void ORdatabaseDecisionTreeClass::createOrParseSnapshotIDreferenceImageCompariso
 }
 #endif
 
-#ifndef OR_IMAGE_COMPARISON_DECISION_TREE_SQL
-void ORdatabaseDecisionTreeClass::addSnapshotIDReferenceToList(const string* parseFileName, const int64_t snapshotID)
+#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
+void ATORdatabaseDecisionTreeClass::addSnapshotIDReferenceToList(const string* parseFileName, const int64_t snapshotID)
 {
 	ofstream parseFileObject(parseFileName->c_str(), ios::app);		//append to snapshot id reference list
 
@@ -1694,9 +1694,9 @@ void ORdatabaseDecisionTreeClass::addSnapshotIDReferenceToList(const string* par
 }
 
 
-void ORdatabaseDecisionTreeClass::parseSnapshotIDreferenceList(const string* parseFileName, ORsnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList)
+void ATORdatabaseDecisionTreeClass::parseSnapshotIDreferenceList(const string* parseFileName, ATORsnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList)
 {
-	ORsnapshotIDreferenceList* currentReferenceInSnapshotIDReferenceList = firstReferenceInSnapshotIDreferenceList;
+	ATORsnapshotIDreferenceList* currentReferenceInSnapshotIDReferenceList = firstReferenceInSnapshotIDreferenceList;
 
 	ifstream parseFileObject(parseFileName->c_str());		//append to snapshot id reference list
 
@@ -1713,7 +1713,7 @@ void ORdatabaseDecisionTreeClass::parseSnapshotIDreferenceList(const string* par
 			{
 				currentReferenceInSnapshotIDReferenceList->referenceID = SHAREDvars.convertStringToLong(snapshotIDString);
 
-				ORsnapshotIDreferenceList* newReferenceInSnapshotIDReferenceList = new ORsnapshotIDreferenceList();
+				ATORsnapshotIDreferenceList* newReferenceInSnapshotIDReferenceList = new ATORsnapshotIDreferenceList();
 				currentReferenceInSnapshotIDReferenceList->next = newReferenceInSnapshotIDReferenceList;
 				currentReferenceInSnapshotIDReferenceList = currentReferenceInSnapshotIDReferenceList->next;
 

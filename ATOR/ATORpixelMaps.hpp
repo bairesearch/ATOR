@@ -26,13 +26,13 @@
  * File Name: ATORpixelMaps.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3o1a 05-November-2020
+ * Project Version: 3o2a 08-November-2020
  * /
  *******************************************************************************/
 
 
-#ifndef HEADER_OR_PIXELMAPS
-#define HEADER_OR_PIXELMAPS
+#ifndef HEADER_ATOR_PIXELMAPS
+#define HEADER_ATOR_PIXELMAPS
 
 #include "SHAREDvars.hpp"
 
@@ -42,9 +42,9 @@
 
 
 
-#define OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_OFF (0)
-#define OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE (1)
-#define OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE_COMPLETELY (2)
+#define ATOR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_OFF (0)
+#define ATOR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE (1)
+#define ATOR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE_COMPLETELY (2)
 
 
 #define DEPTH_GRADIENT_MAP_VEC_NUM_DIMENSIONS (2)
@@ -76,7 +76,7 @@
 
 
 
-class ORpixelMapsClass
+class ATORpixelMapsClass
 {
 	private: RTpixelMapsClass RTpixelMaps;
 	private: SHAREDvectorClass SHAREDvector;
@@ -94,19 +94,19 @@ class ORpixelMapsClass
 	public: void createDepthContrastBooleanMap(const int imageWidth, const int imageHeight, const double* depthContrastMap, bool* depthContrastBooleanMap);
 
 	public: void generatePixmapFromDepthGradientMap(const string imageFileName, int imageWidth, const int imageHeight, double* depthGradientMap);
-	public: void generateRGBmapFromDepthGradientMap(int imageWidth, const int imageHeight, double* depthGradientMap, unsigned char* rgbMap);
+	public: void generateRGBmapFromDepthGradientMap(int imageWidth, const int imageHeight, double* depthGradientMap, uchar* rgbMap);
 	public: void generatePixmapFromDepthGradientContrastMap(const string imageFileName, const int imageWidth, const int imageHeight, const double* depthGradientContrastMap);
-	private: void generateRGBmapFromDepthGradientContrastMap(const int imageWidth, const int imageHeight, const double* depthGradientContrastMap, unsigned char* rgbMap);
+	private: void generateRGBmapFromDepthGradientContrastMap(const int imageWidth, const int imageHeight, const double* depthGradientContrastMap, uchar* rgbMap);
 	public: void createDepthGradientContrastBooleanMap(const int imageWidth, const int imageHeight, const double* depthGradientContrastMap, bool* depthGradientContrastBooleanMap);
 
 	public: void generatePixmapFromPointNormalContrastMap(const string imageFileName, const int imageWidth, const int imageHeight, const double* pointNormalContrastMap);
-	public: void generateRGBmapFromPointNormalContrastMap(const int imageWidth, const int imageHeight, const double* pointNormalContrastMap, unsigned char* rgbMap);
+	public: void generateRGBmapFromPointNormalContrastMap(const int imageWidth, const int imageHeight, const double* pointNormalContrastMap, uchar* rgbMap);
 	public: void createPointNormalContrastBooleanMap(const int imageWidth, const int imageHeight, const double* pointNormalContrastMap, bool* pointNormalContrastBooleanMap);
 
 
 
 
-	//methods taken from ORoperations.cpp;
+	//methods taken from ATORoperations.cpp;
 
 
 	public: double calculateForegroundMinimumDepthWithinKernel(const int pixelX, const int pixelY, const int imageWidth, const int imageHeight, const int kernelWidth, const int kernelHeight, const double* depthMap, vec* nearbyPointOfMinimumDepth, const int zoom);
@@ -137,13 +137,13 @@ class ORpixelMapsClass
 	private: void createNormalMap(const int imageWidth, const int imageHeight, const double* luminosityContrastMapEye1, const double* depthMap, const double* depthContrastMap, const double* depthGradientContrastMap, const double* normalMap);
 
 	//NOT YET FINISHED
-	private: double findDepthOfGivenPixel(int xEye1, int yEye1, int imageWidth, const int imageHeight, const double* luminosityContrastMapEye1, const double* luminosityContrastMapEye2, unsigned char* rgbMapEye1, const unsigned char* rgbMapEye2, const double* calculatedxEye2, const double* calculatedyEye2);
+	private: double findDepthOfGivenPixel(int xEye1, int yEye1, int imageWidth, const int imageHeight, const double* luminosityContrastMapEye1, const double* luminosityContrastMapEye2, uchar* rgbMapEye1, const uchar* rgbMapEye2, const double* calculatedxEye2, const double* calculatedyEye2);
 
 
-	public: void cropRGBmap(int originalImageWidth, const int originalImageHeight, const int cropXPos, const int cropYPos, const int croppedWidth, const int croppedHeight, unsigned char* rgbMapUncropped, unsigned char* rgbMap);
+	public: void cropRGBmap(int originalImageWidth, const int originalImageHeight, const int cropXPos, const int cropYPos, const int croppedWidth, const int croppedHeight, uchar* rgbMapUncropped, uchar* rgbMap);
 	public: void cropDepthMap(const int originalImageWidth, const int originalImageHeight, const int cropXPos, const int cropYPos, const int croppedWidth, const int croppedHeight, const double* depthMapUncropped, double* depthMap);
 
-	public: void resampleRGBmap(unsigned char* rgbMap, const int imageWidth, const int imageHeight, unsigned char* resampledRGBmapAtDesiredZoomChar, const int zoom, const int ignoreBackgroundComparisonMethod);
+	public: void resampleRGBmap(uchar* rgbMap, const int imageWidth, const int imageHeight, uchar* resampledRGBmapAtDesiredZoomChar, const int zoom, const int ignoreBackgroundComparisonMethod);
 	public: void resampleLumOrContrastOrDepthMap(double* lumOrContrastOrDepthMap, const int imageWidth, const int imageHeight, double* resampledLumOrContrastOrDepthMapAtDesiredZoomChar, const int zoom, const double offMapValue);
 
 	public: void createArbitraryContrastBooleanMap(const int imageWidth, const int imageHeight, const double* contrastMap, bool* contrastBooleanMap, const double sensitivity);

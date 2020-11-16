@@ -26,14 +26,14 @@
  * File Name: ATORpolygonList.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3o1a 05-November-2020
+ * Project Version: 3o2a 08-November-2020
  * /
  *******************************************************************************/
 
 
 #include "ATORpolygonList.hpp"
 
-ORobjectReferenceList::ORobjectReferenceList(void)
+ATORobjectReferenceList::ATORobjectReferenceList(void)
 {
 	objectNumber = 0;
 	objectName = "";
@@ -42,7 +42,7 @@ ORobjectReferenceList::ORobjectReferenceList(void)
 	next = NULL;
 }
 
-ORobjectReferenceList::~ORobjectReferenceList()
+ATORobjectReferenceList::~ATORobjectReferenceList()
 {
 	if(next != NULL)
 	{
@@ -51,7 +51,7 @@ ORobjectReferenceList::~ORobjectReferenceList()
 }
 
 
-ORsnapshotIDreferenceList::ORsnapshotIDreferenceList(void)
+ATORsnapshotIDreferenceList::ATORsnapshotIDreferenceList(void)
 {
 	referenceID = 0;
 
@@ -59,7 +59,7 @@ ORsnapshotIDreferenceList::ORsnapshotIDreferenceList(void)
 	previous = NULL;
 }
 
-ORsnapshotIDreferenceList::~ORsnapshotIDreferenceList()
+ATORsnapshotIDreferenceList::~ATORsnapshotIDreferenceList()
 {
 	if(next != NULL)
 	{
@@ -68,7 +68,7 @@ ORsnapshotIDreferenceList::~ORsnapshotIDreferenceList()
 }
 
 
-ORpolygon::ORpolygon(void)
+ATORpolygon::ATORpolygon(void)
 {
 	point1.x = 0.0;
 	point1.y = 0.0;
@@ -82,11 +82,11 @@ ORpolygon::ORpolygon(void)
 
 	next = NULL;
 
-#ifdef OR_METHOD_GEOMETRIC_COMPARISON
+#ifdef ATOR_METHOD_GEOMETRIC_COMPARISON
 	firstFeatureInNearestFeatureList = NULL;
 #endif
 
-	if(OR_METHOD_TRANSFORM_KEY_OT_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_KEY_OT_FEATURES)
 	{
 		point1Transformed.x = 0.0;
 		point1Transformed.y = 0.0;
@@ -101,11 +101,11 @@ ORpolygon::ORpolygon(void)
 
 }
 
-ORpolygon::~ORpolygon()
+ATORpolygon::~ATORpolygon()
 {
 	//there will be a slow minor memory leak until the below code is sorted
 	/*
-#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES
+#ifdef ATOR_METHOD_TRANSFORM_NEARBY_FEATURES
 	if(firstFeatureInNearestFeatureList != NULL)
 	{
 		delete firstFeatureInNearestFeatureList;
@@ -119,7 +119,7 @@ ORpolygon::~ORpolygon()
 	}
 }
 
-ORfeature::ORfeature(void)
+ATORfeature::ATORfeature(void)
 {
 	point.x = 0.0;			//2DOD x pos relative to current snapshot / 3DOD world coord
 	point.y = 0.0;			//2DOD y pos relative to current snapshot / 3DOD world coord
@@ -127,17 +127,17 @@ ORfeature::ORfeature(void)
 	pointNonWorldCoord.x = 0.0;	//3DOD only - x pos relative to current snapshot
 	pointNonWorldCoord.y = 0.0;	//3DOD only - y pos relative to current snapshot
 	pointNonWorldCoord.z = 0.0;	//3DOD only - z pos relative to current snapshot (depth)
-#ifdef OR_METHOD_GEOMETRIC_COMPARISON
+#ifdef ATOR_METHOD_GEOMETRIC_COMPARISON
 	objectName = "";
 	trainOrTest = false;
 	viewIndex = 0;
 	zoomIndex = 0;
 	polyIndex = 0;
 	sideIndex = 0;
-	#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
+	#ifdef ATOR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 	OTpointIndex = 0;
 	#endif
-	#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
+	#ifdef ATOR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
 	minWidthAndHeightOfOrigOT = 0.0;
 	#endif
 
@@ -145,14 +145,14 @@ ORfeature::ORfeature(void)
 	pointTransformed.y = 0.0;
 	pointTransformed.z = 0.0;
 
-	#ifdef VERBOSE_OR_OUTPUT_GEO_COORDINATES
+	#ifdef ATOR_VERBOSE_OUTPUT_GEO_COORDINATES
 	matchFound = false;
 	#endif
 
 #endif
 
-//#ifdef OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
-	for(int i=0; i<OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX; i++)
+//#ifdef ATOR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
+	for(int i=0; i<ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX; i++)
 	{
 		dctCoeff[i] = 0;
 	}
@@ -160,7 +160,7 @@ ORfeature::ORfeature(void)
 
 //#endif
 
-//#ifdef OR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_DEV_BINNING
+//#ifdef ATOR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_DEV_BINNING
 	avgCol.r = 0;
 	avgCol.g = 0;
 	avgCol.b = 0;
@@ -179,15 +179,15 @@ ORfeature::ORfeature(void)
 
 }
 
-#ifdef OR_METHOD_GEOMETRIC_COMPARISON
+#ifdef ATOR_METHOD_GEOMETRIC_COMPARISON
 
-ORfeatureContainer::ORfeatureContainer(void)
+ATORfeatureContainer::ATORfeatureContainer(void)
 {
 	numVotes = 0;
 	error=98765321;
 
 	/*
-	#ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_BASIC_NO_SQL
+	#ifdef ATOR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_BASIC_NO_SQL
 	averageColour.r = 0;
 	averageColour.g = 0;
 	averageColour.b = 0;
@@ -198,7 +198,7 @@ ORfeatureContainer::ORfeatureContainer(void)
 	next = NULL;
 }
 
-ORfeatureContainer::~ORfeatureContainer()
+ATORfeatureContainer::~ATORfeatureContainer()
 {
 	if(firstFeatureInFeatureList != NULL)
 	{
@@ -213,7 +213,7 @@ ORfeatureContainer::~ORfeatureContainer()
 
 #endif
 
-ORfeature::~ORfeature()
+ATORfeature::~ATORfeature()
 {
 	if(next != NULL)
 	{
@@ -222,7 +222,7 @@ ORfeature::~ORfeature()
 }
 
 
-ORmeshPoint::ORmeshPoint(void)
+ATORmeshPoint::ATORmeshPoint(void)
 {
 	xInt = 0;
 	yInt = 0;
@@ -239,7 +239,7 @@ ORmeshPoint::ORmeshPoint(void)
 	luminosity = 0;
 	luminosityContrast = 0;
 
-	//#ifdef OR_USE_CONTRAST_CALC_METHOD_C
+	//#ifdef ATOR_USE_CONTRAST_CALC_METHOD_C
 	interpixelMeshPoint = NULL;
 	interpixelMeshPointFilled = false;
 	//#endif
@@ -259,7 +259,7 @@ ORmeshPoint::ORmeshPoint(void)
 	adjacentMeshPointFilled[2] = false;
 	adjacentMeshPointFilled[3] = false;
 
-	//#ifdef OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST
+	//#ifdef ATOR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST
 	meshPointNormalFilled = false;
 		vec temp;
 		temp.x = 0.0;
@@ -280,9 +280,9 @@ ORmeshPoint::ORmeshPoint(void)
 	hasBeenProcessedInGenerationOfOuterBoundary = false;
 
 
-	edge = false;	//currently only used if OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED
+	edge = false;	//currently only used if ATOR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED
 
-	//#ifdef OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED
+	//#ifdef ATOR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED
 	quadraticFitDepth = 0.0;
 	zeroCrossingValueX = 0.0;
 	zeroCrossingValueY = 0.0;
@@ -295,7 +295,7 @@ ORmeshPoint::ORmeshPoint(void)
 	next = NULL;
 }
 
-ORmeshPoint::~ORmeshPoint()
+ATORmeshPoint::~ATORmeshPoint()
 {
 	if(next != NULL)
 	{
@@ -304,7 +304,7 @@ ORmeshPoint::~ORmeshPoint()
 }
 
 
-ORpixelContiguous::ORpixelContiguous(void)
+ATORpixelContiguous::ATORpixelContiguous(void)
 {
 	xInt = 0;
 	yInt = 0;
@@ -331,7 +331,7 @@ ORpixelContiguous::ORpixelContiguous(void)
 	readyToDelete = true;
 }
 
-ORpixelContiguous::ORpixelContiguous(int newX, int newY, ORpixelContiguous* newPrevious)
+ATORpixelContiguous::ATORpixelContiguous(int newX, int newY, ATORpixelContiguous* newPrevious)
 {
 	xInt = newX;
 	yInt = newY;
@@ -359,7 +359,7 @@ ORpixelContiguous::ORpixelContiguous(int newX, int newY, ORpixelContiguous* newP
 	previous->readyToDelete = false;
 }
 
-ORpixelContiguous::ORpixelContiguous(ORmeshPoint* newMeshPoint, ORpixelContiguous* newPrevious)
+ATORpixelContiguous::ATORpixelContiguous(ATORmeshPoint* newMeshPoint, ATORpixelContiguous* newPrevious)
 {
 	xInt = 0;
 	yInt = 0;
@@ -388,7 +388,7 @@ ORpixelContiguous::ORpixelContiguous(ORmeshPoint* newMeshPoint, ORpixelContiguou
 }
 
 
-ORpixelContiguous::~ORpixelContiguous()
+ATORpixelContiguous::~ATORpixelContiguous()
 {
 	/*Cannot use recursion here;
 	cout << "deleting contig" <<  endl;
@@ -426,12 +426,12 @@ ORpixelContiguous::~ORpixelContiguous()
 	}
 	cout << "finished del" << endl;
 	*/
-	ORpixelContiguous* currentPixelContiguous = this;
+	ATORpixelContiguous* currentPixelContiguous = this;
 	bool stillMoreToDelete = true;
 	while(stillMoreToDelete)
 	{
 		bool foundAPixelContiguousToParseInto = false;
-		ORpixelContiguous* pixelContiguousToParseInto;
+		ATORpixelContiguous* pixelContiguousToParseInto;
 		for(int q=0;q<9;q++)
 		{
 			if(q != 4)
@@ -476,12 +476,12 @@ ORpixelContiguous::~ORpixelContiguous()
 }
 
 
-ORmeshPoint* ORpolygonListClass::findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const int x, const int y, bool* hasFoundMeshPoint)
+ATORmeshPoint* ATORpolygonListClass::findMeshPointIntInMesh(ATORmeshPoint* firstMeshPointInMeshList, const int x, const int y, bool* hasFoundMeshPoint)
 {
-	ORmeshPoint* foundMeshPoint = NULL;
+	ATORmeshPoint* foundMeshPoint = NULL;
 	*hasFoundMeshPoint = false;
 
-	ORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
+	ATORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	while(currentMeshPointInMesh->next != NULL)
 	{
 		if((currentMeshPointInMesh->xInt == x) && (currentMeshPointInMesh->yInt == y))
@@ -495,13 +495,13 @@ ORmeshPoint* ORpolygonListClass::findMeshPointIntInMesh(ORmeshPoint* firstMeshPo
 	return foundMeshPoint;
 }
 
-ORmeshPoint* ORpolygonListClass::findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const vec* point, bool* hasFoundMeshPoint, const int meshZoneLimit)
+ATORmeshPoint* ATORpolygonListClass::findMeshPointIntInMesh(ATORmeshPoint* firstMeshPointInMeshList, const vec* point, bool* hasFoundMeshPoint, const int meshZoneLimit)
 {
-	ORmeshPoint* foundMeshPoint = NULL;
+	ATORmeshPoint* foundMeshPoint = NULL;
 	*hasFoundMeshPoint = false;
 	int numMeshPointsCounted = 0;
 
-	ORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
+	ATORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	while((currentMeshPointInMesh->next != NULL) && (numMeshPointsCounted < meshZoneLimit))
 	{
 		if(SHAREDvector.compareVectors(&(currentMeshPointInMesh->point), point))
@@ -516,9 +516,9 @@ ORmeshPoint* ORpolygonListClass::findMeshPointIntInMesh(ORmeshPoint* firstMeshPo
 	return foundMeshPoint;
 }
 
-ORmeshPoint* ORpolygonListClass::findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const int position)
+ATORmeshPoint* ATORpolygonListClass::findMeshPointIntInMesh(ATORmeshPoint* firstMeshPointInMeshList, const int position)
 {
-	ORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
+	ATORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	for(int i=0; i < position; i++)
 	{
 		currentMeshPointInMesh = currentMeshPointInMesh->next;
@@ -527,15 +527,15 @@ ORmeshPoint* ORpolygonListClass::findMeshPointIntInMesh(ORmeshPoint* firstMeshPo
 	return currentMeshPointInMesh;
 }
 
-//#ifdef OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST
+//#ifdef ATOR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST
 
-//#ifdef OR_USE_CONTRAST_CALC_METHOD_C
+//#ifdef ATOR_USE_CONTRAST_CALC_METHOD_C
 //see calculateMeshPointNormalsUsingPointMap
 //requires;
 //vec meshPointNormals[4];	//from 4 tris creating using mesh point and two out of four surrounding meshpoints, x-, x+, y-, y+
 //vec meshPointNormal; 		//average of four calculated meshpoint normals
 //no boundary checks - these can easily be implemented using adjacentMeshPointFilled
-void ORpolygonListClass::calculateMeshPointInterpixelNormal(ORmeshPoint* meshPoint)
+void ATORpolygonListClass::calculateMeshPointInterpixelNormal(ATORmeshPoint* meshPoint)
 {
 	/*
 	2 4
@@ -591,7 +591,7 @@ void ORpolygonListClass::calculateMeshPointInterpixelNormal(ORmeshPoint* meshPoi
 
 //see calculateMeshPointNormalsUsingPointMap
 //no boundary checks - these can easily be implemented using adjacentMeshPointFilled
-void ORpolygonListClass::calculateMeshPointInterpixelNormalContrast(ORmeshPoint* meshPoint)
+void ATORpolygonListClass::calculateMeshPointInterpixelNormalContrast(ATORmeshPoint* meshPoint)
 {
 	/*
 	q;
@@ -642,7 +642,7 @@ void ORpolygonListClass::calculateMeshPointInterpixelNormalContrast(ORmeshPoint*
 	meshPoint->meshPointNormalContrast = contrastLevel;
 }
 
-void ORpolygonListClass::calculateMeshPointInterpixelLuminosityContrast(ORmeshPoint* meshPoint)
+void ATORpolygonListClass::calculateMeshPointInterpixelLuminosityContrast(ATORmeshPoint* meshPoint)
 {
 	/*
 	q;
@@ -696,7 +696,7 @@ void ORpolygonListClass::calculateMeshPointInterpixelLuminosityContrast(ORmeshPo
 	meshPoint->interpixelMeshPoint->luminosityContrast = contrastLevel;
 }
 
-void ORpolygonListClass::calculateMeshPointInterpixelDepth(ORmeshPoint* meshPoint)
+void ATORpolygonListClass::calculateMeshPointInterpixelDepth(ATORmeshPoint* meshPoint)
 {
 	/*
 	q;
@@ -724,7 +724,7 @@ void ORpolygonListClass::calculateMeshPointInterpixelDepth(ORmeshPoint* meshPoin
 
 }
 
-void ORpolygonListClass::calculateMeshPointInterpixelDepthWithForegroundDepthCheck(ORmeshPoint* meshPoint)
+void ATORpolygonListClass::calculateMeshPointInterpixelDepthWithForegroundDepthCheck(ATORmeshPoint* meshPoint)
 {
 	/*
 	q;
@@ -756,7 +756,7 @@ void ORpolygonListClass::calculateMeshPointInterpixelDepthWithForegroundDepthChe
 }
 
 /*
-void calculateMeshPointInterpixelDepthWithForegroundDepthCheckOLD(ORmeshPoint* meshPoint)
+void calculateMeshPointInterpixelDepthWithForegroundDepthCheckOLD(ATORmeshPoint* meshPoint)
 {
 	double averageDepth = 0.0;
 	int numberOfDepthValsRecorded = 0;
@@ -781,25 +781,25 @@ void calculateMeshPointInterpixelDepthWithForegroundDepthCheckOLD(ORmeshPoint* m
 		q = qMapping[1][y];
 		double adjacentInterpixelDepthValue = meshPoint->adjacentMeshPoint[q]->depth;
 
-		#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+		#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 		if(compareDoubles(interpixelDepthValue, RT_RAYTRACE_NO_HIT_DEPTH_T))
 		{
 			interpixelDepthValue = ESTIMATE_MAX_DEPTH_T_REAL;
 		}
 		#endif
-		#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+		#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 		if(compareDoubles(adjacentInterpixelDepthValue, RT_RAYTRACE_NO_HIT_DEPTH_T))
 		{
 			adjacentInterpixelDepthValue = ESTIMATE_MAX_DEPTH_T_REAL;
 		}
 		#endif
 
-		if(interpixelDepthValue < (adjacentInterpixelDepthValue+OR_MAX_DEPTH_NOISE))
+		if(interpixelDepthValue < (adjacentInterpixelDepthValue+ATOR_MAX_DEPTH_NOISE))
 		{
 			averageDepth = averageDepth + interpixelDepthValue;
 			numberOfDepthValsRecorded++;
 		}
-		else if(adjacentInterpixelDepthValue < (interpixelDepthValue+OR_MAX_DEPTH_NOISE))
+		else if(adjacentInterpixelDepthValue < (interpixelDepthValue+ATOR_MAX_DEPTH_NOISE))
 		{
 			averageDepth = averageDepth + adjacentInterpixelDepthValue;
 			numberOfDepthValsRecorded++;
@@ -813,25 +813,25 @@ void calculateMeshPointInterpixelDepthWithForegroundDepthCheckOLD(ORmeshPoint* m
 		double interpixelDepthValue = meshPoint->adjacentMeshPoint[q]->depth;
 		q = qMapping[x][1];
 		double adjacentInterpixelDepthValue = meshPoint->adjacentMeshPoint[q]->depth;
-		#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+		#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 		if(compareDoubles(interpixelDepthValue, RT_RAYTRACE_NO_HIT_DEPTH_T))
 		{
 			interpixelDepthValue = ESTIMATE_MAX_DEPTH_T_REAL;
 		}
 		#endif
-		#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+		#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 		if(compareDoubles(adjacentInterpixelDepthValue, RT_RAYTRACE_NO_HIT_DEPTH_T))
 		{
 			adjacentInterpixelDepthValue = ESTIMATE_MAX_DEPTH_T_REAL;
 		}
 		#endif
 
-		if(interpixelDepthValue < (adjacentInterpixelDepthValue+OR_MAX_DEPTH_NOISE))
+		if(interpixelDepthValue < (adjacentInterpixelDepthValue+ATOR_MAX_DEPTH_NOISE))
 		{
 			averageDepth = averageDepth + interpixelDepthValue;
 			numberOfDepthValsRecorded++;
 		}
-		else if(adjacentInterpixelDepthValue < (interpixelDepthValue+OR_MAX_DEPTH_NOISE))
+		else if(adjacentInterpixelDepthValue < (interpixelDepthValue+ATOR_MAX_DEPTH_NOISE))
 		{
 			averageDepth = averageDepth + adjacentInterpixelDepthValue;
 			numberOfDepthValsRecorded++;
@@ -856,7 +856,7 @@ void calculateMeshPointInterpixelDepthWithForegroundDepthCheckOLD(ORmeshPoint* m
 //vec meshPointNormals[4];	//from 4 tris creating using mesh point and two out of four surrounding meshpoints, x-, x+, y-, y+
 //vec meshPointNormal; 		//average of four calculated meshpoint normals
 //no boundary checks - these can easily be implemented using adjacentMeshPointFilled
-void ORpolygonListClass::calculateMeshPointNormal(ORmeshPoint* meshPoint)
+void ATORpolygonListClass::calculateMeshPointNormal(ATORmeshPoint* meshPoint)
 {
 	vec averageNormalVector;
 	averageNormalVector.x = 0.0;
@@ -894,7 +894,7 @@ void ORpolygonListClass::calculateMeshPointNormal(ORmeshPoint* meshPoint)
 
 //see calculateMeshPointNormalsUsingPointMap
 //no boundary checks - these can easily be implemented using adjacentMeshPointFilled
-void ORpolygonListClass::calculateMeshPointNormalContrast(ORmeshPoint* meshPoint)
+void ATORpolygonListClass::calculateMeshPointNormalContrast(ATORmeshPoint* meshPoint)
 {
 	double contrastLevel = 0.0;
 
@@ -912,7 +912,7 @@ void ORpolygonListClass::calculateMeshPointNormalContrast(ORmeshPoint* meshPoint
 }
 //#endif
 
-void ORpolygonListClass::calculateMeshPointLuminosityContrast(ORmeshPoint* meshPoint)
+void ATORpolygonListClass::calculateMeshPointLuminosityContrast(ATORmeshPoint* meshPoint)
 {
 	double contrastLevel = 0.0;
 

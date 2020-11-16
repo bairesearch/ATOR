@@ -26,16 +26,16 @@
  * File Name: ATORTHmain.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3o1a 05-November-2020
+ * Project Version: 3o2a 08-November-2020
  * /
  *******************************************************************************/
 
 
-#ifndef HEADER_TH_OR_MAIN
-#define HEADER_TH_OR_MAIN
+#ifndef HEADER_TH_ATOR_MAIN
+#define HEADER_TH_ATOR_MAIN
 
-#define OR_METHOD2DOD_DIMENSIONS (2)
-#define OR_METHOD3DOD_DIMENSIONS (3)
+#define ATOR_METHOD2DOD_DIMENSIONS (2)
+#define ATOR_METHOD3DOD_DIMENSIONS (3)
 
 int main();
 

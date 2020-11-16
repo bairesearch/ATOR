@@ -26,7 +26,7 @@
  * File Name: ATORoperations.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3o1a 05-November-2020
+ * Project Version: 3o2a 08-November-2020
  * /
  *******************************************************************************/
 
@@ -41,7 +41,7 @@ double minObjectDepthAsDeterminedByCurrentFocus = MIN_OBJECT_DEPTH_AS_DETERMINED
 
 
 
-void ORoperationsClass::createPointMapFromDepthMap(const int imageWidth, const int imageHeight, const double* depthMap, double* pointMap, RTviewInfo* vi)
+void ATORoperationsClass::createPointMapFromDepthMap(const int imageWidth, const int imageHeight, const double* depthMap, double* pointMap, RTviewInfo* vi)
 {
 	//fill luminosityMap
 	for(int y = 0; y < imageHeight; y++)
@@ -69,7 +69,7 @@ void ORoperationsClass::createPointMapFromDepthMap(const int imageWidth, const i
 	}
 }
 
-void ORoperationsClass::printvi(const RTviewInfo* vi)
+void ATORoperationsClass::printvi(const RTviewInfo* vi)
 {
 	cout << "printvi{}" << endl;
 
@@ -90,7 +90,7 @@ void ORoperationsClass::printvi(const RTviewInfo* vi)
 }
 
 
-void ORoperationsClass::printPointMap(int imageWidth, const int imageHeight, double* pointMap)
+void ATORoperationsClass::printPointMap(int imageWidth, const int imageHeight, double* pointMap)
 {
 	cout << "printPointMap{}" << endl;
 
@@ -110,7 +110,7 @@ void ORoperationsClass::printPointMap(int imageWidth, const int imageHeight, dou
 	}
 }
 
-void ORoperationsClass::printDepthMap(const int imageWidth, const int imageHeight, const double* depthMap)
+void ATORoperationsClass::printDepthMap(const int imageWidth, const int imageHeight, const double* depthMap)
 {
 	cout << "printDepthMap{}" << endl;
 
@@ -134,11 +134,11 @@ void ORoperationsClass::printDepthMap(const int imageWidth, const int imageHeigh
 
 
 
-bool ORoperationsClass::addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec* proposedFeature, ORfeature* firstFeatureInList, const double maxFeatureDistanceError, const bool checkAlsoZ)
+bool ATORoperationsClass::addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec* proposedFeature, ATORfeature* firstFeatureInList, const double maxFeatureDistanceError, const bool checkAlsoZ)
 {
 	bool foundCommonFeature = false;
 
-	ORfeature* currentFeatureInList = firstFeatureInList;
+	ATORfeature* currentFeatureInList = firstFeatureInList;
 
 	if(currentFeatureInList->next != NULL)
 	{
@@ -183,7 +183,7 @@ bool ORoperationsClass::addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec*
 			currentFeatureInList->point.x = proposedFeature->x;
 			currentFeatureInList->point.y = proposedFeature->y;
 			currentFeatureInList->point.z = proposedFeature->z;
-			ORfeature* newFeature = new ORfeature();
+			ATORfeature* newFeature = new ATORfeature();
 			currentFeatureInList->next = newFeature;
 			currentFeatureInList = currentFeatureInList->next;
 		}
@@ -196,7 +196,7 @@ bool ORoperationsClass::addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec*
 		currentFeatureInList->point.x = proposedFeature->x;
 		currentFeatureInList->point.y = proposedFeature->y;
 		currentFeatureInList->point.z = proposedFeature->z;
-		ORfeature* newFeature = new ORfeature();
+		ATORfeature* newFeature = new ATORfeature();
 		currentFeatureInList->next = newFeature;
 		currentFeatureInList = currentFeatureInList->next;
 
@@ -208,11 +208,11 @@ bool ORoperationsClass::addFeatureToListAndIfCommonFeatureExistsTakeAverage(vec*
 
 
 
-bool ORoperationsClass::checkFeatureListForCommonFeature(const vec* corner, const ORfeature* firstFeatureInList, const double maxFeatureDistanceError, const bool checkAlsoZ)
+bool ATORoperationsClass::checkFeatureListForCommonFeature(const vec* corner, const ATORfeature* firstFeatureInList, const double maxFeatureDistanceError, const bool checkAlsoZ)
 {
 	bool foundCommonFeature = false;
 
-	const ORfeature* currentFeatureInList = firstFeatureInList;
+	const ATORfeature* currentFeatureInList = firstFeatureInList;
 
 	if(currentFeatureInList->next != NULL)
 	{
@@ -255,7 +255,7 @@ bool ORoperationsClass::checkFeatureListForCommonFeature(const vec* corner, cons
 }
 
 
-void ORoperationsClass::generateBooleanMapFromFeatureList(const int imageWidth, const int imageHeight, const ORfeature* firstFeatureInList,  bool* featuresMap, const RTviewInfo* vi, const int zoom)
+void ATORoperationsClass::generateBooleanMapFromFeatureList(const int imageWidth, const int imageHeight, const ATORfeature* firstFeatureInList,  bool* featuresMap, const RTviewInfo* vi, const int zoom)
 {
 	//initialise featuresMap
 	for(int y = 0; y < imageHeight; y++)
@@ -266,7 +266,7 @@ void ORoperationsClass::generateBooleanMapFromFeatureList(const int imageWidth, 
 		}
 	}
 
-	const ORfeature* currentFeatureInList = firstFeatureInList;
+	const ATORfeature* currentFeatureInList = firstFeatureInList;
 	while(currentFeatureInList->next != NULL)
 	{
 
@@ -286,7 +286,7 @@ void ORoperationsClass::generateBooleanMapFromFeatureList(const int imageWidth, 
 }
 
 
-void ORoperationsClass::generateBooleanMapFromFeatureListOLD(const int imageWidth, const int imageHeight, const ORfeature* firstFeatureInList,  bool* featuresMap)
+void ATORoperationsClass::generateBooleanMapFromFeatureListOLD(const int imageWidth, const int imageHeight, const ATORfeature* firstFeatureInList,  bool* featuresMap)
 {
 	//initialise featuresMap
 	for(int y = 0; y < imageHeight; y++)
@@ -297,7 +297,7 @@ void ORoperationsClass::generateBooleanMapFromFeatureListOLD(const int imageWidt
 		}
 	}
 
-	const ORfeature* currentFeatureInList = firstFeatureInList;
+	const ATORfeature* currentFeatureInList = firstFeatureInList;
 	while(currentFeatureInList->next != NULL)
 	{
 		int x = currentFeatureInList->point.x;
@@ -308,11 +308,11 @@ void ORoperationsClass::generateBooleanMapFromFeatureListOLD(const int imageWidt
 }
 
 
-bool ORoperationsClass::checkPolygonListForCommonPolygon(const ORpolygon* polygon, const ORpolygon* firstPolygonInList)
+bool ATORoperationsClass::checkPolygonListForCommonPolygon(const ATORpolygon* polygon, const ATORpolygon* firstPolygonInList)
 {
 	bool foundCommonPolygon = false;
 
-	const ORpolygon* currentPolygonInList = firstPolygonInList;
+	const ATORpolygon* currentPolygonInList = firstPolygonInList;
 
 	if(currentPolygonInList->next != NULL)
 	{
@@ -402,11 +402,11 @@ bool ORoperationsClass::checkPolygonListForCommonPolygon(const ORpolygon* polygo
 
 }
 
-bool ORoperationsClass::checkFeatureListForCommonFeatureBasic(const ORfeature* corner, const ORfeature* firstFeatureInList)
+bool ATORoperationsClass::checkFeatureListForCommonFeatureBasic(const ATORfeature* corner, const ATORfeature* firstFeatureInList)
 {
 	bool foundCommonFeature = false;
 
-	const ORfeature* currentFeatureInList = firstFeatureInList;
+	const ATORfeature* currentFeatureInList = firstFeatureInList;
 
 	while(currentFeatureInList->next != NULL)
 	{
@@ -423,16 +423,16 @@ bool ORoperationsClass::checkFeatureListForCommonFeatureBasic(const ORfeature* c
 
 
 
-ORpolygon* ORoperationsClass::addPolysToListForGivenFeatureAndNearestFeatureList(ORpolygon* firstCurrentPolygonInList, const ORpolygon* firstPolygonInList, ORfeature* firstFeatureInNearestFeatureList, const int numberOfPolygonsPerFeature, const int dimension)
+ATORpolygon* ATORoperationsClass::addPolysToListForGivenFeatureAndNearestFeatureList(ATORpolygon* firstCurrentPolygonInList, const ATORpolygon* firstPolygonInList, ATORfeature* firstFeatureInNearestFeatureList, const int numberOfPolygonsPerFeature, const int dimension)
 {
-	ORpolygon* currentPolygonInList = firstCurrentPolygonInList;
+	ATORpolygon* currentPolygonInList = firstCurrentPolygonInList;
 	int count = 0;
 
-	ORfeature* currentFeature = firstFeatureInNearestFeatureList;
-	ORfeature* currentFeatureInNearestFeatureList = firstFeatureInNearestFeatureList->next;
+	ATORfeature* currentFeature = firstFeatureInNearestFeatureList;
+	ATORfeature* currentFeatureInNearestFeatureList = firstFeatureInNearestFeatureList->next;
 	while(currentFeatureInNearestFeatureList->next != NULL)
 	{
-		ORfeature* currentFeatureInNearestFeatureList2 = firstFeatureInNearestFeatureList;
+		ATORfeature* currentFeatureInNearestFeatureList2 = firstFeatureInNearestFeatureList;
 		while(currentFeatureInNearestFeatureList2->next != NULL)
 		{
 			//make sure poly uses different points;
@@ -446,12 +446,12 @@ ORpolygon* ORoperationsClass::addPolysToListForGivenFeatureAndNearestFeatureList
 			{
 				bool passedAreaTest = false;
 
-				if(dimension == OR_METHOD3DOD_DIMENSIONS)
+				if(dimension == ATOR_METHOD3DOD_DIMENSIONS)
 				{
 					//CHECK THIS - need to invent code for this scenario
-					//if(calculateAreaOfTriangle3D(&(currentFeature->point), &(currentFeatureInNearestFeatureList->point), &(currentFeatureInNearestFeatureList2->point)) > OR_METHOD3DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON)
+					//if(calculateAreaOfTriangle3D(&(currentFeature->point), &(currentFeatureInNearestFeatureList->point), &(currentFeatureInNearestFeatureList2->point)) > ATOR_METHOD3DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON)
 
-					if(OR_METHOD_3DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST)
+					if(ATOR_METHOD_3DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST)
 					{
 						double areaOfT = SHAREDvector.calculateAreaOfTriangle(&(currentFeature->pointNonWorldCoord), &(currentFeatureInNearestFeatureList->pointNonWorldCoord), &(currentFeatureInNearestFeatureList2->pointNonWorldCoord));
 
@@ -467,7 +467,7 @@ ORpolygon* ORoperationsClass::addPolysToListForGivenFeatureAndNearestFeatureList
 						{
 							minAngleTest = false;
 						}
-						if((areaOfT > OR_METHOD3DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON) && (minAngleTest ==  true))
+						if((areaOfT > ATOR_METHOD3DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON) && (minAngleTest ==  true))
 						{
 							passedAreaTest = true;
 						}
@@ -478,7 +478,7 @@ ORpolygon* ORoperationsClass::addPolysToListForGivenFeatureAndNearestFeatureList
 						passedAreaTest = true;
 					}
 				}
-				else if(dimension == OR_METHOD2DOD_DIMENSIONS)
+				else if(dimension == ATOR_METHOD2DOD_DIMENSIONS)
 				{
 					/*
 					double minXOfT = minDouble(minDouble(currentFeature->point.x, currentFeatureInNearestFeatureList->point.x), currentFeatureInNearestFeatureList2->point.x);
@@ -488,24 +488,24 @@ ORpolygon* ORoperationsClass::addPolysToListForGivenFeatureAndNearestFeatureList
 					double widthOfOriginalT = SHAREDvars.absDouble(minXOfT - maxXOfT);
 					double heightOfOriginalT = SHAREDvars.absDouble(minYOfT - maxYOfT);
 					double maxLengthOfT = maxDouble(widthOfOriginalT, heightOfOriginalT);
-					double minAcceptableAreaOfT = maxLengthOfT*(maxLengthOfT/OR_METHOD_MINIMUM_SIDE_LENGTH_RATIO_OF_EQUILATERAL_T) / 2.0; //area of t = w*h/2
-					double minAcceptableAreaOfTNormalised = minAcceptableAreaOfT*(maxLengthOfT/OR_METHOD_SIDE_LENGTH_FOR_MINIMUM_SIDE_LENGTH_RATIO_OF_EQUILATERAL_T);	//large t's have wider spread features,
-					if(minAcceptableAreaOfTNormalised < OR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON)
+					double minAcceptableAreaOfT = maxLengthOfT*(maxLengthOfT/ATOR_METHOD_MINIMUM_SIDE_LENGTH_RATIO_OF_EQUILATERAL_T) / 2.0; //area of t = w*h/2
+					double minAcceptableAreaOfTNormalised = minAcceptableAreaOfT*(maxLengthOfT/ATOR_METHOD_SIDE_LENGTH_FOR_MINIMUM_SIDE_LENGTH_RATIO_OF_EQUILATERAL_T);	//large t's have wider spread features,
+					if(minAcceptableAreaOfTNormalised < ATOR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON)
 					{
-						minAcceptableAreaOfTNormalised = OR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON;
+						minAcceptableAreaOfTNormalised = ATOR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON;
 					}
 
 					//double maxLengthOfT = maxDouble(widthOfOriginalT, heightOfOriginalT);
-					//double averageSideLengthOfMinimumSizedTEquilateral = sqrt(OR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON);
+					//double averageSideLengthOfMinimumSizedTEquilateral = sqrt(ATOR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON);
 					//double averageSideLengthOfMinimumSizedTThin = averageSideLengthOfMinimumSizedTEquilateral*2.0;
 					//double areaRequirementNormalisationFactor = maxLengthOfT/averageSideLengthOfMinimumSizedTThin;
-					//f(areaOfT/areaRequirementNormalisationFactor > OR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON)
+					//f(areaOfT/areaRequirementNormalisationFactor > ATOR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON)
 
 					double areaOfT = SHAREDvector.calculateAreaOfTriangle(&(currentFeature->point), &(currentFeatureInNearestFeatureList->point), &(currentFeatureInNearestFeatureList2->point));
 					if(areaOfT > minAcceptableAreaOfTNormalised)
 					*/
 
-					if(OR_METHOD_2DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST)
+					if(ATOR_METHOD_2DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST)
 					{
 						double areaOfT = SHAREDvector.calculateAreaOfTriangle(&(currentFeature->point), &(currentFeatureInNearestFeatureList->point), &(currentFeatureInNearestFeatureList2->point));
 
@@ -519,7 +519,7 @@ ORpolygon* ORoperationsClass::addPolysToListForGivenFeatureAndNearestFeatureList
 						{
 							minAngleTest = false;
 						}
-						if((areaOfT > OR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON) && (minAngleTest ==  true))
+						if((areaOfT > ATOR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON) && (minAngleTest ==  true))
 						{
 							passedAreaTest = true;
 						}
@@ -529,7 +529,7 @@ ORpolygon* ORoperationsClass::addPolysToListForGivenFeatureAndNearestFeatureList
 
 						//basic:
 						double areaOfT = SHAREDvector.calculateAreaOfTriangle(&(currentFeature->point), &(currentFeatureInNearestFeatureList->point), &(currentFeatureInNearestFeatureList2->point));
-						if(areaOfT > OR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON)
+						if(areaOfT > ATOR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON)
 						{
 							passedAreaTest = true;
 						}
@@ -539,7 +539,7 @@ ORpolygon* ORoperationsClass::addPolysToListForGivenFeatureAndNearestFeatureList
 				if(passedAreaTest)
 				{//minimum area of triangle enforcement - eliminates small polys subject to noise, and also eliminates colinear polys
 
-					ORpolygon tempPolygon;
+					ATORpolygon tempPolygon;
 					SHAREDvector.copyVectorRT(&(tempPolygon.point1), &(currentFeature->point));
 					SHAREDvector.copyVectorRT(&(tempPolygon.point2), &(currentFeatureInNearestFeatureList->point));
 					SHAREDvector.copyVectorRT(&(tempPolygon.point3), &(currentFeatureInNearestFeatureList2->point));
@@ -552,7 +552,7 @@ ORpolygon* ORoperationsClass::addPolysToListForGivenFeatureAndNearestFeatureList
 							SHAREDvector.copyVectorRT(&(currentPolygonInList->point2), &(currentFeatureInNearestFeatureList->point));
 							SHAREDvector.copyVectorRT(&(currentPolygonInList->point3), &(currentFeatureInNearestFeatureList2->point));
 
-							ORpolygon* newPolygon = new ORpolygon();
+							ATORpolygon* newPolygon = new ATORpolygon();
 							currentPolygonInList->next = newPolygon;
 							currentPolygonInList = currentPolygonInList->next;
 
@@ -571,7 +571,7 @@ ORpolygon* ORoperationsClass::addPolysToListForGivenFeatureAndNearestFeatureList
 	return currentPolygonInList;
 }
 
-int ORoperationsClass::calculateNumberOfNearestFeatures(const int numberOfPolygonsPerFeature, const int numberOfNearbyFeaturesToTransform)
+int ATORoperationsClass::calculateNumberOfNearestFeatures(const int numberOfPolygonsPerFeature, const int numberOfNearbyFeaturesToTransform)
 {
 	int numberOfNearestFeatures;
 	if(numberOfPolygonsPerFeature == 1)
@@ -598,12 +598,12 @@ int ORoperationsClass::calculateNumberOfNearestFeatures(const int numberOfPolygo
 
 
 
-void ORoperationsClass::generateNearestFeaturesList(ORfeature* firstFeatureInNearestFeatureList, const int numberOfNearestFeatures)
+void ATORoperationsClass::generateNearestFeaturesList(ATORfeature* firstFeatureInNearestFeatureList, const int numberOfNearestFeatures)
 {
-	ORfeature* currentFeatureInNearestFeatureList = firstFeatureInNearestFeatureList;
+	ATORfeature* currentFeatureInNearestFeatureList = firstFeatureInNearestFeatureList;
 	for(int i=0; i<numberOfNearestFeatures; i++)
 	{
-		ORfeature* newFeature = new ORfeature();
+		ATORfeature* newFeature = new ATORfeature();
 		currentFeatureInNearestFeatureList->point.x = REALLY_FAR_AWAY;
 		currentFeatureInNearestFeatureList->point.y = REALLY_FAR_AWAY;
 		currentFeatureInNearestFeatureList->point.z = REALLY_FAR_AWAY;
@@ -613,22 +613,22 @@ void ORoperationsClass::generateNearestFeaturesList(ORfeature* firstFeatureInNea
 }
 
 
-bool ORoperationsClass::generatePolygonListUsingFeatureListLocalised(const int imageWidth, const int imageHeight, const ORfeature firstFeatureInList[], ORpolygon firstPolygonInList[], const int numberOfZoomIndicies, const int dimension)
+bool ATORoperationsClass::generatePolygonListUsingFeatureListLocalised(const int imageWidth, const int imageHeight, const ATORfeature firstFeatureInList[], ATORpolygon firstPolygonInList[], const int numberOfZoomIndicies, const int dimension)
 {
 	bool result = true;
 
 	for(int trainZoomIndex=0; trainZoomIndex < numberOfZoomIndicies; trainZoomIndex++)
 	{
-		ORpolygon* currentPolygonInList = &(firstPolygonInList[trainZoomIndex]);
-		const ORfeature* currentFeatureInList1 = &(firstFeatureInList[trainZoomIndex]);
+		ATORpolygon* currentPolygonInList = &(firstPolygonInList[trainZoomIndex]);
+		const ATORfeature* currentFeatureInList1 = &(firstFeatureInList[trainZoomIndex]);
 
 		int cornerIndexList1 = 0;
 		while(currentFeatureInList1->next != NULL)
 		{
-			int numberOfNearestFeatures = calculateNumberOfNearestFeatures(NUMBER_OF_POLYGONS_PER_FEATURE, OR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM);
+			int numberOfNearestFeatures = calculateNumberOfNearestFeatures(NUMBER_OF_POLYGONS_PER_FEATURE, ATOR_METHOD_NUM_NEARBY_FEATURES_TO_TRANSFORM);
 
 
-			ORfeature* firstFeatureInNearestFeatureList = new ORfeature();
+			ATORfeature* firstFeatureInNearestFeatureList = new ATORfeature();
 			//generateNearestFeaturesList(firstFeatureInNearestFeatureList, numberOfNearestFeatures);
 			firstFeatureInNearestFeatureList->point.x = currentFeatureInList1->point.x;
 			firstFeatureInNearestFeatureList->point.y = currentFeatureInList1->point.y;
@@ -636,12 +636,12 @@ bool ORoperationsClass::generatePolygonListUsingFeatureListLocalised(const int i
 			firstFeatureInNearestFeatureList->pointNonWorldCoord.x = currentFeatureInList1->pointNonWorldCoord.x;
 			firstFeatureInNearestFeatureList->pointNonWorldCoord.y = currentFeatureInList1->pointNonWorldCoord.y;
 			firstFeatureInNearestFeatureList->pointNonWorldCoord.z = currentFeatureInList1->pointNonWorldCoord.z;
-			ORfeature* secondFeatureInNearestFeatureList = new ORfeature();
+			ATORfeature* secondFeatureInNearestFeatureList = new ATORfeature();
 			firstFeatureInNearestFeatureList->next = secondFeatureInNearestFeatureList;
 
 			double previousDistanceToNearestFeatureFromFeatureList2 = 0.0;
 
-			ORfeature* currentFeatureInNearestFeatureList = secondFeatureInNearestFeatureList;	//do not use first point
+			ATORfeature* currentFeatureInNearestFeatureList = secondFeatureInNearestFeatureList;	//do not use first point
 			int currentNearestFeatureIndex = 1;
 			bool stillFindingNearestFeatures = true;
 			while((currentNearestFeatureIndex < numberOfNearestFeatures) && stillFindingNearestFeatures)
@@ -649,7 +649,7 @@ bool ORoperationsClass::generatePolygonListUsingFeatureListLocalised(const int i
 				double distanceToNearestFeatureFromFeatureList2 = REALLY_FAR_AWAY;
 
 				//add corner 2 to nearest corner list
-				const ORfeature* currentFeatureInList2 = &(firstFeatureInList[trainZoomIndex]);
+				const ATORfeature* currentFeatureInList2 = &(firstFeatureInList[trainZoomIndex]);
 				int cornerIndexList2 = 0;
 				bool foundASpot = false;
 
@@ -683,7 +683,7 @@ bool ORoperationsClass::generatePolygonListUsingFeatureListLocalised(const int i
 				}
 				else
 				{
-					ORfeature* newFeature = new ORfeature();
+					ATORfeature* newFeature = new ATORfeature();
 					currentFeatureInNearestFeatureList->next = newFeature;
 					currentFeatureInNearestFeatureList = currentFeatureInNearestFeatureList->next;
 					currentNearestFeatureIndex++;
@@ -691,15 +691,15 @@ bool ORoperationsClass::generatePolygonListUsingFeatureListLocalised(const int i
 			}
 
 
-			//#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES
-			ORpolygon* backupOfOldCurrentPolygon = currentPolygonInList;
+			//#ifdef ATOR_METHOD_TRANSFORM_NEARBY_FEATURES
+			ATORpolygon* backupOfOldCurrentPolygon = currentPolygonInList;
 			//#endif
 
 			currentPolygonInList = addPolysToListForGivenFeatureAndNearestFeatureList(currentPolygonInList, firstPolygonInList, firstFeatureInNearestFeatureList, NUMBER_OF_POLYGONS_PER_FEATURE, dimension);
 
-			if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
+			if(ATOR_METHOD_TRANSFORM_NEARBY_FEATURES)
 			{
-				ORpolygon* tempCurrentPolygonInList = backupOfOldCurrentPolygon;
+				ATORpolygon* tempCurrentPolygonInList = backupOfOldCurrentPolygon;
 				while(tempCurrentPolygonInList->next != NULL)
 				{
 					tempCurrentPolygonInList->firstFeatureInNearestFeatureList = firstFeatureInNearestFeatureList;
@@ -707,7 +707,7 @@ bool ORoperationsClass::generatePolygonListUsingFeatureListLocalised(const int i
 				}
 			}
 
-			if(!OR_METHOD_TRANSFORM_NEARBY_FEATURES)
+			if(!ATOR_METHOD_TRANSFORM_NEARBY_FEATURES)
 			{
 				delete firstFeatureInNearestFeatureList;
 			}
@@ -721,25 +721,25 @@ bool ORoperationsClass::generatePolygonListUsingFeatureListLocalised(const int i
 	return result;
 
 }
-bool ORoperationsClass::generatePolygonListUsingFeatureList(const int imageWidth, const int imageHeight, const ORfeature firstFeatureInList[], ORpolygon firstPolygonInList[], const int numberOfZoomIndicies)
+bool ATORoperationsClass::generatePolygonListUsingFeatureList(const int imageWidth, const int imageHeight, const ATORfeature firstFeatureInList[], ATORpolygon firstPolygonInList[], const int numberOfZoomIndicies)
 {
 	bool result = true;
 
 	for(int trainZoomIndex=0; trainZoomIndex < numberOfZoomIndicies; trainZoomIndex++)
 	{
-		ORpolygon* currentPolygonInList = &(firstPolygonInList[trainZoomIndex]);
-		const ORfeature* currentFeatureInList1 = &(firstFeatureInList[trainZoomIndex]);
+		ATORpolygon* currentPolygonInList = &(firstPolygonInList[trainZoomIndex]);
+		const ATORfeature* currentFeatureInList1 = &(firstFeatureInList[trainZoomIndex]);
 
 		int cornerIndexList1 = 0;
 		while(currentFeatureInList1->next != NULL)
 		{
 			//add corner 2 to polygon
-			const ORfeature* currentFeatureInList2 = &(firstFeatureInList[trainZoomIndex]);
+			const ATORfeature* currentFeatureInList2 = &(firstFeatureInList[trainZoomIndex]);
 			int cornerIndexList2 = 0;
 			while(currentFeatureInList2->next != NULL)
 			{
 				//add corner 3 to polygon
-				const ORfeature* currentFeatureInList3 = &(firstFeatureInList[trainZoomIndex]);
+				const ATORfeature* currentFeatureInList3 = &(firstFeatureInList[trainZoomIndex]);
 				int cornerIndexList3 = 0;
 				while(currentFeatureInList3->next != NULL)
 				{
@@ -750,7 +750,7 @@ bool ORoperationsClass::generatePolygonListUsingFeatureList(const int imageWidth
 					}
 					else
 					{
-						ORpolygon tempPolygon;
+						ATORpolygon tempPolygon;
 						SHAREDvector.copyVectorRT(&(tempPolygon.point1), &(currentFeatureInList1->point));
 						SHAREDvector.copyVectorRT(&(tempPolygon.point2), &(currentFeatureInList2->point));
 						SHAREDvector.copyVectorRT(&(tempPolygon.point3), &(currentFeatureInList3->point));
@@ -760,7 +760,7 @@ bool ORoperationsClass::generatePolygonListUsingFeatureList(const int imageWidth
 							SHAREDvector.copyVectorRT(&(currentPolygonInList->point1), &(currentFeatureInList1->point));
 							SHAREDvector.copyVectorRT(&(currentPolygonInList->point2), &(currentFeatureInList2->point));
 							SHAREDvector.copyVectorRT(&(currentPolygonInList->point3), &(currentFeatureInList3->point));
-							ORpolygon* newPolygon = new ORpolygon();
+							ATORpolygon* newPolygon = new ATORpolygon();
 							currentPolygonInList->next = newPolygon;
 							currentPolygonInList = currentPolygonInList->next;
 						}
@@ -1001,7 +1001,7 @@ void generatePolygonsUsingFeatureArraysEfficientNOTCOMPLETE(int imageWidth, int 
 */
 
 
-void ORoperationsClass::createInterpolatedPointMap(int imageWidth, const int imageHeight, double* pointMap, double* pointMapInterpolated)
+void ATORoperationsClass::createInterpolatedPointMap(int imageWidth, const int imageHeight, double* pointMap, double* pointMapInterpolated)
 {
 	//initialise featuresMap
 	for(int y = -1; y < imageHeight; y++)
@@ -1097,7 +1097,7 @@ void createInterpolatedDepthMap(int imageWidth, int imageHeight, double* depthMa
 
 
 
-void ORoperationsClass::applyTransformationMatrixToAllReferencesIn2Dlist(LDreference* firstReferenceInInterpolated2DrgbMap, mat* transformationMatrix)
+void ATORoperationsClass::applyTransformationMatrixToAllReferencesIn2Dlist(LDreference* firstReferenceInInterpolated2DrgbMap, mat* transformationMatrix)
 {
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
@@ -1116,7 +1116,7 @@ void ORoperationsClass::applyTransformationMatrixToAllReferencesIn2Dlist(LDrefer
 	}
 }
 
-void ORoperationsClass::applyTranslationToAllReferencesIn2Dlist(LDreference* firstReferenceInInterpolated2DrgbMap, vec* translationVector)
+void ATORoperationsClass::applyTranslationToAllReferencesIn2Dlist(LDreference* firstReferenceInInterpolated2DrgbMap, vec* translationVector)
 {
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
@@ -1139,7 +1139,7 @@ void ORoperationsClass::applyTranslationToAllReferencesIn2Dlist(LDreference* fir
 }
 
 
-void ORoperationsClass::restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(LDreference* firstReferenceInInterpolated2DrgbMap)
+void ATORoperationsClass::restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(LDreference* firstReferenceInInterpolated2DrgbMap)
 {
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
@@ -1161,7 +1161,7 @@ void ORoperationsClass::restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(
 	}
 }
 
-void ORoperationsClass::storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(LDreference* firstReferenceInInterpolated2DrgbMap)
+void ATORoperationsClass::storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(LDreference* firstReferenceInInterpolated2DrgbMap)
 {
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)

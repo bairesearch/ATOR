@@ -2,170 +2,170 @@
 	<objectRecognition>
 	
 	
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_DECISION_TREE" stringValue="true" fractionalValue="" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING" stringValue="true" fractionalValue="" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING" stringValue="true" fractionalValue="" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING" stringValue="true" fractionalValue="" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_DEV_BINNING" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING" stringValue="true" fractionalValue="" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_SQL_SMALL_HUE_DEV_MAP_COMPARISON" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_DECISION_TREE" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_DECISION_TREE_GEOMETRIC_COMPARISON_BINNING" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_DECISION_TREE_AVERAGE_RGB_DEV_BINNING" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_DECISION_TREE_SMALL_HUE_DEV_MAP_COMPARISON" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_SQL_AVERAGE_RGB_DEV_BINNING" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_SQL_SMALL_HUE_DEV_MAP_COMPARISON" stringValue="false" fractionalValue="" />
 		
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_SQL_GET_TEST_DATA_FROM_SQL" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_SQL_GET_TEST_DATA_FROM_SQL" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE" stringValue="false" fractionalValue="" />
 		
 		
 		
-		<miscellaneousItem name="OR_USE_FIND_CORNER_FEATURES" stringValue="true" fractionalValue="" />		
-		<miscellaneousItem name="OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES" stringValue="true" fractionalValue="" />
-		<miscellaneousItem name="OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_METHOD_USE_MESH_LISTS" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_USE_FIND_CORNER_FEATURES" stringValue="true" fractionalValue="" />		
+		<miscellaneousItem name="ATOR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_USE_CONTIGUOUS_REGION_FIND_CENTRED_FEATURES_SUBPIXEL_ACCURACY" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD_USE_MESH_LISTS" stringValue="false" fractionalValue="" />
 		
-		<miscellaneousItem name="OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_METHOD2DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_METHOD2DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_TRACE_CONTIGUOUS_REGION_BOUNDARY_DIAGONALS" stringValue="false" fractionalValue="" />					
-		<miscellaneousItem name="OR_TRACE_CONTIGUOUS_REGION_BOUNDARY_RESET_EDGES_DYNAMICALLY_OPT" stringValue="false" fractionalValue="" /> 			
-		<miscellaneousItem name="OR_METHOD3DOD_USE_3D_EDGE_POINTS_CALCULATED_DURING_QUADRATIC_FIT_INSTEAD_OF_DURING_EDGE_TRACE" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES_TRACE_MIN_MAX_NOT_TESTED_YET" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_CREATE_INTERPOLATED_MESH_REFERENCE_LIST_USING_MESH_LIST" stringValue="false" fractionalValue="0" />
+		<miscellaneousItem name="ATOR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD2DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD2DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP_BOOL" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_TRACE_CONTIGUOUS_REGION_BOUNDARY_DIAGONALS" stringValue="false" fractionalValue="" />					
+		<miscellaneousItem name="ATOR_TRACE_CONTIGUOUS_REGION_BOUNDARY_RESET_EDGES_DYNAMICALLY_OPT" stringValue="false" fractionalValue="" /> 			
+		<miscellaneousItem name="ATOR_METHOD3DOD_USE_3D_EDGE_POINTS_CALCULATED_DURING_QUADRATIC_FIT_INSTEAD_OF_DURING_EDGE_TRACE" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES_TRACE_MIN_MAX_NOT_TESTED_YET" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_CREATE_INTERPOLATED_MESH_REFERENCE_LIST_USING_MESH_LIST" stringValue="false" fractionalValue="0" />
 		
 		<miscellaneousItem name="MIN_REGION_SIZE_TO_CALCULATE_CENTRED_FEATURE" stringValue="" fractionalValue="20" />
 		<miscellaneousItem name="MINIMUM_NUMBER_OF_PIXELS_IN_A_BOUNDARY" stringValue="" fractionalValue="2" />
-		<miscellaneousItem name="OR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES_DO_NOT_USE_UNCHANGING_CASE" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_METHOD_3DOD_CONTINUOUS_EDGE_MAX_NOISE" stringValue="" fractionalValue="0.1" />
-		<miscellaneousItem name="OR_METHOD_3DOD_CONTINUOUS_EDGE_MAX_NOISE_2" stringValue="" fractionalValue="0.1" />
-		<miscellaneousItem name="OR_METHOD_3DOD_CONTINUOUS_EDGE_MAX_POINT_MOVEMENT" stringValue="" fractionalValue="0.3" />
-		<miscellaneousItem name="OR_METHOD_2DOD_CONTINUOUS_EDGE_MAX_NOISE" stringValue="" fractionalValue="1.0" />
-		<miscellaneousItem name="OR_METHOD_2DOD_CONTINUOUS_EDGE_MAX_NOISE_2" stringValue="" fractionalValue="1.0" />
+		<miscellaneousItem name="ATOR_USE_FIND_CONTIGUOUS_REGION_CENTRED_FEATURES_BOUNDARY_FEATURES_DO_NOT_USE_UNCHANGING_CASE" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD_3DOD_CONTINUOUS_EDGE_MAX_NOISE" stringValue="" fractionalValue="0.1" />
+		<miscellaneousItem name="ATOR_METHOD_3DOD_CONTINUOUS_EDGE_MAX_NOISE_2" stringValue="" fractionalValue="0.1" />
+		<miscellaneousItem name="ATOR_METHOD_3DOD_CONTINUOUS_EDGE_MAX_POINT_MOVEMENT" stringValue="" fractionalValue="0.3" />
+		<miscellaneousItem name="ATOR_METHOD_2DOD_CONTINUOUS_EDGE_MAX_NOISE" stringValue="" fractionalValue="1.0" />
+		<miscellaneousItem name="ATOR_METHOD_2DOD_CONTINUOUS_EDGE_MAX_NOISE_2" stringValue="" fractionalValue="1.0" />
 
 
 
-		<miscellaneousItem name="OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST" stringValue="true" fractionalValue="" />
-		<miscellaneousItem name="OR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD3DOD_USE_SHAPE_CONTRAST_INSTEAD_OF_LUMINOSITY_CONTRAST_FOR_FEATURE_DETECTION" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD3DOD_USE_NORMAL_CONTRAST_INSTEAD_OF_DEPTH_GRADIENT_AND_DEPTH_GRADIENT_CONTRAST_FOR_SHAPE_CONTRAST" stringValue="false" fractionalValue="" />
 
 				
 		
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL" stringValue="" fractionalValue="2" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS" stringValue="" fractionalValue="32" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_IN_BITS" stringValue="" fractionalValue="6" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY" stringValue="" fractionalValue="10" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED" stringValue="50" fractionalValue="" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_COLOUR_INFORMATION" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_MATCHED_LUM_CHROMA_SUBSAMPLING" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ENHANCED_CHROMA_SUBSAMPLING" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y" stringValue="" fractionalValue="7" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCr" stringValue="" fractionalValue="0" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCb" stringValue="" fractionalValue="0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL" stringValue="" fractionalValue="2" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS" stringValue="" fractionalValue="32" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_IN_BITS" stringValue="" fractionalValue="6" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY" stringValue="" fractionalValue="10" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_DCT_QUALITY_CHROMA_ENHANCED" stringValue="50" fractionalValue="" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_COLOUR_INFORMATION" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_MATCHED_LUM_CHROMA_SUBSAMPLING" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_USE_ENHANCED_CHROMA_SUBSAMPLING" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y" stringValue="" fractionalValue="7" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCr" stringValue="" fractionalValue="0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCb" stringValue="" fractionalValue="0" />
 		
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_0_X" stringValue="" fractionalValue="1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_0_Y" stringValue="" fractionalValue="0" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_1_X" stringValue="" fractionalValue="2" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_1_Y" stringValue="" fractionalValue="0" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_2_X" stringValue="" fractionalValue="0" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_2_Y" stringValue="" fractionalValue="1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_3_X" stringValue="" fractionalValue="1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_3_Y" stringValue="" fractionalValue="1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_4_X" stringValue="" fractionalValue="2" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_4_Y" stringValue="" fractionalValue="1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_X" stringValue="" fractionalValue="0" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_Y" stringValue="" fractionalValue="2" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_X" stringValue="" fractionalValue="1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_Y" stringValue="" fractionalValue="2" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_7_X" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_7_Y" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_8_X" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_8_Y" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_0_X" stringValue="" fractionalValue="1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_0_Y" stringValue="" fractionalValue="0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_1_X" stringValue="" fractionalValue="2" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_1_Y" stringValue="" fractionalValue="0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_2_X" stringValue="" fractionalValue="0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_2_Y" stringValue="" fractionalValue="1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_3_X" stringValue="" fractionalValue="1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_3_Y" stringValue="" fractionalValue="1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_4_X" stringValue="" fractionalValue="2" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_4_Y" stringValue="" fractionalValue="1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_X" stringValue="" fractionalValue="0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_5_Y" stringValue="" fractionalValue="2" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_X" stringValue="" fractionalValue="1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_6_Y" stringValue="" fractionalValue="2" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_7_X" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_7_Y" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_8_X" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_Y_CELL_8_Y" stringValue="" fractionalValue="-1" />
 
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_0_X" stringValue="" fractionalValue="0" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_0_Y" stringValue="" fractionalValue="0" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_1_X" stringValue="" fractionalValue="1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_1_Y" stringValue="" fractionalValue="0" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_2_X" stringValue="" fractionalValue="0" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_2_Y" stringValue="" fractionalValue="1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_3_X" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_3_Y" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_4_X" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_4_Y" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_5_X" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_5_Y" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_6_X" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_6_Y" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_7_X" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_7_Y" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_8_X" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_8_Y" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_0_X" stringValue="" fractionalValue="0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_0_Y" stringValue="" fractionalValue="0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_1_X" stringValue="" fractionalValue="1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_1_Y" stringValue="" fractionalValue="0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_2_X" stringValue="" fractionalValue="0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_2_Y" stringValue="" fractionalValue="1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_3_X" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_3_Y" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_4_X" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_4_Y" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_5_X" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_5_Y" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_6_X" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_6_Y" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_7_X" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_7_Y" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_8_X" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCR_CELL_8_Y" stringValue="" fractionalValue="-1" />
 
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_0_X" stringValue="" fractionalValue="0" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_0_Y" stringValue="" fractionalValue="0" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_1_X" stringValue="" fractionalValue="1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_1_Y" stringValue="" fractionalValue="0" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_2_X" stringValue="" fractionalValue="0" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_2_Y" stringValue="" fractionalValue="1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_3_X" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_3_Y" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_4_X" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_4_Y" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_5_X" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_5_Y" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_6_X" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_6_Y" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_7_X" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_7_Y" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_8_X" stringValue="" fractionalValue="-1" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_8_Y" stringValue="" fractionalValue="-1" />																				
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_0_X" stringValue="" fractionalValue="0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_0_Y" stringValue="" fractionalValue="0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_1_X" stringValue="" fractionalValue="1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_1_Y" stringValue="" fractionalValue="0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_2_X" stringValue="" fractionalValue="0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_2_Y" stringValue="" fractionalValue="1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_3_X" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_3_Y" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_4_X" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_4_Y" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_5_X" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_5_Y" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_6_X" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_6_Y" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_7_X" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_7_Y" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_8_X" stringValue="" fractionalValue="-1" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DCT_COEFF_SELECTION_ARRAY_YCB_CELL_8_Y" stringValue="" fractionalValue="-1" />																				
 		
 		
 		
-		<miscellaneousItem name="OR_USE_CONTRAST_CALC_METHOD_C" stringValue="true" fractionalValue="" />
-		<miscellaneousItem name="OR_USE_CONTRAST_CALC_METHOD_B" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_USE_CONTRAST_CALC_METHOD_C" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_USE_CONTRAST_CALC_METHOD_B" stringValue="false" fractionalValue="" />
 		<miscellaneousItem name="LUMINOSITY_CONTRAST_FRACTION_THRESHOLD" stringValue="" fractionalValue="0.05" />
 		<miscellaneousItem name="DEPTH_GRADIENT_CONTRAST_FRACTION_THRESHOLD" stringValue="" fractionalValue="0.05" />
 		<miscellaneousItem name="DEPTH_CONTRAST_FRACTION_THRESHOLD" stringValue="" fractionalValue="0.05" />
 		<miscellaneousItem name="POINT_NORMAL_CONTRAST_FRACTION_THRESHOLD" stringValue="" fractionalValue="0.1" />
 		<miscellaneousItem name="LUMINOSITY_FRACTION_THRESHOLD" stringValue="" fractionalValue="0.01" />
-		<miscellaneousItem name="OR_MAX_DEPTH_NOISE" stringValue="" fractionalValue="0.1" />
+		<miscellaneousItem name="ATOR_MAX_DEPTH_NOISE" stringValue="" fractionalValue="0.1" />
 		<miscellaneousItem name="ESTIMATE_MAX_DEPTH_T_REAL" stringValue="" fractionalValue="20.0" />
 		
 		
 		
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_PATTERN_NEVER_CULL_SNAPSHOTS" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_PATTERN_NEVER_CULL_SNAPSHOTS" stringValue="true" fractionalValue="" />
 		
-		<miscellaneousItem name="OR_METHOD_DO_NOT_CULL_SNAPSHOT" stringValue="true" fractionalValue="" />
-		<miscellaneousItem name="OR_METHOD_DO_NOT_CULL_SNAPSHOT_EXTREME" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD_DO_NOT_CULL_SNAPSHOT" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD_DO_NOT_CULL_SNAPSHOT_EXTREME" stringValue="false" fractionalValue="" />
 
 
 		
-		<miscellaneousItem name="OR_METHOD_SUPPORT_HIGH_LEVEL_SCALING" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD_SUPPORT_HIGH_LEVEL_SCALING" stringValue="true" fractionalValue="" />
 
-		<miscellaneousItem name="OR_METHOD2DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS;" stringValue="true" fractionalValue="" />
-		<miscellaneousItem name="OR_METHOD2DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS;" stringValue="" fractionalValue="3" />
-		<miscellaneousItem name="OR_METHOD3DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_METHOD3DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS;" stringValue="" fractionalValue="1" />
+		<miscellaneousItem name="ATOR_METHOD2DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS;" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD2DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS;" stringValue="" fractionalValue="3" />
+		<miscellaneousItem name="ATOR_METHOD3DOD_SUPPORT_SNAPSHOTS_AT_MULTIPLE_ZOOMS" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD3DOD_NUMBER_OF_SNAPSHOT_ZOOM_LEVELS;" stringValue="" fractionalValue="1" />
 
-		<miscellaneousItem name="OR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TRAIN" stringValue="" fractionalValue="10000" />
-		<miscellaneousItem name="OR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TEST" stringValue="" fractionalValue="10000" />
-		<miscellaneousItem name="OR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TRAIN" stringValue="" fractionalValue="10000" />
-		<miscellaneousItem name="OR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TEST" stringValue="" fractionalValue="10000" />
+		<miscellaneousItem name="ATOR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TRAIN" stringValue="" fractionalValue="10000" />
+		<miscellaneousItem name="ATOR_METHOD3DOD_MAX_NUMBER_OF_POLYGONS_TEST" stringValue="" fractionalValue="10000" />
+		<miscellaneousItem name="ATOR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TRAIN" stringValue="" fractionalValue="10000" />
+		<miscellaneousItem name="ATOR_METHOD2DOD_MAX_NUMBER_OF_POLYGONS_TEST" stringValue="" fractionalValue="10000" />
 		
 
 
-		<miscellaneousItem name="OR_SNAPSHOT_WINDOW_POSITION_X" stringValue="" fractionalValue="0" />
-		<miscellaneousItem name="OR_SNAPSHOT_WINDOW_POSITION_Y" stringValue="" fractionalValue="500" />
+		<miscellaneousItem name="ATOR_SNAPSHOT_WINDOW_POSITION_X" stringValue="" fractionalValue="0" />
+		<miscellaneousItem name="ATOR_SNAPSHOT_WINDOW_POSITION_Y" stringValue="" fractionalValue="500" />
 		
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_HAS_LOCAL_CONTRAST_MIN_AVERAGE_COL_DEVIATION" stringValue="" fractionalValue="0.0" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_HAS_STARK_LOCAL_CONTRAST_MIN_AVERAGE_COL_DEVIATION" stringValue="" fractionalValue="0.0" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_HAS_CONTRAST_WRT_AVERAGE_COLOUR_MIN_AVERAGE_COL_DEVIATION" stringValue="" fractionalValue="30.0" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_HAS_STARK_CONTRAST_WRT_AVERAGE_COLOUR_MIN_AVERAGE_COL_DEVIATION" stringValue="" fractionalValue="20.0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_HAS_LOCAL_CONTRAST_MIN_AVERAGE_COL_DEVIATION" stringValue="" fractionalValue="0.0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_HAS_STARK_LOCAL_CONTRAST_MIN_AVERAGE_COL_DEVIATION" stringValue="" fractionalValue="0.0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_HAS_CONTRAST_WRT_AVERAGE_COLOUR_MIN_AVERAGE_COL_DEVIATION" stringValue="" fractionalValue="30.0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_HAS_STARK_CONTRAST_WRT_AVERAGE_COLOUR_MIN_AVERAGE_COL_DEVIATION" stringValue="" fractionalValue="20.0" />
 		<miscellaneousItem name="IMAGE_COMPARISON_MISFIT_AVG_PIXEL_COMPARISON_HUE_ERROR_BASE" stringValue="" fractionalValue="68.2656" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_STARK_LOCAL_DEVIATION_MIN_MIN_COL_DIFF" stringValue="" fractionalValue="10.0" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_MAX_TOTAL_NUM_STARK_LOCAL_DEVIATIONS" stringValue="" fractionalValue="0.2551" />
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_STARK_LOCAL_CONTRAST_MIN_AVG_COL_DIFF" stringValue="" fractionalValue="10.0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_STARK_LOCAL_DEVIATION_MIN_MIN_COL_DIFF" stringValue="" fractionalValue="10.0" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_MAX_TOTAL_NUM_STARK_LOCAL_DEVIATIONS" stringValue="" fractionalValue="0.2551" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_STARK_LOCAL_CONTRAST_MIN_AVG_COL_DIFF" stringValue="" fractionalValue="10.0" />
 		
 		<miscellaneousItem name="XYCOORDINATES_CONVERSION_INTO_PIXELS" stringValue="" fractionalValue="0.05" />
 		<miscellaneousItem name="MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD" stringValue="" fractionalValue="5" />
@@ -183,66 +183,66 @@
 		
 		
 		
-		<miscellaneousItem name="OR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE" stringValue="" fractionalValue="0.001" />
+		<miscellaneousItem name="ATOR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE" stringValue="" fractionalValue="0.001" />
 		
 		
 		
 		<miscellaneousItem name="WINDOWS_MINIMUM_HORIZONTAL_WINDOW_SIZE" stringValue="" fractionalValue="120" />
-		<miscellaneousItem name="OR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO" stringValue="" fractionalValue="6" />
-		<miscellaneousItem name="OR_METHOD_3DOD_USE_SMALL_IMAGE_RATIO" stringValue="" fractionalValue="5" />
+		<miscellaneousItem name="ATOR_METHOD_2DOD_USE_SMALL_IMAGE_RATIO" stringValue="" fractionalValue="6" />
+		<miscellaneousItem name="ATOR_METHOD_3DOD_USE_SMALL_IMAGE_RATIO" stringValue="" fractionalValue="5" />
 		
-		<miscellaneousItem name="OR_METHOD_2DOD_NORM_SNAPSHOT_X" stringValue="" fractionalValue="30" />
-		<miscellaneousItem name="OR_METHOD_2DOD_NORM_SNAPSHOT_Y" stringValue="" fractionalValue="30" />
-		<miscellaneousItem name="OR_METHOD_3DOD_NORM_SNAPSHOT_X" stringValue="" fractionalValue="40" />
-		<miscellaneousItem name="OR_METHOD_3DOD_NORM_SNAPSHOT_X" stringValue="" fractionalValue="40" />	
+		<miscellaneousItem name="ATOR_METHOD_2DOD_NORM_SNAPSHOT_X" stringValue="" fractionalValue="30" />
+		<miscellaneousItem name="ATOR_METHOD_2DOD_NORM_SNAPSHOT_Y" stringValue="" fractionalValue="30" />
+		<miscellaneousItem name="ATOR_METHOD_3DOD_NORM_SNAPSHOT_X" stringValue="" fractionalValue="40" />
+		<miscellaneousItem name="ATOR_METHOD_3DOD_NORM_SNAPSHOT_X" stringValue="" fractionalValue="40" />	
 		
 		
 		
-		<miscellaneousItem name="OR_PRINT_ALGORITHM_PROGRESS" stringValue="true" fractionalValue="" />
-		<miscellaneousItem name="OR_PRINT_ALGORITHM_AND_TIME_DETAILS" stringValue="true" fractionalValue="" />
-		<miscellaneousItem name="OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML" stringValue="true" fractionalValue="" />
-		<miscellaneousItem name="OR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL" stringValue="true" fractionalValue="" />
-		<miscellaneousItem name="OR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_PRINT_ALGORITHM_PROGRESS" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_GENERATE_IMAGE_COMPARITOR_RESULTS_HTML" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_GENERATE_IMAGE_COMPARITOR_RESULTS_ALLOW_CONFIDENTIAL" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS" stringValue="true" fractionalValue="" />
 		<miscellaneousItem name="DEMO_TO_CUSTOMER_HIDE_T_FROM_VIEW" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_GENERATE_IMAGE_COMPARITOR_RESULTS_FNAME" stringValue="imageComparitorResultsForNormalisedSnapshots.html" fractionalValue="" />
+		<miscellaneousItem name="ATOR_GENERATE_IMAGE_COMPARITOR_RESULTS_FNAME" stringValue="imageComparitorResultsForNormalisedSnapshots.html" fractionalValue="" />
 		
 		
 		
-		<miscellaneousItem name="OR_IMAGE_COMPARITOR_MATCH_ERROR_THRESHOLD" stringValue="" fractionalValue="0.2" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARITOR_MATCH_ERROR_THRESHOLD" stringValue="" fractionalValue="0.2" />
 
 
 		
-		<miscellaneousItem name="OR_METHOD_3DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST" stringValue="true" fractionalValue="" />
-		<miscellaneousItem name="OR_METHOD_2DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD_3DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST" stringValue="true" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD_2DOD_USE_POLYGON_MIN_MAX_INTERNAL_ANGLE_TEST" stringValue="true" fractionalValue="" />
 		<miscellaneousItem name="POLYGON_MIN_ANGLE_DEGREES" stringValue="" fractionalValue="10.0" />
-		<miscellaneousItem name="OR_METHOD3DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON" stringValue="" fractionalValue="0.1" />
-		<miscellaneousItem name="OR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON" stringValue="" fractionalValue="20.0" />
+		<miscellaneousItem name="ATOR_METHOD3DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON" stringValue="" fractionalValue="0.1" />
+		<miscellaneousItem name="ATOR_METHOD2DOD_MINIMUM_AREA_OF_NORMALISATION_POLYGON" stringValue="" fractionalValue="20.0" />
 		
 		
 		
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL" stringValue="" fractionalValue="20" />		
-		<miscellaneousItem name="OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING_MULTIPLIER" stringValue="" fractionalValue="5" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL" stringValue="" fractionalValue="20" />		
+		<miscellaneousItem name="ATOR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING_MULTIPLIER" stringValue="" fractionalValue="5" />
 		
 		
 		
-		<miscellaneousItem name="OR_METHOD_ONLY_USE_ONE_POLY_PER_FEATURE_FAST_BUT_LOW_REDUNDANCY" stringValue="false" fractionalValue="" />
-		<miscellaneousItem name="OR_METHOD_ONLY_USE_TWO_NEAREST_FEATURES_TO_COMPARE_FAST_BUT_LOW_REDUNDANCY" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD_ONLY_USE_ONE_POLY_PER_FEATURE_FAST_BUT_LOW_REDUNDANCY" stringValue="false" fractionalValue="" />
+		<miscellaneousItem name="ATOR_METHOD_ONLY_USE_TWO_NEAREST_FEATURES_TO_COMPARE_FAST_BUT_LOW_REDUNDANCY" stringValue="false" fractionalValue="" />
 				
 		<miscellaneousItem name="NUMBER_OF_POLYGONS_PER_FEATURE" stringValue="" fractionalValue="3" />
-		<miscellaneousItem name="OR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE" stringValue="" fractionalValue="4" />
+		<miscellaneousItem name="ATOR_METHOD_NUM_NEARBY_FEATURES_TO_COMPARE" stringValue="" fractionalValue="4" />
 		
-		<miscellaneousItem name="OR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR" stringValue="" fractionalValue="0.3" />
-		<miscellaneousItem name="OR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NEAREST_FEATURE_MAX_DISTANCE" stringValue="" fractionalValue="6.0" />
+		<miscellaneousItem name="ATOR_GEOMETRIC_CHECK_COMPARISON_MAX_ERROR" stringValue="" fractionalValue="0.3" />
+		<miscellaneousItem name="ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NEAREST_FEATURE_MAX_DISTANCE" stringValue="" fractionalValue="6.0" />
 
 
 
-		<miscellaneousItem name="OR_IMAGE_COMPARITOR_SMALL_MATCH_ERROR_THRESHOLD" stringValue="" fractionalValue="0.2" />
+		<miscellaneousItem name="ATOR_IMAGE_COMPARITOR_SMALL_MATCH_ERROR_THRESHOLD" stringValue="" fractionalValue="0.2" />
 		
 		
 
-		<miscellaneousItem name="OR_RULES_XML_SPARE_PARAMETER_1" stringValue="true" fractionalValue="" />		
-		<miscellaneousItem name="OR_RULES_XML_SPARE_PARAMETER_2" stringValue="" fractionalValue="0.1" />		
+		<miscellaneousItem name="ATOR_RULES_XML_SPARE_PARAMETER_1" stringValue="true" fractionalValue="" />		
+		<miscellaneousItem name="ATOR_RULES_XML_SPARE_PARAMETER_2" stringValue="" fractionalValue="0.1" />		
 		
 	</objectRecognition>
 </rules>

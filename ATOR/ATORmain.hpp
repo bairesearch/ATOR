@@ -26,13 +26,13 @@
  * File Name: ATORmain.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3o1a 05-November-2020
+ * Project Version: 3o2a 08-November-2020
  * /
  *******************************************************************************/
 
 
-#ifndef HEADER_OR_MAIN
-#define HEADER_OR_MAIN
+#ifndef HEADER_ATOR_MAIN
+#define HEADER_ATOR_MAIN
 
 
 #include "ATORmethod.hpp"
@@ -43,7 +43,7 @@
 
 int main(const int argc,const char* *argv);
 
-class ORmainClass
+class ATORmainClass
 {
 	public: void printORcommandLineErrorMessage();
 };

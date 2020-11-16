@@ -26,58 +26,58 @@
  * File Name: ATORpolygonList.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3o1a 05-November-2020
+ * Project Version: 3o2a 08-November-2020
  * /
  *******************************************************************************/
 
 
-#ifndef HEADER_OR_POLYGONLIST
-#define HEADER_OR_POLYGONLIST
+#ifndef HEADER_ATOR_POLYGONLIST
+#define HEADER_ATOR_POLYGONLIST
 
 
 #include "SHAREDvars.hpp"
 #include "ATORglobalDefs.hpp"
 #include "SHAREDvector.hpp"
 
-class ORobjectReferenceList{
+class ATORobjectReferenceList{
 private:
 	/*There are currently no private attributes of this class*/
 public:
 
-	ORobjectReferenceList(void); // constructor declaration
-	~ORobjectReferenceList();	//  and destructor.
+	ATORobjectReferenceList(void); // constructor declaration
+	~ATORobjectReferenceList();	//  and destructor.
 
 	int64_t objectNumber;
 	string objectName;
 	int numMatchingSnapshots;
 
-	ORobjectReferenceList* next;
+	ATORobjectReferenceList* next;
 };
 
 
 
-class ORsnapshotIDreferenceList{
+class ATORsnapshotIDreferenceList{
 private:
 	/*There are currently no private attributes of this class*/
 public:
 
-	ORsnapshotIDreferenceList(void); // constructor declaration
-	~ORsnapshotIDreferenceList();	//  and destructor.
+	ATORsnapshotIDreferenceList(void); // constructor declaration
+	~ATORsnapshotIDreferenceList();	//  and destructor.
 
 	int64_t referenceID;
 
-	ORsnapshotIDreferenceList* next;
-	ORsnapshotIDreferenceList* previous;	//only used for ORdatabaseDecisionTree.cpp
+	ATORsnapshotIDreferenceList* next;
+	ATORsnapshotIDreferenceList* previous;	//only used for ATORdatabaseDecisionTree.cpp
 };
 
 
-class ORfeature{
+class ATORfeature{
 private:
 	/*There are currently no private attributes of this class*/
 public:
 
-	ORfeature(void); // constructor declaration
-	~ORfeature();	//  and destructor.
+	ATORfeature(void); // constructor declaration
+	~ATORfeature();	//  and destructor.
 
 	int numberOfFeaturePixelsUsedToGenerateFeature;
 
@@ -88,64 +88,64 @@ public:
 	vec point;
 	vec pointNonWorldCoord;
 
-	#ifdef OR_METHOD_GEOMETRIC_COMPARISON
+	#ifdef ATOR_METHOD_GEOMETRIC_COMPARISON
 	string objectName;
 	int trainOrTest;
 	int viewIndex;
 	int zoomIndex;
 	int polyIndex;
 	int sideIndex;
-	#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
+	#ifdef ATOR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 	int OTpointIndex;	//1,2 or 3
 	#endif
-	#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
+	#ifdef ATOR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
 	double minWidthAndHeightOfOrigOT;
 	#endif
 	vec pointTransformed;
 
-	#ifdef VERBOSE_OR_OUTPUT_GEO_COORDINATES
+	#ifdef ATOR_VERBOSE_OUTPUT_GEO_COORDINATES
 	bool matchFound;	//added 8 June 2012 for debugging
 	#endif
 
 	#endif
 
-	//#ifdef OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
-	signed char dctCoeff[OR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
+	//#ifdef ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING
+	schar dctCoeff[ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
 	uint64_t dctCoeffArrayBinned;
 	//#endif
 
-	//#ifdef OR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING
+	//#ifdef ATOR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING
 	colour avgCol;
 	//#endif
 
-	char snapshotMapsText[OR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_MAX_DATA_LENGTH];
+	char snapshotMapsText[ATOR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_MAX_DATA_LENGTH];
 	int snapshotMapsTextLength;
 
 	bool lastFilledFeatureInList;	//added 8 June 2012 to fix overrun
-	ORfeature* next;
+	ATORfeature* next;
 
 	//bool nearestFeatureActive;	//added 13 June 2012 to prevent non-filled existent features from being used to create polys
 
 };
 
-class ORpolygon{
+class ATORpolygon{
 private:
 	/*There are currently no private attributes of this class*/
 public:
 
-	ORpolygon(void); // constructor declaration
-	~ORpolygon();	//  and destructor.
+	ATORpolygon(void); // constructor declaration
+	~ATORpolygon();	//  and destructor.
 
 	vec point1;
 	vec point2;
 	vec point3;
-	ORpolygon* next;
+	ATORpolygon* next;
 
-	#ifdef OR_METHOD_GEOMETRIC_COMPARISON
-	ORfeature* firstFeatureInNearestFeatureList;
+	#ifdef ATOR_METHOD_GEOMETRIC_COMPARISON
+	ATORfeature* firstFeatureInNearestFeatureList;
 	#endif
 
-	//#ifdef OR_METHOD_TRANSFORM_KEY_OT_FEATURES
+	//#ifdef ATOR_METHOD_TRANSFORM_KEY_OT_FEATURES
 	vec point1Transformed;
 	vec point2Transformed;
 	vec point3Transformed;
@@ -153,20 +153,20 @@ public:
 
 };
 
-#ifdef OR_METHOD_GEOMETRIC_COMPARISON
-class ORfeatureContainer{
+#ifdef ATOR_METHOD_GEOMETRIC_COMPARISON
+class ATORfeatureContainer{
 private:
 	/*There are currently no private attributes of this class*/
 public:
 
-	ORfeatureContainer(void); // constructor declaration
-	~ORfeatureContainer();	//  and destructor.
+	ATORfeatureContainer(void); // constructor declaration
+	~ATORfeatureContainer();	//  and destructor.
 
 	int numVotes;
 	double error;
 
-	ORfeature* firstFeatureInFeatureList;
-	ORfeatureContainer* next;
+	ATORfeature* firstFeatureInFeatureList;
+	ATORfeatureContainer* next;
 };
 #endif
 
@@ -176,13 +176,13 @@ public:
 #define NO_EDGE_FOUND (3)
 
 
-class ORmeshPoint{
+class ATORmeshPoint{
 private:
 	/*There are currently no private attributes of this class*/
 public:
 
-	ORmeshPoint(void); 	// constructor declaration
-	~ORmeshPoint();	//  and destructor.
+	ATORmeshPoint(void); 	// constructor declaration
+	~ATORmeshPoint();	//  and destructor.
 
 	vec point;
 	int xInt;
@@ -192,15 +192,15 @@ public:
 	double luminosity;
 	double luminosityContrast;	//[emulates luminosity contrast map]
 
-	//#ifdef OR_USE_CONTRAST_CALC_METHOD_C
-	ORmeshPoint* interpixelMeshPoint;	//used to store contrast mesh as a submesh of an rgb mesh with a 0.5/0.5 offset
+	//#ifdef ATOR_USE_CONTRAST_CALC_METHOD_C
+	ATORmeshPoint* interpixelMeshPoint;	//used to store contrast mesh as a submesh of an rgb mesh with a 0.5/0.5 offset
 	bool interpixelMeshPointFilled;
 	//#endif
 
-	ORmeshPoint* adjacentMeshPoint[9];	//y:0,x:0->3, y:1,x:0->3, y:2,x:0->3
+	ATORmeshPoint* adjacentMeshPoint[9];	//y:0,x:0->3, y:1,x:0->3, y:2,x:0->3
 	bool adjacentMeshPointFilled[9]; 	//to specify the boundary conditions of the meshpoint
 
-	//#ifdef OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST
+	//#ifdef ATOR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST
 	bool meshPointNormalFilled;
 	vec meshPointNormals[4];	//from 4 tris creating using mesh point and two out of four surrounding meshpoints, x-, x+, y-, y+
 	vec meshPointNormal; 		//average of four calculated meshpoint normals
@@ -217,8 +217,8 @@ public:
 	//bool hasBeenProcessedInSearchForTheOuterBoundary;
 	bool hasBeenProcessedInGenerationOfOuterBoundary;
 
-	bool edge;	//currently only used if OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED
-	//#ifdef OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED
+	bool edge;	//currently only used if ATOR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED
+	//#ifdef ATOR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED
 	double zeroCrossingValueX;
 	double zeroCrossingValueY;
 	double alpha;
@@ -228,54 +228,54 @@ public:
 
 
 
-	ORmeshPoint* next;
+	ATORmeshPoint* next;
 };
 
-class ORpolygonListClass
+class ATORpolygonListClass
 {
 	private: SHAREDvectorClass SHAREDvector;
 	private: SHAREDvarsClass SHAREDvars;
-	public: ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const int x, const int y, bool* hasFoundMeshPoint);
-	public: ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const vec* point, bool* hasFoundMeshPoint, const int meshZoneLimit);
-	public: ORmeshPoint* findMeshPointIntInMesh(ORmeshPoint* firstMeshPointInMeshList, const int position);
+	public: ATORmeshPoint* findMeshPointIntInMesh(ATORmeshPoint* firstMeshPointInMeshList, const int x, const int y, bool* hasFoundMeshPoint);
+	public: ATORmeshPoint* findMeshPointIntInMesh(ATORmeshPoint* firstMeshPointInMeshList, const vec* point, bool* hasFoundMeshPoint, const int meshZoneLimit);
+	public: ATORmeshPoint* findMeshPointIntInMesh(ATORmeshPoint* firstMeshPointInMeshList, const int position);
 
-	//#ifdef OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST
-	public: void calculateMeshPointNormal(ORmeshPoint* meshPoint);
-	public: void calculateMeshPointNormalContrast(ORmeshPoint* meshPoint);
-	//#ifdef OR_USE_CONTRAST_CALC_METHOD_C
-	public: void calculateMeshPointInterpixelNormal(ORmeshPoint* meshPoint);
-	public: void calculateMeshPointInterpixelNormalContrast(ORmeshPoint* meshPoint);
-	public: void calculateMeshPointInterpixelLuminosityContrast(ORmeshPoint* meshPoint);
-	public: void calculateMeshPointInterpixelDepth(ORmeshPoint* meshPoint);
-	public: void calculateMeshPointInterpixelDepthWithForegroundDepthCheck(ORmeshPoint* meshPoint);
+	//#ifdef ATOR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST
+	public: void calculateMeshPointNormal(ATORmeshPoint* meshPoint);
+	public: void calculateMeshPointNormalContrast(ATORmeshPoint* meshPoint);
+	//#ifdef ATOR_USE_CONTRAST_CALC_METHOD_C
+	public: void calculateMeshPointInterpixelNormal(ATORmeshPoint* meshPoint);
+	public: void calculateMeshPointInterpixelNormalContrast(ATORmeshPoint* meshPoint);
+	public: void calculateMeshPointInterpixelLuminosityContrast(ATORmeshPoint* meshPoint);
+	public: void calculateMeshPointInterpixelDepth(ATORmeshPoint* meshPoint);
+	public: void calculateMeshPointInterpixelDepthWithForegroundDepthCheck(ATORmeshPoint* meshPoint);
 	//#endif
 	//#endif
-	public: void calculateMeshPointLuminosityContrast(ORmeshPoint* meshPoint);
+	public: void calculateMeshPointLuminosityContrast(ATORmeshPoint* meshPoint);
 };
 
 
 
-class ORpixelContiguous{
+class ATORpixelContiguous{
 private:
 	/*There are currently no private attributes of this class*/
 public:
 
-	ORpixelContiguous(void); // constructor declaration
-	ORpixelContiguous(int newX, int newY, ORpixelContiguous* newPrevious);
-	ORpixelContiguous(ORmeshPoint* newMeshPoint, ORpixelContiguous* newPrevious);
-	~ORpixelContiguous();	//  and destructor.
+	ATORpixelContiguous(void); // constructor declaration
+	ATORpixelContiguous(int newX, int newY, ATORpixelContiguous* newPrevious);
+	ATORpixelContiguous(ATORmeshPoint* newMeshPoint, ATORpixelContiguous* newPrevious);
+	~ATORpixelContiguous();	//  and destructor.
 
 	bool pathAlreadyCrawled;
 	bool finalPathAlreadyCrawled;
-	int xInt;			//only used by non ORmeshPoint functions
-	int yInt;			//only used by non ORmeshPoint functions
-	vec point;			//only used by non ORmeshPoint functions
-	vec pointNonWorldCoord;		//only used by non ORmeshPoint functions
+	int xInt;			//only used by non ATORmeshPoint functions
+	int yInt;			//only used by non ATORmeshPoint functions
+	vec point;			//only used by non ATORmeshPoint functions
+	vec pointNonWorldCoord;		//only used by non ATORmeshPoint functions
 
-	ORmeshPoint* meshPoint;	//only used by ORmeshPoint functions
+	ATORmeshPoint* meshPoint;	//only used by ATORmeshPoint functions
 
-	ORpixelContiguous* next[9];
-	ORpixelContiguous* previous;
+	ATORpixelContiguous* next[9];
+	ATORpixelContiguous* previous;
 
 	bool readyToDelete;
 };

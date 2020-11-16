@@ -26,24 +26,24 @@
  * File Name: ATORrules.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3o1a 05-November-2020
+ * Project Version: 3o2a 08-November-2020
  * /
  *******************************************************************************/
 
 
-#ifndef HEADER_OR_RULES
-#define HEADER_OR_RULES
+#ifndef HEADER_ATOR_RULES
+#define HEADER_ATOR_RULES
 
 #include "ATORglobalDefs.hpp"
 #include "XMLrulesClass.hpp"
 #include "RTglobalDefs.hpp"
 #include "SHAREDvars.hpp"
 
-class ORrulesClass
+class ATORrulesClass
 {
 	private: SHAREDvarsClass SHAREDvars;
-	public: void fillInORrulesExternVariables();
-	private: void printORrulesExternVariables();
+	public: void fillInATORrulesExternVariables();
+	private: void printATORrulesExternVariables();
 };
 
 #endif

@@ -26,7 +26,7 @@
  * File Name: ATORpixelMaps.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3o1a 05-November-2020
+ * Project Version: 3o2a 08-November-2020
  * /
  *******************************************************************************/
 
@@ -38,7 +38,7 @@
 //requires;
 //vec meshPointNormals[4];	//from 4 tris creating using mesh point and two out of four surrounding meshpoints, x-, x+, y-, y+
 //vec meshPointNormal; 		//average of four calculated meshpoint normals
-void ORpixelMapsClass::calculateMeshPointNormalsUsingPointMap(int x, int y, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight, double* pointMap, vec* meshPointNormal, vec meshPointNormals[])
+void ATORpixelMapsClass::calculateMeshPointNormalsUsingPointMap(int x, int y, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight, double* pointMap, vec* meshPointNormal, vec meshPointNormals[])
 {
 	vec averageNormalVector;
 	averageNormalVector.x = 0.0;
@@ -167,7 +167,7 @@ void ORpixelMapsClass::calculateMeshPointNormalsUsingPointMap(int x, int y, cons
 	SHAREDvector.copyVectors(meshPointNormal,  &averageNormalVector);
 }
 
-void ORpixelMapsClass::createPointNormalMapFromPointMap(int imageWidth, const int imageHeight, double* pointMap, double* pointNormalMap)
+void ATORpixelMapsClass::createPointNormalMapFromPointMap(int imageWidth, const int imageHeight, double* pointMap, double* pointNormalMap)
 {
 	int kernelWidth = DEFAULT_NORMAL_MAP_GENERATION_KERNEL_WIDTH;
 	int kernelHeight = DEFAULT_NORMAL_MAP_GENERATION_KERNEL_HEIGHT;
@@ -186,7 +186,7 @@ void ORpixelMapsClass::createPointNormalMapFromPointMap(int imageWidth, const in
 	}
 }
 
-void ORpixelMapsClass::createPointNormalContrastMapFromPointNormalMap(int imageWidth, const int imageHeight, double* pointNormalMap, double* pointNormalContrastMap)
+void ATORpixelMapsClass::createPointNormalContrastMapFromPointNormalMap(int imageWidth, const int imageHeight, double* pointNormalMap, double* pointNormalContrastMap)
 {
 	for(int y = 1; y < imageHeight-1; y++)
 	{
@@ -198,7 +198,7 @@ void ORpixelMapsClass::createPointNormalContrastMapFromPointNormalMap(int imageW
 	}
 }
 
-double ORpixelMapsClass::calculatePointNormalContrastLevelWithinKernel(int pixelX, int pixelY, double* pointNormalMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight)
+double ATORpixelMapsClass::calculatePointNormalContrastLevelWithinKernel(int pixelX, int pixelY, double* pointNormalMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight)
 {
 	double contrastLevel = 0.0;
 
@@ -231,7 +231,7 @@ double ORpixelMapsClass::calculatePointNormalContrastLevelWithinKernel(int pixel
 							double currentContrastLevelY = SHAREDvars.absDouble(centrePixelNormal.y - currentPixelNormal.y);
 							double currentContrastLevelZ = SHAREDvars.absDouble(centrePixelNormal.z - currentPixelNormal.z);
 
-							if(OR_USE_CONTRAST_CALC_METHOD_B)
+							if(ATOR_USE_CONTRAST_CALC_METHOD_B)
 							{
 								contrastLevel = contrastLevel + currentContrastLevelX+currentContrastLevelY+currentContrastLevelZ;
 							}
@@ -304,7 +304,7 @@ double ORpixelMapsClass::calculatePointNormalContrastLevelWithinKernel(int pixel
 
 
 
-void ORpixelMapsClass::cropRGBmap(int originalImageWidth, const int originalImageHeight, const int cropXPos, const int cropYPos, const int croppedWidth, const int croppedHeight, unsigned char* rgbMapUncropped, unsigned char* rgbMap)
+void ATORpixelMapsClass::cropRGBmap(int originalImageWidth, const int originalImageHeight, const int cropXPos, const int cropYPos, const int croppedWidth, const int croppedHeight, uchar* rgbMapUncropped, uchar* rgbMap)
 {
 	int croppedYPos = 0;
 	for(int y = cropYPos; y < cropYPos+croppedHeight; y++)
@@ -322,7 +322,7 @@ void ORpixelMapsClass::cropRGBmap(int originalImageWidth, const int originalImag
 	}
 }
 
-void ORpixelMapsClass::cropDepthMap(const int originalImageWidth, const int originalImageHeight, const int cropXPos, const int cropYPos, const int croppedWidth, const int croppedHeight, const double* depthMapUncropped, double* depthMap)
+void ATORpixelMapsClass::cropDepthMap(const int originalImageWidth, const int originalImageHeight, const int cropXPos, const int cropYPos, const int croppedWidth, const int croppedHeight, const double* depthMapUncropped, double* depthMap)
 {
 	int croppedYPos = 0;
 	for(int y = cropYPos; y < cropYPos+croppedHeight; y++)
@@ -347,13 +347,13 @@ void ORpixelMapsClass::cropDepthMap(const int originalImageWidth, const int orig
 
 
 
-void ORpixelMapsClass::setXYvectorMapValue(const int x, const int y, const int imageWidth, vec* XYvectorVal, double* XYvectorMap)
+void ATORpixelMapsClass::setXYvectorMapValue(const int x, const int y, const int imageWidth, vec* XYvectorVal, double* XYvectorMap)
 {
 	XYvectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_X] = XYvectorVal->x;
 	XYvectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_Y] = XYvectorVal->y;
 }
 
-void ORpixelMapsClass::getXYvectorMapValue(int x, int y, int imageWidth, double* XYvectorMap, vec* XYvectorVal)
+void ATORpixelMapsClass::getXYvectorMapValue(int x, int y, int imageWidth, double* XYvectorMap, vec* XYvectorVal)
 {
 	XYvectorVal->x = XYvectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_X];
 	XYvectorVal->y = XYvectorMap[y*imageWidth*XY_VECTOR_MAP_NUM_DIMENSIONS + x*XY_VECTOR_MAP_NUM_DIMENSIONS + XY_VECTOR_MAP_VEC_Y];
@@ -363,7 +363,7 @@ void ORpixelMapsClass::getXYvectorMapValue(int x, int y, int imageWidth, double*
 
 
 
-void ORpixelMapsClass::generateRGBmapFromDepthGradientMap(int imageWidth, const int imageHeight, double* depthGradientMap, unsigned char* rgbMap)
+void ATORpixelMapsClass::generateRGBmapFromDepthGradientMap(int imageWidth, const int imageHeight, double* depthGradientMap, uchar* rgbMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -409,7 +409,7 @@ void ORpixelMapsClass::generateRGBmapFromDepthGradientMap(int imageWidth, const 
 
 
 
-void ORpixelMapsClass::generateRGBmapFromDepthGradientContrastMap(const int imageWidth, const int imageHeight, const double* depthGradientContrastMap, unsigned char* rgbMap)
+void ATORpixelMapsClass::generateRGBmapFromDepthGradientContrastMap(const int imageWidth, const int imageHeight, const double* depthGradientContrastMap, uchar* rgbMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -429,7 +429,7 @@ void ORpixelMapsClass::generateRGBmapFromDepthGradientContrastMap(const int imag
 	}
 }
 
-void ORpixelMapsClass::generatePixmapFromDepthGradientContrastMap(const string imageFileName, const int imageWidth, const int imageHeight, const double* depthGradientContrastMap)
+void ATORpixelMapsClass::generatePixmapFromDepthGradientContrastMap(const string imageFileName, const int imageWidth, const int imageHeight, const double* depthGradientContrastMap)
 {
 	int x,y;
 	pixmap* pm;
@@ -451,7 +451,7 @@ void ORpixelMapsClass::generatePixmapFromDepthGradientContrastMap(const string i
 }
 
 
-void ORpixelMapsClass::generatePixmapFromDepthGradientMap(const string imageFileName, int imageWidth, const int imageHeight, double* depthGradientMap)
+void ATORpixelMapsClass::generatePixmapFromDepthGradientMap(const string imageFileName, int imageWidth, const int imageHeight, double* depthGradientMap)
 {
 	int x,y;
 	pixmap* pm;
@@ -549,13 +549,13 @@ void ORpixelMapsClass::generatePixmapFromDepthGradientMap(const string imageFile
 
 
 
-//methods taken from ORoperations.cpp;
+//methods taken from ATORoperations.cpp;
 
 
 
 
 
-double ORpixelMapsClass::calculateForegroundMinimumDepthWithinKernel(const int pixelX, const int pixelY, const int imageWidth, const int imageHeight, const int kernelWidth, const int kernelHeight, const double* depthMap, vec* nearbyPointOfMinimumDepth, const int zoom)
+double ATORpixelMapsClass::calculateForegroundMinimumDepthWithinKernel(const int pixelX, const int pixelY, const int imageWidth, const int imageHeight, const int kernelWidth, const int kernelHeight, const double* depthMap, vec* nearbyPointOfMinimumDepth, const int zoom)
 {
 	double minDepthForNearbyPoints = REALLY_FAR_AWAY;
 
@@ -571,7 +571,7 @@ double ORpixelMapsClass::calculateForegroundMinimumDepthWithinKernel(const int p
 			{
 				double depthVal = RTpixelMaps.getLumOrContrastOrDepthMapValue(kx*zoom, ky*zoom, imageWidth*zoom, depthMap);
 
-				#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+				#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 				if(!SHAREDvars.compareDoubles(depthVal, RT_RAYTRACE_NO_HIT_DEPTH_T))	//NEW official [2 june 09] {ensures the pixel is not a background pixel}
 				{//off object
 
@@ -579,7 +579,7 @@ double ORpixelMapsClass::calculateForegroundMinimumDepthWithinKernel(const int p
 					{
 						minDepthForNearbyPoints = depthVal;
 
-						#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
+						#ifndef ATOR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
 						nearbyPointOfMinimumDepth->x = kx;
 						nearbyPointOfMinimumDepth->y = ky;
 						nearbyPointOfMinimumDepth->z = depthVal;	//not used
@@ -591,7 +591,7 @@ double ORpixelMapsClass::calculateForegroundMinimumDepthWithinKernel(const int p
 				{
 					minDepthForNearbyPoints = depthVal;
 
-					#ifndef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
+					#ifndef ATOR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
 					nearbyPointOfMinimumDepth->x = kx;
 					nearbyPointOfMinimumDepth->y = ky;
 					nearbyPointOfMinimumDepth->z = depthVal;	//not used
@@ -608,7 +608,7 @@ double ORpixelMapsClass::calculateForegroundMinimumDepthWithinKernel(const int p
 
 
 
-void ORpixelMapsClass::createContrastMapFromMapWithForegroundDepthCheckOLD(const int imageWidth, const int imageHeight, const double* luminosityOrDepthMap, const double* depthMap, double* contrastMap, bool* contrastBooleanMap, bool* foregroundDepthCheckContrastBooleanMap, const double mapThreshold)
+void ATORpixelMapsClass::createContrastMapFromMapWithForegroundDepthCheckOLD(const int imageWidth, const int imageHeight, const double* luminosityOrDepthMap, const double* depthMap, double* contrastMap, bool* contrastBooleanMap, bool* foregroundDepthCheckContrastBooleanMap, const double mapThreshold)
 {
 	int kernelWidth = DEFAULT_CONTRAST_MAP_GENERATION_KERNEL_WIDTH;
 	int kernelHeight = DEFAULT_CONTRAST_MAP_GENERATION_KERNEL_HEIGHT;
@@ -637,7 +637,7 @@ void ORpixelMapsClass::createContrastMapFromMapWithForegroundDepthCheckOLD(const
 			{
 				bool contrastValPassedThreshold = false;
 
-				if(OR_USE_CONTRAST_CALC_METHOD_C)
+				if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 				{
 					if(contrastVal != MAP_VALUE_OUT_OF_RANGE)
 					{
@@ -659,7 +659,7 @@ void ORpixelMapsClass::createContrastMapFromMapWithForegroundDepthCheckOLD(const
 	}
 }
 
-double ORpixelMapsClass::calculateContrastLevelWithinKernelWithForegroundDepthCheckOLD(const int pixelX, const int pixelY, const double* luminosityOrDepthMap, const double* depthMap, const int kernelWidth, const int kernelHeight, const int imageWidth, const int imageHeight, bool* foregroundDepthCheckContrastBooleanMap, const double mapThreshold)
+double ATORpixelMapsClass::calculateContrastLevelWithinKernelWithForegroundDepthCheckOLD(const int pixelX, const int pixelY, const double* luminosityOrDepthMap, const double* depthMap, const int kernelWidth, const int kernelHeight, const int imageWidth, const int imageHeight, bool* foregroundDepthCheckContrastBooleanMap, const double mapThreshold)
 {
 	double contrastLevel = 0.0;
 
@@ -668,7 +668,7 @@ double ORpixelMapsClass::calculateContrastLevelWithinKernelWithForegroundDepthCh
 		double centrePixelDepth = RTpixelMaps.getLumOrContrastOrDepthMapValue(pixelX, pixelY, imageWidth, depthMap);
 		double centrePixelVal = RTpixelMaps.getLumOrContrastOrDepthMapValue(pixelX, pixelY, imageWidth, luminosityOrDepthMap);
 
-		#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+		#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 		bool centrePixelNoHit = false;
 		if(SHAREDvars.compareDoubles(centrePixelDepth, RT_RAYTRACE_NO_HIT_DEPTH_T))	//NEW official [4 Nov 08] {ensures the pixel is not a background pixel}
 		{
@@ -698,21 +698,21 @@ double ORpixelMapsClass::calculateContrastLevelWithinKernelWithForegroundDepthCh
 							//calc diff lum diff between centre pixel and current surrounding kernel pixel
 
 							double kernelPixelDepth = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
-							#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+							#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 							if(SHAREDvars.compareDoubles(kernelPixelDepth, RT_RAYTRACE_NO_HIT_DEPTH_T))	//NEW official [4 Nov 08] {ensures the pixel is not a background pixel}
 							{
 								kernelPixelDepth = ESTIMATE_MAX_DEPTH_T_REAL;
 							}
 							#endif
 
-							if(centrePixelDepth < (kernelPixelDepth+OR_MAX_DEPTH_NOISE))	//NEW official [4 Nov 08] {ensures the pixel is more foreground than other pixel}
+							if(centrePixelDepth < (kernelPixelDepth+ATOR_MAX_DEPTH_NOISE))	//NEW official [4 Nov 08] {ensures the pixel is more foreground than other pixel}
 							{
-								#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+								#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 								if(!centrePixelNoHit)
 								{
 								#endif
 
-									if(OR_USE_CONTRAST_CALC_METHOD_B)
+									if(ATOR_USE_CONTRAST_CALC_METHOD_B)
 									{
 										contrastLevel = contrastLevel + currentContrastLevel;
 									}
@@ -725,7 +725,7 @@ double ORpixelMapsClass::calculateContrastLevelWithinKernelWithForegroundDepthCh
 									{
 										RTpixelMaps.setBooleanMapValue(x, y, imageWidth, true, foregroundDepthCheckContrastBooleanMap);
 									}
-								#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+								#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 								}
 								#endif
 							}
@@ -750,7 +750,7 @@ double ORpixelMapsClass::calculateContrastLevelWithinKernelWithForegroundDepthCh
 					double pixelDepthMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(pixelX, y, imageWidth, depthMap);
 					double pixelValMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(pixelX, y, imageWidth, luminosityOrDepthMap);
 
-					#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+					#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 					if(SHAREDvars.compareDoubles(pixelDepthMeasurement, RT_RAYTRACE_NO_HIT_DEPTH_T))
 					{
 						pixelDepthMeasurement = ESTIMATE_MAX_DEPTH_T_REAL;
@@ -760,7 +760,7 @@ double ORpixelMapsClass::calculateContrastLevelWithinKernelWithForegroundDepthCh
 					double adjacentPixelDepthMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(pixelX+1, y, imageWidth, depthMap);
 					double adjacentPixelValMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(pixelX+1, y, imageWidth, luminosityOrDepthMap);
 
-					#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+					#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 					if(SHAREDvars.compareDoubles(adjacentPixelDepthMeasurement, RT_RAYTRACE_NO_HIT_DEPTH_T))
 					{
 						adjacentPixelDepthMeasurement = ESTIMATE_MAX_DEPTH_T_REAL;
@@ -794,7 +794,7 @@ double ORpixelMapsClass::calculateContrastLevelWithinKernelWithForegroundDepthCh
 					double pixelDepthMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, pixelY, imageWidth, depthMap);
 					double pixelValMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, pixelY, imageWidth, luminosityOrDepthMap);
 
-					#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+					#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 					if(SHAREDvars.compareDoubles(pixelDepthMeasurement, RT_RAYTRACE_NO_HIT_DEPTH_T))
 					{
 						pixelDepthMeasurement = ESTIMATE_MAX_DEPTH_T_REAL;
@@ -804,7 +804,7 @@ double ORpixelMapsClass::calculateContrastLevelWithinKernelWithForegroundDepthCh
 					double adjacentPixelDepthMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, pixelY+1, imageWidth, depthMap);
 					double adjacentPixelValMeasurement = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, pixelY+1, imageWidth, luminosityOrDepthMap);
 
-					#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+					#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 					if(SHAREDvars.compareDoubles(adjacentPixelDepthMeasurement, RT_RAYTRACE_NO_HIT_DEPTH_T))
 					{
 						adjacentPixelDepthMeasurement = ESTIMATE_MAX_DEPTH_T_REAL;
@@ -888,7 +888,7 @@ void createContrastBooleanMapFromContrastMapWithForegroundDepthCheck(int imageWi
 			{
 				bool contrastValPassedThreshold = false;
 
-				if(OR_USE_CONTRAST_CALC_METHOD_C)
+				if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 				{
 					if(contrastVal != MAP_VALUE_OUT_OF_RANGE)
 					{
@@ -921,7 +921,7 @@ double getContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixe
 		double centrePixelDepth = getLumOrContrastOrDepthMapValue(pixelX, pixelY, imageWidth, depthMap);
 		double centrePixelVal = getLumOrContrastOrDepthMapValue(pixelX, pixelY, imageWidth, luminosityOrDepthMap);
 
-		#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+		#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 		bool centrePixelNoHit = false;
 		if(compareDoubles(centrePixelDepth, RT_RAYTRACE_NO_HIT_DEPTH_T))	//NEW official [4 Nov 08] {ensures the pixel is not a background pixel}
 		{
@@ -951,16 +951,16 @@ double getContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixe
 							//calc diff lum diff between centre pixel and current surrounding kernel pixel
 
 							double kernelPixelDepth = getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
-							#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+							#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 							if(compareDoubles(kernelPixelDepth, RT_RAYTRACE_NO_HIT_DEPTH_T))	//NEW official [4 Nov 08] {ensures the pixel is not a background pixel}
 							{
 								kernelPixelDepth = ESTIMATE_MAX_DEPTH_T_REAL;
 							}
 							#endif
 
-							if(centrePixelDepth < (kernelPixelDepth+OR_MAX_DEPTH_NOISE))	//NEW official [4 Nov 08] {ensures the pixel is more foreground than other pixel}
+							if(centrePixelDepth < (kernelPixelDepth+ATOR_MAX_DEPTH_NOISE))	//NEW official [4 Nov 08] {ensures the pixel is more foreground than other pixel}
 							{
-								#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+								#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 								if(!centrePixelNoHit)
 								{
 								#endif
@@ -969,7 +969,7 @@ double getContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixe
 									{
 										setBooleanMapValue(pixelX, pixelY, imageWidth, true, foregroundDepthCheckContrastBooleanMap);
 									}
-								#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+								#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 								}
 								#endif
 							}
@@ -995,7 +995,7 @@ double getContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixe
 				{
 					double pixelDepthMeasurement = getLumOrContrastOrDepthMapValue(pixelX, y, imageWidth, depthMap);
 
-					#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+					#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 					if(compareDoubles(pixelDepthMeasurement, RT_RAYTRACE_NO_HIT_DEPTH_T))
 					{
 						pixelDepthMeasurement = ESTIMATE_MAX_DEPTH_T_REAL;
@@ -1006,7 +1006,7 @@ double getContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixe
 					double adjacentPixelDepthMeasurement = getLumOrContrastOrDepthMapValue(pixelX+1, y, imageWidth, depthMap);
 
 
-					#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+					#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 					if(compareDoubles(adjacentPixelDepthMeasurement, RT_RAYTRACE_NO_HIT_DEPTH_T))
 					{
 						adjacentPixelDepthMeasurement = ESTIMATE_MAX_DEPTH_T_REAL;
@@ -1037,7 +1037,7 @@ double getContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixe
 					double pixelDepthMeasurement = getLumOrContrastOrDepthMapValue(x, pixelY, imageWidth, depthMap);
 
 
-					#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+					#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 					if(compareDoubles(pixelDepthMeasurement, RT_RAYTRACE_NO_HIT_DEPTH_T))
 					{
 						pixelDepthMeasurement = ESTIMATE_MAX_DEPTH_T_REAL;
@@ -1047,7 +1047,7 @@ double getContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, int pixe
 
 					double adjacentPixelDepthMeasurement = getLumOrContrastOrDepthMapValue(x, pixelY+1, imageWidth, depthMap);
 
-					#ifdef OR_METHOD3DOD_GENERATE_IMAGE_DATA
+					#ifdef ATOR_METHOD3DOD_GENERATE_IMAGE_DATA
 					if(compareDoubles(adjacentPixelDepthMeasurement, RT_RAYTRACE_NO_HIT_DEPTH_T))
 					{
 						adjacentPixelDepthMeasurement = ESTIMATE_MAX_DEPTH_T_REAL;
@@ -1132,7 +1132,7 @@ double calculateContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, in
 						double kernelPixelLuminosity = getLumOrContrastOrDepthMapValue(x, y, imageWidth, luminosityMap);
 						double currentContrastLevel = absDouble(centrePixelLuminosity - kernelPixelLuminosity);
 
-						if(centrePixelDepth > (kernelPixelDepth-OR_MAX_DEPTH_NOISE))
+						if(centrePixelDepth > (kernelPixelDepth-ATOR_MAX_DEPTH_NOISE))
 						{
 							contrastLevel = maxDouble(contrastLevel, currentContrastLevel);
 						}
@@ -1147,7 +1147,7 @@ double calculateContrastLevelWithinKernelWithForegroundDepthCheck(int pixelX, in
 */
 
 
-void ORpixelMapsClass::createDepthGradientMapFromDepthMap(const int imageWidth, const int imageHeight, const double* depthMap, double* depthGradientMap)
+void ATORpixelMapsClass::createDepthGradientMapFromDepthMap(const int imageWidth, const int imageHeight, const double* depthMap, double* depthGradientMap)
 {
 	int kernelWidth = DEFAULT_DEPTH_GRADIENT_MAP_GENERATION_KERNEL_WIDTH;
 	int kernelHeight = DEFAULT_DEPTH_GRADIENT_MAP_GENERATION_KERNEL_HEIGHT;
@@ -1165,7 +1165,7 @@ void ORpixelMapsClass::createDepthGradientMapFromDepthMap(const int imageWidth, 
 
 
 
-double ORpixelMapsClass::calculateDepthGradientValueWithinKernel(const int pixelX, const int pixelY, const double* depthMap, const int kernelWidth, const int kernelHeight, const int imageWidth, const int imageHeight, vec* depthGradientVal)
+double ATORpixelMapsClass::calculateDepthGradientValueWithinKernel(const int pixelX, const int pixelY, const double* depthMap, const int kernelWidth, const int kernelHeight, const int imageWidth, const int imageHeight, vec* depthGradientVal)
 {
 	double xGradient = 0;
 	double yGradient = 0;
@@ -1265,7 +1265,7 @@ double ORpixelMapsClass::calculateDepthGradientValueWithinKernel(const int pixel
 	return 0.0;
 }
 
-void ORpixelMapsClass::subtractBooleanMaps(const int imageWidth, const int imageHeight, const bool* booleanMap1, const bool* booleanMap2, bool* booleanMap1MinusBooleanMap2)
+void ATORpixelMapsClass::subtractBooleanMaps(const int imageWidth, const int imageHeight, const bool* booleanMap1, const bool* booleanMap2, bool* booleanMap1MinusBooleanMap2)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1292,7 +1292,7 @@ void ORpixelMapsClass::subtractBooleanMaps(const int imageWidth, const int image
 }
 
 
-void ORpixelMapsClass::addBooleanMaps(const int imageWidth, const int imageHeight, const bool* booleanMap1, const bool* booleanMap2, bool* booleanMap1PlusBooleanMap2)
+void ATORpixelMapsClass::addBooleanMaps(const int imageWidth, const int imageHeight, const bool* booleanMap1, const bool* booleanMap2, bool* booleanMap1PlusBooleanMap2)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1322,12 +1322,12 @@ void ORpixelMapsClass::addBooleanMaps(const int imageWidth, const int imageHeigh
 
 
 	//NB this function uses createContrastMapFromMap... (however it really should
-void ORpixelMapsClass::createDepthGradientContrastMapFromDepthGradientMap(int imageWidth, const int imageHeight, double* depthGradientMap, double* depthGradientContrastMap)
+void ATORpixelMapsClass::createDepthGradientContrastMapFromDepthGradientMap(int imageWidth, const int imageHeight, double* depthGradientMap, double* depthGradientContrastMap)
 {
 	createDepthGradientContrastMapFromMap(imageWidth, imageHeight, depthGradientMap, depthGradientContrastMap);
 }
 
-void ORpixelMapsClass::createDepthGradientContrastMapFromMap(int imageWidth, const int imageHeight, double* depthGradientMap, double* depthGradientContrastMap)
+void ATORpixelMapsClass::createDepthGradientContrastMapFromMap(int imageWidth, const int imageHeight, double* depthGradientMap, double* depthGradientContrastMap)
 {
 	int kernelWidth = DEFAULT_DEPTH_GRADIENT_MAP_GENERATION_KERNEL_WIDTH;
 	int kernelHeight = DEFAULT_DEPTH_GRADIENT_MAP_GENERATION_KERNEL_HEIGHT;
@@ -1345,7 +1345,7 @@ void ORpixelMapsClass::createDepthGradientContrastMapFromMap(int imageWidth, con
 
 
 
-double ORpixelMapsClass::calculateDepthGradientContrastValueWithinKernel(int pixelX, int pixelY, double* depthGradientMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight)
+double ATORpixelMapsClass::calculateDepthGradientContrastValueWithinKernel(int pixelX, int pixelY, double* depthGradientMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight)
 {
 	//METHOD1/2
 	double contrastLevel = 0;
@@ -1380,7 +1380,7 @@ double ORpixelMapsClass::calculateDepthGradientContrastValueWithinKernel(int pix
 							double currentContrastLevelY = SHAREDvars.absDouble(centrePixelPositionInDepthGradientMapGradient.y - kernelCurrentPixelPositionInDepthGradientMapGradient.y);
 
 							currentContrastLevel = currentContrastLevelX + currentContrastLevelY;
-							if(OR_USE_CONTRAST_CALC_METHOD_B)
+							if(ATOR_USE_CONTRAST_CALC_METHOD_B)
 							{
 								contrastLevel = contrastLevel + SHAREDvars.absDouble(contrastLevel - currentContrastLevel);
 							}
@@ -1480,7 +1480,7 @@ double ORpixelMapsClass::calculateDepthGradientContrastValueWithinKernel(int pix
 }
 
 
-double ORpixelMapsClass::calculateDepthGradientContrastValueWithinKernelWRONG(const int pixelX, const int pixelY, double* depthGradientMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight)
+double ATORpixelMapsClass::calculateDepthGradientContrastValueWithinKernelWRONG(const int pixelX, const int pixelY, double* depthGradientMap, const int kernelWidth, const int kernelHeight, int imageWidth, const int imageHeight)
 {
 	//METHOD3;
 	#define DEPTH_GRADIENT_SIMILARITY_INDICATOR_UNDEFINED (0)
@@ -1630,7 +1630,7 @@ double ORpixelMapsClass::calculateDepthGradientContrastValueWithinKernelWRONG(co
 
 
 
-bool ORpixelMapsClass::checkIfMeetDepthGradientContrastThreshold(const double depthGradientContrastValue)
+bool ATORpixelMapsClass::checkIfMeetDepthGradientContrastThreshold(const double depthGradientContrastValue)
 {
 	if(depthGradientContrastValue > DEPTH_GRADIENT_CONTRAST_THRESHOLD)
 	{
@@ -1645,7 +1645,7 @@ bool ORpixelMapsClass::checkIfMeetDepthGradientContrastThreshold(const double de
 
 
 
-void ORpixelMapsClass::createDepthGradientContrastBooleanMap(const int imageWidth, const int imageHeight, const double* depthGradientContrastMap, bool* depthGradientContrastBooleanMap)
+void ATORpixelMapsClass::createDepthGradientContrastBooleanMap(const int imageWidth, const int imageHeight, const double* depthGradientContrastMap, bool* depthGradientContrastBooleanMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1667,7 +1667,7 @@ void ORpixelMapsClass::createDepthGradientContrastBooleanMap(const int imageWidt
 }
 
 
-void ORpixelMapsClass::createDepthContrastBooleanMap(const int imageWidth, const int imageHeight, const double* depthContrastMap, bool* depthContrastBooleanMap)
+void ATORpixelMapsClass::createDepthContrastBooleanMap(const int imageWidth, const int imageHeight, const double* depthContrastMap, bool* depthContrastBooleanMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1678,7 +1678,7 @@ void ORpixelMapsClass::createDepthContrastBooleanMap(const int imageWidth, const
 
 			if(depthContrastVal > EDGE_DEPTH_CONTRAST_THRESHOLD)
 			{
-				if(OR_USE_CONTRAST_CALC_METHOD_C)
+				if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 				{
 					if(depthContrastVal != MAP_VALUE_OUT_OF_RANGE)
 					{
@@ -1705,7 +1705,7 @@ void ORpixelMapsClass::createDepthContrastBooleanMap(const int imageWidth, const
 
 
 
-void ORpixelMapsClass::createArbitraryContrastBooleanMap(const int imageWidth, const int imageHeight, const double* contrastMap, bool* contrastBooleanMap, const double sensitivity)
+void ATORpixelMapsClass::createArbitraryContrastBooleanMap(const int imageWidth, const int imageHeight, const double* contrastMap, bool* contrastBooleanMap, const double sensitivity)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1715,7 +1715,7 @@ void ORpixelMapsClass::createArbitraryContrastBooleanMap(const int imageWidth, c
 			bool contrastValPassedThreshold = false;
 			if(contrastVal > sensitivity)
 			{
-				if(OR_USE_CONTRAST_CALC_METHOD_C)
+				if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 				{
 					if(contrastVal != MAP_VALUE_OUT_OF_RANGE)
 					{
@@ -1745,7 +1745,7 @@ void ORpixelMapsClass::createArbitraryContrastBooleanMap(const int imageWidth, c
 
 
 
-void ORpixelMapsClass::createPointNormalContrastBooleanMap(const int imageWidth, const int imageHeight, const double* pointNormalContrastMap, bool* pointNormalContrastBooleanMap)
+void ATORpixelMapsClass::createPointNormalContrastBooleanMap(const int imageWidth, const int imageHeight, const double* pointNormalContrastMap, bool* pointNormalContrastBooleanMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1769,7 +1769,7 @@ void ORpixelMapsClass::createPointNormalContrastBooleanMap(const int imageWidth,
 	}
 }
 
-void ORpixelMapsClass::generateRGBmapFromPointNormalContrastMap(const int imageWidth, const int imageHeight, const double* pointNormalContrastMap, unsigned char* rgbMap)
+void ATORpixelMapsClass::generateRGBmapFromPointNormalContrastMap(const int imageWidth, const int imageHeight, const double* pointNormalContrastMap, uchar* rgbMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1794,7 +1794,7 @@ void ORpixelMapsClass::generateRGBmapFromPointNormalContrastMap(const int imageW
 }
 
 
-void ORpixelMapsClass::generatePixmapFromPointNormalContrastMap(const string imageFileName, const int imageWidth, const int imageHeight, const double* pointNormalContrastMap)
+void ATORpixelMapsClass::generatePixmapFromPointNormalContrastMap(const string imageFileName, const int imageWidth, const int imageHeight, const double* pointNormalContrastMap)
 {
 	int x,y;
 	pixmap* pm;
@@ -1828,12 +1828,12 @@ void ORpixelMapsClass::generatePixmapFromPointNormalContrastMap(const string ima
 
 
 //NOT YET FINISHED
-void ORpixelMapsClass::createNormalMap(const int imageWidth, const int imageHeight, const double* luminosityContrastMapEye1, const double* depthMap, const double* depthContrastMap, const double* depthGradientContrastMap, const double* normalMap)
+void ATORpixelMapsClass::createNormalMap(const int imageWidth, const int imageHeight, const double* luminosityContrastMapEye1, const double* depthMap, const double* depthContrastMap, const double* depthGradientContrastMap, const double* normalMap)
 {
 
 }
 //NOT YET FINISHED
-double ORpixelMapsClass::findDepthOfGivenPixel(int xEye1, int yEye1, int imageWidth, const int imageHeight, const double* luminosityContrastMapEye1, const double* luminosityContrastMapEye2, unsigned char* rgbMapEye1, const unsigned char* rgbMapEye2, const double* calculatedxEye2, const double* calculatedyEye2)
+double ATORpixelMapsClass::findDepthOfGivenPixel(int xEye1, int yEye1, int imageWidth, const int imageHeight, const double* luminosityContrastMapEye1, const double* luminosityContrastMapEye2, uchar* rgbMapEye1, const uchar* rgbMapEye2, const double* calculatedxEye2, const double* calculatedyEye2)
 {
 	double calculatedDepthOfEye1Pixel;
 
@@ -1850,7 +1850,7 @@ double ORpixelMapsClass::findDepthOfGivenPixel(int xEye1, int yEye1, int imageWi
 
 
 //this function should probably be moved elsewhere
-void ORpixelMapsClass::resampleRGBmap(unsigned char* rgbMap, const int imageWidth, const int imageHeight, unsigned char* resampledRGBmapAtDesiredZoomChar, const int zoom, const int ignoreBackgroundComparisonMethod)
+void ATORpixelMapsClass::resampleRGBmap(uchar* rgbMap, const int imageWidth, const int imageHeight, uchar* resampledRGBmapAtDesiredZoomChar, const int zoom, const int ignoreBackgroundComparisonMethod)
 {
 	int resampledWidth = (imageWidth/zoom);
 	int resampledHeight = (imageHeight/zoom);
@@ -1858,7 +1858,7 @@ void ORpixelMapsClass::resampleRGBmap(unsigned char* rgbMap, const int imageWidt
 	int* resampledRGBMapAtDesiredzoomInt = new int[resampledWidth*resampledHeight*RGB_NUM];
 	bool* resampledRGBMapAtDesiredzoomBool = new bool[resampledWidth*resampledHeight];
 
-	if(ignoreBackgroundComparisonMethod == OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE_COMPLETELY)
+	if(ignoreBackgroundComparisonMethod == ATOR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE_COMPLETELY)
 	{
 		for(int y = 0; y < resampledHeight; y++)
 		{
@@ -1870,7 +1870,7 @@ void ORpixelMapsClass::resampleRGBmap(unsigned char* rgbMap, const int imageWidt
 	}
 
 	int* resampledRGBMapAtDesiredzoomCount = new int[resampledWidth*resampledHeight];
-	if(ignoreBackgroundComparisonMethod == OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE)
+	if(ignoreBackgroundComparisonMethod == ATOR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE)
 	{
 		for(int y = 0; y < resampledHeight; y++)
 		{
@@ -1933,17 +1933,17 @@ void ORpixelMapsClass::resampleRGBmap(unsigned char* rgbMap, const int imageWidt
 		{
   			for(int x = 0; x < imageWidth; x++)
 			{
-				if(ignoreBackgroundComparisonMethod == OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE_COMPLETELY)
+				if(ignoreBackgroundComparisonMethod == ATOR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE_COMPLETELY)
 				{
-					if((rgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + RGB_RED] == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (rgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (rgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] == OR_SNAPSHOT_BACKGROUND_COLOUR_B))
+					if((rgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + RGB_RED] == ATOR_SNAPSHOT_BACKGROUND_COLOUR_R) && (rgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] == ATOR_SNAPSHOT_BACKGROUND_COLOUR_G) && (rgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] == ATOR_SNAPSHOT_BACKGROUND_COLOUR_B))
 					{
 						resampledRGBMapAtDesiredzoomBool[(y/zoom)*resampledWidth + (x/zoom)] = false;
 					}
 				}
 
-				if(ignoreBackgroundComparisonMethod == OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE)
+				if(ignoreBackgroundComparisonMethod == ATOR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE)
 				{
-					if(!((rgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + RGB_RED] == OR_SNAPSHOT_BACKGROUND_COLOUR_R) && (rgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] == OR_SNAPSHOT_BACKGROUND_COLOUR_G) && (rgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] == OR_SNAPSHOT_BACKGROUND_COLOUR_B)))
+					if(!((rgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + RGB_RED] == ATOR_SNAPSHOT_BACKGROUND_COLOUR_R) && (rgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] == ATOR_SNAPSHOT_BACKGROUND_COLOUR_G) && (rgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] == ATOR_SNAPSHOT_BACKGROUND_COLOUR_B)))
 					{
 						resampledRGBMapAtDesiredzoomCount[(y/zoom)*resampledWidth + (x/zoom)] = resampledRGBMapAtDesiredzoomCount[(y/zoom)*resampledWidth + (x/zoom)] + 1;
 						resampledRGBMapAtDesiredzoomInt[(y/zoom)*resampledWidth*RGB_NUM + (x/zoom)*RGB_NUM + RGB_RED] = resampledRGBMapAtDesiredzoomInt[(y/zoom)*resampledWidth*RGB_NUM + (x/zoom)*RGB_NUM + RGB_RED] + rgbMap[y*imageWidth*RGB_NUM + x*RGB_NUM + RGB_RED];
@@ -1966,7 +1966,7 @@ void ORpixelMapsClass::resampleRGBmap(unsigned char* rgbMap, const int imageWidt
 		{
   			for(int x = 0; x < resampledWidth; x++)
 			{
-				if(ignoreBackgroundComparisonMethod == OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE)
+				if(ignoreBackgroundComparisonMethod == ATOR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE)
 				{
 					if(resampledRGBMapAtDesiredzoomCount[y*resampledWidth + x] != 0)
 					{
@@ -1982,26 +1982,26 @@ void ORpixelMapsClass::resampleRGBmap(unsigned char* rgbMap, const int imageWidt
 					resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE]/(zoom*zoom);
 				}
 
-				if(ignoreBackgroundComparisonMethod == OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE_COMPLETELY)
+				if(ignoreBackgroundComparisonMethod == ATOR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_TYPE_IGNORE_COMPLETELY)
 				{
 					if(resampledRGBMapAtDesiredzoomBool[y*resampledWidth + x] == false)
 					{
-						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = (unsigned char)(OR_SNAPSHOT_BACKGROUND_COLOUR_R);
-						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = (unsigned char)(OR_SNAPSHOT_BACKGROUND_COLOUR_G);
-						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = (unsigned char)(OR_SNAPSHOT_BACKGROUND_COLOUR_B);
+						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = (uchar)(ATOR_SNAPSHOT_BACKGROUND_COLOUR_R);
+						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = (uchar)(ATOR_SNAPSHOT_BACKGROUND_COLOUR_G);
+						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = (uchar)(ATOR_SNAPSHOT_BACKGROUND_COLOUR_B);
 					}
 					else
 					{
-						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED]);
-						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN]);
-						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE]);
+						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = (uchar)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED]);
+						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = (uchar)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN]);
+						resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = (uchar)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE]);
 					}
 				}
 				else
 				{
-					resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED]);
-					resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN]);
-					resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = (unsigned char)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE]);
+					resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED] = (uchar)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_RED]);
+					resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN] = (uchar)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_GREEN]);
+					resampledRGBmapAtDesiredZoomChar[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE] = (uchar)(resampledRGBMapAtDesiredzoomInt[y*resampledWidth*RGB_NUM + x*RGB_NUM + RGB_BLUE]);
 				}
 			}
 		}
@@ -2029,7 +2029,7 @@ void ORpixelMapsClass::resampleRGBmap(unsigned char* rgbMap, const int imageWidt
 
 
 //this function should probably be moved elsewhere
-void ORpixelMapsClass::resampleLumOrContrastOrDepthMap(double* lumOrContrastOrDepthMap, const int imageWidth, const int imageHeight, double* resampledLumOrContrastOrDepthMapAtDesiredZoomChar, const int zoom, const double offMapValue)
+void ATORpixelMapsClass::resampleLumOrContrastOrDepthMap(double* lumOrContrastOrDepthMap, const int imageWidth, const int imageHeight, double* resampledLumOrContrastOrDepthMapAtDesiredZoomChar, const int zoom, const double offMapValue)
 {
 	int resampledWidth = (imageWidth/zoom);
 	int resampledHeight = (imageHeight/zoom);
@@ -2037,7 +2037,7 @@ void ORpixelMapsClass::resampleLumOrContrastOrDepthMap(double* lumOrContrastOrDe
 	int* resampledMapAtDesiredzoomInt = new int[resampledWidth*resampledHeight];
 
 	bool* resampledMapAtDesiredzoomBool = new bool[resampledWidth*resampledHeight];
-	if(OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON)
+	if(ATOR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON)
 	{
 		for(int y = 0; y < resampledHeight; y++)
 		{
@@ -2047,7 +2047,7 @@ void ORpixelMapsClass::resampleLumOrContrastOrDepthMap(double* lumOrContrastOrDe
 			}
 		}
 	}
-#ifdef OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_V2
+#ifdef ATOR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_V2
 	int* resampledMapAtDesiredzoomCount = new int[resampledWidth*resampledHeight];
 	for(int y = 0; y < resampledHeight; y++)
 	{
@@ -2103,7 +2103,7 @@ void ORpixelMapsClass::resampleLumOrContrastOrDepthMap(double* lumOrContrastOrDe
 		{
   			for(int x = 0; x < imageWidth; x++)
 			{
-				if(OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON)
+				if(ATOR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON)
 				{
 					if(SHAREDvars.compareDoubles(lumOrContrastOrDepthMap[y*imageWidth + x], offMapValue))
 					{
@@ -2111,7 +2111,7 @@ void ORpixelMapsClass::resampleLumOrContrastOrDepthMap(double* lumOrContrastOrDe
 					}
 				}
 
-			#ifdef OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_V2
+			#ifdef ATOR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_V2
 				if(!SHAREDvars.compareDoubles(lumOrContrastOrDepthMap[y*imageWidth + x], offMapValue))
 				{
 					resampledMapAtDesiredzoomCount[(y/zoom)*resampledWidth + (x/zoom)] = resampledMapAtDesiredzoomCount[(y/zoom)*resampledWidth + (x/zoom)] + 1;
@@ -2130,7 +2130,7 @@ void ORpixelMapsClass::resampleLumOrContrastOrDepthMap(double* lumOrContrastOrDe
 		{
   			for(int x = 0; x < resampledWidth; x++)
 			{
-				#ifdef OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_V2
+				#ifdef ATOR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON_V2
 				if(!SHAREDvars.compareDoubles(resampledMapAtDesiredzoomCount[y*resampledWidth + x], offMapValue))
 				{
 					resampledMapAtDesiredzoomInt[y*resampledWidth + x] = resampledMapAtDesiredzoomInt[y*resampledWidth + x]/(resampledMapAtDesiredzoomCount[y*resampledWidth + x]);
@@ -2139,21 +2139,21 @@ void ORpixelMapsClass::resampleLumOrContrastOrDepthMap(double* lumOrContrastOrDe
 				resampledMapAtDesiredzoomInt[y*resampledWidth + x] = resampledMapAtDesiredzoomInt[y*resampledWidth + x]/(zoom*zoom);
 				#endif
 
-				if(OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON)
+				if(ATOR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON)
 				{
 					if(resampledMapAtDesiredzoomBool[y*resampledWidth + x] == false)
 					{
-						resampledLumOrContrastOrDepthMapAtDesiredZoomChar[y*resampledWidth + x] = (unsigned char)(OR_SNAPSHOT_BACKGROUND_COLOUR_R);
+						resampledLumOrContrastOrDepthMapAtDesiredZoomChar[y*resampledWidth + x] = (uchar)(ATOR_SNAPSHOT_BACKGROUND_COLOUR_R);
 					}
 					else
 					{
-						resampledLumOrContrastOrDepthMapAtDesiredZoomChar[y*resampledWidth + x] = (unsigned char)(resampledMapAtDesiredzoomInt[y*resampledWidth + x]);
+						resampledLumOrContrastOrDepthMapAtDesiredZoomChar[y*resampledWidth + x] = (uchar)(resampledMapAtDesiredzoomInt[y*resampledWidth + x]);
 
 					}
 				}
 				else
 				{
-					resampledLumOrContrastOrDepthMapAtDesiredZoomChar[y*resampledWidth + x] = (unsigned char)(resampledMapAtDesiredzoomInt[y*resampledWidth + x]);
+					resampledLumOrContrastOrDepthMapAtDesiredZoomChar[y*resampledWidth + x] = (uchar)(resampledMapAtDesiredzoomInt[y*resampledWidth + x]);
 
 				}
 			}
@@ -2172,7 +2172,7 @@ void ORpixelMapsClass::resampleLumOrContrastOrDepthMap(double* lumOrContrastOrDe
 		}
 	}
 
-	//#ifdef OR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON
+	//#ifdef ATOR_METHOD_USE_SMALL_IMAGE_RATIO_IGNORE_BG_COMPARISON
 	delete resampledMapAtDesiredzoomBool;
 	//#endif
 

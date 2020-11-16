@@ -26,7 +26,7 @@
  * File Name: ATORmethod2DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3o1a 05-November-2020
+ * Project Version: 3o2a 08-November-2020
  * Notes: NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  * /
  *******************************************************************************/
@@ -36,7 +36,7 @@
 #ifdef USE_OPENGL
 #endif
 
-double ORmethod2DODClass::calculateXYorientationOfSide(const ORpolygon* currentPolygonInList, const int side)
+double ATORmethod2DODClass::calculateXYorientationOfSide(const ATORpolygon* currentPolygonInList, const int side)
 {
 	double orientationOfSide;
 
@@ -60,7 +60,7 @@ double ORmethod2DODClass::calculateXYorientationOfSide(const ORpolygon* currentP
 	return orientationOfSide;
 }
 
-double ORmethod2DODClass::calculateXYlengthOfSide(const ORpolygon* currentPolygonInList, const int side)
+double ATORmethod2DODClass::calculateXYlengthOfSide(const ATORpolygon* currentPolygonInList, const int side)
 {
 	double lengthOfSide;
 
@@ -84,7 +84,7 @@ double ORmethod2DODClass::calculateXYlengthOfSide(const ORpolygon* currentPolygo
 	return lengthOfSide;
 }
 
-double ORmethod2DODClass::calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(const ORpolygon* transformedObjectTriangle, const int side)
+double ATORmethod2DODClass::calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(const ATORpolygon* transformedObjectTriangle, const int side)
 {
 	double perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide;
 
@@ -111,7 +111,7 @@ double ORmethod2DODClass::calculatePerpendicularDistanceBetweenThirdApexOfObject
 	return perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide;
 }
 
-double ORmethod2DODClass::calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(const ORpolygon* transformedObjectTriangle, const int side)
+double ATORmethod2DODClass::calculateXaxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex(const ATORpolygon* transformedObjectTriangle, const int side)
 {
 	double xAxisDistanceBetweenThirdApexOfObjectTriangleAndSideLeftApex;
 
@@ -175,7 +175,7 @@ double ORmethod2DODClass::calculateXaxisDistanceBetweenThirdApexOfObjectTriangle
 
 
 
-void ORmethod2DODClass::TEMPprintReferenceListVertexPositions2DOD(const LDreference* firstReferenceInInterpolated2DrgbMap)
+void ATORmethod2DODClass::TEMPprintReferenceListVertexPositions2DOD(const LDreference* firstReferenceInInterpolated2DrgbMap)
 {
 	const LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
@@ -194,12 +194,12 @@ void ORmethod2DODClass::TEMPprintReferenceListVertexPositions2DOD(const LDrefere
 
 
 
-void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ORpolygon* currentPolygonInList, const int side, const bool first, ORfeature* firstFeatureInList)
+void ATORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ATORpolygon* currentPolygonInList, const int side, const bool first, ATORfeature* firstFeatureInList)
 {
 	int64_t time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart;
-	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
+	if(ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
-		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
+		if(ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
 		{
 			cout << "\t\t\t\t start: 3ai. 2DOD normalised snapshot generation - transform data wrt polygon - matrix calc" << endl;
 		}
@@ -207,7 +207,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	}
 
 
-	ORpolygon* transformedObjectTriangle = new ORpolygon();	//equilateral triangle
+	ATORpolygon* transformedObjectTriangle = new ATORpolygon();	//equilateral triangle
 	transformedObjectTriangle->point1.x = currentPolygonInList->point1.x;
 	transformedObjectTriangle->point1.y = currentPolygonInList->point1.y;
 	transformedObjectTriangle->point2.x = currentPolygonInList->point2.x;
@@ -216,7 +216,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	transformedObjectTriangle->point3.y = currentPolygonInList->point3.y;
 
 
-	ORpolygon* predefinedTriangle = new ORpolygon();	//equilateral triangle
+	ATORpolygon* predefinedTriangle = new ATORpolygon();	//equilateral triangle
 	predefinedTriangle->point1.x = 0;
 	predefinedTriangle->point1.y = 0;
 	predefinedTriangle->point2.x = 1;
@@ -256,13 +256,13 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	#else
 	if(first)
 	{
-		ORoperations.storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap);
+		ATORoperations.storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap);
 	}
 	else
 	{
-		ORoperations.restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap);
+		ATORoperations.restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap);
 	}
-	//ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &scaleMatrix1a);
+	//ATORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &scaleMatrix1a);
 	#endif
 
 
@@ -284,13 +284,13 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 
 
 	//1c. tranform nearest features
-	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		ORfeature* currentFeature;	//startup
+		ATORfeature* currentFeature;	//startup
 		currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
-			#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
+			#ifdef ATOR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 			if(SHAREDvector.compareVectors(&(currentFeature->point), &(currentPolygonInList->point1)))
 			{
 				currentFeature->OTpointIndex = 1;
@@ -316,13 +316,13 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 		}
 	}
 
-	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
-		ORfeature* currentFeature;
+		ATORfeature* currentFeature;
 		currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
-			#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
+			#ifdef ATOR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 			if(SHAREDvector.compareVectors(&(currentFeature->point), &(currentPolygonInList->point1)))
 			{
 				currentFeature->OTpointIndex = 1;
@@ -357,7 +357,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 	opengl2DmatrixTransformation2iRotationFactor = rotationFactor2i;
 	#else
-	//ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &rotateMatrix2i);
+	//ATORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &rotateMatrix2i);
 	#endif
 
 	//2ib. tranform object triangle;  rotate object triangle such that the object triangle side is parallel with X axis
@@ -376,9 +376,9 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	*/
 
 	//2ic. tranform nearest features
-	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		ORfeature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
+		ATORfeature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
 			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2i);
@@ -386,9 +386,9 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 			currentFeature = currentFeature->next;
 		}
 	}
-	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
-		ORfeature* currentFeature = firstFeatureInList;
+		ATORfeature* currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
 			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2i);
@@ -448,7 +448,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 	opengl2DmatrixTransformation2iiRotationFactor = rotationFactor2ii;
 	#else
-	//ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &rotateMatrix2ii);
+	//ATORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &rotateMatrix2ii);
 	#endif
 
 	//2iib. tranform object triangle; rotate object triangle by 180 degrees if necessary
@@ -467,9 +467,9 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	*/
 
 	//2iic. tranform nearest features
-	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		ORfeature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
+		ATORfeature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
 			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2ii);
@@ -477,9 +477,9 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 			currentFeature = currentFeature->next;
 		}
 	}
-	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
-		ORfeature* currentFeature = firstFeatureInList;
+		ATORfeature* currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
 			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &rotateMatrix2ii);
@@ -494,7 +494,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 
 
 	double perpendicularDistanceBetweenThirdApexOfPredefinedTriangleAndSide = predefinedTriangle->point3.y;
-#ifndef OR_METHOD_2DOD_ASSUME_NO_3D_ROTATION
+#ifndef ATOR_METHOD_2DOD_ASSUME_NO_3D_ROTATION
 
 	//3a. Scale object data on Y axis such that the third apex is the same perpendicular distance away from the side as is the case for the predefined triangle.
 	double perpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide = calculatePerpendicularDistanceBetweenThirdApexOfObjectTriangleAndSide(transformedObjectTriangle, side);
@@ -508,7 +508,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 	opengl2DmatrixTransformation3aScaleFactor = scaleFactor3a;
 	#else
-	//ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &scaleMatrix3a);
+	//ATORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &scaleMatrix3a);
 	#endif
 
 
@@ -529,9 +529,9 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 
 
 	//3c. tranform nearest features
-	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		ORfeature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
+		ATORfeature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
 			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &scaleMatrix3a);
@@ -539,9 +539,9 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 			currentFeature = currentFeature->next;
 		}
 	}
-	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
-		ORfeature* currentFeature = firstFeatureInList;
+		ATORfeature* currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
 			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &scaleMatrix3a);
@@ -563,7 +563,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	#ifdef USE_OPENGL_PREDEFINED_OD_MATRIX_OPERATIONS
 	opengl2DmatrixTransformation4aShearFactor = shearRequired4a;
 	#else
-	//ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &shearMatrix4a);
+	//ATORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &shearMatrix4a);
 	#endif
 
 
@@ -584,9 +584,9 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 
 
 	//4c. tranform nearest features
-	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		ORfeature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
+		ATORfeature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
 			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &shearMatrix4a);
@@ -594,9 +594,9 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 			currentFeature = currentFeature->next;
 		}
 	}
-	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
-		ORfeature* currentFeature = firstFeatureInList;
+		ATORfeature* currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
 			SHAREDvector.multiplyVectorByMatrix(&vecNew, &(currentFeature->pointTransformed), &shearMatrix4a);
@@ -668,7 +668,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	mat matTemp;
 	SHAREDvector.createIdentityMatrixRT(&multipliedMatrix);
 
-	#ifndef OR_METHOD_2DOD_ASSUME_NO_3D_ROTATION
+	#ifndef ATOR_METHOD_2DOD_ASSUME_NO_3D_ROTATION
 	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &shearMatrix4a);
 	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
 	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &scaleMatrix3a);
@@ -728,7 +728,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	mat matTemp;
 	SHAREDvector.createIdentityMatrixRT(&multipliedMatrix);
 
-	#ifndef OR_METHOD_2DOD_ASSUME_NO_3D_ROTATION
+	#ifndef ATOR_METHOD_2DOD_ASSUME_NO_3D_ROTATION
 	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &shearMatrix4a);
 	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
 	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &scaleMatrix3a);
@@ -741,9 +741,9 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &scaleMatrix1a);
 	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
 
-	ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &multipliedMatrix);
+	ATORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &multipliedMatrix);
 
-	ORoperations.applyTranslationToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &translationVector);
+	ATORoperations.applyTranslationToAllReferencesIn2Dlist(firstReferenceInInterpolated2DrgbMap, &translationVector);
 #endif
 
 
@@ -758,9 +758,9 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 
 
 	//5c. tranform nearest features
-	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		ORfeature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
+		ATORfeature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
 			currentFeature->pointTransformed.x = currentFeature->pointTransformed.x + translationVector.x;
@@ -768,9 +768,9 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 			currentFeature = currentFeature->next;
 		}
 	}
-	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
-		ORfeature* currentFeature = firstFeatureInList;
+		ATORfeature* currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
 			currentFeature->pointTransformed.x = currentFeature->pointTransformed.x + translationVector.x;
@@ -780,24 +780,24 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	}
 
 
-	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
+	if(ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
-		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
+		if(ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
 		{
 			cout << "\t\t\t\t end: 3ai. 2DOD normalised snapshot generation - transform data wrt polygon - matrix calc" << endl;
 		}
 		int64_t time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd;
 		time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd = SHAREDvars.getTimeAsLong();
-		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
+		if(ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
 		{
 			cout << "\t\t\t\t time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygon = " << time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd-time3aiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart << endl;
 		}
 	}
 
 	int64_t time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart;
-	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
+	if(ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
-		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
+		if(ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
 		{
 			cout << "\t\t\t\t start: 3aii. 2DOD normalised snapshot generation - transform data wrt polygon - cull" << endl;
 		}
@@ -810,15 +810,15 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	LDopengl.setViewPort2Dortho(-1.0, 1.0, -1.0, 1.0);
 #else
 	//6. Disable References That Are Not Contained In The Triangle [these won't be raytraced / generated / fed into neural network]
-	if(!OR_METHOD_DO_NOT_CULL_SNAPSHOT_EXTREME)
+	if(!ATOR_METHOD_DO_NOT_CULL_SNAPSHOT_EXTREME)
 	{
 		if(!DEMO_TO_CUSTOMER_HIDE_T_FROM_VIEW)
 		{
 
-			if(OR_METHOD_DO_NOT_CULL_SNAPSHOT)
+			if(ATOR_METHOD_DO_NOT_CULL_SNAPSHOT)
 			{
 				bool padBoundary = false;
-				#ifdef OR_IMAGE_COMPARISON_DECISION_TREE_APPLY_GAUSSIAN_PREPROCESSOR_METHOD1
+				#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_APPLY_GAUSSIAN_PREPROCESSOR_METHOD1
 				padBoundary = true;
 				#endif
 				//disableReferencesThatAreNotContainedInTheObjectSquare2DOD(firstReferenceInInterpolated2DrgbMap, currentPolygonInList, padBoundary);
@@ -834,7 +834,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	}
 #endif
 
-#ifdef OR_METHOD_TRANSFORM_KEY_OT_FEATURES
+#ifdef ATOR_METHOD_TRANSFORM_KEY_OT_FEATURES
 	currentPolygonInList->point1Transformed.x = transformedObjectTriangle->point1.x;
 	currentPolygonInList->point1Transformed.y = transformedObjectTriangle->point1.y;
 	currentPolygonInList->point2Transformed.x = transformedObjectTriangle->point2.x;
@@ -844,7 +844,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 #endif
 
 
-#ifdef OR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
+#ifdef ATOR_METHOD_GEO_COMPARISON_DYNAMIC_ERROR_THRESHOLD
 	//now add minWidthAndHeightOfOrigOT information
 
 	double minXOfTriangle = SHAREDvars.minDouble(SHAREDvars.minDouble(currentPolygonInList->point1.x, currentPolygonInList->point2.x), currentPolygonInList->point3.x);
@@ -856,7 +856,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 	double minwidthheightOfOriginalTriangle = SHAREDvars.minDouble(widthOfOriginalTriangle, heightOfOriginalTriangle);
 
 
-	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
 		currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
@@ -865,7 +865,7 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 			currentFeature = currentFeature->next;
 		}
 	}
-	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
 		currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
@@ -877,15 +877,15 @@ void ORmethod2DODClass::transformObjectData2DOD(LDreference* firstReferenceInInt
 #endif
 
 
-	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
+	if(ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
-		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
+		if(ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
 		{
 			cout << "\t\t\t\t end: 3aii. 2DOD normalised snapshot generation - transform data wrt polygon - cull" << endl;
 		}
 		int64_t time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd;
 		time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd = SHAREDvars.getTimeAsLong();
-		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
+		if(ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
 		{
 			cout << "\t\t\t\t time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygon = " << time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonEnd-time3aiiNormalisedSnapshotGeneration2DODTransformDataWRTPolygonStart << endl;
 		}
@@ -923,7 +923,7 @@ double minDoubles(double a, double b)
 
 
 
-void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList, const bool padBoundary, const int side, const double shearFactor)
+void ATORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced(LDreference* firstReferenceInInterpolated2DrgbMap, const ATORpolygon* currentPolygonInList, const bool padBoundary, const int side, const double shearFactor)
 {
 
 	vec A;
@@ -1015,19 +1015,19 @@ void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectSquare2DO
 	double ydiff = maxyOrig - minyOrig;
 	if(padBoundary)
 	{
-		double xPadding = (maxx-minx)*OR_IMAGE_COMPARISON_PREPROCESS_BOUNDARY_RATIO;
-		double yPadding = (maxy-miny)*OR_IMAGE_COMPARISON_PREPROCESS_BOUNDARY_RATIO;
-		maxx = (maxxOrig + xPadding) + (xdiff* OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
-		minx = (minxOrig - xPadding) - (xdiff* OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
-		maxy = (maxyOrig + yPadding) + (ydiff* OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
-		miny = (minyOrig - yPadding) - (ydiff* OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
+		double xPadding = (maxx-minx)*ATOR_IMAGE_COMPARISON_PREPROCESS_BOUNDARY_RATIO;
+		double yPadding = (maxy-miny)*ATOR_IMAGE_COMPARISON_PREPROCESS_BOUNDARY_RATIO;
+		maxx = (maxxOrig + xPadding) + (xdiff* ATOR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
+		minx = (minxOrig - xPadding) - (xdiff* ATOR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
+		maxy = (maxyOrig + yPadding) + (ydiff* ATOR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
+		miny = (minyOrig - yPadding) - (ydiff* ATOR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
 	}
 	else
 	{
-		maxx = maxxOrig + (xdiff* OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
-		minx = minxOrig - (xdiff* OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
-		maxy = maxyOrig + (ydiff* OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
-		miny = minyOrig - (ydiff* OR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
+		maxx = maxxOrig + (xdiff* ATOR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
+		minx = minxOrig - (xdiff* ATOR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
+		maxy = maxyOrig + (ydiff* ATOR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
+		miny = minyOrig - (ydiff* ATOR_METHOD2DOD_IMAGE_COMPARISON_CULL_ERROR);
 	}
 
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
@@ -1074,7 +1074,7 @@ void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectSquare2DO
 
 
 /*
-void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced2(LDreference* firstReferenceInInterpolated2DrgbMap, ORpolygon* currentPolygonInList, vec* point4, vec* point5, bool padBoundary)
+void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced2(LDreference* firstReferenceInInterpolated2DrgbMap, ATORpolygon* currentPolygonInList, vec* point4, vec* point5, bool padBoundary)
 {
 	vec A;
 	vec B;
@@ -1114,8 +1114,8 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced2(LDrefere
 	double miny;
 	if(padBoundary)
 	{
-		double xPadding = (maxx-minx)*OR_IMAGE_COMPARISON_PREPROCESS_BOUNDARY_RATIO;
-		double yPadding = (maxy-miny)*OR_IMAGE_COMPARISON_PREPROCESS_BOUNDARY_RATIO;
+		double xPadding = (maxx-minx)*ATOR_IMAGE_COMPARISON_PREPROCESS_BOUNDARY_RATIO;
+		double yPadding = (maxy-miny)*ATOR_IMAGE_COMPARISON_PREPROCESS_BOUNDARY_RATIO;
 		maxx = maxxOrig + xPadding;
 		minx = minxOrig - xPadding;
 		maxy = maxyOrig + yPadding;
@@ -1173,7 +1173,7 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DODadvanced2(LDrefere
 
 
 
-void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ORpolygon* currentPolygonInList, bool padBoundary)
+void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, ATORpolygon* currentPolygonInList, bool padBoundary)
 {
 	vec A;
 	vec B;
@@ -1200,8 +1200,8 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(LDreference* firs
 	double miny;
 	if(padBoundary)
 	{
-		double xPadding = (maxx-minx)*OR_IMAGE_COMPARISON_PREPROCESS_BOUNDARY_RATIO;
-		double yPadding = (maxy-miny)*OR_IMAGE_COMPARISON_PREPROCESS_BOUNDARY_RATIO;
+		double xPadding = (maxx-minx)*ATOR_IMAGE_COMPARISON_PREPROCESS_BOUNDARY_RATIO;
+		double yPadding = (maxy-miny)*ATOR_IMAGE_COMPARISON_PREPROCESS_BOUNDARY_RATIO;
 		maxx = maxxOrig + xPadding;
 		minx = minxOrig - xPadding;
 		maxy = maxyOrig + yPadding;;
@@ -1263,7 +1263,7 @@ void disableReferencesThatAreNotContainedInTheObjectSquare2DOD(LDreference* firs
 */
 
 
-void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList)
+void ATORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ATORpolygon* currentPolygonInList)
 {
 	vec A;
 	vec B;
@@ -1368,7 +1368,7 @@ void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectTriangle2
 
 /*NEWER, Barycentric Technique - descriptive but less efficient;
 
-void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList)
+void ATORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ATORpolygon* currentPolygonInList)
 {
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
@@ -1474,7 +1474,7 @@ function PointInTriangle(p, a,b,c)
 
 //NEWER, use triangle area test, but still inefficient method;
 /*
-void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList)
+void ATORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ATORpolygon* currentPolygonInList)
 {
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
@@ -1544,7 +1544,7 @@ void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectTriangle2
 
 /*OLD thorough but inefficient method;
 
-void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ORpolygon* currentPolygonInList)
+void ATORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectTriangle2DOD(LDreference* firstReferenceInInterpolated2DrgbMap, const ATORpolygon* currentPolygonInList)
 {
 	LDreference* currentReference = firstReferenceInInterpolated2DrgbMap;
 	while(currentReference->next != NULL)
@@ -1673,7 +1673,7 @@ void ORmethod2DODClass::disableReferencesThatAreNotContainedInTheObjectTriangle2
 
 
 
-void ORmethod2DODClass::createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, const int imageHeight, unsigned char* rgbMap, LDreference* firstReferenceInInterpolatedMap)
+void ATORmethod2DODClass::createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int imageWidth, const int imageHeight, uchar* rgbMap, LDreference* firstReferenceInInterpolatedMap)
 {
 	LDreference* currentReferenceInInterpolated2DMap = firstReferenceInInterpolatedMap;
 
@@ -1712,10 +1712,10 @@ void ORmethod2DODClass::createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int
 			colour col;
 			RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMap, &col);
 
-			unsigned int colByte1 = (unsigned int)DAT_FILE_FIRST_RGB_COLOUR << (unsigned int)24;
-			unsigned int colByte2 = (unsigned int)col.r << (unsigned int)16;
-			unsigned int colByte3 = (unsigned int)col.g << (unsigned int)8;
-			unsigned int colByte4 = (unsigned int)col.b;
+			uint32_t colByte1 = (uint32_t)DAT_FILE_FIRST_RGB_COLOUR << (uint32_t)24;
+			uint32_t colByte2 = (uint32_t)col.r << (uint32_t)16;
+			uint32_t colByte3 = (uint32_t)col.g << (uint32_t)8;
+			uint32_t colByte4 = (uint32_t)col.b;
 
 
 			currentReferenceInInterpolated2DMap->colour = colByte1 | colByte2 | colByte3 | colByte4;
@@ -1730,33 +1730,33 @@ void ORmethod2DODClass::createInterpolated2DmeshReferenceListUsingRGBmap2DOD(int
 }
 
 
-void ORmethod2DODClass::create2DmeshUsingRGBmap2DOD(int imageWidth, const int imageHeight, double imageXOffset, double imageYOffset, unsigned char* rgbMap, ORmeshPoint* firstMeshPointInMeshList, ORmeshPoint* meshPointArray[], const bool useEdgeZeroCrossingMap)
+void ATORmethod2DODClass::create2DmeshUsingRGBmap2DOD(int imageWidth, const int imageHeight, double imageXOffset, double imageYOffset, uchar* rgbMap, ATORmeshPoint* firstMeshPointInMeshList, ATORmeshPoint* meshPointArray[], const bool useEdgeZeroCrossingMap)
 {
-	//#ifdef OR_USE_CONTRAST_CALC_METHOD_C
+	//#ifdef ATOR_USE_CONTRAST_CALC_METHOD_C
 #ifndef LINUX
-	ORmeshPoint** meshPointInterpixelArray = new ORmeshPoint* [imageWidth*imageHeight];
-	ORQFzeroCrossing** edgeZeroCrossingMap = new ORQFzeroCrossing* [imageWidth*imageHeight];
+	ATORmeshPoint** meshPointInterpixelArray = new ATORmeshPoint* [imageWidth*imageHeight];
+	ATORQFzeroCrossing** edgeZeroCrossingMap = new ATORQFzeroCrossing* [imageWidth*imageHeight];
 #else
-	ORmeshPoint* meshPointInterpixelArray[imageWidth*imageHeight];
-	ORQFzeroCrossing* edgeZeroCrossingMap[imageWidth*imageHeight];
+	ATORmeshPoint* meshPointInterpixelArray[imageWidth*imageHeight];
+	ATORQFzeroCrossing* edgeZeroCrossingMap[imageWidth*imageHeight];
 #endif
 
 	int interpixelContrastMapType = INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST;
 	bool* edgeBoolMap = new bool[imageWidth*imageHeight];
-	if(OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
+	if(ATOR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
 	{
 		if(useEdgeZeroCrossingMap)
 		{
-			//1. edge process image using ORquadraticFit
+			//1. edge process image using ATORquadraticFit
 			for(int i=0; i<imageWidth*imageHeight; i++)
 			{
 				edgeZeroCrossingMap[i] = NULL;
 			}
-			ORfeatureGeneration.generateEdgeListFromRGBmapWithQuadraticFit(rgbMap, edgeBoolMap, edgeZeroCrossingMap, imageWidth, imageHeight, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, OR_METHOD2DOD_DIMENSIONS, NULL, NULL, 1.0, NULL, interpixelContrastMapType);
+			ATORfeatureGeneration.generateEdgeListFromRGBmapWithQuadraticFit(rgbMap, edgeBoolMap, edgeZeroCrossingMap, imageWidth, imageHeight, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, ATOR_METHOD2DOD_DIMENSIONS, NULL, NULL, 1.0, NULL, interpixelContrastMapType);
 		}
 	}
 
-	ORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
+	ATORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	int numMeshPointsInExistingMesh = 0;
 	while(currentMeshPointInMesh->next != NULL)
 	{
@@ -1764,11 +1764,11 @@ void ORmethod2DODClass::create2DmeshUsingRGBmap2DOD(int imageWidth, const int im
 		currentMeshPointInMesh = currentMeshPointInMesh->next;
 	}
 
-	ORmeshPoint* firstNewMeshPointInMesh = currentMeshPointInMesh;
+	ATORmeshPoint* firstNewMeshPointInMesh = currentMeshPointInMesh;
 	currentMeshPointInMesh = firstNewMeshPointInMesh;
 
-	ORmeshPoint* firstMeshPointInInterpixelMesh = new ORmeshPoint();
-	if(OR_USE_CONTRAST_CALC_METHOD_C)
+	ATORmeshPoint* firstMeshPointInInterpixelMesh = new ATORmeshPoint();
+	if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 	{
 		firstNewMeshPointInMesh->interpixelMeshPointFilled = true;	// x+0.5, y+0.5
 		firstNewMeshPointInMesh->interpixelMeshPoint = firstMeshPointInInterpixelMesh;
@@ -1780,8 +1780,8 @@ void ORmethod2DODClass::create2DmeshUsingRGBmap2DOD(int imageWidth, const int im
 	{
 		for(int x = 0; x < imageWidth; x++)
 		{
-			ORmeshPoint* currentMeshPointInInterpixelMesh;
-			if(OR_USE_CONTRAST_CALC_METHOD_C)
+			ATORmeshPoint* currentMeshPointInInterpixelMesh;
+			if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 			{
 				currentMeshPointInInterpixelMesh = currentMeshPointInMesh->interpixelMeshPoint;
 				meshPointInterpixelArray[y*imageWidth + x] = currentMeshPointInInterpixelMesh;	//required for speed
@@ -1804,7 +1804,7 @@ void ORmethod2DODClass::create2DmeshUsingRGBmap2DOD(int imageWidth, const int im
 			currentMeshPointInMesh->yInt = y;
 			currentMeshPointInMesh->luminosity = RTpixelMaps.calculateLuminosityLevelFromRGBVal(&col);
 
-			if(OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
+			if(ATOR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
 			{
 				if(useEdgeZeroCrossingMap)
 				{
@@ -1820,13 +1820,13 @@ void ORmethod2DODClass::create2DmeshUsingRGBmap2DOD(int imageWidth, const int im
 
 			meshPointArray[y*imageWidth + x] = currentMeshPointInMesh;	//required for speed
 
-			ORmeshPoint* newMeshPoint = new ORmeshPoint();
+			ATORmeshPoint* newMeshPoint = new ATORmeshPoint();
 			currentMeshPointInMesh->next = newMeshPoint;
 			currentMeshPointInMesh = currentMeshPointInMesh->next;
 
-			if(OR_USE_CONTRAST_CALC_METHOD_C)
+			if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 			{
-				ORmeshPoint* newMeshPointInInterpixelMesh = new ORmeshPoint();
+				ATORmeshPoint* newMeshPointInInterpixelMesh = new ATORmeshPoint();
 				currentMeshPointInInterpixelMesh->next = newMeshPointInInterpixelMesh;
 				currentMeshPointInMesh->interpixelMeshPointFilled = true;	// x+0.5, y+0.5
 				currentMeshPointInMesh->interpixelMeshPoint = newMeshPointInInterpixelMesh;
@@ -1838,8 +1838,8 @@ void ORmethod2DODClass::create2DmeshUsingRGBmap2DOD(int imageWidth, const int im
 
 	currentMeshPointInMesh = firstNewMeshPointInMesh;
 
-	ORmeshPoint* currentMeshPointInInterpixelMesh;
-	if(OR_USE_CONTRAST_CALC_METHOD_C)
+	ATORmeshPoint* currentMeshPointInInterpixelMesh;
+	if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 	{
 		currentMeshPointInInterpixelMesh = firstMeshPointInInterpixelMesh;
 	}
@@ -1863,7 +1863,7 @@ void ORmethod2DODClass::create2DmeshUsingRGBmap2DOD(int imageWidth, const int im
 
 					currentMeshPointInMesh->adjacentMeshPoint[q] = meshPointArray[ky*imageWidth + kx];
 					currentMeshPointInMesh->adjacentMeshPointFilled[q] = true;
-					if(OR_USE_CONTRAST_CALC_METHOD_C)
+					if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 					{
 						currentMeshPointInInterpixelMesh->adjacentMeshPoint[q] = meshPointInterpixelArray[ky*imageWidth + kx];
 						currentMeshPointInInterpixelMesh->adjacentMeshPointFilled[q] = true;
@@ -1873,7 +1873,7 @@ void ORmethod2DODClass::create2DmeshUsingRGBmap2DOD(int imageWidth, const int im
 				{
 					currentMeshPointInMesh->adjacentMeshPoint[q] = NULL;
 					currentMeshPointInMesh->adjacentMeshPointFilled[q] = false;
-					if(OR_USE_CONTRAST_CALC_METHOD_C)
+					if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 					{
 						currentMeshPointInInterpixelMesh->adjacentMeshPoint[q] = NULL;
 						currentMeshPointInInterpixelMesh->adjacentMeshPointFilled[q] = false;
@@ -1882,7 +1882,7 @@ void ORmethod2DODClass::create2DmeshUsingRGBmap2DOD(int imageWidth, const int im
 			}
 
 			currentMeshPointInMesh = currentMeshPointInMesh->next;
-			if(OR_USE_CONTRAST_CALC_METHOD_C)
+			if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 			{
 				currentMeshPointInInterpixelMesh = currentMeshPointInInterpixelMesh->next;
 			}
@@ -1890,13 +1890,13 @@ void ORmethod2DODClass::create2DmeshUsingRGBmap2DOD(int imageWidth, const int im
 	}
 
 	//calculate mesh point properties
-	if(OR_USE_CONTRAST_CALC_METHOD_C)
+	if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 	{
 		for(int y = 1; y < (imageHeight-1); y++)
 		{
 			for(int x = 1; x < (imageWidth-1); x++)
 			{
-				ORpolygonList.calculateMeshPointInterpixelLuminosityContrast(meshPointArray[y*imageWidth + x]);
+				ATORpolygonList.calculateMeshPointInterpixelLuminosityContrast(meshPointArray[y*imageWidth + x]);
 			}
 		}
 	}
@@ -1906,13 +1906,13 @@ void ORmethod2DODClass::create2DmeshUsingRGBmap2DOD(int imageWidth, const int im
 		{
 			for(int x = 1; x < (imageWidth-1); x++)
 			{
-				ORpolygonList.calculateMeshPointLuminosityContrast(meshPointArray[y*imageWidth + x]);
+				ATORpolygonList.calculateMeshPointLuminosityContrast(meshPointArray[y*imageWidth + x]);
 			}
 		}
 	}
 
-	//UNTESTED (copied from OR_METHOD_3DOD_USE_MESH_LISTS_COMBINED)
-	if(OR_METHOD_2DOD_USE_MESH_LISTS_COMBINED)
+	//UNTESTED (copied from ATOR_METHOD_3DOD_USE_MESH_LISTS_COMBINED)
+	if(ATOR_METHOD_2DOD_USE_MESH_LISTS_COMBINED)
 	{
 		//A) join border mesh points of new mesh with existing mesh mesh points
 		if(numMeshPointsInExistingMesh > 0)
@@ -1956,21 +1956,21 @@ void ORmethod2DODClass::create2DmeshUsingRGBmap2DOD(int imageWidth, const int im
 						borderPoint.y = y+imageYOffset;
 						borderPoint.z = 0.0;
 
-						ORmeshPoint* nearestMeshpointInExistingMesh;
+						ATORmeshPoint* nearestMeshpointInExistingMesh;
 						bool hasFoundMeshPoint = false;
-						nearestMeshpointInExistingMesh = ORpolygonList.findMeshPointIntInMesh(firstMeshPointInMeshList, &borderPoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
+						nearestMeshpointInExistingMesh = ATORpolygonList.findMeshPointIntInMesh(firstMeshPointInMeshList, &borderPoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
 						if(hasFoundMeshPoint == false)
 						{
 							cerr << "error: cannot find adjacent meshpoint" << endl;
 							exit(EXIT_ERROR);
 						}
 
-						ORmeshPoint* meshpointInAdditionalMesh;
+						ATORmeshPoint* meshpointInAdditionalMesh;
 						meshpointInAdditionalMesh = meshPointArray[y*imageWidth + x];
 
 						/*old inefficient;
 						hasFoundMeshPoint = false;
-						meshpointInAdditionalMesh = ORpolygonList.findMeshPointIntInMesh(firstNewMeshPointInMesh, x, y, &hasFoundMeshPoint);
+						meshpointInAdditionalMesh = ATORpolygonList.findMeshPointIntInMesh(firstNewMeshPointInMesh, x, y, &hasFoundMeshPoint);
 						if(hasFoundMeshPoint == false)
 						{
 							cerr << "error: cannot find adjacent meshpoint" << endl;
@@ -1978,7 +1978,7 @@ void ORmethod2DODClass::create2DmeshUsingRGBmap2DOD(int imageWidth, const int im
 						}
 						*/
 
-						if(SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(nearestMeshpointInExistingMesh->point), &(meshpointInAdditionalMesh->point)) < OR_METHOD_2DOD_USE_ADVANCED_INTERP_MESH_JOINING_MAXIMUM_RECONCILIATION_DISTANCE)
+						if(SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(nearestMeshpointInExistingMesh->point), &(meshpointInAdditionalMesh->point)) < ATOR_METHOD_2DOD_USE_ADVANCED_INTERP_MESH_JOINING_MAXIMUM_RECONCILIATION_DISTANCE)
 						{
 							//now redirect all mesh points surrounding the mesh point of the existing mesh to the corresponding mesh point of the additional mesh
 							for(int q = 0; q< 4; q++)

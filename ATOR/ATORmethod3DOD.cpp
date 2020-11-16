@@ -26,7 +26,7 @@
  * File Name: ATORmethod3DOD.cpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3o1a 05-November-2020
+ * Project Version: 3o2a 08-November-2020
  * Notes: NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  * /
  *******************************************************************************/
@@ -34,19 +34,19 @@
 
 #include "ATORmethod3DOD.hpp"
 
-void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, ORpolygon* currentPolygonInList, const int side, const bool first, ORfeature* firstFeatureInList)
+void ATORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInterpolated3DRGBMap, ATORpolygon* currentPolygonInList, const int side, const bool first, ATORfeature* firstFeatureInList)
 {
 	int64_t time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonStart;
-	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
+	if(ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
-		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
+		if(ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
 		{
 			cout << "\t\t\t\t start: 3ai. 3DOD normalised snapshot generation - transform data wrt polygon - matrix calc" << endl;
 		}
 		time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonStart = SHAREDvars.getTimeAsLong();
 	}
 
-	ORpolygon* transformedObjectTriangle = new ORpolygon();	//equilateral triangle
+	ATORpolygon* transformedObjectTriangle = new ATORpolygon();	//equilateral triangle
 	transformedObjectTriangle->point1.x = currentPolygonInList->point1.x;
 	transformedObjectTriangle->point1.y = currentPolygonInList->point1.y;
 	transformedObjectTriangle->point1.z = currentPolygonInList->point1.z;
@@ -103,13 +103,13 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 	#else
 	if(first)
 	{
-		ORoperations.storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap);
+		ATORoperations.storeBackupVertexAbsPositionsForAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap);
 	}
 	else
 	{
-		ORoperations.restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap);
+		ATORoperations.restoreBackupVertexAbsPositionsForAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap);
 	}
-	//ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap, &scaleMatrix1a);
+	//ATORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap, &scaleMatrix1a);
 	#endif
 
 
@@ -124,13 +124,13 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 
 
 	//1c. tranform nearest features
-	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		ORfeature* currentFeature;	//startup
+		ATORfeature* currentFeature;	//startup
 		currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
-			#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
+			#ifdef ATOR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 			if(SHAREDvector.compareVectors(&(currentFeature->point), &(currentPolygonInList->point1)))
 			{
 				currentFeature->OTpointIndex = 1;
@@ -155,13 +155,13 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 			currentFeature = currentFeature->next;
 		}
 	}
-	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
-		ORfeature* currentFeature;
+		ATORfeature* currentFeature;
 		currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
-			#ifdef OR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
+			#ifdef ATOR_METHOD_TRANSFORM_NEARBY_FEATURES_TAG_OT_FEATURES
 			if(SHAREDvector.compareVectors(&(currentFeature->point), &(currentPolygonInList->point1)))
 			{
 				currentFeature->OTpointIndex = 1;
@@ -260,9 +260,9 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 	SHAREDvector.multiplyMatricies(&matTemp, &multipliedMatrix, &xRotationMatrix1a);
 	SHAREDvector.copyMatrixTwoIntoMatrixOne(&multipliedMatrix, &matTemp);
 
-	ORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap, &multipliedMatrix);
+	ATORoperations.applyTransformationMatrixToAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap, &multipliedMatrix);
 
-	ORoperations.applyTranslationToAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap, &translationVector);
+	ATORoperations.applyTranslationToAllReferencesIn2Dlist(firstReferenceInInterpolated3DRGBMap, &translationVector);
 #endif
 
 
@@ -281,9 +281,9 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 
 
 	//5c. tranform nearest features
-	if(OR_METHOD_TRANSFORM_NEARBY_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_NEARBY_FEATURES)
 	{
-		ORfeature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
+		ATORfeature* currentFeature = currentPolygonInList->firstFeatureInNearestFeatureList;
 		while(currentFeature->next != NULL)
 		{
 			currentFeature->pointTransformed.x = currentFeature->pointTransformed.x + translationVector.x;
@@ -292,9 +292,9 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 			currentFeature = currentFeature->next;
 		}
 	}
-	if(OR_METHOD_TRANSFORM_ALL_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_ALL_FEATURES)
 	{
-		ORfeature* currentFeature = firstFeatureInList;
+		ATORfeature* currentFeature = firstFeatureInList;
 		while(currentFeature->next != NULL)
 		{
 			currentFeature->pointTransformed.x = currentFeature->pointTransformed.x + translationVector.x;
@@ -305,7 +305,7 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 		}
 	}
 
-	if(OR_METHOD_TRANSFORM_KEY_OT_FEATURES)
+	if(ATOR_METHOD_TRANSFORM_KEY_OT_FEATURES)
 	{
 		currentPolygonInList->point1Transformed.x = transformedObjectTriangle->point1.x;
 		currentPolygonInList->point1Transformed.y = transformedObjectTriangle->point1.y;
@@ -318,15 +318,15 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 		currentPolygonInList->point3Transformed.z = transformedObjectTriangle->point3.z;
 	}
 
-	if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS)
+	if(ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS)
 	{
-		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
+		if(ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
 		{
 			cout << "\t\t\t\t end: 3ai. 3DOD normalised snapshot generation - transform data wrt polygon - matrix calc" << endl;
 		}
 		int64_t time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonEnd;
 		time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonEnd = SHAREDvars.getTimeAsLong();
-		if(OR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
+		if(ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS_ALL)
 		{
 			cout << "\t\t\t\t time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygon = " << time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonEnd-time3aiNormalisedSnapshotGeneration3DODTransformDataWRTPolygonStart << endl;
 		}
@@ -335,7 +335,7 @@ void ORmethod3DODClass::transformObjectData3DOD(LDreference* firstReferenceInInt
 
 
 	//not yet finished
-void ORmethod3DODClass::calculateEyePositionAndOrientation3DOD(vec* eyeFacingPoly, vec* viewAtFacingPoly, vec* viewUpFacingPoly, vec* viewPortWidthHeightDepth, ORpolygon* pol, const int side)
+void ATORmethod3DODClass::calculateEyePositionAndOrientation3DOD(vec* eyeFacingPoly, vec* viewAtFacingPoly, vec* viewUpFacingPoly, vec* viewPortWidthHeightDepth, ATORpolygon* pol, const int side)
 {
 	vec pt1;
 	vec pt2;
@@ -383,7 +383,7 @@ void ORmethod3DODClass::calculateEyePositionAndOrientation3DOD(vec* eyeFacingPol
 	//normalised distance to size of side s
 	double U = SHAREDvector.findMagnitudeOfVector(&pt2MinusPt1);
 	#else
-	double U = OR_CONSTANT_DISTANCE_EYE_TO_POLYGON_FOR_NN_SNAPSHOT_U;
+	double U = ATOR_CONSTANT_DISTANCE_EYE_TO_POLYGON_FOR_NN_SNAPSHOT_U;
 	#endif
 	SHAREDvector.multiplyVectorByScalarRT(&normalAtPt1Normalised, U, &normalAtPt1WithDistanceU);
 
@@ -411,7 +411,7 @@ void ORmethod3DODClass::calculateEyePositionAndOrientation3DOD(vec* eyeFacingPol
 }
 
 
-void ORmethod3DODClass::createInterpolated3DmeshReferenceListUsingPointMap(int imageWidth, const int imageHeight, double* pointMap, double* pointMapInterpolated, unsigned char* rgbMap, LDreference* firstReferenceInInterpolated3Dmap)
+void ATORmethod3DODClass::createInterpolated3DmeshReferenceListUsingPointMap(int imageWidth, const int imageHeight, double* pointMap, double* pointMapInterpolated, uchar* rgbMap, LDreference* firstReferenceInInterpolated3Dmap)
 {
 	LDreference* currentReferenceInInterpolated3DMap = firstReferenceInInterpolated3Dmap;
 
@@ -419,7 +419,7 @@ void ORmethod3DODClass::createInterpolated3DmeshReferenceListUsingPointMap(int i
 	{
 		for(int x = 0; x < (imageWidth); x++)
 		{
-			ORpolygon polyArray[4];
+			ATORpolygon polyArray[4];
 
 			vec centreVec;
 			vec v1;
@@ -440,11 +440,11 @@ void ORmethod3DODClass::createInterpolated3DmeshReferenceListUsingPointMap(int i
 			if(!SHAREDvector.compareVectors(&centreVec, &nullPointVector))
 			{
 
-				SHAREDvector.multiplyVectorByScalarRT(&centreVec, OR_SNAPSHOT_SCALE_FACTOR, &centreVec);
-				SHAREDvector.multiplyVectorByScalarRT(&v1, OR_SNAPSHOT_SCALE_FACTOR, &v1);
-				SHAREDvector.multiplyVectorByScalarRT(&v2, OR_SNAPSHOT_SCALE_FACTOR, &v2);
-				SHAREDvector.multiplyVectorByScalarRT(&v3, OR_SNAPSHOT_SCALE_FACTOR, &v3);
-				SHAREDvector.multiplyVectorByScalarRT(&v4, OR_SNAPSHOT_SCALE_FACTOR, &v4);
+				SHAREDvector.multiplyVectorByScalarRT(&centreVec, ATOR_SNAPSHOT_SCALE_FACTOR, &centreVec);
+				SHAREDvector.multiplyVectorByScalarRT(&v1, ATOR_SNAPSHOT_SCALE_FACTOR, &v1);
+				SHAREDvector.multiplyVectorByScalarRT(&v2, ATOR_SNAPSHOT_SCALE_FACTOR, &v2);
+				SHAREDvector.multiplyVectorByScalarRT(&v3, ATOR_SNAPSHOT_SCALE_FACTOR, &v3);
+				SHAREDvector.multiplyVectorByScalarRT(&v4, ATOR_SNAPSHOT_SCALE_FACTOR, &v4);
 
 				SHAREDvector.copyVectors(&(polyArray[0].point1), &centreVec);
 				SHAREDvector.copyVectors(&(polyArray[0].point2), &v1);
@@ -475,10 +475,10 @@ void ORmethod3DODClass::createInterpolated3DmeshReferenceListUsingPointMap(int i
 					colour col;
 					RTpixelMaps.getRGBMapValues(x, y, imageWidth, rgbMap, &col);
 
-					unsigned int colByte1 = (unsigned int)DAT_FILE_FIRST_RGB_COLOUR << (unsigned int)24;
-					unsigned int colByte2 = (unsigned int)col.r << (unsigned int)16;
-					unsigned int colByte3 = (unsigned int)col.g << (unsigned int)8;
-					unsigned int colByte4 = (unsigned int)col.b;
+					uint32_t colByte1 = (uint32_t)DAT_FILE_FIRST_RGB_COLOUR << (uint32_t)24;
+					uint32_t colByte2 = (uint32_t)col.r << (uint32_t)16;
+					uint32_t colByte3 = (uint32_t)col.g << (uint32_t)8;
+					uint32_t colByte4 = (uint32_t)col.b;
 
 					currentReferenceInInterpolated3DMap->colour = colByte1 | colByte2 | colByte3 | colByte4;
 					currentReferenceInInterpolated3DMap->absoluteColour = colByte1 | colByte2 | colByte3 | colByte4;
@@ -494,15 +494,15 @@ void ORmethod3DODClass::createInterpolated3DmeshReferenceListUsingPointMap(int i
 }
 
 
-void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double* pointMap, const double* depthMap, unsigned char* rgbMap, ORmeshPoint* firstMeshPointInMeshList, ORmeshPoint* meshPointArray[], const bool useEdgeZeroCrossingMap, const int contrastValChosen, RTviewInfo* vi)
+void ATORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int imageHeight, double* pointMap, const double* depthMap, uchar* rgbMap, ATORmeshPoint* firstMeshPointInMeshList, ATORmeshPoint* meshPointArray[], const bool useEdgeZeroCrossingMap, const int contrastValChosen, RTviewInfo* vi)
 {
-	//#ifdef OR_USE_CONTRAST_CALC_METHOD_C
+	//#ifdef ATOR_USE_CONTRAST_CALC_METHOD_C
 	#ifndef LINUX
-	ORmeshPoint** meshPointInterpixelArray = new ORmeshPoint* [imageWidth*imageHeight];
-	ORQFzeroCrossing** edgeZeroCrossingMap = new ORQFzeroCrossing* [imageWidth*imageHeight];
+	ATORmeshPoint** meshPointInterpixelArray = new ATORmeshPoint* [imageWidth*imageHeight];
+	ATORQFzeroCrossing** edgeZeroCrossingMap = new ATORQFzeroCrossing* [imageWidth*imageHeight];
 	#else
-	ORmeshPoint* meshPointInterpixelArray[imageWidth*imageHeight];
-	ORQFzeroCrossing* edgeZeroCrossingMap[imageWidth*imageHeight];
+	ATORmeshPoint* meshPointInterpixelArray[imageWidth*imageHeight];
+	ATORQFzeroCrossing* edgeZeroCrossingMap[imageWidth*imageHeight];
 	#endif
 	//#endif
 
@@ -517,11 +517,11 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 	}
 
 	bool* edgeBoolMap = new bool[imageWidth*imageHeight];
-	if(OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
+	if(ATOR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
 	{
 		if(useEdgeZeroCrossingMap)
 		{
-			//1. edge process image using ORquadraticFit
+			//1. edge process image using ATORquadraticFit
 			for(int i=0; i<imageWidth*imageHeight; i++)
 			{
 				edgeZeroCrossingMap[i] = NULL;
@@ -530,7 +530,7 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 			if(contrastValChosen == CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_LUMINOSITY_CONTRAST)
 			{
 				//interpixelContrastMapType = INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST;
-				ORfeatureGeneration.generateEdgeListFromRGBmapWithQuadraticFit(rgbMap, edgeBoolMap, edgeZeroCrossingMap, imageWidth, imageHeight, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, OR_METHOD3DOD_DIMENSIONS, pointMap, depthMap, 1, vi, interpixelContrastMapType);
+				ATORfeatureGeneration.generateEdgeListFromRGBmapWithQuadraticFit(rgbMap, edgeBoolMap, edgeZeroCrossingMap, imageWidth, imageHeight, EDGE_LUMINOSITY_CONTRAST_THRESHOLD, ATOR_METHOD3DOD_DIMENSIONS, pointMap, depthMap, 1, vi, interpixelContrastMapType);
 
 			}
 			else if(contrastValChosen == CENTRE_FEATURES_CALCULATION_USING_MESH_LIST_CONTRAST_VALUE_POINT_NORMAL_CONTRAST)
@@ -538,10 +538,10 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 				//interpixelContrastMapType = INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST
 				double* pointNormalMap = new double[imageWidth*imageHeight*VECTOR_NUM_VALUES];
 				double* pointNormalContrastMap = new double[imageWidth*imageHeight];
-				ORpixelMaps.createPointNormalMapFromPointMap(imageWidth, imageHeight, pointMap, pointNormalMap);
-				ORpixelMaps.createPointNormalContrastMapFromPointNormalMap(imageWidth, imageHeight, pointNormalMap, pointNormalContrastMap);
+				ATORpixelMaps.createPointNormalMapFromPointMap(imageWidth, imageHeight, pointMap, pointNormalMap);
+				ATORpixelMaps.createPointNormalContrastMapFromPointNormalMap(imageWidth, imageHeight, pointNormalMap, pointNormalContrastMap);
 				double sensitivity = 1.0;
-				ORfeatureGeneration.generateEdgeListFromContrastMapWithQuadraticFit(pointNormalContrastMap, edgeBoolMap, edgeZeroCrossingMap, imageWidth, imageHeight, EDGE_NORMAL_CONTRAST_THRESHOLD, OR_METHOD3DOD_DIMENSIONS, pointMap, depthMap, 1, vi, interpixelContrastMapType);
+				ATORfeatureGeneration.generateEdgeListFromContrastMapWithQuadraticFit(pointNormalContrastMap, edgeBoolMap, edgeZeroCrossingMap, imageWidth, imageHeight, EDGE_NORMAL_CONTRAST_THRESHOLD, ATOR_METHOD3DOD_DIMENSIONS, pointMap, depthMap, 1, vi, interpixelContrastMapType);
 				delete pointNormalMap;
 				delete pointNormalContrastMap;
 			}
@@ -553,7 +553,7 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 		}
 	}
 
-	ORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
+	ATORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	int numMeshPointsInExistingMesh = 0;
 	while(currentMeshPointInMesh->next != NULL)
 	{
@@ -561,12 +561,12 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 		currentMeshPointInMesh = currentMeshPointInMesh->next;
 	}
 
-	ORmeshPoint* firstNewMeshPointInMesh = currentMeshPointInMesh;
+	ATORmeshPoint* firstNewMeshPointInMesh = currentMeshPointInMesh;
 	currentMeshPointInMesh = firstNewMeshPointInMesh;
 
 
-	ORmeshPoint* firstMeshPointInInterpixelMesh = new ORmeshPoint();
-	if(OR_USE_CONTRAST_CALC_METHOD_C)
+	ATORmeshPoint* firstMeshPointInInterpixelMesh = new ATORmeshPoint();
+	if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 	{
 		firstNewMeshPointInMesh->interpixelMeshPointFilled = true;	// x+0.5, y+0.5
 		firstNewMeshPointInMesh->interpixelMeshPoint = firstMeshPointInInterpixelMesh;
@@ -579,8 +579,8 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 	{
 		for(int x = 0; x < (imageWidth); x++)
 		{
-			ORmeshPoint* currentMeshPointInInterpixelMesh;
-			if(OR_USE_CONTRAST_CALC_METHOD_C)
+			ATORmeshPoint* currentMeshPointInInterpixelMesh;
+			if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 			{
 				currentMeshPointInInterpixelMesh = currentMeshPointInMesh->interpixelMeshPoint;
 				meshPointInterpixelArray[y*imageWidth + x] = currentMeshPointInInterpixelMesh;	//required for speed
@@ -596,7 +596,7 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 			double depth;
 			depth = RTpixelMaps.getLumOrContrastOrDepthMapValue(x, y, imageWidth, depthMap);
 
-			#ifdef OR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
+			#ifdef ATOR_METHOD_3DOD_USE_DYNAMIC_WORLD_COORD_DETERMINATION_USING_DEPTH
 				vec xyzWorld;
 				RTscene.calculatePointMapValue(x, y, depth, &xyzWorld, vi);
 			#else
@@ -615,9 +615,9 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 			currentMeshPointInMesh->point.y = xyzWorld.y;
 			currentMeshPointInMesh->point.z = xyzWorld.z;
 
-			if(OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
+			if(ATOR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
 			{
-				if(OR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP)
+				if(ATOR_METHOD3DOD_USE_QUADRATIC_FIT_EDGE_ZERO_CROSSING_MAP)
 				{
 					if(useEdgeZeroCrossingMap)
 					{
@@ -628,7 +628,7 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 							currentMeshPointInInterpixelMesh->zeroCrossingValueY = edgeZeroCrossingMap[y*imageWidth + x]->zeroCrossingValueY;
 							currentMeshPointInInterpixelMesh->alpha = edgeZeroCrossingMap[y*imageWidth + x]->alpha;
 
-							#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS
+							#ifdef ATOR_USE_FOREGROUND_DEPTH_CHECKS
 							currentMeshPointInInterpixelMesh->quadraticFitDepth = depth;
 							//override point map values with those calculated during quadratic fit;
 							vec* temppoint;
@@ -646,13 +646,13 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 
 			meshPointArray[y*imageWidth + x] = currentMeshPointInMesh;	//required for speed
 
-			ORmeshPoint* newMeshPoint = new ORmeshPoint();
+			ATORmeshPoint* newMeshPoint = new ATORmeshPoint();
 			currentMeshPointInMesh->next = newMeshPoint;
 			currentMeshPointInMesh = currentMeshPointInMesh->next;
 
-			if(OR_USE_CONTRAST_CALC_METHOD_C)
+			if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 			{
-				ORmeshPoint* newMeshPointInInterpixelMesh = new ORmeshPoint();
+				ATORmeshPoint* newMeshPointInInterpixelMesh = new ATORmeshPoint();
 				currentMeshPointInInterpixelMesh->next = newMeshPointInInterpixelMesh;
 				currentMeshPointInMesh->interpixelMeshPointFilled = true;	// x+0.5, y+0.5
 				currentMeshPointInMesh->interpixelMeshPoint = newMeshPointInInterpixelMesh;
@@ -665,8 +665,8 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 
 	currentMeshPointInMesh = firstNewMeshPointInMesh;
 
-	ORmeshPoint* currentMeshPointInInterpixelMesh;
-	if(OR_USE_CONTRAST_CALC_METHOD_C)
+	ATORmeshPoint* currentMeshPointInInterpixelMesh;
+	if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 	{
 		currentMeshPointInInterpixelMesh = firstMeshPointInInterpixelMesh;
 	}
@@ -718,7 +718,7 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 				{
 					currentMeshPointInMesh->adjacentMeshPoint[q] = meshPointArray[ky*imageWidth + kx];
 					currentMeshPointInMesh->adjacentMeshPointFilled[q] = true;
-					if(OR_USE_CONTRAST_CALC_METHOD_C)
+					if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 					{
 						currentMeshPointInInterpixelMesh->adjacentMeshPoint[q] = meshPointInterpixelArray[ky*imageWidth + kx];
 						currentMeshPointInInterpixelMesh->adjacentMeshPointFilled[q] = true;
@@ -729,7 +729,7 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 				{
 					currentMeshPointInMesh->adjacentMeshPoint[q] = NULL;
 					currentMeshPointInMesh->adjacentMeshPointFilled[q] = false;
-					if(OR_USE_CONTRAST_CALC_METHOD_C)
+					if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 					{
 						currentMeshPointInInterpixelMesh->adjacentMeshPoint[q] = NULL;
 						currentMeshPointInInterpixelMesh->adjacentMeshPointFilled[q] = false;
@@ -739,7 +739,7 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 			}
 
 			currentMeshPointInMesh = currentMeshPointInMesh->next;
-			if(OR_USE_CONTRAST_CALC_METHOD_C)
+			if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 			{
 				currentMeshPointInInterpixelMesh = currentMeshPointInInterpixelMesh->next;
 			}
@@ -747,18 +747,18 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 	}
 
 
-	if(OR_USE_CONTRAST_CALC_METHOD_C)
+	if(ATOR_USE_CONTRAST_CALC_METHOD_C)
 	{
 		//calculate mesh point properties
 		for(int y = 0; y < (imageHeight-1); y++)
 		{
 			for(int x = 0; x < (imageWidth-1); x++)
 			{
-				ORpolygonList.calculateMeshPointInterpixelLuminosityContrast(meshPointArray[y*imageWidth + x]);
+				ATORpolygonList.calculateMeshPointInterpixelLuminosityContrast(meshPointArray[y*imageWidth + x]);
 
 				bool alreadyFilledPointValues = false;
 				bool passCondition = true;
-				if(OR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
+				if(ATOR_METHOD_QUADRATIC_FIT_FOR_MESH_LISTS_HAS_BEEN_PROGRAMMED)
 				{
 					if(useEdgeZeroCrossingMap)
 					{
@@ -772,17 +772,17 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 						}
 						else
 						{
-							ORpolygonList.calculateMeshPointInterpixelDepth(meshPointArray[y*imageWidth + x]);
+							ATORpolygonList.calculateMeshPointInterpixelDepth(meshPointArray[y*imageWidth + x]);
 						}
 						passCondition = false;
 					}
 				}
 				if(passCondition)
 				{
-					#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS
-					ORpolygonList.calculateMeshPointInterpixelDepthWithForegroundDepthCheck(meshPointArray[y*imageWidth + x]);
+					#ifdef ATOR_USE_FOREGROUND_DEPTH_CHECKS
+					ATORpolygonList.calculateMeshPointInterpixelDepthWithForegroundDepthCheck(meshPointArray[y*imageWidth + x]);
 					#else
-					ORpolygonList.calculateMeshPointInterpixelDepth(meshPointArray[y*imageWidth + x]);
+					ATORpolygonList.calculateMeshPointInterpixelDepth(meshPointArray[y*imageWidth + x]);
 					#endif
 
 				}
@@ -793,19 +793,19 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 					double pixelYOffset;
 					if(interpixelContrastMapType == INTERPIXEL_CONTRAST_MAP_TYPE_RGB_LUMINOSITY_DEPTH_OR_POINT)
 					{
-						//without OR_USE_CONTRAST_CALC_METHOD_C
+						//without ATOR_USE_CONTRAST_CALC_METHOD_C
 						pixelXOffset = 0;
 						pixelYOffset = 0;
 					}
 					else if(interpixelContrastMapType == INTERPIXEL_CONTRAST_MAP_TYPE_LUMINOSITY_OR_DEPTH_CONTRAST)
 					{
-						//such as luminosityContrast map with OR_USE_CONTRAST_CALC_METHOD_C
+						//such as luminosityContrast map with ATOR_USE_CONTRAST_CALC_METHOD_C
 						pixelXOffset = 0.5;
 						pixelYOffset = 0.5;
 					}
 					else if(interpixelContrastMapType == INTERPIXEL_CONTRAST_MAP_TYPE_NORMAL_OR_GRADIENT_CONTRAST)
 					{
-						//such as gradientContrast or pointNormalContrast map with OR_USE_CONTRAST_CALC_METHOD_C
+						//such as gradientContrast or pointNormalContrast map with ATOR_USE_CONTRAST_CALC_METHOD_C
 						pixelXOffset = 0;
 						pixelYOffset = 0;
 					}
@@ -818,14 +818,14 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 				}
 
 
-				if(OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST)
+				if(ATOR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST)
 				{
-					//emulates ORpixelMaps.createPointNormalMapFromPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointNormalMap):
-					//and emulates ORpixelMaps.createPointNormalContrastMapFromPointNormalMap(int imageWidth, int imageHeight, double* pointNormalMap, double* pointNormalContrastMap):
-					ORpolygonList.calculateMeshPointInterpixelNormal(meshPointArray[y*imageWidth + x]);
+					//emulates ATORpixelMaps.createPointNormalMapFromPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointNormalMap):
+					//and emulates ATORpixelMaps.createPointNormalContrastMapFromPointNormalMap(int imageWidth, int imageHeight, double* pointNormalMap, double* pointNormalContrastMap):
+					ATORpolygonList.calculateMeshPointInterpixelNormal(meshPointArray[y*imageWidth + x]);
 					if((x >=1) && (y >=1))
 					{
-						ORpolygonList.calculateMeshPointInterpixelNormalContrast(meshPointArray[y*imageWidth + x]);
+						ATORpolygonList.calculateMeshPointInterpixelNormalContrast(meshPointArray[y*imageWidth + x]);
 					}
 					(meshPointInterpixelArray[y*imageWidth + x])->meshPointNormalFilled = true;
 				}
@@ -840,14 +840,14 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 		{
 			for(int x = 1; x < (imageWidth-1); x++)
 			{
-				ORpolygonList.calculateMeshPointLuminosityContrast(meshPointArray[y*imageWidth + x]);
+				ATORpolygonList.calculateMeshPointLuminosityContrast(meshPointArray[y*imageWidth + x]);
 
-				if(OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST)
+				if(ATOR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST)
 				{
-					//emulates ORpixelMaps.createPointNormalMapFromPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointNormalMap):
-					//and emulates ORpixelMaps.createPointNormalContrastMapFromPointNormalMap(int imageWidth, int imageHeight, double* pointNormalMap, double* pointNormalContrastMap):
-					ORpolygonList.calculateMeshPointNormal(meshPointArray[y*imageWidth + x]);
-					ORpolygonList.calculateMeshPointNormalContrast(meshPointArray[y*imageWidth + x]);
+					//emulates ATORpixelMaps.createPointNormalMapFromPointMap(int imageWidth, int imageHeight, double* pointMap, double* pointNormalMap):
+					//and emulates ATORpixelMaps.createPointNormalContrastMapFromPointNormalMap(int imageWidth, int imageHeight, double* pointNormalMap, double* pointNormalContrastMap):
+					ATORpolygonList.calculateMeshPointNormal(meshPointArray[y*imageWidth + x]);
+					ATORpolygonList.calculateMeshPointNormalContrast(meshPointArray[y*imageWidth + x]);
 					(meshPointArray[y*imageWidth + x])->meshPointNormalFilled = true;
 				}
 
@@ -856,7 +856,7 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 	}
 
 
-	if(OR_METHOD_3DOD_USE_MESH_LISTS_COMBINED)
+	if(ATOR_METHOD_3DOD_USE_MESH_LISTS_COMBINED)
 	{
 		//A) join border mesh points of new mesh with existing mesh mesh points
 		if(numMeshPointsInExistingMesh > 0)
@@ -897,21 +897,21 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 
 						vec borderPoint;
 						RTpixelMaps.getPointMapValue(x, y, imageWidth, pointMap, &borderPoint);
-						ORmeshPoint* nearestMeshpointInExistingMesh;
+						ATORmeshPoint* nearestMeshpointInExistingMesh;
 						bool hasFoundMeshPoint = false;
-						nearestMeshpointInExistingMesh = ORpolygonList.findMeshPointIntInMesh(firstMeshPointInMeshList, &borderPoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
+						nearestMeshpointInExistingMesh = ATORpolygonList.findMeshPointIntInMesh(firstMeshPointInMeshList, &borderPoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
 						if(hasFoundMeshPoint == false)
 						{
 							cerr << "error: cannot find adjacent meshpoint" << endl;
 							exit(EXIT_ERROR);
 						}
 
-						ORmeshPoint* meshpointInAdditionalMesh;
+						ATORmeshPoint* meshpointInAdditionalMesh;
 						meshpointInAdditionalMesh = meshPointArray[y*imageWidth + x];
 
 						/*old inefficient;
 						hasFoundMeshPoint = false;
-						meshpointInAdditionalMesh = ORpolygonList.findMeshPointIntInMesh(firstNewMeshPointInMesh, x, y, &hasFoundMeshPoint);
+						meshpointInAdditionalMesh = ATORpolygonList.findMeshPointIntInMesh(firstNewMeshPointInMesh, x, y, &hasFoundMeshPoint);
 						if(hasFoundMeshPoint == false)
 						{
 							cerr << "error: cannot find adjacent meshpoint" << endl;
@@ -919,7 +919,7 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 						}
 						*/
 
-						if(SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(nearestMeshpointInExistingMesh->point), &(meshpointInAdditionalMesh->point)) < OR_METHOD_3DOD_USE_ADVANCED_INTERP_MESH_JOINING_MAXIMUM_RECONCILIATION_DISTANCE)
+						if(SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(nearestMeshpointInExistingMesh->point), &(meshpointInAdditionalMesh->point)) < ATOR_METHOD_3DOD_USE_ADVANCED_INTERP_MESH_JOINING_MAXIMUM_RECONCILIATION_DISTANCE)
 						{
 							//now redirect all mesh points surrounding the mesh point of the existing mesh to the corresponding mesh point of the additional mesh
 							for(int q = 0; q< 4; q++)
@@ -937,11 +937,11 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 								}
 							}
 
-							if(OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST)
+							if(ATOR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST)
 							{
 								//now recalculate mesh point normal and normal contrast values [should recalculate other values also]
-								ORpolygonList.calculateMeshPointNormal(nearestMeshpointInExistingMesh);	//or meshpointInAdditionalMesh
-								ORpolygonList.calculateMeshPointNormalContrast(nearestMeshpointInExistingMesh);	//or meshpointInAdditionalMesh
+								ATORpolygonList.calculateMeshPointNormal(nearestMeshpointInExistingMesh);	//or meshpointInAdditionalMesh
+								ATORpolygonList.calculateMeshPointNormalContrast(nearestMeshpointInExistingMesh);	//or meshpointInAdditionalMesh
 							}
 						}
 					}
@@ -953,11 +953,11 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 			bool* contrastBooleanMap = new bool[imageWidth*imageHeight];
 			bool* depthContrastBooleanMap = new bool[imageWidth*imageHeight];
 
-		#ifdef OR_USE_FOREGROUND_DEPTH_CHECKS_OLD
+		#ifdef ATOR_USE_FOREGROUND_DEPTH_CHECKS_OLD
 			createContrastMapFromMapWithForegroundDepthCheck(imageWidth, imageHeight, depthMap, depthMap, depthContrastMap, contrastBooleanMap, foregroundDepthCheckDepthContrastBooleanMap, EDGE_DEPTH_CONTRAST_THRESHOLD);
 		#else
 			RTpixelMaps.createContrastMapFromMap(imageWidth, imageHeight, depthMap, depthContrastMap);
-			ORpixelMaps.createDepthContrastBooleanMap(imageWidth, imageHeight, depthContrastMap, depthContrastBooleanMap);	//need to check threshold here
+			ATORpixelMaps.createDepthContrastBooleanMap(imageWidth, imageHeight, depthContrastMap, depthContrastBooleanMap);	//need to check threshold here
 		#endif
 
 			currentMeshPointInMesh = firstNewMeshPointInMesh;
@@ -971,19 +971,19 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 
 						vec depthContrastEdgePoint;
 						RTpixelMaps.getPointMapValue(x, y, imageWidth, pointMap, &depthContrastEdgePoint);
-						ORmeshPoint* nearestMeshpointInExistingMesh;
+						ATORmeshPoint* nearestMeshpointInExistingMesh;
 						bool hasFoundMeshPoint = false;
-						nearestMeshpointInExistingMesh = ORpolygonList.findMeshPointIntInMesh(firstMeshPointInMeshList, &depthContrastEdgePoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
+						nearestMeshpointInExistingMesh = ATORpolygonList.findMeshPointIntInMesh(firstMeshPointInMeshList, &depthContrastEdgePoint, &hasFoundMeshPoint, numMeshPointsInExistingMesh);
 						if(hasFoundMeshPoint == false)
 						{
 							cerr << "error: cannot find adjacent meshpoint" << endl;
 							exit(EXIT_ERROR);
 						}
 
-						ORmeshPoint* meshpointInAdditionalMesh;
+						ATORmeshPoint* meshpointInAdditionalMesh;
 						meshpointInAdditionalMesh = meshPointArray[y*imageWidth + x];
 
-						if(SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(nearestMeshpointInExistingMesh->point), &(meshpointInAdditionalMesh->point)) < OR_METHOD_3DOD_USE_ADVANCED_INTERP_MESH_JOINING_MAXIMUM_RECONCILIATION_DISTANCE)
+						if(SHAREDvector.calculateTheDistanceBetweenTwoPoints(&(nearestMeshpointInExistingMesh->point), &(meshpointInAdditionalMesh->point)) < ATOR_METHOD_3DOD_USE_ADVANCED_INTERP_MESH_JOINING_MAXIMUM_RECONCILIATION_DISTANCE)
 						{
 							//now redirect all mesh points surrounding the mesh point of the existing mesh to the corresponding mesh point of the additional mesh
 							for(int q = 0; q< 4; q++)
@@ -1000,11 +1000,11 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 								}
 							}
 
-							if(OR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST)
+							if(ATOR_METHOD3DOD_USE_MESH_NORMAL_AND_NORMAL_CONTRAST)
 							{
 								//now recalculate mesh point normal and normal contrast values [should recalculate other values also]
-								ORpolygonList.calculateMeshPointNormal(nearestMeshpointInExistingMesh);	//or meshpointInAdditionalMesh
-								ORpolygonList.calculateMeshPointNormalContrast(nearestMeshpointInExistingMesh);	//or meshpointInAdditionalMesh
+								ATORpolygonList.calculateMeshPointNormal(nearestMeshpointInExistingMesh);	//or meshpointInAdditionalMesh
+								ATORpolygonList.calculateMeshPointNormalContrast(nearestMeshpointInExistingMesh);	//or meshpointInAdditionalMesh
 							}
 						}
 					}
@@ -1029,10 +1029,10 @@ void ORmethod3DODClass::create3DmeshUsingPointMap3DOD(int imageWidth, const int 
 
 
 
-void ORmethod3DODClass::create3DMeshReferenceListUsingPointMap(int imageWidth, int imageHeight, double* pointMap, unsigned char* rgbMap, ORmeshPoint* firstMeshPointInMeshList)
+void ATORmethod3DODClass::create3DMeshReferenceListUsingPointMap(int imageWidth, int imageHeight, double* pointMap, uchar* rgbMap, ATORmeshPoint* firstMeshPointInMeshList)
 {
 
-	ORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
+	ATORmeshPoint* currentMeshPointInMesh = firstMeshPointInMeshList;
 	for(int y = 0; y < (imageHeight); y++)
 	{
 		for(int x = 0; x < (imageWidth); x++)
@@ -1051,7 +1051,7 @@ void ORmethod3DODClass::create3DMeshReferenceListUsingPointMap(int imageWidth, i
 			currentMeshPointInMesh->xInt = x;
 			currentMeshPointInMesh->yInt = x;
 
-			ORmeshPoint* newMeshPoint = new ORmeshPoint();
+			ATORmeshPoint* newMeshPoint = new ATORmeshPoint();
 			currentMeshPointInMesh->next = newMeshPoint;
 			currentMeshPointInMesh = currentMeshPointInMesh->next;
 
@@ -1074,7 +1074,7 @@ void ORmethod3DODClass::create3DMeshReferenceListUsingPointMap(int imageWidth, i
 				if((kx >= 0) && (kx <= imageWidth-1) && (ky >= 0) && (ky <= imageHeight-1))
 				{
 					bool hasFoundMeshPoint = false;
-					currentMeshPointInMesh->adjacentMeshPoint[q] = ORpolygonList.findMeshPointIntInMesh(firstMeshPointInMeshList, kx, ky, &hasFoundMeshPoint);
+					currentMeshPointInMesh->adjacentMeshPoint[q] = ATORpolygonList.findMeshPointIntInMesh(firstMeshPointInMeshList, kx, ky, &hasFoundMeshPoint);
 					if(hasFoundMeshPoint == false)
 					{
 						cerr << "error: cannot find adjacent meshpoint" << endl;
@@ -1099,8 +1099,8 @@ void ORmethod3DODClass::create3DMeshReferenceListUsingPointMap(int imageWidth, i
 
 
 
-#ifdef OR_METHOD_3DOD_USE_OLD_TESTED_BUT_BASIC_FEATURE_DETECTION
-bool ORmethod3DODClass::generateFeatureList3DOD(RTviewInfo* vi, const double* depthMap, double* pointMap, const bool* depthContrastBooleanMap, const bool* luminosityContrastBooleanMap, const bool* luminosityContrastMapMinusDepthContrastMap, ORfeature* firstFeatureInList, const int trainOrTest)
+#ifdef ATOR_METHOD_3DOD_USE_OLD_TESTED_BUT_BASIC_FEATURE_DETECTION
+bool ATORmethod3DODClass::generateFeatureList3DOD(RTviewInfo* vi, const double* depthMap, double* pointMap, const bool* depthContrastBooleanMap, const bool* luminosityContrastBooleanMap, const bool* luminosityContrastMapMinusDepthContrastMap, ATORfeature* firstFeatureInList, const int trainOrTest)
 {
 	bool result = true;
 
@@ -1140,13 +1140,13 @@ bool ORmethod3DODClass::generateFeatureList3DOD(RTviewInfo* vi, const double* de
 	createFeaturesUsingBooleanMapUsingDepthMap(imageWidth, imageHeight, luminosityContrastMapMinusDepthContrastMap, depthMap, featuresUsingLuminosityContrastMapMinusDepthContrastMap, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, vi, pointMap);
 	//THIS ALTERNATE METHOD DOESNT WORK WHY NOT?; createFeaturesUsingBooleanMapUsingPointMap(imageWidth, imageHeight, luminosityContrastMapMinusDepthContrastMap, pointMap, featuresUsingLuminosityContrastMapMinusDepthContrastMap, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2);
 
-	ORpixelMaps.addBooleanMaps(imageWidth, imageHeight, featuresUsingDepthContrastMapComplete, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete, featuresMapComplete);
+	ATORpixelMaps.addBooleanMaps(imageWidth, imageHeight, featuresUsingDepthContrastMapComplete, featuresUsingLuminosityContrastMapMinusDepthContrastMapComplete, featuresMapComplete);
 	reconcileFeaturesMap(imageWidth, imageHeight, featuresMapComplete);	//may no longer be required
 		//required after joining boolean corner maps
 
 	//now define polygons for which transformations will occur for nn experience feeding features
 
-	#ifndef OR_DEBUG_OLD_FEATURE_GENERATION_METHOD
+	#ifndef ATOR_DEBUG_OLD_FEATURE_GENERATION_METHOD
 	//NEW METHOD;
 	generateFeatureListUsingFeatureArraysUsingPointMap(imageWidth, imageHeight, pointMap, maxDotProductResultXposArrayCompleteMap1, maxDotProductResultYposArrayCompleteMap1, firstFeatureInList);
 	generateFeatureListUsingFeatureArraysUsingPointMap(imageWidth, imageHeight, pointMap, maxDotProductResultXposArrayCompleteMap2, maxDotProductResultYposArrayCompleteMap2, firstFeatureInList);
@@ -1157,7 +1157,7 @@ bool ORmethod3DODClass::generateFeatureList3DOD(RTviewInfo* vi, const double* de
 	#endif
 
 	/*
-	ORfeature* currentFeatureInList = firstFeatureInList;
+	ATORfeature* currentFeatureInList = firstFeatureInList;
 	while(currentFeatureInList->next != NULL)
 	{
 		cout << "currentFeatureInList++" << endl;
@@ -1165,7 +1165,7 @@ bool ORmethod3DODClass::generateFeatureList3DOD(RTviewInfo* vi, const double* de
 	}
 	*/
 
-	ORoperations.generateBooleanMapFromFeatureList(imageWidth, imageHeight, firstFeatureInList, featuresMapCompleteOfficial, vi, 1);
+	ATORoperations.generateBooleanMapFromFeatureList(imageWidth, imageHeight, firstFeatureInList, featuresMapCompleteOfficial, vi, 1);
 	//reconcileFeaturesMap(imageWidth, imageHeight, featuresMapCompleteOfficial);	//featuresMapCompleteOfficial shouldnt need reconciliation as features have already been checked to not reside close to each other! - fix this!
 
 	string featuresMapCompleteFileNameCPlus =  "featuresMapComplete" + trainOrTestString + PPM_EXTENSION;
@@ -1203,7 +1203,7 @@ bool ORmethod3DODClass::generateFeatureList3DOD(RTviewInfo* vi, const double* de
 
 
 	//may no longer be required?
-void ORmethod3DODClass::reconcileFeaturesMap(const int imageWidth, const int imageHeight, bool* featuresBooleanMap)
+void ATORmethod3DODClass::reconcileFeaturesMap(const int imageWidth, const int imageHeight, bool* featuresBooleanMap)
 {
 	for(int y = 0; y < imageHeight; y++)
 	{
@@ -1265,7 +1265,7 @@ void ORmethod3DODClass::reconcileFeaturesMap(const int imageWidth, const int ima
 
 
 
-void ORmethod3DODClass::createFeaturesUsingBooleanMap(const int imageWidth, const int imageHeight, const bool* booleanMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], const RTviewInfo* vi)
+void ATORmethod3DODClass::createFeaturesUsingBooleanMap(const int imageWidth, const int imageHeight, const bool* booleanMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], const RTviewInfo* vi)
 {
 	double imageSizeWidth = vi->imageWidth;
 	double imageSizeHeight = vi->imageHeight;
@@ -1474,7 +1474,7 @@ void ORmethod3DODClass::createFeaturesUsingBooleanMap(const int imageWidth, cons
 }
 
 
-void ORmethod3DODClass::createFeaturesUsingBooleanMapUsingDepthMap(const int imageWidth, const int imageHeight, const bool* booleanMap, const double* depthMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], RTviewInfo* vi, const double* pointMap)
+void ATORmethod3DODClass::createFeaturesUsingBooleanMapUsingDepthMap(const int imageWidth, const int imageHeight, const bool* booleanMap, const double* depthMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3], RTviewInfo* vi, const double* pointMap)
 {
 	double imageSizeWidth = vi->imageWidth;
 	double imageSizeHeight = vi->imageHeight;
@@ -1690,7 +1690,7 @@ void ORmethod3DODClass::createFeaturesUsingBooleanMapUsingDepthMap(const int ima
 	//now we have the nearest 3 features to each corner using the outlined (common unit vector) scenarios
 }
 
-void ORmethod3DODClass::createFeaturesUsingBooleanMapUsingPointMap(int imageWidth, const int imageHeight, const bool* booleanMap, double* pointMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3])
+void ATORmethod3DODClass::createFeaturesUsingBooleanMapUsingPointMap(int imageWidth, const int imageHeight, const bool* booleanMap, double* pointMap, bool* featuresUsingContrastMap, bool* featuresUsingContrastMapComplete, int maxDotProductResultXposArrayComplete[3][3][3], int maxDotProductResultYposArrayComplete[3][3][3])
 {
 
 	//for general features;
@@ -1909,12 +1909,12 @@ void ORmethod3DODClass::createFeaturesUsingBooleanMapUsingPointMap(int imageWidt
 }
 
 
-void ORmethod3DODClass::generateFeatureListUsingFeatureArrays(const int imageWidth, const int imageHeight, const int maxDotProductResultXposArrayComplete[3][3][3], const int maxDotProductResultYposArrayComplete[3][3][3], ORfeature* firstFeatureInList, const RTviewInfo* vi)
+void ATORmethod3DODClass::generateFeatureListUsingFeatureArrays(const int imageWidth, const int imageHeight, const int maxDotProductResultXposArrayComplete[3][3][3], const int maxDotProductResultYposArrayComplete[3][3][3], ATORfeature* firstFeatureInList, const RTviewInfo* vi)
 {
 	//First create a list of unique features
 
 	//set currentFeatureInList to last corner in list;
-	ORfeature* currentFeatureInList = firstFeatureInList;
+	ATORfeature* currentFeatureInList = firstFeatureInList;
 	while(currentFeatureInList->next != NULL)
 	{
 		currentFeatureInList = currentFeatureInList->next;
@@ -1934,20 +1934,20 @@ void ORmethod3DODClass::generateFeatureListUsingFeatureArrays(const int imageWid
 				corner.y = y;
 				corner.z = 0.0;
 
-				if(!ORoperations.checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD, false))
+				if(!ATORoperations.checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD, false))
 				{//add corner to list
 
 
 					//fix;
 					bool zerozeroanomolyfound = false;
-					if((corner.x == OR_ZERO_ANOMALY_FEATURE_X_POS) && (corner.y == OR_ZERO_ANOMALY_FEATURE_Y_POS))
+					if((corner.x == ATOR_ZERO_ANOMALY_FEATURE_X_POS) && (corner.y == ATOR_ZERO_ANOMALY_FEATURE_Y_POS))
 					{
 						zerozeroanomolyfound = true;
 					}
 
 					bool backgroundcornerfound = false;
 					/*
-					if(compareDoubles(corner.z, OR_BACKGROUND_ANOMALY_Z_POS))
+					if(compareDoubles(corner.z, ATOR_BACKGROUND_ANOMALY_Z_POS))
 					{
 						backgroundcornerfound = true;
 					}
@@ -1960,7 +1960,7 @@ void ORmethod3DODClass::generateFeatureListUsingFeatureArrays(const int imageWid
 						currentFeatureInList->yViewport = y;
 
 						SHAREDvector.copyVectorRT(&(currentFeatureInList->point), &corner);
-						ORfeature* newFeature = new ORfeature();
+						ATORfeature* newFeature = new ATORfeature();
 						currentFeatureInList->next = newFeature;
 						currentFeatureInList = currentFeatureInList->next;
 					}
@@ -1973,12 +1973,12 @@ void ORmethod3DODClass::generateFeatureListUsingFeatureArrays(const int imageWid
 }
 
 
-void ORmethod3DODClass::generateFeatureListUsingFeatureArraysUsingDepthMap(const int imageWidth, const int imageHeight, const double* depthMap, const int maxDotProductResultXposArrayComplete[3][3][3], const int maxDotProductResultYposArrayComplete[3][3][3], ORfeature* firstFeatureInList, RTviewInfo* vi)
+void ATORmethod3DODClass::generateFeatureListUsingFeatureArraysUsingDepthMap(const int imageWidth, const int imageHeight, const double* depthMap, const int maxDotProductResultXposArrayComplete[3][3][3], const int maxDotProductResultYposArrayComplete[3][3][3], ATORfeature* firstFeatureInList, RTviewInfo* vi)
 {
 	//First create a list of unique features
 
 	//set currentFeatureInList to last corner in list;
-	ORfeature* currentFeatureInList = firstFeatureInList;
+	ATORfeature* currentFeatureInList = firstFeatureInList;
 	while(currentFeatureInList->next != NULL)
 	{
 		currentFeatureInList = currentFeatureInList->next;
@@ -2013,20 +2013,20 @@ void ORmethod3DODClass::generateFeatureListUsingFeatureArraysUsingDepthMap(const
 				corner.z = z;
 				#endif
 
-				if(!ORoperations.checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD, false))
+				if(!ATORoperations.checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_DEPTH_MAP_METHOD, false))
 				{//add corner to list
 
 
 					//fix;
 					bool zerozeroanomolyfound = false;
-					if((corner.x == OR_ZERO_ANOMALY_FEATURE_X_POS) && (corner.y == OR_ZERO_ANOMALY_FEATURE_Y_POS))
+					if((corner.x == ATOR_ZERO_ANOMALY_FEATURE_X_POS) && (corner.y == ATOR_ZERO_ANOMALY_FEATURE_Y_POS))
 					{
 						zerozeroanomolyfound = true;
 					}
 
 					bool backgroundcornerfound = false;
 					/*
-					if(compareDoubles(corner.z, OR_BACKGROUND_ANOMALY_Z_POS))
+					if(compareDoubles(corner.z, ATOR_BACKGROUND_ANOMALY_Z_POS))
 					{
 						backgroundcornerfound = true;
 					}
@@ -2039,7 +2039,7 @@ void ORmethod3DODClass::generateFeatureListUsingFeatureArraysUsingDepthMap(const
 						currentFeatureInList->yViewport = y;
 
 						SHAREDvector.copyVectorRT(&(currentFeatureInList->point), &corner);
-						ORfeature* newFeature = new ORfeature();
+						ATORfeature* newFeature = new ATORfeature();
 						currentFeatureInList->next = newFeature;
 						currentFeatureInList = currentFeatureInList->next;
 					}
@@ -2051,12 +2051,12 @@ void ORmethod3DODClass::generateFeatureListUsingFeatureArraysUsingDepthMap(const
 
 }
 
-void ORmethod3DODClass::generateFeatureListUsingFeatureArraysUsingPointMap(int imageWidth, const int imageHeight, double* pointMap, const int maxDotProductResultXposArrayComplete[3][3][3], const int maxDotProductResultYposArrayComplete[3][3][3], ORfeature* firstFeatureInList)
+void ATORmethod3DODClass::generateFeatureListUsingFeatureArraysUsingPointMap(int imageWidth, const int imageHeight, double* pointMap, const int maxDotProductResultXposArrayComplete[3][3][3], const int maxDotProductResultYposArrayComplete[3][3][3], ATORfeature* firstFeatureInList)
 {
 	//First create a list of unique features
 
 	//set currentFeatureInList to last corner in list;
-	ORfeature* currentFeatureInList = firstFeatureInList;
+	ATORfeature* currentFeatureInList = firstFeatureInList;
 	while(currentFeatureInList->next != NULL)
 	{
 		currentFeatureInList = currentFeatureInList->next;
@@ -2085,20 +2085,20 @@ void ORmethod3DODClass::generateFeatureListUsingFeatureArraysUsingPointMap(int i
 				corner.y = yWorld;
 				corner.z = zWorld;
 
-				if(!ORoperations.checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_POINT_MAP_METHOD, true))
+				if(!ATORoperations.checkFeatureListForCommonFeature(&corner, firstFeatureInList, MAX_FEATURE_DISTANCE_ERROR_USING_POINT_MAP_METHOD, true))
 				{//add corner to list
 
 
 					//fix;
 					bool zerozeroanomolyfound = false;
-					if((corner.x == OR_ZERO_ANOMALY_FEATURE_X_POS) && (corner.y == OR_ZERO_ANOMALY_FEATURE_Y_POS))
+					if((corner.x == ATOR_ZERO_ANOMALY_FEATURE_X_POS) && (corner.y == ATOR_ZERO_ANOMALY_FEATURE_Y_POS))
 					{
 						zerozeroanomolyfound = true;
 					}
 
 					bool backgroundcornerfound = false;
 					/*
-					if(compareDoubles(corner.z, OR_BACKGROUND_ANOMALY_Z_POS))
+					if(compareDoubles(corner.z, ATOR_BACKGROUND_ANOMALY_Z_POS))
 					{
 						backgroundcornerfound = true;
 					}
@@ -2111,7 +2111,7 @@ void ORmethod3DODClass::generateFeatureListUsingFeatureArraysUsingPointMap(int i
 						currentFeatureInList->yViewport = y;
 
 						SHAREDvector.copyVectorRT(&(currentFeatureInList->point), &corner);
-						ORfeature* newFeature = new ORfeature();
+						ATORfeature* newFeature = new ATORfeature();
 						currentFeatureInList->next = newFeature;
 						currentFeatureInList = currentFeatureInList->next;
 					}
