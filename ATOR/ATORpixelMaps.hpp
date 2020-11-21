@@ -26,7 +26,7 @@
  * File Name: ATORpixelMaps.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2020 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition) Functions
- * Project Version: 3o4d 17-November-2020
+ * Project Version: 3o5a 21-November-2020
  * /
  *******************************************************************************/
 
