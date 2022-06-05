@@ -26,7 +26,7 @@
  * File Name: ATORglobalDefs.hpp
  * Author: Richard Bruce Baxter - Copyright (c) 2005-2021 Baxter AI (baxterai.com)
  * Project: OR specific global definitions
- * Project Version: 3p4b 07-August-2021
+ * Project Version: 3p4c 07-August-2021
  * Preconditions: Assume Linux EL5 or Windows XP or is installed
  * /
  *
