@@ -7,9 +7,9 @@
 /*******************************************************************************
  *
  * File Name: ATORdatabaseFileIO.hpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2022 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2008-2024 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition)
- * Project Version: 3q1a 05-June-2022
+ * Project Version: 3r1a 29-February-2024
  * /
  *******************************************************************************/
 
@@ -20,11 +20,11 @@
 #include "ATORglobalDefs.hpp"
 #include "SHAREDvars.hpp"
 #include "ATORpolygonList.hpp"
-#include "ATORdatabaseSQL.hpp"	//required for determineGeoBinX()/determineGeoBinY() only ... - these functions and/or compareFeaturesListForMatch() should probably be moved elsewhere instead, say to "ORdatabaseOperations.cpp"
+#include "ATORdatabaseDecisionTreeOperations.hpp"
 #include "SHAREDvector.hpp"
 #include "LDreferenceManipulation.hpp"
 
-#define ATOR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME ((string)"ORdatabase/")
+#define ATOR_DATABASE_FILESYSTEM_DEFAULT_DATABASE_NAME ((string)"ATORfsdatabase/")
 #define ATOR_DATABASE_FILESYSTEM_DEFAULT_SERVER_OR_MOUNT_NAME "/home/systemusername/source/"
 #define ATOR_DATABASE_CONCEPT_NAME_SUBDIRECTORY_INDEX_NUMBER_OF_LEVELS (3) 	//eg e/x/a/example
 
@@ -39,16 +39,16 @@ class ATORdatabaseFileIOClass
 {
 	private: SHAREDvarsClass SHAREDvars;
 	private: SHAREDvectorClass SHAREDvector;
-	private: ATORdatabaseSQLClass ATORdatabaseSQL;
+	private: ATORdatabaseDecisionTreeOperationsClass ATORdatabaseDecisionTreeOperations;
 	private: LDreferenceManipulationClass LDreferenceManipulation;
 	#ifdef ATOR_USE_DATABASE
 	public: void initialiseDatabase(const string newDatabaseFolderName);
-	private: bool DBdirectoryExists(string* folderName);
-	private: bool DBcreateDirectory(string* folderName);
-	private: bool DBsetCurrentDirectory(string* folderName);
-	private: bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string* folderName);
+	private: bool DBdirectoryExists(const string* folderName);
+	private: bool DBcreateDirectory(const string* folderName);
+	private: bool DBsetCurrentDirectory(const string* folderName);
+	private: bool checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(const string* folderName);
 	private: string DBgenerateServerDatabaseName(const string* objectName, const bool trainOrTest);
-	public: string DBgenerateFolderName(string* objectName, const bool trainOrTest);
+	public: string DBgenerateFolderName(const string* objectName, const bool trainOrTest);
 	#endif
 
 	#ifdef ATOR_METHOD_GEOMETRIC_COMPARISON

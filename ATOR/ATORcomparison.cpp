@@ -7,9 +7,9 @@
 /*******************************************************************************
  *
  * File Name: ATORcomparison.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2022 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2008-2024 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition)
- * Project Version: 3q1a 05-June-2022
+ * Project Version: 3r1a 29-February-2024
  * /
  *******************************************************************************/
 
@@ -29,10 +29,10 @@ int passes;
 
 
 #ifdef ATOR_IMAGE_COMPARISON_NONSQL_GEOMETRIC_COMPARISON_OPTIMISED_TRAIN_FILE_IO_V2
-static ATORfeatureContainer trainfeatureGeoCompBinArray[ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS][ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS][ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS][ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS][2];	//trainfeatureGeoCompBinArray now stores 2 feature combinations (instead of 1 feature)
+static ATORfeatureContainer trainfeatureGeoCompBinArray[ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS_STATIC][ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS_STATIC][ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS_STATIC][ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS_STATIC][2];	//trainfeatureGeoCompBinArray now stores 2 feature combinations (instead of 1 feature)
 #endif
 #ifdef ATOR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_BASIC_NO_SQL
-static ATORfeatureContainer trainfeatureImageAverageColourCompBinArray[ATOR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL][ATOR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL][ATOR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL];
+static ATORfeatureContainer trainfeatureImageAverageColourCompBinArray[ATOR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL_STATIC][ATOR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL_STATIC][ATOR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL_STATIC];
 #endif
 
 //#ifdef ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS
@@ -199,7 +199,7 @@ void ATORcomparisonClass::fillDCTcoeffSelectionArrays()
 #ifdef ATOR_IMAGE_COMPARISON_SQL
 double ATORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPolys[], const int numberOfTestViewIndicies, int imageWidthFacingPoly, int imageHeightFacingPoly, const string testObjectNameArray[], const int numberOfTestObjects, const int dimension, const int numberOfTestZoomIndicies, const int trainOrTest, const int testViewNumber)
 #else
-//double compareNormalisedSnapshots(const int numberOfTrainPolys[], const int numberOfTestPolys[], const int numberOfTrainViewIndicies, const int numberOfTestViewIndicies, int imageWidthFacingPoly, int imageHeightFacingPoly, const string trainObjectNameArray[], const int numberOfTrainObjects, const string testObjectNameArray[], const int numberOfTestObjects, const int dimension, const int numberOfTrainZoomIndicies, const int numberOfTestZoomIndicies, const int testViewNumber)
+double ATORcomparisonClass::compareNormalisedSnapshots(const int numberOfTrainPolys[], const int numberOfTestPolys[], const int numberOfTrainViewIndicies, const int numberOfTestViewIndicies, int imageWidthFacingPoly, int imageHeightFacingPoly, const string trainObjectNameArray[], const int numberOfTrainObjects, const string testObjectNameArray[], const int numberOfTestObjects, const int dimension, const int numberOfTrainZoomIndicies, const int numberOfTestZoomIndicies, const int testViewNumber)
 #endif
 {
 	string currentTempFolder = SHAREDvars.getCurrentDirectory();
@@ -293,7 +293,7 @@ double ATORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPol
 		string ICRheader = "";
 		if(ATOR_GENERATE_IMAGE_COMPARITOR_RESULTS_NO_EXPLICIT_CONFIDENTIAL_WARNINGS)
 		{
-			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3q1a 05-June-2022<p>";
+			ICRheader = ICRheader + "<HTML><HEAD><TITLE>Results </TITLE><style type=\"text/css\">TD { font-size:50%; } </style></HEAD><BODY>Results<p>Project Version: 3r1a 29-February-2024<p>";
 		}
 		else
 		{
@@ -666,10 +666,10 @@ double ATORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPol
 							{
 								if(findex1 != findex2)
 								{
-									int x1Bin = ATORdatabaseSQL.determineGeoBinX(currentFeatureInTempList->pointTransformed.x);
-									int y1Bin = ATORdatabaseSQL.determineGeoBinY(currentFeatureInTempList->pointTransformed.y);
-									int x2Bin = ATORdatabaseSQL.determineGeoBinX(currentFeatureInTempList2->pointTransformed.x);
-									int y2Bin = ATORdatabaseSQL.determineGeoBinY(currentFeatureInTempList2->pointTransformed.y);
+									int x1Bin = ATORdatabaseDecisionTreeOperations.determineGeoBinX(currentFeatureInTempList->pointTransformed.x);
+									int y1Bin = ATORdatabaseDecisionTreeOperations.determineGeoBinY(currentFeatureInTempList->pointTransformed.y);
+									int x2Bin = ATORdatabaseDecisionTreeOperations.determineGeoBinX(currentFeatureInTempList2->pointTransformed.x);
+									int y2Bin = ATORdatabaseDecisionTreeOperations.determineGeoBinY(currentFeatureInTempList2->pointTransformed.y);
 
 									bool insideBin = false;
 
@@ -954,6 +954,7 @@ double ATORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPol
 
 						ATORfeature* currentTestFeature;
 
+						#ifdef ATOR_USE_SQL
 						if(ATOR_IMAGE_COMPARISON_SQL_GET_TEST_DATA_FROM_SQL)
 						{
 							currentTestFeature = new ATORfeature();
@@ -983,6 +984,7 @@ double ATORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPol
 						}
 						else
 						{
+						#endif
 							if(ATOR_IMAGE_COMPARISON_GEOMETRIC_COMPARISON_BINNING)
 							{
 								#ifndef ATOR_WINDOWS_COMPILER_LIMITATION_MUST_GET_TEST_DATA_FROM_SQL
@@ -993,7 +995,9 @@ double ATORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPol
 							{
 								currentTestFeature = new ATORfeature(); 	//create dummy feature - not used.
 							}
+						#ifdef ATOR_USE_SQL
 						}
+						#endif
 
 						colour normalisedAverageHueDeviationRequirement;
 						if(ATOR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING)
@@ -1107,10 +1111,10 @@ double ATORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPol
 									bool geoBinWithinRange = false;
 									if(ATOR_IMAGE_COMPARISON_GEOMETRIC_COMPARISON_BINNING)
 									{
-										xBin = ATORdatabaseSQL.determineGeoBinX(testcurrentFeatureInNearestFeatureList->pointTransformed.x);
-										yBin = ATORdatabaseSQL.determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);
-										x2Bin = ATORdatabaseSQL.determineGeoBinX(testcurrentFeatureInNearestFeatureList2->pointTransformed.x);
-										y2Bin = ATORdatabaseSQL.determineGeoBinY(testcurrentFeatureInNearestFeatureList2->pointTransformed.y);
+										xBin = ATORdatabaseDecisionTreeOperations.determineGeoBinX(testcurrentFeatureInNearestFeatureList->pointTransformed.x);
+										yBin = ATORdatabaseDecisionTreeOperations.determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);
+										x2Bin = ATORdatabaseDecisionTreeOperations.determineGeoBinX(testcurrentFeatureInNearestFeatureList2->pointTransformed.x);
+										y2Bin = ATORdatabaseDecisionTreeOperations.determineGeoBinY(testcurrentFeatureInNearestFeatureList2->pointTransformed.y);
 
 
 										#ifndef ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NO_EXPLICIT_FOR_LOOPS
@@ -1590,7 +1594,12 @@ double ATORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPol
 											}
 											else
 											{
+												#ifdef ATOR_IMAGE_COMPARISON_SQL
 												ATORdatabaseSQL.convertSQLdatabaseStringToSnapshotMaps(imageWidthFacingPoly, imageHeightFacingPoly, rgbMapTrain, trainrgbDevMap, traindepthMap, smallImageWidth, smallImageHeight, trainrgbMapSmall, traindepthMapSmall, trainrgbDevMapSmall, dimension, currentFeatureContainerInTestFeatureMatchingTrainBin->firstFeatureInFeatureList->snapshotMapsText, ATOR_METHOD_3DOD_DEPTH_MAP_TO_IMAGE_CONVERSION_SCALE, ATOR_IMAGE_COMPARISON_COMPARE_RGB_DEV_MAPS_NOT_RGB_MAPS);
+												#else
+												cerr << "ATORcomparisonClass::compareNormalisedSnapshots error: !useGeneratedTrainPixmapFiles requires ATOR_IMAGE_COMPARISON_SQL" << endl;
+												exit(EXIT_ERROR);
+												#endif
 											}
 
 											if(ATOR_PRINT_ALGORITHM_AND_TIME_DETAILS)
@@ -2059,7 +2068,7 @@ double ATORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPol
 												testDCTBinnedPrelimTableHTMLOutputString = testDCTBinnedPrelimTableHTMLOutputString + "<TD>" + SHAREDvars.convertIntToString(arrayValueSigned) + "</TD>";
 
 												double arrayValueUnsignedDouble;
-												int arrayValueUnsigned = ATORdatabaseSQL.determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);
+												int arrayValueUnsigned = ATORdatabaseDecisionTreeOperations.determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);
 												testDCTBinnedTableHTMLOutputString = testDCTBinnedTableHTMLOutputString + "<TD>" + SHAREDvars.convertUnsignedIntToString(arrayValueUnsigned) + "</TD>";
 											}
 											for(int i=0; i<ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; i++)
@@ -2068,7 +2077,7 @@ double ATORcomparisonClass::compareNormalisedSnapshots(const int numberOfTestPol
 												trainDCTBinnedPrelimTableHTMLOutputString = trainDCTBinnedPrelimTableHTMLOutputString + "<TD>" + SHAREDvars.convertIntToString(arrayValueSigned) + "</TD>";
 
 												double arrayValueUnsignedDouble;
-												int arrayValueUnsigned = ATORdatabaseSQL.determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);
+												int arrayValueUnsigned = ATORdatabaseDecisionTreeOperations.determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);
 												trainDCTBinnedTableHTMLOutputString = trainDCTBinnedTableHTMLOutputString + "<TD>" + SHAREDvars.convertUnsignedIntToString(arrayValueUnsigned) + "</TD>";
 											}
 											testDCTBinnedPrelimTableHTMLOutputString = testDCTBinnedPrelimTableHTMLOutputString + "</TR></TABLE>";
@@ -2389,8 +2398,8 @@ void ATORcomparisonClass::createGeoTableHTMLfromFeatureList(const ATORfeature* f
 			string coordinateZString = "";
 			if(applyBinning)
 			{
-				int xBin = ATORdatabaseSQL.determineGeoBinX(currentFeatureInList->pointTransformed.x);
-				int yBin = ATORdatabaseSQL.determineGeoBinY(currentFeatureInList->pointTransformed.y);
+				int xBin = ATORdatabaseDecisionTreeOperations.determineGeoBinX(currentFeatureInList->pointTransformed.x);
+				int yBin = ATORdatabaseDecisionTreeOperations.determineGeoBinY(currentFeatureInList->pointTransformed.y);
 				int zBin = 0;
 				coordinateXString = SHAREDvars.convertIntToString(xBin);
 				coordinateYString = SHAREDvars.convertIntToString(yBin);

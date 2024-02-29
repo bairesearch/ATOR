@@ -7,9 +7,9 @@
 /*******************************************************************************
  *
  * File Name: ATORmethod.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2022 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2008-2024 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition)
- * Project Version: 3q1a 05-June-2022
+ * Project Version: 3r1a 29-February-2024
  * Notes: NB pointmap is a new addition for test streamlining; NB in test scenarios 2 and 3, there will be no pointmap available; the pointmap will have to be generated after depth map is obtained by using calculatePointUsingTInWorld()
  * /
  *******************************************************************************/
@@ -186,7 +186,8 @@ bool ATORmethodClass::ORTHmethod(int dimension, const int numberOfTrainObjects, 
 	{
 		result = false;
 	}
-
+	
+	#ifdef ATOR_USE_COMPARISON
 	#ifdef ATOR_IMAGE_COMPARISON_SQL
 	if(!ATORmethodCompareTestWithTrain(dimension, numberOfTestObjects, testObjectNameArray, imageWidthFacingPoly, imageHeightFacingPoly, numberOfTestPolys, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestZoomIndicies, TEST, 0))
 	#else
@@ -195,6 +196,9 @@ bool ATORmethodClass::ORTHmethod(int dimension, const int numberOfTrainObjects, 
 	{
 		result = false;
 	}
+	#else
+	cout << "ATOR_USE_COMPARISON disabled: will not compare train and test data" << endl;
+	#endif
 
 	if(!ATORmethodExit())
 	{
@@ -203,8 +207,6 @@ bool ATORmethodClass::ORTHmethod(int dimension, const int numberOfTrainObjects, 
 
 	return result;
 }
-
-#ifdef ATOR_IMAGE_COMPARISON_SQL
 
 
 bool ATORmethodClass::ATORmethodTrain(int dimension, const int numberOfTrainObjects, string trainObjectNameArray[], int* numberOfTrainPolys, const int objectDataSource, RTviewInfo* viTrain, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrain, const int numberOfTrainViewIndiciesPerObject, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, const int trainOrTest, const string sqlIPaddress, const string sqlUsername, const string sqlPassword, const bool clearTrainTable, const int viewNumber, const string multViewListFileName)
@@ -247,10 +249,14 @@ bool ATORmethodClass::ATORmethodTest(int dimension, const int numberOfTestObject
 	}
 	cout << "ATORmethodTrainOrTest complete" << endl;
 
+	#ifdef ATOR_USE_COMPARISON
 	if(!ATORmethodCompareTestWithTrain(dimension, numberOfTestObjects, testObjectNameArray, imageWidthFacingPoly, imageHeightFacingPoly, numberOfTestPolys, numberOfTestViewIndiciesPerObjectWithUniquePolygons, numberOfTestZoomIndicies, trainOrTest, viewNumber))
 	{
 		result = false;
 	}
+	#else
+	cout << "ATOR_USE_COMPARISON disabled: will not compare train and test data" << endl;
+	#endif
 
 	if(!ATORmethodExit())
 	{
@@ -261,7 +267,6 @@ bool ATORmethodClass::ATORmethodTest(int dimension, const int numberOfTestObject
 }
 
 
-#endif
 
 
 
@@ -359,11 +364,11 @@ bool ATORmethodClass::ATORmethodExit()
 }
 
 
-
+#ifdef ATOR_USE_COMPARISON
 #ifdef ATOR_IMAGE_COMPARISON_SQL
 bool ATORmethodClass::ATORmethodCompareTestWithTrain(const int dimension, const int numberOfTestObjects, const string testObjectNameArray[], int imageWidthFacingPoly, int imageHeightFacingPoly, const int* numberOfTestPolys, const int numberOfTestViewIndiciesPerObjectWithUniquePolygons, const int numberOfTestZoomIndicies, const int trainOrTest, const int testViewNumber)
 #else
-//bool ATORmethodClass::ATORmethodCompareTestWithTrain(const int dimension, const int numberOfTrainObjects, const string trainObjectNameArray[], const int numberOfTestObjects, const string testObjectNameArray[], int imageWidthFacingPoly, int imageHeightFacingPoly, const int* numberOfTrainPolys, const int* numberOfTestPolys, const int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, const int numberOfTestViewIndiciesPerObjectWithUniquePolygons, const int numberOfTrainZoomIndicies, const int numberOfTestZoomIndicies, const int testViewNumber)
+bool ATORmethodClass::ATORmethodCompareTestWithTrain(const int dimension, const int numberOfTrainObjects, const string trainObjectNameArray[], const int numberOfTestObjects, const string testObjectNameArray[], int imageWidthFacingPoly, int imageHeightFacingPoly, const int* numberOfTrainPolys, const int* numberOfTestPolys, const int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, const int numberOfTestViewIndiciesPerObjectWithUniquePolygons, const int numberOfTrainZoomIndicies, const int numberOfTestZoomIndicies, const int testViewNumber)
 #endif
 {
 	bool result = true;
@@ -382,7 +387,7 @@ bool ATORmethodClass::ATORmethodCompareTestWithTrain(const int dimension, const 
 	#ifdef ATOR_IMAGE_COMPARISON_SQL
 	averageMatchErrorAcrossAllObjects = ATORcomparison.compareNormalisedSnapshots(numberOfTestPolys, numberOfTestViewIndiciesPerObjectWithUniquePolygons, imageWidthFacingPoly, imageHeightFacingPoly, testObjectNameArray, numberOfTestObjects, dimension, numberOfTestZoomIndicies, trainOrTest, testViewNumber);
 	#else
-	//averageMatchErrorAcrossAllObjects = ATORcomparison.compareNormalisedSnapshots(numberOfTrainPolys, numberOfTestPolys, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTestViewIndiciesPerObjectWithUniquePolygons, imageWidthFacingPoly, imageHeightFacingPoly, trainObjectNameArray, numberOfTrainObjects, testObjectNameArray, numberOfTestObjects, dimension, numberOfTrainZoomIndicies, numberOfTestZoomIndicies, testViewNumber);
+	averageMatchErrorAcrossAllObjects = ATORcomparison.compareNormalisedSnapshots(numberOfTrainPolys, numberOfTestPolys, numberOfTrainViewIndiciesPerObjectWithUniquePolygons, numberOfTestViewIndiciesPerObjectWithUniquePolygons, imageWidthFacingPoly, imageHeightFacingPoly, trainObjectNameArray, numberOfTrainObjects, testObjectNameArray, numberOfTestObjects, dimension, numberOfTrainZoomIndicies, numberOfTestZoomIndicies, testViewNumber);
 	#endif
 #endif
 
@@ -661,7 +666,7 @@ bool ATORmethodClass::ATORmethodCompareTestWithTrain(const int dimension, const 
 
 	return result;
 }
-
+#endif
 
 
 bool ATORmethodClass::ATORmethodTrainOrTest(int dimension, const int numberOfObjects, string objectNameArray[], const int objectDataSource, RTviewInfo* vi, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygons, const int numberOfViewIndiciesPerObject, int numberOfViewIndiciesPerObjectWithUniquePolygons, int* numberOfPolys, const int trainOrTest, int numberOfZoomIndicies, const int viewNumber, const string multViewListFileName)
@@ -669,7 +674,7 @@ bool ATORmethodClass::ATORmethodTrainOrTest(int dimension, const int numberOfObj
 	bool result = true;
 
 	for(int o=0; o<numberOfObjects; o++)		//only used for test harness
-	{
+	{	
 		if(ATOR_PRINT_ALGORITHM_PROGRESS)
 		{
 			cout << " objectIndex = " << o << endl;
@@ -947,7 +952,7 @@ bool ATORmethodClass::ATORmethodTrainOrTest(int dimension, const int numberOfObj
 				cout << "\t start: 2. object triangle generation - polygon list creation" << endl;
 				time2ObjectTriangleGenerationPolygonListStart = SHAREDvars.getTimeAsLong();
 			}
-
+			
 			if(!ATORoperations.generatePolygonListUsingFeatureListLocalised(vi->imageWidth, vi->imageHeight, firstFeatureInList, firstPolygonInList, numberOfZoomIndicies, dimension))
 			//if(!generatePolygonListUsingFeatureList(vi->imageWidth, vi->imageHeight, firstFeatureInList, firstPolygonInList))
 			{
@@ -3247,6 +3252,10 @@ bool ATORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firs
 	}
 	#endif
 
+	#ifndef ATOR_IMAGE_COMPARISON_SQL
+	int64_t databaseTableSizeTrainPolyIndex = 0;	//CHECKTHIS (use polyIndex instead of databaseTableSizeTrain for snapshotReferenceID - otherwise parse fileIO database folder to determine number of references)
+	#endif
+											
 	for(int zoomIndex=0; zoomIndex < numberOfZoomIndicies; zoomIndex++)
 	{
 		/*
@@ -3940,9 +3949,9 @@ bool ATORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firs
 									#ifndef ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
 										#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 										int concatonatedDctCoeffArrayBiasIntNOTUSED[ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX];
-										//currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned = ATORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff, concatonatedDctCoeffArrayBiasIntNOTUSED);
+										//currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned = ATORdatabaseDecisionTreeOperations.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff, concatonatedDctCoeffArrayBiasIntNOTUSED);
 										#else
-										currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned = ATORdatabaseSQL.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff);
+										currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeffArrayBinned = ATORdatabaseDecisionTreeOperations.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(currentPolygonInList->firstFeatureInNearestFeatureList->dctCoeff);
 										#endif
 									#endif
 
@@ -4106,6 +4115,7 @@ bool ATORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firs
 
 									#endif
 
+									#ifdef ATOR_USE_DATABASE_DECISIONTREE
 									if(ATOR_IMAGE_COMPARISON_DECISION_TREE)
 									{
 										if((trainOrTest == TRAIN) || (trainOrTest == TRAIN_AND_TEST))
@@ -4128,13 +4138,26 @@ bool ATORmethodClass::generateNormalisedSnapshotsUsingPolyList(LDreference* firs
 
 											//f. input snapshot data into image comparison decision tree
 											//addSnapshotIDReferenceToImageComparisonDecisionTree(smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly);
+											#ifdef ATOR_IMAGE_COMPARISON_SQL
 											int64_t snapshotReferenceID = (databaseTableSizeTrain-1);
+											#else
+											int64_t snapshotReferenceID = databaseTableSizeTrainPolyIndex;
+											databaseTableSizeTrainPolyIndex++;
+											#endif
 											ATORdatabaseDecisionTree.addSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcombinations(smallImageWidth, smallImageHeight, rgbMapSmallFacingPoly, currentPolygonInList->firstFeatureInNearestFeatureList, snapshotReferenceID, ignoreOTfeatures);		//-1 is required because databaseTableSizeTrain has already been incremented
+											
+											//reset current directory
 											#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
-											ATORdatabaseDecisionTree.createAndOrParseIntoDirectory(&imageComparisonTreeBaseDirectory, NULL, false, false);	//reset current directory
+											#ifdef ATOR_USE_DATABASE
+											ATORdatabaseFileIO.DBgenerateFolderName(&objectName, trainOrTest);
+											#else
+											ATORdatabaseDecisionTree.createAndOrParseIntoDirectory(&imageComparisonTreeBaseDirectory, NULL, false, false);
+											#endif
 											#endif
 										}
 									}
+									#endif
+									
 								#ifdef ATOR_METHOD_CHECK_SNAPSHOT_CONTRAST_BEFORE_SAVING_SNAPSHOT
 								}
 								#endif
@@ -4860,6 +4883,7 @@ int ATORmethodClass::createViFromMultiViewList(RTviewInfo* vi, const string file
 	else
 	{
 		cout << "error opening file, " << fileName << endl;
+		exit(EXIT_ERROR);
 	}
 
 	return lineCount;

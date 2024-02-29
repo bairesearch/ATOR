@@ -7,14 +7,23 @@
 /*******************************************************************************
  *
  * File Name: ATORdatabaseSQL.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2022 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2008-2024 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition)
- * Project Version: 3q1a 05-June-2022
+ * Project Version: 3r1a 29-February-2024
  * /
  *******************************************************************************/
 
 
 #include "ATORdatabaseSQL.hpp"
+
+
+#ifdef ATOR_IMAGE_COMPARISON_SQL
+int64_t databaseTableSizeTrainInitial;
+int64_t databaseTableSizeTrain;
+int64_t databaseTableSizeTest;
+int64_t databaseTableSizeDecisionTreeInitial;
+int64_t databaseTableSizeDecisionTree;
+
 
 //move this function elsewhere;
 int ATORdatabaseSQLClass::countIncrements(const int maxIncrement)
@@ -26,14 +35,6 @@ int ATORdatabaseSQLClass::countIncrements(const int maxIncrement)
 	}
 	return total;
 }
-
-//#ifdef ATOR_IMAGE_COMPARISON_SQL
-int64_t databaseTableSizeTrainInitial;
-int64_t databaseTableSizeTrain;
-int64_t databaseTableSizeTest;
-int64_t databaseTableSizeDecisionTreeInitial;
-int64_t databaseTableSizeDecisionTree;
-
 
 
 void ATORdatabaseSQLClass::convertSnapshotMapsToStringForSQLdatabaseEntry(int imageWidthFacingPoly, const int imageHeightFacingPoly, uchar* rgbMapFacingPoly, double* rgbDevIEnormalisedHueContrastMapFacingPoly, const double* depthMapFacingPoly, int smallImageWidth, const int smallImageHeight, uchar* rgbMapSmallFacingPoly, const double* rgbDevIEnormalisedHueContrastMapSmallFacingPoly, double* depthMapSmallFacingPoly, const int dimension, char* snapshotMapsText, const double depthScale, const bool compareRgbDevMapsNotRgbMaps, int* stringSize)
@@ -461,7 +462,7 @@ void ATORdatabaseSQLClass::insertSnapshotIDreferenceIntoSQLdatabaseDecisionTree(
 
 
 
-#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
+#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL_SINGLE_INSERT_STATEMENT_OPTIMISATION
 
 void ATORdatabaseSQLClass::insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart(const string sqlDatabaseDecisionTreeTableName, char* decisionTreeMultipleRowInsertQueryTextCharStar, int64_t* decisionTreeSQLmultipleRowInsertQueryLength)
 {
@@ -1088,18 +1089,18 @@ void ATORdatabaseSQLClass::createFeaturesListUsingDatabaseQueryGeoXYbinRequireme
 			char dctCoeffArrayBinnedString[1000];
 			int DCTCoeff64BitValueStringLengthNOTUSED = 0;	//not used
 			int concatonatedDctCoeffArrayBiasIntNOTUSED[ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS];
-			//convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffNumValString, &DCTCoeff64BitValueStringLengthNOTUSED, concatonatedDctCoeffArrayBiasIntNOTUSED);
+			//ATORdatabaseDecisionTreeOperations.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffNumValString, &DCTCoeff64BitValueStringLengthNOTUSED, concatonatedDctCoeffArrayBiasIntNOTUSED);
 			#else
 			char dctCoeffNumValString[1000];
 			int DCTCoeff64BitValueStringLengthNOTUSED = 0;	//not used
-			//convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffNumValString, &DCTCoeff64BitValueStringLengthNOTUSED);
+			//ATORdatabaseDecisionTreeOperations.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(firstFeatureInList->dctCoeff, dctCoeffNumValString, &DCTCoeff64BitValueStringLengthNOTUSED);
 			#endif
 		#else
 			#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
 			int concatonatedDctCoeffArrayBiasIntNOTUSED[ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS];
-			//uint64_t dctCoeffArrayBinned = convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement, concatonatedDctCoeffArrayBiasIntNOTUSED);
+			//uint64_t dctCoeffArrayBinned = ATORdatabaseDecisionTreeOperations.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement, concatonatedDctCoeffArrayBiasIntNOTUSED);
 			#else
-			uint64_t dctCoeffArrayBinned = convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement);
+			uint64_t dctCoeffArrayBinned = ATORdatabaseDecisionTreeOperations.convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(concatonatedSignedDctCoeffArrayRequirement);
 			#endif
 			char dctCoeffNumValString[25];
 			sprintf(dctCoeffNumValString, "%ld", dctCoeffArrayBinned);
@@ -1638,10 +1639,10 @@ void ATORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ATORfeature*
 
 						int geoxBin[ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS];
 						int geoyBin[ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS];
-						geoxBin[0] = determineGeoBinX(currentFeatureInTempList->pointTransformed.x);
-						geoyBin[0] = determineGeoBinY(currentFeatureInTempList->pointTransformed.y);
-						geoxBin[1] = determineGeoBinX(currentFeatureInTempList2->pointTransformed.x);
-						geoyBin[1] = determineGeoBinY(currentFeatureInTempList2->pointTransformed.y);
+						geoxBin[0] = ATORdatabaseDecisionTreeOperations.determineGeoBinX(currentFeatureInTempList->pointTransformed.x);
+						geoyBin[0] = ATORdatabaseDecisionTreeOperations.determineGeoBinY(currentFeatureInTempList->pointTransformed.y);
+						geoxBin[1] = ATORdatabaseDecisionTreeOperations.determineGeoBinX(currentFeatureInTempList2->pointTransformed.x);
+						geoyBin[1] = ATORdatabaseDecisionTreeOperations.determineGeoBinY(currentFeatureInTempList2->pointTransformed.y);
 
 						if(addPermutationsOfTrainFeaturesForGeoBinning)
 						{
@@ -1795,8 +1796,8 @@ void ATORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ATORfeature*
 
 										string geobinDimensionString = SHAREDvars.convertIntToString(geobinDimension+1);
 
-										geoxBin[geobinDimension] = determineGeoBinX(currentFeature->pointTransformed.x);
-										geoyBin[geobinDimension] = determineGeoBinY(currentFeature->pointTransformed.y);
+										geoxBin[geobinDimension] = ATORdatabaseDecisionTreeOperations.determineGeoBinX(currentFeature->pointTransformed.x);
+										geoyBin[geobinDimension] = ATORdatabaseDecisionTreeOperations.determineGeoBinY(currentFeature->pointTransformed.y);
 
 
 										string geobinxString = SHAREDvars.convertIntToString(geoxBin[geobinDimension]);
@@ -1972,191 +1973,6 @@ void ATORdatabaseSQLClass::insertTransformedFeatureListIntoDatabase(ATORfeature*
 
 
 
-int64_t ATORdatabaseSQLClass::powLong(const int64_t val, const int degree)
-{
-	int64_t result = 1;
-	for(int i=1; i<degree; i++)
-	{
-		result = result*val;
-	}
-	return result;
-}
-
-
-#ifdef ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
-#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
-//void convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(const schar concatonatedSignedDctCoeffArray[], char* DCTcoeff64bitValueString, int* DCTcoeff64bitValueStringLength, int concatonatedDctCoeffArrayBiasInt[])
-#else
-//void convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(const schar concatonatedSignedDctCoeffArray[], char* DCTcoeff64bitValueString, int* DCTcoeff64bitValueStringLength)
-#endif
-#else
-#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
-//uint64_t convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(const schar concatonatedSignedDctCoeffArray[], int concatonatedDctCoeffArrayBiasInt[])
-#else
-uint64_t ATORdatabaseSQLClass::convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(const schar concatonatedSignedDctCoeffArray[])
-#endif
-#endif
-{
-	#ifdef ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
-	*DCTcoeff64bitValueStringLength = 0;
-	int index = 0;		//used to convert binary to char
-	char binaryConvertedToChar = 0x00;
-	#else
-	uint64_t dctCoeffArrayBinned = 0;
-	#endif
-
-	for(int i=0; i<ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS; i++)
-	{
-		int arrayValueSigned = concatonatedSignedDctCoeffArray[i];
-
-		/*
-		//OLD; perform interpolation before signed to unsigned conversion
-
-		//perform binning only if necessary/requested
-		int numDistintValsPerColumn = ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
-		if(numDistintValsPerColumn != 1)
-		{
-			#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
-			double arrayValueSignedDouble = double(arrayValueSigned)/double(ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL);
-			arrayValueSigned = arrayValueSigned/ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
-
-			//cout << "arrayValueSignedDouble = " << arrayValueSignedDouble << endl;
-			//cout << "arrayValueSigned = " << arrayValueSigned << endl;
-
-			if(arrayValueSigned >= 0)
-			{
-				if(arrayValueSignedDouble >= (double(arrayValueSigned)+0.5-DOUBLE_MIN_PRECISION+ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD))
-				{
-					concatonatedDctCoeffArrayBiasInt[i] = ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_POS;
-
-				}
-				else if(arrayValueSignedDouble <= (double(arrayValueSigned)+0.5-DOUBLE_MIN_PRECISION-ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD))
-				{
-					concatonatedDctCoeffArrayBiasInt[i] = ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_NEG;
-
-				}
-				else
-				{
-					concatonatedDctCoeffArrayBiasInt[i] = ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_SAME;
-				}
-			}
-			else
-			{//arrayValueSigned < 0
-
-				if(arrayValueSignedDouble >= (double(arrayValueSigned)+0.5-DOUBLE_MIN_PRECISION+ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD))
-				{
-					concatonatedDctCoeffArrayBiasInt[i] = ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_POS;
-
-				}
-				else if(arrayValueSignedDouble <= (double(arrayValueSigned)+0.5-DOUBLE_MIN_PRECISION-ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD))
-				{
-					concatonatedDctCoeffArrayBiasInt[i] = ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_NEG;
-
-				}
-				else
-				{
-					concatonatedDctCoeffArrayBiasInt[i] = ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_SAME;
-				}
-			}
-			#else
-			arrayValueSigned = arrayValueSigned/ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
-			#endif
-		}
-
-		if(arrayValueSigned > ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET)
-		{
-			arrayValueSigned = ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET;
-		}
-		else if(arrayValueSigned < -ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET)
-		{
-			arrayValueSigned = -ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET;
-		}
-		int arrayValueUnsigned = arrayValueSigned + ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET;	//convert to unsigned
-		*/
-
-
-		double arrayValueUnsignedDouble;
-		uint32_t arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);	//used to be int
-
-		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
-		int numDistintValsPerColumn = ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
-		if(numDistintValsPerColumn != 1)
-		{
-
-			if(arrayValueUnsignedDouble >= (double(arrayValueUnsigned)+0.5-DOUBLE_MIN_PRECISION+ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD))
-			{
-				concatonatedDctCoeffArrayBiasInt[i] = ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_POS;
-
-			}
-			else if(arrayValueUnsignedDouble <= (double(arrayValueUnsigned)+0.5-DOUBLE_MIN_PRECISION-ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_THRESHOLD))
-			{
-				concatonatedDctCoeffArrayBiasInt[i] = ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_NEG;
-			}
-			else
-			{
-				concatonatedDctCoeffArrayBiasInt[i] = ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_SAME;
-			}
-		}
-		#endif
-
-
-	#ifdef ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
-		//cout << "arrayValueUnsigned = " << arrayValueUnsigned << endl;
-		for(int q=0; q<ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_IN_BITS; q++)
-		{
-			if(index == 8)
-			{
-				index = 0;
-				DCTcoeff64bitValueString[*DCTcoeff64bitValueStringLength] = binaryConvertedToChar;
-				*DCTcoeff64bitValueStringLength = *DCTcoeff64bitValueStringLength + 1;
-				binaryConvertedToChar = 0x00;
-			}
-
-			bool bitValue = false;
-			int arrayValueUnsignedAfterBitShift = int(arrayValueUnsigned) >> q;
-			//cout << "arrayValueUnsignedAfterBitShift = " << arrayValueUnsignedAfterBitShift << endl;
-			if(arrayValueUnsignedAfterBitShift%2 == 0)
-			{//LSb == 0 ; therefore an even number
-				bitValue = false;
-			}
-			else
-			{//LSb == 1 ; therefore an odd number
-				bitValue =  true;
-			}
-
-			if(bitValue)
-			{
-				binaryConvertedToChar = binaryConvertedToChar | (0x01 << index);
-			}
-			else
-			{
-				binaryConvertedToChar = binaryConvertedToChar | (0x00 << index);
-			}
-
-			index++;
-		}
-
-	#else
-		int power = ((ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS-i-1)*2)+1; 	//13,11,9,7,5,3,1
-		dctCoeffArrayBinned = dctCoeffArrayBinned + int64_t(arrayValueUnsigned)*powLong(10, power);
-	#endif
-	}
-
-	#ifdef ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
-	//add final character to currentDirectoryCharStar string if necessary
-	if(index > 0)
-	{
-		DCTcoeff64bitValueString[*DCTcoeff64bitValueStringLength] = binaryConvertedToChar;
-		*DCTcoeff64bitValueStringLength = *DCTcoeff64bitValueStringLength + 1;
-	}
-
-	//add null character onto end of string
-	DCTcoeff64bitValueString[*DCTcoeff64bitValueStringLength] = '\0';
-	*DCTcoeff64bitValueStringLength = *DCTcoeff64bitValueStringLength + 1;
-	#else
-	return dctCoeffArrayBinned;
-	#endif
-}
 
 
 
@@ -2195,7 +2011,7 @@ void ATORdatabaseSQLClass::convertConcatonatedSignedDctCoeffArrayAndGeoToLinearC
 		int arrayValueSigned = concatonatedSignedDctCoeffArray[i];
 
 		double arrayValueUnsignedDouble;
-		uint32_t arrayValueUnsigned = determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);		//used to be int
+		uint32_t arrayValueUnsigned = ATORdatabaseDecisionTreeOperations.determineDCTBinUnsigned(arrayValueSigned, &arrayValueUnsignedDouble);		//used to be int
 
 		linearCombinationArray[index] = arrayValueUnsigned;
 		index++;
@@ -2225,66 +2041,11 @@ void ATORdatabaseSQLClass::convertConcatonatedSignedDctCoeffArrayAndGeoToLinearC
 }
 
 
-int ATORdatabaseSQLClass::determineGeoBinX(const double featurePointTransformedXpos)
-{
-	int geoBinX = (featurePointTransformedXpos / ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_X_BIN_SEPARATION) + (ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS/2);
-	return geoBinX;
-}
-
-int ATORdatabaseSQLClass::determineGeoBinY(const double featurePointTransformedYpos)
-{
-	int geoBinY = (featurePointTransformedYpos / ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_Y_BIN_SEPARATION) + (ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS/2);
-	return geoBinY;
-}
-
-double ATORdatabaseSQLClass::determineGeoBinDoubleX(const double featurePointTransformedXpos)
-{
-	double geoBinX = (featurePointTransformedXpos / ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_X_BIN_SEPARATION) + (ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS/2);
-	return geoBinX;
-}
-
-double ATORdatabaseSQLClass::determineGeoBinDoubleY(const double featurePointTransformedYpos)
-{
-	double geoBinY = (featurePointTransformedYpos / ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_Y_BIN_SEPARATION) + (ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS/2);
-	return geoBinY;
-}
-
-
-uint32_t ATORdatabaseSQLClass::determineDCTBinUnsigned(int arrayValueSigned, double* arrayValueUnsignedDouble)
-{
-	if(arrayValueSigned > ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL)
-	{
-		arrayValueSigned = ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
-	}
-	else if(arrayValueSigned < -ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL)
-	{
-		arrayValueSigned = -ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET/ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
-	}
-
-	uint32_t arrayValueUnsigned;
-	int numDistintValsPerColumn = ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL;
-	if(numDistintValsPerColumn != 1)
-	{
-		*arrayValueUnsignedDouble = determineDCTBinUnsignedDouble(arrayValueSigned);
-		arrayValueUnsigned = (uint32_t)(*arrayValueUnsignedDouble);
-	}
-	else
-	{
-		arrayValueUnsigned = arrayValueSigned + ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET;
-	}
-
-	return arrayValueUnsigned;
-}
-
-double ATORdatabaseSQLClass::determineDCTBinUnsignedDouble(const int arrayValueSigned)
-{
-	double arrayValueUnsignedDouble = double(arrayValueSigned)/double(ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DISTINCT_VALS_PER_COL) + double(ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINS_SIGNED_OFFSET);
-	return arrayValueUnsignedDouble;
-}
 
 
 
-//#endif
+
+#endif
 
 
 

@@ -7,9 +7,9 @@
 /*******************************************************************************
  *
  * File Name: ATORpolygonList.hpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2022 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2008-2024 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition)
- * Project Version: 3q1a 05-June-2022
+ * Project Version: 3r1a 29-February-2024
  * /
  *******************************************************************************/
 
@@ -101,7 +101,7 @@ public:
 	colour avgCol;
 	//#endif
 
-	char snapshotMapsText[ATOR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_MAX_DATA_LENGTH];
+	char snapshotMapsText[ATOR_IMAGE_COMPARISON_ADD_ALL_MAPS_TO_DATABASE_MAX_DATA_LENGTH];
 	int snapshotMapsTextLength;
 
 	bool lastFilledFeatureInList;	//added 8 June 2012 to fix overrun

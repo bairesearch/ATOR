@@ -7,9 +7,9 @@
 /*******************************************************************************
  *
  * File Name: ATORdatabaseDecisionTree.hpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2022 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2008-2024 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition)
- * Project Version: 3q1a 05-June-2022
+ * Project Version: 3r1a 29-February-2024
  * /
  *******************************************************************************/
 
@@ -21,6 +21,7 @@
 #include "SHAREDvars.hpp"
 #include "ATORpolygonList.hpp"
 #include "ATORdatabaseSQL.hpp"
+#include "ATORdatabaseDecisionTreeOperations.hpp"
 #include "LDreferenceManipulation.hpp"
 #include "RTpixelMaps.hpp"
 
@@ -33,7 +34,10 @@ extern string imageComparisonTreeName;
 
 class ATORdatabaseDecisionTreeClass
 {
+	#ifdef ATOR_USE_SQL
 	private: ATORdatabaseSQLClass ATORdatabaseSQL;
+	#endif
+	private: ATORdatabaseDecisionTreeOperationsClass ATORdatabaseDecisionTreeOperations;
 	private: SHAREDvarsClass SHAREDvars;
 	private: RTpixelMapsClass RTpixelMaps;
 	public: void addSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcombinations(int imageWidth, const int imageHeight, uchar* rgbMapSmall, ATORfeature* firstFeatureInList, const int64_t snapshotReferenceID, const bool ignoreOTfeatures);
@@ -48,7 +52,9 @@ class ATORdatabaseDecisionTreeClass
 		private: void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopAvgHueDev(const int imageWidth, const int imageHeight, const uchar* rgbMapSmall, const ATORfeature* firstFeatureInList, const int64_t snapshotReferenceID, const bool ignoreOTfeatures,  char* currentDirectoryCharStar, int* currentDirectoryLength, string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, int64_t* decisionTreeSQLmultipleRowInsertQueryLength);
 		private: void addSnapshotIDreferenceToImageComparisonDecisionTreeLoopFinal(const int imageWidth, const int imageHeight, const uchar* rgbMapSmall, const ATORfeature* firstFeatureInList, const int64_t snapshotReferenceID, const bool ignoreOTfeatures,  const char* currentDirectoryCharStar, const int* currentDirectoryLength, string* initialDirectory, char* decisionTreeMultipleRowInsertQueryTextCharStar, int64_t* decisionTreeSQLmultipleRowInsertQueryLength);
 
+	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL_DIRECT_ACCESS
 	public: void createFeatureContainerListUsingUsingGetSnapshotIDreferenceToImageComparisonDecisionTreeWithGeoAvgHueDevAndDCTcheck(ATORfeatureContainer* firstFeatureContainerInTestFeatureMatchingTrainBin, const bool ignoreOTfeatures, int imageWidth, const int imageHeight, uchar* rgbMapSmall, const int64_t pBinxyValueRequirement, const int pBinxRequirement[], const int pBinyRequirement[], const colour* normalisedAverageHueDeviationRequirement, const schar concatonatedSignedDctCoeffArrayRequirement[], const int trainOrTest);
+	#endif
 		public: void createSnapshotIDreferenceImageComparisonDecisionTreeString(int imageWidth, const int imageHeight, uchar* rgbMapSmall, const int64_t pBinxyValueRequirement, const int pBinxRequirement[], const int pBinyRequirement[], const colour* normalisedAverageHueDeviationRequirement, const schar concatonatedSignedDctCoeffArrayRequirement[], char* currentDirectoryCharStar, int* currentDirectoryLength, string* currentDirectory);
 		#ifndef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
 		private: void getSnapshotIDreferencesInImageComparisonDecisionTree(int imageWidth, const int imageHeight, uchar* rgbMapSmall, ATORsnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList, string* currentDirectory);

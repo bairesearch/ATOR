@@ -7,9 +7,9 @@
 /*******************************************************************************
  *
  * File Name: ATORquadraticFit.cpp (based on EdgiseFrame.java, version 1.17 (26-02-04) CSEM)
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2022 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2008-2024 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3q1a 05-June-2022
+ * Project Version: 3r1a 29-February-2024
  * Requirements: Assumes that depth information is less accurate than image information
  * /
  *******************************************************************************/

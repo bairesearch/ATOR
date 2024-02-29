@@ -7,9 +7,9 @@
 /*******************************************************************************
  *
  * File Name: ATORdatabaseFileIO.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2022 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2008-2024 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition)
- * Project Version: 3q1a 05-June-2022
+ * Project Version: 3r1a 29-February-2024
  * /
  *******************************************************************************/
 
@@ -32,7 +32,7 @@ void ATORdatabaseFileIOClass::initialiseDatabase(const string newDatabaseFolderN
 	databaseFolderName = newDatabaseFolderName;
 }
 
-bool ATORdatabaseFileIOClass::DBdirectoryExists(string* folderName)
+bool ATORdatabaseFileIOClass::DBdirectoryExists(const string* folderName)
 {
 	bool folderExists = SHAREDvars.directoryExists(folderName);
 	if(folderExists)
@@ -42,7 +42,7 @@ bool ATORdatabaseFileIOClass::DBdirectoryExists(string* folderName)
 	return folderExists;
 }
 
-bool ATORdatabaseFileIOClass::DBcreateDirectory(string* folderName)
+bool ATORdatabaseFileIOClass::DBcreateDirectory(const string* folderName)
 {
 	bool result = true;
 
@@ -59,7 +59,7 @@ bool ATORdatabaseFileIOClass::DBcreateDirectory(string* folderName)
 	return result;
 }
 
-bool ATORdatabaseFileIOClass::DBsetCurrentDirectory(string* folderName)
+bool ATORdatabaseFileIOClass::DBsetCurrentDirectory(const string* folderName)
 {
 	bool result = true;
 	SHAREDvars.setCurrentDirectory(folderName);
@@ -74,7 +74,7 @@ bool ATORdatabaseFileIOClass::DBsetCurrentDirectory(string* folderName)
 	return result;
 }
 
-bool ATORdatabaseFileIOClass::checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(string* folderName)
+bool ATORdatabaseFileIOClass::checkIfFolderExistsAndIfNotMakeAndSetAsCurrent(const string* folderName)
 {
 	bool result = true;
 	if(!DBdirectoryExists(folderName))
@@ -126,7 +126,7 @@ string ATORdatabaseFileIOClass::DBgenerateServerDatabaseName(const string* objec
 }
 
 
-string ATORdatabaseFileIOClass::DBgenerateFolderName(string* objectName, const bool trainOrTest)
+string ATORdatabaseFileIOClass::DBgenerateFolderName(const string* objectName, const bool trainOrTest)
 {
 	//eg network/server/ORdatabase/e/x/a/example/...
 
@@ -238,10 +238,10 @@ bool ATORdatabaseFileIOClass::compareFeaturesListForMatch(ATORfeature* testFirst
 						#endif
 					}
 
-					int trainxBin = ATORdatabaseSQL.determineGeoBinX(traincurrentFeatureInNearestFeatureList->pointTransformed.x);
-					int trainyBin = ATORdatabaseSQL.determineGeoBinY(traincurrentFeatureInNearestFeatureList->pointTransformed.y);
-					int testxBin = ATORdatabaseSQL.determineGeoBinX(testcurrentFeatureInNearestFeatureList->pointTransformed.x);
-					int testyBin = ATORdatabaseSQL.determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);
+					int trainxBin = ATORdatabaseDecisionTreeOperations.determineGeoBinX(traincurrentFeatureInNearestFeatureList->pointTransformed.x);
+					int trainyBin = ATORdatabaseDecisionTreeOperations.determineGeoBinY(traincurrentFeatureInNearestFeatureList->pointTransformed.y);
+					int testxBin = ATORdatabaseDecisionTreeOperations.determineGeoBinX(testcurrentFeatureInNearestFeatureList->pointTransformed.x);
+					int testyBin = ATORdatabaseDecisionTreeOperations.determineGeoBinY(testcurrentFeatureInNearestFeatureList->pointTransformed.y);
 					if((trainxBin == testxBin) && (trainyBin == testyBin))
 					{
 						numberOfFeatureGeoBinnedExactMatches++;

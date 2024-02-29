@@ -7,22 +7,40 @@
 /*******************************************************************************
  *
  * File Name: ATORglobalDefs.hpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2022 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2008-2024 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition)
- * Project Version: 3q1a 05-June-2022
+ * Project Version: 3r1a 29-February-2024
  * Description: ATOR specific global definitions
  * /
  *******************************************************************************/
 
 
-#ifndef HEADER_OR_GLOBAL_DEFS
-#define HEADER_OR_GLOBAL_DEFS
+#ifndef HEADER_ATOR_GLOBAL_DEFS
+#define HEADER_ATOR_GLOBAL_DEFS
 
 #include "SHAREDglobalDefs.hpp"
 
-#define ATOR_PRINT_EXECUTION_TIME
+//#define ATOR_PYTHON_VIT_INTERFACE	//option for python ViT interface	//added 29 Feb 2024
+#ifndef ATOR_PYTHON_VIT_INTERFACE
+	#define ATOR_USE_SQL· //support SQL database
+	#define ATOR_USE_DATABASE_DECISIONTREE	//generate derivative data such as DCT, decision tree
+	#define ATOR_USE_COMPARISON·   //support comparison between train and test database
+#endif
+#ifndef ATOR_USE_SQL
+	#define ATOR_NON_SQL_MULTIDIMENSIONAL_C_ARRAY_DECLARATION_LIMITATION
+	#ifdef ATOR_NON_SQL_MULTIDIMENSIONAL_C_ARRAY_DECLARATION_LIMITATION
+		//#ifdef ATOR_IMAGE_COMPARISON_NONSQL_GEOMETRIC_COMPARISON_OPTIMISED_TRAIN_FILE_IO_V2
+		#define ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_X_BINS_STATIC (40)
+		#define ATOR_METHOD_GEOMETRIC_COMPARISON_OPTIMISED_FILE_IO_V2_NO_Y_BINS_STATIC (40)
+		//#endif
+		//#ifdef ATOR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_BASIC_NO_SQL
+		#define ATOR_IMAGE_COMPARISON_AVERAGE_RGB_BINNING_NUM_DISTINCT_VALS_PER_COL_STATIC (20)
+		//#endif
+	#endif
+#endif
 
 #define ATOR_USE_DATABASE
+#define ATOR_PRINT_EXECUTION_TIME
 
 //#define ATOR_ASSERT_MATCHES_FOR_ALL_SIDES		//removed 10 June 2012
 
@@ -41,6 +59,7 @@ ATOR_METHOD_3DOD_IGNORE_OT_FEATURES_DURING_GEO_COMPARISON
 	#define ATOR_DATABASE_VERBOSE
 	#define ATOR_DATABASE_VERBOSE_FILESYSTEM_IO
 #endif
+
 
 
 
@@ -898,9 +917,11 @@ extern double ATOR_RULES_XML_SPARE_PARAMETER_2;	//this needs to be made dynamic 
 
 //#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE
 
-	#define ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL		//else use file i/o
+	#ifdef ATOR_USE_SQL
+		#define ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL		//else use file i/o
+	#endif
 	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL
-		#define ATOR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
+		#define ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL_SINGLE_INSERT_STATEMENT_OPTIMISATION
 	#endif
 
 	#define ATOR_IMAGE_COMPARISON_DECISION_TREE_BIN_MAX_LENGTH (1000)
@@ -1093,11 +1114,74 @@ ATOR FUTURE GOOD OPTIMISATION VARIABLES;
 #define ATOR_IMAGE_COMPARISON_COMPARE_RGB_DEV_MAPS_NOT_RGB_MAPS (false)		//case "true" is not yet coded; code this
 
 
+
+
+/***** ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING* ****/
+	//extracted from ATOR SQL VARIABLES
+	
+//#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT		//temporarily disabled for testing... [results in longer DT (decision tree) index]
+
+#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y_MAX (9)
+#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCr_MAX (9)
+#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCb_MAX (9)
+#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX (ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y_MAX + ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCr_MAX + ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCb_MAX)
+
+#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_ON "-sampling-factor 1x1"		//deterministic dct coeff comparison requirement
+#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_OFF ""					//"2x1"
+
+#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NO_BINS_TO_COMPARE (3)	//x +/-1, y+/- 1
+#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D (3)
+
+/*
+DCT-Y values used;
+-1     * -5     * 0       -1      -1      0       0       0
+*3      * 0      * -2      0       0       0       0       0
+*2      * 1       0       0       0       0       0       0
+-3      0       1       1       0       0       0       0
+1       0       0       0       0       0       0       0
+0       0       0       0       0       0       0       0
+0       0       0       0       0       0       0       0
+0       0       0       0       0       0       0       0
+
+DCT-YCb values used;
+*-1    * 1       1       0       0       0       0       0
+*2      0       0       0       0       0       0       0
+1       0       0       0       0       0       0       0
+0       0       0       0       0       0       0       0
+0       0       0       0       0       0       0       0
+0       0       0       0       0       0       0       0
+0       0       0       0       0       0       0       0
+0       0       0       0       0       0       0       0
+
+DCT-YCr values used;
+*-4    * 2       1       0       0       0       0       0
+*0      0       0       0       0       0       0       0
+0       0       0       0       0       0       0       0
+0       0       0       0       0       0       0       0
+0       0       0       0       0       0       0       0
+0       0       0       0       0       0       0       0
+0       0       0       0       0       0       0       0
+0       0       0       0       0       0       0       0
+
+[if ATOR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL is used; dctall -> all binned using 5bit signed, so require a 64 bit integer 5*7 {DCT-Y} + 5*3 {DCT-YCb} + 5*3 {DCT-YCr}  = 60bit]
+*/
+
+
+/***** ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING* ****/
+	//extracted from ATOR SQL VARIABLES
+
+#define ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS (2)	//ATOR_MYSQL_FIELD_NAME_GEO_BIN_X1 pBinx1, ATOR_MYSQL_FIELD_NAME_GEO_BIN_Y1 pBiny1, ATOR_MYSQL_FIELD_NAME_GEO_BIN_X2 pBinx2, ATOR_MYSQL_FIELD_NAME_GEO_BIN_Y2 pBiny2	- enabling the binning of the transformed xy positions of nearby features of the 3 OT features
+
+
+		
 /**********
 ATOR SQL VARIABLES;
 ***********/
+#define ATOR_IMAGE_COMPARISON_ADD_ALL_MAPS_TO_DATABASE_MAX_DATA_LENGTH (ATOR_METHOD_XDOD_SNAPSHOT_SIZE_MAX*3 + ATOR_METHOD_XDOD_SNAPSHOT_SIZE_MAX*3 + ATOR_METHOD_XDOD_SNAPSHOT_SMALL_IMAGE_SIZE_MAX*3 + ATOR_METHOD_XDOD_SNAPSHOT_SMALL_IMAGE_SIZE_MAX*3)
 
-#define ATOR_IMAGE_COMPARISON_SQL										//no choice on this for release versions
+#ifdef ATOR_USE_SQL
+	#define ATOR_IMAGE_COMPARISON_SQL										//no choice on this for release versions
+#endif
 #ifdef ATOR_IMAGE_COMPARISON_SQL
 
 	#define ATOR_METHOD_GEOMETRIC_COMPARISON_BINNING		//required for current execution flow event though binning is not used in this case
@@ -1216,8 +1300,6 @@ ATOR SQL VARIABLES;
 		#define ATOR_MYSQL_FIELD_TYPE_GEO_BINS_MAX_LENGTH (ATOR_MYSQL_FIELD_NAME_GEO_BINS_LENGTH*4 + ATOR_MYSQL_FIELD_NAME_GEO_BINS_XY_LENGTH)
 
 
-	#define ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS (2)	//ATOR_MYSQL_FIELD_NAME_GEO_BIN_X1 pBinx1, ATOR_MYSQL_FIELD_NAME_GEO_BIN_Y1 pBiny1, ATOR_MYSQL_FIELD_NAME_GEO_BIN_X2 pBinx2, ATOR_MYSQL_FIELD_NAME_GEO_BIN_Y2 pBiny2	- enabling the binning of the transformed xy positions of nearby features of the 3 OT features
-
 	#define ATOR_LINEAR_COMBINATION_ARRAY_MAX_SIZE (104)	//ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS + ATOR_IMAGE_COMPARISON_SQL_GEOMETRIC_COMPARISON_BINNING_NUM_GEO_BINNING_DIMENSIONS*2
 
 
@@ -1248,56 +1330,6 @@ ATOR SQL VARIABLES;
 
 		/***** ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING* ****/
 
-		//#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT		//temporarily disabled for testing... [results in longer DT (decision tree) index]
-
-		#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y_MAX (9)
-		#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCr_MAX (9)
-		#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCb_MAX (9)
-		#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_MAX (ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_Y_MAX + ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCr_MAX + ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS_YCb_MAX)
-
-		#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_ON "-sampling-factor 1x1"		//deterministic dct coeff comparison requirement
-		#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_JPG_CHROMA_SUBSAMPLING_OFF ""					//"2x1"
-
-
-		#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NO_BINS_TO_COMPARE (3)	//x +/-1, y+/- 1
-		#define ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_NUM_DCT_COEFFICIENTS_1D (3)
-
-
-
-		/*
-		DCT-Y values used;
-		-1     * -5     * 0       -1      -1      0       0       0
-		*3      * 0      * -2      0       0       0       0       0
-		*2      * 1       0       0       0       0       0       0
-		-3      0       1       1       0       0       0       0
-		1       0       0       0       0       0       0       0
-		0       0       0       0       0       0       0       0
-		0       0       0       0       0       0       0       0
-		0       0       0       0       0       0       0       0
-
-		DCT-YCb values used;
-		*-1    * 1       1       0       0       0       0       0
-		*2      0       0       0       0       0       0       0
-		1       0       0       0       0       0       0       0
-		0       0       0       0       0       0       0       0
-		0       0       0       0       0       0       0       0
-		0       0       0       0       0       0       0       0
-		0       0       0       0       0       0       0       0
-		0       0       0       0       0       0       0       0
-
-		DCT-YCr values used;
-		*-4    * 2       1       0       0       0       0       0
-		*0      0       0       0       0       0       0       0
-		0       0       0       0       0       0       0       0
-		0       0       0       0       0       0       0       0
-		0       0       0       0       0       0       0       0
-		0       0       0       0       0       0       0       0
-		0       0       0       0       0       0       0       0
-		0       0       0       0       0       0       0       0
-
-		[if ATOR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL is used; dctall -> all binned using 5bit signed, so require a 64 bit integer 5*7 {DCT-Y} + 5*3 {DCT-YCb} + 5*3 {DCT-YCr}  = 60bit]
-		*/
-
 		#define ATOR_IMAGE_COMPARISON_SQL_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_MAX_DATA_LENGTH (1*30 + ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_NUM_DCT_COEFFICIENT_BINNING_DIMENSIONS*4)
 			//number dct bins* signed 8bit decimal [-256 -> +256, 4 characters in length]
 		#define ATOR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_MAX_LENGTH (ATOR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BINS_LENGTH + ATOR_MYSQL_FIELD_NAME_DCT_COEFFICIENT_BIN_ALL_LENGTH)
@@ -1318,7 +1350,7 @@ ATOR SQL VARIABLES;
 
 
 
-	#define ATOR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_MAX_DATA_LENGTH (ATOR_METHOD_XDOD_SNAPSHOT_SIZE_MAX*3 + ATOR_METHOD_XDOD_SNAPSHOT_SIZE_MAX*3 + ATOR_METHOD_XDOD_SNAPSHOT_SMALL_IMAGE_SIZE_MAX*3 + ATOR_METHOD_XDOD_SNAPSHOT_SMALL_IMAGE_SIZE_MAX*3)
+	#define ATOR_IMAGE_COMPARISON_SQL_ADD_ALL_MAPS_TO_DATABASE_MAX_DATA_LENGTH (ATOR_IMAGE_COMPARISON_ADD_ALL_MAPS_TO_DATABASE_MAX_DATA_LENGTH)
 		/* for
  		uchar* rgbMapFacingPoly = new uchar[imageWidthFacingPoly*imageHeightFacingPoly*RGB_NUM];	OR;
 		double* rgbDevIEnormalisedHueContrastMapFacingPoly = new double[imageWidthFacingPoly*imageHeightFacingPoly*VEC_MAP_VEC_NUM_DIMENSIONS];
@@ -1485,7 +1517,6 @@ ATOR SQL VARIABLES;
 	#elif defined ATOR_IMAGE_COMPARISON_NONSQL_GEOMETRIC_COMPARISON_OPTIMISED_TRAIN_FILE_IO_V2
 
 		#define ATOR_METHOD_GEOMETRIC_COMPARISON_BINNING
-		#define ATOR_IMAGE_COMPARISON_GEOMETRIC_COMPARISON_BINNING
 
 	#elif defined ATOR_METHOD_GEOMETRIC_COMPARISON_NON_OPTIMISED_FILE_IO
 

@@ -7,9 +7,9 @@
 /*******************************************************************************
  *
  * File Name: ATORmain.cpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2022 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2008-2024 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition)
- * Project Version: 3q1a 05-June-2022
+ * Project Version: 3r1a 29-February-2024
  * /
  *******************************************************************************/
 
@@ -54,7 +54,7 @@ static char errmessage[] = "Usage:  ATOR.exe [options]\n\n\twhere options are an
 "\n\n multi view options only \n"
 "\n\t-multview [string]     : use multiview list [EXPERIMENTAL] (def: multViewList.txt) {3DOD every row; ObjectViewFileNameWithNoExtension|imageext|imageWidth|imageHeight|depthext|vieweyex|vieweyey|vieweyez|viewatx|viewaty|viewatz|viewupx|viewupy|viewupz|viewfocal|viewsizew|viewsizeh|scale. 2DOD every row; ObjectViewFileNameWithNoExtension|imageext|imageWidth|imageHeight|xOffset|yOffset}"
 #ifdef ATOR_USE_DATABASE
-"\n\t-dbfolder [string]     : file system database base folder path (def: /home/systemusername/source/ORfsdatabase)"
+"\n\t-dbfolder [string]     : file system database base folder path (def: /home/rich/source/ORfsdatabase)"
 #endif
 "\n\n\t-version        : print version"
 "\n\n\tThis program either adds an object (imaged from a particular viewpoint) to a BAI OR database, or finds the closest matching object already existent in the BAI OR database.\n\n";
@@ -149,10 +149,11 @@ int main(const int argc,const char* *argv)
 
 	}
 
-	#ifndef ATOR_METHOD3DOD_TEST
 	string sqlIPaddress = "";
 	string sqlUsername = "";
 	string sqlPassword = "";
+	#ifdef ATOR_USE_SQL
+	#ifndef ATOR_METHOD3DOD_TEST
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-sqlipaddress"))
 	{
 		sqlIPaddress = SHAREDvarsClass().getStringArgument(argc, argv, "-sqlipaddress");
@@ -184,6 +185,7 @@ int main(const int argc,const char* *argv)
 		ATORmainClass().printORcommandLineErrorMessage();
 		exit(EXIT_ERROR);
 	}
+	#endif
 	#endif
 
 	RTviewInfo vi;
@@ -303,7 +305,7 @@ int main(const int argc,const char* *argv)
 
 	if(SHAREDvarsClass().argumentExists(argc, argv, "-version"))
 	{
-		cerr << "ATOR.exe - Project Version: 3q1a 05-June-2022" << endl;
+		cerr << "ATOR.exe - Project Version: 3r1a 29-February-2024" << endl;
 		exit(EXIT_OK);
 	}
 

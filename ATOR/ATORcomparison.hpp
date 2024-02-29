@@ -7,9 +7,9 @@
 /*******************************************************************************
  *
  * File Name: ATORcomparison.hpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2022 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2008-2024 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition)
- * Project Version: 3q1a 05-June-2022
+ * Project Version: 3r1a 29-February-2024
  * /
  *******************************************************************************/
 
@@ -23,6 +23,7 @@
 #include "ATORimagecomparison.hpp"
 #include "ATORdatabaseSQL.hpp"
 #include "ATORdatabaseDecisionTree.hpp"
+#include "ATORdatabaseDecisionTreeOperations.hpp"
 #include "ATORdatabaseFileIO.hpp"
 #include "ATORpixelMaps.hpp"
 #include "ATORoperations.hpp"
@@ -42,11 +43,14 @@ class ATORcomparisonClass
 {
 	private: SHAREDvarsClass SHAREDvars;
 	private: SHAREDvectorClass SHAREDvector;
-	private: ATORimagecomparisonClass ATORimagecomparison;
 	private: RTpixelMapsClass RTpixelMaps;
 	private: ATORoperationsClass ATORoperations;
+	private: ATORimagecomparisonClass ATORimagecomparison;
+	#ifdef ATOR_IMAGE_COMPARISON_SQL
 	private: ATORdatabaseSQLClass ATORdatabaseSQL;
+	#endif
 	private: ATORdatabaseDecisionTreeClass ATORdatabaseDecisionTree;
+	private: ATORdatabaseDecisionTreeOperationsClass ATORdatabaseDecisionTreeOperations;
 	private: ATORdatabaseFileIOClass ATORdatabaseFileIO;
 	private: LDjpegClass LDjpeg;
 	public: void fillDCTcoeffSelectionArrays();
@@ -55,7 +59,7 @@ class ATORcomparisonClass
 	#ifdef ATOR_IMAGE_COMPARISON_SQL
 	public: double compareNormalisedSnapshots(const int numberOfTestPolys[], const int numberOfTestViewIndicies, int imageWidthFacingPoly, int imageHeightFacingPoly, const string testObjectNameArray[], const int numberOfTestObjects, const int dimension, const int numberOfTestZoomIndicies, const int trainOrTest, const int testViewNumber);
 	#else
-	//double compareNormalisedSnapshots(const int numberOfTrainPolys[], const int numberOfTestPolys[], const int numberOfTrainViewIndicies, const int numberOfTestViewIndicies, int imageWidthFacingPoly, int imageHeightFacingPoly, const string trainObjectNameArray[], const int numberOfTrainObjects, const string testObjectNameArray[], const int numberOfTestObjects, const int dimension, const int numberOfTrainZoomIndicies, const int numberOfTestZoomIndicies, const int testViewNumber);
+	public: double compareNormalisedSnapshots(const int numberOfTrainPolys[], const int numberOfTestPolys[], const int numberOfTrainViewIndicies, const int numberOfTestViewIndicies, int imageWidthFacingPoly, int imageHeightFacingPoly, const string trainObjectNameArray[], const int numberOfTrainObjects, const string testObjectNameArray[], const int numberOfTestObjects, const int dimension, const int numberOfTrainZoomIndicies, const int numberOfTestZoomIndicies, const int testViewNumber);
 	#endif
 
 	//#ifdef ATOR_IMAGE_COMPARISON_AVERAGE_RGB_DEV_BINNING

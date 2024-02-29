@@ -7,9 +7,9 @@
 /*******************************************************************************
  *
  * File Name: ATORdatabaseSQL.hpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2022 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2008-2024 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition)
- * Project Version: 3q1a 05-June-2022
+ * Project Version: 3r1a 29-February-2024
  * /
  *******************************************************************************/
 
@@ -19,6 +19,7 @@
 
 #include "ATORglobalDefs.hpp"
 #include "SHAREDvars.hpp"
+#include "ATORdatabaseDecisionTreeOperations.hpp"
 #include "ATORpolygonList.hpp"
 #ifdef ATOR_IMAGE_COMPARISON_SQL
 #include "LDmysql.hpp"
@@ -37,9 +38,11 @@ extern int64_t databaseTableSizeDecisionTree;
 class ATORdatabaseSQLClass
 {
 	private: SHAREDvarsClass SHAREDvars;
+	private: ATORdatabaseDecisionTreeOperationsClass ATORdatabaseDecisionTreeOperations;
 	private: LDmysqlClass LDmysql;
 	private: RTpixelMapsClass RTpixelMaps;
 	private: LDreferenceManipulationClass LDreferenceManipulation;
+	
 	private: int countIncrements(const int maxIncrement);
 
 
@@ -49,7 +52,7 @@ class ATORdatabaseSQLClass
 	public: void createSnapshotIDreferenceListUsingSQLdatabaseDecisionTreeTableQuery(ATORsnapshotIDreferenceList* firstReferenceInSnapshotIDreferenceList, const string sqlDatabaseDecisionTreeTableName, const char* decisionTreeBinText, const int decisionTreeBinTextLength, const int trainOrTest);
 	public: void insertSnapshotIDreferenceIntoSQLdatabaseDecisionTree(const string sqlDatabaseDecisionTreeTableName, const char* decisionTreeBinText, const int decisionTreeBinTextLength, const int64_t snapshotReferenceID, int64_t* databaseTableSize);
 
-	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SINGLE_INSERT_STATEMENT_OPTIMISATION
+	#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_SQL_SINGLE_INSERT_STATEMENT_OPTIMISATION
 	public: void insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeStart(const string sqlDatabaseDecisionTreeTableName, char* decisionTreeMultipleRowInsertQueryTextCharStar, int64_t* decisionTreeSQLmultipleRowInsertQueryLength);
 	public: void insertSnapshotIDreferenceIntoSQLdatabaseDecisionTreeIteration(const char* decisionTreeBinText, const int decisionTreeBinTextLength, const int64_t snapshotReferenceID, int64_t* databaseTableSize, char* decisionTreeMultipleRowInsertQueryTextCharStar, int64_t* decisionTreeSQLmultipleRowInsertQueryLength);
 	public: void insertAllSnapshotIDreferencesIntoSQLdatabaseDecisionTreeEnd(char* decisionTreeMultipleRowInsertQueryTextCharStar, int64_t* decisionTreeSQLmultipleRowInsertQueryLength);
@@ -70,33 +73,9 @@ class ATORdatabaseSQLClass
 	//#endif
 
 
-	private: int64_t powLong(const int64_t val, const int degree);
-		#ifdef ATOR_IMAGE_COMPARISON_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_BINARY_TO_CHAR_CONVERSION_OPT
-		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
-		//void convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(const schar concatonatedSignedDctCoeffArray[], char* DCTcoeff64bitValueString, int* DCTcoeff64bitValueStringLength, int concatonatedDctCoeffArrayBiasInt[]);
-		#else
-		//void convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(const schar concatonatedSignedDctCoeffArray[], char* DCTcoeff64bitValueString, int* DCTcoeff64bitValueStringLength);
-		#endif
-		#else
-		#ifdef ATOR_IMAGE_COMPARISON_DECISION_TREE_PATTERN_RECOGNITION_FOURIER_TRANSFORM_BINNING_DETERMINISTIC_BY_INTELLIGENT_BINNING_FAST_RECOG_AND_USE_LOW_HD
-		//uint64_t convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(const schar concatonatedSignedDctCoeffArray[], int concatonatedDctCoeffArrayBiasInt[]);
-		#else
-		public: uint64_t convertDCTcoeffConcatonatedArrayToBinnedAllDCTcoeff64bitValue(const schar concatonatedSignedDctCoeffArray[]);
-		#endif
-		#endif
-
-
 	public: int64_t calculateGeoxyBinMultiDimensional(const int geoxBin[], const int geoyBin[]);
 
 	private: void convertConcatonatedSignedDctCoeffArrayAndGeoToLinearCombination(const schar concatonatedSignedDctCoeffArray[], const int geoxBin[], const int geoyBin[], uint64_t* linearCombination);
-
-	public: int determineGeoBinX(const double featurePointTransformedXpos);
-	public: int determineGeoBinY(const double featurePointTransformedYpos);
-	public: double determineGeoBinDoubleX(const double featurePointTransformedXpos);
-	public: double determineGeoBinDoubleY(const double featurePointTransformedYpos);
-
-	public: uint32_t determineDCTBinUnsigned(int arrayValueSigned, double* arrayValueUnsignedDouble);
-	private: double determineDCTBinUnsignedDouble(const int arrayValueSigned);
 };
 
 

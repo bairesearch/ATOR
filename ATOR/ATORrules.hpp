@@ -7,9 +7,9 @@
 /*******************************************************************************
  *
  * File Name: ATORrules.hpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2022 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2008-2024 Baxter AI (baxterai.com)
  * Project: Generic Construct Functions
- * Project Version: 3q1a 05-June-2022
+ * Project Version: 3r1a 29-February-2024
  * /
  *******************************************************************************/
 
@@ -21,6 +21,7 @@
 #include "XMLrulesClass.hpp"
 #include "RTglobalDefs.hpp"
 #include "SHAREDvars.hpp"
+
 
 class ATORrulesClass
 {

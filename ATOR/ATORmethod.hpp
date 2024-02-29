@@ -7,9 +7,9 @@
 /*******************************************************************************
  *
  * File Name: ATORmethod.hpp
- * Author: Richard Bruce Baxter - Copyright (c) 2005-2022 Baxter AI (baxterai.com)
+ * Author: Richard Bruce Baxter - Copyright (c) 2008-2024 Baxter AI (baxterai.com)
  * Project: ATOR (Axis Transformation Object Recognition)
- * Project Version: 3q1a 05-June-2022
+ * Project Version: 3r1a 29-February-2024
  * /
  *******************************************************************************/
 
@@ -35,10 +35,13 @@
 #include "ATORcomparison.hpp"
 #include "ATORimagecomparison.hpp"
 #include "ATORdatabaseFileIO.hpp"
-#include "LDmysql.hpp";
 #include "LDjpeg.hpp";
+#ifdef ATOR_IMAGE_COMPARISON_SQL
+#include "LDmysql.hpp";
 #include "ATORdatabaseSQL.hpp"
+#endif
 #include "ATORdatabaseDecisionTree.hpp"
+#include "ATORdatabaseDecisionTreeOperations.hpp"
 	#include "LDopengl.hpp"
 
 
@@ -535,7 +538,6 @@ class ATORmethodClass
 {
 	private: LDopenglClass LDopengl;
 	private: ATORcomparisonClass ATORcomparison;
-	private: LDmysqlClass LDmysql;
 	private: SHAREDvarsClass SHAREDvars;
 	private: ATORfeatureGenerationClass ATORfeatureGeneration;
 	private: ATORoperationsClass ATORoperations;
@@ -551,8 +553,12 @@ class ATORmethodClass
 	private: RTreferenceManipulationClass RTreferenceManipulation;
 	private: SHAREDvectorClass SHAREDvector;
 	private: ATORimagecomparisonClass ATORimagecomparison;
+	#ifdef ATOR_IMAGE_COMPARISON_SQL
+	private: LDmysqlClass LDmysql;
 	private: ATORdatabaseSQLClass ATORdatabaseSQL;
+	#endif
 	private: ATORdatabaseDecisionTreeClass ATORdatabaseDecisionTree;
+	private: ATORdatabaseDecisionTreeOperationsClass ATORdatabaseDecisionTreeOperations;
 	private: bool ORTHmethod(int dimension, const int numberOfTrainObjects, string trainObjectNameArray[], const int numberOfTestObjects, string testObjectNameArray[], int* numberOfTrainPolys, int* numberOfTestPolys, const int objectDataSource, RTviewInfo* viTrain, RTviewInfo* viTest, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrain, const int maxNumberOfPolygonsTest, const int numberOfTrainViewIndiciesPerObject, const int numberOfTestViewIndiciesPerObject, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, int numberOfTestZoomIndicies);
 		private: bool ATORmethodInitialise(const int imageWidthFacingPoly, const int imageHeightFacingPoly, const bool initialiseTrain, const bool initialiseTest, const bool clearTrainTable, const int dimension, const string sqlIPaddress, const string sqlUsername, const string sqlPassword);
 		private: bool ATORmethodTrainOrTest(int dimension, const int numberOfObjects, string objectNameArray[], const int objectDataSource, RTviewInfo* vi, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygons, const int numberOfViewIndiciesPerObject, int numberOfViewIndiciesPerObjectWithUniquePolygons, int* numberOfPolys, const int trainOrTest, int numberOfZoomIndicies, const int viewNumber, const string multViewListFileName);
@@ -566,13 +572,16 @@ class ATORmethodClass
 				private: LDreference* convertMeshPointToReferences2DOD(const ATORmeshPoint* currentMeshPointInMeshList, LDreference* firstNewReferenceInInterpolatedMesh);
 
 			private: bool addCornerFeaturesToFeatureListUsingRGBmap(RTviewInfo* vi, uchar* rgbMap, ATORfeature* firstFeatureInList, const int trainOrTest, const string mapFileName, const double sensitivity, const int dimension, double* pointMap, const double* depthMap, int zoom, const bool interpixelRGBmapType);
+		#ifdef ATOR_USE_COMPARISON
 		#ifdef ATOR_IMAGE_COMPARISON_SQL
 		private: bool ATORmethodCompareTestWithTrain(const int dimension, const int numberOfTestObjects, const string testObjectNameArray[], int imageWidthFacingPoly, int imageHeightFacingPoly, const int* numberOfTestPolys, const int numberOfTestViewIndiciesPerObjectWithUniquePolygons, const int numberOfTestZoomIndicies, const int trainOrTest, const int testViewNumber);
-		public: bool ATORmethodTrain(int dimension, const int numberOfTrainObjects, string trainObjectNameArray[], int* numberOfTrainPolys, const int objectDataSource, RTviewInfo* viTrain, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrain, const int numberOfTrainViewIndiciesPerObject, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, const int trainOrTest, const string sqlIPaddress, const string sqlUsername, const string sqlPassword, const bool clearTrainTable, const int viewNumber, const string multViewListFileName);
-		public: bool ATORmethodTest(int dimension, const int numberOfTestObjects, string testObjectNameArray[], int* numberOfTestPolys, const int objectDataSource, RTviewInfo* viTest, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTest, const int numberOfTestViewIndiciesPerObject, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTestZoomIndicies, const int trainOrTest, const string sqlIPaddress, const string sqlUsername, const string sqlPassword, const bool clearTrainTable, const int viewNumber, const string multViewListFileName);
 		#else
 		//bool ATORmethodCompareTestWithTrain(const int dimension, const int numberOfTrainObjects, const string trainObjectNameArray[], const int numberOfTestObjects, const string testObjectNameArray[], int imageWidthFacingPoly, int imageHeightFacingPoly, const int* numberOfTrainPolys, const int* numberOfTestPolys, const int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, const int numberOfTestViewIndiciesPerObjectWithUniquePolygons, const int numberOfTrainZoomIndicies, const int numberOfTestZoomIndicies, const int testViewNumber);
 		#endif
+		#endif
+		public: bool ATORmethodTrain(int dimension, const int numberOfTrainObjects, string trainObjectNameArray[], int* numberOfTrainPolys, const int objectDataSource, RTviewInfo* viTrain, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTrain, const int numberOfTrainViewIndiciesPerObject, int numberOfTrainViewIndiciesPerObjectWithUniquePolygons, int numberOfTrainZoomIndicies, const int trainOrTest, const string sqlIPaddress, const string sqlUsername, const string sqlPassword, const bool clearTrainTable, const int viewNumber, const string multViewListFileName);
+		public: bool ATORmethodTest(int dimension, const int numberOfTestObjects, string testObjectNameArray[], int* numberOfTestPolys, const int objectDataSource, RTviewInfo* viTest, int imageWidthFacingPoly, int imageHeightFacingPoly, const int maxNumberOfPolygonsTest, const int numberOfTestViewIndiciesPerObject, int numberOfTestViewIndiciesPerObjectWithUniquePolygons, int numberOfTestZoomIndicies, const int trainOrTest, const string sqlIPaddress, const string sqlUsername, const string sqlPassword, const bool clearTrainTable, const int viewNumber, const string multViewListFileName);
+
 		private: bool ATORmethodExit();
 
 
